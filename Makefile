@@ -26,9 +26,6 @@ REPOS_TARGETS = git-status git-push git-commit-amend git-tag-list git-diff \
 # -----------------------------------------------------------------------------
 .PHONY: clean
 
-git-status:
-	git status
-
 format:
 	@ for v in `find . -type f -name '*.go' -not -path '*/tmp/*'`; do \
 		echo $$v; \
