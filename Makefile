@@ -41,5 +41,12 @@ build:
 $(REPOS_TARGETS):
 	$(MAKE) -f Repository.mk $@
 
+diff push branch:
+	@$(MAKE) git-$@
+fix-commit-message: git-commit-amend
+cancel-the-latest-commit: git-reset-soft
+remove-added-file: git-rm-cached
+	
+
 clean:
 	:
