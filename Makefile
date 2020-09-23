@@ -19,6 +19,10 @@ GOROOT := $(shell echo $$GOROOT)
 GOPATH := $(shell echo $$GOPATH)
 DOMAIN := libsisimai.org
 
+.DEFAULT_GOAL = git-status
+REPOS_TARGETS = git-status git-push git-commit-amend git-tag-list git-diff \
+				git-reset-soft git-rm-cached git-branch
+
 # -----------------------------------------------------------------------------
 .PHONY: clean
 
@@ -36,6 +40,9 @@ init:
 
 build:
 	$(GO) build $(NAME).go
+
+$(REPOS_TARGETS):
+	$(MAKE) -f Repository.mk $@
 
 clean:
 	:
