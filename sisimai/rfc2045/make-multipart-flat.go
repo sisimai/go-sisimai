@@ -224,7 +224,10 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 
 		} else {
 			// There is no Content-Transfer-Encoding header in the part 
-			if strings.HasSuffix(mediatypev, "/delivery-status") || strings.HasSuffix(mediatypev, "/rfc822") {
+			if strings.HasSuffix(mediatypev, "/delivery-status") ||
+			   strings.HasSuffix(mediatypev, "/feedback-report") ||
+			   strings.HasSuffix(mediatypev, "/rfc822") {
+
 				// Add Content-Type: header of each part (will be used as a delimiter at Sisimai::Lhost)
 				// into the body inside when the value of Content-Type: is message/delivery-status, or
 				// message/rfc822, or text/rfc822-headers
