@@ -64,9 +64,11 @@ func haircut(block *string, heads bool) []string {
 		multipart1[2] = fmt.Sprintf("Content-Type: %s\n", headerpart[0])
 
 		// Do not append Content-Transfer-Encoding: header when the part is the original message:
-        // Content-Type is message/rfc822 or text/rfc822-headers, or message/delivery-status
+		// Content-Type is message/rfc822 or text/rfc822-headers, or message/delivery-status, or
+		// message/feedback-report
 		if strings.Contains(mediatypev, "/rfc822")          { break }
 		if strings.Contains(mediatypev, "/delivery-status") { break }
+		if strings.Contains(mediatypev, "/feedback-report") { break }
 		if len(ctencoding) == 0                             { break }
 
 		multipart1[2] += fmt.Sprintf("Content-Transfer-Encoding: %s\n", ctencoding)
