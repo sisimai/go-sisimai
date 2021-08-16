@@ -5,7 +5,7 @@ package mail
 import "io"
 import "os"
 import "strings"
-import sisistring "sisimai/string"
+import sisimoji "sisimai/string"
 
 const MboxHeader = "\nFrom "
 const BufferSize = 512
@@ -33,7 +33,7 @@ func (this *Mail) readMailbox() (*string, error) {
 		if by, oops := this.handle.ReadAt(readbuffer, this.offset); oops == nil {
 			// No error returned at reading the mbox, append the read buffer into the loopbuffer
 			loopbuffer += string(readbuffer)
-			loopbuffer  = *(sisistring.ToLF(&loopbuffer))
+			loopbuffer  = *(sisimoji.ToLF(&loopbuffer))
 			fromlindex := strings.Index(loopbuffer, MboxHeader)
 
 			if fromlindex > 0 {
@@ -65,7 +65,7 @@ func (this *Mail) readMailbox() (*string, error) {
 			if oops == io.EOF {
 				// Reached to the end of the mbox
 				tempbuffer  := string(readbuffer[:by])
-				emailblock  += *(sisistring.ToLF(&tempbuffer))
+				emailblock  += *(sisimoji.ToLF(&tempbuffer))
 				this.offset += int64(len(tempbuffer))
 				this.handle.Close()
 				break

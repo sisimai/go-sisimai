@@ -1,9 +1,9 @@
-// Copyright (C) 2020 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
 import "fmt"
 import "strings"
-import sisistring "sisimai/string"
+import sisimoji "sisimai/string"
 
 // haircut() remove unnecessary header fields except Content-Type, Content-Transfer-Encoding from
 // multipart/* block.
@@ -15,7 +15,7 @@ func haircut(block *string, heads bool) []string {
 	upperchunk := textchunks[0]
 	lowerchunk := textchunks[1]
 
-	if len(upperchunk) == 0 || !strings.Contains(upperchunk, "Content-Type:") {
+	if len(upperchunk) == 0 || strings.Contains(upperchunk, "Content-Type:") == false {
 		// There is neither "Content-Type:" nor "Content-Transfer-Encoding:" header
 		return []string { "", "" }
 	}
@@ -35,6 +35,7 @@ func haircut(block *string, heads bool) []string {
 			if strings.Contains(v[1], "boundary=") {
 				// Do not convert to lower-cased when the value of Content-Type include a boundary string
 				headerpart[0] = v[1]
+
 			} else {
 				// The value of Content-Type does not include a boundary string
 				headerpart[0] = strings.ToLower(v[1])
@@ -49,7 +50,7 @@ func haircut(block *string, heads bool) []string {
 			if len(headerpart[0]) > 0 {
 				// Append parameters
 				headerpart[0] += " " + e
-				strings.ReplaceAll(headerpart[0], "  ", " ")
+				headerpart[0]  = sisimoji.Squeeze(headerpart[0], " ")
 			}
 		}
 	}
@@ -111,9 +112,9 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 			boundary02 := Boundary(f[0], -1); if len(boundary02) == 0 { continue }
 			bodyinside := strings.SplitN(f[2], "\n\n", 2)[1]
 
-			if len(bodyinside) < 8                        { continue }
-			if !strings.Contains(bodyinside, boundary02)  { continue }
-			v := levelout(f[0], &bodyinside); if v == nil { continue }
+			if len(bodyinside) < 8                               { continue }
+			if strings.Contains(bodyinside, boundary02) == false { continue }
+			v := levelout(f[0], &bodyinside); if v == nil        { continue }
 
 			for _, w := range v {
 				partstable = append(partstable, [3]string {w[0], w[1], w[2]})
@@ -218,11 +219,11 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 			}
 
 			// Try to delete HTML tags inside of text/html part whenever possible
-			if istexthtml { bodystring = *sisistring.ToPlain(&bodystring, false) }
+			if istexthtml { bodystring = *sisimoji.ToPlain(&bodystring, false) }
 			if len(bodystring) == 0 { continue }
 
 			// The new-line code in the converted string is CRLF
-			if strings.Index(bodystring, "\r\n") > -1 { bodystring = *sisistring.ToLF(&bodystring) }
+			if strings.Index(bodystring, "\r\n") > -1 { bodystring = *sisimoji.ToLF(&bodystring) }
 
 		} else {
 			// There is no Content-Transfer-Encoding header in the part 
