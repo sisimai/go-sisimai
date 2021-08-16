@@ -56,8 +56,8 @@ func Match(argv0 string) uint8 {
 		  "Diagnostic-Code", "Last-Attempt-Date", "X-Actual-Recipient" },
 	}
 
-	for _, e := range fieldnames[0] { if e == argv0 { return 1 } }
-	for _, f := range fieldnames[1] { if f == argv0 { return 2 } }
+	for _, e := range fieldnames[0] { if strings.HasPrefix(argv0, e) { return 1 } }
+	for _, f := range fieldnames[1] { if strings.HasPrefix(argv0, f) { return 2 } }
 	return 0
 }
 
@@ -65,7 +65,7 @@ func Match(argv0 string) uint8 {
 func Field(argv0 string) []string {
 	// @param    [string] argv0 A line inlcuding field and value defined in RFC3464
 	// @return   [[]string]     []string {"field-name", "value-type", "Value", "field-group"}
-	if len(argv0) == 0 { return nil }
+	if len(argv0) == 0 { return []string {} }
 
 	fieldgroup := map[string]string {
 		"original-recipient":    "addr",
@@ -84,7 +84,7 @@ func Field(argv0 string) []string {
 	correction := map[string]string {
 		"deliverable": "delivered",
 		"expired":     "delayed",
-		"failure":     "failed"
+		"failure":     "failed",
     }
 	actionlist := []string { "delayed", "deliverable", "delivered", "expanded", "expired", "failed", "failure", "relayed" }
 	captureson := map[string][]string {
@@ -100,12 +100,12 @@ func Field(argv0 string) []string {
 
 	parts := strings.SplitN(argv0, ":", 2)
 	field := strings.ToLower(parts[0])
-	group, exist := fieldgroup[field]; if !exist { return nil }
+	label, exist := fieldgroup[field]; if !exist { return []string {} }
 
 	table := []string { "", "", "", "" }
 	match := false
 
-	if group == "list" {
+	if label == "list" {
 		// Action:
 		value := strings.ToLower(strings.Trim(parts[1], " "))
 		for _, e := range actionlist {
@@ -115,20 +115,20 @@ func Field(argv0 string) []string {
 			table[0] = field
 			table[1] = ""
 			table[2] = value
-			table[3] = group
+			table[3] = label
 
 			// Correct invalid value in Action field:
-			if correction[table[2]] { table[2] = correction[table[2]] }
+			fixed, exist := correction[table[2]]; if exist { table[2] = fixed }
 			break
 		}
-	} else if group == "stat" {
+	} else if label == "stat" {
 		// Status:
-		match  = true
-		value := strings.SplitN(strings.Trim(parts[1], " "), " ")[0]
+		match    = true
+		table[2] = strings.SplitN(strings.Trim(parts[1], " "), " ", 2)[0]
 
 	} else {
 		// Other headers
-		for _, e := range captureson[group] {
+		for _, e := range captureson[label] {
 			// Try to match with each pattern of Per-Message field, Per-Recipient field
 			// - 0: Field-Name
 			// - 1: Sub Type: RFC822, DNS, X-Unix, and so on)
@@ -138,9 +138,9 @@ func Field(argv0 string) []string {
 
 			match    = true
 			table[0] = field
-			table[3] = group
+			table[3] = label
 
-			if group == "addr" || group == "code" || group == "host" {
+			if label == "addr" || label == "code" || label == "host" {
 				// - Final-Recipient: RFC822; kijitora@nyaan.jp
 				// - Diagnostic-Code: SMTP; 550 5.1.1 <kijitora@example.jp>... User Unknown
 				// - Remote-MTA: DNS; mx.example.jp
@@ -148,7 +148,7 @@ func Field(argv0 string) []string {
 				table[1] = strings.ToUpper(strings.Trim(value[0], " "))
 				table[2] = strings.Trim(value[1], " ")
 
-				if group == "host" { table[2] = strings.ToLower(table[2]) }
+				if label == "host" { table[2] = strings.ToLower(table[2]) }
 				if strings.Contains(table[2], " ") { table[2] = "" }
 
 			} else {
@@ -162,6 +162,6 @@ func Field(argv0 string) []string {
 	}
 
 	if match { return table }
-	return nil
+	return []string {}
 }
 
