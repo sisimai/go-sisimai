@@ -34,14 +34,15 @@ func IsIncluded(argv0 string) bool {
 	if strings.HasSuffix(argv0, ">") == false    { return false }
 	if strings.Contains(argv0,  "@") == false    { return false }
 	if IsEmailAddress(strings.Trim(argv0, "<>")) { return true  }
+	return false
 }
 
 // Canonify() returns a string processed by Ruleset 4 in sendmail.cf
 func Final(argv0 string) string {
 	// @param    [string] argv0  String including an email address like "<neko@nyaan.jp>"
 	// @return   [string]        String without angle brackets: "neko@nyaan.jp"
-	for strings.HasPrefix(argv0, "<") { argv0 = strings.Trim(argv0, "<" }
-	for strings.HasSuffix(argv0, ">") { argv0 = strings.Trim(argv0, ">" }
+	for strings.HasPrefix(argv0, "<") { argv0 = strings.Trim(argv0, "<") }
+	for strings.HasSuffix(argv0, ">") { argv0 = strings.Trim(argv0, ">") }
 
 	atmark := strings.LastIndex(argv0, "@")
 	useris := argv0[0:atmark]
