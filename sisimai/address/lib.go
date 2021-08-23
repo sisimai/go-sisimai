@@ -24,11 +24,57 @@ func IsQuotedAddress(email string) bool {
 	return true
 }
 
+// IsIncluded() returns true if the string include an email address
+func IsIncluded(argv0 string) bool {
+	// @param    [string] argv0  String including an email address like "<neko@nyaan.jp>"
+	// @return   [bool]          true:  is including an email address
+	//                           false: is not including an email address
+	if len(argv0) == 0                           { return false }
+	if strings.HasPrefix(argv0, "<") == false    { return false }
+	if strings.HasSuffix(argv0, ">") == false    { return false }
+	if strings.Contains(argv0,  "@") == false    { return false }
+	if IsEmailAddress(strings.Trim(argv0, "<>")) { return true  }
+}
+
+// Canonify() returns a string processed by Ruleset 4 in sendmail.cf
+func Final(argv0 string) string {
+	// @param    [string] argv0  String including an email address like "<neko@nyaan.jp>"
+	// @return   [string]        String without angle brackets: "neko@nyaan.jp"
+	for strings.HasPrefix(argv0, "<") { argv0 = strings.Trim(argv0, "<" }
+	for strings.HasSuffix(argv0, ">") { argv0 = strings.Trim(argv0, ">" }
+
+	atmark := strings.LastIndex(argv0, "@")
+	useris := argv0[0:atmark]
+	hostis := argv0[atmark+1:]
+
+	if IsQuotedAddress(argv0) == false {
+		// Remove all the angle brackets from the local part
+		useris = strings.ReplaceAll(useris, "<", "")
+		useris = strings.ReplaceAll(useris, ">", "")
+	}
+	// Remove all the angle brackets from the domain part
+	hostis = strings.ReplaceAll(hostis, "<", "")
+	hostis = strings.ReplaceAll(hostis, ">", "")
+	return useris + "@" + hostis
+}
+
 // IsEmailAddress() checks that the argument is an email address or not
 func IsEmailAddress(email string) bool {
 	// @param    [string] email  Email address string
 	// @return   [bool]          true:  is an email address
 	//                           false: is not an email address
+
+	// See http://www.ietf.org/rfc/rfc5322.txt
+	//   or http://www.ex-parrot.com/pdw/Mail-RFC822-Address.html ...
+	//   addr-spec       = local-part "@" domain
+	//   local-part      = dot-atom / quoted-string / obs-local-part
+	//   domain          = dot-atom / domain-literal / obs-domain
+	//   domain-literal  = [CFWS] "[" *([FWS] dcontent) [FWS] "]" [CFWS]
+	//   dcontent        = dtext / quoted-pair
+	//   dtext           = NO-WS-CTL /     ; Non white space controls
+	//                     %d33-90 /       ; The rest of the US-ASCII
+	//                     %d94-126        ;  characters not including "[",
+	//                                     ;  "]", or "\"
 	email  = strings.Trim(email, " \t")
 	lasta := strings.LastIndex(email, "@")
 	lastd := strings.LastIndex(email, ".")
