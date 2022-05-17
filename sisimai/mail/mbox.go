@@ -1,4 +1,4 @@
-// Copyright (C) 2020 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2022 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package mail
 
@@ -25,6 +25,7 @@ func (this *Mail) readMailbox() (*string, error) {
 	}
 
 	var emailblock string
+	var crposition bool
 	for {
 		// Read mbox until the EOF
 		loopbuffer := ""
@@ -33,6 +34,22 @@ func (this *Mail) readMailbox() (*string, error) {
 		if by, oops := this.handle.ReadAt(readbuffer, this.offset); oops == nil {
 			// No error returned at reading the mbox, append the read buffer into the loopbuffer
 			loopbuffer += string(readbuffer)
+
+			if crposition && strings.HasPrefix(loopbuffer, "\n") {
+				// When the last character of the previous loopbuffer is "\r" and the 1st character
+				// of the current loopbuffeer is "\n", Remove "\n" at the loopbuffer[0] to avoid
+				// to be converted "\r\n" to "\n\n".
+				strings.Replace(loopbuffer, "\n", "", 1)
+			}
+
+			if strings.HasSuffix(loopbuffer, "\r") {
+				// "\r\n" was divided into "\r" and "\n" ?
+				crposition = true
+
+			} else {
+				// "\r\n" was not divided into "\r" and "\n"
+				crposition = false
+			}
 			loopbuffer  = *(sisimoji.ToLF(&loopbuffer))
 			fromlindex := strings.Index(loopbuffer, MboxHeader)
 
@@ -65,6 +82,14 @@ func (this *Mail) readMailbox() (*string, error) {
 			if oops == io.EOF {
 				// Reached to the end of the mbox
 				tempbuffer  := string(readbuffer[:by])
+
+				if crposition && strings.HasPrefix(tempbuffer, "\n") {
+					// When the last character of the previous loopbuffer is "\r" and the 1st
+					// character of this tempbuffer is "\n", Remove "\n" at the tempbuffer[0] to
+					// avoid to be converted "\r\n" to "\n\n".
+					strings.Replace(tempbuffer, "\n", "", 1)
+				}
+
 				emailblock  += *(sisimoji.ToLF(&tempbuffer))
 				this.offset += int64(len(tempbuffer))
 				this.handle.Close()
