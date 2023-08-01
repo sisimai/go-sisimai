@@ -11,10 +11,11 @@ replace (
 	sisimai/smtp/command => ./sisimai/smtp/command
 	sisimai/smtp/reply => ./sisimai/smtp/reply
 	sisimai/smtp/status => ./sisimai/smtp/status
+	sisimai/smtp/transcript => ./sisimai/smtp/transcript
 	sisimai/string => ./sisimai/string
 )
 
-go 1.14
+go 1.20
 
 require (
 	sisimai/address v0.0.0-00010101000000-000000000000
@@ -27,5 +28,6 @@ require (
 	sisimai/smtp/command v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/smtp/reply v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/smtp/status v0.0.0-00010101000000-000000000000 // indirect
+	sisimai/smtp/transcript v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/string v0.0.0-00010101000000-000000000000 // indirect
 )
