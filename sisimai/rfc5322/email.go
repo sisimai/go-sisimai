@@ -1,8 +1,7 @@
-// Copyright (C) 2020 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc5322
 import "strings"
-import "fmt"
 
 // Received() convert Received headers to a structured data
 func Received(argv0 string) []string {
@@ -11,50 +10,70 @@ func Received(argv0 string) []string {
 	return []string {}
 }
 
-// Fillet() split given entire message body into error message lines and the original message part only
-// include email headers.
-func Fillet(mbody *string, bones []string) []string {
-	// @param    [*string]  mbody  Entire message body
-	// @param    [[]string] bones  String list of the message/rfc822 or the beginning of the original
-	//                             message part
-	// @return   [[]string]        { "Error message lines", "The original message" }
-	if len(*mbody) == 0 { return nil }
-	if len(bones)  == 0 { return nil }
+// Part() split the entire message body given as the 1st argument into error message lines and the
+// original message part only include email headers.
+func Part(email *string, cutby []string, keeps bool) [2]string {
+	// @param    *string  email    Entire message body
+	// @param    []string cutby    String list of the message/rfc822 or the beginning of the original message part
+	// @param    bool     keeps    Flag for keeping strings after "\n\n"
+	// @return   []string          { "Error message lines", "The original message" }
+	// @since    v5.0.0
+	if len(*email) == 0 { return [2]string{ "", "" } }
+	if len(cutby)  == 0 { return [2]string{ "", "" } }
 
-	bone1 := ""
-	for _, b := range bones {
-		// Try to find the separator string
-		if !strings.Contains(*mbody, b) { continue }
-		bone1 = b
+	boundaryor := ""	// A boundary string divides the error message part and the original message part
+	positionor := -1	// A position of the boudary string
+	formerpart := ""	// The error message part
+	latterpart := ""	// The original message part
+
+	for _, e := range cutby {
+		// Find a boundary string(2nd argument) from the 1st argument
+		positionor = strings.Index(*email, e)
+		if positionor == -1 { continue }
+		boundaryor = e
+		break
 	}
 
-	parts := strings.SplitN(*mbody, bone1, 2)
-	if len(parts) == 1 { parts = append(parts, "") }
-	if len(parts[1]) > 0 {
+	if positionor > 0 {
+		// There is the boundary string in the message body
+		formersize := positionor + len(boundaryor)
+		formerpart  = (*email)[0:positionor]
+		latterpart  = (*email)[formersize + 1:len(*email) - formersize]
+
+	} else {
+		// Substitute the entire message to the former part when the boundary string is not included the *email
+		formerpart = *email
+		latterpart = ""
+	}
+
+	if len(latterpart) > 0 {
 		// Remove blank lines, the message body of the original message, and append "\n" at the end
 		// of the original message headers
-		for _, e := range strings.Split(parts[1], "") {
+		// 1. Remove leading blank lines
+		// 2. Remove text after the first blank line: \n\n
+		// 3. Append "\n" at the end of test block when the last character is not "\n"
+		for _, e := range strings.Split(latterpart, "") {
 			// Remove leading blank lines
 			if e == " " || e == "\n" || e == "\r" { continue }
-			p := strings.Index(parts[1], e)
+
+			p := strings.Index(latterpart, e)
 			if p > 0 {
 				// There is leading space characters at the head of parts[1]
-				parts[1] = parts[1][p:len(parts[1])]
+				latterpart = latterpart[p:len(latterpart)]
 			}
 			break
 		}
 
-		if strings.Contains(parts[1], "\n\n") {
-			// Remove text after the first blank line
-			parts[1] = parts[1][0:strings.Index(parts[1], "\n\n") + 1]
+		if keeps == true && strings.Contains(latterpart, "\n\n") {
+			// Remove text after the first blank line when "keeps" is true
+			latterpart = latterpart[0:strings.Index(latterpart, "\n\n") + 1]
 		}
 
-		if !strings.HasSuffix(parts[1], "\n") {
+		if !strings.HasSuffix(latterpart, "\n") {
 			// Append "\n" at the end of the original message
-			parts[1] += "\n"
+			latterpart += "\n"
 		}
 	}
-		fmt.Printf("LENGTH-OF-EEEE = [%d]\n", len(parts[1]))
-	return parts
+	return [2]string{ formerpart, latterpart }
 }
 
