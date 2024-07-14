@@ -1,4 +1,4 @@
-// Copyright (C) 2020 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 import "net/mail"
@@ -62,7 +62,7 @@ func INDICATORS() map[string]uint8 {
 func INDEX() []string {
 	return []string{
 		"Activehunter", "Amavis", "AmazonSES", "AmazonWorkMail", "Aol", "ApacheJames", "Barracuda",
-		"Bigfoot", "Biglobe", "Courier", "Domino", "EZweb", "EinsUndEins", "Exchange2003",
+		"Bigfoot", "Biglobe", "Courier", "Domino", "DragonFly", "EZweb", "EinsUndEins", "Exchange2003",
 		"Exchange2007", "Exim", "FML", "Facebook", "GMX", "GSuite", "GoogleGroups", "Gmail",
 		"IMailServer", "InterScanMSS", "KDDI", "MXLogic", "MailFoundry", "MailMarshalSMTP", "MailRu",
 		"McAfee", "MessageLabs", "MessagingServer", "Notes", "Office365", "OpenSMTPD", "Outlook",
