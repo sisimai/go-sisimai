@@ -1,8 +1,28 @@
 // Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package string
+import "fmt"
 import "strings"
 import "strconv"
+import "crypto/sha1"
+
+// Token() creates the message token from an addresser, and a recipient, and an unix machine time
+func Token(argv1 string, argv2 string, epoch int) string {
+	// @param    string addr1  A sender's email address
+	// @param    string addr2  A recipient's email address
+	// @param    int    epoch  Machine time of the email bounce
+	// @return   string        Message token(MD5 hex digest) or empty string if the any argument is missing
+	// @see      http://en.wikipedia.org/wiki/ASCII
+	if len(argv1) == 0 { return "" }
+	if len(argv2) == 0 { return "" }
+
+	// Format: STX(0x02) Sender-Address RS(0x1e) Recipient-Address ETX(0x03)
+	plain := fmt.Sprintf("\x02%s\x1e%s\x1e%d\x03", strings.ToLower(argv1), strings.ToLower(argv2), epoch)
+	crypt := sha1.New(); crypt.Write([]byte(plain))
+	token := crypt.Sum(nil)
+
+	return fmt.Sprintf("%x", token)
+}
 
 // Squeeze() remove redundant characters
 func Squeeze(argv1 string, chars string) string {
