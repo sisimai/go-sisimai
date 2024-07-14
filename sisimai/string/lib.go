@@ -74,3 +74,29 @@ func IsIPv4Address(argv1 string) bool {
 	return match
 }
 
+// Aligned() checks if each element of the 2nd argument is aligned in the 1st argument or not
+func Aligned(argv1 string, argv2 []string) bool {
+	// @param    string   argv1  String to be checked
+	// @param    []string argv2  List including the ordered strings
+	// @return   bool
+	// @since    v5.2.0
+	if len(argv1) == 0 { return false }
+	if len(argv2) == 0 { return false }
+
+	align := -1
+	right :=  0
+
+	for _, e := range argv2 {
+		// Get the position of each element in the 1st argument using index()
+		if align > 0 { argv1 = argv1[align + 1:] }
+		p := strings.Index(argv1, e)
+
+		if p < 0 { break }		// Break this loop when there is no string in the 1st argument
+		align = len(e) + p - 1	//  There is an aligned string in the 1st argument
+		right++
+	}
+
+	if right == len(argv2) { return true }
+	return false
+}
+
