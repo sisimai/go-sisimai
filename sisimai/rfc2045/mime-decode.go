@@ -31,12 +31,12 @@ func IsEncoded(argv0 *string) (bool) {
 
 // DecodeH() decodes the value of email header which is MIME-Encoded string.
 func DecodeH(argv0 *string) *string {
-	// @param    [*string] argvs  Reference to an array including MIME-Encoded text
-	// @return   [*string]        MIME-Decoded text
+	// @param    *string    argvs  A pointer to MIME-Encoded text
+	// @return   *string           MIME-Decoded text
 	hasdecoded := ""
 	stringlist := []string{}
 	decodingif := new(mime.WordDecoder)
-	characters := []string{ ".", "[", "]" }
+	characters := []string{".", "[", "]"}
 
 	if strings.Contains(*argv0, " ") {
 		// The argument string include 1 or more space characters
@@ -81,9 +81,9 @@ func DecodeH(argv0 *string) *string {
 
 // DecodeB() decodes Base64 encoded text.
 func DecodeB(argv0 *string, argv1 string) *string {
-	// @param    [*string] argv0   Base64 Encoded text
-	// @param    [string]  argv1   Character set name
-	// @return   [*string]         MIME-Decoded text
+	// @param    *string    argv0  Base64 Encoded text
+	// @param    string     argv1  Character set name
+	// @return   *string           MIME-Decoded text
 	if len(*argv0) < 8 { return argv0 }
 	if len(argv1) == 0 { argv1 = "utf-8" }
 
@@ -93,9 +93,9 @@ func DecodeB(argv0 *string, argv1 string) *string {
 	base64text  = fmt.Sprintf("=?%s?B?%s?=", argv1, base64text)
 	plainvalue := ""
 
-	if plain, oops := decodingif.Decode(base64text); oops != nil {
+	if plain, nyaan := decodingif.Decode(base64text); nyaan != nil {
 		// Failed to decode the base64-encoded text
-		log.Fatal(oops)
+		log.Fatal(nyaan)
 
 	} else {
 		// Successfully decoded
@@ -106,15 +106,15 @@ func DecodeB(argv0 *string, argv1 string) *string {
 
 // DecodeQ() decodes Quoted-Pritable encdoed text
 func DecodeQ(argv0 *string) *string {
-	// @param    [*string] argv0   Quoted-Printable Encoded text
-	// @return   [*string]         MIME-Decoded text
+	// @param    *string    argv0 Quoted-Printable Encoded text
+	// @return   *string          MIME-Decoded text
 	readstring := strings.NewReader(*argv0)
 	decodingif := quotedprintable.NewReader(readstring)
 	plainvalue := ""
 
-	if plain, oops := ioutil.ReadAll(decodingif); oops != nil {
+	if plain, nyaan := ioutil.ReadAll(decodingif); nyaan != nil {
 		// Failed to decode the quoted-printable text
-		log.Fatal(oops)
+		log.Fatal(nyaan)
 
 	} else {
 		// Successfully decoded
