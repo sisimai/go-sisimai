@@ -1,28 +1,7 @@
-// Copyright (C) 2020 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
 import "strings"
-
-// IsEncoded() checks that the argument is MIME encoded string or not.
-func IsEncoded(argv0 *string) (bool) {
-	// @param    [*string] argv0  String to be checked
-	// @return   [bool]           true: Not MIME encoded string
-    //                            false: MIME encoded string
-	is_encoded := false
-	for {
-		// =?UTF-8?B?44OL44Oj44O844Oz?=
-		if !strings.Contains(*argv0, "=?") { break } // Begins with "=?"
-		if !strings.Contains(*argv0, "?=") { break } // Ends with "?="
-		if strings.Count(*argv0, "?") != 4 { break } // "?" appears 4 times
-		if len(*argv0) < 8                 { break } // String length should be 8 or more
-		if strings.Contains(*argv0, "?B?") ||
-		   strings.Contains(*argv0, "?b?") ||
-		   strings.Contains(*argv0, "?Q?") ||
-		   strings.Contains(*argv0, "?q?") { is_encoded = true }
-		break
-	}
-	return is_encoded
-}
 
 // Parameter() finds a value of specified parameter name from Content-Type header.
 func Parameter(argv0 string, argv1 string) string {

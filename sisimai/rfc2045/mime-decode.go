@@ -8,6 +8,27 @@ import "log"
 import "mime/quotedprintable"
 import "io/ioutil"
 
+// IsEncoded() checks that the argument is MIME encoded string or not.
+func IsEncoded(argv0 *string) (bool) {
+	// @param    *string    argv0  String to be checked
+	// @return   bool              true: Not MIME encoded string
+    //                             false: MIME encoded string
+	match := false
+	for {
+		// =?UTF-8?B?44OL44Oj44O844Oz?=
+		if !strings.Contains(*argv0, "=?") { break } // Begins with "=?"
+		if !strings.Contains(*argv0, "?=") { break } // Ends with "?="
+		if strings.Count(*argv0, "?") != 4 { break } // "?" appears 4 times
+		if len(*argv0) < 8                 { break } // String length should be 8 or more
+		if strings.Contains(*argv0, "?B?") ||
+		   strings.Contains(*argv0, "?b?") ||
+		   strings.Contains(*argv0, "?Q?") ||
+		   strings.Contains(*argv0, "?q?") { match = true }
+		break
+	}
+	return match
+}
+
 // DecodeH() decodes the value of email header which is MIME-Encoded string.
 func DecodeH(argv0 *string) *string {
 	// @param    [*string] argvs  Reference to an array including MIME-Encoded text
