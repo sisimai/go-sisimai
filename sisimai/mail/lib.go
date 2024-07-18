@@ -1,9 +1,7 @@
-// Copyright (C) 2020 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-/*
-sisimai/mail is a package for reading a UNIX mbox, a Maildir, or any email message input from
-Standard-in, a variable.
-*/
+
+// sisimai/mail is a package for reading a UNIX mbox, a Maildir, or any email message input from Standard-in
 package mail
 
 import "os"
@@ -30,10 +28,10 @@ type Mail struct {
 	payload []string // Each email message
 }
 
-// A constructor of Mail struct
+// Rise() is a constructor of Mail struct
 func Rise(argv0 string) (*Mail, error) {
-	// @param    [string] argv0  Path to mbox or Maildir/
-	// @return   [*mail.Mail]    Pointer to mail.Mail struct
+	// @param    string     argv0  Path to mbox or Maildir/
+	// @return   *mail.Mail        Pointer to mail.Mail struct
 	thing := Mail{}
 
 	if argv0 == "STDIN" {
@@ -73,9 +71,10 @@ func Rise(argv0 string) (*Mail, error) {
 
 // *Mail.Read() is an email reader, works as an iterator.
 func (this *Mail) Read() (*string, error) {
-	// @return   [*string] Contents of mbox/Maildir
+	// @param    NONE
+	// @return   *string Contents of mbox/Maildir
 	var mail *string // Email contents: headers and entire message body
-	var oops error   // Some errors while reading an email file
+	var oops  error  // Some errors while reading an email file
 
 	switch this.Kind {
 		case "mailbox":
