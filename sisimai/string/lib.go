@@ -24,6 +24,20 @@ func Token(argv1 string, argv2 string, epoch int) string {
 	return fmt.Sprintf("%x", token)
 }
 
+// Is8Bit() checks the argument is including an 8-bit character or not
+func Is8Bit(argv1 *string) bool {
+	// @param    *string argv1  Any string to be checked
+	// @return   bool           false:  ASCII Characters only
+	//                          true:  Including an 8-bit character
+	eight := false
+	for _, e := range *argv1 {
+		if e < 128 { continue }
+		eight = true
+		break
+	}
+	return eight
+}
+
 // Squeeze() remove redundant characters
 func Squeeze(argv1 string, chars string) string {
 	// @param    string argv1  Email address, name, and other elements
