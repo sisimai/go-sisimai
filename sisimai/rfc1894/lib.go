@@ -1,7 +1,15 @@
-// Copyright (C) 2020-2021 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc1894
 import "strings"
+
+func FIELDINDEX() []string {
+	return []string{
+		"Action", "Arrival-Date", "Diagnostic-Code", "Final-Recipient", "Last-Attempt-Date",
+		"Original-Recipient", "Received-From-MTA", "Remote-MTA", "Reporting-MTA", "Status",
+		"X-Actual-Recipienet", "X-Original-Message-ID",
+	}
+}
 
 // FIELDTABLE() return pairs that a field name and key name defined in sisimai/lhost package
 func FIELDTABLE() map[string]string {
