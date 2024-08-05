@@ -3,7 +3,6 @@
 
 // sisimai/mail is a package for reading a UNIX mbox, a Maildir, or any email message input from Standard-in
 package mail
-
 import "os"
 import "strings"
 import "path/filepath"
@@ -70,7 +69,7 @@ func Rise(argv0 string) (*Mail, error) {
 }
 
 // *Mail.Read() is an email reader, works as an iterator.
-func (this *Mail) Read() (*string, error) {
+func(this *Mail) Read() (*string, error) {
 	// @param    NONE
 	// @return   *string Contents of mbox/Maildir
 	var mail *string // Email contents: headers and entire message body
