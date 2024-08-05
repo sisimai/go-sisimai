@@ -1,25 +1,24 @@
-// Copyright (C) 2020 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package string
 import "strings"
 
 // ToLF() replace CR and CR/LF to LF.
 func ToLF(argv0 *string) *string {
-	// @param    [*string] argv0  Text including CR or CR/LF
-	// @return   [*string]        LF converted text
+	// @param    *string argv0  Text including CR or CR/LF
+	// @return   *string        LF converted text
 	if len(*argv0) == 0 { return argv0 }
 
-	replaceset := [...]string { "\r\n", "\r" }
-	lfreplaced := ""
-
-	for _, e := range replaceset {
+	characters := [2]string{"\r\n", "\r"}
+	crreplaced := *argv0
+	for _, e := range characters {
 		// Convert CRLF and CR to LF
-		if !strings.Contains(*argv0, e) { continue }
-		lfreplaced = strings.Replace(*argv0, e, "\n", -1)
+		if strings.Contains(crreplaced, e) == false { continue }
+		crreplaced = strings.ReplaceAll(crreplaced, e, "\n")
 	}
-	if len(lfreplaced) == 0 { return argv0 }
 
-	return &lfreplaced
+	if len(crreplaced) == 0 { return argv0 }
+	return &crreplaced
 }
 
 // ToPlain() converts given HTML text to a plain text.
