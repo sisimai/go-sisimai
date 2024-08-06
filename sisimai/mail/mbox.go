@@ -49,7 +49,6 @@ func(this *Mail) readMailbox() (*string, error) {
 				// "\r\n" was not divided into "\r" and "\n"
 				crposition = false
 			}
-			loopbuffer  = *(sisimoji.ToLF(&loopbuffer))
 			fromlindex := strings.Index(loopbuffer, MboxHeader)
 
 			if fromlindex > 0 {
@@ -89,7 +88,7 @@ func(this *Mail) readMailbox() (*string, error) {
 					tempbuffer = strings.Replace(tempbuffer, "\n", "", 1)
 				}
 
-				emailblock  += *(sisimoji.ToLF(&tempbuffer))
+				emailblock  += tempbuffer
 				this.offset += int64(len(tempbuffer))
 				this.handle.Close()
 				break
@@ -100,6 +99,8 @@ func(this *Mail) readMailbox() (*string, error) {
 			}
 		}
 	} // The end of the loop(for)
+
+	emailblock  += *(sisimoji.ToLF(&emailblock))
 	return &emailblock, nil
 }
 
