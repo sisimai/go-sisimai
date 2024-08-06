@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
 import "fmt"
@@ -8,9 +8,9 @@ import sisimoji "sisimai/string"
 // haircut() remove unnecessary header fields except Content-Type, Content-Transfer-Encoding from
 // multipart/* block.
 func haircut(block *string, heads bool) []string {
-	// @param    [*string] block  multipart/* block text
-	// @param    [bool]    heads  true: Returns only Content-(Type|Transfer-Encoding) headers
-	// @return   [[]string]       Two headers and body part of multipart/* block
+	// @param    *string  block  multipart/* block text
+	// @param    bool     heads  true: Returns only Content-(Type|Transfer-Encoding) headers
+	// @return   []string        Two headers and body part of multipart/* block
 	textchunks := strings.SplitN(*block, "\n\n", 2)
 	upperchunk := textchunks[0]
 	lowerchunk := textchunks[1]
@@ -20,7 +20,7 @@ func haircut(block *string, heads bool) []string {
 		return []string { "", "" }
 	}
 
-	var headerpart[2] string = [2]string {"", ""}     // {"text/plain; charset=iso-2022-jp; ...", "quoted-printable"}
+	var headerpart[2] string = [2]string{"", ""} // {"text/plain; charset=iso-2022-jp; ...", "quoted-printable"}
 	for _, e := range strings.Split(upperchunk, "\n") {
 		// Remove fields except Content-Type:, and Content-Transfer-Encoding: in each part of multipart/*
 		// block such as the following:
@@ -58,7 +58,7 @@ func haircut(block *string, heads bool) []string {
 
 	mediatypev := strings.ToLower(headerpart[1])
 	ctencoding := headerpart[1]
-	multipart1 := [...]string {headerpart[0], headerpart[1], ""}
+	multipart1 := [...]string{headerpart[0], headerpart[1], ""}
 
 	for {
 		// UPPER CHUNK: Make a body part at the 2nd element of multipart1
@@ -90,15 +90,15 @@ func haircut(block *string, heads bool) []string {
 
 // levelout() splits the second argument: multipart/* blocks by a boundary string in the first argument.
 func levelout(argv0 string, argv1 *string) [][3]string {
-	// @param    [string]  argv0  The value of Content-Type header
-	// @param    [*string] argv1  A pointer to multipart/* message blocks
-	// @return   [[][3]string]    List of each part of multipart/*
+	// @param    string      argv0  The value of Content-Type header
+	// @param    *string     argv1  A pointer to multipart/* message blocks
+	// @return   [][3]string        List of each part of multipart/*
 	if len(argv0)  == 0 { return nil }
 	if len(*argv1) == 0 { return nil }
 
 	boundary01 := Boundary(argv0, 0); if len(boundary01) == 0 { return nil }
 	multiparts := strings.Split(*argv1, boundary01 + "\n")
-	partstable := [][3]string {}
+	partstable := [][3]string{}
 
 	// Remove empty or useless preamble and epilogue of multipart/* block
 	if len(multiparts[0])                   < 8 { multiparts = multiparts[1:] }
@@ -117,12 +117,12 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 			v := levelout(f[0], &bodyinside); if v == nil        { continue }
 
 			for _, w := range v {
-				partstable = append(partstable, [3]string {w[0], w[1], w[2]})
+				partstable = append(partstable, [3]string{w[0], w[1], w[2]})
 			}
 		} else {
 			// The part is not a multipart/* block
 			b := e; if len(f[len(f) - 1]) > 0 { b = f[len(f) - 1] }
-			v := [3]string {f[0], f[1], b}
+			v := [3]string{f[0], f[1], b}
 			if len(f[0]) > 0 { v[2] = strings.SplitN(b, "\n\n", 2)[1] }
 			partstable = append(partstable, v)
 		}
@@ -140,9 +140,9 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 
 // Makeflat() makes multipart/* part blocks flat and decode each part.
 func MakeFlat(argv0 string, argv1 *string) *string {
-	// @param    [string]  argv0  The value of Content-Type header
-	// @param    [*string] argv1  A pointer to multipart/* message blocks
-	// @return   [*string]        Message body
+	// @param    string  argv0  The value of Content-Type header
+	// @param    *string argv1  A pointer to multipart/* message blocks
+	// @return   *string        Message body
 	if strings.Index(argv0, "multipart/") == -1 { return nil }
 	if strings.Index(argv0, "boundary=")  == -1 { return nil }
 
@@ -151,18 +151,21 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 	//   - content-transfer-encoding: quoted-printable  => Content-Transfer-Encoding: quoted-printable
 	//   - CHARSET=, BOUNDARY=                          => charset-, boundary=
 	//   - message/xdelivery-status                     => message/delivery-status
-	for _, e := range [...]string { "CONTENT-TYPE", "Content-type", "content-type" } {
+	for _, e := range [...]string{ "CONTENT-TYPE", "Content-type", "content-type" } {
 		// Transform the Content-Type header name to the camel cased
+		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
 		*argv1 = strings.Replace(*argv1, e + ":", "Content-Type:", -1)
 	}
 
 	for _, e := range [...]string { "CONTENT-TRANSFER-ENCODING", "content-transfer-encoding" } {
 		// Transform the Content-Transfer-Encoding header name to the camel cased
+		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
 		*argv1 = strings.Replace(*argv1, e + ":", "Content-Transfer-Encoding:", -1)
 	}
 
 	for _, e := range [...]string { "CHARSET", "CharSet", "Charset", "BOUNDARY", "Boundary" } {
 		// Transform each parameter field name to the lower cased
+		// TODO: These parameters have been transformed by sisimai.message.Tidy() function ...?
 		*argv1 = strings.Replace(*argv1, e + "=", strings.ToLower(e) + "=", -1)
 	}
 	*argv1 = strings.Replace(*argv1, "message/xdelivery-status", "message/delivery-status", -1)
