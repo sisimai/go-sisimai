@@ -1,33 +1,10 @@
 // Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
-import "net/mail"
-
-type LhostDS struct {
-	Action       string // The value of Action header
-	Agent        string // MTA name
-	Alias        string // The value of alias entry(RHS)
-	Command      string // SMTP command in the message body
-	Date         string // The value of Last-Attempt-Date header
-	Diagnosis    string // The value of Diagnostic-Code header
-	FeedbackType string // Feedback type
-	Lhost        string // The value of Received-From-MTA header
-	Reason       string // Temporary reason of bounce
-	Recipient    string // The value of Final-Recipient header
-	ReplyCode    uint   // SMTP Reply Code
-	Rhost        string // The value of Remote-MTA header
-	HardBounce   bool   // Hard bounce or not
-	Spec         string // Protocl specification
-	Status       string // The value of Status header
-}
-
-type LhostRR struct {
-	DS     []LhostDS    // List of LhostDS structs
-	RFC822 string       // The original message
-}
+import "sisimai/sis"
 
 // Keep each function for parsing a bounce mail
-var LhostCode = map[string]func(mail.Header, *string) (LhostRR, error) {}
+var LhostCode = map[string]func(*sis.BeforeFact) sis.RisingUnderway {}
 
 // DELIVERYSTATUS() returns a data structure for a bounce message.
 func DELIVERYSTATUS() map[string]string {
@@ -72,21 +49,26 @@ func INDEX() []string {
 }
 
 // Rise() is a wrapper function for calling each MTA functions in sisimai/lhost.
-func Rise(mhead mail.Header, mbody *string) (LhostRR, error) {
-	rr := LhostRR{}
+/*
+func Rise(mhead map[string][]string, mbody *string) LhostRR {
 
-	lhostorder := OrderBySubject(mhead["Subject"][0])
-	lhostorder  = append(lhostorder, AnotherOrder() ...)
+	var localhostr LhostRR
+	var lhostorder []string = OrderBySubject(mhead["subject"][0])
+	    lhostorder          = append(lhostorder, AnotherOrder() ...)
 
 	for _, e := range lhostorder {
+		// Call init() function of each MTA module in sisimai/lhost
+		localhostr = LhostCode[e]
+		if localhostr.DS
 		_, ok := LhostCode[e]
 		if !ok { continue } // TODO: Remove this line after we've implement sisimai/lhost pakcage
 
-		q, oops := LhostCode[e](mhead, mbody); if oops != nil { continue }
+		q := LhostCode[e](mhead, mbody); if oops != nil { continue }
 		if len(q.DS) == 0 { continue }
 		rr = q
 	}
 
 	return rr, nil
 }
+*/
 
