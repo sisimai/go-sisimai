@@ -4,7 +4,7 @@ package rfc5965
 
 func FIELDINDEX() []string {
 	// https://datatracker.ietf.org/doc/html/rfc5965
-	return []string {
+	return []string{
 		// Required Fields
 		// The following report header fields MUST appear exactly once:
 		"Feedback-Type", "User-Agent", "Version",
