@@ -1,13 +1,10 @@
-// Copyright (C) 2020-2021 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reply
-import "strings"
-import "strconv"
-import sisimoji "sisimai/string"
 
-/*
- http://www.ietf.org/rfc/rfc5321.txt
-   4.2.1.  Reply Code Severities and Theory
+/* http://www.ietf.org/rfc/rfc5321.txt
+//-------------------------------------------------------------------------------------------------
+  4.2.1.  Reply Code Severities and Theory
        2yz  Positive Completion reply
        3yz  Positive Intermediate reply
        4yz  Transient Negative Completion reply
@@ -21,85 +18,56 @@ import sisimoji "sisimai/string"
        x4z  Unspecified.
        x5z  Mail system: These replies indicate the status of the receiver mail system vis-a-vis
             the requested transfer or other mail system action.
-
-  4.2.3.  Reply Codes in Numeric Order
-       211  System status, or system help reply
-       214  Help message (Information on how to use the receiver or the meaning of a particular
-            non-standard command; this reply is useful only to the human user)
-       220  <domain> Service ready
-       221  <domain> Service closing transmission channel
-       250  Requested mail action okay, completed
-       251  User not local; will forward to <forward-path> (See Section 3.4)
-       252  Cannot VRFY user, but will accept message and attempt delivery (See Section 3.5.3)
-       354  Start mail input; end with <CRLF>.<CRLF>
-       421  <domain> Service not available, closing transmission channel (This may be a reply to
-            any command if the service knows it must shut down)
-       450  Requested mail action not taken: mailbox unavailable (e.g., mailbox busy or temporarily
-            blocked for policy reasons)
-       451  Requested action aborted: local error in processing
-       452  Requested action not taken: insufficient system storage
-       455  Server unable to accommodate parameters
-       500  Syntax error, command unrecognized (This may include errors such as command line too long)
-       501  Syntax error in parameters or arguments
-       502  Command not implemented (see Section 4.2.4)
-       503  Bad sequence of commands
-       504  Command parameter not implemented
-       550  Requested action not taken: mailbox unavailable (e.g., mailbox not found, no access,
-            or command rejected for policy reasons)
-       551  User not local; please try <forward-path> (See Section 3.4)
-       552  Requested mail action aborted: exceeded storage allocation
-       553  Requested action not taken: mailbox name not allowed (e.g., mailbox syntax incorrect)
-       554  Transaction failed (Or, in the case of a connection-opening response, "No SMTP service here")
-       555  MAIL FROM/RCPT TO parameters not recognized or not implemented
 */
 
-// Find() returns an SMTP reply code found from the given string
-func Find(argv0 string) string {
-	// @param    [string] argv0  String including an SMTP reply code
-	// @return   [string]        Found SMTP reply code or an empty string
-	if len(argv0) < 3                     { return "" }
-	if strings.Contains(argv0, "X-UNIX;") { return "" }
-
-	argv0  = strings.ReplaceAll(argv0, "-", " ") // "550-5.1.1" => "550 5.1.1"
-	found := ""
-
-	for _, e := range strings.Fields(argv0) {
-		// Find an SMTP reply code from each field
-		e = strings.TrimSpace(e)  // Strip space characters
-		e = strings.Trim(e, "[]") // Strip square brackets
-		e = strings.Trim(e, "()") // Strip parentheses
-
-		if len(e) < 3                               { continue } // Minimun length is 3: "550"
-		if sisimoji.ContainsOnlyNumbers(e) == false { continue }
-
-		if e[0:1] == "2" || e[0:1] == "4" || e[0:1] == "5" {
-			// The first letter of an SMTP reply code is 2,4 or 5
-			i, oops := strconv.Atoi(e)
-			if oops != nil { continue }
-			if i < 200     { continue }
-			if i > 579     { continue }
-
-			switch {
-				case i > 199 && i < 254:
-					// 200 OK
-					found = e
-					break
-
-				case i > 399 && i < 480:
-					// 421 Deferrerd
-					found = e
-					break
-
-				case i > 499 && i < 580:
-					// 550 User unknown
-					found = e
-					break
-
-				default:
-					continue
-			}
-		}
-	}
-	return found
-}
+// 211  System status, or system help reply
+// 214  Help message (Information on how to use the receiver or the meaning of a particular
+//      non-standard command; this reply is useful only to the human user)
+// 220  <domain> Service ready
+// 221  <domain> Service closing transmission channel
+// 250  Requested mail action okay, completed
+// 251  User not local; will forward to <forward-path> (See Section 3.4)
+// 252  Cannot VRFY user, but will accept message and attempt delivery (See Section 3.5.3)
+// 253  OK, <n> pending messages for node <domain> started (See RFC1985)
+// 354  Start mail input; end with <CRLF>.<CRLF>
+// 421   <domain> Service not available, closing transmission channel (This may be a reply to
+//       any command if the service knows it must shut down)
+// 422   (See RFC5248)
+// 430   (See RFC5248)
+// 432   A password transition is needed (See RFC4954)
+// 450   Requested mail action not taken: mailbox unavailable (e.g., mailbox busy or temporarily
+//       blocked for policy reasons)
+// 451   Requested action aborted: local error in processing
+// 452   Requested action not taken: insufficient system storage
+// 453   You have no mail (See RFC2645)
+// 454   Temporary authentication failure (See RFC4954)
+// 455   Server unable to accommodate parameters
+// 456   please retry immediately the message over IPv4 because it fails SPF and DKIM (See
+//       https://datatracker.ietf.org/doc/html/draft-martin-smtp-ipv6-to-ipv4-fallback-00
+// 458   Unable to queue messages for node <domain> (See RFC1985)
+// 459   Node <domain> not allowed: <reason> (See RFC51985)
+// 500   Syntax error, command unrecognized (This may include errors such as command line too long)
+// 501   Syntax error in parameters or arguments
+// 502   Command not implemented (see Section 4.2.4)
+// 503   Bad sequence of commands
+// 504   Command parameter not implemented
+// 520   Please use the correct QHLO ID (See https://datatracker.ietf.org/doc/id/draft-fanf-smtp-quickstart-01.txt)
+// 521   Host does not accept mail (See RFC7504)
+// 523   Encryption Needed (See RFC5248)
+// 524   (See RFC5248)
+// 525   User Account Disabled (See RFC5248)
+// 530   Authentication required (See RFC4954)
+// 533   (See RFC5248)
+// 534   Authentication mechanism is too weak (See RFC4954)
+// 535   Authentication credentials invalid (See RFC4954)
+// 538   Encryption required for requested authentication mechanism (See RFC4954)
+// 550   Requested action not taken: mailbox unavailable (e.g., mailbox not found, no access, or
+//       command rejected for policy reasons)
+// 551   User not local; please try <forward-path> (See Section 3.4)
+// 552   Requested mail action aborted: exceeded storage allocation
+// 553   Requested action not taken: mailbox name not allowed (e.g., mailbox syntax incorrect)
+// 554   Transaction failed (Or, in the case of a connection-opening response, "No SMTP service here")
+// 555   MAIL FROM/RCPT TO parameters not recognized or not implemented
+// 556   Domain does not accept mail (See RFC7504)
+// 557   draft-moore-email-addrquery-01
 
