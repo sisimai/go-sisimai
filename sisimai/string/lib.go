@@ -157,3 +157,13 @@ func Aligned(argv1 string, argv2 []string) bool {
 	return false
 }
 
+// IndexOnTheWay() returns the index of the first instance of argv1 after argv2 in argv0
+func IndexOnTheWay(argv0, argv1 string, start int) int {
+	// @param    string argv0  The string to be searched
+	// @param    string argv1  The substring to search for
+	// @param    int    start  The index from which to start the search
+	// @return   string        The index of argv1
+	if start < 0 || start >= len(argv0) { return -1 }
+	return strings.Index(argv0[start:], argv1) + start
+}
+
