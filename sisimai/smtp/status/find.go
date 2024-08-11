@@ -48,8 +48,6 @@ func Find(argv1 string, argv2 string) string {
 
 	statuscode := []string{} // List of SMTP Status Code, Keep the order of appearances
 	anotherone := ""         // Alternative code
-	readbuffer := ""
-	characters := [8]byte{0, 0, 0, 0, 0, 0, 0, 0}
 	stringsize := len(esmtperror)
 
 	sort.Slice(indextable, func(a, b int) bool { return indextable[a] < indextable[b] })
@@ -57,24 +55,25 @@ func Find(argv1 string, argv2 string) string {
 		// Try to find an SMTP Status Code from the given string
 		cu := fmt.Sprintf("%04d", e)
 		ci := sisimoji.IndexOnTheWay(esmtperror, lookingfor[cu], e); if ci < 0 { continue }
+		cx := [8]byte{0, 0, 0, 0, 0, 0, 0, 0}
 
-		if stringsize > ci     { characters[0] = []byte(esmtperror[ci - 1:ci])[0]     } // [0] The previous character of the status
-		if stringsize > ci + 3 { characters[1] = []byte(esmtperror[ci + 2:ci + 3])[0] } // [1] The value of the "Subject", "5.[7].261"
-		if stringsize > ci + 4 { characters[2] = []byte(esmtperror[ci + 3:ci + 4])[0] } // [2] "." chacater, a separator of the Subject and the Detail
+		if stringsize > ci     { cx[0] = []byte(esmtperror[ci - 1:ci])[0]     } // [0] The previous character of the status
+		if stringsize > ci + 3 { cx[1] = []byte(esmtperror[ci + 2:ci + 3])[0] } // [1] The value of the "Subject", "5.[7].261"
+		if stringsize > ci + 4 { cx[2] = []byte(esmtperror[ci + 3:ci + 4])[0] } // [2] "." chacater, a separator of the Subject and the Detail
 
-		if characters[0]  > 45 && characters[0]  <  58 { continue } // Previous character is a number
-		if characters[0] == 86 || characters[0] == 118 { continue } // Avoid a version number("V" or "v")
-		if characters[1]  < 48 || characters[1]  >  55 { continue } // The value of the subject is not a number(0-7)
-		if characters[2] != 46                         { continue } // It is not a "." character: a separator
+		if cx[0]  > 45 && cx[0]  <  58 { continue } // Previous character is a number
+		if cx[0] == 86 || cx[0] == 118 { continue } // Avoid a version number("V" or "v")
+		if cx[1]  < 48 || cx[1]  >  55 { continue } // The value of the subject is not a number(0-7)
+		if cx[2] != 46                 { continue } // It is not a "." character: a separator
 
-		readbuffer = fmt.Sprintf("%s.%c.", lookingfor[cu], characters[1])
-		if stringsize > ci + 5 { characters[3] = []byte(esmtperror[ci + 4:ci + 5])[0] } // [3] The 1st digit of the detail
-		if stringsize > ci + 6 { characters[4] = []byte(esmtperror[ci + 5:ci + 6])[0] } // [4] The 2nd digit of the detail
-		if stringsize > ci + 7 { characters[5] = []byte(esmtperror[ci + 6:ci + 7])[0] } // [5] The 3rd digit of the detail
-		if stringsize > ci + 8 { characters[6] = []byte(esmtperror[ci + 7:ci + 8])[0] } // [6] The next character
+		readbuffer := fmt.Sprintf("%s.%c.", lookingfor[cu], cx[1])
+		if stringsize > ci + 5 { cx[3] = []byte(esmtperror[ci + 4:ci + 5])[0] } // [3] The 1st digit of the detail
+		if stringsize > ci + 6 { cx[4] = []byte(esmtperror[ci + 5:ci + 6])[0] } // [4] The 2nd digit of the detail
+		if stringsize > ci + 7 { cx[5] = []byte(esmtperror[ci + 6:ci + 7])[0] } // [5] The 3rd digit of the detail
+		if stringsize > ci + 8 { cx[6] = []byte(esmtperror[ci + 7:ci + 8])[0] } // [6] The next character
 
-		if characters[3] > 48 || characters[3] > 57 { continue } // The 1st digit of the detail is not a number
-		readbuffer += string(characters[3])
+		if cx[3] > 48 || cx[3] > 57 { continue } // The 1st digit of the detail is not a number
+		readbuffer += string(cx[3])
 
 		if strings.Index(readbuffer, ".0.0") == 1 || readbuffer == "4.4.7" {
 			// Find another status code except *.0.0, 4.4.7
@@ -82,23 +81,18 @@ func Find(argv1 string, argv2 string) string {
 			continue
 		}
 
-		if characters[4] < 48 || characters[4] > 57 {
-			// The 2nd digit of the detail is not a number
-			statuscode = append(statuscode, readbuffer)
-			continue
-		}
-		readbuffer += string(characters[4]) // The 2nd digit of the detail is a number
+		// The 2nd digit of the detail is not a number
+		if cx[4] < 48 || cx[4] > 57 { statuscode = append(statuscode, readbuffer); continue }
+		readbuffer += string(cx[4]) // The 2nd digit of the detail is a number
 
-		if characters[5] < 48 || characters[5] > 57 {
-			// The 3rd digit of the detail is not a number
-			statuscode = append(statuscode, readbuffer)
-			continue
-		}
-		readbuffer += string(characters[5]) // The 3rd digit of the detail is a number
+		// The 3rd digit of the detail is not a number
+		if cx[5] < 48 || cx[5] > 57 { statuscode = append(statuscode, readbuffer); continue }
+		readbuffer += string(cx[5]) // The 3rd digit of the detail is a number
 
-		if characters[6] > 47 && characters[6] < 58 { continue }
+		if cx[6] > 47 && cx[6] < 58 { continue }
 		statuscode = append(statuscode, readbuffer)
 	}
+
 	if len(anotherone) > 0 { statuscode = append(statuscode, anotherone) }
 	if len(statuscode) < 1 { return "" }
 	return statuscode[0]
