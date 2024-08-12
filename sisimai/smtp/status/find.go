@@ -11,8 +11,8 @@ func Find(argv1 string, argv2 string) string {
 	// @param    string argv1  String including DSN
 	// @param    string argv2  An SMTP Reply Code or 2 or 4 or 5 
 	// @return   string        Found delivery status code or an empty string
-	if len(argv1) < 7 { return "" }
-	if len(argv2) < 0 { argv2 = " " }
+	if len(argv1) < 7 { return ""   }
+	if len(argv2) < 1 { argv2 = " " }
 
 	givenclass := argv2[0:1]
 	eestatuses := []string{}
