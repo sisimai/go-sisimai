@@ -1,20 +1,15 @@
-// Copyright (C) 2020-2021 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package status
-import "strings"
-import "strconv"
-import sisimoji "sisimai/string"
 
-/*
- http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
-
- -------------------------------------------------------------------------------------------------
+/* http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
+---------------------------------------------------------------------------------------------------
  [Class Sub-Codes]
  2.X.Y Success
  4.X.Y Persistent Transient Failure
  5.X.Y Permanent Failure
 
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
  [Subject Sub-Codes]
 
  X.0.X --- Other or Undefined Status
@@ -59,7 +54,7 @@ import sisimoji "sisimai/string"
            recipient.  Both the sender and recipient must permit the exchange of messages and
            arrange the exchange of necessary keys and certificates for cryptographic operations.
 
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
  [Enumerated Status Codes]
 
  X.0.0  Any    Other undefined Status:(RFC 3463)
@@ -113,7 +108,7 @@ import sisimoji "sisimai/string"
  X.1.10 ---    Recipient address has null MX:(RFC 7505)
                  This status code is returned when the associated address is marked as invalid
                  using a null MX.
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
  X.2.0  ---    Other or undefined mailbox status:(RFC 3463)
                  The mailbox exists, but something about the destination mailbox has caused the
                  sending of this DSN.
@@ -138,7 +133,7 @@ import sisimoji "sisimai/string"
         452      The mailbox is a mailing list address and the mailing list was unable to be
                  expanded. This code may represent a permanent failure or a persistent transient
                  failure.
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
  X.3.0  221    Other or undefined mail system status:(RFC 3463)
         250      The destination system exists and normally accepts mail, but something about the
         421,451  system has caused the generation of this DSN.
@@ -166,7 +161,7 @@ import sisimoji "sisimai/string"
  X.3.5  ---    System incorrectly configured:(RFC 3463)
                  The system is not configured in a manner that will permit it to accept this
                  message.
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
  X.4.0  ---    Other or undefined network or routing status:(RFC 3463)
                  Something went wrong with the networking, but it is not clear what the problem is,
                  or the problem cannot be well expressed with any of the other provided detail
@@ -209,7 +204,7 @@ import sisimoji "sisimai/string"
                  remained on that host too long or because the time-to-live value specified by the
                  sender of the message was exceeded. If possible, the code for the actual problem
                  found when delivery was attempted should be returned rather than this code.
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
  X.5.0  220    Other or undefined protocol status:(RFC 3463)
         250-253  Something was wrong with the protocol necessary to deliver the message to the next
         451,452  hop and the problem cannot be well expressed with any of the other provided detail
@@ -249,7 +244,7 @@ import sisimoji "sisimai/string"
                  command due to the client sending a [BASE64] response which is longer than the
                  maximum buffer size available for the currently selected SASL mechanism. This is
                  useful for both permanent and persistent transient errors.
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
  X.6.0  ---    Other or undefined media error:(RFC 3463)
                  Something about the content of a message caused it to be considered undeliverable
                  and the problem cannot be well expressed with any of the other provided detail
@@ -296,7 +291,7 @@ import sisimoji "sisimai/string"
                  This indicates that transaction failed after the final "." of the DATA command.
 
  X.6.10        This is a duplicate of X.6.8 and is thus deprecated.
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
  X.7.0  220    Other or undefined security status:(RFC 3463)
         235      Something related to security caused the message to be returned, and the problem
         450,454  cannot be well expressed with any of the other provided detail codes. This status
@@ -452,9 +447,8 @@ import sisimoji "sisimai/string"
                  This status code is returned when the associated sender address has a null MX,
                  and the SMTP receiver is configured to reject mail from such sender
                  (e.g., because it could not return a DSN).
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
  SAMPLES
-
    554 5.5.0   No recipients have been specified
    503 5.5.0   Valid RCPT TO required before BURL
    554 5.6.3   Conversion required but not supported
@@ -477,155 +471,20 @@ import sisimoji "sisimai/string"
        5.7.8   Authentication credentials invalid
        5.7.9   Authentication mechanism is too weak
        5.7.11  Encryption required for requested authentication mechanism
- -------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 */
 
-// standardcode() returns an error reason matched with the given delivery status code
-func StandardCode(argv0 string) string {
-	// @param    [string] argv0       Delivery Status Code
-	// @return   [string]             Matched error reason name or an empty string
-	table := map[string]string {
-		"2.1.5":  "delivered",    // Successfully delivered
-		// ----------------------------------------------------------------------------------------
-		"4.1.6":  "hasmoved",     // Destination mailbox has moved, No forwarding address
-		"4.1.7":  "rejected",     // Bad sender"s mailbox address syntax
-		"4.1.8":  "rejected",     // Bad sender"s system address
-		"4.1.9":  "systemerror",  // Message relayed to non-compliant mailer
-		"4.2.1":  "suspend",      // Mailbox disabled, not accepting messages
-		"4.2.2":  "mailboxfull",  // Mailbox full
-		"4.2.3":  "exceedlimit",  // Message length exceeds administrative limit
-		"4.2.4":  "filtered",     // Mailing list expansion problem
-		//"4.3.0": "systemerror",  // Other or undefined mail system status
-		"4.3.1":  "systemfull",   // Mail system full
-		"4.3.2":  "notaccept",    // System not accepting network messages
-		"4.3.3":  "systemerror",  // System not capable of selected features
-		"4.3.5":  "systemerror",  // System incorrectly configured
-		//"4.4.0": "networkerror", // Other or undefined network or routing status
-		"4.4.1":  "expired",      // No answer from host
-		"4.4.2":  "networkerror", // Bad connection
-		"4.4.3":  "systemerror",  // Directory server failure
-		"4.4.4":  "networkerror", // Unable to route
-		"4.4.5":  "systemfull",  // Mail system congestion
-		"4.4.6":  "networkerror", // Routing loop detected
-		"4.4.7":  "expired",      // Delivery time expired
-		//"4.5.0": "networkerror", // Other or undefined protocol status
-		"4.5.3":  "systemerror",  // Too many recipients
-		"4.5.5":  "systemerror",  // Wrong protocol version
-		"4.6.0":  "contenterror", // Other or undefined media error
-		"4.6.2":  "contenterror", // Conversion required and prohibited
-		"4.6.5":  "contenterror", // Conversion Failed
-		//"4.7.0": "securityerror",// Other or undefined security status
-		"4.7.1":  "blocked",      // Delivery not authorized, message refused
-		"4.7.2":  "blocked",      // Mailing list expansion prohibited
-		"4.7.5":  "securityerror",// Cryptographic failure
-		"4.7.6":  "securityerror",// Cryptographic algorithm not supported
-		"4.7.7":  "securityerror",// Message integrity failure
-		"4.7.12": "securityerror",// A password transition is needed
-		"4.7.15": "securityerror",// Priority Level is too low
-		"4.7.16": "mesgtoobig",   // Message is too big for the specified priority
-		"4.7.24": "securityerror",// SPF validation error
-		"4.7.25": "blocked",      // Reverse DNS validation failed
-		// ----------------------------------------------------------------------------------------
-		"5.1.0":  "userunknown",  // Other address status
-		"5.1.1":  "userunknown",  // Bad destination mailbox address
-		"5.1.2":  "hostunknown",  // Bad destination system address
-		"5.1.3":  "userunknown",  // Bad destination mailbox address syntax
-		"5.1.4":  "filtered",     // Destination mailbox address ambiguous
-		"5.1.6":  "hasmoved",     // Destination mailbox has moved, No forwarding address
-		"5.1.7":  "rejected",     // Bad sender"s mailbox address syntax
-		"5.1.8":  "rejected",     // Bad sender"s system address
-		"5.1.9":  "systemerror",  // Message relayed to non-compliant mailer
-		"5.1.10": "notaccept",    // Recipient address has null MX
-		"5.2.0":  "filtered",     // Other or undefined mailbox status
-		"5.2.1":  "filtered",     // Mailbox disabled, not accepting messages
-		"5.2.2":  "mailboxfull",  // Mailbox full
-		"5.2.3":  "exceedlimit",  // Message length exceeds administrative limit
-		"5.2.4":  "filtered",     // Mailing list expansion problem
-		"5.3.0":  "systemerror",  // Other or undefined mail system status
-		"5.3.1":  "systemfull",   // Mail system full
-		"5.3.2":  "notaccept",    // System not accepting network messages
-		"5.3.3":  "systemerror",  // System not capable of selected features
-		"5.3.4":  "mesgtoobig",   // Message too big for system
-		"5.3.5":  "systemerror",  // System incorrectly configured
-		"5.4.0":  "networkerror", // Other or undefined network or routing status
-		"5.4.3":  "systemerror",  // Directory server failure
-		"5.4.4":  "hostunknown",  // Unable to route
-		"5.5.2":  "syntaxerror",  // If the server cannot BASE64 decode any client response (AUTH)
-		"5.5.3":  "toomanyconn",  // Too many recipients
-		"5.5.4":  "systemerror",  // Invalid command arguments
-		"5.5.5":  "systemerror",  // Wrong protocol version
-		"5.5.6":  "syntaxerror",  // Authentication Exchange line is too long
-		"5.6.0":  "contenterror", // Other or undefined media error
-		"5.6.1":  "contenterror", // Media not supported
-		"5.6.2":  "contenterror", // Conversion required and prohibited
-		"5.6.3":  "contenterror", // Conversion required but not supported
-		"5.6.5":  "contenterror", // Conversion Failed
-		"5.6.6":  "contenterror", // Message content not available
-		"5.6.7":  "contenterror", // Non-ASCII addresses not permitted for that sender/recipient
-		"5.6.8":  "contenterror", // UTF-8 string reply is required, but not permitted by the SMTP client
-		"5.6.9":  "contenterror", // UTF-8 header message cannot be transferred to one or more recipients
-		"5.7.0":  "securityerror",// Other or undefined security status
-		"5.7.1":  "securityerror",// Delivery not authorized, message refused
-		"5.7.2":  "securityerror",// Mailing list expansion prohibited
-		"5.7.3":  "securityerror",// Security conversion required but not possible
-		"5.7.4":  "securityerror",// Security features not supported
-		"5.7.5":  "securityerror",// Cryptographic failure
-		"5.7.6":  "securityerror",// Cryptographic algorithm not supported
-		"5.7.7":  "securityerror",// Message integrity failure
-		"5.7.8":  "securityerror",// Authentication credentials invalid
-		"5.7.9":  "securityerror",// Authentication mechanism is too weak
-		"5.7.10": "securityerror",// Encryption Needed
-		"5.7.11": "securityerror",// Encryption required for requested authentication mechanism
-		"5.7.13": "suspend",      // User Account Disabled
-		"5.7.14": "securityerror",// Trust relationship required
-		"5.7.15": "securityerror",// Priority Level is too low
-		"5.7.16": "mesgtoobig",   // Message is too big for the specified priority
-		"5.7.17": "hasmoved",     // Mailbox owner has changed
-		"5.7.18": "hasmoved",     // Domain owner has changed
-		"5.7.19": "securityerror",// RRVS test cannot be completed
-		"5.7.20": "securityerror",// No passing DKIM signature found
-		"5.7.21": "securityerror",// No acceptable DKIM signature found
-		"5.7.22": "securityerror",// No valid author-matched DKIM signature found
-		"5.7.23": "securityerror",// SPF validation failed
-		"5.7.24": "securityerror",// SPF validation error
-		"5.7.25": "blocked",      // Reverse DNS validation failed
-		"5.7.26": "securityerror",// Multiple authentication checks failed
-		"5.7.27": "notaccept",    // MX resource record of a destination host is Null MX: RFC7505
-	}
-	return table[argv0]
-}
+// Code() returns an internal delivery status code matched with the given reason string
+func Code(argv0 string, argv1 bool) string {
+	// @param    string  argv0 Reason name
+	// @param    bool    argv1 false: Permanent error, true: Temporary error
+	// @return   string        Internal delivery status code or an empty string
+	if len(argv0) == 0 { return "" }
 
-// InternalCode() returns an internal delivery status code matched with the given error reason name
-func InternalCode(argv0 string, argv1 bool) string {
-	// @param    [string] argv0       An error reason name
-	// @param    [bool]   argv1       true: temporary error, false: permanent error
-	// @return   [string]             Matched delivery status code or an empty string
-	codet := map[string]string {
-		"blocked":       "4.0.971",
-		"contenterror":  "4.0.960",
-		//"exceedlimit": "4.0.923",
-		"expired":       "4.0.947",
-		"filtered":      "4.0.924",
-		//"hasmoved":    "4.0.916",
-		//"hostunknown": "4.0.912",
-		"mailboxfull":   "4.0.922",
-		//"mailererror": "4.0.939",
-		//"mesgtoobig":  "4.0.934",
-		"networkerror":  "4.0.944",
-		//"norelaying":  "4.0.909",
-		"notaccept":     "4.0.932",
-		"onhold":        "4.0.901",
-		"rejected":      "4.0.918",
-		"securityerror": "4.0.970",
-		"spamdetected":  "4.0.980",
-		//"suspend":     "4.0.921",
-		"systemerror":   "4.0.930",
-		"systemfull":    "4.0.931",
-		"toomanyconn":   "4.0.945",
-		//"userunknown": "4.0.911",
-		"undefined":     "4.0.900",
-	}
-	codep := map[string]string {
+	internalcr := ""
+	codetable0 := map[string]string{
+		"authfailure":     "5.0.972",
+		"badreputation":   "5.0.975",
 		"blocked":         "5.0.971",
 		"contenterror":    "5.0.960",
 		"exceedlimit":     "5.0.923",
@@ -639,11 +498,14 @@ func InternalCode(argv0 string, argv1 bool) string {
 		"networkerror":    "5.0.944",
 		"norelaying":      "5.0.909",
 		"notaccept":       "5.0.932",
+		"notcompliantrfc": "5.0.974",
 		"onhold":          "5.0.901",
 		"policyviolation": "5.0.972",
 		"rejected":        "5.0.918",
+		"requireptr":      "5.0.973",
 		"securityerror":   "5.0.970",
 		"spamdetected":    "5.0.980",
+		"speeding":        "5.0.946",
 		"suspend":         "5.0.921",
 		"systemerror":     "5.0.930",
 		"systemfull":      "5.0.931",
@@ -653,76 +515,168 @@ func InternalCode(argv0 string, argv1 bool) string {
 		"undefined":       "5.0.900",
 		"virusdetected":   "5.0.971",
 	}
+	codetable1 := map[string]string{
+		"authfailure":     "4.0.972",
+		"badreputation":   "4.0.975",
+		"blocked":         "4.0.971",
+		"contenterror":    "4.0.960",
+	//	"exceedlimit":     "4.0.923",
+		"expired":         "4.0.947",
+		"filtered":        "4.0.924",
+	//	"hasmoved":        "4.0.916",
+	//	"hostunknown":     "4.0.912",
+		"mailboxfull":     "4.0.922",
+	//	"mailererror":     "4.0.939",
+	//	"mesgtoobig":      "4.0.934",
+		"networkerror":    "4.0.944",
+	//	"norelaying":      "4.0.909",
+		"notaccept":       "4.0.932",
+		"notcompliantrfc": "4.0.974",
+		"onhold":          "4.0.901",
+		"rejected":        "4.0.918",
+		"requireptr":      "4.0.973",
+		"securityerror":   "4.0.970",
+		"spamdetected":    "4.0.980",
+		"speeding":        "4.0.946",
+	//	"suspend":         "4.0.921",
+		"systemerror":     "4.0.930",
+		"systemfull":      "4.0.931",
+		"toomanyconn":     "4.0.945",
+	//	"userunknown":    "4.0.911",
+		"undefined":       "4.0.900",
+	}
 
-	if argv1 {
-		// Return a matched delivery status code in the Permanent Errors: codep
-		return codep[argv0]
+	if argv1 == true {
+		// Returns the matched temporary error code
+		internalcr = codetable1[argv0]
 
 	} else {
-		// Return a matched delivery status code in the Tempoorary Errors: codet
-		return codet[argv0]
+		// Returns the matched permanent error code
+		internalcr = codetable0[argv0]
 	}
-}
-
-// Code() returns an internal delivery status code matched with the given reason string
-func Code(argv0 string, argv1 bool) string {
-	// @param    [string]  argv0 Reason name
-	// @param    [bool]    argv1 false: Permanent error, true: Temporary error
-	// @return   [string]        Internal delivery status code or an empty string
-	if len(argv0) == 0 { return "" }
-	return InternalCode(argv0, argv1)
+	return internalcr
 }
 
 // Name() returns a reason string matched with the given delivery status code
 func Name(argv0 string) string {
-	// @param    [string] argv0 Delivery status code(D.S.N.)
-	// @return   [string]       Reason name or an empty string
-	if len(argv0) == 0 { return "" }
-	if strings.HasPrefix(argv0, "2") || strings.HasPrefix(argv0, "4") || strings.HasPrefix(argv0, "5") {
-		// The first letter of a delivery status code are 2, 4 or 5
-		if sisimoji.ContainsOnlyNumbers(strings.ReplaceAll(argv0, ".", "")) { return StandardCode(argv0) }
+	// @param    string argv0 Delivery status code(D.S.N.)
+	// @return   string       Reason name or an empty string
+	if len(argv0) == 0      { return "" }
+	if Test(argv0) == false { return "" }
+
+	standardcr := map[string]string{
+		"2.1.5":  "delivered",			// Successfully delivered
+	// --------------------------------------------------------------------------------------------
+		"4.1.6":  "hasmoved",			// Destination mailbox has moved, No forwarding address
+		"4.1.7":  "rejected",			// Bad sender"s mailbox address syntax
+		"4.1.8":  "rejected",			// Bad sender"s system address
+		"4.1.9":  "systemerror",		// Message relayed to non-compliant mailer
+		"4.2.1":  "suspend",			// Mailbox disabled, not accepting messages
+		"4.2.2":  "mailboxfull",		// Mailbox full
+		"4.2.3":  "exceedlimit",		// Message length exceeds administrative limit
+		"4.2.4":  "filtered",			// Mailing list expansion problem
+	//	"4.3.0":  "systemerror",		// Other or undefined mail system status
+		"4.3.1":  "systemfull",			// Mail system full
+		"4.3.2":  "notaccept",			// System not accepting network messages
+		"4.3.3":  "systemerror",		// System not capable of selected features
+		"4.3.5":  "systemerror",		// System incorrectly configured
+	//	"4.4.0":  "networkerror",		// Other or undefined network or routing status
+		"4.4.1":  "expired",			// No answer from host
+		"4.4.2":  "networkerror",		// Bad connection
+		"4.4.3":  "systemerror",		// Directory server failure
+		"4.4.4":  "networkerror",		// Unable to route
+		"4.4.5":  "systemfull",			// Mail system congestion
+		"4.4.6":  "networkerror",		// Routing loop detected
+		"4.4.7":  "expired",			// Delivery time expired
+		"4.4.8":  "networkerror",		// Retry on IPv4
+	//	"4.5.0":  "networkerror",		// Other or undefined protocol status
+		"4.5.3":  "systemerror",		// Too many recipients
+		"4.5.5":  "systemerror",		// Wrong protocol version
+		"4.6.0":  "contenterror",		// Other or undefined media error
+		"4.6.2":  "contenterror",		// Conversion required and prohibited
+		"4.6.5":  "contenterror",		// Conversion Failed
+	//	"4.7.0":  "securityerror",		// Other or undefined security status
+		"4.7.1":  "blocked",			// Delivery not authorized, message refused
+		"4.7.2":  "blocked",			// Mailing list expansion prohibited
+		"4.7.5":  "securityerror",		// Cryptographic failure
+		"4.7.6":  "securityerror",		// Cryptographic algorithm not supported
+		"4.7.7":  "securityerror",		// Message integrity failure
+		"4.7.12": "securityerror",		// A password transition is needed
+		"4.7.15": "securityerror",		// Priority Level is too low
+		"4.7.16": "mesgtoobig",			// Message is too big for the specified priority
+		"4.7.24": "authfailure",		// SPF validation error
+		"4.7.25": "requireptr",			// Reverse DNS validation failed
+		"4.7.26": "authfailure",		// Must pass either SPF or DKIM validation
+	// --------------------------------------------------------------------------------------------
+		"5.1.0":  "userunknown",		// Other address status
+		"5.1.1":  "userunknown",		// Bad destination mailbox address
+		"5.1.2":  "hostunknown",		// Bad destination system address
+		"5.1.3":  "userunknown",		// Bad destination mailbox address syntax
+		"5.1.4":  "filtered",			// Destination mailbox address ambiguous
+		"5.1.6":  "hasmoved",			// Destination mailbox has moved, No forwarding address
+		"5.1.7":  "rejected",			// Bad sender"s mailbox address syntax
+		"5.1.8":  "rejected",			// Bad sender"s system address
+		"5.1.9":  "systemerror",		// Message relayed to non-compliant mailer
+		"5.1.10": "notaccept",			// Recipient address has null MX
+		"5.2.0":  "filtered",			// Other or undefined mailbox status
+		"5.2.1":  "filtered",			// Mailbox disabled, not accepting messages
+		"5.2.2":  "mailboxfull",		// Mailbox full
+		"5.2.3":  "exceedlimit",		// Message length exceeds administrative limit
+		"5.2.4":  "filtered",			// Mailing list expansion problem
+		"5.3.0":  "systemerror",		// Other or undefined mail system status
+		"5.3.1":  "systemfull",			// Mail system full
+		"5.3.2":  "notaccept",			// System not accepting network messages
+		"5.3.3":  "systemerror",		// System not capable of selected features
+		"5.3.4":  "mesgtoobig",			// Message too big for system
+		"5.3.5":  "systemerror",		// System incorrectly configured
+		"5.4.0":  "networkerror",		// Other or undefined network or routing status
+		"5.4.3":  "systemerror",		// Directory server failure
+		"5.4.4":  "hostunknown",		// Unable to route
+		"5.5.2":  "syntaxerror",		// If the server cannot BASE64 decode any client response (AUTH)
+		"5.5.3":  "toomanyconn",		// Too many recipients
+		"5.5.4":  "systemerror",		// Invalid command arguments
+		"5.5.5":  "systemerror",		// Wrong protocol version
+		"5.5.6":  "syntaxerror",		// Authentication Exchange line is too long
+		"5.6.0":  "contenterror",		// Other or undefined media error
+		"5.6.1":  "contenterror",		// Media not supported
+		"5.6.2":  "contenterror",		// Conversion required and prohibited
+		"5.6.3":  "contenterror",		// Conversion required but not supported
+		"5.6.5":  "contenterror",		// Conversion Failed
+		"5.6.6":  "contenterror",		// Message content not available
+		"5.6.7":  "contenterror",		// Non-ASCII addresses not permitted for that sender/recipient
+		"5.6.8":  "contenterror",		// UTF-8 string reply is required, but not permitted by the SMTP client
+		"5.6.9":  "contenterror",		// UTF-8 header message cannot be transferred to one or more recipients
+		"5.7.0":  "securityerror",		// Other or undefined security status
+		"5.7.1":  "securityerror",		// Delivery not authorized, message refused
+		"5.7.2":  "securityerror",		// Mailing list expansion prohibited
+		"5.7.3":  "securityerror",		// Security conversion required but not possible
+		"5.7.4":  "securityerror",		//Security features not supported
+		"5.7.5":  "securityerror",		// Cryptographic failure
+		"5.7.6":  "securityerror",		// Cryptographic algorithm not supported
+		"5.7.7":  "securityerror",		// Message integrity failure
+		"5.7.8":  "securityerror",		// Authentication credentials invalid
+		"5.7.9":  "securityerror",		// Authentication mechanism is too weak
+		"5.7.10": "securityerror",		// Encryption Needed
+		"5.7.11": "securityerror",		// Encryption required for requested authentication mechanism
+		"5.7.13": "suspend",			// User Account Disabled
+		"5.7.14": "securityerror",		// Trust relationship required
+		"5.7.15": "securityerror",		// Priority Level is too low
+		"5.7.16": "mesgtoobig",			// Message is too big for the specified priority
+		"5.7.17": "hasmoved",			// Mailbox owner has changed
+		"5.7.18": "hasmoved",			// Domain owner has changed
+		"5.7.19": "securityerror",		// RRVS test cannot be completed
+		"5.7.20": "authfailure",		// No passing DKIM signature found
+		"5.7.21": "authfailure",		// No acceptable DKIM signature found
+		"5.7.22": "authfailure",		// No valid author-matched DKIM signature found
+		"5.7.23": "authfailure",		// SPF validation failed
+		"5.7.24": "authfailure",		// SPF validation error
+		"5.7.25": "requireptr",			// Reverse DNS validation failed
+		"5.7.26": "authfailure",		// Multiple authentication checks failed
+		"5.7.27": "notaccept",			// MX resource record of a destination host is Null MX: RFC7505
+		"5.7.28": "spamdetected",		// The message appears to be part of a mail flood of similar abusive messages.
+		"5.7.29": "authfailure",		// This status code may be returned when a message fails ARC validation.
+		"5.7.30": "securityerror",		//REQUIRETLS support required
 	}
-	return ""
-}
-
-// Find() returns a delivery status code found from the given string
-func Find(argv0 string) string {
-	// @param    [string] argv0  String including DSN
-	// @return   [string]        Found delivery status code or an empty string
-	if len(argv0) < 5 { return "" }
-
-	argv0  = strings.ReplaceAll(argv0, "-", " ") // "550-5.1.1" => "550 5.1.1"
-	found := ""
-
-	CEFLOOP: for _, e := range strings.Fields(argv0) {
-		// Find a delivery status code from each field
-		e = strings.TrimSpace(e)  // Strip space characters
-		e = strings.Trim(e, "[]") // Strip square brackets
-		e = strings.Trim(e, "()") // Strip parentheses
-		if len(e) < 5                 { continue } // Minimun length is 5: "5.1.1"
-		if strings.Count(e, ".") != 2 { continue } // The number of "." is 2
-
-		if e[0:2] == "2." || e[0:2] == "4." || e[0:2] == "5." {
-			// The first character of a delivery status is 2, 4 or 5
-			for _, v := range strings.Split(e[2:], ".") {
-				// Check each digit of the delivery status code like "2.1.5"
-				i, oops := strconv.Atoi(v)
-				if oops != nil { continue CEFLOOP }
-				if i < 0       { continue CEFLOOP }
-
-				if strings.HasPrefix(e, "4.") || strings.HasPrefix(e, "5.") {
-					// 4.2.3 OR 5.1.1
-					if i > 999 { continue CEFLOOP }
-
-				} else {
-					// 2.1.5
-					if i > 7   { continue CEFLOOP }
-				}
-			}
-			found = e
-			break CEFLOOP
-		}
-	}
-	return found
+	return standardcr[argv0]
 }
 
