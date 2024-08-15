@@ -66,7 +66,7 @@ func Find(argv1 string, argv2 string) string {
 		if cx[1]  < 48 || cx[1]  >  55 { continue } // The value of the subject is not a number(0-7)
 		if cx[2] != 46                 { continue } // It is not a "." character: a separator
 
-		readbuffer := fmt.Sprintf("%s.%c.", lookingfor[cu], cx[1])
+		readbuffer := fmt.Sprintf("%s%c.", lookingfor[cu], cx[1])
 		if stringsize > ci + 5 { cx[3] = []byte(esmtperror[ci + 4:ci + 5])[0] } // [3] The 1st digit of the detail
 		if stringsize > ci + 6 { cx[4] = []byte(esmtperror[ci + 5:ci + 6])[0] } // [4] The 2nd digit of the detail
 		if stringsize > ci + 7 { cx[5] = []byte(esmtperror[ci + 6:ci + 7])[0] } // [5] The 3rd digit of the detail
