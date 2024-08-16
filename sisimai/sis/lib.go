@@ -8,7 +8,7 @@ package sis
 //  | || '_ \| __/ _ \ '__| '_ \ / _` | | \___ \| __| '__| | | |/ __| __| | | | '__/ _ \/ __|
 //  | || | | | ||  __/ |  | | | | (_| | |  ___) | |_| |  | |_| | (__| |_| |_| | | |  __/\__ \
 // |___|_| |_|\__\___|_|  |_| |_|\__,_|_| |____/ \__|_|   \__,_|\___|\__|\__,_|_|  \___||___/
-type DeliveryStatus struct {
+type DeliveryMatter struct {
 	Action       string     // The value of Action header
 	Agent        string     // MTA name
 	Alias        string     // The value of alias entry(RHS)
@@ -28,7 +28,7 @@ type DeliveryStatus struct {
 
 // Each MTA function in sisimai/lhost returns RisingUnderway{}
 type RisingUnderway struct {
-	Digest []DeliveryStatus // List of DeliveryStatus structs
+	Digest []DeliveryMatter // List of DeliveryMatter structs
 	RFC822 string           // The original message
 }
 
@@ -44,7 +44,7 @@ type BeforeFact struct {
 	From    string              // Unix FROM line ("From ")
 	Head    map[string][]string // Email headers
 	Body    string              // Email body
-	Digest  []DeliveryStatus    // Decoded results returned from sisimai/lhost/*
+	Digest  []DeliveryMatter    // Decoded results returned from sisimai/lhost/*
 	RFC822  string              // The original message
 	Catch   func()              // Callback
 }
