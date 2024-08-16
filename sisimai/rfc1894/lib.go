@@ -30,10 +30,9 @@ func FIELDTABLE() map[string]string {
 
 // Match() checks that the argument matches with a field defined in RFC3464 or not
 func Match(argv0 string) uint8 {
-	// @param    [string] argv0 A line inlcuding field and value defined in RFC3464
-    // @return   [uint8]        0: did not matched, 1,2: matched
-
-	fieldnames := [][]string {
+	// @param    string argv0 A line inlcuding field and value defined in RFC3464
+    // @return   uint8        0: did not matched, 1,2: matched
+	fieldnames := [][]string{
 		// https://tools.ietf.org/html/rfc3464#section-2.2
 		//   Some fields of a DSN apply to all of the delivery attempts described by that DSN. At
 		//   most, these fields may appear once in any DSN. These fields are used to correlate the
@@ -46,7 +45,7 @@ func Match(argv0 string) uint8 {
 		//   The following fields are not used in Sisimai:
 		//     - Original-Envelope-Id
 		//     - DSN-Gateway
-		{ "Reporting-MTA", "Received-From-MTA", "Arrival-Date", "X-Original-Message-ID" },
+		{"Reporting-MTA", "Received-From-MTA", "Arrival-Date", "X-Original-Message-ID"},
 
 		// https://tools.ietf.org/html/rfc3464#section-2.3
 		//   A DSN contains information about attempts to deliver a message to one or more
@@ -60,8 +59,8 @@ func Match(argv0 string) uint8 {
 		//   The following fields are not used in Sisimai:
 		//     - Will-Retry-Until
 		//     - Final-Log-ID
-		{ "Original-Recipient", "Final-Recipient", "Action", "Status", "Remote-MTA",
-		  "Diagnostic-Code", "Last-Attempt-Date", "X-Actual-Recipient" },
+		{"Original-Recipient", "Final-Recipient", "Action", "Status", "Remote-MTA",
+		 "Diagnostic-Code", "Last-Attempt-Date", "X-Actual-Recipient"},
 	}
 
 	for _, e := range fieldnames[0] { if strings.HasPrefix(argv0, e) { return 1 } }
@@ -71,11 +70,11 @@ func Match(argv0 string) uint8 {
 
 // Field() checks that the argument is including field defined in RFC3464 or not and return values
 func Field(argv0 string) []string {
-	// @param    [string] argv0 A line inlcuding field and value defined in RFC3464
-	// @return   [[]string]     []string {"field-name", "value-type", "Value", "field-group"}
-	if len(argv0) == 0 { return []string {} }
+	// @param    string   argv0 A line inlcuding field and value defined in RFC3464
+	// @return   []string       []string{"field-name", "value-type", "value", "field-group"}
+	if len(argv0) == 0 { return []string{} }
 
-	fieldgroup := map[string]string {
+	fieldgroup := map[string]string{
 		"original-recipient":    "addr",
 		"final-recipient":       "addr",
 		"x-actual-recipient":    "addr",
@@ -89,28 +88,28 @@ func Field(argv0 string) []string {
 		"status":                "stat",
 		"x-original-message-id": "text",
     }
-	correction := map[string]string {
+	correction := map[string]string{
 		"deliverable": "delivered",
 		"expired":     "delayed",
 		"failure":     "failed",
     }
-	actionlist := []string { "delayed", "deliverable", "delivered", "expanded", "expired", "failed", "failure", "relayed" }
-	captureson := map[string][]string {
-		"addr": []string { "Final-Recipient", "Originaal-Recipient", "X-Actual-Recipient" },
-		"code": []string { "Diagnostic-Code" },
-		"date": []string { "Arrival-Date", "Last-Attempt-Date" },
-		"host": []string { "Received-From", "Remote-MTA", "Reporting-MTA" },
-	//  "list": []string { "Action" },
-	//  "stat": []string { "Status" },
-	//  "text": []string { "X-Original-Message-ID" },
-	//  "text": []string { "Final-Log-ID", "Original-Envelope-ID" }
+	actionlist := []string{"delayed", "deliverable", "delivered", "expanded", "expired", "failed", "failure", "relayed"}
+	captureson := map[string][]string{
+		"addr": []string{"Final-Recipient", "Originaal-Recipient", "X-Actual-Recipient"},
+		"code": []string{"Diagnostic-Code"},
+		"date": []string{"Arrival-Date", "Last-Attempt-Date"},
+		"host": []string{"Received-From", "Remote-MTA", "Reporting-MTA"},
+	//  "list": []string{"Action"},
+	//  "stat": []string{"Status"},
+	//  "text": []string{"X-Original-Message-ID"},
+	//  "text": []string{"Final-Log-ID", "Original-Envelope-ID"}
 	}
 
 	parts := strings.SplitN(argv0, ":", 2)
 	field := strings.ToLower(parts[0])
-	label, exist := fieldgroup[field]; if !exist { return []string {} }
+	label, exist := fieldgroup[field]; if !exist { return []string{} }
 
-	table := []string { "", "", "", "" }
+	table := []string{"", "", "", ""}
 	match := false
 
 	if label == "list" {
@@ -170,6 +169,6 @@ func Field(argv0 string) []string {
 	}
 
 	if match { return table }
-	return []string {}
+	return []string{}
 }
 
