@@ -26,6 +26,7 @@ type DeliveryStatus struct {
 	Status       string     // The value of Status header
 }
 
+// Each MTA function in sisimai/lhost returns RisingUnderway{}
 type RisingUnderway struct {
 	Digest []DeliveryStatus // List of DeliveryStatus structs
 	RFC822 string           // The original message
@@ -38,6 +39,7 @@ func(this *RisingUnderway) Void() bool {
 	return false
 }
 
+// Rise() in sisimai/message returns BeforeFact{}
 type BeforeFact struct {
 	From    string              // Unix FROM line ("From ")
 	Head    map[string][]string // Email headers
