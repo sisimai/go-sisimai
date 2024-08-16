@@ -6,27 +6,6 @@ import "sisimai/sis"
 // Keep each function for parsing a bounce mail
 var LhostCode = map[string]func(*sis.BeforeFact) sis.RisingUnderway {}
 
-// DELIVERYSTATUS() returns a data structure for a bounce message.
-func DELIVERYSTATUS() map[string]string {
-	return map[string]string {
-		"action": "",       // The value of Action header
-		"agent": "",        // MTA name
-		"alias": "",        // The value of alias entry(RHS)
-		"command": "",      // SMTP command in the message body
-		"date": "",         // The value of Last-Attempt-Date header
-		"diagnosis": "",    // The value of Diagnostic-Code header
-		"feedbacktype": "", // Feedback Type
-		"lhost": "",        // The value of Received-From-MTA header
-		"reason": "",       // Temporary reason of bounce
-		"recipient": "",    // The value of Final-Recipient header
-		"replycode": "",    // SMTP Reply Code
-		"rhost": "",        // The value of Remote-MTA header
-		"hardbounce": "",   // Hard bounce or not
-		"spec": "",         // Protocl specification
-		"status": "",       // The value of Status header
-	}
-}
-
 // INDICATORS() returns flags for position variables used at MTA functions in sisimai/lhost.
 func INDICATORS() map[string]uint8 {
 	return map[string]uint8 {
