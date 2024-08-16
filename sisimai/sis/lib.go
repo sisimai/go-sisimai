@@ -19,7 +19,7 @@ type DeliveryStatus struct {
 	Lhost        string     // The value of Received-From-MTA header
 	Reason       string     // Temporary reason of bounce
 	Recipient    string     // The value of Final-Recipient header
-	ReplyCode    uint       // SMTP Reply Code
+	ReplyCode    string     // SMTP Reply Code
 	Rhost        string     // The value of Remote-MTA header
 	HardBounce   bool       // Hard bounce or not
 	Spec         string     // Protocl specification
