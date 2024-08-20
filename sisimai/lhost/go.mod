@@ -1,4 +1,2 @@
 module libsisimai.org/sisimai/lhost
-
-go 1.14
-
+go 1.22

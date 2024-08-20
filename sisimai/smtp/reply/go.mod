@@ -1,2 +1,2 @@
 module libsisimai.org/sisimai/smtp/reply
-go 1.14
+go 1.22

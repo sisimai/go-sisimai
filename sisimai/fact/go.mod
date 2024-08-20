@@ -1,3 +1,2 @@
 module libsisimai.org/sisimai/fact
-go 1.14
-
+go 1.22
