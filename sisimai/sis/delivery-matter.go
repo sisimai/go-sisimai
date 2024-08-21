@@ -1,8 +1,9 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package sis
-import "strings"
+import "sisimai/address"
 import "sisimai/rfc1894"
+import "sisimai/smtp/status"
 
 var Fields1894 = rfc1894.FIELDTABLE()
 type DeliveryMatter struct {
@@ -23,12 +24,15 @@ type DeliveryMatter struct {
 	Status       string     // The value of Status header
 }
 
-// Set()
-func(this *DeliveryMatter) Set(argv0, argv1 string) *DeliveryMatter {
-	if len(Fields1894[argv0]) == 0 { return this }
-	if len(argv1)             == 0 { return this }
+// Set() substitutes the argv1 as a value into the member related to argv0
+func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
+	// @param    string argv0  A key name related to the member of DeliveryMatter struct
+	// @param    string argv1  The value to be substituted
+	// @return   bool          Returns true if it succesufully substituted
+	if len(argv0)             == 0 { return false }
+	if len(argv1)             == 0 { return false }
+	if len(Fields1894[argv0]) == 0 { return false }
 
-	argv1 = strings.TrimSpace(argv1)
 	switch argv0 {
 		// Available values are the followings:
 		// - "action":             Action    (list)
@@ -42,7 +46,7 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) *DeliveryMatter {
 		// - "reporting-mta":      Rhost     (host)
 		// - "status":             Status    (stat)
 		// - "x-actual-recipient": Alias     (addr)
-		default: return this
+		default: return false
 		case "action":
 			// Action: failed
 			this.Action = argv1
@@ -57,13 +61,15 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) *DeliveryMatter {
 			this.Diagnosis = argv1
 
 		case "final-recipient":
-			// Final-Recipient: RFC822; kijitora@nyaan.jp
-			this.Recipient = argv1
+			// Final-Recipient: RFC822; <kijitora@nyaan.jp>
+			v := address.S3S4(argv1); if len(v) == 0 { return false }
+			this.Recipient = v
 
 		case "original-recipient", "x-actual-recipient":
 			// X-Actual-Recipient: RFC822; kijitora@example.co.jp
 			// X-Actual-Recipient: X-Unix; |/var/adm/sm.bin/neko
-			this.Alias = argv1
+			v := address.S3S4(argv1); if len(v) == 0 { return false }
+			this.Alias = v
 
 		case "received-from-mta":
 			// Received-From-MTA: DNS; p225-ix4.kyoto.example.ne.jp
@@ -76,14 +82,41 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) *DeliveryMatter {
 
 		case "status":
 			// Status: 5.1.1
+			if status.Test(argv1) == false { return false }
 			this.Status = argv1
 	}
-	return this
+	return true
 }
 
-// Get()
+// Get() returns the value of the member specified at argv0
 func(this *DeliveryMatter) Get(argv0 string) string {
-	if len(argv0) == 0 { return "" }
-	return ""
+	// @param    string argv0  A key name related to the member of DeliveryMatter struct
+	// @return   string        The value of the member specified at argv0
+	if len(argv0)             == 0 { return "" }
+	if len(Fields1894[argv0]) == 0 { return "" }
+
+	switch argv0 {
+		// Available values are the followings:
+		// - "action":             Action    (list)
+		// - "arrival-date":       Date      (date)
+		// - "diagnostic-code":    Diagnosis (code)
+		// - "final-recipient":    Recipient (addr)
+		// - "last-attempt-date":  Date      (date)
+		// - "original-recipient": Alias     (addr)
+		// - "received-from-mta":  Lhost     (host)
+		// - "remote-mta":         Rhost     (host)
+		// - "reporting-mta":      Rhost     (host)
+		// - "status":             Status    (stat)
+		// - "x-actual-recipient": Alias     (addr)
+		case "action":    return this.Action
+		case "alias":     return this.Alias
+		case "date":      return this.Date
+		case "diagnosis": return this.Diagnosis
+		case "lhost":     return this.Lhost
+		case "rhost":     return this.Rhost
+		case "recipient": return this.Recipient
+		case "status":    return this.Status
+		default:          return ""
+	}
 }
 
