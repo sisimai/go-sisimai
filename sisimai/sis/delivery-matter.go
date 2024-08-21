@@ -1,6 +1,7 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package sis
+import "strings"
 import "sisimai/rfc1894"
 
 var Fields1894 = rfc1894.FIELDTABLE()
@@ -23,8 +24,11 @@ type DeliveryMatter struct {
 }
 
 // Set()
-func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
-	if len(Fields1894[argv0]) == 0 { return false }
+func(this *DeliveryMatter) Set(argv0, argv1 string) *DeliveryMatter {
+	if len(Fields1894[argv0]) == 0 { return this }
+	if len(argv1)             == 0 { return this }
+
+	argv1 = strings.TrimSpace(argv1)
 	switch argv0 {
 		// Available values are the followings:
 		// - "action":             Action    (list)
@@ -38,7 +42,7 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
 		// - "reporting-mta":      Rhost     (host)
 		// - "status":             Status    (stat)
 		// - "x-actual-recipient": Alias     (addr)
-		default: return false
+		default: return this
 		case "action":
 			// Action: failed
 			this.Action = argv1
@@ -74,11 +78,12 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
 			// Status: 5.1.1
 			this.Status = argv1
 	}
-	return true
+	return this
 }
 
 // Get()
 func(this *DeliveryMatter) Get(argv0 string) string {
+	if len(argv0) == 0 { return "" }
 	return ""
 }
 
