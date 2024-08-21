@@ -95,80 +95,68 @@ func Field(argv0 string) []string {
     }
 	actionlist := []string{"delayed", "deliverable", "delivered", "expanded", "expired", "failed", "failure", "relayed"}
 	captureson := map[string][]string{
-		"addr": []string{"Final-Recipient", "Originaal-Recipient", "X-Actual-Recipient"},
+		"addr": []string{"Final-Recipient", "Original-Recipient", "X-Actual-Recipient"},
 		"code": []string{"Diagnostic-Code"},
 		"date": []string{"Arrival-Date", "Last-Attempt-Date"},
 		"host": []string{"Received-From", "Remote-MTA", "Reporting-MTA"},
-	//  "list": []string{"Action"},
-	//  "stat": []string{"Status"},
+		"list": []string{"Action"},
+		"stat": []string{"Status"},
 	//  "text": []string{"X-Original-Message-ID"},
 	//  "text": []string{"Final-Log-ID", "Original-Envelope-ID"}
 	}
 
-	parts := strings.SplitN(argv0, ":", 2)
-	field := strings.ToLower(parts[0])
-	label, exist := fieldgroup[field]; if !exist { return []string{} }
+	parts := strings.SplitN(argv0, ":", 2) // []string{"Final-Recipient", " rfc822; <neko@nyaan.jp>"}
+	field := strings.ToLower(parts[0])     // "final-recipient"
+	group, nyaan := fieldgroup[field]      // "addr"
+	if nyaan == false              { return []string{} }
+	if len(captureson[group]) == 0 { return []string{} }
 
+	// - 0: Field-Name
+	// - 1: Sub Type: RFC822, DNS, X-Unix, and so on)
+	// - 2: Value
+	// - 3: Field Group(addr, code, date, host, stat, text)
 	table := []string{"", "", "", ""}
 	match := false
+	for _, e := range captureson[group] {
+		// Try to match with each pattern of Per-Message field, Per-Recipient field
+		if field == strings.ToLower(e) { match = true; break }
+	}
+	if match == false { return []string{} }
 
-	if label == "list" {
-		// Action:
-		value := strings.ToLower(strings.Trim(parts[1], " "))
-		for _, e := range actionlist {
-			// Verify the value of Action: field
-			if e != value { continue }
-			match    = true
-			table[0] = field
-			table[1] = ""
-			table[2] = value
-			table[3] = label
+	parts[1] = strings.TrimSpace(parts[1])
+	table[0] = field
+	table[3] = group
 
-			// Correct invalid value in Action field:
-			fixed, exist := correction[table[2]]; if exist { table[2] = fixed }
-			break
+	if group == "addr" || group == "code" || group == "host" {
+		// - Final-Recipient: RFC822; kijitora@nyaan.jp
+		// - Diagnostic-Code: SMTP; 550 5.1.1 <kijitora@example.jp>... User Unknown
+		// - Remote-MTA: DNS; mx.example.jp
+		v       := strings.SplitN(parts[1], ";", 2)
+		table[1] = strings.ToUpper(strings.TrimSpace(v[0]))
+		table[2] = strings.TrimSpace(v[1])
+
+		if group == "host" { table[2] = strings.ToLower(table[2]) }
+		if len(strings.ReplaceAll(table[2], " ", "")) == 0 { table[2] = "" }
+
+	} else if group == "list" {
+		// Action: failed
+		v := strings.ToLower(parts[1])
+		for _, r := range actionlist {
+			// Check the value is an available value defined in "actionlist" or convert to an
+			// available value defined in "correction"
+			if v == r { table[2] = v; break }
 		}
-	} else if label == "stat" {
-		// Status:
-		match    = true
-		table[2] = strings.SplitN(strings.Trim(parts[1], " "), " ", 2)[0]
+		if len(table[2]) == 0 { if len(correction[v]) > 0 { table[2] = correction[v] } }
 
 	} else {
-		// Other headers
-		for _, e := range captureson[label] {
-			// Try to match with each pattern of Per-Message field, Per-Recipient field
-			// - 0: Field-Name
-			// - 1: Sub Type: RFC822, DNS, X-Unix, and so on)
-			// - 2: Value
-			// - 3: Field Group(addr, code, date, host, stat, text)
-			if strings.ToLower(e) != field { continue }
-
-			match    = true
-			table[0] = field
-			table[3] = label
-
-			if label == "addr" || label == "code" || label == "host" {
-				// - Final-Recipient: RFC822; kijitora@nyaan.jp
-				// - Diagnostic-Code: SMTP; 550 5.1.1 <kijitora@example.jp>... User Unknown
-				// - Remote-MTA: DNS; mx.example.jp
-				value   := strings.SplitN(parts[1], ";", 2)
-				table[1] = strings.ToUpper(strings.Trim(value[0], " "))
-				table[2] = strings.Trim(value[1], " ")
-
-				if label == "host" { table[2] = strings.ToLower(table[2]) }
-				if strings.Contains(table[2], " ") { table[2] = "" }
-
-			} else {
-				// - Arrival-Date:
-				// - X-Original-Message-ID:
-				table[1] = ""
-				table[2] = strings.Trim(parts[1], " ")
-			}
-			break
-		}
+		// Other groups such as Status:, Arrival-Date:, or X-Original-Message-ID:.
+		// There is no ";" character in the field.
+		// - Status: 5.2.2
+		// - Arrival-Date: Mon, 21 May 2018 16:09:59 +0900
+		table[2] = parts[1]
+		if group != "date" { table[2] = strings.ToLower(parts[1]) }
 	}
 
-	if match { return table }
-	return []string{}
+	return table
 }
 
