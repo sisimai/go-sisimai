@@ -13,15 +13,15 @@ func Find(argv1 string, argv2 string) string {
 	if strings.Contains(strings.ToUpper(argv1), "X-UNIX") { return "" }
 	if len(argv2) == 0 { argv2 = "0" }
 
-	replycode2 := []uint16{211, 214, 220, 221, 235, 250, 251, 252, 253, 354}
-	replycode4 := []uint16{421, 450, 451, 452, 422, 430, 432, 453, 454, 455, 456, 458, 459}
-	replycode5 := []uint16{
-		550, 552, 553, 551, 521, 525, 502, 520, 523, 524, 530, 533, 534, 535, 538, 551, 555, 556,
-		554, 557, 500, 501, 502, 503, 504,
+	replycode2 := []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "354"}
+	replycode4 := []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "456", "458", "459"}
+	replycode5 := []string{
+		"550", "552", "553", "551", "521", "525", "502", "520", "523", "524", "530", "533", "534", "535", "538",
+		"551", "555", "556", "554", "557", "500", "501", "502", "503", "504",
 	}
-	codeofsmtp := map[string][]uint16{"2": replycode2, "4": replycode4, "5": replycode5}
+	codeofsmtp := map[string][]string{"2": replycode2, "4": replycode4, "5": replycode5}
 	statuscode := argv2[0:1]
-	replycodes := []uint16{}
+	replycodes := []string{}
 	esmtperror := fmt.Sprintf(" %s ", argv1)
 	esmtpreply := ""        // SMTP Reply Code
 	replyindex := -1        // A position of SMTP reply code found by the strings.Index()
@@ -43,14 +43,13 @@ func Find(argv1 string, argv2 string) string {
 
 	for _, e := range replycodes {
 		// Try to find an SMTP Reply Code from the given string
-		f := string(e)
-		replyindex = strings.Index(esmtperror, f); if replyindex < 0 { continue }
+		replyindex = strings.Index(esmtperror, e); if replyindex < 0 { continue }
 		formerchar = []byte(esmtperror[replyindex - 1:replyindex])[0]
 		latterchar = []byte(esmtperror[replyindex + 3:replyindex + 4])[0]
 
 		if formerchar > 45 && formerchar < 58 { continue }
 		if latterchar > 45 && latterchar < 58 { continue }
-		esmtpreply = f
+		esmtpreply = e
 		break
 	}
 	return esmtpreply
