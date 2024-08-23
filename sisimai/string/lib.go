@@ -48,7 +48,7 @@ func Squeeze(argv1 string, chars string) string {
 		// Remove redundant characters from "argv1"
 		for strings.Count(argv1, e + e) > 1 {
 			// e + e => e
-			e = strings.ReplaceAll(argv1, e + e, e)
+			argv1 = strings.ReplaceAll(argv1, e + e, e)
 		}
 	}
 	return argv1
