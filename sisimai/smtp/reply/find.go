@@ -22,11 +22,6 @@ func Find(argv1 string, argv2 string) string {
 	codeofsmtp := map[string][]string{"2": replycode2, "4": replycode4, "5": replycode5}
 	statuscode := argv2[0:1]
 	replycodes := []string{}
-	esmtperror := fmt.Sprintf(" %s ", argv1)
-	esmtpreply := ""        // SMTP Reply Code
-	replyindex := -1        // A position of SMTP reply code found by the strings.Index()
-	formerchar := uint8(0)  // A character that is one character before the SMTP reply code
-	latterchar := uint8(0)  // A character that is one character  after the SMTP reply code
 
 	if statuscode == "2" || statuscode == "4" || statuscode == "5" {
 		// The first character of the 2nd argument is 2 or 4 or 5
@@ -41,11 +36,13 @@ func Find(argv1 string, argv2 string) string {
 		replycodes = append(replycodes, codeofsmtp["5"]...)
 	}
 
+	esmtperror := fmt.Sprintf(" %s ", argv1)
+	esmtpreply := ""
 	for _, e := range replycodes {
 		// Try to find an SMTP Reply Code from the given string
-		replyindex = strings.Index(esmtperror, e); if replyindex < 0 { continue }
-		formerchar = []byte(esmtperror[replyindex - 1:replyindex])[0]
-		latterchar = []byte(esmtperror[replyindex + 3:replyindex + 4])[0]
+		replyindex := strings.Index(esmtperror, e); if replyindex < 0 { continue }
+		formerchar := []byte(esmtperror[replyindex - 1:replyindex])[0]
+		latterchar := []byte(esmtperror[replyindex + 3:replyindex + 4])[0]
 
 		if formerchar > 45 && formerchar < 58 { continue }
 		if latterchar > 45 && latterchar < 58 { continue }
