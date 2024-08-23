@@ -34,7 +34,7 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 }
 
 // Rise() works as a constructor of Sisimai::Message
-func Rise(mesg *string, hook func()) (sis.BeforeFact, error) {
+func Rise(mesg *string, hook func()) sis.BeforeFact {
 	// @param   *string     mesg  Entire email message
 	// @param   func()      hook  callback method
 	// @return  Message           Structured email data
@@ -100,10 +100,11 @@ func Rise(mesg *string, hook func()) (sis.BeforeFact, error) {
 		//    There is a bounce message inside of mutipart/*, try to sift the first message/rfc822
 		//    part as a entire message body again.
 		parseagain++
-
-		// TODO Implement this block
-		// 5. Rewrite headers of the original message in the body part
 	}
-	return *beforefact, nil
+
+	// TODO Implement this block
+	// 5. Rewrite headers of the original message in the body part
+
+	return *beforefact
 }
 
