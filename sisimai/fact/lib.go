@@ -3,13 +3,6 @@
 package fact
 import as "sisimai/address"
 
-type Messaging struct {
-	from   string            // UNIX From line
-	header map[string]string // Header part of an email
-	ds     map[string]string // Parsed data by Sisimai::Lhost
-	rfc822 map[string]string // Header part of the original message
-	catch  string            // The results returned by hook method
-}
 type Catch interface {}
 type FactRR struct {
 	Action         string          // The value of Action: header
