@@ -99,6 +99,8 @@ func sift(bf *sis.BeforeFact, hook func()) bool {
 		if len(localhostr.Digest[j].Agent) > 0 { continue }
 		localhostr.Digest[j].Agent = modulename
 	}
+	bf.RFC822 = localhostr.RFC822
+	bf.Digest = localhostr.Digest
 
 	return true
 }
