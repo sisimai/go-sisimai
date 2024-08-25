@@ -1,4 +1,5 @@
 module libsisimai.org/sisimai
+
 go 1.22
 
 replace (
@@ -7,6 +8,7 @@ replace (
 	sisimai/lhost => ./sisimai/lhost
 	sisimai/mail => ./sisimai/mail
 	sisimai/message => ./sisimai/message
+	sisimai/reason => ./sisimai/reason
 	sisimai/rfc1894 => ./sisimai/rfc1894
 	sisimai/rfc2045 => ./sisimai/rfc2045
 	sisimai/rfc5322 => ./sisimai/rfc5322
@@ -29,6 +31,7 @@ require (
 require (
 	sisimai/lhost v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/message v0.0.0-00010101000000-000000000000 // indirect
+	sisimai/reason v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/rfc1894 v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/rfc2045 v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/rfc5322 v0.0.0-00010101000000-000000000000 // indirect
