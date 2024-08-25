@@ -11,6 +11,7 @@ package sis
 import "time"
 import sisiaddr "sisimai/address"
 
+// sisimai/fact.Rise() returns []sis.Fact
 type Fact struct {
 	Action          string                  // The value of "Action:" field
 	Addresser       sisiaddr.EmailAddress   // The sender address of the original message
