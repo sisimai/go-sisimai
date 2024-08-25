@@ -10,3 +10,14 @@ func Retry() map[string]bool {
     }
 }
 
+// Index() returns the list of all the reasons sisimai supoort
+func Index() []string {
+	return []string{
+        "AuthFailure", "BadReputation", "Blocked", "ContentError", "ExceedLimit", "Expired", "Filtered",
+		"HasMoved", "HostUnknown", "MailboxFull", "MailerError", "MesgTooBig", "NetworkError", "NotAccept",
+		"NotCompliantRFC", "OnHold", "Rejected", "NoRelaying", "SpamDetected", "VirusDetected", "PolicyViolation",
+		"SecurityError", "Speeding", "Suspend", "RequirePTR", "SystemError", "SystemFull", "TooManyConn",
+		"UserUnknown", "SyntaxError",
+    }
+}
+
