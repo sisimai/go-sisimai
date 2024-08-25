@@ -21,6 +21,7 @@ func(this *BeforeFact) Void() bool {
 	// @param    NONE
 	// @return   bool Returns true if BeforeFact.Digest is empty
 	if len(this.Digest) == 0 { return true }
+	if len(this.RFC822) == 0 { return true }
 	return false
 }
 
