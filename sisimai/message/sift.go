@@ -1,16 +1,22 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
+//  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
+// | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
+// | | | | | |  __/\__ \__ \ (_| | (_| |  __/
+// |_| |_| |_|\___||___/___/\__,_|\__, |\___|
+//                                |___/      
 import "strings"
+import "net/mail"
 import "sisimai/sis"
 import "sisimai/lhost"
 import "sisimai/rfc2045"
 import sisimoji "sisimai/string"
 
 // sift() sifts a bounce mail with each MTA module
-func sift(bf *sis.BeforeFact, hook func()) bool {
+func sift(bf *sis.BeforeFact, hook *func()) bool {
 	// @param  *sis.BeforeFact bf     Processing message entity.
-	// @param  func()          hook   A hook method to be called
+	// @param  *func()         hook   The callback function for the decoded bounce message
 	// @return bool                   true:  Successfully got the results
 	//                                false: Failed to get the results
 	if len(bf.Head) == 0 { return false }
@@ -46,7 +52,7 @@ func sift(bf *sis.BeforeFact, hook func()) bool {
 	bf.Body = strings.ReplaceAll(bf.Body, "\t", " ")
 
 	// TODO: Call the hook funcation
-	hook()
+	// hook()
 
 	havecalled := map[string]bool{}
 	localhostr := sis.RisingUnderway{}
@@ -99,7 +105,10 @@ func sift(bf *sis.BeforeFact, hook func()) bool {
 		if len(localhostr.Digest[j].Agent) > 0 { continue }
 		localhostr.Digest[j].Agent = modulename
 	}
-	bf.RFC822 = localhostr.RFC822
+
+	// Convert headers of the original message to data structure/map[string][]string
+	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(localhostr.RFC822)); if nyaan != nil { return false }
+	bf.RFC822 = makemap(&rfc822part.Header, false)
 	bf.Digest = localhostr.Digest
 
 	return true
