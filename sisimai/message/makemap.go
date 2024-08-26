@@ -1,24 +1,27 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
+//  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
+// | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
+// | | | | | |  __/\__ \__ \ (_| | (_| |  __/
+// |_| |_| |_|\___||___/___/\__,_|\__, |\___|
+//                                |___/      
 import "strings"
 import "net/mail"
 import sisimoji "sisimai/string"
 
 // makemap() converts a mail.Header struct to a map[string][]string
 func makemap(argv0 *mail.Header, argv1 bool) map[string][]string {
-	// @param    *mail.Header argv0      Email header data
-	// @param    bool         argv1      Decode "Subject:" header or not
+	// @param    *mail.Header      argv0 Email header data
+	// @param    bool              argv1 Decode "Subject:" header or not
 	// @return   map[string]string       Structured email header data
 	headermaps := map[string][]string{}
 	receivedby := []string{}
 
 	for e, v := range *argv0 {
 		// Each key name is the lower-cased string, each value is an array ([]string{})
-		if strings.Contains(e, " ") {
-			// The field name of an email header does not contain " "
-			continue
-		}
+		// The field name of an email header does not contain " "
+		if strings.Contains(e, " ") { continue }
 		headermaps[strings.ToLower(e)] = v
 	}
 
