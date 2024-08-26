@@ -1,6 +1,12 @@
 // Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
+//            _     _                   
+//   __ _  __| | __| |_ __ ___  ___ ___ 
+//  / _` |/ _` |/ _` | '__/ _ \/ __/ __|
+// | (_| | (_| | (_| | | |  __/\__ \__ \
+//  \__,_|\__,_|\__,_|_|  \___||___/___/
+//                                      
 import "strings"
 
 // IsQuotedAddress() checks that the local part of the argument is quoted
@@ -31,6 +37,7 @@ func IsEmailAddress(email string) bool {
 	// @param    string email    Email address string
 	// @return   bool            true:  is an email address
 	//                           false: is not an email address
+	if len(email) < 5 { return false } // n@e.e
 
 	// See http://www.ietf.org/rfc/rfc5322.txt
 	//   or http://www.ex-parrot.com/pdw/Mail-RFC822-Address.html ...
