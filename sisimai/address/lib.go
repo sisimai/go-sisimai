@@ -19,9 +19,7 @@ func S3S4(argv0 string) string {
 	// @param    string input  Text including an email address
 	// @return   string        Email address without comment, brackets
 	if len(argv0) == 0 { return "" }
-
-	list := Find(argv0)
-	if len(list) == 0 { return argv0 }
+	list := Find(argv0); if len(list[0]) == 0 { return "" }
 	return list[0]
 }
 
@@ -29,6 +27,9 @@ func S3S4(argv0 string) string {
 func Final(argv0 string) string {
 	// @param    string argv0  String including an email address like "<neko@nyaan.jp>"
 	// @return   string        String without angle brackets: "neko@nyaan.jp"
+	if len(argv0)            == 0     { return argv0 }
+	if IsEmailAddress(argv0) == false { return argv0 }
+
 	for strings.HasPrefix(argv0, "<") { argv0 = strings.Trim(argv0, "<") }
 	for strings.HasSuffix(argv0, ">") { argv0 = strings.Trim(argv0, ">") }
 
