@@ -110,7 +110,7 @@ func IsEmailAddress(email string) bool {
 			if email[j] ==  47 { match = false; break } // Equals "/"
 			if email[j] >  122 { match = false; break } // After  "z"
 
-			if email[j] > 57 && email[j] < 65 { match = false; break } // ":" to "@"
+			if email[j] > 57 && email[j] < 64 { match = false; break } // ":" to "?"
 			if email[j] > 90 && email[j] < 97 { match = false; break } // "[" to "`"
 
 			if j > lastd {
