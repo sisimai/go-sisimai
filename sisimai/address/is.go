@@ -32,6 +32,17 @@ func IsIncluded(argv0 string) bool {
 	return false
 }
 
+// IsComment() returns true if the string starts with "(" and ends with ")"
+func IsComment(argv0 string) bool {
+	// @param    string argv0    String including an comment in email address like "(neko, nyaan)"
+	// @return   bool            true:  is a comment
+	//                           false: is not a comment
+	if len(argv0)                    == 0     { return false }
+	if strings.HasPrefix(argv0, "(") == false { return false }
+	if strings.HasSuffix(argv0, ")") == false { return false }
+	return true
+}
+
 // IsEmailAddress() checks that the argument is an email address or not
 func IsEmailAddress(email string) bool {
 	// @param    string email    Email address string
