@@ -35,7 +35,7 @@ type Fact struct {
 	SMTPCommand     string                  // The last SMTP command
 	SenderDomain    string                  // The domain part of the "Addresser"
 	Subject         string                  // UTF-8 Subject text
-	TimeStamp       time.Time               // The value of "Date:" header in the original message
+	Timestamp       time.Time               // The value of "Date:" header in the original message
 	TimezoneOffset  int32                   // Time zone offset(seconds)
 	Token           string                  // Message token/MD5 Hex digest value
 }
