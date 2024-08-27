@@ -14,15 +14,6 @@ func Undisclosed(a string) string {
 	return fmt.Sprintf("undisclosed-%s-in-headers@libsisimai.org.invalid", addr)
 }
 
-// S3S4() runs like ruleset 3,4 of sendmail.cf
-func S3S4(argv0 string) string {
-	// @param    string input  Text including an email address
-	// @return   string        Email address without comment, brackets
-	if len(argv0) == 0 { return "" }
-	list := Find(argv0); if len(list[0]) == 0 { return "" }
-	return list[0]
-}
-
 // Final() returns a string processed by Ruleset 4 in sendmail.cf
 func Final(argv0 string) string {
 	// @param    string argv0  String including an email address like "<neko@nyaan.jp>"

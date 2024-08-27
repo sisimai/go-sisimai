@@ -9,6 +9,15 @@ package address
 import "strings"
 import sisimoji "sisimai/string"
 
+// S3S4() runs like ruleset 3,4 of sendmail.cf
+func S3S4(argv1 string) string {
+	// @param    string argv1  Text including an email address
+	// @return   string        Email address without comment, brackets
+	if len(argv1)   == 0 { return "" }; list := Find(argv1)
+	if len(list[0]) == 0 { return "" }
+	return list[0]
+}
+
 // Find() is an email address parser with a name and a comment
 func Find(argv1 string) [3]string {
 	// @param    string argv1  String including email address
