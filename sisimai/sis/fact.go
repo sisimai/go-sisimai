@@ -23,8 +23,8 @@ type Fact struct {
 	DiagnosticType  string                  // The 1st part of "Diagnostic-Code:" field
 	FeedbackType    string                  // Feedback Type
 	HardBounce      bool                    // Hard bounce or not
-	ListID          string                  // The value of "List-Id" field of the original message
 	Lhost           string                  // local host name/Local MTA
+	ListID          string                  // The value of "List-Id" field of the original message
 	MessageID       string                  // The value of "Message-Id:" header of the original message
 	Origin          string                  // The email path as a data source
 	Reason          string                  // Bounce reason
