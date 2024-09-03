@@ -76,7 +76,7 @@ func Rise(argvs [3]string) EmailAddress {
 
 // *EmailAddress.Void() returns true if it does not include a valid email address
 func(this *EmailAddress) Void() bool {
-	if len(this.Address) == 0 { return false }
-	return true
+	if len(this.Address) == 0 { return true }
+	return false
 }
 
