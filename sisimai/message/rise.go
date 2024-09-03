@@ -1,6 +1,11 @@
 // Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
+//  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
+// | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
+// | | | | | |  __/\__ \__ \ (_| | (_| |  __/
+// |_| |_| |_|\___||___/___/\__,_|\__, |\___|
+//                                |___/      
 import "io"
 import "fmt"
 import "strings"
@@ -34,10 +39,12 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 }
 
 // Rise() works as a constructor of Sisimai::Message
-func Rise(mesg *string, hook func()) sis.BeforeFact {
+func Rise(mesg *string, hook *func()) sis.BeforeFact {
 	// @param   *string     mesg  Entire email message
 	// @param   func()      hook  callback method
 	// @return  Message           Structured email data
+	if len(*mesg) < 1 { return sis.BeforeFact{} }
+
 	mesg        = sisimoji.ToLF(mesg)
 	parseagain := 0
 	beforefact := new(sis.BeforeFact)
@@ -104,7 +111,6 @@ func Rise(mesg *string, hook func()) sis.BeforeFact {
 
 	// TODO Implement this block
 	// 5. Rewrite headers of the original message in the body part
-
 	return *beforefact
 }
 
