@@ -36,7 +36,7 @@ type Fact struct {
 	SenderDomain    string                  // The domain part of the "Addresser"
 	Subject         string                  // UTF-8 Subject text
 	Timestamp       time.Time               // The value of "Date:" header in the original message
-	TimezoneOffset  int32                   // Time zone offset(seconds)
+	TimezoneOffset  string                  // Time zone offset("+0900")
 	Token           string                  // Message token/MD5 Hex digest value
 }
 
