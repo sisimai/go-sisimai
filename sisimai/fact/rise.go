@@ -14,6 +14,7 @@ import "net/mail"
 import "sisimai/sis"
 import "sisimai/reason"
 import "sisimai/message"
+import "sisimai/rfc1894"
 import "sisimai/rfc5322"
 import "sisimai/address"
 import "sisimai/smtp/reply"
@@ -49,8 +50,8 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 		addrs := map[string][3]string{} // Addresser, and Recipient
 		piece := map[string]string{}    // Each element except email addresses
-		thing := sis.Fact{}
-		clock := time.Time{}   // The source value of "Timestamp"
+		thing := sis.Fact{}             // Each sis.Fact struct
+		clock := time.Time{}            // The source value of "Timestamp"
 
 		ADDRESSER: for {
 			// Detect an email address from message/rfc822 part
@@ -227,23 +228,16 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			break DIAGNOSTICTYPE
 		}
 
-		// Check the SMTP command, the Subject field of the original message
-		piece["subject"] = strings.ReplaceAll(rfc822data["subject"][0], "\r", "")
+		// Set other values returned from sisimai/message.Rise()
+		addrs["recipient"] = [3]string{e.Recipient, "", ""}
+		piece["subject"]   = strings.ReplaceAll(rfc822data["subject"][0], "\r", "")
 		if command.Test(e.Command) { piece["smtpcommand"] = e.Command }
-
-		ALIAS: for {
-			// Look up the Envelope-To address from the Received: header in the original message
-			// when the recipient address is same with the value of piece["alias"].
-			addrs["recipient"] = [3]string{e.Recipient, "", ""}
-			piece["alias"]     = e.Alias
-			break ALIAS
-		}
 
 		CONSTRUCTOR: for {
 			// - Create email address object as address.EmailAddress struct
 			// - Create decoded bounce mail object as sis.Fact struct
-			as := address.Rise(addrs["addresser"]); if as.Void() == true { break RISEOF }
-			ar := address.Rise(addrs["recipient"]); if ar.Void() == true { break RISEOF }
+			as := address.Rise(addrs["addresser"]); if as.Void() == true { continue RISEOF }
+			ar := address.Rise(addrs["recipient"]); if ar.Void() == true { continue RISEOF }
 
 			thing.Action         = e.Action
 			thing.Addresser      = as
@@ -272,6 +266,107 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			thing.Token          = sisimoji.Token(as.Address, ar.Address, int(thing.Timestamp.Unix()))
 
 			break CONSTRUCTOR
+		}
+
+		ALIAS: for {
+			// Look up the Envelope-To address from the Received: header in the original message
+			// when the recipient address is same with the value of piece["alias"].
+			if len(thing.Alias) == 0                  { break ALIAS }
+			if thing.Recipient.Address != thing.Alias { break ALIAS }
+			if len(rfc822data["received"]) == 0       { break ALIAS }
+
+			recv := rfc822data["received"]
+			hops := len(recv)
+			for i := hops - 1; hops >= 0; hops-- {
+				// Search for the string " for " from the Received: header
+				if strings.Contains(recv[i], " for ") == false { continue }
+				or := rfc5322.Received(recv[i])
+
+				if len(or) == 0                           { continue }
+				if len(or[5]) == 0                        { continue }
+				if address.IsEmailAddress(or[5]) == false { continue }
+				if or[5] == thing.Recipient.Address       { continue }
+
+				thing.Alias = or[5]; break
+			}
+			break ALIAS
+		}
+		if thing.Alias == thing.Recipient.Address { thing.Alias = "" }
+
+		REASON: for {
+			// Decide the reason of email bounce
+			if len(thing.Reason) == 0 || RetryIndex[thing.Reason] == true {
+				// The value of "reason" is empty or is needed to check with other values again
+				re := thing.Reason; if re == "" { re = "undefined" }
+				// TODO: Implement sisimai/rhost, sisimai/reason/*.go
+				//   thing.Reason = rhost.Get(thing)
+				//   if thing.Reason == "" { thing.Reason = reason.Get(thing) }
+				//   if thing.Reason == "" { thing.Reason = re }
+			}
+			break REASON
+		}
+
+		HARDBOUNCE: for {
+			// Set the value of "hardbounce", default value of "bouncebounce" is 0
+			if thing.Reason == "delivered" || thing.Reason == "feedback" || thing.Reason == "vacation" {
+				// Delete the value of ReplyCode when the Reason is "feedback" or "vacation"
+				if thing.Reason != "delivered" { thing.ReplyCode = "" }
+
+			} else {
+				// The Reason is not "delivered", or "feedback", or "vacation"
+				smtperrors := fmt.Sprintf("%s %s", piece["deliverystatus"], piece["diagnosticcode"])
+				if len(smtperrors) < 4 { smtperrors = "" }
+				// TODO: Implemenet sisimai/smtp/error
+				//   softorhard := error.SoftOrHard(thing.Reason, smtperrors)
+				//   if softorhard == "hard" { thing.HardBounce = true }
+			}
+			break HARDBOUNCE
+		}
+
+		DELIVERYSTATUS: for {
+			// Set a pseudo status code
+			if len(thing.DeliveryStatus) > 0 { break DELIVERYSTATUS }
+
+			smtperrors := fmt.Sprintf("%s %s", thing.ReplyCode, piece["diagnosticcode"])
+			if len(smtperrors) < 4 { smtperrors = "" }
+			// TODO: Implemenet sisimai/smtp/error
+			//   permanent1 := error.IsPermanent(smtperrors)
+			//   thing.DeliveryStatus = status.Code(thing.Reason, !permanent1)
+			break DELIVERYSTATUS
+		}
+
+		REPLYCODE: for {
+			// Check both of the first digit of "DeliveryStatus" and "ReplyCode"
+			cx := [2]string{string(thing.DeliveryStatus[0]), string(thing.ReplyCode[0])}
+			if cx[0] != cx[1] {
+				// The class of the "Status:" is defer with the first digit of the reply code
+				cx[1] = reply.Find(piece["diagnosticcode"], cx[0])
+				if strings.HasPrefix(cx[1], cx[0]) {
+					// The first digit of cx[1] found by status.Find() is equal to cx[0]
+					thing.ReplyCode = cx[1]
+
+				} else {
+					// Remove the value of ReplyCode when the 1st digit of the both values are difer
+					thing.ReplyCode = ""
+				}
+			}
+
+			if ActionList[thing.Action] == false {
+				// There is an action value which is not described at RFC1894
+				ox := rfc1894.Field("Action: " + thing.Action)
+				if len(ox) > 0 {
+					// Rewrite the value of "Action:" field to the valid value
+					//
+					// The syntax for the action-field is:
+					//   action-field = "Action" ":" action-value
+					//   action-value = "failed" / "delayed" / "delivered" / "relayed" / "expanded"
+					thing.Action = ox[2]
+				}
+			}
+			if thing.Reason == "expired"                            { thing.Action = "delayed" }
+			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed"  }
+
+			break REPLYCODE
 		}
 		listoffact = append(listoffact, thing)
 	}
