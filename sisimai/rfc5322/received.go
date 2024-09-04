@@ -6,7 +6,7 @@ import "sisimai/address"
 import sisimoji "sisimai/string"
 
 // Received() convert Received headers to a structured data
-func Received(argv1 string) []string {
+func Received(argv1 string) [6]string {
 	// @param    string    argv1  Received header
 	// @return   []string         Each item in the Received header order by the following:
 	//                            0: (from)   "hostname"
@@ -16,9 +16,9 @@ func Received(argv1 string) []string {
 	//                            4: (id)     "queue-id"
 	//                            5: (for)    "envelope-to address"
 	// Received: (qmail 10000 invoked by uid 999); 24 Apr 2013 00:00:00 +0900
-	if strings.IndexByte(argv1, ' ') < 0                { return []string{} }
-	if strings.Contains(argv1, " invoked by uid")       { return []string{} }
-	if strings.Contains(argv1, " invoked from network") { return []string{} }
+	if strings.IndexByte(argv1, ' ') < 0                { return [6]string{} }
+	if strings.Contains(argv1, " invoked by uid")       { return [6]string{} }
+	if strings.Contains(argv1, " invoked from network") { return [6]string{} }
 
 	// - https://datatracker.ietf.org/doc/html/rfc5322
 	//   received        =   "Received:" *received-token ";" date-time CRLF
@@ -148,6 +148,6 @@ func Received(argv1 string) []string {
 		if strings.Contains(token[e], "]") { strings.Replace(token[e], "]", "", 1) }
 	}
 
-	return []string{token["from"], token["by"], token["via"], token["with"], token["id"], token["for"]}
+	return [6]string{token["from"], token["by"], token["via"], token["with"], token["id"], token["for"]}
 }
 
