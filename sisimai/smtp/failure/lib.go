@@ -41,7 +41,7 @@ func IsTemporary(argv1 string) bool {
 }
 
 // IsHardBounce() checks the reason sisimai detected is a hard bounce or not
-func isHardBounce (argv1, argv2 string) bool {
+func IsHardBounce (argv1, argv2 string) bool {
 	// @param   string argv1  The bounce reason sisimai detected
 	// @param   string argv2  String including SMTP Status code
 	// @return  bool          true: is a hard bounce
@@ -66,7 +66,7 @@ func isHardBounce (argv1, argv2 string) bool {
 }
 
 // IsSoftBounce() checks the reason sisimai detected is a soft bounce or not
-func isSoftBounce (argv1, argv2 string) bool {
+func IsSoftBounce (argv1, argv2 string) bool {
 	// @param   string argv1  The bounce reason sisimai detected
 	// @param   string argv2  String including SMTP Status code
 	// @return  bool          true: is a soft bounce
