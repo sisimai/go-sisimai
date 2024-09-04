@@ -15,6 +15,7 @@ replace (
 	sisimai/rfc5965 => ./sisimai/rfc5965
 	sisimai/sis => ./sisimai/sis
 	sisimai/smtp/command => ./sisimai/smtp/command
+	sisimai/smtp/failure => ./sisimai/smtp/failure
 	sisimai/smtp/reply => ./sisimai/smtp/reply
 	sisimai/smtp/status => ./sisimai/smtp/status
 	sisimai/smtp/transcript => ./sisimai/smtp/transcript
@@ -38,6 +39,7 @@ require (
 	sisimai/rfc5965 v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/sis v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/smtp/command v0.0.0-00010101000000-000000000000 // indirect
+	sisimai/smtp/failure v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/smtp/reply v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/smtp/status v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/smtp/transcript v0.0.0-00010101000000-000000000000 // indirect
