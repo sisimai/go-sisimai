@@ -10,6 +10,24 @@ import "sisimai/sis"
 // Keep each function to check/detect the bounce reason
 var ReasonCode0 = map[string]func(string) bool {}
 var ReasonCode1 = map[string]func(*sis.Fact) bool {}
+var ClassOrders = [][]string{
+	[]string{
+		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "HasMoved", "NoRelaying", "AuthFailure",
+		"UserUnknown", "Filtered", "RequirePTR", "NotCompliantRFC", "BadReputation", "Rejected",
+		"HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked",
+    },
+    []string{
+		"MailboxFull", "AuthFailure", "BadReputation", "Speeding", "SpamDetected", "VirusDetected",
+		"PolicyViolation", "NoRelaying", "SystemError", "NetworkError", "Suspend", "ContentError",
+		"SystemFull", "NotAccept", "Expired", "SecurityError", "MailerError",
+    },
+    []string{
+		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "UserUnknown", "Filtered", "Rejected",
+		"HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked", "SpamDetected", "AuthFailure",
+		"SecurityError", "SystemError", "NetworkError", "Suspend", "Expired", "ContentError", "HasMoved",
+		"SystemFull", "NotAccept", "MailerError", "NoRelaying", "SyntaxError", "OnHold",
+    },
+}
 
 // Retry() returns the table of reason list which should be checked again
 func Retry() map[string]bool {
