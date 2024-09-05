@@ -1,6 +1,12 @@
 // Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
+//  _ _               _      __               _    __ _      
+// | | |__   ___  ___| |_   / / __   ___  ___| |_ / _(_)_  __
+// | | '_ \ / _ \/ __| __| / / '_ \ / _ \/ __| __| |_| \ \/ /
+// | | | | | (_) \__ \ |_ / /| |_) | (_) \__ \ |_|  _| |>  < 
+// |_|_| |_|\___/|___/\__/_/ | .__/ \___/|___/\__|_| |_/_/\_\
+//                           |_|                             
 import "fmt"
 import "slices"
 import "strings"
@@ -21,8 +27,9 @@ func init() {
 	LhostCode["Postfix"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }
+		if len(bf.Body)            == 0 { return sis.RisingUnderway{} }
+		if len(bf.Head["x-aol-ip"]) > 0 { return sis.RisingUnderway{} } // X-AOL-IP: 192.0.2.1
 
 		match := uint8(0)
 		if strings.Index(bf.Head["subject"][0], "SMTP server: errors from ") > 0 {
@@ -35,7 +42,6 @@ func init() {
 			match = 1
 		}
 		if match == 0                   { return sis.RisingUnderway{} }
-		if len(bf.Head["x-aol-ip"]) > 0 { return sis.RisingUnderway{} } // X-AOL-IP: 192.0.2.1
 
 		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
@@ -152,11 +158,9 @@ func init() {
 						// Other DSN fields defined in RFC3464
 						v.Set(o[0], o[2]); if f != 1 { continue }
 
+						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 						permessage[z] = o[2]
-						if slices.Contains(keystrings, z) == false {
-							// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
-							keystrings = append(keystrings, z)
-						}
+						if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
 					}
 				} else {
 					// If you do so, please include this problem report. You can
@@ -213,7 +217,7 @@ func init() {
 							nomessages = true
 
 						} else {
-							// Get an error message continued from the previous line
+							// Get the error message continued from the previous line
 							if len(anotherset["diagnosis"]) == 0 { continue }
 							if strings.HasPrefix(e, "    ") {
 								// Append the current line
@@ -251,7 +255,6 @@ func init() {
 		for j, _ := range dscontents {
 			// Set default values stored in "permessage" if each value in "dscontents" is empty.
 			e := &(dscontents[j])
-
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
 				if len(v.Get(z))       > 0 { continue }
