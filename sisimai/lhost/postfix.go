@@ -21,10 +21,9 @@ import "sisimai/smtp/command"
 import "sisimai/smtp/transcript"
 import sisimoji "sisimai/string"
 
-// init() registers the following function for parsing a bounce mail of Postfix into LhostCode
 func init() {
 	// Decode bounce messages from Postfix https://www.postfix.org/
-	LhostCode["Postfix"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
+	Inquire["Postfix"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
 		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }

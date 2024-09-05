@@ -19,10 +19,9 @@ import "sisimai/smtp/status"
 import "sisimai/smtp/command"
 import sisimoji "sisimai/string"
 
-// init() registers the following function for parsing a bounce mail from Sendmail into LhostCode
 func init() {
 	// V8Sendmail: /usr/sbin/sendmail
-	LhostCode["Sendmail"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
+	Inquire["Sendmail"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
 		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }
