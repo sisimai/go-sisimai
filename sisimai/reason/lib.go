@@ -8,9 +8,10 @@ package reason
 import "sisimai/sis"
 
 // Keep each function to check/detect the bounce reason
-var ReasonCode0 = map[string]func(string) bool {}
-var ReasonCode1 = map[string]func(*sis.Fact) bool {}
-var ClassOrders = [][]string{
+var Match = map[string]func(string) bool {}
+var Truth = map[string]func(*sis.Fact) bool {}
+
+var ClassOrder = [][]string{
 	[]string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "HasMoved", "NoRelaying", "AuthFailure",
 		"UserUnknown", "Filtered", "RequirePTR", "NotCompliantRFC", "BadReputation", "Rejected",
