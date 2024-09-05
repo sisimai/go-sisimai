@@ -1,9 +1,15 @@
 // Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
+//  _ _               _   
+// | | |__   ___  ___| |_ 
+// | | '_ \ / _ \/ __| __|
+// | | | | | (_) \__ \ |_ 
+// |_|_| |_|\___/|___/\__|
+//                        
 import "sisimai/sis"
 
-// Keep each function for parsing a bounce mail
+// Keep each function for decoding a bounce mail
 var LhostCode = map[string]func(*sis.BeforeFact) sis.RisingUnderway {}
 
 // INDICATORS() returns flags for position variables used at MTA functions in sisimai/lhost.
@@ -26,28 +32,4 @@ func INDEX() []string {
 		"Verizon", "X1", "X2", "X3", "X4", "X5", "X6", "Yahoo", "Yandex", "Zoho", "mFILTER", "qmail",
 	}
 }
-
-// Rise() is a wrapper function for calling each MTA functions in sisimai/lhost.
-/*
-func Rise(mhead map[string][]string, mbody *string) LhostRR {
-
-	var localhostr LhostRR
-	var lhostorder []string = OrderBySubject(mhead["subject"][0])
-	    lhostorder          = append(lhostorder, AnotherOrder() ...)
-
-	for _, e := range lhostorder {
-		// Call init() function of each MTA module in sisimai/lhost
-		localhostr = LhostCode[e]
-		if localhostr.DS
-		_, ok := LhostCode[e]
-		if !ok { continue } // TODO: Remove this line after we've implement sisimai/lhost pakcage
-
-		q := LhostCode[e](mhead, mbody); if oops != nil { continue }
-		if len(q.DS) == 0 { continue }
-		rr = q
-	}
-
-	return rr, nil
-}
-*/
 
