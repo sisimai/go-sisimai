@@ -20,6 +20,7 @@ import "sisimai/address"
 import "sisimai/smtp/reply"
 import "sisimai/smtp/status"
 import "sisimai/smtp/command"
+import "sisimai/smtp/failure"
 import sisimoji "sisimai/string"
 
 var RetryIndex = reason.Retry()
@@ -316,9 +317,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 				// The Reason is not "delivered", or "feedback", or "vacation"
 				smtperrors := fmt.Sprintf("%s %s", piece["deliverystatus"], piece["diagnosticcode"])
 				if len(smtperrors) < 4 { smtperrors = "" }
-				// TODO: Implemenet sisimai/smtp/error
-				//   softorhard := error.SoftOrHard(thing.Reason, smtperrors)
-				//   if softorhard == "hard" { thing.HardBounce = true }
+				thing.HardBounce = failure.IsHardBounce(thing.Reason, smtperrors)
 			}
 			break HARDBOUNCE
 		}
@@ -329,9 +328,8 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 			smtperrors := fmt.Sprintf("%s %s", thing.ReplyCode, piece["diagnosticcode"])
 			if len(smtperrors) < 4 { smtperrors = "" }
-			// TODO: Implemenet sisimai/smtp/error
-			//   permanent1 := error.IsPermanent(smtperrors)
-			//   thing.DeliveryStatus = status.Code(thing.Reason, !permanent1)
+			permanent1 := failure.IsPermanent(smtperrors)
+			thing.DeliveryStatus = status.Code(thing.Reason, !permanent1)
 			break DELIVERYSTATUS
 		}
 
