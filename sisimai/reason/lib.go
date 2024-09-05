@@ -1,11 +1,15 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
-//                                 
 //  _ __ ___  __ _ ___  ___  _ __  
 // | '__/ _ \/ _` / __|/ _ \| '_ \ 
 // | | |  __/ (_| \__ \ (_) | | | |
 // |_|  \___|\__,_|___/\___/|_| |_|
+import "sisimai/sis"
+
+// Keep each function to check/detect the bounce reason
+var ReasonCode0 = map[string]func(string) bool {}
+var ReasonCode1 = map[string]func(*sis.Fact) bool {}
 
 // Retry() returns the table of reason list which should be checked again
 func Retry() map[string]bool {
