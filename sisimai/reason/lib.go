@@ -26,7 +26,7 @@ var ClassOrders = [][]string{
 		"HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked", "SpamDetected", "AuthFailure",
 		"SecurityError", "SystemError", "NetworkError", "Suspend", "Expired", "ContentError", "HasMoved",
 		"SystemFull", "NotAccept", "MailerError", "NoRelaying", "SyntaxError", "OnHold",
-    },
+	},
 }
 
 // Retry() returns the table of reason list which should be checked again
@@ -34,7 +34,7 @@ func Retry() map[string]bool {
 	return map[string]bool{
 		"undefined": true, "onhold": true,  "systemerror": true, "securityerror": true, "expired": true,
 		"suspend": true, "networkerror": true, "hostunknown": true, "userunknown": true,
-    }
+	}
 }
 
 // Index() returns the list of all the reasons sisimai supoort
@@ -74,6 +74,6 @@ func Index() []string {
 		"UserUnknown",      // Email rejected due to a local part of a recipients email address does not exist
 		//"Vacation",       // Email replied automatically due to a recipient is out of office
 		"VirusDetected",    // Email rejected due to a virus scanner on a destination host
-    }
+	}
 }
 
