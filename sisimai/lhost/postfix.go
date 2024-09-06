@@ -171,7 +171,7 @@ func init() {
 					// 5.1.1 <userunknown@example.co.jp>... User Unknown (in reply to RCPT TO command)
 					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") && strings.HasPrefix(e, " ") {
 						// Continued line of the value of Diagnostic-Code field
-						v.Diagnosis += fmt.Sprintf(" %s", sisimoji.Squeeze(strings.Trim(e, " "), " "))
+						v.Diagnosis += fmt.Sprintf(" %s", sisimoji.Sweep(e))
 						readslices[j + 1] = "Diagnostic-Code: " + e
 
 					} else if sisimoji.Aligned(e, []string{"X-Postfix-Sender:", "rfac822;", "@"}) {
@@ -263,7 +263,7 @@ func init() {
 
 			if len(anotherset["diagnosis"]) > 0 {
 				// Copy alternative error message to e.Diagnosis
-				anotherset["diagnosis"] = sisimoji.Squeeze(anotherset["diagnosis"], " ")
+				anotherset["diagnosis"] = sisimoji.Sweep(anotherset["diagnosis"])
 				if len(e.Diagnosis) == 0 { e.Diagnosis = anotherset["diagnosis"] }
 
 				if sisimoji.ContainsOnlyNumbers(e.Diagnosis) {
@@ -306,7 +306,7 @@ func init() {
 					}
 				}
 			}
-			e.Diagnosis = sisimoji.Squeeze(e.Diagnosis, " ")
+			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 
 			if len(commandset) > 0 {
 				// Set an SMTP command name picked from the error message

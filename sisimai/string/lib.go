@@ -57,19 +57,16 @@ func Sweep(argv1 string) string {
 	// @param    string argv1  String to be cleaned
 	// @return   string        Cleaned out string
 	if len(argv1) == 0 { return "" }
-	argv1 = Squeeze(argv1, " ")
-	argv1 = strings.ReplaceAll(argv1, "\t", "")
+
+	argv1 = strings.ReplaceAll(argv1, "\t", " ")
 	argv1 = strings.TrimSpace(argv1)
+	argv1 = Squeeze(argv1, " ")
 
-	if strings.Contains(argv1, " --") {
+	for strings.Contains(argv1, " --") {
 		// Delete all the string after a boundary string like " --neko-nyaan"
-		for {
-			if strings.Contains(argv1, "-- ")  { break }
-			if strings.Contains(argv1, "--\t") { break }
-
-			argv1 = argv1[0:strings.Index(argv1, " --")-1]
-			break
-		}
+		if strings.Contains(argv1, "-- ")  { break }
+		if strings.Contains(argv1, "--\t") { break }
+		argv1 = argv1[0:strings.Index(argv1, " --") - 1]
 	}
 	return argv1
 }

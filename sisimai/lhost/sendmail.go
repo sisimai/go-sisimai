@@ -171,7 +171,7 @@ func init() {
 					// Get the error message continued from the previous line
 					if strings.HasPrefix(e, " ")                            == false { continue }
 					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false { continue }
-					v.Diagnosis += " " + sisimoji.Squeeze(e, " ")
+					v.Diagnosis += " " + sisimoji.Sweep(e)
 				}
 			}
 		}
@@ -203,7 +203,7 @@ func init() {
 				e.Diagnosis = fmt.Sprintf("%s %s", strings.Join(esmtpreply, " "), e.Diagnosis)
 				break
 			}
-			e.Diagnosis = sisimoji.Squeeze(e.Diagnosis, " ")
+			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 			if e.Command == "" { e.Command = thecommand }
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 			if e.Command == "" { if len(esmtpreply) > 0 { e.Command = "EHLO" }}
