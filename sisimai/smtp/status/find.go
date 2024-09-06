@@ -29,7 +29,7 @@ func Find(argv1 string, argv2 string) string {
 
 	if givenclass == "2" || givenclass == "4" || givenclass == "5" {
 		// The second argument is a valid value
-		eestatuses = []string{fmt.Sprintf("%d.", givenclass)}
+		eestatuses = []string{fmt.Sprintf("%s.", givenclass)}
 
 	} else {
 		// The second argument has not been specified or an invalid value
