@@ -78,7 +78,7 @@ func Find(argv1 string, argv2 string) string {
 		if stringsize > ci + 7 { cx[5] = []byte(esmtperror[ci + 6:ci + 7])[0] } // [5] The 3rd digit of the detail
 		if stringsize > ci + 8 { cx[6] = []byte(esmtperror[ci + 7:ci + 8])[0] } // [6] The next character
 
-		if cx[3] > 48 || cx[3] > 57 { continue } // The 1st digit of the detail is not a number
+		if cx[3] < 48 || cx[3] > 57 { continue } // The 1st digit of the detail is not a number
 		readbuffer += string(cx[3])
 
 		if strings.Index(readbuffer, ".0.0") == 1 || readbuffer == "4.4.7" {
