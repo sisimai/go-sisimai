@@ -10,7 +10,6 @@ package reason
 import "strings"
 import "sisimai/sis"
 import "sisimai/smtp/status"
-import sisimoji "sisimai/string"
 
 func init() {
 	// Try to match that the given text and message patterns
@@ -27,6 +26,9 @@ func init() {
 	Truth["ExceedLimit"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is exceedlimit, false: is not exceedlimit
+
+		// Status: 5.2.3
+		// Diagnostic-Code: SMTP; 552 5.2.3 Message size exceeds fixed maximum message size
 		if fo.Reason == "exceedlimit"                      { return true }
 		if status.Name(fo.DeliveryStatus) == "exceedlimit" { return true }
 		return Match["ExceedLimit"](strings.ToLower(fo.DiagnosticCode))
