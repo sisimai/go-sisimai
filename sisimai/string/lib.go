@@ -39,17 +39,15 @@ func Is8Bit(argv1 *string) bool {
 
 // Squeeze() remove redundant characters
 func Squeeze(argv1 string, chars string) string {
-	// @param    string argv1  Email address, name, and other elements
-	// @return   EmailAddress  EmailAddress struct when the email address was not valid
+	// @param    string argv1  String including redundant characters like "neko  nyaan"
+	// @param    string chars  Characters to be squeezed 
+	// @return   string        Squeezed string like "neko nyaan"
 	if len(argv1) == 0 { return ""    }
 	if len(chars) == 0 { return argv1 }
 
-	for _, e := range strings.Split(chars, "") {
+	for strings.Contains(argv1, chars + chars) {
 		// Remove redundant characters from "argv1"
-		for strings.Count(argv1, e + e) > 1 {
-			// e + e => e
-			argv1 = strings.ReplaceAll(argv1, e + e, e)
-		}
+		argv1 = strings.ReplaceAll(argv1, chars + chars, chars)
 	}
 	return argv1
 }
