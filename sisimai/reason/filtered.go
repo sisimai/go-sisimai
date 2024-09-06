@@ -1,3 +1,68 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
+
+//  _____ _ _ _                    _ 
+// |  ___(_) | |_ ___ _ __ ___  __| |
+// | |_  | | | __/ _ \ '__/ _ \/ _` |
+// |  _| | | | ||  __/ | |  __/ (_| |
+// |_|   |_|_|\__\___|_|  \___|\__,_|
+import "strings"
+import "sisimai/sis"
+import "sisimai/smtp/status"
+
+func init() {
+	// Try to match that the given text and message patterns
+	Match["Filtered"] = func(argv1 string) bool {
+		// @param    string argv1 String to be matched with text patterns
+		// @return   bool         true: Matched, false: did not match
+		index := []string{
+			"because the recipient is only accepting mail from specific email addresses", // AOL Phoenix
+			"bounced address", // SendGrid|a message to an address has previously been Bounced.
+			"due to extended inactivity new mail is not currently being accepted for this mailbox",
+			"has restricted sms e-mail", // AT&T
+			"is not accepting any mail",
+			"message rejected due to user rules",
+			"not found recipient account",
+			"refused due to recipient preferences", // Facebook
+			"resolver.rst.notauthorized", // Microsoft Exchange
+			"this account is protected by",
+			"user not found", // Filter on MAIL.RU
+			"user refuses to receive this mail",
+			"user reject",
+			"we failed to deliver mail because the following address recipient id refuse to receive mail", // Willcom
+			"you have been blocked by the recipient",
+		}
+
+		for _, v := range index { if strings.Contains(argv1, v) { return true }}
+		return false
+	}
+
+	// The bounce reason is "filtered" or not
+	Truth["Filtered"] = func(fo *sis.Fact) bool {
+		// @param    *sis.Fact fo    Struct to be detected the reason
+		// @return   bool            true: is filtered, false: is not filtered
+		if fo.Reason == "filtered" { return true }
+
+		tempreason := status.Name(fo.DeliveryStatus); if tempreason == "suspend" { return false }
+		issuedcode := strings.ToLower(fo.DiagnosticCode)
+		thecommand := fo.SMTPCommand
+
+		if tempreason == "filtered" {
+			// The value of delivery status code points "filtered".
+			if Match["UserUnknown"](issuedcode) == true { return true }
+			if Match["Filtered"](issuedcode)    == true { return true }
+
+		} else {
+			// The value of "Reason" is not "filtered" when the value of "smtpcommand" is an SMTP
+			// command to be sent before the SMTP DATA command because all the MTAs read the headers
+			// and the entire message body after the DATA command.
+			if thecommand == "CONN" || thecommand == "EHLO" || thecommand == "HELO" { return false }
+			if thecommand == "MAIL" || thecommand == "RCPT"                         { return false }
+			if Match["Filtered"](issuedcode)    == true                             { return true  }
+			if Match["UserUnknown"](issuedcode) == true                             { return true  }
+		}
+		return false
+	}
+}
+
