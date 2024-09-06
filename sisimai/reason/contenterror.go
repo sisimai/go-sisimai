@@ -10,8 +10,6 @@ package reason
 //                                                               
 import "strings"
 import "sisimai/sis"
-import "sisimai/smtp/status"
-import sisimoji "sisimai/string"
 
 func init() {
 	// Try to match that the given text and message patterns
