@@ -1,6 +1,13 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package status
+
+//                _           __   _        _             
+//  ___ _ __ ___ | |_ _ __   / /__| |_ __ _| |_ _   _ ___ 
+// / __| '_ ` _ \| __| '_ \ / / __| __/ _` | __| | | / __|
+// \__ \ | | | | | |_| |_) / /\__ \ || (_| | |_| |_| \__ \
+// |___/_| |_| |_|\__| .__/_/ |___/\__\__,_|\__|\__,_|___/
+//                   |_|                                  
 import "strings"
 
 // Prefer() returns the preferred value selected from the arguments

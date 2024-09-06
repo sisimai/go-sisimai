@@ -1,6 +1,7 @@
 // Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package status
+
 //                _           __   _        _             
 //  ___ _ __ ___ | |_ _ __   / /__| |_ __ _| |_ _   _ ___ 
 // / __| '_ ` _ \| __| '_ \ / / __| __/ _` | __| | | / __|
