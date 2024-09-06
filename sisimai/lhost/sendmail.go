@@ -169,9 +169,8 @@ func init() {
 					}
 				} else {
 					// Get the error message continued from the previous line
-					if j < 1                                                             { continue }
-					if strings.HasPrefix(e, " ")                                == false { continue }
-					if strings.HasPrefix(readslices[j - 1], "Diagnostic-Code:") == false { continue }
+					if strings.HasPrefix(e, " ")                            == false { continue }
+					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false { continue }
 					v.Diagnosis += " " + sisimoji.Sweep(e)
 				}
 			}

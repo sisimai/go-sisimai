@@ -169,10 +169,10 @@ func init() {
 					//
 					// <userunknown@example.co.jp>: host mx.example.co.jp[192.0.2.153] said: 550
 					// 5.1.1 <userunknown@example.co.jp>... User Unknown (in reply to RCPT TO command)
-					if strings.HasPrefix(readslices[j - 2], "Diagnostic-Code:") && strings.HasPrefix(e," ") {
+					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") && strings.HasPrefix(e, " ") {
 						// Continued line of the value of Diagnostic-Code field
 						v.Diagnosis += fmt.Sprintf(" %s", sisimoji.Sweep(strings.Trim(e, " ")))
-						e = "Diagnostic-Code: " + e
+						readslices[j + 1] = "Diagnostic-Code: " + e
 
 					} else if sisimoji.Aligned(e, []string{"X-Postfix-Sender:", "rfac822;", "@"}) {
 						// X-Postfix-Sender: rfc822; shironeko@example.org
