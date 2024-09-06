@@ -41,8 +41,8 @@ func init() {
 	Truth["AuthFailure"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is authfailure, false: is not authfailure
-		if fo.Reason == "authfailure"                      { return true  }
-		if status.Name(fo.DeliveryStatus) == "authfailure" { return true  }
+		if fo.Reason == "authfailure"                      { return true }
+		if status.Name(fo.DeliveryStatus) == "authfailure" { return true }
 		return Match["AuthFailure"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
