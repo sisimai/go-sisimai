@@ -11,6 +11,7 @@ import "sisimai/sis"
 var Match = map[string]func(string) bool {}
 var Truth = map[string]func(*sis.Fact) bool {}
 
+var GetRetried = Retry()
 var ClassOrder = [][]string{
 	[]string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "HasMoved", "NoRelaying", "AuthFailure",
