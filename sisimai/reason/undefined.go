@@ -10,7 +10,7 @@ package reason
 import "sisimai/sis"
 
 func init() {
-	Match["Delivered"] = func(argv1 string) bool { return false }
-	Truth["Delivered"] = func(fo *sis.Fact) bool { return false }
+	Match["Undefined"] = func(argv1 string) bool { return false }
+	Truth["Undefined"] = func(fo *sis.Fact) bool { return false }
 }
 
