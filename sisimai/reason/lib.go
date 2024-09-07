@@ -7,7 +7,7 @@ package reason
 // |_|  \___|\__,_|___/\___/|_| |_|
 import "sisimai/sis"
 
-// Keep each function to check/detect the bounce reason
+// Keep each function (pointer) defined in sisimai/reason/*.go to check/detect the bounce reason
 var Match = map[string]func(string) bool {}
 var Truth = map[string]func(*sis.Fact) bool {}
 
