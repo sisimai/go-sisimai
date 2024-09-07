@@ -113,7 +113,7 @@ func init() {
 		// @return   bool            true: is blocked, false: is not blocked
 		if fo.Reason == "blocked"                      { return true }
 		if status.Name(fo.DeliveryStatus) == "blocked" { return true }
-		return Match["AuthFailure"](strings.ToLower(fo.DiagnosticCode))
+		return Match["Blocked"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 
