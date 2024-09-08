@@ -22,7 +22,6 @@ func init() {
 		// @see      https://support.google.com/a/answer/3726730?hl=en
 		if reply.Test(fo.ReplyCode)       == false { return "" }
 		if status.Test(fo.DeliveryStatus) == false { return "" }
-fmt.Printf("IS-GOOGLE = %s", fo.Rhost)
 
 		messagesof := map[string][][]string{
 			"authfailure": [][]string{
