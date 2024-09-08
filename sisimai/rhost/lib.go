@@ -10,7 +10,7 @@ package rhost
 import "strings"
 import "sisimai/sis"
 
-var ReturnedBy = map[string]func(*sis.Fact) bool {}
+var ReturnedBy = map[string]func(*sis.Fact) string {}
 var RhostClass = map[string][]string{
 	"Apple":     []string{".mail.icloud.com", ".apple.com", ".me.com"},
 	"Cox":       []string{"cox.net"},
@@ -50,6 +50,6 @@ func Find(fo *sis.Fact) string {
 	}
 	if rhostclass == "" { return "" }
 
-	return ReturnedBy[rhostclass](sis.Fact)
+	return ReturnedBy[rhostclass](fo)
 }
 
