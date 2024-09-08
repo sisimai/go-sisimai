@@ -46,7 +46,7 @@ func init() {
 	}
 
 	// The bounce reason is "systemerror" or not
-	Truth["SystemError"] = func(fo *sis.Fact) bool {
+	ProbesInto["SystemError"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is systemerror, false: is not systemerror
 		return false

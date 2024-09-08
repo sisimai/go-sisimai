@@ -49,7 +49,7 @@ func init() {
 	}
 
 	// The bounce reason is "expired" or not
-	Truth["Expired"] = func(fo *sis.Fact) bool {
+	ProbesInto["Expired"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is expired, false: is not expired
 		return false

@@ -23,7 +23,7 @@ func init() {
 	}
 
 	// The bounce reason is "exceedlimit" or not
-	Truth["ExceedLimit"] = func(fo *sis.Fact) bool {
+	ProbesInto["ExceedLimit"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is exceedlimit, false: is not exceedlimit
 

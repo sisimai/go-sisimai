@@ -108,7 +108,7 @@ func init() {
 	}
 
 	// The bounce reason is "blocked" or not
-	Truth["Blocked"] = func(fo *sis.Fact) bool {
+	ProbesInto["Blocked"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is blocked, false: is not blocked
 		if fo.Reason == "blocked"                      { return true }

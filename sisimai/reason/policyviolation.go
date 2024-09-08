@@ -52,7 +52,7 @@ func init() {
 	}
 
 	// The bounce reason is "policyviolation" or not
-	Truth["PolicyViolation"] = func(fo *sis.Fact) bool {
+	ProbesInto["PolicyViolation"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is policyviolation, false: is not policyviolation
 		return false

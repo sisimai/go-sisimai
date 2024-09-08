@@ -12,6 +12,6 @@ import "sisimai/sis"
 
 func init() {
 	IncludedIn["Delivered"] = func(argv1 string) bool { return false }
-	Truth["Delivered"] = func(fo *sis.Fact) bool { return false }
+	ProbesInto["Delivered"] = func(fo *sis.Fact) bool { return false }
 }
 

@@ -47,7 +47,7 @@ func init() {
 	}
 
 	// The bounce reason is "suspend" or not
-	Truth["Suspend"] = func(fo *sis.Fact) bool {
+	ProbesInto["Suspend"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is suspend, false: is not suspend
 		if fo.Reason == "suspend" { return true }

@@ -29,7 +29,7 @@ func init() {
 	}
 
 	// The bounce reason is "virusdetected" or not
-	Truth["VirusDetected"] = func(fo *sis.Fact) bool {
+	ProbesInto["VirusDetected"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is virusdetected, false: is not virusdetected
 		if fo.Reason == "virusdetected"                         { return true  }

@@ -138,7 +138,7 @@ func init() {
 	}
 
 	// The bounce reason is "userunknown" or not
-	Truth["UserUnknown"] = func(fo *sis.Fact) bool {
+	ProbesInto["UserUnknown"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is userunknown, false: is not userunknown
 		if fo.Reason == "userunknown" { return true }
@@ -162,6 +162,7 @@ func init() {
 			if matchother == false { return true } // Did not match with other message patterns
 
 		} else {
+			// The reason name found by fo.DeliveryStatus is not "userunknown", or is empty
 			if fo.SMTPCommand == "RCPT" {
 				// When the SMTP command is not "RCPT", the session rejected by other reason, maybe.
 				if IncludedIn["UserUnknown"](strings.ToLower(fo.DiagnosticCode)) { return true }

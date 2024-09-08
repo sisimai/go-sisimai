@@ -10,7 +10,7 @@ import "sisimai/sis"
 
 // Keep each function (pointer) defined in sisimai/reason/*.go to check/detect the bounce reason
 var IncludedIn = map[string]func(string) bool {}
-var Truth = map[string]func(*sis.Fact) bool {}
+var ProbesInto = map[string]func(*sis.Fact) bool {}
 
 var GetRetried = Retry()
 var ClassOrder = [][]string{

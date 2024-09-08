@@ -33,7 +33,7 @@ func init() {
 	}
 
 	// The bounce reason is "contenterror" or not
-	Truth["ContentError"] = func(fo *sis.Fact) bool {
+	ProbesInto["ContentError"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is contenterror, false: is not contenterror
 		return false

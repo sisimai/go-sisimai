@@ -45,7 +45,7 @@ func init() {
 	}
 
 	// The bounce reason is "norelaying" or not
-	Truth["NoRelaying"] = func(fo *sis.Fact) bool {
+	ProbesInto["NoRelaying"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is norelaying, false: is not norelaying
 		if fo.Reason == "norelaying" { return true }

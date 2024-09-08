@@ -33,7 +33,7 @@ func init() {
 	}
 
 	// The bounce reason is "mailererror" or not
-	Truth["MailerError"] = func(fo *sis.Fact) bool {
+	ProbesInto["MailerError"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is mailererror, false: is not mailererror
 		return false

@@ -39,7 +39,7 @@ func init() {
 	}
 
 	// The bounce reason is "networkerror" or not
-	Truth["NetworkError"] = func(fo *sis.Fact) bool {
+	ProbesInto["NetworkError"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is networkerror, false: is not networkerror
 		return false

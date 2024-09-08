@@ -20,7 +20,7 @@ func init() {
 	}
 
 	// The bounce reason is "syntaxerror" or not
-	Truth["SyntaxError"] = func(fo *sis.Fact) bool {
+	ProbesInto["SyntaxError"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is syntaxerror, false: is not syntaxerror
 		if fo.Reason == "syntaxerror" { return true }

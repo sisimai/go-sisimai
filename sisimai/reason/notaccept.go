@@ -32,7 +32,7 @@ func init() {
 	}
 
 	// The bounce reason is "notaccept" or not
-	Truth["NotAccept"] = func(fo *sis.Fact) bool {
+	ProbesInto["NotAccept"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is notaccept, false: is not notaccept
 		if fo.Reason == "notaccept"                                                { return true  }

@@ -39,7 +39,7 @@ func init() {
 	}
 
 	// The bounce reason is "filtered" or not
-	Truth["Filtered"] = func(fo *sis.Fact) bool {
+	ProbesInto["Filtered"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is filtered, false: is not filtered
 		if fo.Reason == "filtered" { return true }

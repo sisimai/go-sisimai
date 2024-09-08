@@ -72,7 +72,7 @@ func init() {
 	}
 
 	// The bounce reason is "mailboxfull" or not
-	Truth["MailboxFull"] = func(fo *sis.Fact) bool {
+	ProbesInto["MailboxFull"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is mailboxfull, false: is not mailboxfull
 

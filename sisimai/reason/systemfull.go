@@ -26,7 +26,7 @@ func init() {
 	}
 
 	// The bounce reason is "systemfull" or not
-	Truth["SystemFull"] = func(fo *sis.Fact) bool {
+	ProbesInto["SystemFull"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is systemfull, false: is not systemfull
 		return false

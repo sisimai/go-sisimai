@@ -30,7 +30,7 @@ func init() {
 	}
 
 	// The bounce reason is "badreputation" or not
-	Truth["BadReputation"] = func(fo *sis.Fact) bool {
+	ProbesInto["BadReputation"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is badreputation, false: is not badreputation
 		if fo.Reason == "badreputation" { return true }

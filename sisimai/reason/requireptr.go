@@ -52,7 +52,7 @@ func init() {
 	}
 
 	// The bounce reason is "requireptr" or not
-	Truth["RequirePTR"] = func(fo *sis.Fact) bool {
+	ProbesInto["RequirePTR"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is requireptr, false: is not requireptr
 		if fo.Reason == "requireptr"                      { return true }

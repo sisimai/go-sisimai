@@ -39,7 +39,7 @@ func init() {
 	}
 
 	// The bounce reason is "toomanyconn" or not
-	Truth["TooManyConn"] = func(fo *sis.Fact) bool {
+	ProbesInto["TooManyConn"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is toomanyconn, false: is not toomanyconn
 		if fo.Reason == "toomanyconn"                      { return true }

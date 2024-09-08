@@ -44,7 +44,7 @@ func init() {
 	}
 
 	// The bounce reason is "hostunknown" or not
-	Truth["HostUnknown"] = func(fo *sis.Fact) bool {
+	ProbesInto["HostUnknown"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is hostunknown, false: is not hostunknown
 		if fo.Reason == "hostunknown" { return true }

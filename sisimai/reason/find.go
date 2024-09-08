@@ -29,7 +29,7 @@ func Find(fo *sis.Fact) string {
 		for _, e := range ClassOrder[0] {
 			// Check the values of Diagnostic-Code: and Status: fields using truth() function of
 			// each child class in Sisimai::Reason
-			if Truth[e](fo) == false { continue }
+			if ProbesInto[e](fo) == false { continue }
 			reasontext = strings.ToLower(e); break
 		}
 	}
@@ -90,7 +90,7 @@ func anotherone(fo *sis.Fact) string {
 			// - Diagnostic-Code: X-UNIX; ..., X-Postfix, or other X-*
 			// - 50X Syntax Error?
 			if strings.HasPrefix(fo.DiagnosticType, "X-UNIX") { reasontext = "mailererror"; break }
-			if Truth["SyntaxError"](fo) == true               { reasontext = "syntaxerror"; break }
+			if ProbesInto["SyntaxError"](fo) == true          { reasontext = "syntaxerror"; break }
 		}
 		if reasontext != "" { break }
 

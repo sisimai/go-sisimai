@@ -11,6 +11,6 @@ import "sisimai/sis"
 
 func init() {
 	IncludedIn["Undefined"] = func(argv1 string) bool { return false }
-	Truth["Undefined"] = func(fo *sis.Fact) bool { return false }
+	ProbesInto["Undefined"] = func(fo *sis.Fact) bool { return false }
 }
 

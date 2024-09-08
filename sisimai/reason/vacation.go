@@ -28,7 +28,7 @@ func init() {
 	}
 
 	// The bounce reason is "vacation" or not
-	Truth["Vacation"] = func(fo *sis.Fact) bool {
+	ProbesInto["Vacation"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is vacation, false: is not vacation
 		return false

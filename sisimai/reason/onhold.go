@@ -19,7 +19,7 @@ func init() {
 	}
 
 	// The bounce reason is "onhold" or not
-	Truth["OnHold"] = func(fo *sis.Fact) bool {
+	ProbesInto["OnHold"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is onhold, false: is not onhold
 		if fo.Reason == "onhold"                      { return true }

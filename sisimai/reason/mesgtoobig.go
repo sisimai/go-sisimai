@@ -37,7 +37,7 @@ func init() {
 	}
 
 	// The bounce reason is "mesgtoobig" or not
-	Truth["MesgTooBig"] = func(fo *sis.Fact) bool {
+	ProbesInto["MesgTooBig"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is mesgtoobig, false: is not mesgtoobig
 		if fo.Reason == "mesgtoobig"                      { return true }

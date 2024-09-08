@@ -126,7 +126,7 @@ func init() {
 	}
 
 	// The bounce reason is "spamdetected" or not
-	Truth["SpamDetected"] = func(fo *sis.Fact) bool {
+	ProbesInto["SpamDetected"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is spamdetected, false: is not spamdetected
 		if fo.Reason == "spamdetected"                      { return true }

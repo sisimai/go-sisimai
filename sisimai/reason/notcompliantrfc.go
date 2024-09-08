@@ -26,7 +26,7 @@ func init() {
 	}
 
 	// The bounce reason is "notcompliantrfc" or not
-	Truth["NotCompliantRFC"] = func(fo *sis.Fact) bool {
+	ProbesInto["NotCompliantRFC"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is notcompliantrfc, false: is not notcompliantrfc
 		if fo.Reason == "notcompliantrfc" { return true }

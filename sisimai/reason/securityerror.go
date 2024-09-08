@@ -47,7 +47,7 @@ func init() {
 	}
 
 	// The bounce reason is "securityerror" or not
-	Truth["SecurityError"] = func(fo *sis.Fact) bool {
+	ProbesInto["SecurityError"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is securityerror, false: is not securityerror
 		return false

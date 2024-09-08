@@ -22,7 +22,7 @@ func init() {
 	}
 
 	// The bounce reason is "hasmoved" or not
-	Truth["HasMoved"] = func(fo *sis.Fact) bool {
+	ProbesInto["HasMoved"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is hasmoved, false: is not hasmoved
 		if fo.Reason == "hasmoved" { return true }

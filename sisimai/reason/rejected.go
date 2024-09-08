@@ -86,7 +86,7 @@ func init() {
 	}
 
 	// The bounce reason is "rejected" or not
-	Truth["Rejected"] = func(fo *sis.Fact) bool {
+	ProbesInto["Rejected"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is rejected, false: is not rejected
 		if fo.Reason == "rejected" { return true }
