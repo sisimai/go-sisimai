@@ -10,7 +10,7 @@ package reason
 import "sisimai/sis"
 
 func init() {
-	Match["Feedback"] = func(argv1 string) bool { return false }
+	IncludedIn["Feedback"] = func(argv1 string) bool { return false }
 	Truth["Feedback"] = func(fo *sis.Fact) bool { return false }
 }
 

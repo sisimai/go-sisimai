@@ -1,6 +1,7 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
+
 //  _ __ ___  __ _ ___  ___  _ __  
 // | '__/ _ \/ _` / __|/ _ \| '_ \ 
 // | | |  __/ (_| \__ \ (_) | | | |
@@ -8,7 +9,7 @@ package reason
 import "sisimai/sis"
 
 // Keep each function (pointer) defined in sisimai/reason/*.go to check/detect the bounce reason
-var Match = map[string]func(string) bool {}
+var IncludedIn = map[string]func(string) bool {}
 var Truth = map[string]func(*sis.Fact) bool {}
 
 var GetRetried = Retry()

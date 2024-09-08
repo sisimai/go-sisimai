@@ -11,10 +11,10 @@ import "strings"
 import "sisimai/sis"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["HasMoved"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["HasMoved"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{" has been replaced by "}
 
 		for _, v := range index { if strings.Contains(argv1, v) { return true }}
@@ -26,7 +26,7 @@ func init() {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is hasmoved, false: is not hasmoved
 		if fo.Reason == "hasmoved" { return true }
-		return Match["HasMoved"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["HasMoved"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

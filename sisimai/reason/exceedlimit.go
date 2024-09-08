@@ -12,10 +12,10 @@ import "sisimai/sis"
 import "sisimai/smtp/status"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["ExceedLimit"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["ExceedLimit"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{"message header size exceeds limit", "message too large"}
 
 		for _, v := range index { if strings.Contains(argv1, v) { return true }}
@@ -31,7 +31,7 @@ func init() {
 		// Diagnostic-Code: SMTP; 552 5.2.3 Message size exceeds fixed maximum message size
 		if fo.Reason == "exceedlimit"                      { return true }
 		if status.Name(fo.DeliveryStatus) == "exceedlimit" { return true }
-		return Match["ExceedLimit"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["ExceedLimit"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

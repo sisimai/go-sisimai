@@ -13,10 +13,10 @@ import "sisimai/smtp/status"
 import sisimoji "sisimai/string"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["UserUnknown"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["UserUnknown"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"#5.1.1 bad address",
 			"550 address invalid",
@@ -156,7 +156,7 @@ func init() {
 
 			for _, e := range prematches {
 				// Check the value of "Diagnostic-Code" with other error patterns.
-				if Match[e](issuedcode) == false { continue }
+				if IncludedIn[e](issuedcode) == false { continue }
 				matchother = true; break
 			}
 			if matchother == false { return true } // Did not match with other message patterns
@@ -164,7 +164,7 @@ func init() {
 		} else {
 			if fo.SMTPCommand == "RCPT" {
 				// When the SMTP command is not "RCPT", the session rejected by other reason, maybe.
-				if Match["UserUnknown"](strings.ToLower(fo.DiagnosticCode)) { return true }
+				if IncludedIn["UserUnknown"](strings.ToLower(fo.DiagnosticCode)) { return true }
 			}
 		}
 		return false

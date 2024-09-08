@@ -13,10 +13,10 @@ import "sisimai/smtp/status"
 import sisimoji "sisimai/string"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["HostUnknown"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["HostUnknown"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"domain does not exist",
 			"domain is not reachable",
@@ -52,12 +52,12 @@ func init() {
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 		if status.Name(fo.DeliveryStatus) == "hostunknown" {
 			// To prevent classifying DNS errors as "HostUnknown"
-			if Match["NetworkError"](issuedcode) == false { return true }
+			if IncludedIn["NetworkError"](issuedcode) == false { return true }
 
 		} else {
 			// Status: 5.1.2
 			// Diagnostic-Code: SMTP; 550 Host unknown
-			if Match["HostUnknown"](issuedcode)  == true  { return true }
+			if IncludedIn["HostUnknown"](issuedcode)  == true  { return true }
 		}
 		return false
 	}

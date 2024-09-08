@@ -13,10 +13,10 @@ import "sisimai/sis"
 import "sisimai/smtp/status"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["TooManyConn"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["TooManyConn"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"all available ips are at maximum connection limit", // SendGrid
 			"connection rate limit exceeded",
@@ -44,7 +44,7 @@ func init() {
 		// @return   bool            true: is toomanyconn, false: is not toomanyconn
 		if fo.Reason == "toomanyconn"                      { return true }
 		if status.Name(fo.DeliveryStatus) == "toomanyconn" { return true }
-		return Match["TooManyConn"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["TooManyConn"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

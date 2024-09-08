@@ -12,10 +12,10 @@ import "strings"
 import "sisimai/sis"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["SystemFull"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["SystemFull"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"mail system full",
 			"requested mail action aborted: exceeded storage allocation", // MS Exchange

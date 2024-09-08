@@ -14,10 +14,10 @@ import "sisimai/smtp/status"
 import sisimoji "sisimai/string"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["SpamDetected"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["SpamDetected"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			" - spam",
 			"//www.spamhaus.org/help/help_spam_16.htm",
@@ -133,7 +133,7 @@ func init() {
 		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true }
 		if fo.SMTPCommand == "CONN" || fo.SMTPCommand == "EHLO" || fo.SMTPCommand == "HELO" ||
 		   fo.SMTPCommand == "MAIL" || fo.SMTPCommand == "RCPT" { return false }
-		return Match["SpamDetected"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["SpamDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

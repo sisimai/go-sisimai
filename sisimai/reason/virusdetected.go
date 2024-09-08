@@ -11,10 +11,10 @@ import "strings"
 import "sisimai/sis"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["VirusDetected"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["VirusDetected"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"it has a potentially executable attachment",
 			"the message was rejected because it contains prohibited virus or spam content",
@@ -36,7 +36,7 @@ func init() {
 		if fo.SMTPCommand == "CONN"                             { return false }
 		if fo.SMTPCommand == "EHLO" || fo.SMTPCommand == "HELO" { return false }
 		if fo.SMTPCommand == "MAIL" || fo.SMTPCommand == "RCPT" { return false }
-		return Match["VirusDetected"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["VirusDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

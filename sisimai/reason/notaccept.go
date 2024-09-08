@@ -12,10 +12,10 @@ import "strings"
 import "sisimai/sis"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["NotAccept"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["NotAccept"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"does not accept mail (nullmx)",
 			"host/domain does not accept mail", // iCloud
@@ -38,7 +38,7 @@ func init() {
 		if fo.Reason == "notaccept"                                                { return true  }
 		if fo.ReplyCode == "521" || fo.ReplyCode == "554" || fo.ReplyCode == "556" { return true  }
 		if fo.SMTPCommand != "MAIL"                                                { return false }
-		return Match["NotAccept"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["NotAccept"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

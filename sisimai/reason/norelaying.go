@@ -12,10 +12,10 @@ import "strings"
 import "sisimai/sis"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["NoRelaying"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["NoRelaying"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"as a relay",
 			"email address is not verified.",
@@ -51,7 +51,7 @@ func init() {
 		if fo.Reason == "norelaying" { return true }
 		if fo.Reason == "securityerror" || fo.Reason == "systemerror" || fo.Reason == "undefined" { return false }
 		if fo.SMTPCommand == "CONN"     || fo.SMTPCommand == "EHLO"   || fo.SMTPCommand == "HELO" { return false }
-		return Match["NoRelaying"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["NoRelaying"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

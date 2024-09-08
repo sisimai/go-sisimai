@@ -11,7 +11,7 @@ package reason
 import "sisimai/sis"
 
 func init() {
-	Match["Delivered"] = func(argv1 string) bool { return false }
+	IncludedIn["Delivered"] = func(argv1 string) bool { return false }
 	Truth["Delivered"] = func(fo *sis.Fact) bool { return false }
 }
 

@@ -12,10 +12,10 @@ import "strings"
 import "sisimai/sis"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["Speeding"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["Speeding"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"mail sent from your IP address has been temporarily rate limited",
 			"please try again slower",
@@ -36,7 +36,7 @@ func init() {
 		// Remote-MTA: dns; smtp.example.jp
 		// Diagnostic-Code: smtp; 451 4.7.1 <mx.example.org[192.0.2.2]>: Client host rejected: Please try again slower
 		if fo.Reason == "speeding" { return true }
-		return Match["Speeding"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["Speeding"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

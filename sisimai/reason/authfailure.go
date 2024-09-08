@@ -13,10 +13,10 @@ import "sisimai/smtp/status"
 import sisimoji "sisimai/string"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["AuthFailure"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["AuthFailure"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"//spf.pobox.com",
 			"bad spf records for",
@@ -43,7 +43,7 @@ func init() {
 		// @return   bool            true: is authfailure, false: is not authfailure
 		if fo.Reason == "authfailure"                      { return true }
 		if status.Name(fo.DeliveryStatus) == "authfailure" { return true }
-		return Match["AuthFailure"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["AuthFailure"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

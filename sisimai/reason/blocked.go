@@ -2,11 +2,11 @@
 // This software is distributed under The BSD 2-Clause License.
 package reason
 
-//  _     _            _            _ 
-// | |__ | | ___   ___| | _____  __| |
-// | '_ \| |/ _ \ / __| |/ / _ \/ _` |
+//  ____  _            _            _ 
+// | __ )| | ___   ___| | _____  __| |
+// |  _ \| |/ _ \ / __| |/ / _ \/ _` |
 // | |_) | | (_) | (__|   <  __/ (_| |
-// |_.__/|_|\___/ \___|_|\_\___|\__,_|
+// |____/|_|\___/ \___|_|\_\___|\__,_|
 //                                    
 import "strings"
 import "sisimai/sis"
@@ -14,10 +14,10 @@ import "sisimai/smtp/status"
 import sisimoji "sisimai/string"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["Blocked"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["Blockd"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			" said: 550 blocked",
 			"//www.spamcop.net/bl.",
@@ -113,7 +113,7 @@ func init() {
 		// @return   bool            true: is blocked, false: is not blocked
 		if fo.Reason == "blocked"                      { return true }
 		if status.Name(fo.DeliveryStatus) == "blocked" { return true }
-		return Match["Blocked"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["Blocked"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

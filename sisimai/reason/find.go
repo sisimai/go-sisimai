@@ -42,7 +42,7 @@ func Find(fo *sis.Fact) string {
 		if reasontext != ""                           { return reasontext        }
 
 		// Try to match with message patterns in Sisimai::Reason::Vacation
-		if Match["Vacation"](issuedcode)              { reasontext = "vacation"  }
+		if IncludedIn["Vacation"](issuedcode)         { reasontext = "vacation"  }
 		if reasontext == "" && issuedcode != ""       { reasontext = "onhold"    }
 		if reasontext == ""                           { reasontext = "undefined" }
 	}
@@ -71,7 +71,7 @@ func anotherone(fo *sis.Fact) string {
 		// The value of the reason is not decided yet by the fo.DeliveryStatus
 		for _, e := range ClassOrder[1] {
 			// Trying to match with other patterns in sisimai/reason/*.go
-			if Match[e](issuedcode) == false { continue }
+			if IncludedIn[e](issuedcode) == false { continue }
 			reasontext = strings.ToLower(e); break
 		}
 		if reasontext != "" { break }

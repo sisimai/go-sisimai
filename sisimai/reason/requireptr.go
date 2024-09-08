@@ -14,10 +14,10 @@ import "sisimai/smtp/status"
 import sisimoji "sisimai/string"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["RequirePTR"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["RequirePTR"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"access denied. ip name lookup failed",
 			"all mail servers must have a ptr record with a valid reverse dns entry",
@@ -57,7 +57,7 @@ func init() {
 		// @return   bool            true: is requireptr, false: is not requireptr
 		if fo.Reason == "requireptr"                      { return true }
 		if status.Name(fo.DeliveryStatus) == "requireptr" { return true }
-		return Match["RequirePTR"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn["RequirePTR"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

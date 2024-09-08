@@ -12,10 +12,10 @@ import "sisimai/sis"
 import "sisimai/smtp/status"
 
 func init() {
-	// Try to match that the given text and message patterns
-	Match["Filtered"] = func(argv1 string) bool {
-		// @param    string argv1 String to be matched with text patterns
-		// @return   bool         true: Matched, false: did not match
+	// Try to check the argument string includes any of the strings in the error message pattern
+	IncludedIn["Filtered"] = func(argv1 string) bool {
+		// @param    string argv1 Does the string include any of the strings listed in the pattern?
+		// @return   bool         true: Included, false: did not include
 		index := []string{
 			"because the recipient is only accepting mail from specific email addresses", // AOL Phoenix
 			"bounced address", // SendGrid|a message to an address has previously been Bounced.
@@ -50,8 +50,8 @@ func init() {
 
 		if tempreason == "filtered" {
 			// The value of delivery status code points "filtered".
-			if Match["UserUnknown"](issuedcode) == true { return true }
-			if Match["Filtered"](issuedcode)    == true { return true }
+			if IncludedIn["UserUnknown"](issuedcode) == true { return true }
+			if IncludedIn["Filtered"](issuedcode)    == true { return true }
 
 		} else {
 			// The value of "Reason" is not "filtered" when the value of "smtpcommand" is an SMTP
@@ -59,8 +59,8 @@ func init() {
 			// and the entire message body after the DATA command.
 			if thecommand == "CONN" || thecommand == "EHLO" || thecommand == "HELO" { return false }
 			if thecommand == "MAIL" || thecommand == "RCPT"                         { return false }
-			if Match["Filtered"](issuedcode)    == true                             { return true  }
-			if Match["UserUnknown"](issuedcode) == true                             { return true  }
+			if IncludedIn["Filtered"](issuedcode)    == true                        { return true  }
+			if IncludedIn["UserUnknown"](issuedcode) == true                        { return true  }
 		}
 		return false
 	}
