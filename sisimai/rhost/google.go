@@ -8,7 +8,6 @@ package rhost
 // | |  | | | | (_) \__ \ |_ / /| |_| | (_) | (_) | (_| | |  __/
 // |_|  |_| |_|\___/|___/\__/_/  \____|\___/ \___/ \__, |_|\___|
 //                                                 |___/        
-import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/smtp/reply"
