@@ -23,7 +23,7 @@ import sisimoji "sisimai/string"
 
 func init() {
 	// Decode bounce messages from Postfix https://www.postfix.org/
-	Inquire["Postfix"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
+	InquireFor["Postfix"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
 		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }

@@ -65,10 +65,10 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 		// 4. sisimai/rfc3834
 		for _, r := range TryOnFirst {
 			// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
-			if r != "Postfix" { continue } // TODO: Implement all the lhost/*.go modules except postfix.go
+			if r != "Postfix" && r != "Sendmail" { continue } // TODO: Implement all the lhost/*.go modules except postfix.go
 			if havecalled[r]  { continue }
 
-			localhostr    = lhost.LhostCode[r](bf)
+			localhostr    = lhost.InquireFor[r](bf)
 			havecalled[r] = true
 			modulename    = r
 

@@ -21,7 +21,7 @@ import sisimoji "sisimai/string"
 
 func init() {
 	// V8Sendmail: /usr/sbin/sendmail
-	Inquire["Sendmail"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
+	InquireFor["Sendmail"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
 		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }

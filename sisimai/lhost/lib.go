@@ -10,7 +10,7 @@ package lhost
 import "sisimai/sis"
 
 // Keep each function for decoding a bounce mail
-var Inquire = map[string]func(*sis.BeforeFact) sis.RisingUnderway {}
+var InquireFor = map[string]func(*sis.BeforeFact) sis.RisingUnderway {}
 
 // INDICATORS() returns flags for position variables used at MTA functions in sisimai/lhost.
 func INDICATORS() map[string]uint8 {
