@@ -162,13 +162,13 @@ func init() {
 
 		if reasontext == "" {
 			// There is no error label in the error message
-			for e := range messagesof {
+			FINDREASON: for e := range messagesof {
 				// The key name is a bounce reason name
 				for _, f := range messagesof[e] {
 					// Try to find the text listed in messagesof from the error message
 					if strings.Contains(issuedcode, f) == false { continue }
 					reasontext = e
-					break
+					break FINDREASON
 				}
 			}
 		}

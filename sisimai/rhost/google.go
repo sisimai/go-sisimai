@@ -530,7 +530,7 @@ func init() {
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 		reasontext := ""
 
-		REASON: for e := range messagesof {
+		FINDREASON: for e := range messagesof {
 			// Each key is a name
 			for _, f := range messagesof[e] {
 				// Try to match each SMTP reply code, status code, error message
@@ -538,7 +538,7 @@ func init() {
 				if strings.Index(f[0], esmtpreply) < 1         { continue }
 				if strings.Index(f[1], statuscode) < 2         { continue }
 
-				reasontext = e; break REASON
+				reasontext = e; break FINDREASON
 			}
 		}
 		return reasontext

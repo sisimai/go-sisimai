@@ -147,12 +147,12 @@ func init() {
 		if reasontext == "" {
 			// There is no error code in the error message
 			issuedcode = strings.ToLower(issuedcode)
-			for e := range messagesof {
+			FINDREASON: for e := range messagesof {
 				// Try to find with each error message defined in "messagesof"
 				for _, f := range messagesof[e] {
 					// Check the error message includes each sub string or not
 					if strings.Contains(issuedcode, f) == false { continue }
-					reasontext = e; break
+					reasontext = e; break FINDREASON
 				}
 			}
 		}

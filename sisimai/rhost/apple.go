@@ -77,12 +77,13 @@ func init() {
 
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 		reasontext := ""
-		for e := range messagesof {
+
+		FINDREASON: for e := range messagesof {
 			// Each key is an error reason name
 			for _, f := range messagesof[e] {
 				// Try to match each SMTP reply code, status code, error message
 				if strings.Contains(issuedcode, f) == false { continue }
-				reasontext = e; break
+				reasontext = e; break FINDREASON
 			}
 		}
 		return reasontext
