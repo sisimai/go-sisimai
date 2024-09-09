@@ -15,6 +15,8 @@ func init() {
 	ReturnedBy["FrancePTT"] = func(fo *sis.Fact) string {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
+		// @see      https://www.postmastery.com/orange-postmaster-smtp-error-codes-ofr/
+		// @see      https://smtpfieldmanual.com/provider/orange
 		if fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := map[string]string{
