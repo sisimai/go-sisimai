@@ -11,13 +11,13 @@ import "fmt"
 import "slices"
 import "strings"
 import "sisimai/sis"
-import "sisimai/address"
 import "sisimai/rfc1894"
 import "sisimai/rfc5322"
 import "sisimai/smtp/reply"
 import "sisimai/smtp/status"
 import "sisimai/smtp/command"
 import sisimoji "sisimai/string"
+import sisiaddr "sisimai/address"
 
 func init() {
 	// V8Sendmail: /usr/sbin/sendmail
@@ -142,7 +142,7 @@ func init() {
 
 						if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"@", ">.", " "}) {
 							// <kijitora@example.co.jp>... Deferred: Name server: example.co.jp.: host name lookup failure
-							anotherset["recipient"] = address.S3S4(e[0:strings.Index(e, ">")])
+							anotherset["recipient"] = sisiaddr.S3S4(e[0:strings.Index(e, ">")])
 							anotherset["diagnosis"] = e[strings.Index(e," ") + 1:]
 
 						} else {
@@ -220,7 +220,7 @@ func init() {
 			if strings.HasSuffix(e.Recipient, "@") {
 				// @example.jp, no local part
 				// Get the email address from the value of Diagnostic-Code field
-				cv := address.Find(e.Diagnosis)
+				cv := sisiaddr.Find(e.Diagnosis)
 				if cv[0] != "" { e.Recipient = cv[0] }
 			}
 		}

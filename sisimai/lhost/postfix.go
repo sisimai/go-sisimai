@@ -13,7 +13,6 @@ import "slices"
 import "strings"
 import "strconv"
 import "sisimai/sis"
-import "sisimai/address"
 import "sisimai/rfc1894"
 import "sisimai/rfc5322"
 import "sisimai/smtp/reply"
@@ -21,6 +20,7 @@ import "sisimai/smtp/status"
 import "sisimai/smtp/command"
 import "sisimai/smtp/transcript"
 import sisimoji "sisimai/string"
+import sisiaddr "sisimai/address"
 
 func init() {
 	// Decode bounce messages from Postfix https://www.postfix.org/
@@ -195,13 +195,13 @@ func init() {
 							p1 := strings.Index(e, "> ")
 							p2 := strings.Index(e[p1:], "(expanded from ")
 							p3 := strings.Index(e[p2 + 14:], ">):")
-							anotherset["recipient"] = address.S3S4(e[0:p1])
-							anotherset["alias"]     = address.S3S4(e[p2 + 15:])
+							anotherset["recipient"] = sisiaddr.S3S4(e[0:p1])
+							anotherset["alias"]     = sisiaddr.S3S4(e[p2 + 15:])
 							anotherset["diagnosis"] = e[p3 + 3:]
 
 						} else if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"<", "@", ">:"}) {
 							// <kijitora@exmaple.jp>: ...
-							anotherset["recipient"] = address.S3S4(e[0:strings.Index(e, ">") + 1])
+							anotherset["recipient"] = sisiaddr.S3S4(e[0:strings.Index(e, ">") + 1])
 							anotherset["diagnosis"] = e[strings.Index(e, ">:") + 2:]
 
 						} else if strings.Contains(e, "--- Delivery report unavailable ---") {
@@ -245,7 +245,7 @@ func init() {
 				if nomessages == true && p1 > 0 {
 					// Try to get a recipient address from To: field in the original message at message/rfc822 part
 					cv := emailparts[1][p1 + 5:p2 + 1]
-					dscontents[len(dscontents) - 1].Recipient = address.S3S4(cv)
+					dscontents[len(dscontents) - 1].Recipient = sisiaddr.S3S4(cv)
 					recipients += 1
 				}
 			}
