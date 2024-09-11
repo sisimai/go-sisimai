@@ -12,6 +12,7 @@ import "time"
 import "strings"
 import "net/mail"
 import "sisimai/sis"
+import "sisimai/rhost"
 import "sisimai/reason"
 import "sisimai/message"
 import "sisimai/rfc1894"
@@ -220,8 +221,8 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 		DIAGNOSTICTYPE: for {
 			// Set the value of "diagnostictype" if it is empty
-			piece["diagnosictype"] = e.Reason
-			piece["reason"]        = e.Reason
+			piece["diagnostictype"] = e.Reason
+			piece["reason"]         = e.Reason
 
 			if len(e.Spec) > 0 { break DIAGNOSTICTYPE }
 			if piece["reason"] == "mailererror"                               { piece["diagnostictype"] = "X-UNIX" }
@@ -299,10 +300,9 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			if len(thing.Reason) == 0 || RetryIndex[thing.Reason] == true {
 				// The value of "reason" is empty or is needed to check with other values again
 				re := thing.Reason; if re == "" { re = "undefined" }
-				// TODO: Implement sisimai/rhost, sisimai/reason/*.go
-				//   thing.Reason = rhost.Get(thing)
-				//   if thing.Reason == "" { thing.Reason = reason.Get(thing) }
-				//   if thing.Reason == "" { thing.Reason = re }
+				thing.Reason = rhost.Find(&thing)
+				if thing.Reason == "" { thing.Reason = reason.Find(&thing) }
+				if thing.Reason == "" { thing.Reason = re }
 			}
 			break REASON
 		}
@@ -368,6 +368,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		}
 		listoffact = append(listoffact, thing)
 	}
+	fmt.Printf("List-Of-Fact = (%##v)\n", listoffact)
 	return listoffact
 }
 
