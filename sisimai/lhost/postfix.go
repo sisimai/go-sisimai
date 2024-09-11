@@ -1,6 +1,7 @@
 // Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
+
 //  _ _               _      __               _    __ _      
 // | | |__   ___  ___| |_   / / __   ___  ___| |_ / _(_)_  __
 // | | '_ \ / _ \/ __| __| / / '_ \ / _ \/ __| __| |_| \ \/ /
