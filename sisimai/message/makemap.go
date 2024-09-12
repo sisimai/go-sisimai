@@ -40,10 +40,11 @@ func makemap(argv0 *mail.Header, argv1 bool) map[string][]string {
 	}
 
 	// The following fields should be exist
-	if len(headermaps["from"])     == 0 { headermaps["from"]      = []string{""} }
-	if len(headermaps["received"]) == 0 { headermaps["receivedc"] = []string{""} }
-	if len(headermaps["subject"])  == 0 { headermaps["subject"]   = []string{""}; return headermaps }
-	if !argv1 { return headermaps }
+	if len(headermaps["from"])       == 0 { headermaps["from"]       = []string{""} }
+	if len(headermaps["received"])   == 0 { headermaps["received"]   = []string{""} }
+	if len(headermaps["message-id"]) == 0 { headermaps["message-id"] = []string{""} }
+	if len(headermaps["subject"])    == 0 { headermaps["subject"]    = []string{""}; return headermaps }
+	if argv1 == false { return headermaps }
 
 	if sisimoji.Is8Bit(&(headermaps["subejct"][0])) {
 		// The "Subject:" header is including multibyte character, is not a MIME-Encoded text.
