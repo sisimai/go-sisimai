@@ -47,8 +47,8 @@ func init() {
 			// savemail.c:1361|    sendbody
 			// savemail.c:1362|    ? "   ----- Original message follows -----\n"
 			// savemail.c:1363|    : "   ----- Message header follows -----\n",
-			"message": []string{ "   ----- Transcript of session follows -----" },
-			"error":   []string{ "... while talking to "},
+			"message": []string{"   ----- Transcript of session follows -----"},
+			"error":   []string{"... while talking to "},
 		}
 		fieldtable := rfc1894.FIELDTABLE()
 		permessage := map[string]string{} // Store values of each Per-Message field

@@ -131,7 +131,7 @@ func init() {
 					v.Alias = o[2]
 				}
 			} else if o[3] == "code" {
-				// # Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
+				// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
 				v.Spec = o[1]
 				if strings.ToUpper(o[1]) == "X-POSTFIX" { v.Spec = "SMTP" }
 				v.Diagnosis = o[2]
