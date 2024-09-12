@@ -16,7 +16,7 @@ import "sisimai/rfc5322"
 import sisimoji "sisimai/string"
 
 func init() {
-	// Decode bounce messages from
+	// Decode bounce messages from Aol Mail: https://www.aol.com
 	InquireFor["Aol"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
@@ -89,7 +89,7 @@ func init() {
 						v.Alias = o[2]
 					}
 				} else if o[3] == "code" {
-					// # Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
+					// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
 					v.Spec = o[1]
 					v.Diagnosis = o[2]
 
