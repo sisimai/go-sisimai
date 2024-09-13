@@ -8,7 +8,6 @@ package lhost
 // | |  | | | | (_) \__ \ |_ / / | |_| | | | (_| | (_| | (_) | | | |  _| | | |_| |
 // |_|  |_| |_|\___/|___/\__/_/  |____/|_|  \__,_|\__, |\___/|_| |_|_|   |_|\__, |
 //                                                |___/                     |___/ 
-import "slices"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc5322"
@@ -24,13 +23,16 @@ func init() {
 		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
-		proceedsto := true; for {
-			// From: MAILER-DAEMON <>
-			// To: kijitora@df.example.jp
-			// Subject: Mail delivery failed
-			if !strings.Contains(bf.Head["subject"][0], "Mail delivery failed") { proceedsto = false }
-			if !slices.Contains(bf.Head["received"], " (DragonFly Mail Agent")  { proceedsto = false }
-			break
+		// From: MAILER-DAEMON <>
+		// To: kijitora@df.example.jp
+		// Subject: Mail delivery failed
+		if !strings.Contains(bf.Head["subject"][0], "Mail delivery failed") { return sis.RisingUnderway{} }
+		proceedsto := false; for _, e := range bf.Head["received"] {
+			// Received: from MAILER-DAEMON
+			//    id e070f
+			//    by df.example.jp (DragonFly Mail Agent v0.13);
+			//    Sun, 16 Jun 2024 18:15:07 +0900
+			if strings.Contains(e, " (DragonFly Mail Agent") { proceedsto = true; break }
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
