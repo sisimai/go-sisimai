@@ -128,7 +128,12 @@ func init() {
 
 					} else if strings.HasPrefix(e, "<<< ") {
 						// <<< Response from SMTP Server
-						if slices.Contains(esmtpreply, e[4:]) == false { esmtpreply = append(esmtpreply, e[4:]) }
+						isincluded := false
+						for _, r := range esmtpreply {
+							// Whether the response is included in the "estmpreply" or not
+							if strings.Contains(r, e[4:]) == true { isincluded = true; break }
+						}
+						if isincluded == false { esmtpreply = append(esmtpreply, e[4:]) }
 
 					} else {
 						// Detect an SMTP session error or a connection error
