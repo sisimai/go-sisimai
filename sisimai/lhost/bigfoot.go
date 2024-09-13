@@ -22,14 +22,20 @@ func init() {
 	InquireFor["Bigfoot"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body)            == 0 { return sis.RisingUnderway{} }
+		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
-		proceedsto := true; for {
-			// Subject: "Returned mail: ..."
-			if strings.Contains(bf.Head["from"][0], "@bigfoot.com>") { break }
-			if slices.Contains(bf.Head["received"], ".bigfoot.com ") { break }
-			proceedsto = false; break
+		proceedsto := false
+		if strings.Contains(bf.Head["from"][0], "@bigfoot.com>") {
+			// From: Mail Delivery Subsystem <MAILER-DAEMON@bigfoot.com>
+			proceedsto = true
+
+		} else {
+			for _, e := range bf.Head["received"] {
+				// Received: by mx.bigfoot.com with SMTP id ...
+				if strings.Contains(e, ".bigfoot.com ") == false { continue }
+				proceedsto = true; break
+			}
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
