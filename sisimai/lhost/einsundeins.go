@@ -16,7 +16,7 @@ import sisimoji "sisimai/string"
 import sisiaddr "sisimai/address"
 
 func init() {
-	// Decode bounce messages from
+	// Decode bounce messages from 1&1: https://www.1und1.de/
 	InquireFor["EinsUndEins"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
