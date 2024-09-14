@@ -8,7 +8,6 @@ package lhost
 // | |  | | | | (_) \__ \ |_ / / ___ \| |_) | (_| | (__| | | |  __/ |_| | (_| | | | | | |  __/\__ \
 // |_|  |_| |_|\___/|___/\__/_/_/   \_\ .__/ \__,_|\___|_| |_|\___|\___/ \__,_|_| |_| |_|\___||___/
 import "fmt"
-import "slices"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc5322"
@@ -22,16 +21,19 @@ func init() {
 		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
-		proceedsto := true; for {
+		proceedsto := false; for {
 			// Subject:     [BOUNCE]
-			// Received:    JAMES SMTP Server
 			// Message-Id:  JavaMail.
-			if bf.Head["subject"][0] == "[BOUNCE]"                       { break }
-			if strings.Contains(bf.Head["message-id"][0], ".JavaMail.")  { break }
-			if slices.Contains(bf.Head["received"], "JAMES SMTP Server") { break }
-			proceedsto = false; break
+			if bf.Head["subject"][0] == "[BOUNCE]"                      { proceedsto = true; break }
+			if strings.Contains(bf.Head["message-id"][0], ".JavaMail.") { proceedsto = true; break }
+			for _, e := range bf.Head["received"] {
+				// Received: from localhost ([127.0.0.1])
+				//    by mx.example.org (JAMES SMTP Server 2.3.2) with SMTP ID 220...
+				if strings.Contains(e, "JAMES SMTP Server") == true     { proceedsto = true; break }
+			}
+			break
 		}
-        if proceedsto == false { return sis.RisingUnderway{} }
+		if proceedsto == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822"}
