@@ -128,7 +128,6 @@ func init() {
 		}
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-
     }
 }
 
