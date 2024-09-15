@@ -19,6 +19,10 @@ func init() {
 		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
+		// These headers exist only a bounce mail from Office365
+		if len(bf.Head["x-ms-exchange-crosstenant-originalarrivaltime"]) > 0 { return sis.RisingUnderway{} }
+		if len(bf.Head["x-ms-exchange-crosstenant-fromentityheader"])    > 0 { return sis.RisingUnderway{} }
+
 		proceedsto := uint8(0); for {
 			// Content-Language: en-US, fr-FR
 			if strings.HasPrefix(bf.Head["subject"][0], "Undeliverable")    { proceedsto = 1; break }
