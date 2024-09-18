@@ -100,8 +100,8 @@ func Aligned(argv1 string, argv2 []string) bool {
 		if align > 0 { argv1 = argv1[align + 1:] }
 		p := strings.Index(argv1, e)
 
-		if p < 0 { break }		// Break this loop when there is no string in the 1st argument
-		align = len(e) + p - 1	//  There is an aligned string in the 1st argument
+		if p < 0 { break }      // Break this loop when there is no string in the 1st argument
+		align = len(e) + p - 1  // There is an aligned string in the 1st argument
 		right++
 	}
 
