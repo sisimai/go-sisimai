@@ -134,3 +134,18 @@ func ContainsAny(argv1 string, argv2 []string) bool {
 	return false
 }
 
+// EqualsAny() checks whether any alement in argv2 is equal to the argv1 or not
+func EqualsAny(argv1 string, argv2 []string) bool {
+	// @param    string   argv1 
+	// @param    []string argv2 
+	// @return   bool
+	if len(argv1) == 0 { return false }
+	if len(argv2) == 0 { return false }
+
+	for _, e := range argv2 {
+		// It works like `grep { $e eq $_ } @list` in Perl
+		if argv1 == e { return true }
+	}
+	return false
+}
+
