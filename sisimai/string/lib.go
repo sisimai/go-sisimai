@@ -119,3 +119,18 @@ func IndexOnTheWay(argv0, argv1 string, start int) int {
 	return strings.Index(argv0[start:], argv1) + start
 }
 
+// ContainsAny() checks whether any alement in argv2 is included in argv1 or not
+func ContainsAny(argv1 string, argv2 []string) bool {
+	// @param    string   argv1 
+	// @param    []string argv2 
+	// @return   bool
+	if len(argv1) == 0 { return false }
+	if len(argv2) == 0 { return false }
+
+	for _, e := range argv2 {
+		// It works like `grep { index($e, $_) > -1 } @list` in Perl
+		if strings.Contains(argv1, e) { return true }
+	}
+	return false
+}
+
