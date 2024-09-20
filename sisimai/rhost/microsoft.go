@@ -342,6 +342,7 @@ func init() {
 			},
 			"notaccept": [][4]string{
 				[4]string{"4.3.2", "", "", "system not accepting network messages"},
+				[4]string{"4.4.4", "", "", "hosted tenant which has no mail-enabled subscriptions"},
 
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - You're using the ABP Routing agent, and the recipient isn't a member of the global
