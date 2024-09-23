@@ -15,7 +15,7 @@ import sisimoji "sisimai/string"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
-	IncludedIn["Blockd"] = func(argv1 string) bool {
+	IncludedIn["Blocked"] = func(argv1 string) bool {
 		// @param    string argv1 Does the string include any of the strings listed in the pattern?
 		// @return   bool         true: Included, false: did not include
 		index := []string{
