@@ -43,7 +43,6 @@ func OrderBySubject(title string) []string {
 		"permanent-delivery": []string{"X4"},
 		"postmaster-notify":  []string{"Sendmail"},
 		"returned-mail": []string{"Sendmail", "Aol", "V5sendmail", "Bigfoot", "Biglobe", "X1"},
-		"sorry-your":    []string{"Facebook"},
 		"there-was":     []string{"X6"},
 		"undeliverable": []string{"Office365", "Exchange2007", "Aol", "Exchange2003"},
 		"undeliverable-mail":    []string{"Amavis", "MailMarshalSMTP", "IMailServer"},
@@ -96,7 +95,7 @@ func AnotherOrder() []string {
 		"Notes", "qmail", "Courier", "OpenSMTPD", "Zoho", "MessageLabs", "MXLogic", "MailFoundry",
 		"McAfee", "V5sendmail", "mFILTER", "SendGrid", "ReceivingSES", "Amavis", "PowerMTA", "GoogleGroups",
 		"Gmail", "EZweb", "IMailServer", "MailMarshalSMTP", "Activehunter", "Bigfoot", "Biglobe",
-		"Facebook", "X4", "X1", "X3", "X6",
+		"X4", "X1", "X3", "X6",
 	}
 }
 
