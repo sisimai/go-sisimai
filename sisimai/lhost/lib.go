@@ -1,12 +1,12 @@
 // Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
+
 //  _ _               _   
 // | | |__   ___  ___| |_ 
 // | | '_ \ / _ \/ __| __|
 // | | | | | (_) \__ \ |_ 
 // |_|_| |_|\___/|___/\__|
-//                        
 import "sisimai/sis"
 
 // Keep each function for decoding a bounce mail

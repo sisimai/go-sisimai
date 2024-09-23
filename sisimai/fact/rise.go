@@ -1,12 +1,12 @@
 // Copyright (C) 2020-2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
+
 //   __            _   
 //  / _| __ _  ___| |_ 
 // | |_ / _` |/ __| __|
 // |  _| (_| | (__| |_ 
 // |_|  \__,_|\___|\__|
-//                     
 import "fmt"
 import "time"
 import "strings"
