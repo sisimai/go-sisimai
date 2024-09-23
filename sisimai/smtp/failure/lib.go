@@ -1,6 +1,7 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package failure
+
 //                _           ____       _ _                
 //  ___ _ __ ___ | |_ _ __   / / _| __ _(_) |_   _ _ __ ___ 
 // / __| '_ ` _ \| __| '_ \ / / |_ / _` | | | | | | '__/ _ \
@@ -19,7 +20,6 @@ func IsPermanent(argv1 string) bool {
 
 	statuscode := status.Find(argv1, "")
 	if statuscode == "" { statuscode = reply.Find(argv1, "") }
-
 	if strings.HasPrefix(statuscode, "5")                      { return true }
 	if strings.Contains(strings.ToLower(argv1), " permanent ") { return true }
 	return false
@@ -33,7 +33,6 @@ func IsTemporary(argv1 string) bool {
 
 	statuscode := status.Find(argv1, "")
 	if statuscode == "" { statuscode = reply.Find(argv1, "") }
-
 	if strings.HasPrefix(statuscode, "4")                      { return true }
 	if strings.Contains(strings.ToLower(argv1), " temporar")   { return true }
 	if strings.Contains(strings.ToLower(argv1), " persistent") { return true }
