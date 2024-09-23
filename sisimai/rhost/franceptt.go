@@ -9,6 +9,7 @@ package rhost
 // |_|  |_| |_|\___/|___/\__/_/  |_|  |_|  \__,_|_| |_|\___\___|_|    |_|   |_|  
 import "strings"
 import "sisimai/sis"
+import sisimoji "sisimai/string"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service
@@ -162,14 +163,10 @@ func init() {
 
 		if reasontext == "" {
 			// There is no error label in the error message
-			FINDREASON: for e := range messagesof {
+			for e := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[e] {
-					// Try to find the text listed in messagesof from the error message
-					if strings.Contains(issuedcode, f) == false { continue }
-					reasontext = e
-					break FINDREASON
-				}
+				if sisimoji.ContainsAny(issuedcode, messagesof[e]) == false { continue }
+				reasontext = e; break
 			}
 		}
 		return reasontext

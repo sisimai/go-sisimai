@@ -10,6 +10,7 @@ package rhost
 //                                    |_|   |_|           
 import "strings"
 import "sisimai/sis"
+import sisimoji "sisimai/string"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service
@@ -78,13 +79,10 @@ func init() {
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 		reasontext := ""
 
-		FINDREASON: for e := range messagesof {
+		for e := range messagesof {
 			// Each key is an error reason name
-			for _, f := range messagesof[e] {
-				// Try to match each SMTP reply code, status code, error message
-				if strings.Contains(issuedcode, f) == false { continue }
-				reasontext = e; break FINDREASON
-			}
+			if sisimoji.ContainsAny(issuedcode, messagesof[e]) == false { continue }
+			reasontext = e; break
 		}
 		return reasontext
 	}
