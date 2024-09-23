@@ -20,6 +20,7 @@ func IsPermanent(argv1 string) bool {
 
 	statuscode := status.Find(argv1, "")
 	if statuscode == "" { statuscode = reply.Find(argv1, "") }
+
 	if strings.HasPrefix(statuscode, "5")                      { return true }
 	if strings.Contains(strings.ToLower(argv1), " permanent ") { return true }
 	return false
@@ -33,6 +34,7 @@ func IsTemporary(argv1 string) bool {
 
 	statuscode := status.Find(argv1, "")
 	if statuscode == "" { statuscode = reply.Find(argv1, "") }
+
 	if strings.HasPrefix(statuscode, "4")                      { return true }
 	if strings.Contains(strings.ToLower(argv1), " temporar")   { return true }
 	if strings.Contains(strings.ToLower(argv1), " persistent") { return true }
@@ -53,9 +55,9 @@ func IsHardBounce (argv1, argv2 string) bool {
 	hardbounce := false
 	if len(argv2) > 0 {
 		// Check the 2nd argument(a status code or a reply code)
-		statuscode := status.Find(argv2, "")
-		if statuscode == "" { statuscode = reply.Find(argv2, "") }
-		if strings.HasPrefix(statuscode, "5") { hardbounce = true }
+		cv := status.Find(argv2, "")
+		if cv == "" { cv = reply.Find(argv2, "") }
+		if strings.HasPrefix(cv, "5") { hardbounce = true }
 
 	} else {
 		// Deal "NotAccept" as a hard bounce when the 2nd argument is empty
@@ -78,9 +80,9 @@ func IsSoftBounce (argv1, argv2 string) bool {
 	softbounce := false
 	if len(argv2) > 0 {
 		// Check the 2nd argument(a status code or a reply code)
-		statuscode := status.Find(argv2, "")
-		if statuscode == "" { statuscode = reply.Find(argv2, "") }
-		if strings.HasPrefix(statuscode, "4") { softbounce = true }
+		cv := status.Find(argv2, "")
+		if cv == "" { cv = reply.Find(argv2, "") }
+		if strings.HasPrefix(cv, "4") { softbounce = true }
 	}
 	return softbounce
 }
