@@ -524,13 +524,12 @@ func init() {
 				[3]string{"553", "5.1.3", "is not a valid rfc 5321 address"},
 			},
 		}
-
 		statuscode := fo.DeliveryStatus[2:] // 5.7.1 => 7.1
 		esmtpreply := fo.ReplyCode[1:]      //   421 =>  21
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 		reasontext := ""
 
-		FINDREASON: for e := range messagesof {
+		for e := range messagesof {
 			// Each key is a name
 			for _, f := range messagesof[e] {
 				// Try to match each SMTP reply code, status code, error message
@@ -538,7 +537,7 @@ func init() {
 				if strings.Index(f[0], esmtpreply) < 1         { continue }
 				if strings.Index(f[1], statuscode) < 2         { continue }
 
-				reasontext = e; break FINDREASON
+				reasontext = e; break
 			}
 		}
 		return reasontext
