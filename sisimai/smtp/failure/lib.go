@@ -55,9 +55,11 @@ func IsHardBounce (argv1, argv2 string) bool {
 	hardbounce := false
 	if len(argv2) > 0 {
 		// Check the 2nd argument(a status code or a reply code)
-		cv := status.Find(argv2, "")
-		if cv == "" { cv = reply.Find(argv2, "") }
-		if strings.HasPrefix(cv, "5") { hardbounce = true }
+		cv := status.Find(argv2, ""); if cv == "" { cv = reply.Find(argv2, "") }
+
+		// The SMTP status code or the SMTP reply code starts with "5"
+		// Deal as a hard bounce when the error message does not indicate a temporary error 
+		if strings.HasPrefix(cv, "5") || IsTemporary(argv2) == false { hardbounce = true }
 
 	} else {
 		// Deal "NotAccept" as a hard bounce when the 2nd argument is empty

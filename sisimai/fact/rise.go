@@ -328,8 +328,10 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 			smtperrors := fmt.Sprintf("%s %s", thing.ReplyCode, piece["diagnosticcode"])
 			if len(smtperrors) < 4 { smtperrors = "" }
-			permanent1 := failure.IsPermanent(smtperrors)
-			thing.DeliveryStatus = status.Code(thing.Reason, !permanent1)
+			permanent0 := failure.IsPermanent(smtperrors)
+			temporary0 := failure.IsTemporary(smtperrors)
+			temporary1 := temporary0; if !permanent0 && !temporary0 { temporary1 = false }
+			thing.DeliveryStatus = status.Code(thing.Reason, temporary1)
 			break DELIVERYSTATUS
 		}
 
