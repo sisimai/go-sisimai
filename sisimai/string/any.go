@@ -10,10 +10,10 @@ package string
 //                       |___/ 
 import "strings"
 
-// ContainsAny() checks whether any alement in argv2 is included in argv1 or not
+// ContainsAny() checks whether any element in argv2 is included in argv1 or not
 func ContainsAny(argv1 string, argv2 []string) bool {
-	// @param    string   argv1 
-	// @param    []string argv2 
+	// @param    string   argv1 A string containing any substring listed in argv2
+	// @param    []string argv2 A list of strings to find in argv1
 	// @return   bool
 	if len(argv1) == 0 { return false }
 	if len(argv2) == 0 { return false }
@@ -25,10 +25,10 @@ func ContainsAny(argv1 string, argv2 []string) bool {
 	return false
 }
 
-// EqualsAny() checks whether any alement in argv2 is equal to the argv1 or not
+// EqualsAny() checks whether any element in argv2 is equal to the argv1 or not
 func EqualsAny(argv1 string, argv2 []string) bool {
-	// @param    string   argv1 
-	// @param    []string argv2 
+	// @param    string   argv1 A string containing any substring listed in argv2
+	// @param    []string argv2 A list of strings to find in argv1
 	// @return   bool
 	if len(argv1) == 0 { return false }
 	if len(argv2) == 0 { return false }
