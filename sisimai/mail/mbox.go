@@ -1,6 +1,12 @@
 // Copyright (C) 2020,2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package mail
+
+//                  _ _    __         _               
+//  _ __ ___   __ _(_) |  / / __ ___ | |__   _____  __
+// | '_ ` _ \ / _` | | | / / '_ ` _ \| '_ \ / _ \ \/ /
+// | | | | | | (_| | | |/ /| | | | | | |_) | (_) >  < 
+// |_| |_| |_|\__,_|_|_/_/ |_| |_| |_|_.__/ \___/_/\_\
 import "io"
 import "os"
 import "strings"
@@ -18,8 +24,7 @@ func(this *Mail) readMailbox() (*string, error) {
 	if this.offset >= this.Size { return nil, io.EOF }
 	if this.handle == nil {
 		// Open the mbox, and read at the offset position
-		filehandle, oops := os.Open(this.Path)
-		if oops != nil { return nil, oops }
+		filehandle, nyaan := os.Open(this.Path); if nyaan != nil { return nil, nyaan }
 		this.handle = filehandle // Successfully opened the mbox
 	}
 
@@ -30,7 +35,7 @@ func(this *Mail) readMailbox() (*string, error) {
 		loopbuffer := ""
 		readbuffer := make([]byte, BufferSize)
 
-		if by, oops := this.handle.ReadAt(readbuffer, this.offset); oops == nil {
+		if by, nyaan := this.handle.ReadAt(readbuffer, this.offset); nyaan == nil {
 			// No error returned at reading the mbox, append the read buffer into the loopbuffer
 			loopbuffer += string(readbuffer[:by])
 
@@ -77,7 +82,7 @@ func(this *Mail) readMailbox() (*string, error) {
 			}
 		} else {
 			// There is any failure on reading the mbox
-			if oops == io.EOF {
+			if nyaan == io.EOF {
 				// Reached to the end of the mbox
 				tempbuffer := string(readbuffer[:by])
 
@@ -95,7 +100,7 @@ func(this *Mail) readMailbox() (*string, error) {
 
 			} else {
 				// Something wrong
-				return nil, oops
+				return nil, nyaan
 			}
 		}
 	} // The end of the loop(for)
