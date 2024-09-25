@@ -1,6 +1,7 @@
 // Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
+
 //            _     _                   
 //   __ _  __| | __| |_ __ ___  ___ ___ 
 //  / _` |/ _` |/ _` | '__/ _ \/ __/ __|
@@ -38,7 +39,7 @@ func Find(argv1 string) [3]string {
 		"comment-block": (1 << 2), // (nekochan)
 	}
 
-	for _, e := range strings.Split(argv1,"") {
+	for _, e := range strings.Split(argv1, "") {
 		// Check each character
 		if strings.Contains(delimiters, e) {
 			// The character is a delimiter
@@ -192,7 +193,7 @@ func Find(argv1 string) [3]string {
 			// The character is not a delimiter
 			if groupindex == 0 || groupindex == 2 {
 				// Deal as a character of the display name
-				readbuffer[1]   += e
+				readbuffer[1] += e
 
 			} else {
 				// Append "e" to "address" readbuffer[0] or "comment" readbuffer[2]
@@ -204,7 +205,12 @@ func Find(argv1 string) [3]string {
 
 	if len(readbuffer[0]) == 0 {
 		// There is no email address
-		if IsIncluded(readbuffer[1]) {
+		if IsEmailAddress(readbuffer[1]) {
+			// The display name part is an email address like "neko@example.jp"
+			// TODO: Implement this block in p5-sisimai, rb-sisimai
+			readbuffer[0] = "<" + readbuffer[1] + ">"
+
+		} else if IsIncluded(readbuffer[1]) {
 			// Try to use the string like an email address in the display name
 			for _, e := range strings.Split(readbuffer[1], " ") {
 				// Find an email address
@@ -240,9 +246,9 @@ func Find(argv1 string) [3]string {
 		if IsQuotedAddress(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], `"`) }
 		emailtable[0] = readbuffer[0]
 	}
-	if len(emailtable[0]) == 0 { return [3]string{} }
 
-	if len(readbuffer[1]) > 0 {
+	if len(emailtable[0]) == 0 { return [3]string{} }
+	if len(readbuffer[1])  > 0 {
 		// Remove trailing spaces at the display name and the comment block
 		readbuffer[1] = strings.TrimSpace(readbuffer[1])
 
