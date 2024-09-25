@@ -33,6 +33,7 @@ func init() {
 			if strings.HasPrefix(bf.Head["subject"][0], "Undeliverable")    { proceedsto = 1; break }
 			if strings.HasPrefix(bf.Head["subject"][0], "Non_remis_")       { proceedsto = 1; break }
 			if strings.HasPrefix(bf.Head["subject"][0], "Non recapitabile") { proceedsto = 1; break }
+			break
 		}
 		if proceedsto                       == 0 { return sis.RisingUnderway{} }
 		if len(bf.Head["content-language"]) == 0 { return sis.RisingUnderway{} }
