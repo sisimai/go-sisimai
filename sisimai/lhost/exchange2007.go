@@ -141,13 +141,13 @@ func init() {
 				// Diagnostic information for administrators:
 				//
 				// Generating server: mta22.neko.example.org
-				for _,  f := range startingof["rhost"] { if strings.HasPrefix(e, f) == false { continue } }
-				if connheader[0] != "" { continue }
+				if sisimoji.HasPrefixAny(e, startingof["rhost"]) == false { continue }
+				if connheader[0] != ""                                    { continue }
 				connheader[0] = strings.Trim(e[strings.Index(e, ":"):], " ")
 				connvalues++
 			}
 		}
-        if recipients == 0  { return sis.RisingUnderway{} }
+		if recipients == 0  { return sis.RisingUnderway{} }
 
 		for j, _ := range dscontents {
 			// Set default values stored in "permessage" if each value in "dscontents" is empty.
