@@ -18,8 +18,7 @@ func IsPermanent(argv1 string) bool {
 	// @return  bool          true(permanet error), false(is not a permanent error)
 	if len(argv1) == 0 { return false }
 
-	statuscode := status.Find(argv1, "")
-	if statuscode == "" { statuscode = reply.Find(argv1, "") }
+	statuscode := status.Find(argv1, ""); if statuscode == "" { statuscode = reply.Find(argv1, "") }
 
 	if strings.HasPrefix(statuscode, "5")                      { return true }
 	if strings.Contains(strings.ToLower(argv1), " permanent ") { return true }
@@ -32,12 +31,12 @@ func IsTemporary(argv1 string) bool {
 	// @return  bool          true(temporary error), false(is not a temporary error)
 	if len(argv1) == 0 { return false }
 
-	statuscode := status.Find(argv1, "")
-	if statuscode == "" { statuscode = reply.Find(argv1, "") }
+	statuscode := status.Find(argv1, ""); if statuscode == "" { statuscode = reply.Find(argv1, "") }
+	issuedcode := strings.ToLower(argv1)
 
-	if strings.HasPrefix(statuscode, "4")                      { return true }
-	if strings.Contains(strings.ToLower(argv1), " temporar")   { return true }
-	if strings.Contains(strings.ToLower(argv1), " persistent") { return true }
+	if strings.HasPrefix(statuscode, "4")          { return true }
+	if strings.Contains(issuedcode, " temporar")   { return true }
+	if strings.Contains(issuedcode, " persistent") { return true }
 	return false
 }
 
