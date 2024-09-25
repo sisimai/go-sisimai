@@ -131,9 +131,9 @@ func Field(argv0 string) []string {
 		// - Final-Recipient: RFC822; kijitora@nyaan.jp
 		// - Diagnostic-Code: SMTP; 550 5.1.1 <kijitora@example.jp>... User Unknown
 		// - Remote-MTA: DNS; mx.example.jp
-		v       := strings.SplitN(parts[1], ";", 2)
-		table[1] = strings.ToUpper(strings.TrimSpace(v[0]))
-		table[2] = strings.TrimSpace(v[1])
+		v := strings.SplitN(parts[1], ";", 2)
+		if len(v) > 0 { table[1] = strings.ToUpper(strings.TrimSpace(v[0])) }
+		if len(v) > 1 { table[2] = strings.TrimSpace(v[1])                  }
 
 		if group == "host" { table[2] = strings.ToLower(table[2]) }
 		if len(strings.ReplaceAll(table[2], " ", "")) == 0 { table[2] = "" }
