@@ -99,8 +99,7 @@ func(this *Mail) readMailbox() (*string, error) {
 			}
 		}
 	} // The end of the loop(for)
-
-	emailblock  += *(sisimoji.ToLF(&emailblock))
+	emailblock = *(sisimoji.ToLF(&emailblock))
 	return &emailblock, nil
 }
 
