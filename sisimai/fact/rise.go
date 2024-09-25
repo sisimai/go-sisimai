@@ -337,7 +337,10 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 		REPLYCODE: for {
 			// Check both of the first digit of "DeliveryStatus" and "ReplyCode"
-			cx := [2]string{string(thing.DeliveryStatus[0]), string(thing.ReplyCode[0])}
+			cx := [2]string{"", ""}
+			if thing.DeliveryStatus != "" { cx[0] = string(thing.DeliveryStatus) }
+			if thing.ReplyCode      != "" { cx[1] = string(thing.ReplyCode)      }
+
 			if cx[0] != cx[1] {
 				// The class of the "Status:" is defer with the first digit of the reply code
 				cx[1] = reply.Find(piece["diagnosticcode"], cx[0])
