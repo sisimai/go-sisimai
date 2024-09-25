@@ -11,6 +11,7 @@ import "net/mail"
 import "sisimai/sis"
 import "sisimai/lhost"
 import "sisimai/rfc2045"
+import "sisimai/rfc3464"
 import sisimoji "sisimai/string"
 
 // sift() sifts a bounce mail with each MTA module
@@ -65,20 +66,19 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 		// 4. sisimai/rfc3834
 		for _, r := range TryOnFirst {
 			// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
-			if r != "Postfix" && r != "Sendmail" { continue } // TODO: Implement all the lhost/*.go modules except postfix.go
 			if havecalled[r]  { continue }
-
 			localhostr    = lhost.InquireFor[r](bf)
 			havecalled[r] = true
 			modulename    = r
-
 			if localhostr.Void() == false { break DECODER }
 		}
 
 		if havecalled["rfc3464"] == false {
-			// TODO: Implemente sismai/rfc3464.go
 			// 2. sisimai/rfc3464
 			// When the all of sisimai/lhost/*.go modules did not return the decoded data
+			localhostr = rfc3464.Inquire(bf)
+			havecalled["rfc3464"] = true
+			modulename = "RFC3464"
 			if localhostr.Void() == false { break DECODER }
 		}
 
