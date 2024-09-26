@@ -58,6 +58,7 @@ func anotherone(fo *sis.Fact) string {
 	issuedcode := strings.ToLower(fo.DiagnosticCode)
 	reasontext := status.Name(fo.DeliveryStatus)
 	trytomatch := false
+	forsubject := ""
 
 	for trytomatch == false {
 		// Set true when the reasontext is listed in GetRetried or fo.DiagnosticType is "SMTP"
@@ -77,7 +78,7 @@ func anotherone(fo *sis.Fact) string {
 		if reasontext != "" { break }
 
 		// Check the value of "Status:" field (fo.DeliveryStatus)
-		forsubject := fo.DeliveryStatus[0:3]
+		if len(fo.DeliveryStatus) > 3 { forsubject = fo.DeliveryStatus[0:3] }
 		if forsubject == "5.6" || forsubject == "4.6" {
 			// X.6.0   Other or undefined media error
 			reasontext = "contenterror"
