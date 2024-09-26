@@ -1,7 +1,12 @@
 // Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
-import "fmt"
+
+//            _     _                   
+//   __ _  __| | __| |_ __ ___  ___ ___ 
+//  / _` |/ _` |/ _` | '__/ _ \/ __/ __|
+// | (_| | (_| | (_| | | |  __/\__ \__ \
+//  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
 
 type EmailAddress struct {
@@ -56,7 +61,7 @@ func Rise(argvs [3]string) EmailAddress {
 
 		thing.User    = lpart
 		thing.Host    = dpart
-		thing.Address = fmt.Sprintf("%s@%s", lpart, dpart)
+		thing.Address = lpart + "@" + dpart
 
 	} else {
 		// The argument does not include "@"
@@ -70,7 +75,6 @@ func Rise(argvs [3]string) EmailAddress {
 
 	thing.Name    = argvs[1]
 	thing.Comment = argvs[2]
-	fmt.Printf("THING = [%q]\n", thing)
 	return *thing
 }
 

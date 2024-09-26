@@ -1,17 +1,22 @@
 // Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
-import "fmt"
+
+//            _     _                   
+//   __ _  __| | __| |_ __ ___  ___ ___ 
+//  / _` |/ _` |/ _` | '__/ _ \/ __/ __|
+// | (_| | (_| | (_| | | |  __/\__ \__ \
+//  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
 
 // Undisclosed() returns a pseudo recipient address or a pseudo sender address
 func Undisclosed(a string) string {
-	// @param    string a   Address type: 'r' or 's'
+	// @param    string a   Address type: "r" or "s"
 	// @return   string     Pseudo recipient address or sender address when the "a" is neither "r" nor "s"
 	addr := ""
 	if a == "s" { addr = "sender"    }
 	if a == "r" { addr = "recipient" }
-	return fmt.Sprintf("undisclosed-%s-in-headers@libsisimai.org.invalid", addr)
+	return "undisclosed-" + addr + "-in-headers@libsisimai.org.invalid"
 }
 
 // Final() returns a string processed by Ruleset 4 in sendmail.cf

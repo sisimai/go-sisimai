@@ -1,12 +1,12 @@
 // Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
+
 //            _     _                   
 //   __ _  __| | __| |_ __ ___  ___ ___ 
 //  / _` |/ _` |/ _` | '__/ _ \/ __/ __|
 // | (_| | (_| | (_| | | |  __/\__ \__ \
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
-//                                      
 import "strings"
 
 // IsQuotedAddress() checks that the local part of the argument is quoted
@@ -68,8 +68,8 @@ func IsEmailAddress(email string) bool {
 	if len(email)         > 254 { return false } // The maximum length of an email address is 254
 	if lasta < 1 || lasta >  64 { return false } // The maximum lenght of a local part is 64
 	if len(email) - lasta > 253 { return false } // The maximum lenght of a domain part is 253
-	if email[0]           == 46 { return false } // "." at the first character is not allowed in a local part
-	if email[lasta - 1]   == 46 { return false } // "." before the "@" is not allowed in a local part
+	if email[0]           == 46 { return false } // '.' at the first character is not allowed in a local part
+	if email[lasta - 1]   == 46 { return false } // '.' before the "@" is not allowed in a local part
 
 	upper := strings.ToUpper(email)
 	quote := IsQuotedAddress(email)
@@ -79,17 +79,17 @@ func IsEmailAddress(email string) bool {
 		// 31 < The ASCII code of each character < 127
 		if j < lasta {
 			// A local part of the email address: string before the last "@"
-			if email[j] <  32 { match = false; break } // Before " "
-			if email[j] > 126 { match = false; break } // After  "~"
+			if email[j] <  32 { match = false; break } // Before ' '
+			if email[j] > 126 { match = false; break } // After  '~'
 			if j == 0 { continue }
 
 			if quote {
 				// The email address has quoted local part like "neko@nyaan"@example.org
 				if email[j-1] != 34 {
-					// When the previous character is not "\", '"', " ", and "\t" is not allowed
-					if email[j] ==  9 { match = false; break } // "\t"
-					if email[j] == 32 { match = false; break } // " "
-					if email[j] == 34 { match = false; break } // "\"
+					// When the previous character is not '\', `'`, ' ', and '\t' is not allowed
+					if email[j] ==  9 { match = false; break } // '\t'
+					if email[j] == 32 { match = false; break } // ' '
+					if email[j] == 34 { match = false; break } // '\'
 					if email[j] == 92 { match = false; break } // '"'
 				}
 			} else {
@@ -106,17 +106,17 @@ func IsEmailAddress(email string) bool {
 			}
 		} else {
 			// A domain part of the email address: string after the last "@"
-			if email[j] <   45 { match = false; break } // Before "-"
-			if email[j] ==  47 { match = false; break } // Equals "/"
-			if email[j] >  122 { match = false; break } // After  "z"
+			if email[j] <   45 { match = false; break } // Before '-'
+			if email[j] ==  47 { match = false; break } // Equals '/'
+			if email[j] >  122 { match = false; break } // After  'z'
 
-			if email[j] > 57 && email[j] < 64 { match = false; break } // ":" to "?"
-			if email[j] > 90 && email[j] < 97 { match = false; break } // "[" to "`"
+			if email[j] > 57 && email[j] < 64 { match = false; break } // ':' to '?'
+			if email[j] > 90 && email[j] < 97 { match = false; break } // '[' to '`'
 
 			if j > lastd {
-				// *TLD of the domain part: string after the last "."
-				if upper[j] < 65 { match = false; break } // Before "A"
-				if upper[j] > 90 { match = false; break } // After  "Z"
+				// *TLD of the domain part: string after the last '.'
+				if upper[j] < 65 { match = false; break } // Before 'A'
+				if upper[j] > 90 { match = false; break } // After  'Z'
 			}
 		}
 	}
