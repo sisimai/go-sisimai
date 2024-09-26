@@ -1,6 +1,12 @@
 // Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc1894
+
+//  ____  _____ ____ _  ___  ___  _  _   
+// |  _ \|  ___/ ___/ |( _ )/ _ \| || |  
+// | |_) | |_ | |   | |/ _ \ (_) | || |_ 
+// |  _ <|  _|| |___| | (_) \__, |__   _|
+// |_| \_\_|   \____|_|\___/  /_/   |_|  
 import "strings"
 
 func FIELDINDEX() []string {
