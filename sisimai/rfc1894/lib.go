@@ -8,6 +8,7 @@ package rfc1894
 // |  _ <|  _|| |___| | (_) \__, |__   _|
 // |_| \_\_|   \____|_|\___/  /_/   |_|  
 import "strings"
+import sisimoji "sisimai/string"
 
 func FIELDINDEX() []string {
 	return []string{
@@ -159,12 +160,10 @@ func Field(argv0 string) []string {
 
 	} else if group == "list" {
 		// Action: failed
+		// Check the value is an available value defined in "actionlist" or convert to an
+		// available value defined in "correction"
 		v := strings.ToLower(parts[1])
-		for _, r := range actionlist {
-			// Check the value is an available value defined in "actionlist" or convert to an
-			// available value defined in "correction"
-			if v == r { table[2] = v; break }
-		}
+		if sisimoji.EqualsAny(v, actionlist) { table[2] = v }
 		if len(table[2]) == 0 { if len(correction[v]) > 0 { table[2] = correction[v] } }
 
 	} else {
