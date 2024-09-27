@@ -23,6 +23,7 @@ var RhostClass = map[string][]string{
 	"Microsoft": []string{".prod.outlook.com", ".protection.outlook.com"},
 	"Mimecast":  []string{".mimecast.com"},
 	"NTTDOCOMO": []string{"mfsmax.docomo.ne.jp"},
+	"Outlook":   []string{".hotmail.com"},
 	"Spectrum":  []string{"charter.net"},
 	"Tencent":   []string{".qq.com"},
 	"YahooInc":  []string{".yahoodns.net"},
