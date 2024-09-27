@@ -47,7 +47,7 @@ func OrderBySubject(title string) []string {
 		"undeliverable": []string{"Office365", "Exchange2007", "Aol", "Exchange2003"},
 		"undeliverable-mail":    []string{"Amavis", "MailMarshalSMTP", "IMailServer"},
 		"undeliverable-message": []string{"Notes", "Verizon"},
-		"undelivered-mail":      []string{"Postfix", "Aol", "SendGrid", "Zoho"},
+		"undelivered-mail":      []string{"Postfix", "Aol", "Zoho"},
 		"warning":               []string{"Sendmail", "Exim"},
 	}
 
@@ -93,7 +93,7 @@ func AnotherOrder() []string {
 		// The following is a fallback list
 		"Postfix", "GSuite", "Yahoo", "Outlook", "GMX", "MessagingServer", "EinsUndEins", "Domino",
 		"Notes", "qmail", "Courier", "OpenSMTPD", "Zoho", "MessageLabs", "MXLogic", "MailFoundry",
-		"McAfee", "V5sendmail", "mFILTER", "SendGrid", "ReceivingSES", "Amavis", "PowerMTA", "GoogleGroups",
+		"McAfee", "V5sendmail", "mFILTER", "ReceivingSES", "Amavis", "PowerMTA", "GoogleGroups",
 		"Gmail", "EZweb", "IMailServer", "MailMarshalSMTP", "Activehunter", "Bigfoot", "Biglobe",
 		"X4", "X1", "X3", "X6",
 	}
