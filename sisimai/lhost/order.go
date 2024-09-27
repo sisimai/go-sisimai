@@ -21,7 +21,7 @@ func OrderBySubject(title string) []string {
 		"delivery-report":       []string{"PowerMTA" },
 		"delivery-status":       []string{
 			"GSuite", "Outlook", "GoogleGroups", "McAfee", "OpenSMTPD", "AmazonSES", "AmazonWorkMail",
-			"ReceivingSES", "Gmail", "X3",
+			"Gmail", "X3",
 		},
 		"dmarc-ietf-dmarc": []string{"ARF"},
 		"email-feedback":   []string{"ARF"},
@@ -93,7 +93,7 @@ func AnotherOrder() []string {
 		// The following is a fallback list
 		"Postfix", "GSuite", "Yahoo", "Outlook", "GMX", "MessagingServer", "EinsUndEins", "Domino",
 		"Notes", "qmail", "Courier", "OpenSMTPD", "Zoho", "MessageLabs", "MXLogic", "MailFoundry",
-		"McAfee", "V5sendmail", "mFILTER", "ReceivingSES", "Amavis", "PowerMTA", "GoogleGroups",
+		"McAfee", "V5sendmail", "mFILTER", "Amavis", "PowerMTA", "GoogleGroups",
 		"Gmail", "EZweb", "IMailServer", "MailMarshalSMTP", "Activehunter", "Bigfoot", "Biglobe",
 		"X4", "X1", "X3", "X6",
 	}
