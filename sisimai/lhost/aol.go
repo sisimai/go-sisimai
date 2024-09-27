@@ -8,7 +8,6 @@ package lhost
 // | |  | | | | (_) \__ \ |_ / / ___ \ (_) | |
 // |_|  |_| |_|\___/|___/\__/_/_/   \_\___/|_|
 import "fmt"
-import "slices"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc1894"
@@ -99,7 +98,7 @@ func init() {
 
 					// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 					permessage[z] = o[2]
-					if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
+					if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 				}
 			} else {
 				// Continued line of the value of Diagnostic-Code field

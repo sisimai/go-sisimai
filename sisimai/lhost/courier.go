@@ -8,7 +8,6 @@ package lhost
 // | |  | | | | (_) \__ \ |_ / /| |__| (_) | |_| | |  | |  __/ |   
 // |_|  |_| |_|\___/|___/\__/_/  \____\___/ \__,_|_|  |_|\___|_|   
 import "fmt"
-import "slices"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc1894"
@@ -113,7 +112,7 @@ func init() {
 
 					// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 					permessage[z] = o[2]
-					if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
+					if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 				}
 			} else {
 				// The line does not begin with a DSN field defined in RFC3464

@@ -9,7 +9,6 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/ | .__/ \___/|___/\__|_| |_/_/\_\
 //                           |_|                             
 import "fmt"
-import "slices"
 import "strings"
 import "strconv"
 import "sisimai/sis"
@@ -160,7 +159,7 @@ func init() {
 
 						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 						permessage[z] = o[2]
-						if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
+						if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 					}
 				} else {
 					// If you do so, please include this problem report. You can

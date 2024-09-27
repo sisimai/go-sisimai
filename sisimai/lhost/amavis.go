@@ -7,7 +7,6 @@ package lhost
 // | '__| '_ \ / _ \/ __| __| / / _ \ | '_ ` _ \ / _` \ \ / / / __|
 // | |  | | | | (_) \__ \ |_ / / ___ \| | | | | | (_| |\ V /| \__ \
 // |_|  |_| |_|\___/|___/\__/_/_/   \_\_| |_| |_|\__,_| \_/ |_|___/
-import "slices"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc1894"
@@ -142,7 +141,7 @@ func init() {
 
 				// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 				permessage[z] = o[2]
-				if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
+				if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
