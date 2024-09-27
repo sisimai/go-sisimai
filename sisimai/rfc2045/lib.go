@@ -1,6 +1,12 @@
 // Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
+
+//  ____  _____ ____ ____   ___  _  _  ____  
+// |  _ \|  ___/ ___|___ \ / _ \| || || ___| 
+// | |_) | |_ | |     __) | | | | || ||___ \ 
+// |  _ <|  _|| |___ / __/| |_| |__   _|__) |
+// |_| \_\_|   \____|_____|\___/   |_||____/ 
 import "strings"
 
 // Parameter() finds a value of specified parameter name from Content-Type header.
@@ -35,16 +41,14 @@ func Boundary(argv0 string, start int) string {
 	// @param    int     start    -1: boundary string itself
 	//                             0: Start of boundary: "--boundary"
 	//                             1: End of boundary" "--boundary--"
-	// @return   [string]        Boundary string
-	if len(argv0) == 0 { return "" }
-
-	btext := Parameter(argv0, "boundary")
+	// @return   string            Boundary string
+	if len(argv0) == 0 { return "" }; btext := Parameter(argv0, "boundary")
 	if len(btext) == 0 { return "" }
 
 	// Content-Type: multipart/mixed; boundary=Apple-Mail-5--931376066
 	// Content-Type: multipart/report; report-type=delivery-status;
 	//    boundary="n6H9lKZh014511.1247824040/mx.example.jp"
-	if start > -1 { btext = "--" + btext }
+	if start > -1 { btext  = "--" + btext }
 	if start >  0 { btext += "--" }
 	return btext
 }
