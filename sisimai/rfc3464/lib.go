@@ -140,9 +140,11 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		lowercased := strings.ToLower(e.Diagnosis)
 		if strings.Contains(issuedcode, lowercased) == true { e.Diagnosis = beforemesg }
 
-		e.Command   = command.Find(e.Diagnosis);             if e.Command   == "" { e.Command   = alternates.Command   }
-		e.ReplyCode = reply.Find(e.Diagnosis, e.Status);     if e.ReplyCode == "" { e.ReplyCode = alternates.ReplyCode }
-		e.Status    = status.Find(e.Diagnosis, e.ReplyCode); if e.Status    == "" { e.Status    = alternates.Status    }
+		e.Command   = command.Find(e.Diagnosis);         if e.Command   == "" { e.Command   = alternates.Command   }
+		e.ReplyCode = reply.Find(e.Diagnosis, e.Status); if e.ReplyCode == "" { e.ReplyCode = alternates.ReplyCode }
+
+		if e.Status == "" { e.Status = status.Find(e.Diagnosis, e.ReplyCode) }
+		if e.Status == "" { e.Status = alternates.Status                     }
 	}
 	return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 }
