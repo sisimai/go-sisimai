@@ -15,7 +15,7 @@ func init() {
 	ReturnedBy["Aol"] = func(fo *sis.Fact) string {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
-		// @see      https://technet.microsoft.com/en-us/library/bb232118
+		// @see      Aol Mail: https://www.aol.com
 		if fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
