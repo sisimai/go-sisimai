@@ -24,7 +24,7 @@ func INDICATORS() map[string]uint8 {
 func INDEX() []string {
 	return []string{
 		"Activehunter", "Amavis", "AmazonSES", "AmazonWorkMail", "ApacheJames",
-		"Bigfoot", "Biglobe", "Courier", "Domino", "DragonFly", "EZweb", "EinsUndEins", "Exchange2003",
+		"Biglobe", "Courier", "Domino", "DragonFly", "EZweb", "EinsUndEins", "Exchange2003",
 		"Exchange2007", "Exim", "FML", "GMX", "GSuite", "GoogleGroups", "Gmail",
 		"IMailServer", "InterScanMSS", "KDDI", "MXLogic", "MailFoundry", "MailMarshalSMTP", "MailRu",
 		"McAfee", "MessageLabs", "MessagingServer", "Notes", "Office365", "OpenSMTPD",
