@@ -30,6 +30,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	boundaries := []string{
 		"Content-Type: message/rfc822",
 		"Content-Type: text/rfc822-headers",
+		"Content-Type: message/partial",
 		"Content-Disposition: inline", // See lhost-facebook-*.eml
 	}
 	startingof := map[string][]string{"message": []string{"Content-Type: message/delivery-status"}}
