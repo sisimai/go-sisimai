@@ -17,11 +17,11 @@ import "sisimai/reason"
 import "sisimai/message"
 import "sisimai/rfc1894"
 import "sisimai/rfc5322"
-import "sisimai/address"
 import "sisimai/smtp/reply"
 import "sisimai/smtp/status"
 import "sisimai/smtp/command"
 import "sisimai/smtp/failure"
+import sisiaddr "sisimai/address"
 import sisimoji "sisimai/string"
 
 var RetryIndex = reason.Retry()
@@ -59,16 +59,16 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			// Detect an email address from message/rfc822 part
 			for _, f := range RFC822Head["addresser"] {
 				// Check each header in message/rfc822 part
-				if len(rfc822data[f])                             == 0 { continue }
-				j := address.Find(rfc822data[f][0]); if len(j[0]) == 0 { continue }
+				if len(rfc822data[f])                              == 0 { continue }
+				j := sisiaddr.Find(rfc822data[f][0]); if len(j[0]) == 0 { continue }
 				addrs["addresser"] = j
 				break ADDRESSER
 			}
 
-			if len(addrs["addresser"][0]) == 0 && len(beforefact.Head["to"]) > 4 {
+			if len(addrs["addresser"][0]) == 0 && len(beforefact.Head["to"]) > 0 {
 				// Fallback: Get the sender address from the header of the bounced email if the address
 				// is not set at the loop above.
-				j := address.Find(beforefact.Head["to"][0])
+				j := sisiaddr.Find(beforefact.Head["to"][0])
 				if len(j[0]) > 0 { addrs["addresser"] = j }
 			}
 			break ADDRESSER
@@ -164,6 +164,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			// - Cleanup the value of "Diagnostic-Code:" field
 			// - Find and set the SMTP Reply Code
 			piece["diagnosticcode"] = e.Diagnosis
+			piece["deliverystatus"] = e.Status
 			piece["replycode"]      = e.ReplyCode
 			if len(e.Diagnosis) == 0 { break DIAGNOSTICCODE }
 
@@ -171,7 +172,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			piece["diagnosticcode"] = strings.ReplaceAll(piece["diagnosticcode"], "\r", "")
 			cs := status.Find(piece["diagnosticcode"], "")
 			cr := reply.Find(piece["diagnosticcode"], cs)
-			piece["deliverystatus"] = status.Prefer(piece["diagnosticcode"], cs, cr)
+			piece["deliverystatus"] = status.Prefer(piece["deliverystatus"], cs, cr)
 
 			if len(cr) == 3 {
 				// There is an SMTP reply code in the error message 
@@ -238,8 +239,8 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		CONSTRUCTOR: for {
 			// - Create email address object as address.EmailAddress struct
 			// - Create decoded bounce mail object as sis.Fact struct
-			as := address.Rise(addrs["addresser"]); if as.Void() == true { continue RISEOF }
-			ar := address.Rise(addrs["recipient"]); if ar.Void() == true { continue RISEOF }
+			as := sisiaddr.Rise(addrs["addresser"]); if as.Void() == true { continue RISEOF }
+			ar := sisiaddr.Rise(addrs["recipient"]); if ar.Void() == true { continue RISEOF }
 
 			thing.Action         = e.Action
 			thing.Addresser      = as
@@ -284,10 +285,10 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 				if strings.Contains(recv[i], " for ") == false { continue }
 				or := rfc5322.Received(recv[i])
 
-				if len(or) == 0                           { continue }
-				if len(or[5]) == 0                        { continue }
-				if address.IsEmailAddress(or[5]) == false { continue }
-				if or[5] == thing.Recipient.Address       { continue }
+				if len(or) == 0                            { continue }
+				if len(or[5]) == 0                         { continue }
+				if sisiaddr.IsEmailAddress(or[5]) == false { continue }
+				if or[5] == thing.Recipient.Address        { continue }
 
 				thing.Alias = or[5]; break
 			}
@@ -338,8 +339,8 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		REPLYCODE: for {
 			// Check both of the first digit of "DeliveryStatus" and "ReplyCode"
 			cx := [2]string{"", ""}
-			if thing.DeliveryStatus != "" { cx[0] = string(thing.DeliveryStatus) }
-			if thing.ReplyCode      != "" { cx[1] = string(thing.ReplyCode)      }
+			if thing.DeliveryStatus != "" { cx[0] = string(thing.DeliveryStatus[0]) }
+			if thing.ReplyCode      != "" { cx[1] = string(thing.ReplyCode[0])      }
 
 			if cx[0] != cx[1] {
 				// The class of the "Status:" is defer with the first digit of the reply code
@@ -373,7 +374,19 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		}
 		listoffact = append(listoffact, thing)
 	}
-	fmt.Printf("List-Of-Fact = (%##v)\n", listoffact)
+
+	for j, e := range listoffact {
+		fmt.Printf("List-Of-Fact[%d] = %##v\n", j, e)
+		fmt.Printf("----------------------------------\n")
+		fmt.Printf("--[%d]DiagnosticCode = [%s]\n", j, e.DiagnosticCode)
+		fmt.Printf("--[%d]DeliveryStatus = [%s]\n", j, e.DeliveryStatus)
+		fmt.Printf("--[%d]ReplyCode = [%s]\n", j, e.ReplyCode)
+		fmt.Printf("--[%d]Reason = [%s]\n", j, e.Reason)
+		fmt.Printf("--[%d]DecodedBy = [%s]\n", j, e.SMTPAgent)
+		fmt.Printf("--[%d]Command = [%s]\n", j, e.SMTPCommand)
+		fmt.Printf("--[%d]Recipient = [%s]\n", j, e.Recipient.Address)
+		fmt.Printf("--[%d]Rhost = [%s]\n", j, e.Rhost)
+	}
 	return listoffact
 }
 
