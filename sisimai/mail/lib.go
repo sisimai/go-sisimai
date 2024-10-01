@@ -1,8 +1,13 @@
 // Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-
-// sisimai/mail is a package for reading a UNIX mbox, a Maildir, or any email message input from Standard-in
 package mail
+
+//                  _ _ 
+//  _ __ ___   __ _(_) |
+// | '_ ` _ \ / _` | | |
+// | | | | | | (_| | | |
+// |_| |_| |_|\__,_|_|_|
+// sisimai/mail is a package for reading a UNIX mbox, a Maildir, or any email message input from Standard-in
 import "os"
 import "strings"
 import "path/filepath"
