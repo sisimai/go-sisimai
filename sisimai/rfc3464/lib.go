@@ -44,7 +44,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	readslices := []string{""}        // Copy each line for later reference
 	recipients := uint8(0)            // The number of 'Final-Recipient' header
 	beforemesg := ""                  // String before startingof["message"]
-	ctboundary := rfc2045.Boundary(bf.Head["content-type"][0], 0)
+	goestonext := false               // Flag: do not append the line into "beforemesg"
+	isboundary := []string{rfc2045.Boundary(bf.Head["content-type"][0], 0)}
 	v          := &(dscontents[len(dscontents) - 1])
 
 	for j, e := range(strings.Split(emailparts[0], "\n")) {
@@ -59,9 +60,30 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			for {
 				// Append each string before startingof["message"][0] except the following patterns
 				// for the later reference
-				if e == ""                                 { break } // Blank line
-				if strings.HasPrefix(e, ctboundary)        { break } // boundary="----------=_1351676802-30315-116783"
-				if strings.HasPrefix(e, "Content-")        { break } // Content-Type:, Content-Disposition
+				if e == ""    { break } // Blank line
+				if goestonext { break } // Skip if the part is text/html, image/icon in multipart/*
+
+				// This line is a boundary kept in "multiparts" as a string, when the end of
+				// the boundary appeared, the condition above also returns true.
+				if sisimoji.HasPrefixAny(e, isboundary) { goestonext = false; break }
+				if strings.HasPrefix(e, "Content-Type") {
+					// Content-Type: field in multipart/*
+					if strings.Contains(e, "multipart/") {
+						// Content-Type: multipart/alternative; boundary=aa00220022222222ffeebb
+						// Pick the boundary string and store it into "isboucdary"
+						isboundary = append(isboundary, rfc2045.Boundary(e, 0))
+
+					} else if strings.Contains(e, "text/plain") {
+						// For example, "text/html", "image/icon"
+						goestonext = false
+
+					} else {
+						// Other types: for example, text/html, image/jpg, and so on
+						goestonext = true
+					}
+					break
+				}
+				if strings.HasPrefix(e, "Content-")        { break } // Content-Disposition, ...
 				if strings.HasPrefix(e, "This is a MIME")  { break } // This is a MIME-formatted message.
 				if strings.HasPrefix(e, "This is a multi") { break } // This is a multipart message in MIME format
 				if strings.HasPrefix(e, "This is an auto") { break } // This is an automatically generated ...
@@ -136,10 +158,17 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			e.Set(z, permessage[z])
 		}
 
-		// "beforemesg" contains the entire strings of e.Diagnosis
 		e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 		lowercased := strings.ToLower(e.Diagnosis)
-		if strings.Contains(issuedcode, lowercased) == true { e.Diagnosis = beforemesg }
+		if strings.Contains(issuedcode, lowercased) == true {
+			// "beforemesg" contains the entire strings of e.Diagnosis
+			e.Diagnosis = beforemesg
+
+		} else {
+			// The value of e.Diagnosis is not contained in "beforemesg"
+			// There may be an important error message in "beforemesg"
+			if len(beforemesg) > 0 { e.Diagnosis = sisimoji.Sweep(beforemesg + " " + e.Diagnosis) }
+		}
 
 		e.Command   = command.Find(e.Diagnosis);         if e.Command   == "" { e.Command   = alternates.Command   }
 		e.ReplyCode = reply.Find(e.Diagnosis, e.Status); if e.ReplyCode == "" { e.ReplyCode = alternates.ReplyCode }
