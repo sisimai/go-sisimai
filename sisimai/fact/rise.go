@@ -111,29 +111,28 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 				if e.Lhost == e.Rhost { e.Lhost = "" }
 				if len(e.Lhost) == 0  { e.Lhost = rfc5322.Received(recv[0])[0] }
 			}
-			for _, v := range []string{e.Rhost, e.Lhost} {
+			for _, v := range []*string{&e.Rhost, &e.Lhost} {
 				// Check and rewrite each host name
-				if len(v) == 0 { continue }
+				if len(*v) == 0 { continue }
 
 				// Use the domain part as a remote/local host when the value is an email address
-				if strings.Contains(v, "@") { v = strings.Split(v, "@")[1] }
+				if strings.Contains(*v, "@") { *v = strings.Split(*v, "@")[1] }
 
 				// Remove [], (), \r, and strings before "="
-				for _, c := range []string{"(", ")", "[", "]", "\r"} { v = strings.ReplaceAll(v, c, "") }
-				if strings.Contains(v, "=") { v = strings.SplitN(v, "=", 2)[1] }
-
-				if strings.Contains(v, " ") {
+				for _, c := range []string{"(", ")", "[", "]", "\r"} { *v = strings.ReplaceAll(*v, c, "") }
+				if strings.Contains(*v, "=") { *v = strings.SplitN(*v, "=", 2)[1] }
+				if strings.Contains(*v, " ") {
 					// Check a space character in each value and get the first hostname
-					ee := strings.Split(v, " ")
+					ee := strings.Split(*v, " ")
 					for _, w := range ee {
 						// Get a hostname from the string like "127.0.0.1 x109-20.example.com 192.0.2.20"
 						// or "mx.sp.example.jp 192.0.2.135"
 						if sisimoji.IsIPv4Address(w) { continue }
-						v = w; break
+						*v = w; break
 					}
-					if strings.Index(v, " ") > 0 { v = ee[0] }
+					if strings.Index(*v, " ") > 0 { *v = ee[0] }
 				}
-				if strings.HasSuffix(v, ".") { v = strings.TrimRight(v, ".") } // Remove "." at the end of the value
+				if strings.HasSuffix(*v, ".") { *v = strings.TrimRight(*v, ".") } // Remove "." at the end of the value
 			}
 			break RECEIVED
 		}
@@ -385,6 +384,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		fmt.Printf("--[%d]DecodedBy = [%s]\n", j, e.SMTPAgent)
 		fmt.Printf("--[%d]Command = [%s]\n", j, e.SMTPCommand)
 		fmt.Printf("--[%d]Recipient = [%s]\n", j, e.Recipient.Address)
+		fmt.Printf("--[%d]Lhost = [%s]\n", j, e.Lhost)
 		fmt.Printf("--[%d]Rhost = [%s]\n", j, e.Rhost)
 	}
 	return listoffact
