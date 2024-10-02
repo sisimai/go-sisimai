@@ -7,6 +7,7 @@ package sis
 // | |_| |  __/ | |\ V /  __/ |  | |_| | |  | | (_| | |_| ||  __/ |   
 // |____/ \___|_|_| \_/ \___|_|   \__, |_|  |_|\__,_|\__|\__\___|_|   
 //                                |___/                               
+import "strings"
 import "sisimai/address"
 import "sisimai/rfc1894"
 import "sisimai/smtp/status"
@@ -88,6 +89,8 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
 
 		case "status":
 			// Status: 5.1.1
+			// Status: 4.2.2 (Over Quota)
+			if strings.Contains(argv1, " ") { argv1 = argv1[0:strings.Index(argv1, " ")] }
 			if status.Test(argv1) == false { return false }
 			this.Status = argv1
 	}
