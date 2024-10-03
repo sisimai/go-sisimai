@@ -91,7 +91,7 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
 			// Status: 5.1.1
 			// Status: 4.2.2 (Over Quota)
 			if strings.Contains(argv1, " ") { argv1 = argv1[0:strings.Index(argv1, " ")] }
-			if status.Test(argv1) == false { return false }
+			if status.Test(argv1) == false  { return false }
 			this.Status = argv1
 	}
 	return true
