@@ -22,10 +22,10 @@ func IsIPv4Address(argv1 string) bool {
 	match := true
 	for _, e := range strings.Split(argv1, ".") {
 		// Check each octet is between 0 and 255
-		v, oops := strconv.Atoi(e)
-		if oops != nil { match = false; break }
-		if v < 0       { match = false; break }
-		if v > 255     { match = false; break }
+		v, nyaan := strconv.Atoi(e)
+		if nyaan != nil { match = false; break }
+		if v < 0        { match = false; break }
+		if v > 255      { match = false; break }
 	}
 	return match
 }
