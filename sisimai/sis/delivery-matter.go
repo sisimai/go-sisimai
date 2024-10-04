@@ -80,11 +80,15 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
 
 		case "received-from-mta":
 			// Received-From-MTA: DNS; p225-ix4.kyoto.example.ne.jp
+			// Received-From-MTA: dns; sironeko@example.jp
+			if strings.Contains(argv1, "@") { argv1 = argv1[strings.Index(argv1, "@") + 1:] }
 			this.Lhost = argv1
-		
+
 		case "remote-mta", "reporting-mta":
 			// Remote-MTA: dns; mx-aol.mail.gm0.yahoodns.net
+			// Remote-MTA: dns; 192.0.2.222 (192.0.2.222, the server for the domain.)
 			// Reporting-MTA: dsn; d217-29.smtp-out.amazonses.com
+			if strings.Contains(argv1, " ") { argv1 = strings.Split(argv1, " ")[0] }
 			this.Rhost = argv1
 
 		case "status":
