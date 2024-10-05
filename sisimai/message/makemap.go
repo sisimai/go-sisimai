@@ -1,6 +1,7 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
+
 //  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
 // | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
 // | | | | | |  __/\__ \__ \ (_| | (_| |  __/
@@ -21,8 +22,13 @@ func makemap(argv0 *mail.Header, argv1 bool) map[string][]string {
 	for e, v := range *argv0 {
 		// Each key name is the lower-cased string, each value is an array ([]string{})
 		// The field name of an email header does not contain " "
-		if strings.Contains(e, " ") { continue }
-		headermaps[strings.ToLower(e)] = v
+		f := strings.ToLower(e)
+		if strings.Contains(f, " ")               { continue }
+		if strings.Contains(f, "authentication-") { continue } // Authentication-Results:
+		if strings.HasPrefix(f, "arc-")           { continue } // ARC-Seal:, ARC-Authentication-Results:, ....
+		if strings.HasPrefix(f, "dkim-")          { continue } // DKIM-Sigunature:
+		if strings.HasPrefix(f, "-spf")           { continue } // Received-SPF:
+		headermaps[f] = v
 	}
 
 	if len(headermaps["received"]) > 0 {
