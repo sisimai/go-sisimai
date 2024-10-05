@@ -19,6 +19,7 @@ var RhostClass = map[string][]string{
 	"FrancePTT":   []string{".laposte.net", ".orange.fr", ".wanadoo.fr"},
 	"GoDaddy":     []string{"smtp.secureserver.net", "mailstore1.secureserver.net"},
 	"Google":      []string{"aspmx.l.google.com", "gmail-smtp-in.l.google.com"},
+	"GSuite":      []string{"googlemail.com"},
 	"IUA":         []string{".email.ua"},
 	"KDDI":        []string{".ezweb.ne.jp", "msmx.au.com"},
 	"MessageLabs": []string{".messagelabs.com"},
