@@ -9,18 +9,17 @@ package rfc5322
 // |_| \_\_|   \____|____/____/_____|_____|
 import "strings"
 
-// Part() split the entire message body given as the 1st argument into error message lines and the
+// Part() splits the entire message body given as the 1st argument into error message lines and the
 // original message part only include email headers.
 func Part(email *string, cutby []string, keeps bool) [2]string {
 	// @param    *string  email    Entire message body
 	// @param    []string cutby    String list of the message/rfc822 or the beginning of the original message part
 	// @param    bool     keeps    Flag for keeping strings after "\n\n"
 	// @return   []string          { "Error message lines", "The original message" }
-	// @since    v5.0.0
 	if len(*email) == 0 { return [2]string{"", ""} }
 	if len(cutby)  == 0 { return [2]string{"", ""} }
 
-	positionor := -1 // A position of the boudary string
+	positionor := -1 // A position of the boundary string
 	formerpart := "" // The error message part
 	latterpart := "" // The original message part
 
@@ -33,10 +32,19 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 	if positionor > 0 {
 		// There is the boundary string in the message body
 		formerpart  = (*email)[:positionor]
-		latterpart  = (*email)[positionor:]
+		rfc822part := strings.Split((*email)[positionor:], "\n\n")
+
+		for _, e := range rfc822part {
+			// Find a part including "Received:", "From:" header
+			if strings.Contains(e, "Received: ") == false { continue }
+			if strings.Contains(e, "From: ")     == false { continue }
+			latterpart = e; break
+		}
+		if latterpart == "" { latterpart = (*email)[positionor:] }
 
 	} else {
-		// Substitute the entire message to the former part when the boundary string is not included the *email
+		// Substitute the entire message to the former part when the boundary string is not included
+		// in the 1st argument
 		formerpart = *email
 		latterpart = ""
 	}
@@ -51,11 +59,9 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 			// Remove leading blank lines
 			if e == " " || e == "\n" || e == "\r" { continue }
 
+			// There is leading space characters at the head of parts[1]
 			p := strings.Index(latterpart, e)
-			if p > 0 {
-				// There is leading space characters at the head of parts[1]
-				latterpart = latterpart[p:len(latterpart)]
-			}
+			if p > 0 { latterpart = latterpart[p:len(latterpart)] }
 			break
 		}
 
@@ -64,10 +70,8 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 			latterpart = latterpart[0:strings.Index(latterpart, "\n\n") + 1]
 		}
 
-		if strings.HasSuffix(latterpart, "\n") == false {
-			// Append "\n" at the end of the original message
-			latterpart += "\n"
-		}
+		// Append "\n" at the end of the original message
+		if strings.HasSuffix(latterpart, "\n") == false { latterpart += "\n" }
 	}
 	return [2]string{formerpart, latterpart}
 }
