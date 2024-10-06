@@ -25,7 +25,7 @@ func INDEX() []string {
 	return []string{
 		"Activehunter", "AmazonSES", "AmazonWorkMail", "ApacheJames",
 		"Biglobe", "Courier", "Domino", "DragonFly", "EZweb", "EinsUndEins", "Exchange2003",
-		"Exchange2007", "Exim", "FML", "GMX", "GSuite", "GoogleGroups", "Gmail",
+		"Exchange2007", "Exim", "FML", "GMX", "GoogleGroups", "Gmail",
 		"IMailServer", "InterScanMSS", "KDDI", "MXLogic", "MailFoundry", "MailMarshalSMTP", "MailRu",
 		"McAfee", "MessagingServer", "Notes", "Office365", "OpenSMTPD",
 		"Postfix", "PowerMTA", "Sendmail", "SurfControl", "V5sendmail",
