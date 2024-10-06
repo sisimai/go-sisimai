@@ -1,6 +1,7 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
+
 //  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
 // | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
 // | | | | | |  __/\__ \__ \ (_| | (_| |  __/
@@ -58,7 +59,6 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 	havecalled := map[string]bool{}
 	localhostr := sis.RisingUnderway{}
 	modulename := ""
-	//havesifted := ""
 	DECODER: for {
 		// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
 		// 2. sisimai/rfc3464
