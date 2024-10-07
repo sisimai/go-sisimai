@@ -102,7 +102,7 @@ func IsEmailAddress(email string) bool {
 				if e == ":" || e == ";" { match = false; break }
 				if e == "(" || e == ")" { match = false; break }
 				if e == "<" || e == ">" { match = false; break }
-				if e == "p" || e == "]" { match = false; break }
+				if e == "[" || e == "]" { match = false; break }
 			}
 		} else {
 			// A domain part of the email address: string after the last "@"
