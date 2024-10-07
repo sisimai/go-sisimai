@@ -247,8 +247,7 @@ func Find(argv1 string) [3]string {
 		emailtable[0] = readbuffer[0]
 	}
 
-	if len(emailtable[0]) == 0 { return [3]string{} }
-	if len(readbuffer[1])  > 0 {
+	if len(readbuffer[1]) > 0 {
 		// Remove trailing spaces at the display name and the comment block
 		readbuffer[1] = strings.TrimSpace(readbuffer[1])
 
@@ -265,6 +264,14 @@ func Find(argv1 string) [3]string {
 			readbuffer[1] = strings.Trim(readbuffer[1], `"`)
 		}
 		emailtable[1] = readbuffer[1]
+	}
+
+	for _, e := range readbuffer {
+		// There is no email address, try to pick an email address from each element in readbuffer
+		e = strings.Trim(e, "<>{}()[]`';.")
+		if IsQuotedAddress(e) == false { e = strings.Trim(e, `"`) }
+		if IsEmailAddress(e)  == true  { emailtable[0] = e; break }
+		if emailtable[0] != "" { break }
 	}
 
 	// Check and tidy up the comment block
