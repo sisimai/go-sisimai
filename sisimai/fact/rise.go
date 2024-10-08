@@ -15,6 +15,7 @@ import "sisimai/sis"
 import "sisimai/rhost"
 import "sisimai/reason"
 import "sisimai/message"
+import "sisimai/rfc1123"
 import "sisimai/rfc1894"
 import "sisimai/rfc5322"
 import "sisimai/smtp/reply"
@@ -101,16 +102,28 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		}
 
 		RECEIVED: for {
-			// Scan "Received:" header of the original message
-			recv := beforefact.Head["received"];
-			size := len(recv)
-
-			if size > 0 {
-				// Get a local host name and a remote host name from the Received header.
-				if len(e.Rhost) == 0  { e.Rhost = rfc5322.Received(recv[size - 1])[0] }
-				if e.Lhost == e.Rhost { e.Lhost = "" }
-				if len(e.Lhost) == 0  { e.Lhost = rfc5322.Received(recv[0])[0] }
+			// Scan "Received:" header of the bounce message
+			le := len(beforefact.Head["received"])
+			if e.Rhost == "" {
+				// Try to pick a remote hostname from Received: headers of the bounce message
+				for ri := le - 1; ri > -1; ri-- {
+					// Get a local host name and a remote host name from the Received header.
+					cv := rfc5322.Received(beforefact.Head["received"][ri])
+					if rfc1123.IsValidHostname(cv[0]) == false { continue }
+					e.Rhost = cv[0]; break
+				}
 			}
+			if e.Lhost == e.Rhost { e.Lhost = "" }
+			if e.Lhost == "" {
+				// Try to pick a local hostname from Received: headers of the bounce message
+				for li := 0; li < le; li++ {
+					// Get a local host name and a remote host name from the Received header.
+					cv := rfc5322.Received(beforefact.Head["received"][li])
+					if rfc1123.IsValidHostname(cv[0]) == false { continue }
+					e.Lhost = cv[0]; break
+				}
+			}
+
 			for _, v := range []*string{&e.Rhost, &e.Lhost} {
 				// Check and rewrite each host name
 				if len(*v) == 0 { continue }
