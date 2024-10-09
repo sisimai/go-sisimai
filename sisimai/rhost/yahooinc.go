@@ -39,7 +39,7 @@ func init() {
 				// - 550 relaying denied for <***@yahoo.com>
 				"relaying denied for ",
 			},
-			"notcomplaintrfc": []string{"headers are not rfc compliant"},
+			"notcompliantrfc": []string{"headers are not rfc compliant"},
 			"policyviolation": []string{
 				// - 554 Message not allowed - [PH01] Email not accepted for policy reasons.
 				//   Please visit https://postmaster.yahooinc.com/error-codes
