@@ -27,7 +27,7 @@ func IsValidHostname(argv1 string) bool {
 
 	hostnameok := true
 	for _, e := range strings.Split(strings.ToUpper(argv1), "") {
-		// Check each octet is between 0 and 255
+		// Check each characater is a number or an alphabet
 		if e[0] <  45              { hostnameok = false; break } //  45 = '-'
 		if e[0] == 47              { hostnameok = false; break } //  47 = '/'
 		if e[0] >  57 && e[0] < 65 { hostnameok = false; break } //  57 = '9', 65 = 'A'
