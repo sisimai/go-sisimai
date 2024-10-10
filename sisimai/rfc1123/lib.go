@@ -21,7 +21,6 @@ func IsValidHostname(argv1 string) bool {
 	if strings.HasPrefix(argv1, "-") == true { return false }
 	if strings.HasPrefix(argv1, ".") == true { return false }
 	if strings.HasSuffix(argv1, "-") == true { return false }
-	if strings.HasSuffix(argv1, ".") == true { return false }
 
 	hostnameok := true
 	for _, e := range strings.Split(strings.ToUpper(argv1), "") {
