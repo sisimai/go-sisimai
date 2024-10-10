@@ -18,8 +18,9 @@ func IsValidHostname(argv1 string) bool {
 	if len(argv1) > 255                      { return false }
 	if strings.Contains(argv1, ".") == false { return false }
 	if strings.Contains(argv1, "..") == true { return false }
-	if strings.HasPrefix(argv1, "-") == true { return false }
+	if strings.Contains(argv1, "--") == true { return false }
 	if strings.HasPrefix(argv1, ".") == true { return false }
+	if strings.HasPrefix(argv1, "-") == true { return false }
 	if strings.HasSuffix(argv1, "-") == true { return false }
 
 	hostnameok := true
