@@ -15,7 +15,9 @@ func IsValidHostname(argv1 string) bool {
 	// @return   bool          true:  is a valid hostname
 	//                         false: is not a valid hostname
 	// @see https://datatracker.ietf.org/doc/html/rfc1123
-	if len(argv1) > 255                      { return false }
+	if len(argv1) <   4 { return false }
+	if len(argv1) > 255 { return false }
+
 	if strings.Contains(argv1, ".") == false { return false }
 	if strings.Contains(argv1, "..") == true { return false }
 	if strings.Contains(argv1, "--") == true { return false }
