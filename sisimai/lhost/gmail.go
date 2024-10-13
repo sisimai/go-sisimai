@@ -174,7 +174,6 @@ func init() {
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
-				continue
 			}
 			if readcursor & indicators["deliverystatus"] == 0 { continue }
 			if len(e) == 0                                    { continue }
@@ -214,7 +213,7 @@ func init() {
 				v.Diagnosis += e + " "
 			}
 		}
-        if recipients == 0 { return sis.RisingUnderway{} }
+		if recipients == 0 { return sis.RisingUnderway{} }
 
 		for j, _ := range dscontents {
 			// Set default values stored in "permessage" if each value in "dscontents" is empty.
