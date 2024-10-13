@@ -14,7 +14,6 @@ import "sisimai/rfc1123"
 import "sisimai/smtp/status"
 import sisiaddr "sisimai/address"
 import sisimoji "sisimai/string"
-import "fmt"
 
 func init() {
 	// Decode bounce messages from Gmail: https://mail.google.com/
