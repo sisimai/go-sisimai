@@ -28,8 +28,14 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 	bf.Body = *(tidy(&bf.Body))
 
 	// Decode BASE64 Encoded message body
-	mesgformat := ""; if len(bf.Head["content-type"])               > 0 { strings.ToLower(bf.Head["content-type"][0]) }
-	ctencoding := ""; if len(bf.Head["content-trtansfer-encoding"]) > 0 { strings.ToLower(bf.Head["content-transfer-encoding"][0]) }
+	mesgformat := ""; if len(bf.Head["content-type"]) > 0 {
+		// Content-Type: text/plain; charset=utf8
+		mesgformat = strings.ToLower(bf.Head["content-type"][0])
+	}
+	ctencoding := ""; if len(bf.Head["content-trtansfer-encoding"]) > 0 {
+		// Content-Transfer-Encoding: base64
+		ctencoding = strings.ToLower(bf.Head["content-transfer-encoding"][0])
+	}
 
 	if strings.HasPrefix(mesgformat, "text/plain") || strings.HasPrefix(mesgformat, "text/html") {
 		// Content-Type: text/plain; charset=UTF-8
