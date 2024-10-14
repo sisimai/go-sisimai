@@ -43,7 +43,7 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 			// Content-Transfer-Encoding: base64
 			bf.Body = *(rfc2045.DecodeB(&bf.Body, ""))
 
-		} else {
+		} else if ctencoding == "quoted-printable" {
 			// Content-Transfer-Encoding: quoted-printable
 			bf.Body = *(rfc2045.DecodeQ(&bf.Body))
 		}
