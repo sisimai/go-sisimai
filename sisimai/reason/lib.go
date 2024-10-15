@@ -40,6 +40,14 @@ func Retry() map[string]bool {
 	}
 }
 
+// IsExplicit() returns false when the argument is empty or is "undefined" or is "onhold"
+func IsExplicit(argv1 string) bool {
+	// @param    string argv1  Reason name
+	// @return   bool          false: The reaosn is not explicit
+	if argv1 == "" || argv1 == "undefined" || argv1 == "onhold" { return false }
+	return true
+}
+
 // Index() returns the list of all the reasons sisimai supoort
 func Index() []string {
 	return []string{
