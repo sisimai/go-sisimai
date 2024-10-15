@@ -1,6 +1,7 @@
 // Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
+
 //  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
 // | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
 // | | | | | |  __/\__ \__ \ (_| | (_| |  __/
@@ -70,7 +71,7 @@ func Rise(mesg *string, hook *func()) sis.BeforeFact {
 
 			// Build "Head", "Body" members of BeforeFact
 			beforefact.Head    = makemap(&email.Header, false)
-			bodystring, nyaan := io.ReadAll(email.Body); if nyaan != nil { break }
+			bodystring, nyaan := io.ReadAll(email.Body); if nyaan != nil { break RISE }
 			beforefact.Body    = string(bodystring)
 		}
 
@@ -106,7 +107,8 @@ func Rise(mesg *string, hook *func()) sis.BeforeFact {
 		// 4. Try to sift again
 		//    There is a bounce message inside of mutipart/*, try to sift the first message/rfc822
 		//    part as a entire message body again.
-		parseagain++
+		//parseagain++
+		break RISE
 	}
 
 	// TODO Implement this block
