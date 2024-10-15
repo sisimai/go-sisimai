@@ -10,7 +10,6 @@ package lhost
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc5322"
-import "sisimai/smtp/status"
 import "sisimai/smtp/command"
 import sisiaddr "sisimai/address"
 import sisimoji "sisimai/string"
@@ -89,17 +88,8 @@ func init() {
 
 			} else {
 				// Get error messages
-				if len(status.Find(e, "")) > 0 || sisimoji.Aligned(e, []string{"<", "@", ">"}) {
-					// There is an SMTP status code or an email address like "5.1.1 <neko@example.jp>... User Unknown"
-					if v.Diagnosis == "" { v.Diagnosis = e }
-
-				} else {
-					// Reason:
-					// delivery retry timeout exceeded
-					if e == ""                   {                  continue }
-					if e == "Reason: "           { v.Diagnosis = e; continue }
-					if v.Diagnosis == "Reason: " { v.Diagnosis = e; continue }
-				}
+				if e == "" { continue }
+				v.Diagnosis += e + " "
 			}
 		}
         if recipients == 0 { return sis.RisingUnderway{} }
