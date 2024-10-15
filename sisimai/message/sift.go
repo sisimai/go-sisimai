@@ -118,7 +118,7 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 		// Append each line of localhostr.RFC822 to rfc822text except malformed headers
 		if e == "" && rfc822text != ""  { break } // The blank line between the header and the body
 		if strings.Index(e, ":") < 1 {            // The line does not contain ":" or begins with ":"
-			// The line does not a line continued from the previous line of a long header
+			// The line is not a line continued from the previous line of a long header
 			if strings.HasPrefix(e, " ") == false || strings.HasPrefix(e, "\t") == false { continue }
 		}
 		rfc822text += e + "\n"
