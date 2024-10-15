@@ -12,8 +12,8 @@ import "strings"
 
 // tidy() tidies up each field name and format
 func tidy(argv0 *string) *string {
-	// @param    *string argv0 Strings including field and value used at an email
-	// @return   *string       Strings tidied up
+	// @param    *string argv0 String including field and value used at an email
+	// @return   *string       String tidied up
 	email := ""; if len(*argv0) < 1 { return &email }
 	lines := strings.Split(*argv0, "\n")
 
