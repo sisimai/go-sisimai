@@ -30,17 +30,17 @@ func init() {
 		if len(bf.Body)            == 0 { return sis.RisingUnderway{} }
 		if len(bf.Head["x-aol-ip"]) > 0 { return sis.RisingUnderway{} } // X-AOL-IP: 192.0.2.1
 
-		match := uint8(0)
+		proceedsto := uint8(0)
 		if strings.Index(bf.Head["subject"][0], "SMTP server: errors from ") > 0 {
 			// src/smtpd/smtpd_chat.c:|337: post_mail_fprintf(notice, "Subject: %s SMTP server: errors from %s",
 			// src/smtpd/smtpd_chat.c:|338:   var_mail_name, state->namaddr);
-			match = 2
+			proceedsto = 2
 
 		} else if bf.Head["subject"][0] == "Undelivered Mail Returned to Sender" {
 			// Subject: Undelivered Mail Returned to Sender
-			match = 1
+			proceedsto = 1
 		}
-		if match == 0                   { return sis.RisingUnderway{} }
+		if proceedsto == 0 { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
@@ -65,7 +65,7 @@ func init() {
 		commandset := []string{}          // "in reply to * command" list
 		v          := &(dscontents[len(dscontents) - 1])
 
-		if match == 2 {
+		if proceedsto == 2 {
 			// The message body starts with "Transcript of session follows."
 			transcript := transcript.Rise(emailparts[0], "In:", "Out:")
 			if len(transcript) == 0 { return sis.RisingUnderway{} }
