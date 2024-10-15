@@ -32,7 +32,7 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 		// Content-Type: text/plain; charset=utf8
 		mesgformat = strings.ToLower(bf.Head["content-type"][0])
 	}
-	ctencoding := ""; if len(bf.Head["content-trtansfer-encoding"]) > 0 {
+	ctencoding := ""; if len(bf.Head["content-transfer-encoding"]) > 0 {
 		// Content-Transfer-Encoding: base64
 		ctencoding = strings.ToLower(bf.Head["content-transfer-encoding"][0])
 	}
