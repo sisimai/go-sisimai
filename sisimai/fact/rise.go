@@ -107,7 +107,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			if e.Rhost == "" {
 				// Try to pick a remote hostname from Received: headers of the bounce message
 				for ri := le - 1; ri > -1; ri-- {
-					// Get a local host name and a remote host name from the Received header.
+					// Check the Received: headers backwards and get a remote hostname
 					cv := rfc5322.Received(beforefact.Head["received"][ri])
 					if rfc1123.IsValidHostname(cv[0]) == false { continue }
 					e.Rhost = cv[0]; break
@@ -117,7 +117,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			if e.Lhost == "" {
 				// Try to pick a local hostname from Received: headers of the bounce message
 				for li := 0; li < le; li++ {
-					// Get a local host name and a remote host name from the Received header.
+					// Check the Received: headers forwards and get a local hostnaame
 					cv := rfc5322.Received(beforefact.Head["received"][li])
 					if rfc1123.IsValidHostname(cv[0]) == false { continue }
 					e.Lhost = cv[0]; break
@@ -308,15 +308,14 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		}
 		if thing.Alias == thing.Recipient.Address { thing.Alias = "" }
 
-		REASON: for {
-			// Decide the reason of email bounce
-			if len(thing.Reason) == 0 || RetryIndex[thing.Reason] == true {
-				// The value of "reason" is empty or is needed to check with other values again
-				re := thing.Reason; if re == "" { re = "undefined" }
-				thing.Reason = rhost.Find(&thing)
-				if thing.Reason == "" { thing.Reason = reason.Find(&thing) }
-				if thing.Reason == "" { thing.Reason = re }
-			}
+		REASON: for thing.Reason == "" || RetryIndex[thing.Reason] {
+			// Decide the reason of the email bounce
+			// The value of thing.Reason is empty or is needed to check with other values again
+			re := thing.Reason; if re == "" { re = "undefined" }
+
+			or := rhost.Find(&thing);  if reason.IsExplicit(or) { thing.Reason = or; break REASON }
+			or  = reason.Find(&thing); if reason.IsExplicit(or) { thing.Reason = or; break REASON }
+			thing.Reason = re
 			break REASON
 		}
 
