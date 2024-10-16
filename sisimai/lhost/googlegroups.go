@@ -48,7 +48,7 @@ func init() {
 		// Thanks,
 		//
 		// Google Groups
-		boundaries := []string{"----- Original message -----"}
+		boundaries := []string{"----- Original message -----", "Content-Type: message/rfc822"}
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
@@ -63,11 +63,15 @@ func init() {
 			sisimoji.Sweep(issuedcode),         // diagnosis
 		}
 
-		// * You might have spelled or formatted the group name incorrectly.
-		// * The owner of the group may have removed this group.
-		// * You may need to join the group before receiving permission to post.
-		// * This group may not be open to posting.
-		if strings.Count(emailparts[0], " * ") == 4 { recordwide[1] = "rejected" }
+		for {
+			// * You might have spelled or formatted the group name incorrectly.
+			// * The owner of the group may have removed this group.
+			// * You may need to join the group before receiving permission to post.
+			// * This group may not be open to posting.
+			if strings.Count(emailparts[0], "\n *") == 4 { recordwide[1] = "rejected"; break }
+			if strings.Count(emailparts[0], "\n*")  == 4 { recordwide[1] = "rejected"; break }
+			break
+		}
 
 		for _, e := range strings.Split(bf.Head["x-failed-recipients"][0], ",") {
 			// X-Failed-Recipients: neko@example.jp, nyaan@example.org, ...
