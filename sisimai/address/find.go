@@ -202,6 +202,7 @@ func Find(argv1 string) [3]string {
 			continue
 		}
 	} // End of the loop(for)
+	if emailtable[0] != "" { return emailtable }
 
 	if len(readbuffer[0]) == 0 {
 		// There is no email address
@@ -266,12 +267,20 @@ func Find(argv1 string) [3]string {
 		emailtable[1] = readbuffer[1]
 	}
 
-	for _, e := range readbuffer {
-		// There is no email address, try to pick an email address from each element in readbuffer
-		e = strings.Trim(e, "<>{}()[]`';.")
-		if IsQuotedAddress(e) == false { e = strings.Trim(e, `"`) }
-		if IsEmailAddress(e)  == true  { emailtable[0] = e; break }
-		if emailtable[0] != "" { break }
+	E0: for emailtable[0] == "" {
+		// There is no email address in emailtable[0]
+		for _, e := range []string{readbuffer[1], readbuffer[2]} {
+			// Try to pick an email address from each element in readbuffer
+			for _, f := range strings.Split(e, " ") {
+				// Find an email address like string from each element splitted by " "
+				if f == "" || strings.Index(f, "@") < 1            { continue }
+				f = strings.Trim(f, "<>{}()[]`';."); if len(f) < 5 { continue }
+
+				if IsQuotedAddress(f) == false { e = strings.Trim(e, `"`)    }
+				if IsEmailAddress(f)  == true  { emailtable[0] = f; break E0 }
+			}
+		}
+		break E0
 	}
 
 	// Check and tidy up the comment block
