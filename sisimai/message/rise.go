@@ -79,7 +79,7 @@ func Rise(mesg *string, hook *func()) sis.BeforeFact {
 		rawsubject := strings.TrimSpace(beforefact.Head["subject"][0])
 		if len(rawsubject) > 0 {
 			// Decode MIME-Encoded "Subject:" header
-			if rfc2045.IsEncoded(&rawsubject) {
+			if rfc2045.IsEncoded(rawsubject) {
 				// The header is mime-encoded
 				beforefact.Head["subject"][0] = *rfc2045.DecodeH(&rawsubject)
 

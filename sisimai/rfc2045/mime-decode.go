@@ -9,21 +9,19 @@ import "mime/quotedprintable"
 import "io/ioutil"
 
 // IsEncoded() checks that the argument is MIME encoded string or not.
-func IsEncoded(argv0 *string) (bool) {
-	// @param    *string    argv0  String to be checked
+func IsEncoded(argv0 string) bool {
+	// @param    string    argv0   String to be checked that it is MIME encoded or not
 	// @return   bool              true: Not MIME encoded string
     //                             false: MIME encoded string
+	argv0  = strings.ToUpper(argv0)
 	match := false
 	for {
 		// =?UTF-8?B?44OL44Oj44O844Oz?=
-		if !strings.Contains(*argv0, "=?") { break } // Begins with "=?"
-		if !strings.Contains(*argv0, "?=") { break } // Ends with "?="
-		if strings.Count(*argv0, "?") != 4 { break } // "?" appears 4 times
-		if len(*argv0) < 8                 { break } // String length should be 8 or more
-		if strings.Contains(*argv0, "?B?") ||
-		   strings.Contains(*argv0, "?b?") ||
-		   strings.Contains(*argv0, "?Q?") ||
-		   strings.Contains(*argv0, "?q?") { match = true }
+		if !strings.Contains(argv0, "=?") { break } // Begins with "=?"
+		if !strings.Contains(argv0, "?=") { break } // Ends with "?="
+		if strings.Count(argv0, "?") != 4 { break } // "?" appears 4 times
+		if len(argv0) < 8                 { break } // String length should be 8 or more
+		if strings.Contains(argv0, "?B?") || strings.Contains(argv0, "?Q?") { match = true }
 		break
 	}
 	return match
@@ -49,7 +47,7 @@ func DecodeH(argv0 *string) *string {
 
 	for index, value := range stringlist {
 		// Check and decode each part of the string
-		if IsEncoded(&value) {
+		if IsEncoded(value) {
 			if ! strings.HasPrefix(value, "=?") {
 				// For example, "[=?UTF-8?B?...]"
 				for _, c := range characters { value = strings.Replace(value, c + "=?", "=?", -1) }
