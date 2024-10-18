@@ -1,12 +1,18 @@
 // Copyright (C) 2020 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
-import "strings"
-import "mime"
+
+//  ____  _____ ____ ____   ___  _  _  ____  
+// |  _ \|  ___/ ___|___ \ / _ \| || || ___| 
+// | |_) | |_ | |     __) | | | | || ||___ \ 
+// |  _ <|  _|| |___ / __/| |_| |__   _|__) |
+// |_| \_\_|   \____|_____|\___/   |_||____/ 
 import "fmt"
 import "log"
-import "mime/quotedprintable"
+import "mime"
+import "strings"
 import "io/ioutil"
+import "mime/quotedprintable"
 
 // IsEncoded() checks that the argument is MIME encoded string or not.
 func IsEncoded(argv0 string) bool {
