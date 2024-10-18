@@ -196,11 +196,11 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 			// Check the value of Content-Transfer-Encoding: header
 			if ctencoding == "base64" {
 				// Content-Transfer-Encoding: base64
-				bodystring = *DecodeB(&bodyinside, "")
+				bodystring = DecodeB(bodyinside, "")
 
 			} else if ctencoding == "quoted-printable" {
 				// Content-Transfer-Encoding: quoted-printable
-				bodystring = *DecodeQ(&bodyinside)
+				bodystring = DecodeQ(bodyinside)
 
 			} else if ctencoding == "7bit" {
 				// Content-Transfer-Encoding: 7bit
