@@ -28,6 +28,7 @@ func IsIncluded(argv0 string) bool {
 	if strings.HasPrefix(argv0, "<") == false    { return false }
 	if strings.HasSuffix(argv0, ">") == false    { return false }
 	if strings.Contains(argv0,  "@") == false    { return false }
+	if strings.Contains(argv0,  " ") == true     { return false }
 	if IsEmailAddress(strings.Trim(argv0, "<>")) { return true  }
 	return false
 }
