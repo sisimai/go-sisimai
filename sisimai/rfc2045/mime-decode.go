@@ -84,15 +84,15 @@ func DecodeH(argv0 string) string {
 }
 
 // DecodeB() decodes Base64 encoded text.
-func DecodeB(argv0 *string, argv1 string) *string {
-	// @param    *string    argv0  Base64 Encoded text
+func DecodeB(argv0 string, argv1 string) string {
+	// @param    string     argv0  Base64 Encoded text
 	// @param    string     argv1  Character set name
-	// @return   *string           MIME-Decoded text
-	if len(*argv0) < 8 { return argv0 }
+	// @return   string            MIME-Decoded text
+	if len(argv0)  < 8 { return argv0 }
 	if len(argv1) == 0 { argv1 = "utf-8" }
 
 	decodingif := new(mime.WordDecoder)
-	base64text := strings.TrimSpace(*argv0)
+	base64text := strings.TrimSpace(argv0)
 	base64text  = strings.Join(strings.Split(base64text, "\n"), "")
 	base64text  = fmt.Sprintf("=?%s?B?%s?=", argv1, base64text)
 	plainvalue := ""
@@ -105,7 +105,7 @@ func DecodeB(argv0 *string, argv1 string) *string {
 		// Successfully decoded
 		plainvalue = plain
 	}
-	return &plainvalue
+	return plainvalue
 }
 
 // DecodeQ() decodes Quoted-Pritable encdoed text
