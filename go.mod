@@ -33,6 +33,8 @@ require (
 )
 
 require (
+	golang.org/x/net v0.30.0 // indirect
+	golang.org/x/text v0.19.0 // indirect
 	sisimai/lhost v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/message v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/reason v0.0.0-00010101000000-000000000000 // indirect
