@@ -28,53 +28,53 @@ func IsEncoded(argv0 string) bool {
 }
 
 // DecodeH() decodes the value of email header which is MIME-Encoded string.
-func DecodeH(argv0 *string) *string {
-	// @param    *string    argvs  A pointer to MIME-Encoded text
-	// @return   *string           MIME-Decoded text
+func DecodeH(argv0 string) string {
+	// @param    string    argvs  MIME-Encoded text
+	// @return   string           MIME-Decoded text
 	hasdecoded := ""
 	stringlist := []string{}
 	decodingif := new(mime.WordDecoder)
 	characters := []string{".", "[", "]"}
 
-	if strings.Contains(*argv0, " ") {
+	if strings.Contains(argv0, " ") {
 		// The argument string include 1 or more space characters
-		stringlist = strings.Split(*argv0, " ")
+		stringlist = strings.Split(argv0, " ")
 
 	} else {
 		// The argument string does not contain any space characters
-		stringlist = append(stringlist, *argv0)
+		stringlist = append(stringlist, argv0)
 	}
 
-	for index, value := range stringlist {
+	for j, e := range stringlist {
 		// Check and decode each part of the string
-		if IsEncoded(value) {
-			if ! strings.HasPrefix(value, "=?") {
+		if IsEncoded(e) {
+			if strings.HasPrefix(e, "=?") == false {
 				// For example, "[=?UTF-8?B?...]"
-				for _, c := range characters { value = strings.Replace(value, c + "=?", "=?", -1) }
+				for _, c := range characters { e = strings.Replace(e, c + "=?", "=?", -1) }
 			}
 
-			if ! strings.HasSuffix(value, "?=") {
+			if strings.HasSuffix(e, "?=") == false {
 				// For example, "=?UTF-8?B?....?=."
-				for _, c := range characters { value = strings.Replace(value, "?=" + c, "?=", -1) }
+				for _, c := range characters { e = strings.Replace(e, "?=" + c, "?=", -1) }
 			}
 
-			if de, oops := decodingif.DecodeHeader(value); oops == nil {
+			if f, nyaan := decodingif.DecodeHeader(e); nyaan == nil {
 				// Successfully decoded
-				if index > 0 { hasdecoded += " " }
-				hasdecoded += de
+				if j > 0 { hasdecoded += " " }
+				hasdecoded += f
 
 			} else {
 				// Failed to decode
-				if index > 0 { hasdecoded += " " }
-				hasdecoded += value
+				if j > 0 { hasdecoded += " " }
+				hasdecoded += e
 			}
 		} else {
 			// Is not MIME-Encoded text part
-			if index > 0 { hasdecoded += " " }
-			hasdecoded += value
+			if j > 0 { hasdecoded += " " }
+			hasdecoded += e
 		}
 	}
-	return &hasdecoded
+	return hasdecoded
 }
 
 // DecodeB() decodes Base64 encoded text.
