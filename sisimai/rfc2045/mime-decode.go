@@ -109,10 +109,10 @@ func DecodeB(argv0 string, argv1 string) string {
 }
 
 // DecodeQ() decodes Quoted-Pritable encdoed text
-func DecodeQ(argv0 *string) *string {
-	// @param    *string    argv0 Quoted-Printable Encoded text
-	// @return   *string          MIME-Decoded text
-	readstring := strings.NewReader(*argv0)
+func DecodeQ(argv0 string) string {
+	// @param    string     argv0 Quoted-Printable Encoded text
+	// @return   string           MIME-Decoded text
+	readstring := strings.NewReader(argv0)
 	decodingif := quotedprintable.NewReader(readstring)
 	plainvalue := ""
 
@@ -124,6 +124,6 @@ func DecodeQ(argv0 *string) *string {
 		// Successfully decoded
 		plainvalue = string(plain)
 	}
-	return &plainvalue
+	return plainvalue
 }
 

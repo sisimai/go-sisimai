@@ -45,7 +45,7 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 
 		} else if ctencoding == "quoted-printable" {
 			// Content-Transfer-Encoding: quoted-printable
-			bf.Body = *(rfc2045.DecodeQ(&bf.Body))
+			bf.Body = rfc2045.DecodeQ(bf.Body)
 		}
 
 		if strings.HasPrefix(mesgformat, "text/html") {
