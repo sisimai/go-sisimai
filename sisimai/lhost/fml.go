@@ -2,11 +2,11 @@
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
-//       _               _      _______ __  __ _     
-//  _ __| |__   ___  ___| |_   / /  ___|  \/  | |    
-// | '__| '_ \ / _ \/ __| __| / /| |_  | |\/| | |    
-// | |  | | | | (_) \__ \ |_ / / |  _| | |  | | |___ 
-// |_|  |_| |_|\___/|___/\__/_/  |_|   |_|  |_|_____|
+//  _ _               _      _______ __  __ _     
+// | | |__   ___  ___| |_   / /  ___|  \/  | |    
+// | | '_ \ / _ \/ __| __| / /| |_  | |\/| | |    
+// | | | | | (_) \__ \ |_ / / |  _| | |  | | |___ 
+// |_|_| |_|\___/|___/\__/_/  |_|   |_|  |_|_____|
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc5322"
@@ -17,8 +17,8 @@ func init() {
 	InquireFor["FML"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body)            == 0 { return sis.RisingUnderway{} }
+		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
 		if len(bf.Head["x-mlserver"])                     == 0 { return sis.RisingUnderway{} }
 		if strings.Index(bf.Head["from"][0], "-admin@")    < 1 { return sis.RisingUnderway{} }
