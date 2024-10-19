@@ -24,15 +24,18 @@ func init() {
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := false
-		emailtitle := bf.Head["subject"][0]
-		titletable := []string{
-			"Mail could not be delivered",
-			"メッセージを配信できません。",
-			"メール配信に失敗しました",
-		}
+		for {
+			emailtitle := bf.Head["subject"][0]
+			titletable := []string{
+				"Mail could not be delivered",
+				"メッセージを配信できません。",
+				"メール配信に失敗しました",
+			}
 
-		if strings.HasPrefix(bf.Head["from"][0], `"InterScan`) { proceedsto = true }
-		if sisimoji.ContainsAny(emailtitle, titletable)        { proceedsto = true }
+			if strings.HasPrefix(bf.Head["from"][0], `"InterScan`) { proceedsto = true; break }
+			if sisimoji.ContainsAny(emailtitle, titletable)        { proceedsto = true; break }
+			break
+		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
 		boundaries := []string{"Content-Type: message/rfc822"}
