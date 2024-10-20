@@ -127,7 +127,7 @@ func init() {
 		}
 
 		for j, _ := range dscontents {
-			// Set default values stored in "permessage" if each value in "dscontents" is empty.
+			// Tidy up the error message in e.Diagnosis
 			e := &(dscontents[j])
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 		}

@@ -146,7 +146,7 @@ func init() {
 		if recipients == 0 { return sis.RisingUnderway{} }
 
 		for j, _ := range dscontents {
-			// Check each value of DeliveryMatter
+			// Check each value of DeliveryMatter{}, try to detect the bounce reason.
 			e := &(dscontents[j])
 
 			if alternates != "" {

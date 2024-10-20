@@ -77,7 +77,7 @@ func init() {
 		if recipients == 0 { return sis.RisingUnderway{} }
 
 		for j, _ := range dscontents {
-			// Set default values stored in "permessage" if each value in "dscontents" is empty.
+			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
 
 			if alternates != "" {

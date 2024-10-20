@@ -89,7 +89,7 @@ func init() {
 		if recipients == 0 { return sis.RisingUnderway{} }
 
 		for j, _ := range dscontents {
-			// Get and set other values into sis.DeliveryMatter{}
+			// Get and set other values into sis.DeliveryMatter{}, Try to detect the bounce reason
 			e := &(dscontents[j])
 
 			if e.Diagnosis == "" { e.Diagnosis = alternates }
