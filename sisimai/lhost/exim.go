@@ -389,7 +389,7 @@ func init() {
 				if anotherone[0] != "" { anotherone[j] = anotherone[0] }
 			}
 
-			if len(anotherone[j]) > 0 {
+			if len(anotherone) > j {
 				// Copy alternative error message
 				if e.Diagnosis == "" { e.Diagnosis = anotherone[j] }
 
