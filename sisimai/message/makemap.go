@@ -18,6 +18,7 @@ func makemap(argv0 *mail.Header, argv1 bool) map[string][]string {
 	// @return   map[string]string       Structured email header data
 	headermaps := map[string][]string{}
 	receivedby := []string{}
+	isrequired := []string{"from", "received", "message-id", "content-type", "subject"}
 
 	for e, v := range *argv0 {
 		// Each key name is the lower-cased string, each value is an array ([]string{})
@@ -45,7 +46,7 @@ func makemap(argv0 *mail.Header, argv1 bool) map[string][]string {
 		headermaps["received"] = receivedby
 	}
 
-	for _, e := range []string{"from", "received", "message-id", "content-type", "subject"} {
+	for _, e := range isrequired {
 		// The following fields should be exist
 		if len(headermaps[e]) == 0 { headermaps[e] = []string{""} }
 	}
