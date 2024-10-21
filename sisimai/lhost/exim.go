@@ -23,9 +23,8 @@ func init() {
 	InquireFor["Exim"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0                                { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0                                { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Head["from"][0], ".mail.ru") { return sis.RisingUnderway{} }
+		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
 		// X-Failed-Recipients: kijitora@example.ed.jp
 		proceedsto := uint8(0)
@@ -472,11 +471,11 @@ func init() {
 			// The value of "Status:" indicates permanent error but the value of SMTP reply code in
 			// Diagnostic-Code: field is "TEMPERROR"!!!!
 			re := e.Reason
-			cr :=  reply.Find(e.Diagnosis, e.Status)
+			cr := reply.Find(e.Diagnosis, e.Status)
 			cs := status.Find(e.Diagnosis, cr)
 			cv := ""
 
-			if cr[0:1] == "4" || re == "expired" || re == "mailboxfull" {
+			if strings.HasPrefix(cr, "4") || re == "expired" || re == "mailboxfull" {
 				// Set the pseudo status code as a temporary error
 				cv = status.Code(re, true)
 
