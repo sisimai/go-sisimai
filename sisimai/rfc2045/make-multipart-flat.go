@@ -151,19 +151,19 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 	//   - content-transfer-encoding: quoted-printable  => Content-Transfer-Encoding: quoted-printable
 	//   - CHARSET=, BOUNDARY=                          => charset-, boundary=
 	//   - message/xdelivery-status                     => message/delivery-status
-	for _, e := range [...]string{ "CONTENT-TYPE", "Content-type", "content-type" } {
+	for _, e := range []string{"CONTENT-TYPE", "Content-type", "content-type"} {
 		// Transform the Content-Type header name to the camel cased
 		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
 		*argv1 = strings.Replace(*argv1, e + ":", "Content-Type:", -1)
 	}
 
-	for _, e := range [...]string { "CONTENT-TRANSFER-ENCODING", "content-transfer-encoding" } {
+	for _, e := range []string{"CONTENT-TRANSFER-ENCODING", "content-transfer-encoding"} {
 		// Transform the Content-Transfer-Encoding header name to the camel cased
 		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
 		*argv1 = strings.Replace(*argv1, e + ":", "Content-Transfer-Encoding:", -1)
 	}
 
-	for _, e := range [...]string { "CHARSET", "CharSet", "Charset", "BOUNDARY", "Boundary" } {
+	for _, e := range []string{"CHARSET", "CharSet", "Charset", "BOUNDARY", "Boundary"} {
 		// Transform each parameter field name to the lower cased
 		// TODO: These parameters have been transformed by sisimai.message.Tidy() function ...?
 		*argv1 = strings.Replace(*argv1, e + "=", strings.ToLower(e) + "=", -1)
@@ -229,16 +229,18 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 
 		} else {
 			// There is no Content-Transfer-Encoding header in the part 
-			if strings.HasSuffix(mediatypev, "/delivery-status") ||
-			   strings.HasSuffix(mediatypev, "/feedback-report") ||
-			   strings.HasSuffix(mediatypev, "/rfc822") {
-
-				// Add Content-Type: header of each part (will be used as a delimiter at Sisimai::Lhost)
-				// into the body inside when the value of Content-Type: is message/delivery-status, or
-				// message/rfc822, or text/rfc822-headers
-				bodystring += fmt.Sprintf("Content-Type: %s\n", mediatypev)
-			}
 			bodystring += bodyinside
+		}
+
+		// There is no Content-Transfer-Encoding header in the part 
+		if strings.HasSuffix(mediatypev, "/delivery-status") ||
+		   strings.HasSuffix(mediatypev, "/feedback-report") ||
+		   strings.HasSuffix(mediatypev, "/rfc822") {
+
+			// Add Content-Type: header of each part (will be used as a delimiter at Sisimai::Lhost)
+			// into the body inside when the value of Content-Type: is message/delivery-status, or
+			// message/rfc822, or text/rfc822-headers
+			bodystring += fmt.Sprintf("Content-Type: %s\n", mediatypev)
 		}
 
 		// Append "\n" when the last character of $bodystring is not LF
