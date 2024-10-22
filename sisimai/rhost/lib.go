@@ -38,10 +38,11 @@ func Find(fo *sis.Fact) string {
 	// @return   string          Bounce reason name or an empty string
 	if fo.DiagnosticCode == "" { return "" }
 
+	clienthost := strings.ToLower(fo.Lhost)
 	remotehost := strings.ToLower(fo.Rhost)
 	domainpart := strings.ToLower(fo.Destination)
 	rhostclass := ""
-	if len(remotehost + domainpart) == 0 { return "" }
+	if len(remotehost + domainpart + clienthost) == 0 { return "" }
 
 	for e := range RhostClass {
 		// Try to match the remote host or the domain part with each value of RhostClass
@@ -50,6 +51,7 @@ func Find(fo *sis.Fact) string {
 			// - Whether "r" includes the domain part of the recipient address or not
 			if strings.HasSuffix(remotehost, r) { rhostclass = e; break }
 			if strings.HasSuffix(r, domainpart) { rhostclass = e; break }
+			if strings.HasSuffix(clienthost, r) { rhostclass = e; break }
 		}
 		if rhostclass != "" { break }
 	}
