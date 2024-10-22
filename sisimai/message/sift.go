@@ -54,7 +54,7 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 		}
 	} else if strings.HasPrefix(mesgformat, "multipart/") {
 		// In case of Content-Type: multipart/*
-		bf.Body = *(rfc2045.MakeFlat(mesgformat, &bf.Body))
+		bf.Body = *(rfc2045.MakeFlat(bf.Head["content-type"][0], &bf.Body))
 	}
 	bf.Body = *(sisimoji.ToLF(&bf.Body))
 	bf.Body = strings.ReplaceAll(bf.Body, "\t", " ")
