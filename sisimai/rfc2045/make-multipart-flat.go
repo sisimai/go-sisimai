@@ -98,7 +98,7 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 
 	boundary01 := Boundary(argv0, 0); if len(boundary01) == 0 { return nil }
 	multiparts := strings.Split(*argv1, boundary01 + "\n")
-	partstable := [][3]string{}
+	partstable := [][3]string{} // []
 
 	// Remove empty or useless preamble and epilogue of multipart/* block
 	if len(multiparts[0])                   < 8 { multiparts = multiparts[1:] }
@@ -203,8 +203,7 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 
 			} else if ctencoding == "7bit" {
 				// Content-Transfer-Encoding: 7bit
-				ctxcharset := Parameter(e[0], "charset")
-				if strings.Contains(ctxcharset, "iso-2022-") && len(ctxcharset) == 11 {
+				if ctx := Parameter(e[0], "charset"); strings.HasPrefix(ctx, "iso-2022-") {
 					// Content-Type: text/plain; charset=ISO-2022-JP
 					//
 					// TODO: Convert the string to UTF-8
@@ -233,14 +232,11 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 		}
 
 		// There is no Content-Transfer-Encoding header in the part 
-		if strings.HasSuffix(mediatypev, "/delivery-status") ||
-		   strings.HasSuffix(mediatypev, "/feedback-report") ||
-		   strings.HasSuffix(mediatypev, "/rfc822") {
-
+		if sisimoji.ContainsAny(mediatypev, []string{"/delivery-status", "/rfc822", "/feedback-report"}) {
 			// Add Content-Type: header of each part (will be used as a delimiter at Sisimai::Lhost)
 			// into the body inside when the value of Content-Type: is message/delivery-status, or
 			// message/rfc822, or text/rfc822-headers
-			bodystring += fmt.Sprintf("Content-Type: %s\n", mediatypev)
+			bodystring = fmt.Sprintf("Content-Type: %s\n%s", mediatypev, bodystring)
 		}
 
 		// Append "\n" when the last character of $bodystring is not LF
