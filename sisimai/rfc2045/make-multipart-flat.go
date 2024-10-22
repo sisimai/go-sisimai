@@ -143,8 +143,8 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 	// @param    string  argv0  The value of Content-Type header
 	// @param    *string argv1  A pointer to multipart/* message blocks
 	// @return   *string        Message body
-	if strings.Index(argv0, "multipart/") == -1 { return nil }
-	if strings.Index(argv0, "boundary=")  == -1 { return nil }
+	if strings.Contains(argv0, "multipart/") == false { return nil }
+	if strings.Contains(argv0, "boundary=")  == false { return nil }
 
 	// Some bounce messages include lower-cased "content-type:" field such as the followings:
 	//   - content-type: message/delivery-status        => Content-Type: message/delivery-status
@@ -226,7 +226,7 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 			if len(bodystring) == 0 { continue }
 
 			// The new-line code in the converted string is CRLF
-			if strings.Index(bodystring, "\r\n") > -1 { bodystring = *sisimoji.ToLF(&bodystring) }
+			if strings.Contains(bodystring, "\r\n") { bodystring = *sisimoji.ToLF(&bodystring) }
 
 		} else {
 			// There is no Content-Transfer-Encoding header in the part 
