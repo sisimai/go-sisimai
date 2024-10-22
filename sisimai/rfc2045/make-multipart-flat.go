@@ -169,7 +169,6 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 		*argv1 = strings.Replace(*argv1, e + "=", strings.ToLower(e) + "=", -1)
 	}
 	*argv1 = strings.Replace(*argv1, "message/xdelivery-status", "message/delivery-status", -1)
-
 	multiparts := levelout(argv0, argv1)
 	flattenout := ""
 
@@ -185,7 +184,7 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 		if mediatypev == "text/html" {
 			// Skip text/html part when the value of Content-Type: header in an internal part of
 			// multipart/* includes multipart/alternative;	
-			if strings.Index(argv0, "multipart/alternative") > -1 { continue }
+			if strings.Contains(argv0, "multipart/alternative") { continue }
 			istexthtml = true
 		}
 		ctencoding := e[1] // The value of Content-Transfer-Encoding header
@@ -205,7 +204,7 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 			} else if ctencoding == "7bit" {
 				// Content-Transfer-Encoding: 7bit
 				ctxcharset := Parameter(e[0], "charset")
-				if strings.Index(ctxcharset, "iso-2022-") > -1 && len(ctxcharset) == 11 {
+				if strings.Contains(ctxcharset, "iso-2022-") && len(ctxcharset) == 11 {
 					// Content-Type: text/plain; charset=ISO-2022-JP
 					//
 					// TODO: Convert the string to UTF-8
