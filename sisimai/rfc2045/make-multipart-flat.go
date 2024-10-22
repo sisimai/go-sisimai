@@ -1,6 +1,12 @@
 // Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
+
+//  ____  _____ ____ ____   ___  _  _  ____  
+// |  _ \|  ___/ ___|___ \ / _ \| || || ___| 
+// | |_) | |_ | |     __) | | | | || ||___ \ 
+// |  _ <|  _|| |___ / __/| |_| |__   _|__) |
+// |_| \_\_|   \____|_____|\___/   |_||____/ 
 import "fmt"
 import "strings"
 import sisimoji "sisimai/string"
@@ -15,10 +21,8 @@ func haircut(block *string, heads bool) []string {
 	upperchunk := textchunks[0]
 	lowerchunk := textchunks[1]
 
-	if len(upperchunk) == 0 || strings.Contains(upperchunk, "Content-Type:") == false {
-		// There is neither "Content-Type:" nor "Content-Transfer-Encoding:" header
-		return []string { "", "" }
-	}
+	// There is neither "Content-Type:" nor "Content-Transfer-Encoding:" header
+	if len(upperchunk) == 0 || strings.Contains(upperchunk, "Content-Type:") == false { return []string{"", ""} }
 
 	var headerpart[2] string = [2]string{"", ""} // {"text/plain; charset=iso-2022-jp; ...", "quoted-printable"}
 	for _, e := range strings.Split(upperchunk, "\n") {
