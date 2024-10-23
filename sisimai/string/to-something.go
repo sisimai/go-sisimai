@@ -1,6 +1,13 @@
 // Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package string
+
+//      _        _             
+//  ___| |_ _ __(_)_ __   __ _ 
+// / __| __| '__| | '_ \ / _` |
+// \__ \ |_| |  | | | | | (_| |
+// |___/\__|_|  |_|_| |_|\__, |
+//                       |___/ 
 import "strings"
 
 // ToLF() replace CR and CR/LF to LF.
@@ -28,28 +35,45 @@ func ToPlain(argv0 *string, loose bool) *string {
 	// @return   [*string]        Plain text
 	if len(*argv0) == 0 { return argv0 }
 
-	plain := ""
 	xhtml := *argv0
-	body0 := strings.Index(strings.ToLower(*argv0), "<body>")
+	lower := strings.ToLower(*argv0)
+	plain := "" // Plain text (including no HTML element)
+	body0 := -1 // Index of the beginning of the <body> element
 
-	// Remove HTML header part
-	if body0 > -1 { xhtml = xhtml[body0 + len("<body>"):len(xhtml)] }
+	for _, e := range []string{">", " ", "\t", "\n"} {
+		// Find the position of <body?, and remove the HTML header part
+		body0  = strings.Index(lower, "<body" + e); if body0 < 0 { continue }
+		body0 += len("<body>") + 1
 
-	for _, e := range strings.Split(xhtml, "</") {
-		// Find ">" from HTML element and remove string until ">"
-		for {
-			if strings.HasPrefix(e, "body>") { break }
-			if strings.HasPrefix(e, "html>") { break }
+		if e != ">" { body0 = IndexOnTheWay(lower, ">", body0) + 1 }
+		xhtml = xhtml[body0:]
+		lower = strings.ToLower(xhtml)
 
-			p := strings.Index(e, "<")
-			q := strings.Index(e, ">")
-
-			if p > -1 && p < q { plain += e[0:p - 1] }
-			if p == -1 || q == -1 { plain += e }
-			e  = e[q + 1:len(e)]
-			break
-		}
+		// Remove string from <style> to </style>
+		p0 := strings.Index(lower, "<style");  if p0 < 0 { break }
+		p1 := strings.Index(lower, "</style"); if p1 < 0 { break }
+		xhtml = xhtml[:p0] + xhtml[p1 + 8:]
 	}
+
+	for strings.Contains(xhtml, "<") || strings.Contains(xhtml, ">") {
+		// Find "<" from HTML element and remove string until ">"
+		p0 := strings.Index(xhtml, "<");         if p0 < 0 { break }
+		p1 := IndexOnTheWay(xhtml, ">", p0 + 2); if p1 < 0 { break }
+
+		if p0 >  0 { plain += xhtml[0:p0] + " "      }
+		if p0 > p1 { plain += xhtml[p1 + 1:p0] + " " }
+
+		xhtml = xhtml[p1 + 1:]
+	}
+
+	// Remove entity references
+	plain = strings.ReplaceAll(plain, "&lt;",   "<")
+	plain = strings.ReplaceAll(plain, "&gt;",   ">")
+	plain = strings.ReplaceAll(plain, "&quot;", `"`)
+	plain = strings.ReplaceAll(plain, "&nbsp;", " ")
+	plain = strings.ReplaceAll(plain, "&copy;", "(C)")
+	plain = strings.ReplaceAll(plain, "&amp;",  "&")
+	plain = Sweep(strings.ReplaceAll(plain, "\n", " "))
 	return &plain
 }
 
