@@ -66,7 +66,7 @@ func ToPlain(argv0 *string, loose bool) *string {
 		xhtml = xhtml[p1 + 1:]
 	}
 
-	// Remove entity references
+	// Remove or replace entity references
 	plain = strings.ReplaceAll(plain, "&lt;",   "<")
 	plain = strings.ReplaceAll(plain, "&gt;",   ">")
 	plain = strings.ReplaceAll(plain, "&quot;", `"`)
