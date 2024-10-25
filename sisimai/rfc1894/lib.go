@@ -78,7 +78,7 @@ func Match(argv0 string) uint8 {
 // Field() checks that the argument is including field defined in RFC3464 or not and return values
 func Field(argv0 string) []string {
 	// @param    string   argv0 A line inlcuding field and value defined in RFC3464
-	// @return   []string       []string{"field-name", "value-type", "value", "field-group"}
+	// @return   []string       []string{"field-name", "value-type", "value", "field-group", "comment"}
 	if len(argv0) == 0 { return []string{} }
 
 	fieldgroup := map[string]string{
@@ -122,7 +122,8 @@ func Field(argv0 string) []string {
 	// - 1: Sub Type: RFC822, DNS, X-Unix, and so on)
 	// - 2: Value
 	// - 3: Field Group(addr, code, date, host, stat, text)
-	table := []string{"", "", "", ""}
+	// - 4: Comment
+	table := []string{"", "", "", "", ""}
 	match := false
 	for _, e := range captureson[group] {
 		// Try to match with each pattern of Per-Message field, Per-Recipient field
@@ -173,6 +174,16 @@ func Field(argv0 string) []string {
 		// - Arrival-Date: Mon, 21 May 2018 16:09:59 +0900
 		table[2] = parts[1]
 		if group != "date" { table[2] = strings.ToLower(parts[1]) }
+	}
+
+	if sisimoji.Aligned(table[2], []string{" (", ")"}) {
+		// Extract text enclosed in parentheses as comments
+		// Reporting-MTA: dns; mr21p30im-asmtp004.me.example.com (tcp-daemon)
+		// TODO: Implement this block at p5-sisimai, rb-sisimai
+		p1 := strings.Index(table[2], " (")
+		p2 := strings.Index(table[2], ")" )
+		table[4] = table[2][p1 + 2:p2]
+		table[2] = table[2][0:p1]
 	}
 
 	return table
