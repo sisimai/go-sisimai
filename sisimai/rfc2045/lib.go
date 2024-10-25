@@ -22,7 +22,7 @@ func Parameter(argv0 string, argv1 string) string {
 	if len(argv1) > 0 {
 		// There is a parameter name in the second argument
 		parameterq = strings.ToLower(argv1) + "="
-		paramindex = strings.Index(argv0, parameterq)
+		paramindex = strings.Index(strings.ToLower(argv0), parameterq)
 	}
 	if paramindex == -1 { return "" }
 
