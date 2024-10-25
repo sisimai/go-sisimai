@@ -147,8 +147,9 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 	// @param    string  argv0  The value of Content-Type header
 	// @param    *string argv1  A pointer to multipart/* message blocks
 	// @return   *string        Message body
-	if strings.Contains(argv0, "multipart/") == false { return nil }
-	if strings.Contains(argv0, "boundary=")  == false { return nil }
+	lhead := strings.ToLower(argv0)
+	if strings.Contains(lhead, "multipart/") == false { return nil }
+	if strings.Contains(lhead, "boundary=")  == false { return nil }
 
 	// Some bounce messages include lower-cased "content-type:" field such as the followings:
 	//   - content-type: message/delivery-status        => Content-Type: message/delivery-status
@@ -187,8 +188,8 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 		if strings.Index(mediatypev, "text/") + strings.Index(mediatypev, "message/") == -2 { continue }
 		if mediatypev == "text/html" {
 			// Skip text/html part when the value of Content-Type: header in an internal part of
-			// multipart/* includes multipart/alternative;	
-			if strings.Contains(argv0, "multipart/alternative") { continue }
+			// multipart/* includes multipart/alternative;
+			if strings.Contains(lhead, "multipart/alternative") { continue }
 			istexthtml = true
 		}
 		ctencoding := e[1] // The value of Content-Transfer-Encoding header
