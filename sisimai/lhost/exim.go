@@ -28,7 +28,9 @@ func init() {
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
 		// X-Failed-Recipients: kijitora@example.ed.jp
+		thirdparty := false
 		proceedsto := uint8(0)
+		messageidv := bf.Head["message-id"][0]
 		emailtitle := []string{
 			"Delivery Status Notification",
 			"Mail delivery failed",
@@ -38,18 +40,31 @@ func init() {
 			"error(s) in forwarding or filtering",
 		}
 		if strings.HasPrefix(bf.Head["from"][0], `"Mail Delivery System"`) { proceedsto++ }
-		for bf.Head["message-id"][0] != "" {
+		for messageidv != "" {
 			// Message-Id: <E1P1YNN-0003AD-Ga@example.org>
-			if strings.Index(bf.Head["message-id"][0], "<") !=  0 { break }
-			if strings.Index(bf.Head["message-id"][0], "-") !=  8 { break }
-			if strings.Index(bf.Head["message-id"][0], "@") != 18 { break }
+			if strings.Index(messageidv, "<") !=  0 { break }
+			if strings.Index(messageidv, "-") !=  8 { break }
+			if strings.Index(messageidv, "@") != 18 { break }
 			proceedsto++; break
 		}
 		for _, e := range emailtitle {
+			// Subject: Mail delivery failed: returning message to sender
+			// Subject: Mail delivery failed
+			// Subject: Message frozen
 			if strings.Contains(bf.Head["subject"][0], e) == false { continue }
 			proceedsto++; break
 		}
-		if proceedsto < 2 { return sis.RisingUnderway{} }
+
+		for {
+			// Exim clones of the third Parties
+			// 1. McAfee Saas (Formerly MXLogic)
+			if len(bf.Head["x-mx-bounce"])    > 0    { thirdparty = true; break }
+			if len(bf.Head["x-mxl-hash"])     > 0    { thirdparty = true; break }
+			if len(bf.Head["x-mxl-notehash"]) > 0    { thirdparty = true; break }
+			if strings.Contains(messageidv, "<mxl~") { thirdparty = true; break }
+			break
+		}
+		if proceedsto < 2 && thirdparty == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{
@@ -59,6 +74,7 @@ func init() {
 			// deliver.c:6426|"------ This is a copy of the message's headers. ------\n");
 			"------ This is a copy of the message, including all the headers. ------",
 			"Content-Type: message/rfc822",
+			"Included is a copy of the message header:\n-----------------------------------------", // MXLogic
 		}
 		startingof := map[string][]string{
 			// Error text strings which defined in exim/src/deliver.c
@@ -212,11 +228,12 @@ func init() {
 			ce := false
 			for {
 				// Check whether the line matches the following conditions or not
-				if strings.HasPrefix(e, "  ") == false { break } // The line should start with "  " (2 spaces)
-				if strings.Index(e, "@") < 2           { break } // "@" should be included (email)
-				if strings.Index(e, ".") < 2           { break } // "." should be included (domain part)
-				if strings.Contains(e, "pipe to |")    { break } // Exclude "pipe to /path/to/prog" line
-				if e[2:3] == " " || e[2:3] == "<"      { break } // The 3rd character is " " or "<"
+				if strings.HasPrefix(e, "  ") == false  { break } // The line should start with "  " (2 spaces)
+				if strings.Index(e, "@") < 2            { break } // "@" should be included (email)
+				if strings.Index(e, ".") < 2            { break } // "." should be included (domain part)
+				if strings.Contains(e, "pipe to |")     { break } // Exclude "pipe to /path/to/prog" line
+				if e[2:3] == " "                        { break } // The 3rd character is " "
+				if thirdparty == false && e[2:3] == "<" { break } // MXLogic returns "  <neko@example.jp>: ..."
 
 				ce = true; break
 			}
@@ -321,7 +338,7 @@ func init() {
 					if len(dscontents) == recipients {
 						// This line is an error message
 						if e == "" { continue }
-						v.Diagnosis += e + " "
+						v.Diagnosis += " " + e
 
 					} else {
 						// Error message when the email address above does not include '@' and domain part.
@@ -415,6 +432,7 @@ func init() {
 					}
 				}
 			}
+
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 			p1 = strings.Index(e.Diagnosis, "__"); if p1 > 1 { e.Diagnosis = e.Diagnosis[0:p1] }
 
