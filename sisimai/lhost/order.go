@@ -27,7 +27,7 @@ func OrderBySubject(title string) []string {
 		"failure-notice":   []string{"Yahoo", "qmail", "mFILTER", "Activehunter", "X4"},
 		"loop-alert":       []string{"FML"},
 		"mail-could":       []string{"InterScanMSS"},
-		"mail-delivery":    []string{"Exim", "GMX", "EinsUndEins", "Zoho", "MXLogic"},
+		"mail-delivery":    []string{"Exim", "GMX", "EinsUndEins", "Zoho"},
 		"mail-failure":     []string{"Exim"},
 		"mail-not":         []string{"X4"},
 		"mail-system":      []string{"EZweb"},
@@ -88,7 +88,7 @@ func AnotherOrder() []string {
 
 		// The following is a fallback list
 		"Postfix", "Yahoo", "GMX", "MessagingServer", "EinsUndEins", "Domino",
-		"Notes", "qmail", "Courier", "OpenSMTPD", "Zoho", "MXLogic", "MailFoundry",
+		"Notes", "qmail", "Courier", "OpenSMTPD", "Zoho", "MailFoundry",
 		"McAfee", "V5sendmail", "mFILTER", "PowerMTA", "GoogleGroups",
 		"Gmail", "EZweb", "IMailServer", "MailMarshalSMTP", "Activehunter", "Biglobe",
 		"X4", "X1", "X3", "X6",
