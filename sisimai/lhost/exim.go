@@ -17,7 +17,6 @@ import "sisimai/smtp/status"
 import "sisimai/smtp/command"
 import sisiaddr "sisimai/address"
 import sisimoji "sisimai/string"
-import "fmt"
 
 func init() {
 	// Decode bounce messages from Exim Internet Mailer: https://www.exim.org/
@@ -158,6 +157,13 @@ func init() {
 			"was frozen on arrival by ",
 		}
 
+		if strings.Contains(bf.Body, "\n----- This ") {
+			// There are extremely rare cases where there are only five hyphens.
+			// https://github.com/sisimai/set-of-emails/blob/master/maildir/bsd/lhost-exim-05.eml
+			// ----- This is a copy of the message, including all the headers. ------
+			bf.Body = strings.Replace(bf.Body, "\n----- This ", "\n------ This ", 1)
+		}
+
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
@@ -257,6 +263,7 @@ func init() {
 						cv = sisiaddr.S3S4(e[2:])
 					}
 				}
+				if sisiaddr.IsEmailAddress(cv) == false { continue }
 				v.Recipient = cv
 				recipients++
 
@@ -324,8 +331,6 @@ func init() {
 
 						} else {
 							if strings.HasPrefix(e, "    ") == false { continue }
-							fmt.Printf("AO = %##v\n", anotherone)
-							fmt.Printf("RI = %d\n", rightindex)
 							anotherone[rightindex] += e + " "
 						}
 					}
