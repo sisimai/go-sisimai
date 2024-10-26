@@ -393,11 +393,11 @@ func init() {
 				// Final-Recipient: rfc822;|/p/q/r
 				// Status: 5.0.0
 				e.Diagnosis = dscontents[0].Diagnosis
-				if e.Spec == "" { e.Spec = dscontents[0].Spec }
+				if e.Spec        == "" { e.Spec = dscontents[0].Spec   }
 				if anotherone[0] != "" { anotherone[j] = anotherone[0] }
 			}
 
-			if len(anotherone) > j {
+			if len(anotherone) > j && anotherone[j] != "" {
 				// Copy alternative error message
 				if e.Diagnosis == "" { e.Diagnosis = anotherone[j] }
 
