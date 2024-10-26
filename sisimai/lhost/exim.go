@@ -37,7 +37,7 @@ func init() {
 			"Warning: message ",
 			"error(s) in forwarding or filtering",
 		}
-		if strings.HasPrefix(bf.Head["from"][0], "Mail Delivery System") { proceedsto++ }
+		if strings.HasPrefix(bf.Head["from"][0], `"Mail Delivery System"`) { proceedsto++ }
 		for bf.Head["message-id"][0] != "" {
 			// Message-Id: <E1P1YNN-0003AD-Ga@example.org>
 			if strings.Index(bf.Head["message-id"][0], "<") !=  0 { break }
@@ -216,7 +216,7 @@ func init() {
 				if strings.Index(e, "@") < 2           { break } // "@" should be included (email)
 				if strings.Index(e, ".") < 2           { break } // "." should be included (domain part)
 				if strings.Contains(e, "pipe to |")    { break } // Exclude "pipe to /path/to/prog" line
-				if e[2:3] == " " || e[2:3] == "<"      { break } // The 3rd character is " " o "<"
+				if e[2:3] == " " || e[2:3] == "<"      { break } // The 3rd character is " " or "<"
 
 				ce = true; break
 			}
