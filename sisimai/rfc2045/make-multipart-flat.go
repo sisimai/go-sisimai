@@ -17,7 +17,7 @@ func haircut(block *string, heads bool) []string {
 	// @param    *string  block  multipart/* block text
 	// @param    bool     heads  true: Returns only Content-(Type|Transfer-Encoding) headers
 	// @return   []string        Two headers and body part of multipart/* block
-	textchunks := strings.SplitN(*block, "\n\n", 2)
+	textchunks := strings.SplitN(*block, "\n\n", 2); if len(textchunks) < 2 { return []string{"", ""} }
 	upperchunk := textchunks[0]
 	lowerchunk := textchunks[1]
 
