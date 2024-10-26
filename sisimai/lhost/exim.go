@@ -7,6 +7,7 @@ package lhost
 // | | '_ \ / _ \/ __| __| / /|  _| \ \/ / | '_ ` _ \ 
 // | | | | | (_) \__ \ |_ / / | |___ >  <| | | | | | |
 // |_|_| |_|\___/|___/\__/_/  |_____/_/\_\_|_| |_| |_|
+import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc1894"
@@ -338,6 +339,7 @@ func init() {
 			}
 		}
 
+
 		if recipients > 0 {
 			// Check "an undisclosed address", "unroutable address"
 			for j, _ := range dscontents {
@@ -493,6 +495,40 @@ func init() {
 			}
 			if e.ReplyCode == "" { e.ReplyCode = cr          }
 			if e.Status    == "" { status.Prefer(cs, cv, cr) }
+		}
+
+		for emailparts[1] == "" {
+			// There is no original message in the warning message like the follwing:
+			//
+			// This message was created automatically by mail delivery software.
+			// A message that you sent has not yet been delivered to one or more of its
+			// recipients after more than 24 hours on the queue on neko.example.com.
+			//
+			// The message identifier is:     neko222-nyaaan-22
+			// The subject of the message is: Nyaan
+			// The date of the message is:    Thu, 22 Apr 2016 23:34:45 +0900
+			//
+			// The address to which the message has not yet been delivered is:
+			//
+			//   kijitora@example.co.jp
+			//     host mta-nyaan.example.co.jp [192.0.2.222]
+			//     Delay reason: SMTP error from remote mail server after MAIL FROM:<sironeko-nyaan@neko.example.com> SIZE=1024:
+			//     450 service permits 2 unverifyable sending IPs - neko.example.com is not 203.0.113.222
+			//
+			// No action is required on your part. Delivery attempts will continue for
+			// some time, and this warning may be repeated at intervals if the message
+			// remains undelivered. Eventually the mail delivery software will give up,
+			// and when that happens, the message will be returned to you.
+			emailparts[1] += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
+
+			p1 := strings.Index(bf.Body, "The date of the message is: ");    if p1 < 0 { break }
+			p2 := sisimoji.IndexOnTheWay(bf.Body, "\n", p1);                 if p2 < 0 { break }
+			emailparts[1] += fmt.Sprintf("Date: %s\n", bf.Body[p1 + 31:p2])
+
+			p1  = strings.Index(bf.Body, "The subject of the message is: "); if p1 < 0 { break }
+			p2  = sisimoji.IndexOnTheWay(bf.Body, "\n", p1);                 if p2 < 0 { break }
+			emailparts[1] += fmt.Sprintf("Subject: %s\n", bf.Body[p1 + 31:p2])
+			break
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
