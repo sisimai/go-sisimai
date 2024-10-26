@@ -255,7 +255,7 @@ func init() {
 						// parser.c:748|     s-1, (int)(s - US mailbox - 1), mailbox);
 						// parser.c:749|   goto PARSE_FAILED;
 						// parser.c:750|   }
-						cv = sisiaddr.S3S4(e[p1:p2])
+						cv = sisiaddr.S3S4(e[p1:p2 + 1])
 						v.Diagnosis = sisimoji.Sweep(e[p2 + 1:])
 
 					} else {
@@ -338,7 +338,6 @@ func init() {
 				}
 			}
 		}
-
 
 		if recipients > 0 {
 			// Check "an undisclosed address", "unroutable address"
