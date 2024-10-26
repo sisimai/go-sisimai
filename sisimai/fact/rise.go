@@ -234,7 +234,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 		DIAGNOSTICTYPE: for {
 			// Set the value of "diagnostictype" if it is empty
-			piece["diagnostictype"] = e.Reason
+			piece["diagnostictype"] = e.Spec
 			piece["reason"]         = e.Reason
 
 			if len(e.Spec) > 0 { break DIAGNOSTICTYPE }
