@@ -17,6 +17,7 @@ import "sisimai/smtp/status"
 import "sisimai/smtp/command"
 import sisiaddr "sisimai/address"
 import sisimoji "sisimai/string"
+import "fmt"
 
 func init() {
 	// Decode bounce messages from Exim Internet Mailer: https://www.exim.org/
@@ -162,7 +163,7 @@ func init() {
 		readcursor := uint8(0)              // Points the current cursor position
 		nextcursor := uint8(0)
 		recipients := 0                     // The number of 'Final-Recipient' header
-		anotherone := []string{}            // Keeping another error messages
+		anotherone := []string{""}          // Keeping another error messages
 		rightindex := uint8(0)              // The last index number of dscontents
 		boundary00 := ""                    // Boundary sting
 		v          := &(dscontents[len(dscontents) - 1])
@@ -323,6 +324,8 @@ func init() {
 
 						} else {
 							if strings.HasPrefix(e, "    ") == false { continue }
+							fmt.Printf("AO = %##v\n", anotherone)
+							fmt.Printf("RI = %d\n", rightindex)
 							anotherone[rightindex] += e + " "
 						}
 					}

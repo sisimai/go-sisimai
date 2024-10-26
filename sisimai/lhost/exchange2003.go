@@ -96,8 +96,8 @@ func init() {
 		connvalues := 0                     // Counter, 3 if it has got the all values of connheader
 		connheader := [3]string{"", "", ""} // [To:, Subject:, Date:]
 		rightindex := uint8(0)              // The last index number of dscontents
-		anotherone := []string{}            // Keeping another error messages
-		msexchange := []bool{}              // Flag, true if "MSEXCH:" text has been appeared
+		anotherone := []string{""}          // Keeping another error messages
+		msexchange := []bool{false}         // Flag, true if "MSEXCH:" text has been appeared
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
@@ -194,10 +194,12 @@ func init() {
 			e := &(dscontents[j])
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 
-			if strings.HasPrefix(e.Diagnosis, "MSEXCH:") {
+			if sisimoji.Aligned(e.Diagnosis, []string{"MSEXCH:", "(", ")"}) {
 				//     MSEXCH:IMS:KIJITORA CAT:EXAMPLE:EXCHANGE 0 (000C05A6) Unknown Recipient
-				capturedcode := e.Diagnosis[strings.Index(e.Diagnosis, "(") + 1:8]
-				errormessage := e.Diagnosis[strings.Index(e.Diagnosis, ")") + 1:]
+				p1 := strings.Index(e.Diagnosis, "(")
+				p2 := strings.Index(e.Diagnosis, ")")
+				capturedcode := e.Diagnosis[p1 + 1:p2]
+				errormessage := e.Diagnosis[p2 + 1:]
 
 				FINDREASON: for r := range errorcodes {
 					// The key name is a bounce reason name
