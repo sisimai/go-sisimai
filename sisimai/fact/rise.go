@@ -315,6 +315,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 			or := rhost.Find(&thing);  if reason.IsExplicit(or) { thing.Reason = or; break REASON }
 			or  = reason.Find(&thing); if reason.IsExplicit(or) { thing.Reason = or; break REASON }
+			if thing.DiagnosticCode != "" { re = "onhold" }
 			thing.Reason = re
 			break REASON
 		}
