@@ -9,6 +9,8 @@ package string
 // |___/\__|_|  |_|_| |_|\__, |
 //                       |___/ 
 import "strings"
+import "golang.org/x/text/encoding"
+import "golang.org/x/text/encoding/japanese"
 
 // ToLF() replace CR and CR/LF to LF.
 func ToLF(argv0 *string) *string {
@@ -78,12 +80,26 @@ func ToPlain(argv0 *string, loose bool) *string {
 }
 
 // ToUTF8() converts an encoded text to UTF8 text
-func ToUTF8(argv0 *string) *string {
-	// @param    [*string] argv0  Some encoded text
-	// @return   [*string]        UTF-8 text
+func ToUTF8(argv0 []byte, argv1 string) (string, error) {
+	// @param    []byte argv0     Some encoded text
+	// @param    string argv1     Encoding name of the argv0
+	// @return   string, error    Converted string or an error
+	if len(argv0) == 0  { return "", nil }
+	if argv1      == "" { return "", nil }
 
-	// TODO: IMPLEMENT
-	utf8 := ""
-	return &utf8
+	var encodingif *encoding.Decoder
+	switch argv1 {
+		case "iso-2022-jp": encodingif = japanese.ISO2022JP.NewDecoder()
+		case "shift_jis":   encodingif = japanese.ShiftJIS.NewDecoder()
+		case "euc-jp":      encodingif = japanese.EUCJP.NewDecoder()
+		/*
+		default:
+			// TODO: Use "charmap" package when the encoding name is not Japanese
+			// We have no sample email from Notes written in non-Japanese except English
+		*/
+	}
+	utf8string := make([]byte, len(argv0) * 3)
+	rightindex, _, nyaan := encodingif.Transform(utf8string, argv0, true); if nyaan != nil { return "", nyaan }
+	return string(utf8string[:rightindex]), nil
 }
 
