@@ -115,10 +115,7 @@ func init() {
 				if readcursor == 0 {
 					// Beginning of the bounce message or message/delivery-status part
 					for _, a := range startingof["message"] {
-						if sisimoji.Aligned(e, a) {
-							readcursor |= indicators["deliverystatus"]
-							break
-						}
+						if sisimoji.Aligned(e, a) { readcursor |= indicators["deliverystatus"]; break }
 					}
 					continue
 				}
@@ -148,7 +145,7 @@ func init() {
 							v.Alias = o[2]
 						}
 					} else if o[3] == "code" {
-						// # Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
+						// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
 						v.Spec = o[1]
 						if strings.ToUpper(o[1]) == "X-POSTFIX" { v.Spec = "SMTP" }
 						v.Diagnosis = o[2]
@@ -218,10 +215,7 @@ func init() {
 						} else {
 							// Get the error message continued from the previous line
 							if len(anotherset["diagnosis"]) == 0 { continue }
-							if strings.HasPrefix(e, "    ") {
-								// Append the current line
-								anotherset["diagnosis"] += fmt.Sprintf(" %s", strings.Trim(e[4:], " "))
-							}
+							if strings.HasPrefix(e, "    ") { anotherset["diagnosis"] += " " + strings.Trim(e[4:], " ") }
 						}
 					}
 				} // End of message/delivery-status
@@ -324,7 +318,8 @@ func init() {
 					if strings.Contains(e.Diagnosis, "refused to talk to me:") { e.Command = "HELO" }
 				}
 			}
-			if len(e.Spec) == 0 && sisimoji.Aligned(e.Diagnosis, []string{"host ", " said:"}) { e.Spec = "NEKO" }
+			if e.Spec != "" { continue }
+			if sisimoji.Aligned(e.Diagnosis, []string{"host ", " said:"}) { e.Spec = "SMTP" }
 		}
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
