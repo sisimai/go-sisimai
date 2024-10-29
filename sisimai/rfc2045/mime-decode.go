@@ -8,6 +8,7 @@ package rfc2045
 // |  _ <|  _|| |___ / __/| |_| |__   _|__) |
 // |_| \_\_|   \____|_____|\___/   |_||____/ 
 import "io"
+import "os"
 import "fmt"
 import "log"
 import "mime"
@@ -123,14 +124,13 @@ func DecodeQ(argv0 string) string {
 	decodingif := quotedprintable.NewReader(readstring)
 	plainvalue := ""
 
-	if plain, nyaan := ioutil.ReadAll(decodingif); nyaan != nil {
+	plain, nyaan := ioutil.ReadAll(decodingif); if nyaan != nil {
 		// Failed to decode the quoted-printable text
-		log.Fatal(nyaan)
-
-	} else {
-		// Successfully decoded
-		plainvalue = string(plain)
+		fmt.Fprintf(os.Stderr, " ***warning: %s\n", nyaan)
+		plainvalue = argv0
 	}
+	if len(plain) > 0 { plainvalue = string(plain) }
+
 	return plainvalue
 }
 

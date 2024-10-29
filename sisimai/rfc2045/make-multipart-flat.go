@@ -7,6 +7,7 @@ package rfc2045
 // | |_) | |_ | |     __) | | | | || ||___ \ 
 // |  _ <|  _|| |___ / __/| |_| |__   _|__) |
 // |_| \_\_|   \____|_____|\___/   |_||____/ 
+import "log"
 import "fmt"
 import "strings"
 import sisimoji "sisimai/string"
@@ -126,6 +127,16 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 		} else {
 			// The part is not a multipart/* block
 			b := e; if len(f[len(f) - 1]) > 0 { b = f[len(f) - 1] }
+			c := Parameter(f[0], "charset")
+
+			if sisimoji.Is8Bit(&b) || c == "iso-2022-jp" {
+				// Avoid the following errors in DecodeQ()
+				// - quotedprintable: invalid unescaped byte 0x1b in body
+				utf8string, nyaan := sisimoji.ToUTF8([]byte(b), c)
+				if nyaan != nil { log.Fatal(fmt.Printf(" ***error: %s\n", nyaan)) }
+				b = utf8string // Successfuly converted to UTF8
+			}
+
 			v := [3]string{f[0], f[1], b}
 			if len(f[0]) > 0 { v[2] = strings.SplitN(b, "\n\n", 2)[1] }
 			partstable = append(partstable, v)
