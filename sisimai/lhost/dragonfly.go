@@ -26,7 +26,7 @@ func init() {
 		// From: MAILER-DAEMON <>
 		// To: kijitora@df.example.jp
 		// Subject: Mail delivery failed
-		if !strings.Contains(bf.Head["subject"][0], "Mail delivery failed") { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Head["subject"][0], "Mail delivery failed") == false { return sis.RisingUnderway{} }
 		proceedsto := false; for _, e := range bf.Head["received"] {
 			// Received: from MAILER-DAEMON
 			//    id e070f
