@@ -2,6 +2,11 @@
 // This software is distributed under The BSD 2-Clause License.
 package rfc5965
 
+//  ____  _____ ____ ____  ___   __  ____  
+// |  _ \|  ___/ ___| ___|/ _ \ / /_| ___| 
+// | |_) | |_ | |   |___ \ (_) | '_ \___ \ 
+// |  _ <|  _|| |___ ___) \__, | (_) |__) |
+// |_| \_\_|   \____|____/  /_/ \___/____/ 
 func FIELDINDEX() []string {
 	// https://datatracker.ietf.org/doc/html/rfc5965
 	return []string{
