@@ -23,14 +23,14 @@ func Find(argv1 string, argv2 string) string {
 
 	givenclass := argv2[0:1]
 	eestatuses := []string{}
-	esmtperror := fmt.Sprintf(" %s ", argv1)
+	esmtperror := " " + argv1 + " "
 	lookingfor := map[string]string{}
 	indextable := []int{}
 	ip4address := sisimoji.FindIPv4Address(esmtperror)
 
 	if givenclass == "2" || givenclass == "4" || givenclass == "5" {
 		// The second argument is a valid value
-		eestatuses = []string{fmt.Sprintf("%s.", givenclass)}
+		eestatuses = []string{givenclass + "."}
 
 	} else {
 		// The second argument has not been specified or an invalid value
