@@ -1,13 +1,13 @@
 // Copyright (C) 2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package transcript
+
 //                _           ___                                 _       _   
 //  ___ _ __ ___ | |_ _ __   / / |_ _ __ __ _ _ __  ___  ___ _ __(_)_ __ | |_ 
 // / __| '_ ` _ \| __| '_ \ / /| __| '__/ _` | '_ \/ __|/ __| '__| | '_ \| __|
 // \__ \ | | | | | |_| |_) / / | |_| | | (_| | | | \__ \ (__| |  | | |_) | |_ 
 // |___/_| |_| |_|\__| .__/_/   \__|_|  \__,_|_| |_|___/\___|_|  |_| .__/ \__|
 //                   |_|                                           |_|        
-import "fmt"
 import "strings"
 import "sisimai/smtp/reply"
 import "sisimai/smtp/status"
@@ -113,7 +113,7 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 			// The line neither include ">>>" nor "<<<"
 			// Concatenate folded lines to each previous line with a single " "(space character)
 			ll := len(sessionlog); if ll == 0 { continue }
-			sessionlog[ll - 1] += fmt.Sprintf(" %s", strings.TrimLeft(e, " "))
+			sessionlog[ll - 1] += " " + strings.TrimLeft(e, " ")
 		}
 	}
 	if len(sessionlog) == 0 { return transcript }
