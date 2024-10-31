@@ -204,18 +204,18 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 					//   553 information. (#5.7.1)
 					for _, q := range []string{"-", " "} {
 						// Remove strings: "550-5.7.1", and "550 5.7.1" from the error message
-						cx := fmt.Sprintf("%s%s%s", cr, q, cs)
+						cx := cr + q + cs
 						piece["diagnosticcode"] = strings.ReplaceAll(piece["diagnosticcode"], cx, "")
 
 						// Remove "553-" and "553 " (SMTP reply code only) from the error message
-						cx  = fmt.Sprintf("%s%s", cr, q)
+						cx  = cr + q
 						piece["diagnosticcode"] = strings.ReplaceAll(piece["diagnosticcode"], cx, "")
 					}
 
 					if strings.Contains(piece["diagnosticcode"], cr) {
 						// Add "550 5.1.1" into the head of the error message when the error
 						// message does not begin with "550"
-						piece["diagnosticcode"] = fmt.Sprintf("%s %s %s", cr, cs, piece["diagnosticcode"])
+						piece["diagnosticcode"] = cr + " " + cs + " " + piece["diagnosticcode"]
 					}
 				}
 			}
@@ -328,7 +328,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 			} else {
 				// The Reason is not "delivered", or "feedback", or "vacation"
-				smtperrors := fmt.Sprintf("%s %s", piece["deliverystatus"], piece["diagnosticcode"])
+				smtperrors := piece["deliverystatus"] + " " + piece["diagnosticcode"]
 				if len(smtperrors) < 4 { smtperrors = "" }
 				thing.HardBounce = failure.IsHardBounce(thing.Reason, smtperrors)
 			}
@@ -339,7 +339,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			// Set a pseudo status code
 			if len(thing.DeliveryStatus) > 0 { break DELIVERYSTATUS }
 
-			smtperrors := fmt.Sprintf("%s %s", thing.ReplyCode, piece["diagnosticcode"])
+			smtperrors := thing.ReplyCode + " " + piece["diagnosticcode"]
 			if len(smtperrors) < 4 { smtperrors = "" }
 			permanent0 := failure.IsPermanent(smtperrors)
 			temporary0 := failure.IsTemporary(smtperrors)
@@ -389,7 +389,8 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 	for j, e := range listoffact {
 		fmt.Printf("List-Of-Fact[%d] = %##v\n", j, e)
-		fmt.Printf("----------------------------------\n")
+		fmt.Printf("-----------------------------------------------------------------\n")
+		fmt.Printf("--[%d]Origin = [%s]\n", j, e.Origin)
 		fmt.Printf("--[%d]DiagnosticCode = [%s]\n", j, e.DiagnosticCode)
 		fmt.Printf("--[%d]DeliveryStatus = [%s]\n", j, e.DeliveryStatus)
 		fmt.Printf("--[%d]ReplyCode = [%s]\n", j, e.ReplyCode)
