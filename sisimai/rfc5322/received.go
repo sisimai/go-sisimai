@@ -1,6 +1,12 @@
 // Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc5322
+
+//  ____  _____ ____ ____ _________  ____  
+// |  _ \|  ___/ ___| ___|___ /___ \|___ \ 
+// | |_) | |_ | |   |___ \ |_ \ __) | __) |
+// |  _ <|  _|| |___ ___) |__) / __/ / __/ 
+// |_| \_\_|   \____|____/____/_____|_____|
 import "strings"
 import "sisimai/address"
 import sisimoji "sisimai/string"
@@ -121,8 +127,8 @@ func Received(argv1 string) [6]string {
 
 	for {
 		// Try to rewrite uninformative hostnames and IP addresses in token["from"]
-		if right == true   { break }	// There is no need to rewrite
-		if len(alter) == 0 { break }	// There is no alternative for rewriting
+		if right == true   { break } // There is no need to rewrite
+		if len(alter) == 0 { break } // There is no alternative for rewriting
 		if strings.Contains(alter[0], token["from"]) { break }
 
 		if strings.HasPrefix(token["from"], "localhost") {
