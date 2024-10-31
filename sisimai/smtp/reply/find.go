@@ -1,13 +1,13 @@
 // Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reply
+
 //                _           __              _       
 //  ___ _ __ ___ | |_ _ __   / / __ ___ _ __ | |_   _ 
 // / __| '_ ` _ \| __| '_ \ / / '__/ _ \ '_ \| | | | |
 // \__ \ | | | | | |_| |_) / /| | |  __/ |_) | | |_| |
 // |___/_| |_| |_|\__| .__/_/ |_|  \___| .__/|_|\__, |
 //                   |_|               |_|      |___/ 
-import "fmt"
 import "strings"
 
 // Find() returns an SMTP reply code found from the given string
@@ -42,7 +42,7 @@ func Find(argv1 string, argv2 string) string {
 		replycodes = append(replycodes, codeofsmtp["5"]...)
 	}
 
-	esmtperror := fmt.Sprintf(" %s ", argv1)
+	esmtperror := " " + argv1 + " "
 	esmtpreply := ""
 	for _, e := range replycodes {
 		// Try to find an SMTP Reply Code from the given string
