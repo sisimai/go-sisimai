@@ -84,17 +84,27 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			for _, f := range RFC822Head["date"] {
 				// Date information did not exist in message/delivery-status part.
 				// Get the value of "Date:" header or other date related headers.
-				if len(rfc822data[f]) == 0 { continue }
-				datevalues = append(datevalues, rfc822data[f][0])
+				if len(rfc822data[f]) > 0 { datevalues = append(datevalues, rfc822data[f][0]) }
 			}
 
 			// Get the value of "Date:" header of the bounce message
 			if len(datevalues) < 2 { datevalues = append(datevalues, beforefact.Head["date"][0]) }
 			for _, v := range datevalues {
-				// Parse each date string using time.Parse()
+				// Parse each date string using net/mail.ParseDate()
 				times, nyaan := mail.ParseDate(v); if nyaan != nil { continue }
-				clock = times
-				break
+				clock = times; break
+			}
+			if clock.IsZero() == true {
+				// Failed to parse the date string at the previous loop,
+				// try to tidy up it using rfc5322.Date() before calling net/mail.ParseDate()
+				for _, v := range datevalues {
+					// Try to parse the date string tidied by rfc5322.Date()
+					j := rfc5322.Date(v); if j != "" {
+						// rfc5322.Date() returned a valid date string
+						times, nyaan := mail.ParseDate(j); if nyaan != nil { continue }
+						clock = times; break
+					}
+				}
 			}
 			if clock.IsZero() == true { continue RISEOF }
 
