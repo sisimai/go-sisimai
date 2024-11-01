@@ -28,7 +28,7 @@ func INDEX() []string {
 		"Exchange2007", "Exim", "FML", "GMX", "GoogleGroups", "Gmail",
 		"IMailServer", "InterScanMSS", "KDDI", "MailFoundry", "MailMarshalSMTP",
 		"McAfee", "MessagingServer", "Notes", "Office365", "OpenSMTPD",
-		"Postfix", "PowerMTA", "Sendmail", "SurfControl", "V5sendmail",
+		"Postfix", "PowerMTA", "Sendmail", "V5sendmail",
 		"Verizon", "X1", "X2", "X3", "X4", "X5", "X6", "Yahoo", "Zoho", "mFILTER", "qmail",
 	}
 }
