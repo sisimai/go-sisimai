@@ -94,7 +94,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 				times, nyaan := mail.ParseDate(v); if nyaan != nil { continue }
 				clock = times; break
 			}
-			if clock.IsZero() == true {
+			if clock.IsZero() {
 				// Failed to parse the date string at the previous loop,
 				// try to tidy up it using rfc5322.Date() before calling net/mail.ParseDate()
 				for _, v := range datevalues {
@@ -106,7 +106,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 					}
 				}
 			}
-			if clock.IsZero() == true { continue RISEOF }
+			if clock.IsZero() { continue RISEOF }
 
 			break TIMESTAMP
 		}
