@@ -8,7 +8,6 @@ package status
 // \__ \ | | | | | |_| |_) / /\__ \ || (_| | |_| |_| \__ \
 // |___/_| |_| |_|\__| .__/_/ |___/\__\__,_|\__|\__,_|___/
 //                   |_|                                  
-
 /* http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
 ---------------------------------------------------------------------------------------------------
  [Class Sub-Codes]
@@ -486,7 +485,7 @@ func Code(argv0 string, argv1 bool) string {
 	// @param    string  argv0 Reason name
 	// @param    bool    argv1 false: Permanent error, true: Temporary error
 	// @return   string        Internal delivery status code or an empty string
-	if len(argv0) == 0 { return "" }
+	if len(argv0) < 6 { return "" }
 
 	internalcr := ""
 	codetable0 := map[string]string{
@@ -568,7 +567,7 @@ func Code(argv0 string, argv1 bool) string {
 func Name(argv0 string) string {
 	// @param    string argv0 Delivery status code(D.S.N.)
 	// @return   string       Reason name or an empty string
-	if len(argv0) == 0      { return "" }
+	if len(argv0)   < 5     { return "" }
 	if Test(argv0) == false { return "" }
 
 	standardcr := map[string]string{
@@ -682,7 +681,7 @@ func Name(argv0 string) string {
 		"5.7.27": "notaccept",			// MX resource record of a destination host is Null MX: RFC7505
 		"5.7.28": "spamdetected",		// The message appears to be part of a mail flood of similar abusive messages.
 		"5.7.29": "authfailure",		// This status code may be returned when a message fails ARC validation.
-		"5.7.30": "securityerror",		//REQUIRETLS support required
+		"5.7.30": "securityerror",		// REQUIRETLS support required
 	}
 	return standardcr[argv0]
 }
