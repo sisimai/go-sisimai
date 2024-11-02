@@ -189,7 +189,7 @@ func init() {
 			e := &(dscontents[j])
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
-				if len(v.Get(z))       > 0 { continue }
+				if len(v.Select(z))    > 0 { continue }
 				if len(permessage[z]) == 0 { continue }
 				e.Set(z, permessage[z])
 			}
