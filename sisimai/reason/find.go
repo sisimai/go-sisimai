@@ -49,7 +49,7 @@ func Find(fo *sis.Fact) string {
 	return reasontext
 }
 
-// anotherone() detects the other bounce reason, fall back method for Get()
+// anotherone() detects the other bounce reason, fall back method for Find()
 func anotherone(fo *sis.Fact) string {
 	// @param    *sis.Fact fo    Struct to be detected the reason
 	// @return   string          Bounce reason name or an empty string
