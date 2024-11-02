@@ -30,6 +30,29 @@ type DeliveryMatter struct {
 	Status       string     // The value of Status header
 }
 
+// Select() returns the current value of the sis.DeliveryMatter{}
+func(this *DeliveryMatter) Select(argv0 string) string {
+	// @param    string argv0  A lower-cased member of sis.DeliveryMatter{}
+	// @return   string        The value of the member specified at argv0
+	switch argv0 {
+		case "action":       return this.Action
+		case "agent":        return this.Agent
+		case "alias":        return this.Alias
+		case "command":      return this.Command
+		case "date":         return this.Date
+		case "diagnosis":    return this.Diagnosis
+		case "feedbacktype": return this.FeedbackType
+		case "lhost":        return this.Lhost
+		case "reason":       return this.Reason
+		case "recipient":    return this.Recipient
+		case "replycode":    return this.ReplyCode
+		case "rhost":        return this.Rhost
+		case "spec":         return this.Spec
+		case "status":       return this.Status
+		default:             return ""
+	}
+}
+
 // Set() substitutes the argv1 as a value into the member related to argv0
 func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
 	// @param    string argv0  A key name related to the member of DeliveryMatter struct
@@ -98,29 +121,6 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
 			this.Status = argv1
 	}
 	return true
-}
-
-// Select() returns the current value of the sis.DeliveryMatter{}
-func(this *DeliveryMatter) Select(argv0 string) string {
-	// @param    string argv0  A lower-cased member of sis.DeliveryMatter{}
-	// @return   string        The value of the member specified at argv0
-	switch argv0 {
-		case "action":       return this.Action
-		case "agent":        return this.Agent
-		case "alias":        return this.Alias
-		case "command":      return this.Command
-		case "date":         return this.Date
-		case "diagnosis":    return this.Diagnosis
-		case "feedbacktype": return this.FeedbackType
-		case "lhost":        return this.Lhost
-		case "reason":       return this.Reason
-		case "recipient":    return this.Recipient
-		case "replycode":    return this.ReplyCode
-		case "rhost":        return this.Rhost
-		case "spec":         return this.Spec
-		case "status":       return this.Status
-		default:             return ""
-	}
 }
 
 // Get() returns the value of the member specified at argv0
