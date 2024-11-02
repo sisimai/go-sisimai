@@ -112,8 +112,8 @@ func init() {
 				} else {
 					f := rfc1894.Match(e); if f > 0 {
 						// "e" matched with any field defined in RFC3464
-						o := rfc1894.Field(e); if len(o) == 0 { continue }
-						z := fieldtable[o[0]]
+						o := rfc1894.Field(e); if len(o) < 1 { continue }
+						z := fieldtable[o[0]]; if len(z) < 1 { continue }
 
 						if o[3] == "code" {
 							// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
