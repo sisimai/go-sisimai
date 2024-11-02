@@ -26,7 +26,6 @@ type DeliveryMatter struct {
 	Recipient    string     // The value of Final-Recipient header
 	ReplyCode    string     // SMTP Reply Code
 	Rhost        string     // The value of Remote-MTA header
-	HardBounce   bool       // Hard bounce or not
 	Spec         string     // Protocl specification
 	Status       string     // The value of Status header
 }
@@ -118,7 +117,6 @@ func(this *DeliveryMatter) Select(argv0 string) string {
 		case "recipient":    return this.Recipient
 		case "replycode":    return this.ReplyCode
 		case "rhost":        return this.Rhost
-		case "hardbounce":   if this.HardBounce == true { return "y" } else { return "n" }
 		case "spec":         return this.Spec
 		case "status":       return this.Status
 		default:             return ""
