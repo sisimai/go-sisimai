@@ -132,10 +132,31 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 			}
 		} else {
-			// Continued line of the value of Diagnostic-Code: field
-			if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false { continue }
-			if strings.HasPrefix(e, " ")                            == false { continue }
-			v.Diagnosis += " " + sisimoji.Sweep(e)
+			// Check that the line is a continued line of the value of Diagnostic-Code: field or not
+			if strings.HasPrefix(e, "X-") && strings.Contains(e, ": ") {
+				// This line is a MTA-Specific fields begins with "X-"
+				if cb := is3rdparty(e); cb == false { continue }
+				if cv := xfield(e); len(cv) > 0 && rfc1894.Match(cv[0]) == 0 {
+					// Check the first element is a field defined in RFC1894 or not
+					if strings.HasPrefix(cv[4], "reason:") {
+						// cv[4] is a string line "reason:mailboxfull"
+						v.Update("reason", cv[4][strings.Index(cv[4], ":") + 1:])
+					}
+				} else {
+					// Set the value picked from "X-*" field to the member of sis.DeliveryMatter
+					// when the current value is empty
+					z := fieldtable[strings.ToLower(cv[0])]; if len(z) < 1 { continue }
+					if v.Select(z) == "" { v.Update(z, cv[2]) }
+				}
+			} else {
+				// The line may be a continued line of the value of the Diagnostic-Code: field
+				if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false { continue }
+				if strings.HasPrefix(e, " ") {
+					// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
+					//    has an SPF record with a hard fail
+					v.Diagnosis += " " + sisimoji.Sweep(e)
+				}
+			}
 		}
 	}
 	if recipients == 0 { return sis.RisingUnderway{} }
