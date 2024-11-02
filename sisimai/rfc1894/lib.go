@@ -79,7 +79,7 @@ func Match(argv0 string) uint8 {
 func Field(argv0 string) []string {
 	// @param    string   argv0 A line inlcuding field and value defined in RFC3464
 	// @return   []string       []string{"field-name", "value-type", "value", "field-group", "comment"}
-	if len(argv0) == 0 { return []string{} }
+	if len(argv0) < 7 { return []string{} }
 
 	fieldgroup := map[string]string{
 		"original-recipient":    "addr",
