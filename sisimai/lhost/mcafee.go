@@ -84,7 +84,7 @@ func init() {
 					continue
 				}
 				// Other DSN fields defined in RFC3464
-				v.Set(o[0], o[2])
+				v.Update(o[0], o[2])
 
 			} else {
 				// Continued line of the value of Diagnostic-Code field
