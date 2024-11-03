@@ -9,11 +9,11 @@ package rfc1123
 // |_| \_\_|   \____|_|_|_____|____/ 
 import "strings"
 
-// IsValidHostname() returns "true" when the given string is a valid hostname
-func IsValidHostname(argv1 string) bool {
+// IsInternetHost() returns "true" when the given string is a valid Internet hostname
+func IsInternetHost(argv1 string) bool {
 	// @param    string argv1  Hostname
-	// @return   bool          true:  is a valid hostname
-	//                         false: is not a valid hostname
+	// @return   bool          true:  is a valid Internet hostname
+	//                         false: is not a valid Internet hostname
 	// @see https://datatracker.ietf.org/doc/html/rfc1123
 	if len(argv1) <   4 { return false }
 	if len(argv1) > 255 { return false }

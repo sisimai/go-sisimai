@@ -27,7 +27,7 @@ import sisimoji "sisimai/string"
 
 var RetryIndex = reason.Retry()
 var RFC822Head = rfc5322.HEADERTABLE()
-var ActionList = map[string]bool{ "delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true };
+var ActionList = map[string]bool{ "delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true }
 
 // sisimai/fact.Rise() returns []sis.Fact when it successfully decoded bounce messages
 func Rise(email *string, origin string, args map[string]bool, hook *func()) []sis.Fact {
@@ -119,7 +119,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 				for ri := le - 1; ri > -1; ri-- {
 					// Check the Received: headers backwards and get a remote hostname
 					cv := rfc5322.Received(beforefact.Head["received"][ri])
-					if rfc1123.IsValidHostname(cv[0]) == false { continue }
+					if rfc1123.IsInternetHost(cv[0]) == false { continue }
 					e.Rhost = cv[0]; break
 				}
 			}
@@ -129,7 +129,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 				for li := 0; li < le; li++ {
 					// Check the Received: headers forwards and get a local hostnaame
 					cv := rfc5322.Received(beforefact.Head["received"][li])
-					if rfc1123.IsValidHostname(cv[0]) == false { continue }
+					if rfc1123.IsInternetHost(cv[0]) == false { continue }
 					e.Lhost = cv[0]; break
 				}
 			}

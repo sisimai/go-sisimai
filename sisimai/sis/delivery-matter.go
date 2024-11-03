@@ -108,7 +108,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 
 		case "lhost":
 			// Only valid hostnames are accepted
-			if this.Lhost == argv1 || rfc1123.IsValidHostname(argv1) == false { return false }
+			if this.Lhost == argv1 || rfc1123.IsInternetHost(argv1) == false { return false }
 			this.Lhost = strings.ToLower(argv1)
 
 		case "reason":
@@ -128,7 +128,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 
 		case "rhost":
 			// Only valid hostnames are accepted
-			if this.Rhost == argv1 || rfc1123.IsValidHostname(argv1) == false { return false }
+			if this.Rhost == argv1 || rfc1123.IsInternetHost(argv1) == false { return false }
 			this.Rhost = strings.ToLower(argv1)
 
 		case "spec":

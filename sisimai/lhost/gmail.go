@@ -229,8 +229,8 @@ func init() {
 				hostname := e.Diagnosis[p1 + 4:p2]
 				ipv4addr := e.Diagnosis[p2 + 3:strings.LastIndex(e.Diagnosis, "].")]
 
-				if rfc1123.IsValidHostname(hostname) { e.Rhost = hostname }
-				if e.Rhost == ""                     { e.Rhost = ipv4addr }
+				if rfc1123.IsInternetHost(hostname) { e.Rhost = hostname }
+				if e.Rhost == ""                    { e.Rhost = ipv4addr }
 			}
 
 			for {
