@@ -124,7 +124,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 			} else {
 				// Other DSN fields defined in RFC3464
-				v.Set(o[0], o[2]); if f != 1 { continue }
+				v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 
 				// Copy the lower-cased member name of sis.DeliveryMatter{} for "permessage" for
 				// the later reference
@@ -174,9 +174,9 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		// Set default values stored in "permessage" if each value in "dscontents" is empty.
 		e := &(dscontents[j]); for _, z := range keystrings {
 			// Do not set an empty string into each member of sis.DeliveryMatter{}
-			if len(v.Get(z))       > 0 { continue }
+			if len(v.Select(z))    > 0 { continue }
 			if len(permessage[z]) == 0 { continue }
-			e.Set(z, permessage[z])
+			e.Update(z, permessage[z])
 		}
 
 		e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
