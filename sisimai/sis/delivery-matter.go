@@ -214,35 +214,3 @@ func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
 	return true
 }
 
-// Get() returns the value of the member specified at argv0
-func(this *DeliveryMatter) Get(argv0 string) string {
-	// @param    string argv0  A key name related to the member of DeliveryMatter struct
-	// @return   string        The value of the member specified at argv0
-	if len(argv0)             == 0 { return "" }
-	if len(Fields1894[argv0]) == 0 { return "" }
-
-	switch Fields1894[argv0] {
-		// Available values are the followings:
-		// - "action":             Action    (list)
-		// - "arrival-date":       Date      (date)
-		// - "diagnostic-code":    Diagnosis (code)
-		// - "final-recipient":    Recipient (addr)
-		// - "last-attempt-date":  Date      (date)
-		// - "original-recipient": Alias     (addr)
-		// - "received-from-mta":  Lhost     (host)
-		// - "remote-mta":         Rhost     (host)
-		// - "reporting-mta":      Rhost     (host)
-		// - "status":             Status    (stat)
-		// - "x-actual-recipient": Alias     (addr)
-		case "action":    return this.Action
-		case "alias":     return this.Alias
-		case "date":      return this.Date
-		case "diagnosis": return this.Diagnosis
-		case "lhost":     return this.Lhost
-		case "rhost":     return this.Rhost
-		case "recipient": return this.Recipient
-		case "status":    return this.Status
-		default:          return ""
-	}
-}
-
