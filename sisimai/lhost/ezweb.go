@@ -83,10 +83,7 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				for _, f := range startingof["message"] {
-					if strings.Contains(e, f) { readcursor |= indicators["deliverystatus"]; break }
-				}
-				continue
+				if sisimoji.HasPrefixAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
 			}
 			if readcursor & indicators["deliverystatus"] == 0 { continue }
 			if len(e) == 0                                    { continue }
@@ -120,7 +117,7 @@ func init() {
 				f := rfc1894.Match(e); if f > 0 {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
-					v.Set(o[0], o[2])
+					v.Update(o[0], o[2])
 
 				} else {
 					// The line does not begin with a DSN field defined in RFC3464
