@@ -144,6 +144,37 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 	return true
 }
 
+// AsRFC1894() returns a lower-cased member name converted from a field name defined in RFC1894
+func(this *DeliveryMatter) AsRFC1894(argv1 string) string {
+	// @param    string argv1  A field name defined in RFC1894
+	// @return   string        A member name of sis.DeliveryMatter
+	if len(argv1)             == 0 { return "" }
+	if len(Fields1894[argv1]) == 0 { return "" }
+
+	switch argv1 {
+		// Available values are the followings:
+		// - "action":             Action    (list)
+		// - "arrival-date":       Date      (date)
+		// - "diagnostic-code":    Diagnosis (code)
+		// - "final-recipient":    Recipient (addr)
+		// - "last-attempt-date":  Date      (date)
+		// - "original-recipient": Alias     (addr)
+		// - "received-from-mta":  Lhost     (host)
+		// - "remote-mta":         Rhost     (host)
+		// - "reporting-mta":      Lhost     (host)
+		// - "status":             Status    (stat)
+		// - "x-actual-recipient": Alias     (addr)
+		default:                                         return ""
+		case "action", "status":                         return argv1
+		case "arrival-date", "last-attempt-date":        return "date"
+		case "diagnostic-code":                          return "diagnosis"
+		case "final-recipient":                          return "recipient"
+		case "original-recipient", "x-actual-recipient": return "alias"
+		case "reporting-mta":                            return "lhost"
+		case "remote-mta", "received-from-mta":          return "rhost"
+	}
+}
+
 // Set() substitutes the argv1 as a value into the member related to argv0
 func(this *DeliveryMatter) Set(argv0, argv1 string) bool {
 	// @param    string argv0  A key name related to the member of DeliveryMatter struct
