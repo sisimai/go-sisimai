@@ -57,7 +57,7 @@ func init() {
 
 		} else if xfieldname == "x-powermta-virtualmta" {
 			// X-PowerMTA-VirtualMTA: mx22.neko.example.jp
-			xfieldlist[0] = "Received-From-MTA"
+			xfieldlist[0] = "Reporting-MTA"
 		}
 
 		return xfieldlist
