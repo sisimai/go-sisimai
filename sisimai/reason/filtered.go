@@ -47,7 +47,6 @@ func init() {
 
 		tempreason := status.Name(fo.DeliveryStatus); if tempreason == "suspend" { return false }
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
-		thecommand := fo.SMTPCommand
 
 		if tempreason == "filtered" {
 			// The value of delivery status code points "filtered".
@@ -55,11 +54,11 @@ func init() {
 			if IncludedIn["Filtered"](issuedcode)    == true { return true }
 
 		} else {
-			// The value of "Reason" is not "filtered" when the value of "smtpcommand" is an SMTP
+			// The value of "Reason" is not "filtered" when the value of "fo.Command" is an SMTP
 			// command to be sent before the SMTP DATA command because all the MTAs read the headers
 			// and the entire message body after the DATA command.
-			if thecommand == "CONN" || thecommand == "EHLO" || thecommand == "HELO" { return false }
-			if thecommand == "MAIL" || thecommand == "RCPT"                         { return false }
+			if fo.Command == "CONN" || fo.Command == "EHLO" || fo.Command == "HELO" { return false }
+			if fo.Command == "MAIL" || fo.Command == "RCPT"                         { return false }
 			if IncludedIn["Filtered"](issuedcode)    == true                        { return true  }
 			if IncludedIn["UserUnknown"](issuedcode) == true                        { return true  }
 		}

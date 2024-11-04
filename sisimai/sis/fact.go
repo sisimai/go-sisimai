@@ -32,7 +32,7 @@ type Fact struct {
 	Recipient       sisiaddr.EmailAddress   // The recipient address of the original message
 	ReplyCode       string                  // SMTP Reply Code such as "421"
 	DecodedBy       string                  // Module(Engine) name
-	SMTPCommand     string                  // The last SMTP command
+	Command         string                  // The last SMTP command
 	SenderDomain    string                  // The domain part of the "Addresser"
 	Subject         string                  // UTF-8 Subject text
 	Timestamp       time.Time               // The value of "Date:" header in the original message

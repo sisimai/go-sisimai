@@ -65,7 +65,7 @@ func init() {
 		// A bounce reason did not decide from the status code, the error message.
 		if statuscode == "5.0.0" {
 			// Status: 5.0.0
-			if fo.SMTPCommand == "RCPT" {
+			if fo.Command == "RCPT" {
 				// Your message to the following recipients cannot be delivered:
 				//
 				// <***@docomo.ne.jp>:
@@ -81,7 +81,7 @@ func init() {
 				// Diagnostic-Code: smtp; 550 Unknown user ***@docomo.ne.jp
 				reasontext = "userunknown"
 
-			} else if fo.SMTPCommand == "DATA" {
+			} else if fo.Command == "DATA" {
 				// <***@docomo.ne.jp>: host mfsmax.docomo.ne.jp[203.138.181.240] said:
 				// 550 Unknown user ***@docomo.ne.jp (in reply to end of DATA
 				// command)

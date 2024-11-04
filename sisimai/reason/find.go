@@ -101,11 +101,8 @@ func anotherone(fo *sis.Fact) string {
 			reasontext = "expired"
 
 		} else {
-			// Check the value of the SMTP command (fo.SMTPCommand)
-			if fo.SMTPCommand == "EHLO" || fo.SMTPCommand == "HELO" {
-				// Rejected an SMTP connection or after sending EHLO, HELO
-				reasontext = "blocked"
-			}
+			// Rejected an SMTP connection or after sending EHLO, HELO
+			if fo.Command == "EHLO" || fo.Command == "HELO" { reasontext = "blocked" }
 		}
 		break
 	}

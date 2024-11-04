@@ -97,13 +97,11 @@ func init() {
 
 		// Check the value of Diagnosic-Code: field with patterns
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
-		thecommand := fo.SMTPCommand
-
-		if thecommand == "MAIL" {
+		if fo.Command == "MAIL" {
 			// The session was rejected at 'MAIL FROM' command
 			if IncludedIn["Rejected"](issuedcode) == true { return true }
 
-		} else if thecommand == "DATA" {
+		} else if fo.Command == "DATA" {
 			// The session was rejected at 'DATA' command
 			if tempreason != "userunknown" {
 				// Except "userunknown"

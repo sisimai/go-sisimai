@@ -37,7 +37,7 @@ func init() {
 		// @return   bool            true: is notaccept, false: is not notaccept
 		if fo.Reason == "notaccept"                                                { return true  }
 		if fo.ReplyCode == "521" || fo.ReplyCode == "554" || fo.ReplyCode == "556" { return true  }
-		if fo.SMTPCommand != "MAIL"                                                { return false }
+		if fo.Command != "MAIL"                                                    { return false }
 		return IncludedIn["NotAccept"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

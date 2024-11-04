@@ -163,7 +163,7 @@ func init() {
 
 		} else {
 			// The reason name found by fo.DeliveryStatus is not "userunknown", or is empty
-			if fo.SMTPCommand == "RCPT" {
+			if fo.Command == "RCPT" {
 				// When the SMTP command is not "RCPT", the session rejected by other reason, maybe.
 				if IncludedIn["UserUnknown"](strings.ToLower(fo.DiagnosticCode)) { return true }
 			}

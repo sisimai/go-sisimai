@@ -259,7 +259,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		// Set other values returned from sisimai/message.Rise()
 		addrs["recipient"] = [3]string{e.Recipient, "", ""}
 		piece["subject"]   = strings.ReplaceAll(rfc822data["subject"][0], "\r", "")
-		if command.Test(e.Command) { piece["smtpcommand"] = e.Command }
+		if command.Test(e.Command) { piece["command"] = e.Command }
 
 		CONSTRUCTOR: for {
 			// - Create email address object as address.EmailAddress struct
@@ -286,7 +286,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			thing.Recipient      = ar
 			thing.ReplyCode      = piece["replycode"]; if len(thing.ReplyCode) == 0 { reply.Find(piece["diagnosticcode"], "") }
 			thing.DecodedBy      = e.Agent
-			thing.SMTPCommand    = piece["smtpcommand"]
+			thing.Command        = piece["command"]
 			thing.SenderDomain   = as.Host
 			thing.Subject        = piece["subject"]
 			thing.Timestamp      = clock
@@ -409,7 +409,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		fmt.Printf("--[%d]ReplyCode = [%s]\n", j, e.ReplyCode)
 		fmt.Printf("--[%d]Reason = [%s]\n", j, e.Reason)
 		fmt.Printf("--[%d]DecodedBy = [%s]\n", j, e.DecodedBy)
-		fmt.Printf("--[%d]Command = [%s]\n", j, e.SMTPCommand)
+		fmt.Printf("--[%d]Command = [%s]\n", j, e.Command)
 		fmt.Printf("--[%d]Recipient = [%s]\n", j, e.Recipient.Address)
 		fmt.Printf("--[%d]Lhost = [%s]\n", j, e.Lhost)
 		fmt.Printf("--[%d]Rhost = [%s]\n", j, e.Rhost)

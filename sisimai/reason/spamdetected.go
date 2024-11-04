@@ -131,8 +131,8 @@ func init() {
 		// @return   bool            true: is spamdetected, false: is not spamdetected
 		if fo.Reason == "spamdetected"                      { return true }
 		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true }
-		if fo.SMTPCommand == "CONN" || fo.SMTPCommand == "EHLO" || fo.SMTPCommand == "HELO" ||
-		   fo.SMTPCommand == "MAIL" || fo.SMTPCommand == "RCPT" { return false }
+		if fo.Command == "CONN" || fo.Command == "EHLO" || fo.Command == "HELO" ||
+		   fo.Command == "MAIL" || fo.Command == "RCPT" { return false }
 		return IncludedIn["SpamDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

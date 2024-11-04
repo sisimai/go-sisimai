@@ -32,10 +32,10 @@ func init() {
 	ProbesInto["VirusDetected"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is virusdetected, false: is not virusdetected
-		if fo.Reason == "virusdetected"                         { return true  }
-		if fo.SMTPCommand == "CONN"                             { return false }
-		if fo.SMTPCommand == "EHLO" || fo.SMTPCommand == "HELO" { return false }
-		if fo.SMTPCommand == "MAIL" || fo.SMTPCommand == "RCPT" { return false }
+		if fo.Reason == "virusdetected"                 { return true  }
+		if fo.Command == "CONN"                         { return false }
+		if fo.Command == "EHLO" || fo.Command == "HELO" { return false }
+		if fo.Command == "MAIL" || fo.Command == "RCPT" { return false }
 		return IncludedIn["VirusDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

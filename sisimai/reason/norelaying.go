@@ -50,7 +50,7 @@ func init() {
 		// @return   bool            true: is norelaying, false: is not norelaying
 		if fo.Reason == "norelaying" { return true }
 		if fo.Reason == "securityerror" || fo.Reason == "systemerror" || fo.Reason == "undefined" { return false }
-		if fo.SMTPCommand == "CONN"     || fo.SMTPCommand == "EHLO"   || fo.SMTPCommand == "HELO" { return false }
+		if fo.Command == "CONN" || fo.Command == "EHLO" || fo.Command == "HELO" { return false }
 		return IncludedIn["NoRelaying"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
