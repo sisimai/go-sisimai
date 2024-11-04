@@ -126,6 +126,7 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 			// >>> SMTP-Command Arguments (Sent by the client)
 			thecommand := command.Find(e); if len(thecommand) == 0 { continue }
 			commandarg := strings.TrimLeft(e[strings.Index(e, thecommand) + len(thecommand):], " ")
+			uppercased := strings.ToUpper(commandarg)
 			parameters := "" // Command parameters of MAIL, RCPT
 
 			transcript = append(transcript, *(new(TranscriptLog)))
@@ -135,8 +136,7 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 
 			if thecommand == "MAIL" || thecommand == "RCPT" || thecommand == "XFORWARD" {
 				// "MAIL FROM" or "RCPT TO" or "XFORWARD"
-				if strings.HasPrefix(commandarg, "FROM:") || strings.HasPrefix(commandarg, "TO:") {
-					// NOTE: strings.ToUpper(commandarg, "TO:") ?
+				if strings.HasPrefix(uppercased, "FROM:") || strings.HasPrefix(uppercased, "TO:") {
 					// >>> MAIL FROM: <neko@example.com> SIZE=65535
 					// >>> RCPT TO: <kijitora@example.org>
 					p4 := strings.IndexByte(commandarg, '<'); if p4 < 0 { continue }
