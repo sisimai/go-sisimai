@@ -112,6 +112,9 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		}
 
 		RECEIVED: for {
+			// Try to pick a remote hostname from the error message
+			e.Rhost = rfc1123.Find(e.Diagnosis)
+
 			// Scan "Received:" header of the bounce message
 			le := len(beforefact.Head["received"])
 			if e.Rhost == "" {
