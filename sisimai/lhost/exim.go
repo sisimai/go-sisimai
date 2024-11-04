@@ -197,7 +197,6 @@ func init() {
 			boundary00 = rfc2045.Boundary(bf.Head["content-type"][0], 0)
 		}
 
-		p1 := -1
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
@@ -435,7 +434,7 @@ func init() {
 			}
 
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
-			p1 = strings.Index(e.Diagnosis, "__"); if p1 > 1 { e.Diagnosis = e.Diagnosis[0:p1] }
+			p1 := strings.Index(e.Diagnosis, "__"); if p1 > 1 { e.Diagnosis = e.Diagnosis[0:p1] }
 
 			if e.Rhost == "" { e.Rhost = rfc1123.Find(e.Diagnosis) }
 			if e.Lhost == "" { e.Lhost = recvdtoken[0] }
