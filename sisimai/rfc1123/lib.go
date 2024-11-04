@@ -8,6 +8,7 @@ package rfc1123
 // |  _ <|  _|| |___| | |/ __/ ___) |
 // |_| \_\_|   \____|_|_|_____|____/ 
 import "strings"
+import sisimoji "sisimai/string"
 
 // IsInternetHost() returns "true" when the given string is a valid Internet hostname
 func IsInternetHost(argv1 string) bool {
@@ -40,5 +41,97 @@ func IsInternetHost(argv1 string) bool {
 		if e[0] > 47 && e[0] < 58  { hostnameok = false; break }
 	}
 	return hostnameok
+}
+
+// Find() returns a valid internet hostname found from the argument
+func Find(argv1 string) string {
+	// @param    string argv1  String including hostnames
+	// @return   string        A valid internet hostname found in the argument
+	if argv1 == "" { return "" }
+
+	// Replace some string for splitting by " "
+	// - mx.example.net[192.0.2.1] => mx.example.net [192.0.2.1]
+	// - mx.example.jp:[192.0.2.1] => mx.example.jp :[192.0.2.1]
+	sourcetext := argv1
+	sourcetext  = strings.ReplaceAll(sourcetext, "[", " [")
+	sourcetext  = strings.ReplaceAll(sourcetext, "]", "] ")
+	sourcetext  = strings.ReplaceAll(sourcetext, "<", " <") 
+	sourcetext  = strings.ReplaceAll(sourcetext, ">", "> ") 
+	sourcetext  = strings.ReplaceAll(sourcetext, ":", " : ") 
+	sourcetext  = strings.ReplaceAll(sourcetext, ";", " ; ") 
+	sourcetext  = sisimoji.Sweep(sourcetext)
+
+	sandwiched := [][]string{
+		// (Postfix) postfix/src/smtp/smtp_proto.c: "host %s said: %s (in reply to %s)",
+		// - <kijitora@example.com>: host re2.example.com[198.51.100.2] said: 550 ...
+		// - <kijitora@example.org>: host r2.example.org[198.51.100.18] refused to talk to me:
+		[]string{"host ", " said: "},
+		[]string{"host ", " talk to me: "},
+		[]string{"while talking to ", ":"}, // (Sendmail) ... while talking to mx.bouncehammer.jp.:
+		[]string{"host ", " ["},            // (Exim) host mx.example.jp [192.0.2.20]: 550 5.7.0 
+
+		// (MailFoundry)
+		// - Delivery failed for the following reason: Server mx22.example.org[192.0.2.222] failed with: 550...
+		// - Delivery failed for the following reason: mail.example.org[192.0.2.222] responded with failure: 552..
+		[]string{"Delivery failed for the following reason: ", " with"},
+		[]string{"Remote system: ", "("}, // (MessagingServer) Remote system: dns;mx.example.net (mx. -- 
+		[]string{" : ", "["},             // (SendGrid) cat:000000:<cat@example.jp> : 192.0.2.1 : mx.example.jp:[192.0.2.2]...
+		[]string{"SMTP Server ", ">"},    // (X6) SMTP Server <smtpd.libsisimai.org> rejected recipient ...
+		[]string{"-MTA: ", ">"},          // (MailMarshal) Reporting-MTA:      <rr1.example.com>
+	}
+	startafter := []string{
+		"Generating server: ", // (Exchange2007) Generating server: mta4.example.org
+	}
+	existuntil := []string{
+		" did not like our ",  // (Dragonfly) mail-inbound.libsisimai.net [192.0.2.25] did not like our DATA: ...
+	}
+	sourcelist := []string{}
+	foundtoken := []string{}
+
+	MAKELIST: for {
+		for _, e := range sandwiched {
+			// Check a hostname exists between the e[0] and e[1] at slice "sandwiched"
+			// Each slice in sandwich have 2 elements
+			if sisimoji.Aligned(sourcetext, e) == false { continue }
+			p1 := strings.Index(sourcetext, e[0])
+			p2 := strings.Index(sourcetext, e[1])
+			cw := len(e[0])
+
+			sourcelist = strings.Split(sourcetext[p1 + cw:p2], " ")
+			break MAKELIST
+		}
+
+		// Check other patterns which are not sandwiched
+		for _, e := range startafter {
+			// startafter have some strings, not a slice([]string).
+			if strings.Contains(sourcetext, e) == false { continue }
+			p1 := strings.Index(sourcetext, e)
+
+			sourcelist = strings.Split(sourcetext[p1 + len(e):], " ")
+			break MAKELIST
+		}
+
+		for _, e := range existuntil {
+			// existuntil have some strings, not a slice([]string).
+			if strings.Contains(sourcetext, e) == false { continue }
+			p1 := strings.Index(sourcetext, e)
+
+			sourcelist = strings.Split(sourcetext[0:p1], " ")
+			break MAKELIST
+		}
+
+		if len(sourcelist) == 0 { sourcelist = strings.Split(sourcetext, " ") }
+		break MAKELIST
+	}
+
+	for _, f := range sourcelist {
+		// Pick some strings which is 4 or more length, is including "." character
+		if len(f) < 4                        { continue }
+		if strings.Contains(f, ".") == false { continue }
+		if IsInternetHost(f) == false        { continue }
+		foundtoken = append(foundtoken, f)
+	}
+	if len(foundtoken) == 0 { return "" }
+	return foundtoken[0]
 }
 
