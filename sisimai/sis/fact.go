@@ -31,7 +31,7 @@ type Fact struct {
 	Rhost           string                  // Remote host name/Remote MTA
 	Recipient       sisiaddr.EmailAddress   // The recipient address of the original message
 	ReplyCode       string                  // SMTP Reply Code such as "421"
-	SMTPAgent       string                  // Module(Engine) name
+	DecodedBy       string                  // Module(Engine) name
 	SMTPCommand     string                  // The last SMTP command
 	SenderDomain    string                  // The domain part of the "Addresser"
 	Subject         string                  // UTF-8 Subject text

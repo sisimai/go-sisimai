@@ -285,7 +285,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			thing.Rhost          = e.Rhost
 			thing.Recipient      = ar
 			thing.ReplyCode      = piece["replycode"]; if len(thing.ReplyCode) == 0 { reply.Find(piece["diagnosticcode"], "") }
-			thing.SMTPAgent      = e.Agent
+			thing.DecodedBy      = e.Agent
 			thing.SMTPCommand    = piece["smtpcommand"]
 			thing.SenderDomain   = as.Host
 			thing.Subject        = piece["subject"]
@@ -408,7 +408,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		fmt.Printf("--[%d]DeliveryStatus = [%s]\n", j, e.DeliveryStatus)
 		fmt.Printf("--[%d]ReplyCode = [%s]\n", j, e.ReplyCode)
 		fmt.Printf("--[%d]Reason = [%s]\n", j, e.Reason)
-		fmt.Printf("--[%d]DecodedBy = [%s]\n", j, e.SMTPAgent)
+		fmt.Printf("--[%d]DecodedBy = [%s]\n", j, e.DecodedBy)
 		fmt.Printf("--[%d]Command = [%s]\n", j, e.SMTPCommand)
 		fmt.Printf("--[%d]Recipient = [%s]\n", j, e.Recipient.Address)
 		fmt.Printf("--[%d]Lhost = [%s]\n", j, e.Lhost)
