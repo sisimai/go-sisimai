@@ -69,6 +69,7 @@ func Find(argv1 string) string {
 		[]string{"host ", " talk to me: "},
 		[]string{"while talking to ", ":"}, // (Sendmail) ... while talking to mx.bouncehammer.jp.:
 		[]string{"host ", " ["},            // (Exim) host mx.example.jp [192.0.2.20]: 550 5.7.0 
+		[]string{" by ", ". ["},            // (Gmail) ...for the recipient domain example.jp by mx.example.jp. [192.0.2.1].
 
 		// (MailFoundry)
 		// - Delivery failed for the following reason: Server mx22.example.org[192.0.2.222] failed with: 550...
@@ -87,6 +88,8 @@ func Find(argv1 string) string {
 	}
 	sourcelist := []string{}
 	foundtoken := []string{}
+	thelongest := uint8(0)
+	hostnameis := ""
 
 	MAKELIST: for {
 		for _, e := range sandwiched {
@@ -94,8 +97,7 @@ func Find(argv1 string) string {
 			// Each slice in sandwich have 2 elements
 			if sisimoji.Aligned(sourcetext, e) == false { continue }
 			p1 := strings.Index(sourcetext, e[0])
-			p2 := strings.Index(sourcetext, e[1])
-			cw := len(e[0])
+			p2 := strings.Index(sourcetext, e[1]); cw := len(e[0])
 
 			sourcelist = strings.Split(sourcetext[p1 + cw:p2], " ")
 			break MAKELIST
@@ -124,14 +126,22 @@ func Find(argv1 string) string {
 		break MAKELIST
 	}
 
-	for _, f := range sourcelist {
+	for _, e := range sourcelist {
 		// Pick some strings which is 4 or more length, is including "." character
-		if len(f) < 4                        { continue }
-		if strings.Contains(f, ".") == false { continue }
-		if IsInternetHost(f) == false        { continue }
-		foundtoken = append(foundtoken, f)
+		if len(e) < 4                        { continue }
+		if strings.Contains(e, ".") == false { continue }
+		if IsInternetHost(e) == false        { continue }
+		foundtoken = append(foundtoken, e)
 	}
-	if len(foundtoken) == 0 { return "" }
-	return foundtoken[0]
+	if len(foundtoken) == 0 { return ""            }
+	if len(foundtoken) == 1 { return foundtoken[0] }
+
+	for _, e := range foundtoken {
+		// Returns the longest hostname
+		cw := uint8(len(e)); if thelongest >= cw { continue }
+		hostnameis = e
+		thelongest = cw
+	}
+	return hostnameis
 }
 
