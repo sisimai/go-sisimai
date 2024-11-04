@@ -152,7 +152,7 @@ func init() {
 
 					} else {
 						// Other DSN fields defined in RFC3464
-						v.Set(o[0], o[2]); if f != 1 { continue }
+						v.Update(o[0], o[2]); if f != 1 { continue }
 
 						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 						permessage[z] = o[2]
@@ -256,7 +256,7 @@ func init() {
 				// Do not set an empty string into each member of DeliveryMatter{}
 				if len(v.Select(z))    > 0 { continue }
 				if len(permessage[z]) == 0 { continue }
-				e.Set(z, permessage[z])
+				e.Update(z, permessage[z])
 			}
 
 			if len(anotherset["diagnosis"]) > 0 {
