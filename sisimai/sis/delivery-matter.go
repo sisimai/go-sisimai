@@ -8,7 +8,6 @@ package sis
 // |____/ \___|_|_| \_/ \___|_|   \__, |_|  |_|\__,_|\__|\__\___|_|   
 //                                |___/                               
 import "strings"
-import "sisimai/address"
 import "sisimai/rfc1123"
 import "sisimai/rfc1894"
 import "sisimai/smtp/reply"
