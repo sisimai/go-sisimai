@@ -10,6 +10,7 @@ package lhost
 import "fmt"
 import "strings"
 import "sisimai/sis"
+import "sisimai/rfc1123"
 import "sisimai/rfc1894"
 import "sisimai/rfc2045"
 import "sisimai/rfc5322"
@@ -195,8 +196,8 @@ func init() {
 			// Get the boundary string and set regular expression for matching with the boundary string.
 			boundary00 = rfc2045.Boundary(bf.Head["content-type"][0], 0)
 		}
-		
-		p1 := -1; p2 := -1
+
+		p1 := -1
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
@@ -436,14 +437,7 @@ func init() {
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 			p1 = strings.Index(e.Diagnosis, "__"); if p1 > 1 { e.Diagnosis = e.Diagnosis[0:p1] }
 
-			if e.Rhost == "" {
-				// Get the remote host name
-				// host neko.example.jp [192.0.2.222]: 550 5.1.1 <kijitora@example.jp>... User Unknown
-				p1 = strings.Index(e.Diagnosis, "host ")
-				p2 = sisimoji.IndexOnTheWay(e.Diagnosis, " ", p1 + 5)
-				if p1 > -1       { e.Rhost = e.Diagnosis[p1 + 5:p2] }
-				if e.Rhost == "" { e.Rhost = recvdtoken[1]          }
-			}
+			if e.Rhost == "" { e.Rhost = rfc1123.Find(e.Diagnosis) }
 			if e.Lhost == "" { e.Lhost = recvdtoken[0] }
 
 			if e.Command == "" {

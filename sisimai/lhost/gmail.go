@@ -219,19 +219,7 @@ func init() {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
-
-			if sisimoji.Aligned(e.Diagnosis, []string{" by ", ". [", "]. "}) {
-				// Get a remote hostname and set it into e.Rhost
-				// Google tried to deliver your message, but it was rejected by the server
-				// for the recipient domain example.jp by mx.example.jp. [192.0.2.153].
-				p1 := strings.LastIndex(e.Diagnosis, " by ")
-				p2 := strings.LastIndex(e.Diagnosis, ". [")
-				hostname := e.Diagnosis[p1 + 4:p2]
-				ipv4addr := e.Diagnosis[p2 + 3:strings.LastIndex(e.Diagnosis, "].")]
-
-				if rfc1123.IsInternetHost(hostname) { e.Rhost = hostname }
-				if e.Rhost == ""                    { e.Rhost = ipv4addr }
-			}
+			e.Rhost     = rfc1123.Find(e.Diagnosis)
 
 			for {
 				// Find "(state 18)" and pick "18" as a key of statetable
