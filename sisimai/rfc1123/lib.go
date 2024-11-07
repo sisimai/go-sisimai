@@ -74,14 +74,14 @@ func Find(argv1 string) string {
 		// (MailFoundry)
 		// - Delivery failed for the following reason: Server mx22.example.org[192.0.2.222] failed with: 550...
 		// - Delivery failed for the following reason: mail.example.org[192.0.2.222] responded with failure: 552..
-		[]string{"Delivery failed for the following reason: ", " with"},
-		[]string{"Remote system: ", "("}, // (MessagingServer) Remote system: dns;mx.example.net (mx. -- 
+		[]string{"delivery failed for the following reason: ", " with"},
+		[]string{"remote system: ", "("}, // (MessagingServer) Remote system: dns;mx.example.net (mx. -- 
 		[]string{" : ", "["},             // (SendGrid) cat:000000:<cat@example.jp> : 192.0.2.1 : mx.example.jp:[192.0.2.2]...
-		[]string{"SMTP Server ", ">"},    // (X6) SMTP Server <smtpd.libsisimai.org> rejected recipient ...
-		[]string{"-MTA: ", ">"},          // (MailMarshal) Reporting-MTA:      <rr1.example.com>
+		[]string{"smtp server ", ">"},    // (X6) SMTP Server <smtpd.libsisimai.org> rejected recipient ...
+		[]string{"-mta: ", ">"},          // (MailMarshal) Reporting-MTA:      <rr1.example.com>
 	}
 	startafter := []string{
-		"Generating server: ", // (Exchange2007) Generating server: mta4.example.org
+		"generating server: ", // (Exchange2007) Generating server: mta4.example.org
 	}
 	existuntil := []string{
 		" did not like our ",  // (Dragonfly) mail-inbound.libsisimai.net [192.0.2.25] did not like our DATA: ...
