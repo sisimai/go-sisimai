@@ -52,7 +52,7 @@ func Find(argv1 string) string {
 	// Replace some string for splitting by " "
 	// - mx.example.net[192.0.2.1] => mx.example.net [192.0.2.1]
 	// - mx.example.jp:[192.0.2.1] => mx.example.jp :[192.0.2.1]
-	sourcetext := argv1
+	sourcetext := strings.ToLower(argv1)
 	sourcetext  = strings.ReplaceAll(sourcetext, "[", " [")
 	sourcetext  = strings.ReplaceAll(sourcetext, "]", "] ")
 	sourcetext  = strings.ReplaceAll(sourcetext, "<", " <") 
@@ -128,6 +128,7 @@ func Find(argv1 string) string {
 
 	for _, e := range sourcelist {
 		// Pick some strings which is 4 or more length, is including "." character
+		e = strings.TrimRight(e, ".") // Remote "." at the end of the string
 		if len(e) < 4                        { continue }
 		if strings.Contains(e, ".") == false { continue }
 		if IsInternetHost(e) == false        { continue }
