@@ -52,6 +52,7 @@ func init() {
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		remotehost := ""                  // The last remote hostname
+		curcommand := ""                  // THe last SMTP command
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
@@ -71,17 +72,21 @@ func init() {
 			// <<< 550 <kijitora@example.org>, User Unknown
 			// 550 <kijitora@example.org>... User unknown
 			// 421 example.org (smtp)... Deferred: Connection timed out during user open with example.org
+			if strings.HasPrefix(e, ">>> ") { curcommand = command.Find(e[4:]) }
 			if sisimoji.Aligned(e, []string{" <", "@", ">..."}) || strings.Contains(strings.ToUpper(e), ">>> RCPT TO:") {
 				// 550 <kijitora@example.org>... User unknown
 				// >>> RCPT To:<kijitora@example.org>
-				p1 := strings.Index(e, "<")
+				p0 := strings.Index(e, " ")
+				p1 := sisimoji.IndexOnTheWay(e, "<", p0)
 				p2 := sisimoji.IndexOnTheWay(e, ">", p1)
 				cv := sisiaddr.S3S4(e[p1:p2 + 1])
-				if cv == v.Recipient {
+
+				if cv == v.Recipient || curcommand == "MAIL" && strings.HasPrefix(e, "<<< ") {
 					// The recipient address is the same address with the last appeared address
 					// like "550 <mikeneko@example.co.jp>... User unknown"
 					// Append this line to the string which is keeping error messages
 					v.Diagnosis += " " + e
+					curcommand   = ""
 
 				} else {
 					// The recipient address in this line differs from the last appeared address
@@ -115,8 +120,8 @@ func init() {
 			p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 6)
 
 			// Get the recipient address from "To:" header at the original message
-			if p1 > 0 { dscontents[0].Recipient = sisiaddr.S3S4(emailparts[1][p1 + 6:p2]) }
-			if sisiaddr.IsEmailAddress(dscontents[0].Recipient) { return sis.RisingUnderway{} }
+			if p1 > 0 { dscontents[0].Recipient = sisiaddr.S3S4(emailparts[1][p1 + 5:p2]) }
+			if sisiaddr.IsEmailAddress(dscontents[0].Recipient) == false { return sis.RisingUnderway{} }
 			recipients++
 		}
 
