@@ -81,7 +81,7 @@ func init() {
 				p2 := sisimoji.IndexOnTheWay(e, ">", p1)
 				cv := sisiaddr.S3S4(e[p1:p2 + 1])
 
-				if cv == v.Recipient || curcommand == "MAIL" && strings.HasPrefix(e, "<<< ") {
+				if cv == v.Recipient || (curcommand == "MAIL" && strings.HasPrefix(e, "<<< ")) {
 					// The recipient address is the same address with the last appeared address
 					// like "550 <mikeneko@example.co.jp>... User unknown"
 					// Append this line to the string which is keeping error messages
