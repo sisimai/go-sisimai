@@ -109,8 +109,13 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 	if len(multiparts[0])                   < 8 { multiparts = multiparts[1:] }
 	if len(multiparts[len(multiparts) - 1]) < 8 { multiparts = multiparts[0:len(multiparts) - 2] }
 
-	for _, e := range multiparts {
+	for j, e := range multiparts {
 		// Check each part and breaks up internal multipart/* block
+		if j > 0 && strings.HasPrefix(e, "Content-") == false {
+			// Add "Content-Type: text/plain" field at the head of the part because there is no
+			// Content-Type: field; see set-of-emails/maildir/bsd/lhost-x1-01.eml
+			e = fmt.Sprintf("Content-Type: text/plain\n\n%s", e)
+		}
 		f := haircut(&e, false)
 		if strings.Contains(f[0], "multipart/") {
 			// There is nested multipart/* block
