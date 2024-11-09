@@ -29,7 +29,7 @@ func INDEX() []string {
 		"IMailServer", "InterScanMSS", "KDDI", "MailFoundry", "MailMarshalSMTP",
 		"McAfee", "MessagingServer", "Notes", "Office365", "OpenSMTPD",
 		"Postfix", "Sendmail", "V5sendmail",
-		"Verizon", "X1", "X2", "X3", "X4", "X5", "X6", "Yahoo", "Zoho", "mFILTER", "qmail",
+		"Verizon", "X1", "X2", "X3", "X5", "X6", "Yahoo", "Zoho", "mFILTER", "qmail",
 	}
 }
 

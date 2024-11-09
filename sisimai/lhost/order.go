@@ -29,19 +29,17 @@ func OrderBySubject(title string) []string {
 		"email-feedback":        []string{"ARF"},
 		"failed-delivery":       []string{"X2"},
 		"failure-delivery":      []string{"X2"},
-		"failure-notice":        []string{"Yahoo", "qmail", "mFILTER", "Activehunter", "X4"},
+		"failure-notice":        []string{"Yahoo", "qmail", "mFILTER", "Activehunter"},
 		"loop-alert":            []string{"FML"},
 		"mail-could":            []string{"InterScanMSS"},
 		"mail-delivery":         []string{"Exim", "GMX", "EinsUndEins", "Zoho"},
 		"mail-failure":          []string{"Exim"},
-		"mail-not":              []string{"X4"},
 		"mail-system":           []string{"EZweb"},
 		"message-delivery":      []string{"MailFoundry"},
 		"message-frozen":        []string{"Exim"},
 		"non-recapitabile":      []string{"Exchange2007"},
 		"non-remis":             []string{"Exchange2007"},
 		"notice":                []string{"Courier"},
-		"permanent-delivery":    []string{"X4"},
 		"postmaster-notify":     []string{"Sendmail"},
 		"returned-mail":         []string{"Sendmail", "V5sendmail", "Biglobe", "X1"},
 		"there-was":             []string{"X6"},
@@ -93,7 +91,7 @@ func AnotherOrder() []string {
 		// The following is a fallback list
 		"Postfix", "Yahoo", "GMX", "MessagingServer", "EinsUndEins", "Domino", "Notes", "qmail", "Courier",
 		"OpenSMTPD", "Zoho", "MailFoundry", "McAfee", "V5sendmail", "mFILTER", "GoogleGroups",
-		"Gmail", "EZweb", "IMailServer", "MailMarshalSMTP", "Activehunter", "Biglobe", "X4", "X1", "X3", "X6",
+		"Gmail", "EZweb", "IMailServer", "MailMarshalSMTP", "Activehunter", "Biglobe", "X1", "X3", "X6",
 	}
 }
 
