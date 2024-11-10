@@ -76,9 +76,9 @@ func Find(argv1 string) string {
 		// - Delivery failed for the following reason: mail.example.org[192.0.2.222] responded with failure: 552..
 		[]string{"delivery failed for the following reason: ", " with"},
 		[]string{"remote system: ", "("}, // (MessagingServer) Remote system: dns;mx.example.net (mx. -- 
-		[]string{" : ", "["},             // (SendGrid) cat:000000:<cat@example.jp> : 192.0.2.1 : mx.example.jp:[192.0.2.2]...
-		[]string{"smtp server ", ">"},    // (X6) SMTP Server <smtpd.libsisimai.org> rejected recipient ...
+		[]string{"smtp server <", ">"},   // (X6) SMTP Server <smtpd.libsisimai.org> rejected recipient ...
 		[]string{"-mta: ", ">"},          // (MailMarshal) Reporting-MTA:      <rr1.example.com>
+		[]string{" : ", "["},             // (SendGrid) cat:000000:<cat@example.jp> : 192.0.2.1 : mx.example.jp:[192.0.2.2]...
 	}
 	startafter := []string{
 		"generating server: ", // (Exchange2007) Generating server: mta4.example.org
@@ -97,7 +97,7 @@ func Find(argv1 string) string {
 			// Each slice in sandwich have 2 elements
 			if sisimoji.Aligned(sourcetext, e) == false { continue }
 			p1 := strings.Index(sourcetext, e[0])
-			p2 := strings.Index(sourcetext, e[1]); cw := len(e[0])
+			p2 := strings.Index(sourcetext, e[1]); cw := len(e[0]); if p1 + cw >= p2 { continue }
 
 			sourcelist = strings.Split(sourcetext[p1 + cw:p2], " ")
 			break MAKELIST
