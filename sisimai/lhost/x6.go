@@ -14,7 +14,6 @@ import "sisimai/rfc5322"
 import "sisimai/smtp/command"
 import sisimoji "sisimai/string"
 import sisiaddr "sisimai/address"
-import "fmt"
 
 func init() {
 	// Decode bounce messages from Unknown MTA #6
@@ -83,10 +82,8 @@ func init() {
 			// Tidy up the error message in e.Diagnosis
 			e := &(dscontents[j])
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
-			fmt.Printf("DS = (%s)\n", e.Diagnosis)
 			e.Command   = command.Find(e.Diagnosis)
 			e.Rhost     = rfc1123.Find(e.Diagnosis)
-			fmt.Printf("RH = (%s)\n", e.Rhost)
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
