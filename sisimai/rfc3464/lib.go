@@ -48,6 +48,21 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	isboundary := []string{rfc2045.Boundary(bf.Head["content-type"][0], 0)}
 	v          := &(dscontents[len(dscontents) - 1])
 
+	for strings.Contains(emailparts[0], "@") == false {
+		// There is a bounce message inside of message/rfc822 part at lhost-x5-*
+		cv := ""
+		he := true
+		p1 := strings.Index(bf.Body, "Content-Type: message/rfc822\n"); if p1 < 0 { break }
+		for _, e := range strings.Split(bf.Body[p1 + 32:], "\n") {
+			// Remove headers before the first "\n\n" after "Content-Type: message/rfc822" line
+			if he { if e == "" { he = false }; continue }
+			if strings.HasPrefix(e, "--")    { continue }
+			cv += e + "\n"
+		}
+		emailparts = rfc5322.Part(&cv, boundaries, false)
+		break;
+	}
+
 	for j, e := range(strings.Split(emailparts[0], "\n")) {
 		// Read error messages and delivery status lines from the head of the email to the
 		// previous line of the beginning of the original message.
