@@ -96,6 +96,7 @@ func ToUTF8(argv0 []byte, argv1 string) (string, error) {
 		default:
 			// TODO: Use "charmap" package when the encoding name is not Japanese
 			// We have no sample email from Notes written in non-Japanese except English
+			// A bounce mail written in Russian also fails (signal SIGSEGV: segmentation violation)
 		*/
 	}
 	utf8string := make([]byte, len(argv0) * 3)
