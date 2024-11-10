@@ -33,7 +33,11 @@ func init() {
 			[]string{"(qmail ", "invoked for bounce)"},
 			[]string{"(qmail ", "invoked from ", "network)"},
 		}
-		if bf.Head["subject"][0] == "failure notice" { proceedsto = true }
+		emailtitle := []string{
+			"failure notice", // qmail-send.c:Subject: failure notice\n\
+			"Failure Notice", // Yahoo
+		}
+		if sisimoji.EqualsAny(bf.Head["subject"][0], emailtitle) { proceedsto = true }
 		for _, e := range bf.Head["received"] {
 			// Received: (qmail 2222 invoked for bounce);29 Apr 2017 23:34:45 +0900
 			// Received: (qmail 2202 invoked from network); 29 Apr 2018 00:00:00 +0900
@@ -66,6 +70,7 @@ func init() {
 				"He/Her is not ",        // The followings are the qmail clone
 				"unable to deliver your message to the following addresses",
 				"Su mensaje no pudo ser entregado",
+				"Sorry, we were unable to deliver your message to the following address",
 				"This is the machine generated message from mail service",
 				"This is the mail delivery agent at",
 				"Unable to deliver message to the following address",
