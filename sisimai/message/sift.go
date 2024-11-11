@@ -10,6 +10,7 @@ package message
 import "strings"
 import "net/mail"
 import "sisimai/sis"
+import "sisimai/arf"
 import "sisimai/lhost"
 import "sisimai/rfc2045"
 import "sisimai/rfc3464"
@@ -72,7 +73,7 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 		// 4. sisimai/rfc3834
 		for _, r := range TryOnFirst {
 			// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
-			if havecalled[r]  { continue }
+			if havecalled[r] || r == "ARF" || strings.HasPrefix(r, "RFC") { continue }
 			localhostr    = lhost.InquireFor[r](bf)
 			havecalled[r] = true
 			modulename    = r
@@ -92,6 +93,8 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 			// TODO: Implemente sismai/arf.go
 			// 3. call sisimai/arf
 			// Try to decode the message as a Feedback Loop message
+			localhostr = arf.Inquire(bf)
+			modulename = "ARF"
 			if localhostr.Void() == false { break DECODER }
 		}
 
