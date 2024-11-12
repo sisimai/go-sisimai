@@ -87,8 +87,10 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 				if len(rfc822data[f]) > 0 { datevalues = append(datevalues, rfc822data[f][0]) }
 			}
 
-			// Get the value of "Date:" header of the bounce message
-			if len(datevalues) < 2 { datevalues = append(datevalues, beforefact.Head["date"][0]) }
+			if len(datevalues) < 2 && len(beforefact.Head["date"]) > 0 {
+				// Get the value of "Date:" header of the bounce message
+				datevalues = append(datevalues, beforefact.Head["date"][0])
+			}
 			for _, v := range datevalues {
 				// Parse each date string using net/mail.ParseDate()
 				times, nyaan := mail.ParseDate(v); if nyaan != nil { continue }
