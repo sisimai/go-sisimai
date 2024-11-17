@@ -7,11 +7,13 @@ package lhost
 // | | '_ \ / _ \/ __| __| / / _ \ | '_ ` _ \ / _` |_  / _ \| '_ \\___ \|  _| \___ \ 
 // | | | | | (_) \__ \ |_ / / ___ \| | | | | | (_| |/ / (_) | | | |___) | |___ ___) |
 // |_|_| |_|\___/|___/\__/_/_/   \_\_| |_| |_|\__,_/___\___/|_| |_|____/|_____|____/ 
+import "log"
+import "fmt"
+import "errors"
 import "strings"
-//import "encoding/json"
+import "encoding/json"
 import "sisimai/sis"
 import sisimoji "sisimai/string"
-import "fmt"
 
 func init() {
 	// Decode bounce messages from Amazon SES(Sending): https://aws.amazon.com/ses/
@@ -57,32 +59,38 @@ func init() {
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
-		fmt.Printf("JSON = (%s)\n", emailparts[0])
-
 		// https://docs.aws.amazon.com/en_us/ses/latest/DeveloperGuide/notification-contents.html
 		type eachHeader struct {
-			name  string              // "MIME-Version"
-			value string              // "1.0"
+			Name  string // "MIME-Version"
+			Value string // "1.0"
 		}
 		type commonHead struct {
-			from      []string        // ["Sender Name <sender@example.com>"]
-			to        []string        // ["Recipient Name <recipient@example.com>"]
-			date      string          // "Mon, 08 Oct 2018 14:05:45 +0000"
-			messageId string          // "custom-message-ID"
-			subject   string          // "Message sent using Amazon SES"
+			From      []string        // ["Sender Name <sender@example.com>"]
+			To        []string        // ["Recipient Name <recipient@example.com>"]
+			Date      string          // "Mon, 08 Oct 2018 14:05:45 +0000"
+			MessageID string          // "custom-message-ID"
+			Subject   string          // "Message sent using Amazon SES"
 		}
 		type mailObject struct {
-			timestamp        string   // "2018-10-08T14:05:45 +0000"
-			messageId        string   // "000001378603177f-7a5433e7-8edb-42ae-af10-f0181f34d6ee-000000"
-			source           string   // "sender@example.com"
-			sourceArn        string   // "arn:aws:ses:us-east-1:888888888888:identity/example.com"
-			sourceIp         string   // "127.0.3.0"
-			sendingAccountId string   // "123456789012"
-			callerIdentity   string   // 
-			destination      []string // ["recipient@example.com"]
-			headersTruncated bool
-			headers          []eachHeader
-			commonHeaders    commonHead
+			Timestamp        string   // "2018-10-08T14:05:45 +0000"
+			MessageID        string   // "000001378603177f-7a5433e7-8edb-42ae-af10-f0181f34d6ee-000000"
+			Source           string   // "sender@example.com"
+			SourceARN        string   // "arn:aws:ses:us-east-1:888888888888:identity/example.com"
+			SourceIP         string   // "127.0.3.0"
+			SendingAccountID string   // "123456789012"
+			CallerIdentity   string   // ?
+			Destination      []string // ["recipient@example.com"]
+			HeadersTruncated bool
+			Headers          []eachHeader
+			CommonHeaders    commonHead
+		}
+		RFC822Head := func(it *mailObject) string {
+			// RFC822Head() returns the original email message (headers only)
+			allheaders := ""
+			for _, e := range it.Headers { allheaders += fmt.Sprintf("%s: %s\n", e.Name, e.Value) }
+			if it.CommonHeaders.Date    != "" { allheaders += fmt.Sprintf("Date: %s\n", it.CommonHeaders.Date)       }
+			if it.CommonHeaders.Subject != "" { allheaders += fmt.Sprintf("Subject: %s\n", it.CommonHeaders.Subject) }
+			return allheaders
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -136,24 +144,24 @@ func init() {
 		}
 		*/
 		type failedRCPT struct {
-			emailAddress   string     // "bounce@simulator.amazonses.com",
-			diagnosticCode string     // "smtp; 550 5.1.1 user unknown"
-			action         string     // "failed"
-			status         string     // "5.1.1"
+			EmailAddress   string     // "bounce@simulator.amazonses.com",
+			DiagnosticCode string     // "smtp; 550 5.1.1 user unknown"
+			Action         string     // "failed"
+			Status         string     // "5.1.1"
 		}
 		type bounceBack struct {
-			bounceType        string  // "Undetermined", "Permanent", "Transient"
-			bounceSubType     string  // "General", "Suppressed", "MailboxFull", and so on
-			bouncedRecipients []failedRCPT
-			timestamp         string  // "2016-10-21T06:58:02.245Z"
-			feedbackId        string  // "01010157e6083d17-38cf01f3-852d-4401-8e8a-84e67a3e51d8-000000"
-			remoteMtaIp       string  // "127.0.2.0"
-			reportingMTA      string  // "dsn; a27-33.smtp-out.us-west-2.amazonses.com"
+			BounceType        string  // "Undetermined", "Permanent", "Transient"
+			BounceSubType     string  // "General", "Suppressed", "MailboxFull", and so on
+			BouncedRecipients []failedRCPT
+			Timestamp         string  // "2016-10-21T06:58:02.245Z"
+			FeedbackID        string  // "01010157e6083d17-38cf01f3-852d-4401-8e8a-84e67a3e51d8-000000"
+			RemoteMTAIP       string  // "127.0.2.0"
+			ReportingMTA      string  // "dsn; a27-33.smtp-out.us-west-2.amazonses.com"
 		}
 		type ReturnedTo struct {
-			notificationType string
-			mail   mailObject
-			bounce bounceBack // This field is present only if the notificationType is Bounce
+			NotificationType string
+			Mail   mailObject
+			Bounce bounceBack // This field is present only if the notificationType is Bounce
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -172,42 +180,100 @@ func init() {
 		//                 or categorized as spam.
 		// - other:        Indicates any other feedback that does not fit into other registered types.
 		// - virus:        Reports that a virus is found in the originating message.
-		type complainBy struct {
-			emailAddress      string  // [{"emailAddress": "complaint@simulator.amazonses.com"}]
-		}
+		type complainBy struct { EmailAddress string } // [{"emailAddress": "complaint@simulator.amazonses.com"}]
 		type complaints struct {
-			complainedRecipients []complainBy
-			timestamp             string // "2016-10-21T06:58:02.245Z"
-			feedbackId            string // "01010157e6083d17-38cf01f3-852d-4401-8e8a-84e67a3e51d8-000000"
-			complaintSubType      string // The value of the complaintSubType field can either be null or OnAccountSuppressionList
-			userAgent             string // "Amazon SES Mailbox Simulator",
-			complaintFeedbackType string // "abuse"
-			arrivalDate           string // The value of the Arrival-Date or Received-Date field
+			ComplainedRecipients []complainBy
+			Timestamp             string // "2016-10-21T06:58:02.245Z"
+			FeedbackID            string // "01010157e6083d17-38cf01f3-852d-4401-8e8a-84e67a3e51d8-000000"
+			ComplaintSubType      string // The value of the complaintSubType field can either be null or OnAccountSuppressionList
+			UserAgent             string // "Amazon SES Mailbox Simulator",
+			ComplaintFeedbackType string // "abuse"
+			ArrivalDate           string // The value of the Arrival-Date or Received-Date field
 		}
 		type Complained struct {
-			notificationType string
-			mail             mailObject
-			complaint        complaints // This field is present only if the notificationType is Complaint 
+			NotificationType string
+			Mail      mailObject
+			Complaint complaints // This field is present only if the notificationType is Complaint 
 		}
 
 		//-----------------------------------------------------------------------------------------
 		// "notificationType": "Delivery"
 		// https://docs.aws.amazon.com/ses/latest/dg/notification-contents.html#delivery-object
 		type sentstatus struct {
-			timestamp             string   // "2016-10-21T06:58:02.245Z"
-			processingTimeMillis  int      // 5753
-			recipients            []string // ["complaint@simulator.amazonses.com"]
-			smtpResponse          string   // "250 2.6.0 Message received"
-			remoteMtaIp           string   // "127.0.2.0"
-			reportingMTA          string   // "dsn; a27-33.smtp-out.us-west-2.amazonses.com"
+			Timestamp             string   // "2016-10-21T06:58:02.245Z"
+			ProcessingTimeMillis  int      // 5753
+			Recipients            []string // ["complaint@simulator.amazonses.com"]
+			SMTPResponse          string   // "250 2.6.0 Message received"
+			RemoteMTAIP           string   // "127.0.2.0"
+			ReportingMTA          string   // "dsn; a27-33.smtp-out.us-west-2.amazonses.com"
 		}
 		type Deliveries struct {
-			notificationType string
-			mail             mailObject
-			delivery         sentstatus    // This field is present only if the notificationType is Complaint 
+			NotificationType string
+			Mail      mailObject
+			Delivery  sentstatus // This field is present only if the notificationType is Complaint 
 		}
 
+		//-----------------------------------------------------------------------------------------
+		type NotifiedTo struct {
+			returnedto ReturnedTo // "notificationType":"Bounce"
+			complained Complained // "notificationType":"Complaint"
+			deliveries Deliveries // "notificationType":"Delivery"
+		}
+
+		//-----------------------------------------------------------------------------------------
+		var notifytype string     // The first character of "notificationType": "b", "c" or "d"
+		var notifiedto NotifiedTo // This instance have 3 types: ReturnedTo, Deliveries, Complained
+		var mailinside mailObject // The pointer to mailObject struct
+		var jsonerrors error  = errors.New("Invalid JSON format")
+		var jsonstring []byte = []byte(emailparts[0])
+
+		for json.Valid(jsonstring) == true {
+			// The JSON string should contain one of the followings in "notificationType" field
+			// - "Bounce"
+			// - "Complaint"
+			// - "Delivery"
+			if strings.Contains(emailparts[0], `"notificationType":"Bounce"`) {
+				// {"notificationType":"Bounce","bounce":{"bounceType":"Permanent",...
+				var p ReturnedTo
+				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
+				notifiedto.returnedto = p
+				mailinside = p.Mail
+				notifytype = "b"
+
+			} else if strings.Contains(emailparts[0], `"notificationType":"Complaint"`) {
+				// {"notificationType":"Complaint","complaint":{"complainedRecipients":[{"e...
+				var p Complained
+				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
+				notifiedto.complained = p
+				mailinside = p.Mail
+				notifytype = "c"
+
+			} else if strings.Contains(emailparts[0], `"notificationType":"Delivery"`) {
+				// {"notificationType":"Delivery","mail":{"timestamp":...
+				var p Deliveries
+				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
+				notifiedto.deliveries = p
+				mailinside = p.Mail
+				notifytype = "d"
+
+			} else {
+				// There is no "notificationType" field or unknown type of "notificationType" field
+				// in the JSON string in the message body
+				jsonerrors = errors.New("There is no notificationType field or unknown type of notificationType field")
+			}
+			break
+		}
+		if notifytype == "" { log.Fatal(fmt.Printf(" *****error: %s\n", jsonerrors)) }
+
+
+		fmt.Printf("json = (%##v)\n", notifiedto)
+		fmt.Printf("type = (%s)\n", notifytype)
+
+
 		dscontents := []sis.DeliveryMatter{{}}
+
+		emailparts[1] = RFC822Head(&mailinside)
+		fmt.Printf("EMAIL = (%s)\n", emailparts[1])
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
 }
