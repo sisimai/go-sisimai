@@ -7,13 +7,18 @@ package lhost
 // | | '_ \ / _ \/ __| __| / / _ \ | '_ ` _ \ / _` |_  / _ \| '_ \\___ \|  _| \___ \ 
 // | | | | | (_) \__ \ |_ / / ___ \| | | | | | (_| |/ / (_) | | | |___) | |___ ___) |
 // |_|_| |_|\___/|___/\__/_/_/   \_\_| |_| |_|\__,_/___\___/|_| |_|____/|_____|____/ 
-import "log"
+import "os"
 import "fmt"
 import "errors"
 import "strings"
 import "encoding/json"
 import "sisimai/sis"
+import "sisimai/rfc1123"
+import "sisimai/smtp/reply"
+import "sisimai/smtp/status"
+import "sisimai/smtp/command"
 import sisimoji "sisimai/string"
+import sisiaddr "sisimai/address"
 
 func init() {
 	// Decode bounce messages from Amazon SES(Sending): https://aws.amazon.com/ses/
@@ -221,7 +226,7 @@ func init() {
 		}
 
 		//-----------------------------------------------------------------------------------------
-		var notifytype string     // The first character of "notificationType": "b", "c" or "d"
+		var whatnotify string     // The first character of "notificationType": "B", "C" or "D"
 		var notifiedto NotifiedTo // This instance have 3 types: ReturnedTo, Deliveries, Complained
 		var mailinside mailObject // The pointer to mailObject struct
 		var jsonerrors error  = errors.New("Invalid JSON format")
@@ -238,7 +243,7 @@ func init() {
 				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
 				notifiedto.returnedto = p
 				mailinside = p.Mail
-				notifytype = "b"
+				whatnotify = "B"
 
 			} else if strings.Contains(emailparts[0], `"notificationType":"Complaint"`) {
 				// {"notificationType":"Complaint","complaint":{"complainedRecipients":[{"e...
@@ -246,7 +251,7 @@ func init() {
 				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
 				notifiedto.complained = p
 				mailinside = p.Mail
-				notifytype = "c"
+				whatnotify = "C"
 
 			} else if strings.Contains(emailparts[0], `"notificationType":"Delivery"`) {
 				// {"notificationType":"Delivery","mail":{"timestamp":...
@@ -254,7 +259,7 @@ func init() {
 				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
 				notifiedto.deliveries = p
 				mailinside = p.Mail
-				notifytype = "d"
+				whatnotify = "D"
 
 			} else {
 				// There is no "notificationType" field or unknown type of "notificationType" field
@@ -263,17 +268,44 @@ func init() {
 			}
 			break
 		}
-		if notifytype == "" { log.Fatal(fmt.Printf(" *****error: %s\n", jsonerrors)) }
-
-
-		fmt.Printf("json = (%##v)\n", notifiedto)
-		fmt.Printf("type = (%s)\n", notifytype)
-
+		if whatnotify == "" {
+			// Failed to loadl/decode JSON
+			fmt.Fprintf(os.Stderr, " ***warning: %s\n", jsonerrors)
+			return sis.RisingUnderway{}
+		}
 
 		dscontents := []sis.DeliveryMatter{{}}
+		recipients := uint8(0)            // The number of 'Final-Recipient' header
+		v          := &(dscontents[len(dscontents) - 1])
+
+		if whatnotify == "B" {
+			// "notificationType":"Bounce"
+			for _, e := range notifiedto.returnedto.Bounce.BouncedRecipients {
+				// {"emailAddress":"neko@example.jp", "action":"failed", "status":"5.1.1", "diagnosticCode": "..."}
+				if len(v.Recipient) > 0 {
+					// There are multiple recipient addresses in the message body.
+					dscontents = append(dscontents, sis.DeliveryMatter{})
+					v = &(dscontents[len(dscontents) - 1])
+				}
+				v.Recipient = sisiaddr.S3S4(e.EmailAddress)
+				v.Diagnosis = sisimoji.Sweep(e.DiagnosticCode)
+				v.Command   = command.Find(v.Diagnosis)
+				v.Action    = e.Action
+				v.Status    = status.Find(e.Status, "")
+				v.ReplyCode = reply.Find(v.Diagnosis, v.Status)
+				v.Date      = notifiedto.returnedto.Bounce.Timestamp
+				v.Lhost     = rfc1123.Find(notifiedto.returnedto.Bounce.ReportingMTA)
+				recipients += 1
+			}
+		} else if whatnotify == "C" {
+			// "notificationType":"Complaint"
+
+		} else if whatnotify == "D" {
+			// "notificationType":"Delivery"
+
+		}
 
 		emailparts[1] = RFC822Head(&mailinside)
-		fmt.Printf("EMAIL = (%s)\n", emailparts[1])
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
 }
