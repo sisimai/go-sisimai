@@ -220,15 +220,15 @@ func init() {
 
 		//-----------------------------------------------------------------------------------------
 		type NotifiedTo struct {
-			returnedto ReturnedTo // "notificationType":"Bounce"
-			complained Complained // "notificationType":"Complaint"
-			deliveries Deliveries // "notificationType":"Delivery"
+			returnedto *ReturnedTo // "notificationType":"Bounce"
+			complained *Complained // "notificationType":"Complaint"
+			deliveries *Deliveries // "notificationType":"Delivery"
 		}
 
 		//-----------------------------------------------------------------------------------------
-		var whatnotify string     // The first character of "notificationType": "B", "C" or "D"
-		var notifiedto NotifiedTo // This instance have 3 types: ReturnedTo, Deliveries, Complained
-		var mailinside mailObject // The pointer to mailObject struct
+		var whatnotify string      // The first character of "notificationType": "B", "C" or "D"
+		var notifiedto NotifiedTo  // This instance have 3 types: ReturnedTo, Deliveries, Complained
+		var mailinside *mailObject // The pointer to mailObject struct
 		var jsonerrors error  = errors.New("Invalid JSON format")
 		var jsonstring []byte = []byte(emailparts[0])
 
@@ -241,24 +241,24 @@ func init() {
 				// {"notificationType":"Bounce","bounce":{"bounceType":"Permanent",...
 				var p ReturnedTo
 				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
-				notifiedto.returnedto = p
-				mailinside = p.Mail
+				notifiedto.returnedto = &p
+				mailinside = &p.Mail
 				whatnotify = "B"
 
 			} else if strings.Contains(emailparts[0], `"notificationType":"Complaint"`) {
 				// {"notificationType":"Complaint","complaint":{"complainedRecipients":[{"e...
 				var p Complained
 				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
-				notifiedto.complained = p
-				mailinside = p.Mail
+				notifiedto.complained = &p
+				mailinside = &p.Mail
 				whatnotify = "C"
 
 			} else if strings.Contains(emailparts[0], `"notificationType":"Delivery"`) {
 				// {"notificationType":"Delivery","mail":{"timestamp":...
 				var p Deliveries
 				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
-				notifiedto.deliveries = p
-				mailinside = p.Mail
+				notifiedto.deliveries = &p
+				mailinside = &p.Mail
 				whatnotify = "D"
 
 			} else {
@@ -275,12 +275,13 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
+//		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])
 
 		if whatnotify == "B" {
 			// "notificationType":"Bounce"
-			for _, e := range notifiedto.returnedto.Bounce.BouncedRecipients {
+			o := &notifiedto.returnedto.Bounce
+			for _, e := range (*o).BouncedRecipients {
 				// {"emailAddress":"neko@example.jp", "action":"failed", "status":"5.1.1", "diagnosticCode": "..."}
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -293,19 +294,45 @@ func init() {
 				v.Action    = e.Action
 				v.Status    = status.Find(e.Status, "")
 				v.ReplyCode = reply.Find(v.Diagnosis, v.Status)
-				v.Date      = notifiedto.returnedto.Bounce.Timestamp
-				v.Lhost     = rfc1123.Find(notifiedto.returnedto.Bounce.ReportingMTA)
-				recipients += 1
+				v.Date      = (*o).Timestamp
+				v.Lhost     = rfc1123.Find((*o).ReportingMTA)
 			}
 		} else if whatnotify == "C" {
 			// "notificationType":"Complaint"
-
+			o := &notifiedto.complained.Complaint
+			for _, e := range (*o).ComplainedRecipients {
+				// {"emailAddress":"neko@example.jp"}
+				if len(v.Recipient) > 0 {
+					// There are multiple recipient addresses in the message body.
+					dscontents = append(dscontents, sis.DeliveryMatter{})
+					v = &(dscontents[len(dscontents) - 1])
+				}
+				v.Recipient    = sisiaddr.S3S4(e.EmailAddress)
+				v.Reason       = "feedback"
+				v.FeedbackType = (*o).ComplaintFeedbackType
+				v.Date         = (*o).Timestamp
+				v.Diagnosis    = fmt.Sprintf(`{"feedbackid":"%s", "useragent":"%s"}`, (*o).FeedbackID, (*o).UserAgent)
+			}
 		} else if whatnotify == "D" {
 			// "notificationType":"Delivery"
-
+			o := &notifiedto.deliveries.Delivery
+			for _, e := range (*o).Recipients {
+				// {"emailAddress":"neko@example.jp"}
+				if len(v.Recipient) > 0 {
+					// There are multiple recipient addresses in the message body.
+					dscontents = append(dscontents, sis.DeliveryMatter{})
+					v = &(dscontents[len(dscontents) - 1])
+				}
+				v.Recipient = sisiaddr.S3S4(e)
+				v.Reason    = "delivered"
+				v.Date      = (*o).Timestamp
+				v.Lhost     = (*o).ReportingMTA
+				v.Diagnosis = (*o).SMTPResponse
+				v.Status    = status.Find(v.Diagnosis, "")
+				v.ReplyCode = reply.Find(v.Diagnosis, v.Status)
+			}
 		}
-
-		emailparts[1] = RFC822Head(&mailinside)
+		emailparts[1] = RFC822Head(mailinside)
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
 }
