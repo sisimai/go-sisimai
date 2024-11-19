@@ -23,7 +23,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
 	boundaries := []string{"__SISIMAI_PSEUDO_BOUNDARY__"}
-	lowerlabel := []string{"from", "to", "auto-submitted", "prededence", "x-apple-action"}
+	lowerlabel := []string{"from", "to", "subject", "auto-submitted", "precedence", "x-apple-action"}
 	lowervalue := map[string]string{}
 	dontdecode := map[string][]string{
 		"from":    []string{"root@", "postmaster@", "mailer-daemon@"},
@@ -40,7 +40,6 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		"subject":        []string{"auto:", "auto response:", "automatic reply:", "out of office:", "out of the office:"},
 		"x-apple-action": []string{"vacation"},
     };
-	//subjectset := []string{"auto response:", "automatic reply:", "out of office:"}
 	proceedsto := true
 
 	// Set lower-cased value of each header related to auto-response
@@ -77,8 +76,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	}
 	if recipients == 0 { return sis.RisingUnderway{} }
 
-//	readsuntil := uint8(5)            // The number of the maximum lines this function reads
-//	blanklines := uint8(0)            // The number of coniunuous blank lines
+	// Squeeze continuous "\n" in the message body
+	bf.Body     = strings.Trim(strings.ReplaceAll(bf.Body, "\n\n", "\n"), "\n")
 	bodyslices := strings.Split(bf.Body, "\n")
 	rfc822part := ""
 
@@ -90,22 +89,29 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	if len(bodyslices) < 5 {
 		// There is vacation message only in the message body
+		bf.Body = strings.ReplaceAll(bf.Body, "\n", " ")
 		v.Diagnosis = sisimoji.Sweep(bf.Body)
 
 	} else {
-		/*
-		for j, e := range bodyslices {
-			// Read error messages and delivery status lines from the head of the email to the
-			// previous line of the beginning of the original message.
+		for _, e := range bodyslices {
+			// Read vacation messages from the head of the email
+			if len(e) == 0 || strings.HasPrefix(e, "--") { continue }
+			v.Diagnosis += e + " "
 		}
-		*/
 	}
 
-	v.Reason = "vacaion"
-	v.Date   = bf.Head["date"][0]
+	for {
+		// Pick the original Subject: value from the bounce message
+		p1 := strings.Index(bf.Head["subject"][0], ": "); if p1 < 0 { break }
+		if sisimoji.ContainsAny(lowervalue["subject"], autoreply0["subject"]) == false { break }
+		cv := sisimoji.Sweep(bf.Head["subject"][0][p1 + 2:])
+		rfc822part += fmt.Sprintf("Subject: %s\n", cv)
+		break
+	}
 
+	v.Reason    = "vacaion"
+	v.Date      = bf.Head["date"][0]
 	rfc822part += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
 	return sis.RisingUnderway{ Digest: dscontents, RFC822: rfc822part }
-
 }
 
