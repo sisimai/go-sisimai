@@ -14,6 +14,7 @@ replace (
 	sisimai/rfc1894 => ./sisimai/rfc1894
 	sisimai/rfc2045 => ./sisimai/rfc2045
 	sisimai/rfc3464 => ./sisimai/rfc3464
+	sisimai/rfc3834 => ./sisimai/rfc3834
 	sisimai/rfc5322 => ./sisimai/rfc5322
 	sisimai/rfc5965 => ./sisimai/rfc5965
 	sisimai/rhost => ./sisimai/rhost
@@ -44,6 +45,7 @@ require (
 	sisimai/rfc1894 v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/rfc2045 v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/rfc3464 v0.0.0-00010101000000-000000000000 // indirect
+	sisimai/rfc3834 v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/rfc5322 v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/rfc5965 v0.0.0-00010101000000-000000000000 // indirect
 	sisimai/rhost v0.0.0-00010101000000-000000000000 // indirect

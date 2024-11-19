@@ -14,6 +14,7 @@ import "sisimai/arf"
 import "sisimai/lhost"
 import "sisimai/rfc2045"
 import "sisimai/rfc3464"
+import "sisimai/rfc3834"
 import sisimoji "sisimai/string"
 
 // sift() sifts a bounce mail with each MTA module
@@ -102,6 +103,8 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 			// TODO: Implemente sismai/rfc3834.go
 			// 4. call sisimai/rfc3834
 			// Try to sift the message as auto reply message defined in RFC3834
+			localhostr = rfc3834.Inquire(bf)
+			modulename = "RFC3834"
 			if localhostr.Void() == false { break DECODER }
 		}
 		break // as of now, we have no sample email for coding this block
