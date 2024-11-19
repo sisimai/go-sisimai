@@ -137,7 +137,6 @@ func init() {
 		// Transient/MessageTooLarge -- message you sent was too large
 		// Transient/ContentRejected -- message you sent contains content that the provider doesn't allow
 		// Transient/AttachmentRejected the message contained an unacceptable attachment
-		/*
 		reasonmaps := map[string]string {
 			"Supressed":                "undefined", // "suppressed" will be assigned (new reason name)
 			"OnAccountSuppressionList": "undefined", // "suppressed" will be assigned (new reason name)
@@ -147,7 +146,6 @@ func init() {
 			"ContentRejected":          "contenterror",
 			"AttachmentRejected":       "securityerror",
 		}
-		*/
 		type failedRCPT struct {
 			EmailAddress   string     // "bounce@simulator.amazonses.com",
 			DiagnosticCode string     // "smtp; 550 5.1.1 user unknown"
@@ -275,7 +273,7 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-//		recipients := uint8(0)            // The number of 'Final-Recipient' header
+		recipients := uint8(0)
 		v          := &(dscontents[len(dscontents) - 1])
 
 		if whatnotify == "B" {
@@ -296,6 +294,13 @@ func init() {
 				v.ReplyCode = reply.Find(v.Diagnosis, v.Status)
 				v.Date      = (*o).Timestamp
 				v.Lhost     = rfc1123.Find((*o).ReportingMTA)
+				recipients += 1
+
+				for f := range reasonmaps {
+					// Try to find the bounce reason by "bounceSubType"
+					if reasonmaps[f] != (*o).BounceSubType { continue }
+					v.Reason = f; break
+				}
 			}
 		} else if whatnotify == "C" {
 			// "notificationType":"Complaint"
@@ -312,6 +317,7 @@ func init() {
 				v.FeedbackType = (*o).ComplaintFeedbackType
 				v.Date         = (*o).Timestamp
 				v.Diagnosis    = fmt.Sprintf(`{"feedbackid":"%s", "useragent":"%s"}`, (*o).FeedbackID, (*o).UserAgent)
+				recipients += 1
 			}
 		} else if whatnotify == "D" {
 			// "notificationType":"Delivery"
@@ -325,13 +331,17 @@ func init() {
 				}
 				v.Recipient = sisiaddr.S3S4(e)
 				v.Reason    = "delivered"
+				v.Action    = "delivered"
 				v.Date      = (*o).Timestamp
 				v.Lhost     = (*o).ReportingMTA
 				v.Diagnosis = (*o).SMTPResponse
 				v.Status    = status.Find(v.Diagnosis, "")
 				v.ReplyCode = reply.Find(v.Diagnosis, v.Status)
+				recipients += 1
 			}
 		}
+		if recipients == 0 { return sis.RisingUnderway{} }
+
 		emailparts[1] = RFC822Head(mailinside)
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
