@@ -18,6 +18,7 @@ import "sisimai/smtp/reply"
 import "sisimai/smtp/status"
 import "sisimai/smtp/command"
 import sisimoji "sisimai/string"
+import sisiaddr "sisimai/address"
 
 // Inquire() decodes a bounce message which have fields defined in RFC3464
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
@@ -139,6 +140,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				// X-Actual-Recipient: rfc822; kijitora@example.co.jp
 				if o[0] == "final-recipient" {
 					// Final-Recipient: rfc822; kijitora@example.jp
+					// Final-Recipient: x400; /PN=...
+					if sisiaddr.IsEmailAddress(o[2]) == false { continue }
 					if len(v.Recipient) > 0 {
 						// There are multiple recipient addresses in the message body.
 						dscontents = append(dscontents, sis.DeliveryMatter{})
@@ -198,6 +201,12 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				}
 			}
 		}
+	}
+	for recipients == 0 {
+		// There is no valid recipient address, Try to use the alias addaress as a final recipient
+		if dscontents[0].Alias == ""                             { break }
+		if sisiaddr.IsEmailAddress(dscontents[0].Alias) == false { break }
+		dscontents[0].Recipient = dscontents[0].Alias; recipients++
 	}
 	if recipients == 0 { return sis.RisingUnderway{} }
 
