@@ -120,6 +120,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if strings.HasPrefix(e, "This is a multi") { break } // This is a multipart message in MIME format
 				if strings.HasPrefix(e, "This is an auto") { break } // This is an automatically generated ...
 				if strings.HasPrefix(e, "###")             { break } // Frame like #####
+				if strings.HasPrefix(e, "***")             { break } // Frame like *****
 				if strings.Contains(e, "---- The follow")  { break } // ----- The following addresses had delivery problems -----
 				if strings.Contains(e, "---- Transcript")  { break } // ----- Transcript of session follows -----
 				beforemesg += e + " "; break
