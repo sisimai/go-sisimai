@@ -7,6 +7,7 @@ package rfc3464
 // | |_) | |_ | |     |_ \| || |_| '_ \| || |_ 
 // |  _ <|  _|| |___ ___) |__   _| (_) |__   _|
 // |_| \_\_|   \____|____/   |_|  \___/   |_|  
+import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/lhost"
@@ -117,6 +118,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if strings.HasPrefix(e, "This is a MIME")  { break } // This is a MIME-formatted message.
 				if strings.HasPrefix(e, "This is a multi") { break } // This is a multipart message in MIME format
 				if strings.HasPrefix(e, "This is an auto") { break } // This is an automatically generated ...
+				if strings.HasPrefix(e, "    ----- The ")  { break } //     ----- The following addresses had delivery problems -----
+				if strings.HasPrefix(e, "----- ")          { break } // ----- Transcript of session follows -----
 				if strings.HasPrefix(e, "###")             { break } // Frame like #####
 				beforemesg += e + " "; break
 			}
@@ -150,11 +153,17 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				}
 			} else if o[3] == "code" {
 				// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
-				v.Spec = o[1]
-				v.Diagnosis = o[2]
+				v.Spec       = o[1]
+				v.Diagnosis += o[2] + " "
 
 			} else {
 				// Other DSN fields defined in RFC3464
+				if o[4] != "" {
+					// There are other error messages as a comment such as the following:
+					// Status: 5.0.0 (permanent failure)
+					// Status: 4.0.0 (cat.example.net: host name lookup failure)
+					v.Diagnosis += " " + o[4]
+				}
 				v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 
 				// Copy the lower-cased member name of sis.DeliveryMatter{} for "permessage" for
@@ -228,6 +237,10 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		if e.Status == "" { e.Status = status.Find(e.Diagnosis, e.ReplyCode) }
 		if e.Status == "" { e.Status = alternates.Status                     }
 	}
+
+	// Set the recipient address as To: header in the original message part
+	if emailparts[1] == "" { emailparts[1] = fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient) }
+
 	return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 }
 
