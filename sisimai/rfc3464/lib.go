@@ -39,6 +39,14 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	keystrings := []string{}          // Key list of permessage
 	dscontents := []sis.DeliveryMatter{{}}
 	alternates := sis.DeliveryMatter{}
+
+	for sisimoji.ContainsAny(bf.Body, boundaries) == false {
+		// There is no "Content-Type: message/rfc822" line in the message body
+		cv := "\n\nReturn-Path:"; if strings.Contains(bf.Body, cv) == false { break }
+		bf.Body = strings.Replace(bf.Body, cv, "\n\n" + boundaries[0] + cv, 1)
+		break
+	}
+
 	emailparts := rfc5322.Part(&bf.Body, boundaries, false)
 	readcursor := uint8(0)            // Points the current cursor position
 	readslices := []string{""}        // Copy each line for later reference
@@ -52,7 +60,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		// There is a bounce message inside of message/rfc822 part at lhost-x5-*
 		cv := ""
 		he := true
-		p1 := strings.Index(bf.Body, "Content-Type: message/rfc822\n"); if p1 < 0 { break }
+		p1 := strings.Index(bf.Body, boundaries[0] + "\n"); if p1 < 0 { break }
 		for _, e := range strings.Split(bf.Body[p1 + 32:], "\n") {
 			// Remove headers before the first "\n\n" after "Content-Type: message/rfc822" line
 			if he { if e == "" { he = false }; continue }
@@ -61,6 +69,13 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		}
 		emailparts = rfc5322.Part(&cv, boundaries, false)
 		break;
+	}
+
+	for strings.Contains(emailparts[0], startingof["message"][0]) == false {
+		// There is no "Content-Type: message/delivery-status" line in the message body
+		cv := "\n\nReporting-MTA:"; if strings.Contains(emailparts[0], cv) == false { break }
+		emailparts[0] = strings.Replace(emailparts[0], cv, "\n\n" + startingof["message"][0] + cv, 1)
+		break
 	}
 
 	for j, e := range(strings.Split(emailparts[0], "\n")) {
