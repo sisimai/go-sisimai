@@ -15,7 +15,6 @@ import "sisimai/smtp/reply"
 import "sisimai/smtp/status"
 import sisiaddr "sisimai/address"
 import sisimoji "sisimai/string"
-import "fmt"
 
 func init() {
 	// Decode bounce messages from Microsoft Exchange Server 2007: https://www.microsoft.com/microsoft-365/exchange/email
@@ -29,25 +28,25 @@ func init() {
 		if len(bf.Head["x-ms-exchange-crosstenant-originalarrivaltime"]) > 0 { return sis.RisingUnderway{} }
 		if len(bf.Head["x-ms-exchange-crosstenant-fromentityheader"])    > 0 { return sis.RisingUnderway{} }
 
-		proceedsto := uint8(0); for {
-			// Content-Language: en-US, fr-FR, sv-SE
-			if strings.HasPrefix(bf.Head["subject"][0], "Undeliverable")    { proceedsto = 1; break }
-			if strings.HasPrefix(bf.Head["subject"][0], "Non_remis_")       { proceedsto = 1; break }
-			if strings.HasPrefix(bf.Head["subject"][0], "Non recapitabile") { proceedsto = 1; break }
-			if strings.HasPrefix(bf.Head["subject"][0], "Olevererbart")     { proceedsto = 1; break }
-			break
+		proceedsto := uint8(0)
+		emailtitle := []string{
+			// Content-Language: 
+			"Undeliverable",    // en-US
+			"Non_remis_",       // fr-FR
+			"Non remis ",       // fr-FR
+			"Non recapitabile", // it-CH
+			"Olevererbart",     // sv-SE
 		}
-		if proceedsto                       == 0 { return sis.RisingUnderway{} }
-		if len(bf.Head["content-language"]) == 0 { return sis.RisingUnderway{} }
-
+		if sisimoji.HasPrefixAny(bf.Head["subject"][0], emailtitle) { proceedsto = 1 }
 		for {
 			// Content-Laugage: JP or ja-JP
+			if len(bf.Head["content-language"])    == 0 {               break }
 			if len(bf.Head["content-language"][0]) == 2 { proceedsto++; break }
 			if len(bf.Head["content-language"][0]) == 5 { proceedsto++; break }
 			break
 		}
 		if proceedsto < 2 { return sis.RisingUnderway{} }
-fmt.Printf("BODY = (%s)\n", bf.Body)
+
 		indicators := INDICATORS()
 		boundaries := []string{
 			"Original message headers:",             // en-US
