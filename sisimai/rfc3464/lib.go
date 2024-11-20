@@ -117,6 +117,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if strings.HasPrefix(e, "This is a MIME")  { break } // This is a MIME-formatted message.
 				if strings.HasPrefix(e, "This is a multi") { break } // This is a multipart message in MIME format
 				if strings.HasPrefix(e, "This is an auto") { break } // This is an automatically generated ...
+				if strings.HasPrefix(e, "###")             { break } // Frame like #####
 				beforemesg += e + " "; break
 			}
 			continue
