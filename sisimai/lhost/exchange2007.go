@@ -15,6 +15,7 @@ import "sisimai/smtp/reply"
 import "sisimai/smtp/status"
 import sisiaddr "sisimai/address"
 import sisimoji "sisimai/string"
+import "fmt"
 
 func init() {
 	// Decode bounce messages from Microsoft Exchange Server 2007: https://www.microsoft.com/microsoft-365/exchange/email
@@ -29,10 +30,11 @@ func init() {
 		if len(bf.Head["x-ms-exchange-crosstenant-fromentityheader"])    > 0 { return sis.RisingUnderway{} }
 
 		proceedsto := uint8(0); for {
-			// Content-Language: en-US, fr-FR
+			// Content-Language: en-US, fr-FR, sv-SE
 			if strings.HasPrefix(bf.Head["subject"][0], "Undeliverable")    { proceedsto = 1; break }
 			if strings.HasPrefix(bf.Head["subject"][0], "Non_remis_")       { proceedsto = 1; break }
 			if strings.HasPrefix(bf.Head["subject"][0], "Non recapitabile") { proceedsto = 1; break }
+			if strings.HasPrefix(bf.Head["subject"][0], "Olevererbart")     { proceedsto = 1; break }
 			break
 		}
 		if proceedsto                       == 0 { return sis.RisingUnderway{} }
@@ -45,24 +47,27 @@ func init() {
 			break
 		}
 		if proceedsto < 2 { return sis.RisingUnderway{} }
-
+fmt.Printf("BODY = (%s)\n", bf.Body)
 		indicators := INDICATORS()
 		boundaries := []string{
 			"Original message headers:",             // en-US
 			"tes de message d'origine :",            // fr-FR/En-têtes de message d'origine
 			"Intestazioni originali del messaggio:", // it-CH
+			"Ursprungshuvuden:",                     // sv-SE
 		}
 		startingof := map[string][]string{
 			"message": []string{
 				"Diagnostic information for administrators:",           // en-US
 				"Informations de diagnostic pour les administrateurs",  // fr-FR
 				"Informazioni di diagnostica per gli amministratori",   // it-CH
+				"Diagnostisk information f",                            // sv-SE
 			},
 			"error": []string{" RESOLVER.", " QUEUE."},
 			"rhost": []string{
 				"Generating server",        // en-US
 				"Serveur de g",             // fr-FR/Serveur de génération
 				"Server di generazione",    // it-CH
+				"Genererande server",       // sv-SE
 			},
 		}
 		ndrsubject := map[string]string{
