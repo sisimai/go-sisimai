@@ -27,7 +27,10 @@ var TryOnFirst = []string{}
 var DefaultSet = lhost.AnotherOrder()
 var Boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
 var ReplacesAs = map[string][][]string{
-    "Content-Type": [][]string{{"message/xdelivery-status", "message/delivery-status"}},
+    "Content-Type": [][]string{
+		{"message/xdelivery-status",         "message/delivery-status"},
+		{"message/disposition-notification", "message/delivery-status"},
+	},
 }
 
 // makefield() generates a map including each field name defined in RFC1894, RFC5322, and RFC5965
