@@ -141,7 +141,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if o[0] == "final-recipient" {
 					// Final-Recipient: rfc822; kijitora@example.jp
 					// Final-Recipient: x400; /PN=...
-					cv := sisiaddr.S3S4(o[2]); if sisiaddr.IsEmailAddress(cv) == false { continue }
+					cv := sisiaddr.S3S4(o[2]); if sisiaddr.IsEmailAddress(cv) == false   { continue }
+					cw := len(dscontents); if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
 
 					if len(v.Recipient) > 0 {
 						// There are multiple recipient addresses in the message body.
