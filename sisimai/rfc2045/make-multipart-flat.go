@@ -126,9 +126,7 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 			if strings.Contains(bodyinside, boundary02) == false { continue }
 			v := levelout(f[0], &bodyinside); if v == nil        { continue }
 
-			for _, w := range v {
-				partstable = append(partstable, [3]string{w[0], w[1], w[2]})
-			}
+			for _, w := range v { partstable = append(partstable, [3]string{w[0], w[1], w[2]}) }
 		} else {
 			// The part is not a multipart/* block
 			b := e; if len(f[len(f) - 1]) > 0 { b = f[len(f) - 1] }
@@ -143,7 +141,11 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 			}
 
 			v := [3]string{f[0], f[1], b}
-			if len(f[0]) > 0 { v[2] = strings.SplitN(b, "\n\n", 2)[1] }
+			for len(f[0]) > 0 {
+				if f[0] == "" || b == "" || strings.Contains(b, "\n\n") == false { break }
+				v[2] = strings.SplitN(b, "\n\n", 2)[1]
+				break
+			}
 			partstable = append(partstable, v)
 		}
 	}
