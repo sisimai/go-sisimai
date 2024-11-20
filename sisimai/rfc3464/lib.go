@@ -195,7 +195,12 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				}
 			} else {
 				// The line may be a continued line of the value of the Diagnostic-Code: field
-				if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false { continue }
+				if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false {
+					// In the case of multiple "message/delivery-status" line
+					if strings.HasPrefix(e, "Content-") { continue } // Content-Disposition, ...
+					beforemesg += e + " "
+					continue
+				}
 				if strings.HasPrefix(e, " ") {
 					// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
 					//    has an SPF record with a hard fail
