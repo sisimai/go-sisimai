@@ -1,4 +1,4 @@
-// Copyright (C) 2020 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
 
@@ -28,7 +28,6 @@ func IsEncoded(argv0 string) bool {
 		// =?UTF-8?B?44OL44Oj44O844Oz?=
 		if !strings.Contains(argv0, "=?") { break } // Begins with "=?"
 		if !strings.Contains(argv0, "?=") { break } // Ends with "?="
-		if strings.Count(argv0, "?") != 4 { break } // "?" appears 4 times
 		if len(argv0) < 8                 { break } // String length should be 8 or more
 		if strings.Contains(argv0, "?B?") || strings.Contains(argv0, "?Q?") { match = true }
 		break
