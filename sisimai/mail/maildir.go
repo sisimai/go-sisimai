@@ -12,33 +12,29 @@ import "io/ioutil"
 import "path/filepath"
 
 // readMaildir() is a Maildir/ reader, works as a iterator.
-func (this *Mail) readMaildir() (*string, error) {
-	// @return   [*string]  Contents of the each file in the Maildir/
-	// @return   [error]    It has reached to the end of the Maildir/
+func (this *EmailEntity) readMaildir() (*string, error) {
+	// @return   *string  Contents of the each file in the Maildir/
+	// @return   error    It has reached to the end of the Maildir/
 	if this.handle == nil {
 		// Open the Maildir/
-		filehandle, oops := os.Open(this.Dir)
-		if oops != nil { return nil, oops }
+		filehandle, nyaan := os.Open(this.Dir); if nyaan != nil { return nil, nyaan }
 		this.handle = filehandle // Successfully opened the Maildir/
 	}
 
-	var emailblock string
-	if emailfiles, oops := this.handle.Readdir(1); oops == nil {
+	emailblock := ""
+	if emailfiles, nyaan := this.handle.Readdir(1); nyaan == nil {
 		// Read each email file in the Maildir/
-		for _, ef := range emailfiles {
+		for _, e := range emailfiles {
+			// The element is a directory in the Maildir/, OR the size of email file is 0
 			this.offset += 1
+			if e.IsDir() || e.Size() == 0 { continue }
 
-			if ef.IsDir() || ef.Size() == 0 {
-				// The element is a directory in the Maildir/, OR the size of email file is 0
-				continue
-			}
+			this.Size = e.Size()
+			this.File = e.Name()
+			this.Path = filepath.Clean(filepath.FromSlash(this.Dir + "/" + e.Name()))
 
-			this.Size = ef.Size()
-			this.File = ef.Name()
-			this.Path = filepath.Clean(filepath.FromSlash(this.Dir + "/" + ef.Name()))
-			emailbytes := make([]byte, ef.Size())
-
-			if readbuffer, oops := ioutil.ReadFile(this.Path); oops == nil {
+			emailbytes := make([]byte, e.Size())
+			if readbuffer, nyaan := ioutil.ReadFile(this.Path); nyaan == nil {
 				// No error, successfully opened each email file
 				emailbytes = append(emailbytes, readbuffer...)
 
@@ -51,7 +47,7 @@ func (this *Mail) readMaildir() (*string, error) {
 		}
 	} else {
 		// Completed to read the Maildir/ or Failed to read the Maildir/
-		return nil, oops
+		return nil, nyaan
 	}
 
 	return &emailblock, nil
