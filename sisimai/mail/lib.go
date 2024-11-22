@@ -106,6 +106,7 @@ func(this *EmailEntity) Read() (*string, error) {
 func(this *EmailEntity) setNewLine() bool {
 	// @param    NONE
 	// @return   bool true if the newline code is CRLF or CR or LF
+	if this.Kind == "maildir" { return false }
 	var bufferedio *bufio.Reader
 	var the1st1000 []byte
 	var readbuffer string
