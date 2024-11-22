@@ -41,42 +41,42 @@ type EmailEntity struct {
 func Rise(argv0 string) (*EmailEntity, error) {
 	// @param    string     argv0  Path to mbox or Maildir/
 	// @return   *mail.EmailEntity Pointer to mail.EmailEntity struct
-	thing := EmailEntity{}
+	ee := EmailEntity{}
 
 	if argv0 == "STDIN" {
 		// Read from STDIN
-		thing.Kind = "stdin"
-		thing.Path = "<STDIN>"
+		ee.Kind = "stdin"
+		ee.Path = "<STDIN>"
 
 	} else if strings.Contains(argv0, "\n") {
 		// Email data is in a string
-		thing.Kind = "memory"
-		thing.Path = "<MEMORY>"
+		ee.Kind = "memory"
+		ee.Path = "<MEMORY>"
 
 	} else {
 		// UNIX mbox or Maildir/
 		if filestatus, nyaan:= os.Stat(argv0); nyaan == nil {
 			// the file or the maildir exist
-			thing.Path = argv0
-			thing.Size = filestatus.Size()
+			ee.Path = argv0
+			ee.Size = filestatus.Size()
 
 			if filestatus.IsDir() {
 				// Maildir/
-				thing.Kind = "maildir"
-				thing.Dir  = argv0
+				ee.Kind = "maildir"
+				ee.Dir  = argv0
 
 			} else {
 				// UNIX mbox
-				thing.Kind = "mailbox"
-				thing.File = filepath.Base(argv0)
-				thing.setNewLine()
+				ee.Kind = "mailbox"
+				ee.File = filepath.Base(argv0)
+				ee.setNewLine()
 			}
 		} else {
 			// Neither a mailbox nor a maildir exists
 			return nil, nyaan
 		}
 	}
-	return &thing, nil
+	return &ee, nil
 }
 
 // *EmailEntity.Read() is an email reader, works as an iterator.
