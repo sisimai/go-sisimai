@@ -13,7 +13,7 @@ import "io"
 func (this *EmailEntity) readMemory() (*string, error) {
 	// @return   *string  Contents of the each email in the this.payload[]
 	// @return   error    It has reached to the end of the email
-	if this.Size == 0 || this.offset == int64(len(this.payload)) { return nil, io.EOF }
+	if this.Size == 0 || this.offset >= int64(len(this.payload)) { return nil, io.EOF }
 
 	emailblock := this.payload[this.offset]
 	this.offset++
