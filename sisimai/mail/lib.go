@@ -53,6 +53,20 @@ func Rise(argv0 string) (*EmailEntity, error) {
 		ee.Kind = "memory"
 		ee.Path = "<MEMORY>"
 
+		if cw := CountUnixMboxFrom(&argv0); cw < 2 {
+			// There is 1 or 0 "From " line in the argument
+			ee.payload[0] = argv0
+
+		} else {
+			// There is 2 or more "From " line in the argument
+			for j, uf := range strings.Split(argv0, "\nFrom ") {
+				// Split by "From "
+				if uf == "" { continue }
+				ee.payload[j - 1] = "From " + uf + "\n"
+			}
+		}
+		ee.setNewLine()
+
 	} else {
 		// UNIX mbox or Maildir/
 		if filestatus, nyaan:= os.Stat(argv0); nyaan == nil {
@@ -77,6 +91,15 @@ func Rise(argv0 string) (*EmailEntity, error) {
 		}
 	}
 	return &ee, nil
+}
+
+// CountUnixMboxFrom() returns the number of "From " line of the Unix mbox
+func CountUnixMboxFrom(argv0 *string) uint {
+	// @param    *string argv0  A pointer to the entire email message
+	// @return    unit          The number of "From " lines
+	if len(*argv0) < 5 || strings.HasPrefix(*argv0, "From ") == false { return 0 }
+	cw := strings.Count(*argv0, "\nFrom ")
+	return uint(cw)
 }
 
 // *EmailEntity.Read() is an email reader, works as an iterator.
@@ -108,24 +131,30 @@ func(this *EmailEntity) setNewLine() bool {
 	// @return   bool true if the newline code is CRLF or CR or LF
 	if this.Kind == "maildir" { return false }
 	var bufferedio *bufio.Reader
-	var the1st1000 []byte
 	var readbuffer string
 
-	if this.Kind == "mailbox" {
-		// UNIX mbox
-		if filep, nyaan := os.Open(this.Path); nyaan != nil {
-			// Failed to open the file
-			fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan)
-			this.NewLine = 0
-			return false
+	if this.Kind == "mailbox" || this.Kind == "stdin" {
+		// UNIX mbox or STDIN
+		if this.Kind == "mailbox" {
+			// UNIX mbox
+			if filep, nyaan := os.Open(this.Path); nyaan != nil {
+				// Failed to open the file
+				fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan)
+				this.NewLine = 0
+				return false
+
+			} else {
+				// Successfully opened the mbox
+				this.handle = filep
+			}
+			bufferedio = bufio.NewReader(this.handle)
 
 		} else {
-			// Successfully opened the mbox
-			this.handle = filep
+			// STDIN
+			bufferedio = bufio.NewReader(os.Stdin)
 		}
 
-		bufferedio = bufio.NewReader(this.handle)
-		the1st1000 = make([]byte, 1000)
+		the1st1000 := make([]byte, 1000)
 		_, nyaan := bufferedio.Read(the1st1000)
 		if nyaan != nil && nyaan != io.EOF {
 			// Failed to read the 1st 1000 bytes
@@ -133,11 +162,15 @@ func(this *EmailEntity) setNewLine() bool {
 			this.NewLine = 0
 			return false
 		}
+		readbuffer = string(the1st1000)
+
 	} else {
-		// TODO: Maildir, STDIN, or memory
+		// Memory
+		if len(this.payload) ==  0 { this.NewLine = 0; return false }
+		if this.payload[0]   == "" { this.NewLine = 0; return false }
+		readbuffer = this.payload[0][:1000]
 	}
 
-	readbuffer = string(the1st1000)
 	if strings.Contains(readbuffer, "\r\n") { this.NewLine = 3; return true }
 	if strings.Contains(readbuffer, "\r")   { this.NewLine = 2; return true }
 	if strings.Contains(readbuffer, "\n")   { this.NewLine = 1; return true }
