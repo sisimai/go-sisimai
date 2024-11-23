@@ -115,10 +115,9 @@ func(this *EmailEntity) Read() (*string, error) {
 			email, nyaan = this.readMailbox()
 		case "maildir":
 			email, nyaan = this.readMaildir()
-/**
-	TODO: IMPLEMENT
 		case "memory":
 			email, nyaan = this.readMemory()
+/**
 		case "stdin":
 			email, nyaan = this.readSTDIN()
 **/
