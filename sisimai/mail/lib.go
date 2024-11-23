@@ -49,9 +49,10 @@ func Rise(argv0 string) (*EmailEntity, error) {
 		ee.Path = "<STDIN>"
 
 	} else if strings.Contains(argv0, "\n") {
-		// Email data is in a string
+		// Email data is in a string(memory)
 		ee.Kind = "memory"
 		ee.Path = "<MEMORY>"
+		ee.Size = int64(len(argv0))
 
 		if cw := CountUnixMboxFrom(&argv0); cw < 2 {
 			// There is 1 or 0 "From " line in the argument
@@ -59,10 +60,10 @@ func Rise(argv0 string) (*EmailEntity, error) {
 
 		} else {
 			// There is 2 or more "From " line in the argument
-			for j, uf := range strings.Split(argv0, "\nFrom ") {
+			for _, uf := range strings.Split(argv0, "\nFrom ") {
 				// Split by "From "
 				if uf == "" { continue }
-				ee.payload[j - 1] = "From " + uf + "\n"
+				ee.payload = append(ee.payload, "From " + uf + "\n")
 			}
 		}
 		ee.setNewLine()
