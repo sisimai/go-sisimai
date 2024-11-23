@@ -138,8 +138,8 @@ func init() {
 		// Transient/ContentRejected -- message you sent contains content that the provider doesn't allow
 		// Transient/AttachmentRejected the message contained an unacceptable attachment
 		reasonmaps := map[string]string {
-			"Supressed":                "undefined", // "suppressed" will be assigned (new reason name)
-			"OnAccountSuppressionList": "undefined", // "suppressed" will be assigned (new reason name)
+			"Supressed":                "suppressed",
+			"OnAccountSuppressionList": "suppressed",
 			"General":                  "onhold",
 			"MailboxFull":              "mailboxfull",
 			"MessageTooLarge":          "mesgtoobig",

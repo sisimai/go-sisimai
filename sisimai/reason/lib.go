@@ -28,7 +28,7 @@ var ClassOrder = [][]string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "UserUnknown", "Filtered", "Rejected",
 		"HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked", "SpamDetected", "AuthFailure",
 		"SecurityError", "SystemError", "NetworkError", "Suspend", "Expired", "ContentError", "HasMoved",
-		"SystemFull", "NotAccept", "MailerError", "NoRelaying", "SyntaxError", "OnHold",
+		"SystemFull", "NotAccept", "MailerError", "NoRelaying", "Suppression", "SyntaxError", "OnHold",
 	},
 }
 
@@ -76,6 +76,7 @@ func Index() []string {
 		"SecurityError",    // Email rejected due to security violation was detected on a destination host
 		"SpamDetected",     // Email rejected by spam filter running on the remote host
 		"Speeding",         // Rejected due to exceeding a rate limit or sending too fast
+		"Suppressed",       // Email was not delivered due to being listed in suppression list on MTA
 		"Suspend",          // Email rejected due to a recipient account is being suspended
 		"SyntaxError",      // Email rejected due to syntax error at sent commands in SMTP session
 		"SystemError",      // Email returned due to system error on the remote host
