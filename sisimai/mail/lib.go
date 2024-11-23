@@ -14,6 +14,7 @@ import "fmt"
 import "bufio"
 import "strings"
 import "path/filepath"
+import "io/ioutil"
 
 /* EmailEntity struct keeps each parameter of UNIX mbox, Maildir/.
  | FIELD      | UNIX mbox | Maildir/  | Memory    | <STDIN>    |
@@ -43,27 +44,44 @@ func Rise(argv0 string) (*EmailEntity, error) {
 	// @return   *mail.EmailEntity Pointer to mail.EmailEntity struct
 	ee := EmailEntity{}
 
-	if argv0 == "STDIN" {
-		// Read from STDIN
-		ee.Kind = "stdin"
-		ee.Path = "<STDIN>"
+	if argv0 == "STDIN" || strings.Contains(argv0, "\n") {
+		// Read from STDIN or Memory(string)
+		payload := ""
 
-	} else if strings.Contains(argv0, "\n") {
-		// Email data is in a string(memory)
-		ee.Kind = "memory"
-		ee.Path = "<MEMORY>"
-		ee.Size = int64(len(argv0))
+		if argv0 == "STDIN" {
+			// For example, % cat ./bounce.eml | go run sisimai.go STDIN
+			ee.Kind = "stdin"
+			ee.Path = "<STDIN>"
 
-		if cw := CountUnixMboxFrom(&argv0); cw < 2 {
-			// There is 1 or 0 "From " line in the argument
-			ee.payload[0] = argv0
+			for {
+				// Read all strings from STDIN, and store them to ee.payload
+				// TODO: In the case of that the input data is a binary
+				stdin, nyaan := ioutil.ReadAll(os.Stdin)
+				if len(stdin) == 0 { break }
+				if nyaan != nil { fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan); break }
+				payload = string(stdin)
+				break
+			}
+		} else {
+			// Email data is in a string(memory)
+			ee.Kind = "memory"
+			ee.Path = "<MEMORY>"
+			payload = argv0
+		}
+
+		if cw := CountUnixMboxFrom(&payload); cw < 2 {
+			// There is 1 or 0 "From " line in the payload
+			ee.payload = append(ee.payload, payload)
+			ee.Size = int64(len(payload))
 
 		} else {
-			// There is 2 or more "From " line in the argument
-			for _, uf := range strings.Split(argv0, "\nFrom ") {
+			// There is 2 or more "From " line in the payload
+			for _, uf := range strings.Split(payload, "\nFrom ") {
 				// Split by "From "
 				if uf == "" { continue }
-				ee.payload = append(ee.payload, "From " + uf + "\n")
+				cv := fmt.Sprintf("From %s\n", uf)
+				ee.payload = append(ee.payload, cv)
+				ee.Size   += int64(len(cv))
 			}
 		}
 		ee.setNewLine()
@@ -111,16 +129,10 @@ func(this *EmailEntity) Read() (*string, error) {
 	var nyaan  error  // Some errors while reading an email file
 
 	switch this.Kind {
-		case "mailbox":
-			email, nyaan = this.readMailbox()
-		case "maildir":
-			email, nyaan = this.readMaildir()
-		case "memory":
-			email, nyaan = this.readMemory()
-/**
-		case "stdin":
-			email, nyaan = this.readSTDIN()
-**/
+		case "mailbox": email, nyaan = this.readMailbox()
+		case "maildir": email, nyaan = this.readMaildir()
+		case "memory":  email, nyaan = this.readMemory()
+		case "stdin":   email, nyaan = this.readSTDIN()
 	}
 	return email, nyaan
 }
