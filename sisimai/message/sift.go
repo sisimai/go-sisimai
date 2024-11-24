@@ -91,7 +91,6 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 		}
 
 		if havecalled["arf"] == false {
-			// TODO: Implemente sismai/arf.go
 			// 3. call sisimai/arf
 			// Try to decode the message as a Feedback Loop message
 			localhostr = arf.Inquire(bf)
@@ -100,7 +99,6 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 		}
 
 		if havecalled["rfc3834"] == false {
-			// TODO: Implemente sismai/rfc3834.go
 			// 4. call sisimai/rfc3834
 			// Try to sift the message as auto reply message defined in RFC3834
 			localhostr = rfc3834.Inquire(bf)
