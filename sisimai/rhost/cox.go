@@ -135,15 +135,15 @@ func init() {
 			},
 		}
 
-		issuedcode := fo.DiagnosticCode
-		codenumber := "" // TODO: p0 := strings.Index(issuedcode,  "AUP#");
-		reasontext := errorcodes[codenumber]
-
-		for e := range errorcodes {
-			// Check that "AUP#" + each key name is included in the error message
-			if strings.Contains(issuedcode, "AUP#" + e) == false { continue }
-			reasontext = errorcodes[e]; break
+		issuedcode := fo.DiagnosticCode + " "
+		codenumber := ""
+		for {
+			p0 := strings.Index(issuedcode,  "AUP#");  if p0 < 0 { break }
+			p1 := strings.Index(issuedcode[p0:], " "); if p1 < 0 { break }
+			codenumber = issuedcode[p0 + 4:p0 + p1]
+			break
 		}
+		reasontext := errorcodes[codenumber]
 
 		if reasontext == "" {
 			// There is no error code in the error message
