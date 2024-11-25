@@ -44,6 +44,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	for sisimoji.ContainsAny(bf.Body, boundaries) == false {
 		// There is no "Content-Type: message/rfc822" line in the message body
+		// Insert "Content-Type: message/rfc822" before "Return-Path:" of the original message
 		cv := "\n\nReturn-Path:"; if strings.Contains(bf.Body, cv) == false { break }
 		bf.Body = strings.Replace(bf.Body, cv, "\n\n" + boundaries[0] + cv, 1)
 		break
