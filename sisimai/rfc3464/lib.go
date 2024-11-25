@@ -108,7 +108,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 						isboundary = append(isboundary, rfc2045.Boundary(e, 0))
 
 					} else if strings.Contains(e, "text/plain") {
-						// For example, "text/html", "image/icon"
+						// Content-Type: "text/plain"
 						goestonext = false
 
 					} else {
@@ -122,8 +122,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if strings.HasPrefix(e, "This is a multi") { break } // This is a multipart message in MIME format
 				if strings.HasPrefix(e, "This is an auto") { break } // This is an automatically generated ...
 				if strings.HasPrefix(e, "This multi-part") { break } // This multi-part MIME message contains...
-				if strings.HasPrefix(e, "###")             { break } // Frame like #####
-				if strings.HasPrefix(e, "***")             { break } // Frame like *****
+				if strings.HasPrefix(e, "###")             { break } // A frame like #####
+				if strings.HasPrefix(e, "***")             { break } // A frame like *****
 				if strings.Contains(e, "---- The follow")  { break } // ----- The following addresses had delivery problems -----
 				if strings.Contains(e, "---- Transcript")  { break } // ----- Transcript of session follows -----
 				beforemesg += e + " "; break
