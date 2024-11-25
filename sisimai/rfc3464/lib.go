@@ -76,6 +76,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	for strings.Contains(emailparts[0], startingof["message"][0]) == false {
 		// There is no "Content-Type: message/delivery-status" line in the message body
+		// Insert "Content-Type: message/delivery-status" before "Reporting-MTA:" field
 		cv := "\n\nReporting-MTA:"; if strings.Contains(emailparts[0], cv) == false { break }
 		emailparts[0] = strings.Replace(emailparts[0], cv, "\n\n" + startingof["message"][0] + cv, 1)
 		break
