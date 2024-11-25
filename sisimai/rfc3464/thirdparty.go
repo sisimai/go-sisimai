@@ -9,7 +9,6 @@ package rfc3464
 // |_| \_\_|   \____|____/   |_|  \___/   |_|/_/  |____/|_|  \__,_|_|   \__,_|_|   \__|\__, |
 //                                                                                     |___/ 
 import "strings"
-import sisimoji "sisimai/string"
 
 var ReturnedBy = map[string]func(string) []string {}
 var ThirdParty = map[string][]string{
@@ -35,7 +34,7 @@ func returnedby(argv1 string) string {
 	if argv1 == "" || strings.HasPrefix(argv1, "X-") == false { return "" }
 	for e := range ThirdParty {
 		// Does the argument include the 3rd party specific field?
-		if sisimoji.HasPrefixAny(argv1, ThirdParty[e]) { return e }
+		if strings.HasPrefix(argv1, ThirdParty[e][0]) { return e }
 	}
 	return ""
 }
