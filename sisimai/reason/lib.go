@@ -22,13 +22,13 @@ var ClassOrder = [][]string{
     []string{
 		"MailboxFull", "AuthFailure", "BadReputation", "Speeding", "SpamDetected", "VirusDetected",
 		"PolicyViolation", "NoRelaying", "SystemError", "NetworkError", "Suspend", "ContentError",
-		"SystemFull", "NotAccept", "Expired", "SecurityError", "MailerError",
+		"SystemFull", "NotAccept", "Expired", "SecurityError", "Suppressed", "MailerError",
     },
     []string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "UserUnknown", "Filtered", "Rejected",
 		"HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked", "SpamDetected", "AuthFailure",
 		"SecurityError", "SystemError", "NetworkError", "Suspend", "Expired", "ContentError", "HasMoved",
-		"SystemFull", "NotAccept", "MailerError", "NoRelaying", "Suppression", "SyntaxError", "OnHold",
+		"SystemFull", "NotAccept", "MailerError", "NoRelaying", "Suppressed", "SyntaxError", "OnHold",
 	},
 }
 
