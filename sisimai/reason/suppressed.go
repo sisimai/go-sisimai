@@ -13,7 +13,7 @@ import "sisimai/sis"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
-	IncludedIn["Suppresed"] = func(argv1 string) bool {
+	IncludedIn["Suppressed"] = func(argv1 string) bool {
 		// @param    string argv1 Does the string include any of the strings listed in the pattern?
 		// @return   bool         true: Included, false: did not include
 		return false
