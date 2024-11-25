@@ -36,11 +36,6 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		"Content-Disposition: inline", // See lhost-amavis-*.eml, lhost-facebook-*.eml
 	}
 	startingof := map[string][]string{"message": []string{"Content-Type: message/delivery-status"}}
-	fieldtable := rfc1894.FIELDTABLE()
-	permessage := map[string]string{} // Store values of each Per-Message field
-	keystrings := []string{}          // Key list of permessage
-	dscontents := []sis.DeliveryMatter{{}}
-	alternates := sis.DeliveryMatter{}
 
 	for sisimoji.ContainsAny(bf.Body, boundaries) == false {
 		// There is no "Content-Type: message/rfc822" line in the message body
@@ -49,7 +44,11 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		bf.Body = strings.Replace(bf.Body, cv, "\n\n" + boundaries[0] + cv, 1)
 		break
 	}
-
+	fieldtable := rfc1894.FIELDTABLE()
+	permessage := map[string]string{} // Store values of each Per-Message field
+	keystrings := []string{}          // Key list of permessage
+	dscontents := []sis.DeliveryMatter{{}}
+	alternates := sis.DeliveryMatter{}
 	emailparts := rfc5322.Part(&bf.Body, boundaries, false)
 	readcursor := uint8(0)            // Points the current cursor position
 	readslices := []string{""}        // Copy each line for later reference
