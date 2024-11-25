@@ -100,7 +100,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				// This line is a boundary kept in "multiparts" as a string, when the end of
 				// the boundary appeared, the condition above also returns true.
 				if sisimoji.HasPrefixAny(e, isboundary) { goestonext = false; break }
-				if strings.HasPrefix(e, "Content-Type") {
+				if strings.HasPrefix(e, "Content-Type:") {
 					// Content-Type: field in multipart/*
 					if strings.Contains(e, "multipart/") {
 						// Content-Type: multipart/alternative; boundary=aa00220022222222ffeebb
