@@ -133,7 +133,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		if len(e) == 0                                    { continue }
 
 		if f := rfc1894.Match(e); f > 0 {
-			// "e" matched with any field defined in RFC3464
+			// This line matched with any field defined in RFC3464
 			o := rfc1894.Field(e); if len(o) == 0 { continue }
 			z := fieldtable[o[0]]
 			v  = &(dscontents[len(dscontents) - 1])
