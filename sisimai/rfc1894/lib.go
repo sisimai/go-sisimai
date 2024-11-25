@@ -113,8 +113,8 @@ func Field(argv0 string) []string {
 	}
 
 	parts := strings.SplitN(argv0, ":", 2) // []string{"Final-Recipient", " rfc822; <neko@nyaan.jp>"}
-	field := strings.ToLower(parts[0])     // "final-recipient"
-	group, nyaan := fieldgroup[field]      // "addr"
+	label := strings.ToLower(parts[0])     // "final-recipient"
+	group, nyaan := fieldgroup[label]      // "addr"
 	if nyaan == false              { return []string{} }
 	if len(captureson[group]) == 0 { return []string{} }
 
@@ -127,12 +127,12 @@ func Field(argv0 string) []string {
 	match := false
 	for _, e := range captureson[group] {
 		// Try to match with each pattern of Per-Message field, Per-Recipient field
-		if field == strings.ToLower(e) { match = true; break }
+		if label == strings.ToLower(e) { match = true; break }
 	}
 	if match == false { return []string{} }
 
 	parts[1] = strings.TrimSpace(parts[1])
-	table[0] = field
+	table[0] = label
 	table[3] = group
 
 	if group == "addr" || group == "code" || group == "host" {
@@ -165,7 +165,7 @@ func Field(argv0 string) []string {
 		// When the value is invalid, convert to an available value defined in "correction"
 		v := strings.ToLower(parts[1])
 		if sisimoji.EqualsAny(v, actionlist) { table[2] = v }
-		if len(table[2]) == 0 { if len(correction[v]) > 0 { table[2] = correction[v] } }
+		if table[2] == "" && len(correction[v]) > 0 { table[2] = correction[v] }
 
 	} else {
 		// Other groups such as Status:, Arrival-Date:, or X-Original-Message-ID:.
