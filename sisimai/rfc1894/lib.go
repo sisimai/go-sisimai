@@ -108,8 +108,7 @@ func Field(argv0 string) []string {
 		"host": []string{"Received-From-MTA", "Remote-MTA", "Reporting-MTA"},
 		"list": []string{"Action"},
 		"stat": []string{"Status"},
-	//  "text": []string{"X-Original-Message-ID"},
-	//  "text": []string{"Final-Log-ID", "Original-Envelope-ID"}
+	//  "text": []string{"X-Original-Message-ID", "Final-Log-ID", "Original-Envelope-ID"}
 	}
 
 	parts := strings.SplitN(argv0, ":", 2) // []string{"Final-Recipient", " rfc822; <neko@nyaan.jp>"}
@@ -118,12 +117,6 @@ func Field(argv0 string) []string {
 	if nyaan == false              { return []string{} }
 	if len(captureson[group]) == 0 { return []string{} }
 
-	// - 0: Field-Name
-	// - 1: Sub Type: RFC822, DNS, X-Unix, and so on)
-	// - 2: Value
-	// - 3: Field Group(addr, code, date, host, stat, text)
-	// - 4: Comment
-	table := []string{"", "", "", "", ""}
 	match := false
 	for _, e := range captureson[group] {
 		// Try to match with each pattern of Per-Message field, Per-Recipient field
@@ -131,9 +124,13 @@ func Field(argv0 string) []string {
 	}
 	if match == false { return []string{} }
 
+	// - 0: Field-Name
+	// - 1: Sub Type: RFC822, DNS, X-Unix, and so on)
+	// - 2: Value
+	// - 3: Field Group(addr, code, date, host, stat, text)
+	// - 4: Comment
+	table   := []string{label, "", "", group, ""}
 	parts[1] = strings.TrimSpace(parts[1])
-	table[0] = label
-	table[3] = group
 
 	if group == "addr" || group == "code" || group == "host" {
 		// - Final-Recipient: RFC822; kijitora@nyaan.jp
