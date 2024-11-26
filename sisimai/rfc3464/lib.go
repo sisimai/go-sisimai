@@ -183,7 +183,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			// Check that the line is a continued line of the value of Diagnostic-Code: field or not
 			if strings.HasPrefix(e, "X-") && strings.Contains(e, ": ") {
 				// This line is a MTA-Specific fields begins with "X-"
-				if cb := is3rdparty(e); cb == false { continue }
+				if is3rdparty(e) == false { continue }
 				if cv := xfield(e); len(cv) > 0 && rfc1894.Match(cv[0]) == 0 {
 					// Check the first element is a field defined in RFC1894 or not
 					if strings.HasPrefix(cv[4], "reason:") {
