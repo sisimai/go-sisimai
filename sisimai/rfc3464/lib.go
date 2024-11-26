@@ -247,7 +247,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		} else {
 			// The value of e.Diagnosis is not contained in "beforemesg"
 			// There may be an important error message in "beforemesg"
-			if len(beforemesg) > 0 { e.Diagnosis = sisimoji.Sweep(beforemesg + " " + e.Diagnosis) }
+			e.Diagnosis = sisimoji.Sweep(beforemesg + " " + e.Diagnosis)
 		}
 
 		e.Command   = command.Find(e.Diagnosis);         if e.Command   == "" { e.Command   = alternates.Command   }
