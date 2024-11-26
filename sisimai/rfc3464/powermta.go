@@ -12,7 +12,7 @@ import "strings"
 func init() {
 	// Returns []string which is compatible with the value returned from rfc1894.Field()
 	ReturnedBy["PowerMTA"] = func(argv1 string) []string {
-		// @param    string argv0   A line of the error message
+		// @param    string argv1   A line of the error message
 		// @return   []string       []string{"field-name", "value-type", "value", "field-group", "comment"}
 		// @see      https://bird.com/email/power-mta
 		if argv1 == "" || strings.Contains(argv1, ": ") == false { return []string{} }
