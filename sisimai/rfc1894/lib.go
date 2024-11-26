@@ -144,7 +144,6 @@ func Field(argv0 string) []string {
 
 		} else {
 			// There is no sub type like "Diagnostic-Code: 550 5.1.1 <kijitora@example.jp>..."
-			// TODO: Implement this block at p5-sisimai, rb-sisimai
 			table[2] = strings.TrimSpace(parts[1])
 			switch group {
 				case "addr": table[1] = "RFC822"
@@ -176,7 +175,6 @@ func Field(argv0 string) []string {
 	if sisimoji.Aligned(table[2], []string{" (", ")"}) {
 		// Extract text enclosed in parentheses as comments
 		// Reporting-MTA: dns; mr21p30im-asmtp004.me.example.com (tcp-daemon)
-		// TODO: Implement this block at p5-sisimai, rb-sisimai
 		p1 := strings.Index(table[2], " (")
 		p2 := strings.Index(table[2], ")" )
 		table[4] = table[2][p1 + 2:p2]
