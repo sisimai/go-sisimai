@@ -35,6 +35,7 @@ func init() {
 		fieldparts := strings.SplitN(argv1, ":", 2)  // []string{"Final-Recipient", " rfc822; <neko@nyaan.jp>"}
 		xfieldname := strings.ToLower(fieldparts[0]) // "final-recipient"
 		xef, nyaan := fieldgroup[xfieldname]; if nyaan == false { return []string{} }
+		xfieldlist := []string{"", "", strings.TrimSpace(fieldparts[1]), xef, "", "PowerMTA"}
 
 		// - 0: Field-Name
 		// - 1: Sub Type: RFC822, DNS, X-Unix, and so on)
@@ -42,9 +43,6 @@ func init() {
 		// - 3: Field Group(addr, code, date, host, stat, text)
 		// - 4: Comment
 		// - 5: 3rd Party MTA-Name
-		xfieldlist := []string{"", "", "", xef, "", "PowerMTA"}
-		xfieldlist[2] = strings.TrimSpace(fieldparts[1])
-
 		if xfieldname == "x-powermta-bouncecategory" {
 			// X-PowerMTA-BounceCategory: bad-mailbox
 			// Set the bounce reason picked from the value of the field
@@ -54,7 +52,6 @@ func init() {
 				// of sis.DeliveryMatter{} struct.
 				xfieldlist[4] = "reason:" + messagesof[xfieldlist[2]]
 			}
-
 		} else if xfieldname == "x-powermta-virtualmta" {
 			// X-PowerMTA-VirtualMTA: mx22.neko.example.jp
 			xfieldlist[0] = "Reporting-MTA"
