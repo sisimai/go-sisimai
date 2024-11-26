@@ -204,11 +204,11 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 					beforemesg += e + " "
 					continue
 				}
-				if strings.HasPrefix(e, " ") {
-					// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
-					//    has an SPF record with a hard fail
-					v.Diagnosis += " " + sisimoji.Sweep(e)
-				}
+
+				// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
+				//    has an SPF record with a hard fail
+				if strings.HasPrefix(e, " ") == false { continue }
+				v.Diagnosis += " " + sisimoji.Sweep(e)
 			}
 		}
 	}
