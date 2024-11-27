@@ -23,12 +23,10 @@ func INDICATORS() map[string]uint8 {
 // INDEX() returns MTA functions list in sisimai/lhost sorted by Alphabetical order.
 func INDEX() []string {
 	return []string{
-		"Activehunter", "AmazonSES", "AmazonWorkMail", "ApacheJames",
-		"Biglobe", "Courier", "Domino", "DragonFly", "EZweb", "EinsUndEins", "Exchange2003",
-		"Exchange2007", "Exim", "FML", "GMX", "GoogleGroups", "Gmail",
-		"IMailServer", "InterScanMSS", "KDDI", "MailFoundry", "MailMarshalSMTP",
-		"McAfee", "MessagingServer", "Notes", "Office365", "OpenSMTPD",
-		"Postfix", "Sendmail", "V5sendmail",
+		"Activehunter", "AmazonSES", "AmazonWorkMail", "ApacheJames", "Biglobe", "Courier", "Domino",
+		"DragonFly", "EZweb", "EinsUndEins", "Exchange2003", "Exchange2007", "Exim", "FML", "GMX",
+		"GoogleGroups", "Gmail", "IMailServer", "InterScanMSS", "KDDI", "MailFoundry", "MailMarshalSMTP",
+		"McAfee", "MessagingServer", "Notes", "Office365", "OpenSMTPD", "Postfix", "Sendmail", "V5sendmail",
 		"Verizon", "X1", "X2", "X3", "X6", "Zoho", "mFILTER", "qmail",
 	}
 }
