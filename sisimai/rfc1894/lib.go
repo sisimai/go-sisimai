@@ -35,11 +35,19 @@ func FIELDTABLE() map[string]string {
     }
 }
 
+// Label() returns a lower-cased field name
+func Label(argv0 string) string {
+	// @param    string  argv0 A line including field and value defined in RFC3464
+	// @return   string        Lower-cased field name as a label
+	if argv0 == "" || strings.Index(argv0, ":") < 1 { return "" }
+	return strings.ToLower(strings.SplitN(argv0, ":", 2)[0])
+}
+
 // Match() checks that the argument matches with a field defined in RFC3464 or not
 func Match(argv0 string) uint8 {
 	// @param    string argv0 A line inlcuding field and value defined in RFC3464
-    // @return   uint8        0: did not matched, 1,2: matched
-	fieldnames := [][]string{
+	// @return   uint8        0: not matched, 1: matched with per-message field, 2 is per-recipient
+	fieldname0 := map[string]string{
 		// https://tools.ietf.org/html/rfc3464#section-2.2
 		//   Some fields of a DSN apply to all of the delivery attempts described by that DSN. At
 		//   most, these fields may appear once in any DSN. These fields are used to correlate the
@@ -52,8 +60,12 @@ func Match(argv0 string) uint8 {
 		//   The following fields are not used in Sisimai:
 		//     - Original-Envelope-Id
 		//     - DSN-Gateway
-		{"Reporting-MTA", "Received-From-MTA", "Arrival-Date", "X-Original-Message-ID"},
-
+		"arrival-date":          ":",
+		"received-from-mta":     ";",
+		"reporting-mta":         ";",
+		"x-original-message-id": "@",
+	}
+	fieldname1 := map[string]string{
 		// https://tools.ietf.org/html/rfc3464#section-2.3
 		//   A DSN contains information about attempts to deliver a message to one or more
 		//   recipients. The delivery information for any particular recipient is contained in a
@@ -66,13 +78,31 @@ func Match(argv0 string) uint8 {
 		//   The following fields are not used in Sisimai:
 		//     - Will-Retry-Until
 		//     - Final-Log-ID
-		{"Original-Recipient", "Final-Recipient", "Action", "Status", "Remote-MTA",
-		 "Diagnostic-Code", "Last-Attempt-Date", "X-Actual-Recipient"},
+		"action":                "e", // fail[e]d, d[e]livered, d[e]layed, [e]xpired, r[e]layed
+		"diagnostic-code":       ";",
+		"final-recipient":       ";",
+		"last-attempt-date":     ":",
+		"original-recipient":    ";",
+		"remote-mta":            ";",
+		"status":                ".",
+		"x-actual-recipient":    ";",
 	}
+	cx := uint8(0)
+	cv := Label(argv0)
 
-	for _, e := range fieldnames[0] { if strings.HasPrefix(argv0, e) { return 1 } }
-	for _, f := range fieldnames[1] { if strings.HasPrefix(argv0, f) { return 2 } }
-	return 0
+	for e := range fieldname0 {
+		// Per message fields
+		if cv != e || strings.Contains(argv0, fieldname0[e]) == false { continue }
+		cx = 1; break
+	}
+	if cx > 0 { return cx }
+
+	for e := range fieldname1 {
+		// Per recipient fields
+		if cv != e || strings.Contains(argv0, fieldname1[e]) == false { continue }
+		cx = 2; break
+	}
+	return cx
 }
 
 // Field() checks that the argument is including field defined in RFC3464 or not and return values
