@@ -30,6 +30,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	indicators := lhost.INDICATORS()
 	boundaries := []string{
+		// When the new value added, the part of the value should be listed in "delimiters" variable
+		// defined at MakeFlat() function in sisimai/rfc2045/make-multipart-flat.go
 		"Content-Type: message/rfc822",
 		"Content-Type: text/rfc822-headers",
 		"Content-Type: message/partial",
