@@ -194,6 +194,7 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 	*argv1 = strings.Replace(*argv1, "message/xdelivery-status", "message/delivery-status", -1)
 	multiparts := levelout(argv0, argv1)
 	flattenout := ""
+	delimiters := []string{"/delivery-status", "/rfc822", "/feedback-report", "/partial"}
 
 	for _, e := range multiparts {
 		// Pick only the following parts Sisimai::Lhost will use, and decode each part
@@ -255,7 +256,7 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 		}
 
 		// There is no Content-Transfer-Encoding header in the part 
-		if sisimoji.ContainsAny(mediatypev, []string{"/delivery-status", "/rfc822", "/feedback-report"}) {
+		if sisimoji.ContainsAny(mediatypev, delimiters) {
 			// Add Content-Type: header of each part (will be used as a delimiter at Sisimai::Lhost)
 			// into the body inside when the value of Content-Type: is message/delivery-status, or
 			// message/rfc822, or text/rfc822-headers
