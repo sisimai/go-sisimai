@@ -9,6 +9,7 @@ package command
 // |___/_| |_| |_|\__| .__/_/ \___\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_|
 //                   |_|                                                      
 import "strings"
+import sisimoji "sisimai/string"
 
 func Find(argv0 string) string {
 	// @param    string argv0  Text including SMTP command
@@ -17,20 +18,30 @@ func Find(argv0 string) string {
 
 	commandset := []string{}
 	commandmap := map[string]string{"STAR": "STARTTLS", "XFOR": "XFORWARD"}
+	issuedcode := " " + argv0 + " "
+
 	for _, e := range Detectable {
 		// Find an SMTP command from the given string
-		if strings.Contains(argv0, e) == false { continue }
+		if strings.Contains(e, " ") == false {
+			// For example, "RCPT T" does not appear in an email address or a domain name
+			p0 := strings.Index(argv0, e); if p0 < 0 { continue }
+			cx := true; for {
+				// Exclude an SMTP command in the part of an email address, a domain name, such as
+				// DATABASE@EXAMPLE.JP, EMAIL.EXAMPLE.COM, and so on.
+				cw := len(e) + 1
+				ca := []byte(issuedcode[p0 - 1:p0])[0]
+				cz := []byte(issuedcode[p0 + cw:p0 + cw + 1])[0]
 
-		smtpc := e[0:4] // The first 4 characters of SMTP command found in the argument
-		found := false  // There is the same SMTP command in "commandset" or not
-		for _, c := range commandset {
-			// Check that the command found in the argument is already included in "commandset"
-			if strings.HasPrefix(c, smtpc) == false { continue }
-			found = true
-			break
+				if ca > 47 && ca <  58 || cz > 47 && cz <  58 { break } // 0-9
+				if ca > 63 && ca <  91 || cz > 63 && cz <  91 { break } // @-Z
+				if ca > 93 && ca < 123 || cz > 93 && cz < 123 { break } // ^-z
+				cx = false; break
+			}
+			if cx == true { continue }
 		}
-		if found { continue } // There is the same SMTP command in "commandset"
+		smtpc := e[0:4] // The first 4 characters of SMTP command found in the argument
 
+		if sisimoji.HasPrefixAny(smtpc, commandset) { continue }
 		if smtpc == "STAR" || smtpc == "XFOR" { smtpc = commandmap[smtpc] }
 		commandset = append(commandset, smtpc)
 	}
