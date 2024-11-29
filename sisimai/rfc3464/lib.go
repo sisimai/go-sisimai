@@ -186,11 +186,11 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			if strings.HasPrefix(e, "X-") && strings.Contains(e, ": ") {
 				// This line is a MTA-Specific fields begins with "X-"
 				if is3rdparty(e) == false { continue }
-				if cv := xfield(e); len(cv) > 0 && rfc1894.Match(cv[0]) == 0 {
+				if cv := xfield(e); len(cv) > 0 && len(fieldtable[strings.ToLower(cv[0])]) == 0 {
 					// Check the first element is a field defined in RFC1894 or not
 					if strings.HasPrefix(cv[4], "reason:") {
 						// cv[4] is a string line "reason:mailboxfull"
-						v.Update("reason", cv[4][strings.Index(cv[4], ":") + 1:])
+						v.Reason = cv[4][strings.Index(cv[4], ":") + 1:]
 					}
 				} else {
 					// Set the value picked from "X-*" field to the member of sis.DeliveryMatter
