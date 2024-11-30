@@ -8,6 +8,8 @@ package string
 // \__ \ |_| |  | | | | | (_| |
 // |___/\__|_|  |_|_| |_|\__, |
 //                       |___/ 
+import "os"
+import "fmt"
 import "strings"
 import "golang.org/x/text/encoding"
 import "golang.org/x/text/encoding/japanese"
@@ -86,21 +88,29 @@ func ToUTF8(argv0 []byte, argv1 string) (string, error) {
 	// @return   string, error    Converted string or an error
 	if len(argv0) == 0  { return "", nil }
 	if argv1      == "" { return "", nil }
+	if argv1 == "utf-8" { return string(argv0), nil }
 
 	var encodingif *encoding.Decoder
 	switch argv1 {
 		case "iso-2022-jp": encodingif = japanese.ISO2022JP.NewDecoder()
 		case "shift_jis":   encodingif = japanese.ShiftJIS.NewDecoder()
 		case "euc-jp":      encodingif = japanese.EUCJP.NewDecoder()
-		/*
-		default:
-			// TODO: Use "charmap" package when the encoding name is not Japanese
-			// We have no sample email from Notes written in non-Japanese except English
-			// A bounce mail written in Russian also fails (signal SIGSEGV: segmentation violation)
-		*/
+	/*
+	default:
+		// TODO: Use "charmap" package when the encoding name is not Japanese
+		// We have no sample email from Notes written in non-Japanese except English
+		// A bounce mail written in Russian also fails (signal SIGSEGV: segmentation violation)
+	*/
 	}
 	utf8string := make([]byte, len(argv0) * 3)
-	rightindex, _, nyaan := encodingif.Transform(utf8string, argv0, true); if nyaan != nil { return "", nyaan }
-	return string(utf8string[:rightindex]), nil
+	rightindex, _, nyaan := encodingif.Transform(utf8string, argv0, false)
+	if nyaan != nil { 
+		// Failed to encode?
+		fmt.Fprintf(os.Stderr, " ***warning: %s\n", nyaan)
+		return string(argv0), nyaan
+
+	} else {
+		return string(utf8string[:rightindex]), nil
+	}
 }
 
