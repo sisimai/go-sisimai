@@ -110,6 +110,7 @@ func ToUTF8(argv0 []byte, argv1 string) (string, error) {
 		return string(argv0), nyaan
 
 	} else {
+		// Successfully encoded
 		return string(utf8string[:rightindex]), nil
 	}
 }
