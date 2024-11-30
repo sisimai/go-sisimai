@@ -243,7 +243,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 		if recipients == 1 {
 			// Do not mix the error message of each recipient with "beforemesg" when there is
-			// muliple recipient address in the bounce message
+			// multiple recipient addresses in the bounce message
 			lowercased := strings.ToLower(e.Diagnosis)
 			if strings.Contains(issuedcode, lowercased) == true {
 				// "beforemesg" contains the entire strings of e.Diagnosis
