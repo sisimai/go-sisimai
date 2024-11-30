@@ -178,7 +178,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 					// There are other error messages as a comment such as the following:
 					// Status: 5.0.0 (permanent failure)
 					// Status: 4.0.0 (cat.example.net: host name lookup failure)
-					v.Diagnosis += " " + o[4]
+					v.Diagnosis += " " + o[4] + " "
 				}
 				v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 
