@@ -241,15 +241,19 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		}
 
 		e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
-		lowercased := strings.ToLower(e.Diagnosis)
-		if strings.Contains(issuedcode, lowercased) == true {
-			// "beforemesg" contains the entire strings of e.Diagnosis
-			e.Diagnosis = beforemesg
+		if recipients == 1 {
+			// Do not mix the error message of each recipient with "beforemesg" when there is
+			// muliple recipient address in the bounce message
+			lowercased := strings.ToLower(e.Diagnosis)
+			if strings.Contains(issuedcode, lowercased) == true {
+				// "beforemesg" contains the entire strings of e.Diagnosis
+				e.Diagnosis = beforemesg
 
-		} else {
-			// The value of e.Diagnosis is not contained in "beforemesg"
-			// There may be an important error message in "beforemesg"
-			e.Diagnosis = sisimoji.Sweep(beforemesg + " " + e.Diagnosis)
+			} else {
+				// The value of e.Diagnosis is not contained in "beforemesg"
+				// There may be an important error message in "beforemesg"
+				e.Diagnosis = sisimoji.Sweep(beforemesg + " " + e.Diagnosis)
+			}
 		}
 
 		e.Command   = command.Find(e.Diagnosis);         if e.Command   == "" { e.Command   = alternates.Command   }
