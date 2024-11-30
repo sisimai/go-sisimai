@@ -62,9 +62,9 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	for strings.Contains(emailparts[0], "@") == false {
 		// There is a bounce message inside of message/rfc822 part at lhost-x5-*
+		p0 := strings.Index(bf.Body, boundaries[0] + "\n"); if p0 < 0 { break }
 		cv := ""
 		he := true
-		p0 := strings.Index(bf.Body, boundaries[0] + "\n"); if p0 < 0 { break }
 		for _, e := range strings.Split(bf.Body[p0 + 32:], "\n") {
 			// Remove headers before the first "\n\n" after "Content-Type: message/rfc822" line
 			if he { if e == "" { he = false }; continue }
