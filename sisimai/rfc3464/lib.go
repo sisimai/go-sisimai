@@ -61,17 +61,22 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	v          := &(dscontents[len(dscontents) - 1])
 
 	for strings.Contains(emailparts[0], "@") == false {
+		// There is no email address in the first element of emailparts
 		// There is a bounce message inside of message/rfc822 part at lhost-x5-*
-		p0 := strings.Index(bf.Body, boundaries[0] + "\n"); if p0 < 0 { break }
-		cv := ""
-		he := true
-		for _, e := range strings.Split(bf.Body[p0 + 32:], "\n") {
-			// Remove headers before the first "\n\n" after "Content-Type: message/rfc822" line
-			if he { if e == "" { he = false }; continue }
-			if strings.HasPrefix(e, "--")    { continue }
-			cv += e + "\n"
+		p0 := -1 // The index of the boundary string found first
+		p1 :=  0 // Offset position of the message body after the boundary string
+		ct := "" // Boundary string found first such as "Content-Type: message/rfc822"
+		for _, e := range boundaries {
+			// Look for a boundary string from the message body
+			p0 = strings.Index(bf.Body, e + "\n"); if p0 < 0 { continue }
+			p1 = p0 + len(e) + 2
+			ct = e; break
 		}
-		emailparts = rfc5322.Part(&cv, boundaries, false)
+		if p0 < 0 { break } // There is no boundary string
+
+		p2 := strings.Index(bf.Body[p1:], "\n\n")
+		cv := bf.Body[p1:][p2 + 2:]
+		emailparts = rfc5322.Part(&cv, []string{ct}, false)
 		break;
 	}
 
@@ -125,6 +130,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if strings.HasPrefix(e, "This multi-part") { break } // This multi-part MIME message contains...
 				if strings.HasPrefix(e, "###")             { break } // A frame like #####
 				if strings.HasPrefix(e, "***")             { break } // A frame like *****
+				if strings.HasPrefix(e, "--")              { break } // Boundary string
 				if strings.Contains(e, "---- The follow")  { break } // ----- The following addresses had delivery problems -----
 				if strings.Contains(e, "---- Transcript")  { break } // ----- Transcript of session follows -----
 				beforemesg += e + " "; break
@@ -203,6 +209,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false {
 					// In the case of multiple "message/delivery-status" line
 					if strings.HasPrefix(e, "Content-") { continue } // Content-Disposition, ...
+					if strings.HasPrefix(e, "--")       { continue } // Boundary string
 					beforemesg += e + " "
 					continue
 				}
