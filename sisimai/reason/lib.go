@@ -17,7 +17,7 @@ var ClassOrder = [][]string{
 	[]string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "HasMoved", "NoRelaying", "AuthFailure",
 		"UserUnknown", "Filtered", "RequirePTR", "NotCompliantRFC", "BadReputation", "Rejected",
-		"HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked",
+		"ContentError", "HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked",
     },
     []string{
 		"MailboxFull", "AuthFailure", "BadReputation", "Speeding", "SpamDetected", "VirusDetected",
