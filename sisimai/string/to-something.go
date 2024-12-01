@@ -33,9 +33,8 @@ func ToLF(argv0 *string) *string {
 }
 
 // ToPlain() converts given HTML text to a plain text.
-func ToPlain(argv0 *string, loose bool) *string {
+func ToPlain(argv0 *string) *string {
 	// @param    [*string] argv0  HTML text
-	// @param    [bool]    loose  Loose check flag
 	// @return   [*string]        Plain text
 	if len(*argv0) == 0 { return argv0 }
 

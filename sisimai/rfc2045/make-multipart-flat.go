@@ -244,7 +244,7 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 			}
 
 			// Try to delete HTML tags inside of text/html part whenever possible
-			if istexthtml { bodystring = *sisimoji.ToPlain(&bodystring, false) }
+			if istexthtml { bodystring = *sisimoji.ToPlain(&bodystring) }
 			if len(bodystring) == 0 { continue }
 
 			// The new-line code in the converted string is CRLF

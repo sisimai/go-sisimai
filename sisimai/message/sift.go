@@ -52,7 +52,7 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 
 		if strings.HasPrefix(mesgformat, "text/html") {
 			// Content-Type: text/html;...
-			bf.Body = *(sisimoji.ToPlain(&bf.Body, true))
+			bf.Body = *(sisimoji.ToPlain(&bf.Body))
 		}
 	} else if strings.HasPrefix(mesgformat, "multipart/") {
 		// In case of Content-Type: multipart/*
