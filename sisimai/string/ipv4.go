@@ -10,7 +10,6 @@ package string
 //                       |___/       |_|                
 import "strings"
 import "strconv"
-import "fmt"
 
 // IsIPv4Address() returns "true" when the given string is an IPv4 address
 func IsIPv4Address(argv1 string) bool {
