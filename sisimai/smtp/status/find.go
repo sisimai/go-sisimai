@@ -46,9 +46,9 @@ func Find(argv1 string, argv2 string) string {
 		for p0 > -1 {
 			// Find all of the "5." and "4." string and store its postion
 			p0 = sisimoji.IndexOnTheWay(esmtperror, e, p1); if p0 < 0 { break }
+			p1 = p0 + 5
 			lookingfor[fmt.Sprintf("%04d", p0)] = e
 			indextable = append(indextable, p0)
-			p1 = p0 + 5
 		}
 	}
 	if len(lookingfor) == 0 { return "" }
