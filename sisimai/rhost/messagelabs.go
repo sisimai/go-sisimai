@@ -20,8 +20,8 @@ func init() {
 		if fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
-			"userunknown":   []string{"542 ", " Rejected", "No such user"},
 			"securityerror": []string{"Please turn on SMTP Authentication in your mail client"},
+			"userunknown":   []string{"542 ", " Rejected", "No such user"},
 		}
 
 		reasontext := ""
