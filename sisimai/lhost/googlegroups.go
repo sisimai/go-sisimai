@@ -19,10 +19,11 @@ func init() {
 	InquireFor["GoogleGroups"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head)                         == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body)                         == 0 { return sis.RisingUnderway{} }
-		if len(bf.Head["x-failed-recipients"])  == 0 { return sis.RisingUnderway{} }
-		if len(bf.Head["x-google-smtp-source"]) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Body, "Google Groups") == false { return sis.RisingUnderway{} }
+		if len(bf.Head["x-failed-recipients"])        == 0     { return sis.RisingUnderway{} }
+		if len(bf.Head["x-google-smtp-source"])       == 0     { return sis.RisingUnderway{} }
 
 		// X-Google-Smtp-Source: APXvYqx67WVONuSclAC3HckRuO768rET6VCNXk6xYv7cW5I1l9kkn35pT4zE29miuroXfMsHzqeVDrOoIjb8hdt7tjtNL2XAomNl7FA=
 		// From: Mail Delivery Subsystem <mailer-daemon@googlemail.com>
