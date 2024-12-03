@@ -24,7 +24,7 @@ func OrderBySubject(title string) []string {
 		"complaint-about":       []string{"ARF"},
 		"delivery-failure":      []string{"Domino", "X2"},
 		"delivery-notification": []string{"MessagingServer"},
-		"delivery-status":       []string{"GoogleGroups", "McAfee", "OpenSMTPD", "AmazonSES", "AmazonWorkMail", "Gmail", "X3"},
+		"delivery-status":       []string{"GoogleGroups", "McAfee", "OpenSMTPD", "AmazonSES", "AmazonWorkMail", "Gmail", "X3", "GoogleWorkspace"},
 		"dmarc-ietf-dmarc":      []string{"ARF"},
 		"email-feedback":        []string{"ARF"},
 		"failed-delivery":       []string{"X2"},
