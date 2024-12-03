@@ -15,10 +15,12 @@ import sisimoji "sisimai/string"
 import sisiaddr "sisimai/address"
 
 func init() {
-	// Decode bounce messages from Google Workspace: https://workspace.google.com/
+	// Decode bounce messages from Google Workspace except a bounce mail returned from Google Workspace
+	// due to the remote error (the error message include fields defined in RFC3464)
 	InquireFor["GoogleWorkspace"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
+		// @see https://workspace.google.com/
 		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 		if strings.Contains(bf.Body, "\nDiagnostic-Code:")                         == true  { return sis.RisingUnderway{} }
