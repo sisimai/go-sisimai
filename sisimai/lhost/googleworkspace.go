@@ -21,9 +21,9 @@ func init() {
 		// @return   RisingUnderway      RisingUnderway structure
 		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Body, "\nDiagnostic-Code:")                         == true  { return sis.RisingUnderway{} }
 		if strings.Contains(bf.Head["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
 		if strings.Contains(bf.Head["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Body, "\nDiagnostic-Code:")                         == true  { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
