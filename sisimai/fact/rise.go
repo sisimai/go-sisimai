@@ -12,6 +12,7 @@ import "time"
 import "strings"
 import "net/mail"
 import "sisimai/sis"
+import "sisimai/lda"
 import "sisimai/rhost"
 import "sisimai/reason"
 import "sisimai/message"
@@ -326,10 +327,11 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 		REASON: for thing.Reason == "" || RetryIndex[thing.Reason] {
 			// Decide the reason of the email bounce
 			// The value of thing.Reason is empty or is needed to check with other values again
-			re := thing.Reason; if re == "" { re = "undefined" }
-
-			or := rhost.Find(&thing);  if reason.IsExplicit(or) { thing.Reason = or; break REASON }
+			re := thing.Reason;        if re == "" { re = "undefined" }
+			or := lda.Find(&thing);    if reason.IsExplicit(or) { thing.Reason = or; break REASON }
+			or  = rhost.Find(&thing);  if reason.IsExplicit(or) { thing.Reason = or; break REASON }
 			or  = reason.Find(&thing); if reason.IsExplicit(or) { thing.Reason = or; break REASON }
+
 			if thing.DiagnosticCode != "" { re = "onhold" }
 			thing.Reason = re
 			break REASON

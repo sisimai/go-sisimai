@@ -231,8 +231,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	if beforemesg != "" {
 		// Pick some values of []sis.DeliveryMatte{} from the string before startingof["message"]
-		beforemesg           = sisimoji.Sweep(*(sisimoji.ToPlain(&beforemesg)))
-		//beforemesg           = sisimoji.Sweep(beforemesg)
+		beforemesg           = sisimoji.Sweep(beforemesg)
 		alternates.Command   = command.Find(beforemesg)
 		alternates.ReplyCode = reply.Find(beforemesg, dscontents[0].Status)
 		alternates.Status    = status.Find(beforemesg, alternates.ReplyCode)
