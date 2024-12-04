@@ -79,7 +79,7 @@ func Find(fo *sis.Fact) string {
 	if fo.Command != "" && fo.Command != "DATA" { return "" }
 
 	deliversby := "" // LDA; Local Delivery Agent name
-	reasontext := "" // Bounce reason
+	reasontext := "" // Detected bounce reason
 	issuedcode := strings.ToLower(fo.DiagnosticCode)
 
 	for e := range LocalAgent {
@@ -90,7 +90,7 @@ func Find(fo *sis.Fact) string {
 	if deliversby == "" { return "" }
 
 	for e := range MessagesOf[deliversby] {
-		// The key nane is a Local Delivery Agent name
+		// The key nane is a bounce reason name
 		if sisimoji.ContainsAny(issuedcode, MessagesOf[deliversby][e]) == false { continue }
 		reasontext = e; break
 	}
