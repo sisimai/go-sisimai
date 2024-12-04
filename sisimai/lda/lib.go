@@ -12,17 +12,19 @@ import "sisimai/sis"
 import sisimoji "sisimai/string"
 
 var LocalAgent = map[string][]string{
+	// Each error message should be a lower-cased string
 	// dovecot/src/deliver/deliver.c
 	// 11: #define DEFAULT_MAIL_REJECTION_HUMAN_REASON \
 	// 12: "Your message to <%t> was automatically rejected:%n%r"
-	"dovecot":    []string{"Your message to ", " was automatically rejected:"},
+	"dovecot":    []string{"your message to ", " was automatically rejected:"},
 	"mail.local": []string{"mail.local: "},
-	"procmail":   []string{"procmail: "},
+	"procmail":   []string{"procmail: ", "/procmail "},
 	"maildrop":   []string{"maildrop: "},
 	"vpopmail":   []string{"vdelivermail: "},
 	"vmailmgr":   []string{"vdeliver: "},
 }
 var MessagesOf = map[string]map[string][]string{
+	// Each error message should be a lower-cased string
 	"dovecot": map[string][]string{
 		"mailboxfull": []string{
 			"quota exceeded", // Dovecot 1.2 dovecot/src/plugins/quota/quota.c
@@ -46,6 +48,8 @@ var MessagesOf = map[string]map[string][]string{
 	},
 	"procmail": map[string][]string{
 		"mailboxfull": []string{"quota exceeded while writing"},
+		"mailererror": []string{"couldn't "},
+		"systemerror": []string{"service unavailable"},
 		"systemfull":  []string{"no space left to finish writing"},
 	},
 	"maildrop": map[string][]string{
