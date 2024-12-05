@@ -137,7 +137,7 @@ func init() {
 		// Transient/MessageTooLarge -- message you sent was too large
 		// Transient/ContentRejected -- message you sent contains content that the provider doesn't allow
 		// Transient/AttachmentRejected the message contained an unacceptable attachment
-		reasonmaps := map[string]string {
+		reasonpair := map[string]string {
 			"Supressed":                "suppressed",
 			"OnAccountSuppressionList": "suppressed",
 			"General":                  "onhold",
@@ -296,9 +296,9 @@ func init() {
 				v.Lhost     = rfc1123.Find((*o).ReportingMTA)
 				recipients += 1
 
-				for f := range reasonmaps {
+				for f := range reasonpair {
 					// Try to find the bounce reason by "bounceSubType"
-					if reasonmaps[f] != (*o).BounceSubType { continue }
+					if reasonpair[f] != (*o).BounceSubType { continue }
 					v.Reason = f; break
 				}
 			}
