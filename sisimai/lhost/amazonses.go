@@ -322,7 +322,7 @@ func init() {
 			// "notificationType":"Delivery"
 			o := &notifiedto.deliveries.Delivery
 			for _, e := range (*o).Recipients {
-				// {"emailAddress":"neko@example.jp"}
+				// {"recipients":["neko@example.jp"]}
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})
@@ -334,8 +334,8 @@ func init() {
 				v.Date      = (*o).Timestamp
 				v.Lhost     = (*o).ReportingMTA
 				v.Diagnosis = (*o).SMTPResponse
-				v.Status    = status.Find(v.Diagnosis, "")
-				v.ReplyCode = reply.Find(v.Diagnosis, v.Status)
+				v.Status    = status.Find(v.Diagnosis, "2")
+				v.ReplyCode = reply.Find(v.Diagnosis, "2")
 				recipients += 1
 			}
 		}
