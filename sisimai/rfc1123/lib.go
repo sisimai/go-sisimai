@@ -36,7 +36,7 @@ func IsInternetHost(argv1 string) bool {
 	}
 	if hostnameok == false { return false }
 
-	for _, e := range strings.Split(strings.Split(argv1, ".")[strings.Count(argv1, ".")], "") {
+	for _, e := range strings.Split(argv1[strings.LastIndex(argv1, ".") + 1:], "") {
 		// The top level domain should not include a number
 		if e[0] > 47 && e[0] < 58  { hostnameok = false; break }
 	}
