@@ -88,14 +88,6 @@ func init() {
 			Headers          []eachHeader
 			CommonHeaders    commonHead
 		}
-		RFC822Head := func(it *mailObject) string {
-			// RFC822Head() returns the original email message (headers only)
-			allheaders := ""
-			for _, e := range it.Headers { allheaders += fmt.Sprintf("%s: %s\n", e.Name, e.Value) }
-			if it.CommonHeaders.Date    != "" { allheaders += fmt.Sprintf("Date: %s\n", it.CommonHeaders.Date)       }
-			if it.CommonHeaders.Subject != "" { allheaders += fmt.Sprintf("Subject: %s\n", it.CommonHeaders.Subject) }
-			return allheaders
-		}
 
 		//-----------------------------------------------------------------------------------------
 		// "notificationType": "Bounce"
@@ -341,7 +333,13 @@ func init() {
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
 
-		emailparts[1] = RFC822Head(mailinside)
+		// Generate pseudo email headers as the original message
+		cv := ""
+		for _, e := range mailinside.Headers { cv += fmt.Sprintf("%s: %s\n", e.Name, e.Value) }
+		if mailinside.CommonHeaders.Date    != "" { cv += fmt.Sprintf("Date: %s\n", mailinside.CommonHeaders.Date)       }
+		if mailinside.CommonHeaders.Subject != "" { cv += fmt.Sprintf("Subject: %s\n", mailinside.CommonHeaders.Subject) }
+		emailparts[1] = cv
+
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
 }
