@@ -18,7 +18,6 @@ import "sisimai/smtp/reply"
 import "sisimai/smtp/status"
 import "sisimai/smtp/command"
 import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
 
 func init() {
 	// Decode bounce messages from Amazon SES(Sending): https://aws.amazon.com/ses/
@@ -286,7 +285,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e.EmailAddress)
+				v.Recipient = e.EmailAddress
 				v.Diagnosis = sisimoji.Sweep(e.DiagnosticCode)
 				v.Command   = command.Find(v.Diagnosis)
 				v.Action    = e.Action
@@ -312,7 +311,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient    = sisiaddr.S3S4(e.EmailAddress)
+				v.Recipient    = e.EmailAddress
 				v.Reason       = "feedback"
 				v.FeedbackType = (*o).ComplaintFeedbackType
 				v.Date         = (*o).Timestamp
@@ -329,7 +328,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e)
+				v.Recipient = e
 				v.Reason    = "delivered"
 				v.Action    = "delivered"
 				v.Date      = (*o).Timestamp
