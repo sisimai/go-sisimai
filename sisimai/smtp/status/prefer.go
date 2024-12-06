@@ -53,11 +53,16 @@ func Prefer(argv0, argv1, argv2 string) string {
 
 	if zeroindex2[1] > 0                      { return statuscode } // The SMTP status code is "X.0.0"
 	if statuscode == "4.4.7"                  { return codeinmesg } // "4.4.7" is an ambigous code
+	if statuscode == "4.7.0"                  { return codeinmesg } // "4.7.0" indicates "too many errors"
 	if strings.Index(statuscode, "5.3.") == 0 { return codeinmesg } // "5.3.Z" is a system error
+	if strings.Index(statuscode, ".5.1") == 1 { return codeinmesg } // "X.5.1" indicates an invalid command
+	if strings.Index(statuscode, ".5.2") == 1 { return codeinmesg } // "X.5.2" indicates a syntax error
+	if strings.Index(statuscode, ".5.4") == 1 { return codeinmesg } // "X.5.4" indicates an invalid command argument
+	if strings.Index(statuscode, ".5.5") == 1 { return codeinmesg } // "X.5.5" indicates a wrong protocol version
 
 	if statuscode == "5.1.1" {
 		// "5.1.1" is a code of "userunknown"
-		if zeroindex1[1] > 0 { return statuscode }
+		if zeroindex1[1] > 0 || strings.Index(codeinmesg, "5.5.") == 0 { return statuscode }
 		return codeinmesg
 
 	} else if statuscode == "5.1.3" {
