@@ -130,7 +130,7 @@ func Field(argv0 string) []string {
 		"expired":     "delayed",
 		"failure":     "failed",
     }
-	actionlist := []string{"delayed", "deliverable", "delivered", "expanded", "expired", "failed", "failure", "relayed"}
+	actionlist := []string{"failed", "delayed", "delivered", "relayed", "expanded"}
 	captureson := map[string][]string{
 		"addr": []string{"Final-Recipient", "Original-Recipient", "X-Actual-Recipient"},
 		"code": []string{"Diagnostic-Code"},
