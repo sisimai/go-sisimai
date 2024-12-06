@@ -86,8 +86,8 @@ func Find(argv1 string) string {
 	sourcetext  = strings.ReplaceAll(sourcetext, "]", "] ")
 	sourcetext  = strings.ReplaceAll(sourcetext, "<", " <") 
 	sourcetext  = strings.ReplaceAll(sourcetext, ">", "> ") 
-	sourcetext  = strings.ReplaceAll(sourcetext, ":", " : ") 
-	sourcetext  = strings.ReplaceAll(sourcetext, ";", " ; ") 
+	sourcetext  = strings.ReplaceAll(sourcetext, ":", ": ") 
+	sourcetext  = strings.ReplaceAll(sourcetext, ";", "; ") 
 	sourcetext  = sisimoji.Sweep(sourcetext)
 
 	sourcelist := []string{}
@@ -133,6 +133,8 @@ func Find(argv1 string) string {
 	for _, e := range sourcelist {
 		// Pick some strings which is 4 or more length, is including "." character
 		e = strings.TrimRight(e, ".") // Remove "." at the end of the string
+		for _, f := range []string{"[", "]", "<", ">", ":", ";"} { e = strings.ReplaceAll(e, f, "") }
+
 		if len(e) < 4                        { continue }
 		if strings.Contains(e, ".") == false { continue }
 		if IsInternetHost(e) == false        { continue }
