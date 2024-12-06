@@ -102,6 +102,12 @@ func Find(argv1 string, argv2 string) string {
 
 	if len(anotherone) > 0 { statuscode = append(statuscode, anotherone) }
 	if len(statuscode) < 1 { return "" }
-	return statuscode[0]
+
+	cv := ""; for j, e := range statuscode {
+		// Select one from picked status codes
+		if j == 0 { cv = e; continue }
+		cv = Prefer(cv, e, "");
+	}
+	return cv
 }
 
