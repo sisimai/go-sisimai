@@ -30,7 +30,10 @@ var Sandwiched = [][]string{
 	[]string{" : ", "["},             // (SendGrid) cat:000000:<cat@example.jp> : 192.0.2.1 : mx.example.jp:[192.0.2.2]...
 }
 var StartAfter = []string{
-	"generating server: ", // (Exchange2007) Generating server: mta4.example.org
+	"generating server: ",   // (Exchange2007) Generating server: mta4.example.org
+	"serveur de g",          // fr-FR/Serveur de g辿n辿ration
+	"server di generazione", // it-CH
+	"genererande server",    // sv-SE
 }
 var ExistUntil = []string{
 	" did not like our ",  // (Dragonfly) mail-inbound.libsisimai.net [192.0.2.25] did not like our DATA: ...
