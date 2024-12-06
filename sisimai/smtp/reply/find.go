@@ -19,21 +19,20 @@ func Find(argv1 string, argv2 string) string {
 	if strings.Contains(strings.ToUpper(argv1), "X-UNIX") { return "" }
 	if len(argv2) == 0 { argv2 = "0" }
 
-	codeofsmtp := map[string][]string{"2": ReplyCode2, "4": ReplyCode4, "5": ReplyCode5}
 	statuscode := argv2[0:1]
 	replycodes := []string{}
 
 	if statuscode == "2" || statuscode == "4" || statuscode == "5" {
 		// The first character of the 2nd argument is 2 or 4 or 5
-		replycodes = codeofsmtp[statuscode]
+		replycodes = CodeOfSMTP[statuscode]
 
 	} else {
 		// The first character of the 2nd argument is 0 or other values
 		// TODO: use "slices" package and slices.Concat() avaialble from Go 1.22
 		//       https://pkg.go.dev/slices@master
-		replycodes = append(replycodes, codeofsmtp["2"]...)
-		replycodes = append(replycodes, codeofsmtp["4"]...)
-		replycodes = append(replycodes, codeofsmtp["5"]...)
+		replycodes = append(replycodes, CodeOfSMTP["2"]...)
+		replycodes = append(replycodes, CodeOfSMTP["4"]...)
+		replycodes = append(replycodes, CodeOfSMTP["5"]...)
 	}
 
 	esmtperror := " " + argv1 + " "
