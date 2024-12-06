@@ -129,7 +129,7 @@ func Find(argv1 string) string {
 
 	for _, e := range sourcelist {
 		// Pick some strings which is 4 or more length, is including "." character
-		e = strings.TrimRight(e, ".") // Remote "." at the end of the string
+		e = strings.TrimRight(e, ".") // Remove "." at the end of the string
 		if len(e) < 4                        { continue }
 		if strings.Contains(e, ".") == false { continue }
 		if IsInternetHost(e) == false        { continue }
