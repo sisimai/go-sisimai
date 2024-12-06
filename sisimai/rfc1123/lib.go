@@ -38,6 +38,8 @@ var StartAfter = []string{
 var ExistUntil = []string{
 	" did not like our ",  // (Dragonfly) mail-inbound.libsisimai.net [192.0.2.25] did not like our DATA: ...
 }
+var Prefix0x32 = []string{"(", "[", "<"}
+var Suffix0x32 = []string{")", "]", ">", ":", ";"}
 
 // IsInternetHost() returns "true" when the given string is a valid Internet hostname
 func IsInternetHost(argv1 string) bool {
@@ -82,13 +84,8 @@ func Find(argv1 string) string {
 	// - mx.example.net[192.0.2.1] => mx.example.net [192.0.2.1]
 	// - mx.example.jp:[192.0.2.1] => mx.example.jp :[192.0.2.1]
 	sourcetext := strings.ToLower(argv1)
-	sourcetext  = strings.ReplaceAll(sourcetext, "[", " [")
-	sourcetext  = strings.ReplaceAll(sourcetext, "]", "] ")
-	sourcetext  = strings.ReplaceAll(sourcetext, "<", " <") 
-	sourcetext  = strings.ReplaceAll(sourcetext, ">", "> ") 
-	sourcetext  = strings.ReplaceAll(sourcetext, ":", ": ") 
-	sourcetext  = strings.ReplaceAll(sourcetext, ";", "; ") 
-	sourcetext  = sisimoji.Sweep(sourcetext)
+	for _, e := range Prefix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, " " + e) }
+	for _, e := range Suffix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, e + " ") }
 
 	sourcelist := []string{}
 	foundtoken := []string{}
@@ -133,7 +130,8 @@ func Find(argv1 string) string {
 	for _, e := range sourcelist {
 		// Pick some strings which is 4 or more length, is including "." character
 		e = strings.TrimRight(e, ".") // Remove "." at the end of the string
-		for _, f := range []string{"[", "]", "<", ">", ":", ";"} { e = strings.ReplaceAll(e, f, "") }
+		for _, f := range Prefix0x32 { e = strings.ReplaceAll(e, f, "") }
+		for _, f := range Suffix0x32 { e = strings.ReplaceAll(e, f, "") }
 
 		if len(e) < 4                        { continue }
 		if strings.Contains(e, ".") == false { continue }
