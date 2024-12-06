@@ -1,12 +1,12 @@
 // Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
+
 //  _ _               _      __                  _                 _ _ 
 // | | |__   ___  ___| |_   / /__  ___ _ __   __| |_ __ ___   __ _(_) |
 // | | '_ \ / _ \/ __| __| / / __|/ _ \ '_ \ / _` | '_ ` _ \ / _` | | |
 // | | | | | (_) \__ \ |_ / /\__ \  __/ | | | (_| | | | | | | (_| | | |
 // |_|_| |_|\___/|___/\__/_/ |___/\___|_| |_|\__,_|_| |_| |_|\__,_|_|_|
-//                                                                     
 import "fmt"
 import "strings"
 import "sisimai/sis"
@@ -27,14 +27,14 @@ func init() {
 		if len(bf.Body)            == 0 { return sis.RisingUnderway{} }
 		if len(bf.Head["x-aol-ip"]) > 0 { return sis.RisingUnderway{} } // X-AOL-IP is a header defined in AOL
 
-		match := false
+		proceedsto := false
 		if strings.HasPrefix(bf.Head["subject"][0], "Warning: ") ||
 		   strings.HasSuffix(bf.Head["subject"][0], "see transcript for details") {
 			// Subject: Warning: could not send message for past 4 hours
 			// Subject: Returned mail: see transcript for details
-			match = true
+			proceedsto = true
 		}
-		if match == false { return sis.RisingUnderway{} }
+		if proceedsto == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
