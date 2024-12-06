@@ -19,13 +19,7 @@ func Find(argv1 string, argv2 string) string {
 	if strings.Contains(strings.ToUpper(argv1), "X-UNIX") { return "" }
 	if len(argv2) == 0 { argv2 = "0" }
 
-	replycode2 := []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "354"}
-	replycode4 := []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "456", "458", "459"}
-	replycode5 := []string{
-		"550", "552", "553", "551", "521", "525", "502", "520", "523", "524", "530", "533", "534", "535", "538",
-		"551", "555", "556", "554", "557", "500", "501", "502", "503", "504",
-	}
-	codeofsmtp := map[string][]string{"2": replycode2, "4": replycode4, "5": replycode5}
+	codeofsmtp := map[string][]string{"2": ReplyCode2, "4": ReplyCode4, "5": ReplyCode5}
 	statuscode := argv2[0:1]
 	replycodes := []string{}
 
