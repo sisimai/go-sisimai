@@ -123,7 +123,7 @@ func init() {
 					// Other error messages which does not start with " "
 					if strings.HasPrefix(e, ">>> ") {
 						// >>> DATA (Client Command)
-						thecommand = command.Find(e)
+						if thecommand == "" { thecommand = command.Find(e) }
 
 					} else if strings.HasPrefix(e, "<<< ") {
 						// <<< Response from SMTP Server
