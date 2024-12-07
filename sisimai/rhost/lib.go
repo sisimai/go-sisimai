@@ -55,6 +55,18 @@ func Find(fo *sis.Fact) string {
 		}
 		if rhostclass != "" { break }
 	}
+	if rhostclass == "" {
+		// Neither the remote host nor the destination did not matched with any value of RhostClass
+		for e := range RhostClass {
+			// Try to match the client host with each value of RhostClass
+			for _, r := range RhostClass[e] {
+				// - Whether the remote host (fo.Rhost) includes "r" or not
+				// - Whether "r" includes the domain part of the recipient address or not
+				if strings.HasSuffix(clienthost, r) { rhostclass = e; break }
+			}
+			if rhostclass != "" { break }
+		}
+	}
 	if rhostclass == "" { return "" }
 
 	return ReturnedBy[rhostclass](fo)
