@@ -62,7 +62,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	for strings.Contains(emailparts[0], "@") == false {
 		// There is no email address in the first element of emailparts
-		// There is a bounce message inside of message/rfc822 part at lhost-x5-*
+		// There is a bounce message inside of message/rfc822 part at lhost-x5-*, rfc3464/1311
 		p0 := -1 // The index of the boundary string found first
 		p1 :=  0 // Offset position of the message body after the boundary string
 		ct := "" // Boundary string found first such as "Content-Type: message/rfc822"
