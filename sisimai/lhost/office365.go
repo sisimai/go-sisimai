@@ -98,7 +98,7 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if sisimoji.ContainsAny(e, startingof["message"]) {readcursor |= indicators["deliverystatus"] }
+				if sisimoji.ContainsAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
 			if readcursor & indicators["deliverystatus"] == 0 { continue }
