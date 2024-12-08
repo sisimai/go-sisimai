@@ -110,6 +110,7 @@ func init() {
 		}
 		pairs := [][]string{
 			[]string{"greylisted", " please try again in"},
+			[]string{"mail score (", " over "},
 			[]string{"mail rejete. mail rejected. ", "506"},
 			[]string{"our filters rate at and above ", " percent probability of being spam"},
 			[]string{"rejected by ", " (spam)"},
