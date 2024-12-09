@@ -51,6 +51,7 @@ func init() {
 		boundaries := []string{
 			// qmail-send.c:qmail_puts(&qqt,*sender.s ? "--- Below this line is a copy of the message.\n\n" :...
 			"--- Below this line is a copy of the message.",     // qmail-1.03
+			"--- Below this line is a copy of the mail header.",
 			"--- Below the next line is a copy of the message.", // The followings are the qmail clone
 			"--- Mensaje original adjunto.",
 			"Content-Type: message/rfc822",
