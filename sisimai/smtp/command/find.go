@@ -29,7 +29,7 @@ func Find(argv0 string) string {
 				// Exclude an SMTP command in the part of an email address, a domain name, such as
 				// DATABASE@EXAMPLE.JP, EMAIL.EXAMPLE.COM, and so on.
 				cw := len(e) + 1
-				ca := []byte(issuedcode[p0 - 1:p0])[0]
+				ca := []byte(issuedcode[p0:p0 + 1])[0]
 				cz := []byte(issuedcode[p0 + cw:p0 + cw + 1])[0]
 
 				if ca > 47 && ca <  58 || cz > 47 && cz <  58 { break } // 0-9
