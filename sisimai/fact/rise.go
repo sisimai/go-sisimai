@@ -116,17 +116,20 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 
 		RECEIVED: for {
 			// Try to pick a remote hostname from the error message
-			cv := rfc1123.Find(e.Diagnosis); if rfc1123.IsInternetHost(cv) { e.Rhost = cv }
-
 			// Scan "Received:" header of the bounce message
 			le := len(beforefact.Head["received"])
 			if e.Rhost == "" {
 				// Try to pick a remote hostname from Received: headers of the bounce message
-				for ri := le - 1; ri > -1; ri-- {
-					// Check the Received: headers backwards and get a remote hostname
-					cv := rfc5322.Received(beforefact.Head["received"][ri])
-					if rfc1123.IsInternetHost(cv[0]) == false { continue }
-					e.Rhost = cv[0]; break
+				if cv := rfc1123.Find(e.Diagnosis); rfc1123.IsInternetHost(cv) { e.Rhost = cv }
+				if e.Rhost == "" {
+					// The remote hostname in the error message did not exist or is not a valid
+					// internet hostname
+					for ri := le - 1; ri > -1; ri-- {
+						// Check the Received: headers backwards and get a remote hostname
+						cv := rfc5322.Received(beforefact.Head["received"][ri])
+						if rfc1123.IsInternetHost(cv[0]) == false { continue }
+						e.Rhost = cv[0]; break
+					}
 				}
 			}
 			if e.Lhost == e.Rhost { e.Lhost = "" }
