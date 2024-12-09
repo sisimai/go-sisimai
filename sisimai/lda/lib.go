@@ -48,7 +48,6 @@ var MessagesOf = map[string]map[string][]string{
 	},
 	"procmail": map[string][]string{
 		"mailboxfull": []string{"quota exceeded while writing"},
-		"mailererror": []string{"couldn't "},
 		"systemerror": []string{"service unavailable"},
 		"systemfull":  []string{"no space left to finish writing"},
 	},
@@ -98,6 +97,9 @@ func Find(fo *sis.Fact) string {
 		if sisimoji.ContainsAny(issuedcode, MessagesOf[deliversby][e]) == false { continue }
 		reasontext = e; break
 	}
+
+	// procmail: Couldn't create "/var/mail/tmp.nekochan.22"
+	if reasontext == "" { reasontext = "mailererror" }
 	return reasontext
 }
 
