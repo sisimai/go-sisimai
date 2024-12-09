@@ -399,8 +399,9 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 					thing.Action = ox[2]
 				}
 			}
-			if thing.Reason == "expired"                            { thing.Action = "delayed" }
-			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed"  }
+			if thing.Reason == "delivered"                          { thing.Action = "delivered" }
+			if thing.Reason == "expired"                            { thing.Action = "delayed"   }
+			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed"    }
 
 			break REPLYCODE
 		}
