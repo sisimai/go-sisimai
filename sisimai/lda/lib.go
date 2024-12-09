@@ -47,7 +47,7 @@ var MessagesOf = map[string]map[string][]string{
 		},
 	},
 	"procmail": map[string][]string{
-		"mailboxfull": []string{"quota exceeded while writing"},
+		"mailboxfull": []string{"quota exceeded while writing", "user over quota"},
 		"systemerror": []string{"service unavailable"},
 		"systemfull":  []string{"no space left to finish writing"},
 	},
