@@ -88,6 +88,16 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		break
 	}
 
+
+	if strings.Contains(emailparts[0], "\nFinal-Recipient: <") {
+		// Fix the malformed field "Final-Recipient: <kijitora@example.jp>"
+		cv := "\nFinal-Recipient: "
+		emailparts[0] = strings.ReplaceAll(emailparts[0], cv + "<", cv + "rfc822; ")
+		p0 := strings.Index(emailparts[0], cv)
+		p1 := sisimoji.IndexOnTheWay(emailparts[0], ">\n", p0 + 1)
+		emailparts[0] = emailparts[0][:p1] + emailparts[0][p1 + 1:]
+	}
+
 	for j, e := range(strings.Split(emailparts[0], "\n")) {
 		// Read error messages and delivery status lines from the head of the email to the
 		// previous line of the beginning of the original message.
