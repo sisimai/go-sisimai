@@ -99,6 +99,7 @@ func init() {
 			[]string{"the ip", " is blacklisted"},
 			[]string{"veuillez essayer plus tard. service refused, please try later. ", "103"},
 			[]string{"veuillez essayer plus tard. service refused, please try later. ", "510"},
+			[]string{"your access ip", " has been rejected"},
 			[]string{"your sender's ip address is listed at ", ".abuseat.org"},
 		}
 
