@@ -271,7 +271,6 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				e.Diagnosis = sisimoji.Sweep(beforemesg + " " + e.Diagnosis)
 			}
 		}
-
 		e.Command   = command.Find(e.Diagnosis);         if e.Command   == "" { e.Command   = alternates.Command   }
 		e.ReplyCode = reply.Find(e.Diagnosis, e.Status); if e.ReplyCode == "" { e.ReplyCode = alternates.ReplyCode }
 
