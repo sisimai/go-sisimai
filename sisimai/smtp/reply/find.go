@@ -9,6 +9,7 @@ package reply
 // |___/_| |_| |_|\__| .__/_/ |_|  \___| .__/|_|\__, |
 //                   |_|               |_|      |___/ 
 import "strings"
+import sisimoji "sisimai/string"
 
 // Find() returns an SMTP reply code found from the given string
 func Find(argv1 string, argv2 string) string {
@@ -39,14 +40,22 @@ func Find(argv1 string, argv2 string) string {
 	esmtpreply := ""
 	for _, e := range replycodes {
 		// Try to find an SMTP Reply Code from the given string
-		replyindex := strings.Index(esmtperror, e); if replyindex < 0 { continue }
-		formerchar := []byte(esmtperror[replyindex - 1:replyindex])[0]
-		latterchar := []byte(esmtperror[replyindex + 3:replyindex + 4])[0]
+		//replyindex := strings.Index(esmtperror, e); if replyindex < 0 { continue }
+		appearance := strings.Count(esmtperror, e); if appearance < 1 { continue }
+		startingat := 1
 
-		if formerchar > 45 && formerchar < 58 { continue }
-		if latterchar > 45 && latterchar < 58 { continue }
-		esmtpreply = e
-		break
+		for j := 0; j < appearance; j++ {
+			// Find all the reply codes in the error message
+			replyindex := sisimoji.IndexOnTheWay(esmtperror, e, startingat); if replyindex < 0 { break }
+			formerchar := []byte(esmtperror[replyindex - 1:replyindex])[0]
+			latterchar := []byte(esmtperror[replyindex + 3:replyindex + 4])[0]
+
+			if formerchar > 45 && formerchar < 58 { startingat += replyindex + 3; continue }
+			if latterchar > 45 && latterchar < 58 { startingat += replyindex + 3; continue }
+			esmtpreply = e
+			break
+		}
+		if esmtpreply != "" { break }
 	}
 	return esmtpreply
 }
