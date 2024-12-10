@@ -40,7 +40,6 @@ func Find(argv1 string, argv2 string) string {
 	esmtpreply := ""
 	for _, e := range replycodes {
 		// Try to find an SMTP Reply Code from the given string
-		//replyindex := strings.Index(esmtperror, e); if replyindex < 0 { continue }
 		appearance := strings.Count(esmtperror, e); if appearance < 1 { continue }
 		startingat := 1
 
