@@ -295,8 +295,6 @@ func init() {
 					v.Alias = sisiaddr.S3S4(f); break
 				}
 			} else {
-				if len(e) == 0 { continue }
-
 				if sisimoji.ContainsAny(e, startingof["frozen"]) {
 					// Message *** has been frozen by the system filter.
 					// Message *** was frozen on arrival by ACL.
