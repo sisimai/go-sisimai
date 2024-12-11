@@ -40,7 +40,7 @@ func init() {
 			"Warning: message ",
 			"error(s) in forwarding or filtering",
 		}
-		if strings.HasPrefix(bf.Head["from"][0], `"Mail Delivery System"`) { proceedsto++ }
+		if strings.Contains(bf.Head["from"][0], "Mail Delivery System") { proceedsto++ }
 		for messageidv != "" {
 			// Message-Id: <E1P1YNN-0003AD-Ga@example.org>
 			if strings.Index(messageidv, "<") !=  0 { break }
