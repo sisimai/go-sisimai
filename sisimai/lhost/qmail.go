@@ -113,14 +113,13 @@ func init() {
 		onholdpair := []string{" does not like recipient.", "this message has been in the queue too long."}
 		failonldap := map[string][]string{
 			// qmail-ldap-1.03-20040101.patch:19817 - 19866
+			"exceedlimit": []string{"The message exeeded the maximum size the user accepts"}, // 5.2.3
 			"suspend":     []string{
 				"Mailaddress is administrativly disabled",
 				"Mailaddress is administrativley disabled",
 				"Mailaddress is administratively disabled",
 				"Mailaddress is administrativeley disabled",
 			},  // 5.2.1
-			"userunknown": []string{"Sorry, no mailbox here by that name"}, // 5.1.1
-			"exceedlimit": []string{"The message exeeded the maximum size the user accepts"}, // 5.2.3
 			"systemerror": []string{
 				"Automatic homedir creator crashed",                // 4.3.0
 				"Illegal value in LDAP attribute",                  // 5.3.5
@@ -134,6 +133,7 @@ func init() {
 				"Unable to contact LDAP server",                    // 4.4.3
 				"Unable to login into LDAP server, bad credentials",// 4.4.3
 			},
+			"userunknown": []string{"Sorry, no mailbox here by that name"}, // 5.1.1
 		}
 		messagesof := map[string][]string{
 			// qmail-local.c:589|  strerr_die1x(100,"Sorry, no mailbox here by that name. (#5.1.1)");
