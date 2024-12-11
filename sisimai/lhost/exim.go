@@ -95,7 +95,7 @@ func init() {
 			// deliver.c:6304|"could not be delivered to one or more of its recipients. The following\n"
 			// deliver.c:6305|"address(es) failed:\n", sender_address);
 			// deliver.c:6306|          }
-			"alias":          []string{" an undisclosed address", "unroutable address"},
+			"alias":          []string{" an undisclosed address"},
 			"command":        []string{"SMTP error from remote ", "LMTP error after "},
 			"deliverystatus": []string{"Content-Type: message/delivery-status"},
 			"frozen":         []string{" has been frozen", " was frozen on arrival"},
