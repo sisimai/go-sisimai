@@ -95,7 +95,7 @@ func init() {
 			// deliver.c:6304|"could not be delivered to one or more of its recipients. The following\n"
 			// deliver.c:6305|"address(es) failed:\n", sender_address);
 			// deliver.c:6306|          }
-			"alias":          []string{" an undisclosed address"},
+			"alias":          []string{" an undisclosed address", "unroutable address"},
 			"command":        []string{"SMTP error from remote ", "LMTP error after "},
 			"deliverystatus": []string{"Content-Type: message/delivery-status"},
 			"frozen":         []string{" has been frozen", " was frozen on arrival"},
@@ -238,7 +238,7 @@ func init() {
 				ce = true; break
 			}
 
-			if ce == true || strings.Contains(e, startingof["alias"][0]) {
+			if ce == true || sisimoji.ContainsAny(e, startingof["alias"]) {
 				// The line is including an email address
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -248,7 +248,7 @@ func init() {
 					v = &(dscontents[rightindex])
 				}
 
-				if strings.Contains(e, startingof["alias"][0]) {
+				if sisimoji.ContainsAny(e, startingof["alias"]) {
 					// The line does not include an email address
 					// deliver.c:4549|  printed = US"an undisclosed address";
 					//   an undisclosed address
@@ -280,8 +280,8 @@ func init() {
 						//   kijitora@example.jp
 						cv = sisiaddr.S3S4(e[2:])
 					}
+					if sisiaddr.IsEmailAddress(cv) == false { continue }
 				}
-				if sisiaddr.IsEmailAddress(cv) == false { continue }
 				v.Recipient = cv
 				recipients++
 
