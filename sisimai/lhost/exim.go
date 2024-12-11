@@ -335,7 +335,6 @@ func init() {
 					// There is no boundary string in "boundary00"
 					if len(dscontents) == recipients {
 						// This line is an error message
-						if e == "" { continue }
 						v.Diagnosis += " " + e
 
 					} else {
