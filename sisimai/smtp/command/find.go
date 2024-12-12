@@ -34,7 +34,7 @@ func Find(argv0 string) string {
 
 				if ca > 47 && ca <  58 || cz > 47 && cz <  58 { break } // 0-9
 				if ca > 63 && ca <  91 || cz > 63 && cz <  91 { break } // @-Z
-				if ca > 93 && ca < 123 || cz > 93 && cz < 123 { break } // ^-z
+				if ca > 96 && ca < 123 || cz > 96 && cz < 123 { break } // `-z
 				cx = false; break
 			}
 			if cx == true { continue }
