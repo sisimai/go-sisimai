@@ -34,6 +34,8 @@ func init() {
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{"message": []string{"Your message"}}
 		messagesof := map[string][]string{
+			"filtered":    []string{"Cannot route mail to user"},
+			"systemerror": []string{"Several matches found in Domino Directory"},
 			"userunknown": []string{
 				"not listed in Domino Directory",
 				"not listed in public Name & Address Book",
@@ -41,8 +43,6 @@ func init() {
 				"non répertorié dans l'annuaire Domino",
 				"Domino ディレクトリには見つかりません",
 			},
-			"filtered":    []string{"Cannot route mail to user"},
-			"systemerror": []string{"Several matches found in Domino Directory"},
 		}
 
 		fieldtable := rfc1894.FIELDTABLE()
