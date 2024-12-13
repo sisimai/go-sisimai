@@ -110,24 +110,23 @@ func init() {
 					subjecttxt = e[11:]
 
 				} else {
-					f := rfc1894.Match(e); if f > 0 {
-						// "e" matched with any field defined in RFC3464
-						o := rfc1894.Field(e); if len(o) < 1 { continue }
-						z := fieldtable[o[0]]; if len(z) < 1 { continue }
+					// Other filelds defined in RFC3464
+					f := rfc1894.Match(e); if f      < 1 { continue }
+					o := rfc1894.Field(e); if len(o) < 1 { continue }
+					z := fieldtable[o[0]]; if len(z) < 1 { continue }
 
-						if o[3] == "code" {
-							// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
-							if v.Spec      == "" { v.Spec = o[1] }
-							if v.Diagnosis == "" { v.Diagnosis = o[2] }
+					if o[3] == "code" {
+						// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
+						if v.Spec      == "" { v.Spec = o[1] }
+						if v.Diagnosis == "" { v.Diagnosis = o[2] }
 
-						} else {
-							// Other DSN fields defined in RFC3464
-							v.Update(o[0], o[2]); if f != 1 { continue }
+					} else {
+						// Other DSN fields defined in RFC3464
+						v.Update(o[0], o[2]); if f != 1 { continue }
 
-							// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
-							permessage[z] = o[2]
-							if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
-						}
+						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
+						permessage[z] = o[2]
+						if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 					}
 				}
 			}
