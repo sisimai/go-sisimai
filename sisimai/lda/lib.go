@@ -27,9 +27,9 @@ var MessagesOf = map[string]map[string][]string{
 	// Each error message should be a lower-cased string
 	"dovecot": map[string][]string{
 		"mailboxfull": []string{
+			"not enough disk space",
 			"quota exceeded", // Dovecot 1.2 dovecot/src/plugins/quota/quota.c
 			"quota exceeded (mailbox for user is full)", // dovecot/src/plugins/quota/quota.c
-			"not enough disk space",
 		},
 		"userunknown": []string{"mailbox doesn't exist: "},
 	},
@@ -40,10 +40,10 @@ var MessagesOf = map[string]map[string][]string{
 		},
 		"systemerror": []string{"temporary file write error"},
 		"userunknown": []string{
-			": unknown user:",
-			": user unknown",
 			": invalid mailbox path",
+			": unknown user:",
 			": user missing home directory",
+			": user unknown",
 		},
 	},
 	"procmail": map[string][]string{
@@ -54,8 +54,8 @@ var MessagesOf = map[string]map[string][]string{
 	"maildrop": map[string][]string{
 		"mailboxfull": []string{"maildir over quota."},
 		"userunknown": []string{
-			"invalid user specified.",
 			"cannot find system user",
+			"invalid user specified.",
 		},
 	},
 	"vpopmail": map[string][]string{
