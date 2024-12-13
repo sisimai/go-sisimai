@@ -88,9 +88,12 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		break
 	}
 
-	if strings.Contains(emailparts[0], "\nFinal-Recipient: <") {
+	for _, e := range []string{"Final-Recipient", "Original-Recipient"} {
 		// Fix the malformed field "Final-Recipient: <kijitora@example.jp>"
-		cv := "\nFinal-Recipient: "
+		cv := "\n" + e + ": "
+		cx := cv + "<"; if strings.Contains(emailparts[0], cx) == false { continue }
+
+		// Insert "rfc822; " just after the field name
 		emailparts[0] = strings.Replace(emailparts[0], cv + "<", cv + "rfc822; ", 1)
 		p0 := strings.Index(emailparts[0], cv)
 		p1 := sisimoji.IndexOnTheWay(emailparts[0], ">\n", p0 + 1)
@@ -140,8 +143,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if strings.HasPrefix(e, "###")             { break } // A frame like #####
 				if strings.HasPrefix(e, "***")             { break } // A frame like *****
 				if strings.HasPrefix(e, "--")              { break } // Boundary string
-				if strings.Contains(e, "---- The follow")  { break } // ----- The following addresses had delivery problems -----
-				if strings.Contains(e, "---- Transcript")  { break } // ----- Transcript of session follows -----
+				if strings.Contains(e, "--- The follow")   { break } // ----- The following addresses had delivery problems -----
+				if strings.Contains(e, "--- Transcript")   { break } // ----- Transcript of session follows -----
 				beforemesg += e + " "; break
 			}
 			continue
