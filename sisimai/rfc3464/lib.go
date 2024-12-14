@@ -74,8 +74,9 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		}
 		if p0 < 0 { break } // There is no boundary string
 
-		p2 := strings.Index(bf.Body[p1:], "\n\n")
-		cv := bf.Body[p1:][p2 + 2:]
+		cx := bf.Body[p1:]
+		p2 := strings.Index(cx, "\n\n")
+		cv := cx[p2 + 2:]
 		emailparts = rfc5322.Part(&cv, []string{ct}, false)
 		break;
 	}
