@@ -35,7 +35,6 @@ func init() {
 			// --
 			// If you wish to stop receiving notifications from this topic, please click or visit the link below to unsubscribe:
 			// https://sns.us-west-2.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:us-west-2:1...
-			nt := "notificationType"
 			p1 := strings.Index(bf.Body, "\n\n--\n")
 			if p1 > 0 { sespayload = bf.Body[:p1] }
 			if strings.Contains(sespayload, "!\n ") { sespayload = strings.ReplaceAll(sespayload, "!\n ", "") }
@@ -56,9 +55,9 @@ func init() {
 				sespayload = strings.TrimRight(sespayload, `"`)
 			}
 
-			if strings.Contains(sespayload, nt)   == false { break }
-			if strings.HasPrefix(sespayload, "{") == false { break }
-			if strings.HasSuffix(sespayload, "}") == false { break }
+			if strings.Contains(sespayload, "notificationType") == false { break }
+			if strings.HasPrefix(sespayload, "{")               == false { break }
+			if strings.HasSuffix(sespayload, "}")               == false { break }
 			proceedsto = true; break
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
