@@ -146,12 +146,15 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				// Original-Rcpt-To header field is optional and may appear any number of times as appropriate:
 				// Original-Rcpt-To: <kijitora@example.jp>
 				// Removal-Recipient: user@example.com
+				cv := sisiaddr.S3S4(e[strings.Index(e, " ") + 1:]); if sisiaddr.IsEmailAddress(cv) == false       { continue }
+				cw := len(dscontents);                              if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
+
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e[strings.Index(e, " ") + 1:])
+				v.Recipient = cv
 				recipients += 1
 
 			} else if strings.HasPrefix(e, "Feedback-Type: ") {
