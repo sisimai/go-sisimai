@@ -7,6 +7,7 @@ package arf
 //   / _ \ | |_) | |_   
 //  / ___ \|  _ <|  _|  
 // /_/   \_\_| \_\_|    
+import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/lhost"
@@ -201,23 +202,35 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	for recipients == 0 {
 		// There is no recipient address in the message
-		// Pick it from the original message part
-		p1 := strings.Index(emailparts[1], "\nTo:");               if p1  < 0  { break }
-		p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 4); if p2  < 0  { break }
-		cv := sisiaddr.S3S4(emailparts[1][p1 + 4:p2])
+		if bf.Head["x-apple-unsubscribe"][0] == "true" {
+			// X-Apple-Unsubscribe: true
+			if strings.Contains(bf.Head["from"][0], "@") == false { break }
+			dscontents[0].Recipient = bf.Head["from"][0]
+			dscontents[0].Diagnosis = sisimoji.Sweep(emailparts[0])
 
-		// There is no valid email address in the To: header of the original message such as
-		// To: <Undisclosed Recipients>
-		if cv == "" { cv = sisiaddr.Undisclosed("r") }
-		dscontents[0].Recipient = cv; recipients++
+			// Addpend To: field as a pseudo header
+			if emailparts[1] == "" { emailparts[1] = fmt.Sprintf("To: <%s>\n", bf.Head["from"][0]) }
+
+		} else {
+			// Pick it from the original message part
+			p1 := strings.Index(emailparts[1], "\nTo:");               if p1  < 0  { break }
+			p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 4); if p2  < 0  { break }
+			cv := sisiaddr.S3S4(emailparts[1][p1 + 4:p2])
+
+			// There is no valid email address in the To: header of the original message such as
+			// To: <Undisclosed Recipients>
+			if cv == "" { cv = sisiaddr.Undisclosed("r") }
+			dscontents[0].Recipient = cv
+		}
+		recipients++
 	}
 	if recipients == 0 { return sis.RisingUnderway{} }
 
-	if anotherone != "" { anotherone = strings.TrimRight(sisimoji.Sweep(anotherone), ",") }
+	if anotherone != "" { anotherone = ": " + strings.TrimRight(sisimoji.Sweep(anotherone), ",") }
 	for j, _ := range dscontents {
 		// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 		e := &(dscontents[j])
-		e.Diagnosis = sisimoji.Sweep(e.Diagnosis + ": " + anotherone)
+		e.Diagnosis = sisimoji.Sweep(e.Diagnosis + anotherone)
 		e.Reason    = "feedback"
 		e.Rhost     = remotehost
 		e.Lhost     = reportedby
