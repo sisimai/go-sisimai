@@ -144,14 +144,14 @@ func init() {
 					z := fieldtable[o[0]]
 					if v.Diagnosis == "" {
 						// Capture "Diagnostic-Code:" field because no error messages have been captured
-						v.Update(o[0], o[2])
+						v.Update(v.AsRFC1894(o[0]), o[2])
 
 					} else {
 						// Do not capture "Diagnostic-Code:" field because error message have already
 						// been captured
-						if o[0] == "diagnostic-code" { continue }
-						if o[0] == "final-recipient" { continue }
-						v.Update(o[0], o[2]); if f != 1 { continue }
+						if o[0] == "diagnostic-code"                 { continue }
+						if o[0] == "final-recipient"                 { continue }
+						v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 					}
 					// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 					permessage[z] = o[2]

@@ -321,7 +321,7 @@ func init() {
 
 						} else {
 							// Other DSN fields defined in RFC3464
-							v.Update(o[0], o[2])
+							v.Update(v.AsRFC1894(o[0]), o[2])
 						}
 					} else {
 						// There are other error messages?

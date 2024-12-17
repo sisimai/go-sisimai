@@ -117,7 +117,7 @@ func init() {
 				f := rfc1894.Match(e); if f > 0 {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
-					v.Update(o[0], o[2])
+					v.Update(v.AsRFC1894(o[0]), o[2])
 
 				} else {
 					// The line does not begin with a DSN field defined in RFC3464

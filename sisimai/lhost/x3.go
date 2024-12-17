@@ -118,7 +118,7 @@ func init() {
 
 					} else {
 						// Other DSN fields defined in RFC3464
-						v.Update(o[0], o[2]); if f != 1 { continue }
+						v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 
 						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 						permessage[z] = o[2]
