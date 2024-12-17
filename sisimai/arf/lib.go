@@ -202,11 +202,13 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	for recipients == 0 {
 		// There is no recipient address in the message
-		if bf.Head["x-apple-unsubscribe"][0] == "true" {
+		if len(bf.Head["x-apple-unsubscribe"]) > 0 {
 			// X-Apple-Unsubscribe: true
-			if strings.Contains(bf.Head["from"][0], "@") == false { break }
-			dscontents[0].Recipient = bf.Head["from"][0]
-			dscontents[0].Diagnosis = sisimoji.Sweep(emailparts[0])
+			if bf.Head["x-apple-unsubscribe"][0]         != "true" { break }
+			if strings.Contains(bf.Head["from"][0], "@") == false  { break }
+			dscontents[0].Recipient    = bf.Head["from"][0]
+			dscontents[0].Diagnosis    = sisimoji.Sweep(emailparts[0])
+			dscontents[0].FeedbackType = "opt-out"
 
 			// Addpend To: field as a pseudo header
 			if emailparts[1] == "" { emailparts[1] = fmt.Sprintf("To: <%s>\n", bf.Head["from"][0]) }
