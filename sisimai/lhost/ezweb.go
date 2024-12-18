@@ -73,7 +73,6 @@ func init() {
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		substrings := []string{}          // All the values of "messagesof"
-		alternates := ""                  // Other error message strings
 		v          := &(dscontents[len(dscontents) - 1])
 
 		// Add all the values of messagesof into substrings
@@ -142,7 +141,7 @@ func init() {
 							v.Diagnosis += " " + e
 							isincluded   = true
 						}
-						if isincluded == false { alternates += " " + e }
+						if isincluded == false { v.Diagnosis += " " + e }
 					}
 				}
 			}
@@ -152,21 +151,9 @@ func init() {
 		for j, _ := range dscontents {
 			// Check each value of DeliveryMatter{}, try to detect the bounce reason.
 			e := &(dscontents[j])
-
-			if alternates != "" {
-				// Copy alternative error message to e.Diagnosis
-				if e.Diagnosis == "" {
-					// There is no error message in v.Diagnosis
-					e.Diagnosis = alternates
-
-				} else if strings.HasPrefix(e.Diagnosis, "-") || strings.HasSuffix(e.Diagnosis, "__") {
-					// Override the value of v.Diagsnosis
-					e.Diagnosis = alternates
-				}
-			}
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
-			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 
+			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 			if len(bf.Head["x-spasign"]) > 0 && bf.Head["x-spasign"][0] == "NG" {
 				// Content-Type: text/plain; ..., X-SPASIGN: NG (spamghetti, au by EZweb)
 				// Filtered recipient returns message that include 'X-SPASIGN' header
