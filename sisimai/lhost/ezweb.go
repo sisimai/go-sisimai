@@ -52,19 +52,19 @@ func init() {
 		}
 		messagesof := map[string][]string{
 			//"notaccept": []string{"The following recipients did not receive this message:"},
-			"mailboxfull": []string{"The user(s) account is temporarily over quota"},
-			"suspend":     []string{
-				// http://www.naruhodo-au.kddi.com/qa3429203.html
-				// The recipient may be unpaid user...?
-				"The user(s) account is disabled.",
-				"The user(s) account is temporarily limited.",
-			},
 			"expired": []string{
 				// Your message was not delivered within 0 days and 1 hours.
 				// Remote host is not responding.
 				"Your message was not delivered within ",
 			},
-			"onhold": []string{"Each of the following recipients was rejected by a remote mail server"},
+			"mailboxfull": []string{"The user(s) account is temporarily over quota"},
+			"onhold":  []string{"Each of the following recipients was rejected by a remote mail server"},
+			"suspend": []string{
+				// http://www.naruhodo-au.kddi.com/qa3429203.html
+				// The recipient may be unpaid user...?
+				"The user(s) account is disabled.",
+				"The user(s) account is temporarily limited.",
+			},
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
