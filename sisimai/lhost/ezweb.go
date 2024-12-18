@@ -7,6 +7,7 @@ package lhost
 // | | '_ \ / _ \/ __| __| / /|  _|   / /\ \ /\ / / _ \ '_ \ 
 // | | | | | (_) \__ \ |_ / / | |___ / /_ \ V  V /  __/ |_) |
 // |_|_| |_|\___/|___/\__/_/  |_____/____| \_/\_/ \___|_.__/ 
+import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc1894"
@@ -99,7 +100,7 @@ func init() {
 			//    Recipient: <******@ezweb.ne.jp>
 			//    >>> RCPT TO:<******@ezweb.ne.jp>
 			//    <<< 550 <******@ezweb.ne.jp>: User unknown
-			if sisimoji.Aligned(e, []string{"<", "@", ">"}) && 
+			if sisimoji.Aligned(e, []string{"<", "@", ">"}) &&
 			   (strings.Index(e, "Recipient: <") > 1 || strings.HasPrefix(e, "<")) {
 				// Recipient: <******@ezweb.ne.jp> OR <***@ezweb.ne.jp>: 550 user unknown ...
 				p1 := strings.Index(e, "<")
@@ -110,7 +111,8 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e[p1 + 1:p2])
+				v.Recipient  = sisiaddr.S3S4(e[p1 + 1:p2])
+				v.Diagnosis += " " + e
 				recipients += 1
 
 			} else {
@@ -124,7 +126,12 @@ func init() {
 					if sisimoji.Is8Bit(&e) == true { continue }
 					if strings.Contains(e, " >>> ") {
 						//    >>> RCPT TO:<******@ezweb.ne.jp>
-						v.Command = command.Find(e)
+						v.Command    = command.Find(e)
+						v.Diagnosis += " " + e
+
+					} else if strings.Contains(e, " <<< ") {
+						//    <<< 550 ...
+						v.Diagnosis += " " + e
 
 					} else {
 						// Check the error message
@@ -158,6 +165,7 @@ func init() {
 				}
 			}
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 
 			if len(bf.Head["x-spasign"]) > 0 && bf.Head["x-spasign"][0] == "NG" {
 				// Content-Type: text/plain; ..., X-SPASIGN: NG (spamghetti, au by EZweb)
@@ -166,26 +174,24 @@ func init() {
 
 			} else {
 				// There is no X-SPASIGN header or the value of the header is not "NG"
-				if e.Command == "RCPT" {
-					// Set "userunknown" when the remote server rejected after RCPT command.
-					e.Reason = "userunknown"
-
-				} else {
-					// The last SMTP command is not "RCPT"
-					FINDREASON: for r := range messagesof {
-						// The key name is a bounce reason name
-						for _, f := range messagesof[r] {
-							// Try to find an error message including lower-cased string listed in messagesof
-							if strings.Contains(e.Diagnosis, f) == false { continue }
-							e.Reason = r; break FINDREASON
-						}
+				FINDREASON: for r := range messagesof {
+					// The key name is a bounce reason name
+					for _, f := range messagesof[r] {
+						// Try to find an error message including lower-cased string listed in messagesof
+						if strings.Contains(e.Diagnosis, f) == false { continue }
+						e.Reason = r; break FINDREASON
 					}
 				}
 			}
-			if e.Reason == ""                                { continue }
+			if e.Reason != ""                                { continue }
 			if strings.Contains(e.Recipient, "@ezweb.ne.jp") { continue }
 			if strings.Contains(e.Recipient, "@au.com")      { continue }
-			e.Reason = "userunknown"
+			if strings.HasPrefix(e.Diagnosis, "<") { e.Reason = "userunknown" }
+		}
+
+		if emailparts[1] == "" {
+			// Create pseudo rfc822 part because some bounce mails have no original message part
+			emailparts[1] = fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
 		}
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
