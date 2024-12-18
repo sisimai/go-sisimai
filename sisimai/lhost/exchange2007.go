@@ -24,10 +24,6 @@ func init() {
 		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
-		// These headers exist only a bounce mail from Office365
-		if len(bf.Head["x-ms-exchange-crosstenant-originalarrivaltime"]) > 0 { return sis.RisingUnderway{} }
-		if len(bf.Head["x-ms-exchange-crosstenant-fromentityheader"])    > 0 { return sis.RisingUnderway{} }
-
 		proceedsto := uint8(0)
 		emailtitle := []string{
 			// Content-Language: 
@@ -74,6 +70,7 @@ func init() {
 			"SMTPSEND.DNS.MxLoopback":        "networkerror",  // 554 5.4.4 SMTPSEND.DNS.MxLoopback
 			"RESOLVER.ADR.BadPrimary":        "systemerror",   // 550 5.2.0 RESOLVER.ADR.BadPrimary
 			"RESOLVER.ADR.RecipNotFound":     "userunknown",   // 550 5.1.1 RESOLVER.ADR.RecipNotFound
+			"RESOLVER.ADR.RecipientNotFound": "userunknown",   // 550 5.1.1 RESOLVER.ADR.RecipientNotFound
 			"RESOLVER.ADR.ExRecipNotFound":   "userunknown",   // 550 5.1.1 RESOLVER.ADR.ExRecipNotFound
 			"RESOLVER.ADR.RecipLimit":        "toomanyconn",   // 550 5.5.3 RESOLVER.ADR.RecipLimit
 			"RESOLVER.ADR.InvalidInSmtp":     "systemerror",   // 550 5.1.0 RESOLVER.ADR.InvalidInSmtp
