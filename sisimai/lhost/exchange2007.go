@@ -77,7 +77,7 @@ func init() {
 			"RESOLVER.ADR.Ambiguous":         "systemerror",   // 550 5.1.4 RESOLVER.ADR.Ambiguous, 420 4.2.0 RESOLVER.ADR.Ambiguous
 			"RESOLVER.RST.AuthRequired":      "securityerror", // 550 5.7.1 RESOLVER.RST.AuthRequired
 			"RESOLVER.RST.NotAuthorized":     "rejected",      // 550 5.7.1 RESOLVER.RST.NotAuthorized
-			"RESOLVER.RST.RecipSizeLimit":    "mesgtoobig",    // 550 5.2.3 RESOLVER.RST.RecipSizeLimit
+			"RESOLVER.RST.RecipSizeLimit":    "exceedlimit",   // 550 5.2.3 RESOLVER.RST.RecipSizeLimit
 			"QUEUE.Expired":                  "expired",       // 550 4.4.7 QUEUE.Expired
 		}
 
@@ -172,7 +172,8 @@ func init() {
 			if p0 < 0 || p1 < 0 { continue }
 
 			// #550 5.1.1 RESOLVER.ADR.RecipNotFound; not found ##
-			if len(ndrsubject[e.Diagnosis[p0:p1]]) > 0 { e.Reason = e.Diagnosis[p0:p1] }
+			cv := e.Diagnosis[p0 + 1:p1]; if len(ndrsubject[cv]) == 0 { continue }
+			e.Reason = ndrsubject[cv]
 		}
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
