@@ -22,15 +22,15 @@ func init() {
 		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
-		proceedsto := false; for {
+		proceedsto := false; ISJAMES: for {
 			// Subject:     [BOUNCE]
 			// Message-Id:  JavaMail.
-			if bf.Head["subject"][0] == "[BOUNCE]"                      { proceedsto = true; break }
-			if strings.Contains(bf.Head["message-id"][0], ".JavaMail.") { proceedsto = true; break }
+			if bf.Head["subject"][0] == "[BOUNCE]"                      { proceedsto = true; break ISJAMES }
+			if strings.Contains(bf.Head["message-id"][0], ".JavaMail.") { proceedsto = true; break ISJAMES }
 			for _, e := range bf.Head["received"] {
 				// Received: from localhost ([127.0.0.1])
 				//    by mx.example.org (JAMES SMTP Server 2.3.2) with SMTP ID 220...
-				if strings.Contains(e, "JAMES SMTP Server") == true     { proceedsto = true; break }
+				if strings.Contains(e, "JAMES SMTP Server") == true     { proceedsto = true; break ISJAMES }
 			}
 			break
 		}
@@ -42,16 +42,13 @@ func init() {
 			// apache-james-2.3.2/src/java/org/apache/james/transport/mailets/
 			//   AbstractNotify.java|124:  out.println("Error message below:");
 			//   AbstractNotify.java|128:  out.println("Message details:");
-			"message": []string{""},
-			"error":   []string{"Error message below:"},
+			"message": []string{"Message details:"},
 		}
-
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
-		readcursor := uint8(0)            // Points the current cursor position
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		subjecttxt := ""                  // Alternative "Subject:" text
-		gotmessage := false               // Flag for having got the error message
+		readcursor := uint8(0)                  // Points the current cursor position
+		recipients := uint8(0)                  // The number of 'Final-Recipient' header
+		alternates := [4]string{"", "", "", ""} // [Envelope-From, Header-From, Date, Subject]
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
@@ -59,7 +56,13 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) {
+					// Message details:
+					//   Subject: Nyaaan
+					readcursor |= indicators["deliverystatus"]
+					continue
+				}
+				if e != "" { v.Diagnosis += e }
 				continue
 			}
 			if readcursor & indicators["deliverystatus"] == 0 { continue }
@@ -86,44 +89,36 @@ func init() {
 
 			} else if strings.HasPrefix(e, "  Sent date: ") {
 				//   Sent date: Thu Apr 29 01:20:50 JST 2015
-				v.Date = e[13:]
+				v.Date        = e[13:]
+				alternates[2] = v.Date
 
 			} else if strings.HasPrefix(e, "  Subject: ") {
 				//   Subject: Nyaaan
-				subjecttxt = e[11:]
+				alternates[3] = e[11:]
 
-			} else {
-				// Get error message strings for storing into v.Diagnosis
-				if gotmessage == true { continue }
+			} else if strings.HasPrefix(e, "  MAIL FROM: ") {
+				//   MAIL FROM: shironeko@example.jp
+				alternates[0] = e[13:]
 
-				if len(v.Diagnosis) > 0 {
-					// Continued line of the error message
-					if e == "Message details:" {
-						// Message details:
-						//   Subject: nyaan
-						//   ...
-						gotmessage = true
-
-					} else {
-						// Append the error message text like the following:
-						//   Error message below:
-						//   550 - Requested action not taken: no such user here
-						v.Diagnosis += " " + e
-					}
-				} else {
-					//   Error message below:
-					//   550 - Requested action not taken: no such user here
-					if e == startingof["error"][0] { v.Diagnosis  = e       }
-					if gotmessage == false         { v.Diagnosis += " " + e }
-				}
+			} else if strings.HasPrefix(e, "  From: ") {
+				//   From: Neko <shironeko@example.jp>
+				alternates[1] = e[8:]
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
 
-		if strings.Contains(emailparts[1], "\nSubject:") == false {
-			// Set the value of "subjecttxt" as a "Subject" if there is no original message
-			// in the bounce mail.
-			emailparts[1] += fmt.Sprintf("Subject: %s\n", subjecttxt)
+		if emailparts[1] == "" {
+			// The original message is empty
+			if alternates[1] != "" { emailparts[1] += fmt.Sprintf("From: %s\n", alternates[1]) }
+			if alternates[2] != "" { emailparts[1] += fmt.Sprintf("Date: %s\n", alternates[2]) }
+		}
+		if strings.Contains(emailparts[1], "Return-Path: ") == false {
+			// Set the envelope from address as a Return-Path: header
+			if alternates[0] != "" { emailparts[1] += fmt.Sprintf("Return-Path: <%s>\n", alternates[0]) }
+		}
+		if strings.Contains(emailparts[1], "\nSubject: ") == false {
+			// There is no Subject field in the original message
+			if alternates[3] != "" { emailparts[1] += fmt.Sprintf("Subject: %s\n", alternates[3]) }
 		}
 
 		for j, _ := range dscontents {
