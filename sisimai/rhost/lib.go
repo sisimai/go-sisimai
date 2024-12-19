@@ -23,7 +23,7 @@ var RhostClass = map[string][]string{
 	"IUA":         []string{".email.ua"},
 	"KDDI":        []string{".ezweb.ne.jp", "msmx.au.com"},
 	"MessageLabs": []string{".messagelabs.com"},
-	"Microsoft":   []string{".prod.outlook.com", ".protection.outlook.com", ".onmicrosoft.com"},
+	"Microsoft":   []string{".prod.outlook.com", ".protection.outlook.com", ".onmicrosoft.com", ".exchangelabs.com"},
 	"Mimecast":    []string{".mimecast.com"},
 	"NTTDOCOMO":   []string{"mfsmax.docomo.ne.jp"},
 	"Outlook":     []string{".hotmail.com"},
@@ -44,28 +44,36 @@ func Find(fo *sis.Fact) string {
 	rhostclass := ""
 	if len(remotehost + domainpart + clienthost) == 0 { return "" }
 
-	for e := range RhostClass {
-		// Try to match the remote host or the domain part with each value of RhostClass
-		for _, r := range RhostClass[e] {
-			// - Whether the remote host (fo.Rhost) includes "r" or not
-			// - Whether "r" includes the domain part of the recipient address or not
-			if strings.HasSuffix(remotehost, r) { rhostclass = e; break }
-			if strings.HasSuffix(r, domainpart) { rhostclass = e; break }
-			if strings.HasSuffix(clienthost, r) { rhostclass = e; break }
+	FINDRHOST: for rhostclass == "" {
+		// Try to match the hostname patterns with the following order:
+		// 1. destination: The domain part of the recipient address
+		// 2. rhost: remote hostname
+		// 3. lhost: local MTA hostname
+		for e := range RhostClass {
+			// Try to match the domain part of the recipient address with each value of RhostClass
+			for _, r := range RhostClass[e] {
+				// - Whether "r" includes the domain part of the recipient address or not
+				if strings.HasSuffix(r, domainpart) { rhostclass = e; break FINDRHOST }
+			}
 		}
-		if rhostclass != "" { break }
-	}
-	if rhostclass == "" {
+
+		for e := range RhostClass {
+			// Try to match the remote host with each value of RhostClass
+			for _, r := range RhostClass[e] {
+				// - Whether the remote host (fo.Rhost) includes "r" or not
+				if strings.HasSuffix(remotehost, r) { rhostclass = e; break FINDRHOST }
+			}
+		}
+
 		// Neither the remote host nor the destination did not matched with any value of RhostClass
 		for e := range RhostClass {
 			// Try to match the client host with each value of RhostClass
 			for _, r := range RhostClass[e] {
-				// - Whether the remote host (fo.Rhost) includes "r" or not
-				// - Whether "r" includes the domain part of the recipient address or not
-				if strings.HasSuffix(clienthost, r) { rhostclass = e; break }
+				// - Whether the local MTA host (fo.Lhost) includes "r" or not
+				if strings.HasSuffix(clienthost, r) { rhostclass = e; break FINDRHOST }
 			}
-			if rhostclass != "" { break }
 		}
+		break
 	}
 	if rhostclass == "" { return "" }
 
