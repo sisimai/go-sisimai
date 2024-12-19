@@ -62,7 +62,7 @@ func init() {
 					readcursor |= indicators["deliverystatus"]
 					continue
 				}
-				if e != "" { v.Diagnosis += e }
+				if e != "" { v.Diagnosis += e + " " }
 				continue
 			}
 			if readcursor & indicators["deliverystatus"] == 0 { continue }
