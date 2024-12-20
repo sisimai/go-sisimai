@@ -90,6 +90,32 @@ func init() {
 				//   Discontinue journaling old messages past the expiry threshold.
 				[2]string{"550", "Journal messages past the expiration"},
 			},
+			"failedstarttls": [][2]string{
+				// - This email has been sent using SMTP, but TLS is required by policy.
+				// - Delete or change the Secure Receipt or Secure Delivery policy enforcing TLS.
+				//   Alternatively, ensure the certificates on the mail server haven't expired. If using
+				//   a proxy server, ensure it isn't intercepting the traffic and modifying encryption
+				//   parameters.
+				[2]string{"553", "this route requires encryption (tls)"},
+
+				// - A TLS connection has been attempted using a TLS version that is lower than TLS 1.2.
+				// - Delete or change the Secure Receipt or Secure Delivery policy enforcing TLS.
+				//   Alternatively, ensure the mail server attempting to connect is using the appropri-
+				//   ate version of TLS.
+				[2]string{"553", "this route requires tls version 1.2 or greater"},
+
+				// - A secure connection was attempted using ciphers that do not meet the configured ci-
+				//   pher strength.
+				// - Delete or change the Secure Receipt or Secure Delivery policy enforcing TLS. Alter-
+				//   natively, ensure the certificates on the mail server haven't expired. If using a
+				//   proxy server, ensure it isn't intercepting the traffic and modifying encryption
+				//   parameters.
+				[2]string{"553", "this route requires high-strength ciphers"},
+
+				// - Validation on your umbrella account's domain name does not conform to your DNS.
+				// - Check you DNS has the required umbrella accounts listed as comma-separated values.
+				[2]string{"554", "configuration is invalid for this certificate"},
+			},
 			"mesgtoobig": [][2]string{
 				// - The email size either exceeds an Email Size Limit policy or is larger than the
 				//   Mimecast service limit. The default is 100 MB for the Legacy MTA, and 200 MB for
@@ -186,31 +212,6 @@ func init() {
 				[2]string{"535", "incorrect authentication data"},
 				[2]string{"550", "submitter failed to disabled"},
 				[2]string{"550", "submitter failed to authenticate"},
-
-				// - This email has been sent using SMTP, but TLS is required by policy.
-				// - Delete or change the Secure Receipt or Secure Delivery policy enforcing TLS.
-				//   Alternatively, ensure the certificates on the mail server haven't expired. If using
-				//   a proxy server, ensure it isn't intercepting the traffic and modifying encryption
-				//   parameters.
-				[2]string{"553", "this route requires encryption (tls)"},
-
-				// - A TLS connection has been attempted using a TLS version that is lower than TLS 1.2.
-				// - Delete or change the Secure Receipt or Secure Delivery policy enforcing TLS.
-				//   Alternatively, ensure the mail server attempting to connect is using the appropri-
-				//   ate version of TLS.
-				[2]string{"553", "this route requires tls version 1.2 or greater"},
-
-				// - A secure connection was attempted using ciphers that do not meet the configured ci-
-				//   pher strength.
-				// - Delete or change the Secure Receipt or Secure Delivery policy enforcing TLS. Alter-
-				//   natively, ensure the certificates on the mail server haven't expired. If using a
-				//   proxy server, ensure it isn't intercepting the traffic and modifying encryption
-				//   parameters.
-				[2]string{"553", "this route requires high-strength ciphers"},
-
-				// - Validation on your umbrella account's domain name does not conform to your DNS.
-				// - Check you DNS has the required umbrella accounts listed as comma-separated values.
-				[2]string{"554", "configuration is invalid for this certificate"},
 			},
 			"systemerror": [][2]string{
 				// - The Mimecast server is under maximum load.
