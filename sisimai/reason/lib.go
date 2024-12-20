@@ -22,13 +22,14 @@ var ClassOrder = [][]string{
     []string{
 		"MailboxFull", "AuthFailure", "BadReputation", "Speeding", "SpamDetected", "VirusDetected",
 		"PolicyViolation", "NoRelaying", "SystemError", "NetworkError", "Suspend", "ContentError",
-		"SystemFull", "NotAccept", "Expired", "SecurityError", "Suppressed", "MailerError",
+		"SystemFull", "NotAccept", "Expired", "FailedSTARTTLS", "SecurityError", "Suppressed", "MailerError",
     },
     []string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "UserUnknown", "Filtered", "Rejected",
 		"HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked", "SpamDetected", "AuthFailure",
-		"SecurityError", "SystemError", "NetworkError", "Suspend", "Expired", "ContentError", "HasMoved",
-		"SystemFull", "NotAccept", "MailerError", "NoRelaying", "Suppressed", "SyntaxError", "OnHold",
+		"FailedSTARTTLS", "SecurityError", "SystemError", "NetworkError", "Suspend", "Expired",
+		"ContentError", "HasMoved", "SystemFull", "NotAccept", "MailerError", "NoRelaying", "Suppressed",
+		"SyntaxError", "OnHold",
 	},
 }
 
@@ -58,6 +59,7 @@ func Index() []string {
 		// "Delivered",     // Email delivered successfully
 		"ExceedLimit",      // Email rejected due to an email exceeded the limit
 		"Expired",          // Delivery time has expired due to a connection failure
+		"FailedSTARTTLS",   // Email delivery failed due to STARTTLS related problem
 		"Feedback",         // Email forwarded to the sender as a complaint message from your mailbox provider
 		"Filtered",         // Email rejected due to a header content after SMTP DATA command
 		"HasMoved",         // Email rejected due to users mailbox has moved and is not forwarded automatically
