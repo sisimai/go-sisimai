@@ -190,9 +190,6 @@ func init() {
 
 				// - 421 4.7.0 TLS required for RCPT domain, closing connection. For more information,
 				//   go to Email encryption in transit. https://support.google.com/mail/answer/6330403
-				//
-				// - 454 4.7.0 Too many login attempts, please try again later. For more information, go
-				//   to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
 				[3]string{"421", "4.7.0", "tls required for rcpt domain"},
 
 				// - 421 4.7.29 Your email has been rate limited because this message wasn't sent over a
@@ -358,6 +355,8 @@ func init() {
 				[3]string{"550", "5.7.25", "does not match the ip address of the hostname"},
 			},
 			"securityerror": [][3]string{
+				// - 454 4.7.0 Too many login attempts, please try again later. For more information, go
+				//   to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
 				[3]string{"454", "4.7.0", "too many login attempts"},
 
 				// - 503 5.7.0 No identity changes permitted. For more information, go to About SMTP
