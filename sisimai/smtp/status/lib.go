@@ -495,6 +495,7 @@ func Code(argv0 string, argv1 bool) string {
 		"contenterror":    "5.0.960",
 		"exceedlimit":     "5.0.923",
 		"expired":         "5.0.947",
+		"failedstarttls":  "5.0.976",
 		"filtered":        "5.0.910",
 		"hasmoved":        "5.0.916",
 		"hostunknown":     "5.0.912",
@@ -528,6 +529,7 @@ func Code(argv0 string, argv1 bool) string {
 		"contenterror":    "4.0.960",
 	//	"exceedlimit":     "4.0.923",
 		"expired":         "4.0.947",
+		"failedstarttls":  "4.0.976",
 		"filtered":        "4.0.924",
 	//	"hasmoved":        "4.0.916",
 	//	"hostunknown":     "4.0.912",
@@ -681,7 +683,7 @@ func Name(argv0 string) string {
 		"5.7.27": "notaccept",			// MX resource record of a destination host is Null MX: RFC7505
 		"5.7.28": "spamdetected",		// The message appears to be part of a mail flood of similar abusive messages.
 		"5.7.29": "authfailure",		// This status code may be returned when a message fails ARC validation.
-		"5.7.30": "securityerror",		// REQUIRETLS support required
+		"5.7.30": "failedstarttls",		// REQUIRETLS support required
 	}
 	return standardcr[argv0]
 }
