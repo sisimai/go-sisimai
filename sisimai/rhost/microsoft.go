@@ -28,6 +28,15 @@ func init() {
 				// - The sending message sent over IPv6 must pass either SPF or DKIM.
 				[4]string{"4.7.26", "", "", "must pass either spf or dkim validation, this message is not signed"},
 
+				// - The destination email system uses SPF to validate inbound mail, and there's a prob-
+				//   lem with your SPF configuration.
+				[4]string{"5.7.23", "", "", "the message was rejected because of sender policy framework violation"},
+
+				// - Access denied, sending domain [$SenderDomain] does not pass DMARC verification
+				// - The sender's domain in the 5322.From address doesn't pass DMARC.
+				[4]string{"5.7.509", "", "", "does not pass dmarc verification"},
+			},
+			"failedstarttls": [][4]string{
 				// - Records are DNSSEC authentic, but one or multiple of these scenarios occurred:
 				//   - The destination mail server's certificate doesn't match with what is expected per
 				//     the authentic TLSA record.
@@ -57,19 +66,11 @@ func init() {
 				[4]string{"5.7.325", "", "",
 					"certificate-host-mismatch: remote certificate must have a common name or subject alternative name matching the hostname (dane)"},
 
-				// - The destination email system uses SPF to validate inbound mail, and there's a prob-
-				//   lem with your SPF configuration.
-				[4]string{"5.7.23", "", "", "the message was rejected because of sender policy framework violation"},
-
 				// - DNSSEC checks have passed, yet upon establishing the connection the destination
 				//   mail server provides a certificate that is expired.
 				// - A valid X.509 certificate that isn't expired must be presented. X.509 certificates
 				//   must be renewed after their expiration, commonly annually.
 				[4]string{"5.7.322", "", "", "certificate-expired: destination mail server's certificate is expired"},
-
-				// - Access denied, sending domain [$SenderDomain] does not pass DMARC verification
-				// - The sender's domain in the 5322.From address doesn't pass DMARC.
-				[4]string{"5.7.509", "", "", "does not pass dmarc verification"},
 			},
 			"badreputation": [][4]string{
 				// Undocumented error messages ---------------------------------------------------------
