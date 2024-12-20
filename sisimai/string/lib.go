@@ -46,9 +46,9 @@ func Is8Bit(argv1 *string) bool {
 
 // Squeeze() remove redundant characters
 func Squeeze(argv1 string, chars string) string {
-	// @param    string argv1  String including redundant characters like "neko  nyaan"
+	// @param    string argv1  String including redundant characters like "neko  chan"
 	// @param    string chars  Characters to be squeezed 
-	// @return   string        Squeezed string like "neko nyaan"
+	// @return   string        Squeezed string like "neko chan"
 	if len(argv1) == 0 { return ""    }
 	if len(chars) == 0 { return argv1 }
 
@@ -70,7 +70,7 @@ func Sweep(argv1 string) string {
 	argv1 = Squeeze(argv1, " ")
 
 	for strings.Contains(argv1, " --") {
-		// Delete all the string after a boundary string like " --neko-nyaan"
+		// Delete all the string after a boundary string like " --neko-chan"
 		if strings.Contains(argv1, "-- ")  { break }
 		if strings.Contains(argv1, "--\t") { break }
 		argv1 = argv1[0:strings.Index(argv1, " --") - 1]

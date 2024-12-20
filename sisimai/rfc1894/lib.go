@@ -141,7 +141,7 @@ func Field(argv0 string) []string {
 	//  "text": []string{"X-Original-Message-ID", "Final-Log-ID", "Original-Envelope-ID"}
 	}
 
-	parts := strings.SplitN(argv0, ":", 2) // []string{"Final-Recipient", " rfc822; <neko@nyaan.jp>"}
+	parts := strings.SplitN(argv0, ":", 2) // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
 	label := strings.ToLower(parts[0])     // "final-recipient"
 	group, nyaan := fieldgroup[label]      // "addr"
 	if nyaan == false              { return []string{} }
@@ -163,7 +163,7 @@ func Field(argv0 string) []string {
 	parts[1] = strings.TrimSpace(parts[1])
 
 	if group == "addr" || group == "code" || group == "host" {
-		// - Final-Recipient: RFC822; kijitora@nyaan.jp
+		// - Final-Recipient: RFC822; kijitora@example.jp
 		// - Diagnostic-Code: SMTP; 550 5.1.1 <kijitora@example.jp>... User Unknown
 		// - Remote-MTA: DNS; mx.example.jp
 		if strings.Contains(parts[1], ";") {

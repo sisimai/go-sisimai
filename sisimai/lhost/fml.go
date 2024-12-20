@@ -69,7 +69,7 @@ func init() {
 			p2 := strings.Index(e, ">")
 
 			if p1 > 0 && p2 > 0 {
-				// You are not a member of this mailing list <neko-nyaan@example.org>.
+				// You are not a member of this mailing list <neko-meeting@example.org>.
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})

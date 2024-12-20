@@ -514,8 +514,8 @@ func init() {
 			// The address to which the message has not yet been delivered is:
 			//
 			//   kijitora@example.co.jp
-			//     host mta-nyaan.example.co.jp [192.0.2.222]
-			//     Delay reason: SMTP error from remote mail server after MAIL FROM:<sironeko-nyaan@neko.example.com> SIZE=1024:
+			//     host mta-2.example.co.jp [192.0.2.222]
+			//     Delay reason: SMTP error from remote mail server after MAIL FROM:<sironeko@neko.example.com> SIZE=1024:
 			//     450 service permits 2 unverifyable sending IPs - neko.example.com is not 203.0.113.222
 			//
 			// No action is required on your part. Delivery attempts will continue for

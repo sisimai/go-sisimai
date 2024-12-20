@@ -21,7 +21,7 @@ func IsQuotedAddress(email string) bool {
 
 // IsIncluded() returns true if the string include an email address
 func IsIncluded(argv0 string) bool {
-	// @param    string argv0    String including an email address like "<neko@nyaan.jp>"
+	// @param    string argv0    String including an email address like "<neko@example.jp>"
 	// @return   bool            true:  is including an email address
 	//                           false: is not including an email address
 	if len(argv0) == 0                           { return false }
@@ -35,7 +35,7 @@ func IsIncluded(argv0 string) bool {
 
 // IsComment() returns true if the string starts with "(" and ends with ")"
 func IsComment(argv0 string) bool {
-	// @param    string argv0    String including an comment in email address like "(neko, nyaan)"
+	// @param    string argv0    String including an comment in email address like "(neko, cat)"
 	// @return   bool            true:  is a comment
 	//                           false: is not a comment
 	if len(argv0)                    == 0     { return false }
@@ -85,7 +85,7 @@ func IsEmailAddress(email string) bool {
 			if j == 0 { continue }
 
 			if quote {
-				// The email address has quoted local part like "neko@nyaan"@example.org
+				// The email address has quoted local part like "neko@cat"@example.org
 				if email[j-1] != 34 {
 					// When the previous character is not '\', `'`, ' ', and '\t' is not allowed
 					if email[j] ==  9 { match = false; break } // '\t'

@@ -28,10 +28,10 @@ import "sisimai/smtp/command"
  Out: 250-8BITMIME
  Out: 250-DSN
  Out: 250 CHUNKING
- In:  XFORWARD NAME=neko2-nyaan3.y.example.co.jp ADDR=230.0.113.2
+ In:  XFORWARD NAME=neko2.y.example.co.jp ADDR=230.0.113.2
      PORT=53672
  Out: 250 2.0.0 Ok
- In:  XFORWARD PROTO=SMTP HELO=neko2-nyaan3.y.example.co.jp
+ In:  XFORWARD PROTO=SMTP HELO=neko2.y.example.co.jp
      IDENT=2LYC6642BLzFK3MM SOURCE=REMOTE
  Out: 250 2.0.0 Ok
  In:  MAIL
@@ -148,9 +148,9 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 						parameters = strings.TrimLeft(commandarg[p5 + 1:], " ")
 					}
 				} else {
-					// >>> XFORWARD NAME=neko2-nyaan3.y.example.co.jp ADDR=230.0.113.2 PORT=53672
+					// >>> XFORWARD NAME=neko2.y.example.co.jp ADDR=230.0.113.2 PORT=53672
 					// <<< 250 2.0.0 Ok
-					// >>> XFORWARD PROTO=SMTP HELO=neko2-nyaan3.y.example.co.jp IDENT=2LYC6642BLzFK3MM SOURCE=REMOTE
+					// >>> XFORWARD PROTO=SMTP HELO=neko2.y.example.co.jp IDENT=2LYC6642BLzFK3MM SOURCE=REMOTE
 					// <<< 250 2.0.0 Ok
 					parameters = commandarg
 					commandarg = ""

@@ -333,10 +333,9 @@ func init() {
 		if recipients == 0 { return sis.RisingUnderway{} }
 
 		// Generate pseudo email headers as the original message
-		cv := ""
-		for _, e := range mailinside.Headers { cv += fmt.Sprintf("%s: %s\n", e.Name, e.Value) }
-		if mailinside.CommonHeaders.Date    != "" { cv += fmt.Sprintf("Date: %s\n", mailinside.CommonHeaders.Date)       }
-		if mailinside.CommonHeaders.Subject != "" { cv += fmt.Sprintf("Subject: %s\n", mailinside.CommonHeaders.Subject) }
+		cv := ""; for _, e := range mailinside.Headers { cv += fmt.Sprintf("%s: %s\n", e.Name, e.Value)                       }
+		if mailinside.CommonHeaders.Date    != ""      { cv += fmt.Sprintf("Date: %s\n", mailinside.CommonHeaders.Date)       }
+		if mailinside.CommonHeaders.Subject != ""      { cv += fmt.Sprintf("Subject: %s\n", mailinside.CommonHeaders.Subject) }
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: cv }
     }

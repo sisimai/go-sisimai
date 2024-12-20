@@ -75,7 +75,7 @@ func init() {
 		}
 
 		for _, e := range strings.Split(bf.Head["x-failed-recipients"][0], ",") {
-			// X-Failed-Recipients: neko@example.jp, nyaan@example.org, ...
+			// X-Failed-Recipients: neko@example.jp, cat@example.org, ...
 			if sisiaddr.IsEmailAddress(e) == false { continue }
 			if len(v.Recipient) > 0 {
 				// There are multiple recipient addresses in the message body.

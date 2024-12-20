@@ -145,7 +145,7 @@ func init() {
 			//   Original Message Details
 			//   Created Date:   4/29/2017 11:23:34 PM
 			//   Sender Address: neko@example.com
-			//   Recipient Address:      kijitora-nyaan@neko.kyoto.example.jp
+			//   Recipient Address:      kijitora@neko.kyoto.example.jp
 			//   Subject:        Nyaan?
 			p1 := strings.Index(emailparts[0], "Original Message Details"); if p1 < 0 { break }
 			p2 := strings.Index(emailparts[0], "\nRecipient Address: ");    if p2 < 0 { break }

@@ -46,7 +46,7 @@ func Rise(argvs [3]string) EmailAddress {
 		if strings.Contains(email, "@") {
 			// The address is a VERP or an alias
 			if alias {
-				// The address is an alias like "neko+nyaan@example.jp"
+				// The address is an alias like "neko+cat@example.jp"
 				thing.Alias = argvs[0]
 
 			} else {

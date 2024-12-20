@@ -62,7 +62,7 @@ func Find(argv1 string) [3]string {
 					}
 				} else {
 					// "," is in the display name or the quoted local part of the email address
-					// "Neko, Nyaan" <neko@nyaan.example.org> OR <"neko,nyaan"@example.org>
+					// "Neko, Nyaan" <neko@cat.example.org> OR <"neko,cat"@example.org>
 					if groupindex == 0 || groupindex == 2 {
 						// Deal as a character of the display name
 						readbuffer[1] += e
@@ -78,7 +78,7 @@ func Find(argv1 string) [3]string {
 			if e == "<" {
 				// "<": The beginning of an email address or a character in the display name or the comment
 				if len(readbuffer[0]) == 0 {
-					// The 1st character of the email address: <neko@nyaan.example.jp>
+					// The 1st character of the email address: <neko@cat.example.jp>
 					readcursor |= indicators["email-address"]
 					readbuffer[0] = e
 					groupindex = 1
@@ -113,13 +113,13 @@ func Find(argv1 string) [3]string {
 				// "(": The beginning of a comment block or a character in the display name or the comment
 				if readcursor & indicators["email-address"] > 0 {
 					// An email address including a comment like the followings:
-					// <"neko(nyaan)"@example.org> or <neko(nyaan)@example.org>
+					// <"neko(cat)"@example.org> or <neko(cat)@example.org>
 					if strings.Contains(readbuffer[0], `"`) {
-						// Quoted local part in the email address like <"neko(nyaan)"@example.org>
+						// Quoted local part in the email address like <"neko(cat)"@example.org>
 						readbuffer[0] += e
 
 					} else {
-						// A comment in the email address like <neko(nyaan)@example.org>
+						// A comment in the email address like <neko(cat)@example.org>
 						readcursor |= indicators["comment-block"]
 						if strings.HasSuffix(readbuffer[2], ")") { readbuffer[2] += " " }
 						readbuffer[2] += e
@@ -148,13 +148,13 @@ func Find(argv1 string) [3]string {
 				// "(": The end of a comment block or a character in the display name or the comment
 				if readcursor & indicators["email-address"] > 0 {
 					// An email address including a comment like the followings:
-					// <"neko(nyaan)"@example.org> or <neko(nyaan)@example.org>
+					// <"neko(cat)"@example.org> or <neko(cat)@example.org>
 					if strings.Contains(readbuffer[0], `"`) {
-						// Quoted local part in the email address like <"neko(nyaan)"@example.org>
+						// Quoted local part in the email address like <"neko(cat)"@example.org>
 						readbuffer[0] += e
 
 					} else {
-						// A comment in the email address like <neko(nyaan)@example.org>
+						// A comment in the email address like <neko(cat)@example.org>
 						readcursor &= ^indicators["comment-block"]
 						readbuffer[2] += e
 						groupindex = 1
@@ -226,9 +226,9 @@ func Find(argv1 string) [3]string {
 
 	for sisimoji.Aligned(readbuffer[0], []string{"(", ")"}) {
 		// Remove the comment block from the email address
-		// - (nyaan)nekochan@example.org
-		// - nekochan(nyaan)cat@example.org
-		// - nekochan(nyaan)@example.org
+		// - (cat)nekochan@example.org
+		// - nekochan(cat)cat@example.org
+		// - nekochan(cat)@example.org
 		p1 := strings.Index(readbuffer[0], "(")
 		p2 := strings.Index(readbuffer[0], ")")
 		ce := readbuffer[0][p1:p2 + 1]
@@ -261,7 +261,7 @@ func Find(argv1 string) [3]string {
 			break
 		}
 		if IsQuotedAddress(readbuffer[1]) == false {
-			// Trim `"` from the display name when the value is not like "neko-nyaan"@libsisimai.org
+			// Trim `"` from the display name when the value is not like "neko-cat"@libsisimai.org
 			readbuffer[1] = strings.Trim(readbuffer[1], `"`)
 		}
 		emailtable[1] = readbuffer[1]

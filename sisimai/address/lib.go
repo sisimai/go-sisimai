@@ -21,8 +21,8 @@ func Undisclosed(a string) string {
 
 // Final() returns a string processed by Ruleset 4 in sendmail.cf
 func Final(argv0 string) string {
-	// @param    string argv0  String including an email address like "<neko@nyaan.jp>"
-	// @return   string        String without angle brackets: "neko@nyaan.jp"
+	// @param    string argv0  String including an email address like "<neko@example.jp>"
+	// @return   string        String without angle brackets: "neko@example.jp"
 	if len(argv0)            == 0     { return argv0 }
 	if IsEmailAddress(argv0) == false { return argv0 }
 
