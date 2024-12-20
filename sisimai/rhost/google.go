@@ -431,6 +431,12 @@ func init() {
 				[3]string{"550", "5.2.1", "account that you tried to reach is disabled"},
 				[3]string{"550", "5.2.1", "account that you tried to reach is inactive"},
 			},
+			"failedstarttls": [][3]string{
+				// - 530 5.7.0 Must issue a STARTTLS command first. For more information, go to About
+				//   SMTP error messages and review RFC 3207 specifications.
+				[3]string{"530", "5.7.0", "must issue a starttls command first"},
+				[3]string{"454", "5.5.1",  "starttls may not be repeated"},
+			},
 			"syntaxerror": [][3]string{
 				// - 523 5.7.10 SMTP protocol violation, no commands allowed to pipeline after STARTTLS.
 				//   For more information, go to About SMTP error messages and review RFC 3207
@@ -439,7 +445,6 @@ func init() {
 				[3]string{"454", "4.5.0",  "smtp protocol violation"},
 				[3]string{"525", "5.7.10", "smtp protocol violation"},
 				[3]string{"535", "5.5.4",  "optional argument not permitted"},
-				[3]string{"454", "5.5.1",  "starttls may not be repeated"},
 
 				// - 501 5.5.2 Syntax error, cannot decode response. For more information, go to About
 				//   SMTP error messages.
@@ -468,10 +473,6 @@ func init() {
 				[3]string{"503", "5.5.1", "no data after bdat"},
 				[3]string{"504", "5.7.4", "unrecognized authentication type"},
 				[3]string{"504", "5.7.4", "xoauth is no longer supported"},
-
-				// - 530 5.7.0 Must issue a STARTTLS command first. For more information, go to About
-				//   SMTP error messages and review RFC 3207 specifications.
-				[3]string{"530", "5.7.0", "must issue a starttls command first"},
 				[3]string{"554", "5.7.0", "too many unauthenticated commands"},
 			},
 			"systemerror": [][3]string{
