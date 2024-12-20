@@ -182,6 +182,25 @@ func init() {
 				//   error messages. https://support.google.com/a/answer/3221692
 				[3]string{"451", "4.4.2", "timeout - closing connection"},
 			},
+			"failedstarttls": [][3]string{
+				// - 530 5.7.0 Must issue a STARTTLS command first. For more information, go to About
+				//   SMTP error messages and review RFC 3207 specifications.
+				[3]string{"530", "5.7.0", "must issue a starttls command first"},
+				[3]string{"454", "5.5.1", "starttls may not be repeated"},
+
+				// - 421 4.7.0 TLS required for RCPT domain, closing connection. For more information,
+				//   go to Email encryption in transit. https://support.google.com/mail/answer/6330403
+				//
+				// - 454 4.7.0 Too many login attempts, please try again later. For more information, go
+				//   to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
+				[3]string{"421", "4.7.0", "tls required for rcpt domain"},
+
+				// - 421 4.7.29 Your email has been rate limited because this message wasn't sent over a
+				//   TLS connection. Gmail requires all bulk email senders to use TLS/SSL for SMTP conn-
+				//   ections.
+				[3]string{"421", "4.7.29", "senders to use tls/ssl for smtp"},
+				[3]string{"550", "5.7.29", "senders to use tls/ssl for smtp"},
+			},
 			"mailboxfull": [][3]string{
 				// - 452 4.2.2 The recipient's inbox is out of storage space.
 				//   Please direct the recipient to https://support.google.com/mail/?p=OverQuotaTemp
@@ -339,12 +358,6 @@ func init() {
 				[3]string{"550", "5.7.25", "does not match the ip address of the hostname"},
 			},
 			"securityerror": [][3]string{
-				// - 421 4.7.0 TLS required for RCPT domain, closing connection. For more information,
-				//   go to Email encryption in transit. https://support.google.com/mail/answer/6330403
-				//
-				// - 454 4.7.0 Too many login attempts, please try again later. For more information, go
-				//   to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
-				[3]string{"421", "4.7.0", "tls required for rcpt domain"},
 				[3]string{"454", "4.7.0", "too many login attempts"},
 
 				// - 503 5.7.0 No identity changes permitted. For more information, go to About SMTP
@@ -373,12 +386,6 @@ func init() {
 				//   https://support.google.com/accounts/troubleshooter/2402620
 				[3]string{"535", "5.7.1", "username and password not accepted"},
 				[3]string{"535", "5.7.8", "username and password not accepted"},
-
-				// - 421 4.7.29 Your email has been rate limited because this message wasn't sent over a
-				//   TLS connection. Gmail requires all bulk email senders to use TLS/SSL for SMTP conn-
-				//   ections.
-				[3]string{"421", "4.7.29", "senders to use tls/ssl for smtp"},
-				[3]string{"550", "5.7.29", "senders to use tls/ssl for smtp"},
 			},
 			"spamdetected": [][3]string{
 				// - 421 4.7.0 This message is suspicious due to the nature of the content or the links
@@ -430,12 +437,6 @@ func init() {
 				//   For more information, go to https://support.google.com/mail/?p=DisabledUser
 				[3]string{"550", "5.2.1", "account that you tried to reach is disabled"},
 				[3]string{"550", "5.2.1", "account that you tried to reach is inactive"},
-			},
-			"failedstarttls": [][3]string{
-				// - 530 5.7.0 Must issue a STARTTLS command first. For more information, go to About
-				//   SMTP error messages and review RFC 3207 specifications.
-				[3]string{"530", "5.7.0", "must issue a starttls command first"},
-				[3]string{"454", "5.5.1",  "starttls may not be repeated"},
 			},
 			"syntaxerror": [][3]string{
 				// - 523 5.7.10 SMTP protocol violation, no commands allowed to pipeline after STARTTLS.
