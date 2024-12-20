@@ -198,6 +198,25 @@ func init() {
 				[4]string{"5.4.316", "", "", "message expired"},
 			},
 			"failedstarttls": [][4]string{
+				// Exchange Online ---------------------------------------------------------------------
+				// - DNSSEC checks have passed, yet upon connection, destination mail server doesn't re-
+				//   spond to the STARTTLS command. The destination server responds to the STARTTLS com-
+				//   mand, but the TLS handshake fails.
+				// - This message usually indicates an issue on the destination email server. Check the
+				//   validity of the recipient address. Determine if the destination server is configur-
+				//   ed correctly to receive the messages.
+				[4]string{"4.4.317", "", "", "starttls is required to send mail"},
+				[4]string{"5.4.317", "", "", "starttls is required to send mail"},
+
+				// - DNSSEC checks have passed, yet upon establishing the connection the destination
+				//   mail server provides a certificate that is expired.
+				// - A valid X.509 certificate that isn't expired must be presented. X.509 certificates
+				//   must be renewed after their expiration, commonly annually.
+				[4]string{"5.7.51",  "", "", "restrictdomainstoipaddresses or restrictdomainstocertificate"},
+				[4]string{"4.7.321", "", "", "starttls-not-supported: destination mail server must support tls to receive mail"},
+				[4]string{"5.7.321", "", "", "starttls-not-supported: destination mail server must support tls to receive mail"},
+				[4]string{"5.7.322", "", "", "certificate-expired: destination mail server's certificate is expired"},
+
 				// - Records are DNSSEC authentic, but one or multiple of these scenarios occurred:
 				//   - The destination mail server's certificate doesn't match with what is expected per
 				//     the authentic TLSA record.
@@ -226,26 +245,6 @@ func init() {
 					"certificate-host-mismatch: remote certificate must have a common name or subject alternative name matching the hostname (dane)"},
 				[4]string{"5.7.325", "", "",
 					"certificate-host-mismatch: remote certificate must have a common name or subject alternative name matching the hostname (dane)"},
-
-				// - DNSSEC checks have passed, yet upon establishing the connection the destination
-				//   mail server provides a certificate that is expired.
-				// - A valid X.509 certificate that isn't expired must be presented. X.509 certificates
-				//   must be renewed after their expiration, commonly annually.
-				[4]string{"5.7.322", "", "", "certificate-expired: destination mail server's certificate is expired"},
-				[4]string{"5.7.51", "", "", "restrictdomainstoipaddresses or restrictdomainstocertificate"},
-
-				// Exchange Online ---------------------------------------------------------------------
-				// - DNSSEC checks have passed, yet upon connection, destination mail server doesn't re-
-				//   spond to the STARTTLS command. The destination server responds to the STARTTLS com-
-				//   mand, but the TLS handshake fails.
-				// - This message usually indicates an issue on the destination email server. Check the
-				//   validity of the recipient address. Determine if the destination server is configur-
-				//   ed correctly to receive the messages.
-				[4]string{"4.4.317", "", "", "starttls is required to send mail"},
-				[4]string{"5.4.317", "", "", "starttls is required to send mail"},
-
-				[4]string{"4.7.321", "", "", "starttls-not-supported: destination mail server must support tls to receive mail"},
-				[4]string{"5.7.321", "", "", "starttls-not-supported: destination mail server must support tls to receive mail"},
 			},
 			"mailboxfull": [][4]string{
 				// Exchange Server 2019 ----------------------------------------------------------------
