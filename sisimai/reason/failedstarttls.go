@@ -27,9 +27,9 @@ func init() {
 	ProbesInto["FailedSTARTTLS"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is FailedSTARTTLS, false: is not FailedSTARTTLS
-		if fo.Reason == "failedstarttls"                                           { return true  }
-		if fo.Command == "STARTTLS"                                                { return false }
-		if fo.ReplyCode == "523" || fo.ReplyCode == "524" || fo.ReplyCode == "538" { return true  }
+		if fo.Reason == "failedstarttls"                                           { return true }
+		if fo.Command == "STARTTLS"                                                { return true }
+		if fo.ReplyCode == "523" || fo.ReplyCode == "524" || fo.ReplyCode == "538" { return true }
 		return IncludedIn["FailedSTARTTLS"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
