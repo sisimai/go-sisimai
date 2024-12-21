@@ -16,6 +16,7 @@ import "sisimai/lda"
 import "sisimai/rhost"
 import "sisimai/reason"
 import "sisimai/message"
+import "sisimai/rfc791"
 import "sisimai/rfc1123"
 import "sisimai/rfc1894"
 import "sisimai/rfc5322"
@@ -159,7 +160,7 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 					for _, w := range ee {
 						// Get a hostname from the string like "127.0.0.1 x109-20.example.com 192.0.2.20"
 						// or "mx.sp.example.jp 192.0.2.135"
-						if sisimoji.IsIPv4Address(w) { continue }
+						if rfc791.IsIPv4Address(&w) { continue }
 						*v = w; break
 					}
 					if strings.Index(*v, " ") > 0 { *v = ee[0] }

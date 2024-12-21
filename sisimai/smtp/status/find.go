@@ -11,6 +11,7 @@ package status
 import "fmt"
 import "sort"
 import "strings"
+import "sisimai/rfc791"
 import sisimoji "sisimai/string"
 
 // Find() returns a delivery status code found from the given string
@@ -26,7 +27,7 @@ func Find(argv1 string, argv2 string) string {
 	esmtperror := " " + argv1 + " "
 	lookingfor := map[string]string{}
 	indextable := []int{}
-	ip4address := sisimoji.FindIPv4Address(esmtperror)
+	ip4address := rfc791.FindIPv4Address(&esmtperror)
 
 	if givenclass == "2" || givenclass == "4" || givenclass == "5" {
 		// The second argument is a valid value
