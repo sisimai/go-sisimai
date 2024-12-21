@@ -18,8 +18,7 @@ func IsPermanent(argv1 string) bool {
 	// @return  bool          true(permanet error), false(is not a permanent error)
 	if len(argv1) == 0 { return false }
 
-	statuscode := status.Find(argv1, ""); if statuscode == "" { statuscode = reply.Find(argv1, "") }
-
+	statuscode := status.Find(argv1, "");  if statuscode == "" { statuscode = reply.Find(argv1, "") }
 	if strings.HasPrefix(statuscode, "5")                      { return true }
 	if strings.Contains(strings.ToLower(argv1), " permanent ") { return true }
 	return false
@@ -49,22 +48,14 @@ func IsHardBounce (argv1, argv2 string) bool {
 	if argv1 == "deliverd"  || argv1 == "feedback"    || argv1 == "vacation"    { return false }
 	if argv1 == "hasmoved"  || argv1 == "userunknown" || argv1 == "hostunknown" { return true  }
 	if argv1 != "notaccept"                                                     { return false }
+	if argv2 == ""                                                              { return true  }
 
-	// NotAccept: 5xx => hard bounce, 4xx => soft bounce
-	hardbounce := false
-	if len(argv2) > 0 {
-		// Check the 2nd argument(a status code or a reply code)
-		cv := status.Find(argv2, ""); if cv == "" { cv = reply.Find(argv2, "") }
-
-		// The SMTP status code or the SMTP reply code starts with "5"
-		// Deal as a hard bounce when the error message does not indicate a temporary error 
-		if strings.HasPrefix(cv, "5") || IsTemporary(argv2) == false { hardbounce = true }
-
-	} else {
-		// Deal "NotAccept" as a hard bounce when the 2nd argument is empty
-		hardbounce = true
-	}
-	return hardbounce
+	// Check the 2nd argument(a status code or a reply code)
+	//   - The SMTP status code or the SMTP reply code starts with "5"
+	//   - Deal as a hard bounce when the error message does not indicate a temporary error 
+	cv := status.Find(argv2, ""); if cv == "" { cv = reply.Find(argv2, "") }
+	if strings.HasPrefix(cv, "5") || IsTemporary(argv2) == false { return true }
+	return false
 }
 
 // IsSoftBounce() checks the reason sisimai detected is a soft bounce or not
@@ -76,15 +67,12 @@ func IsSoftBounce (argv1, argv2 string) bool {
 	if argv1 == "hasmoved"  || argv1 == "userunknown" || argv1 == "hostunknown" { return false }
 	if argv1 == "undefined" || argv1 == "onhold"                                { return true  }
 	if argv1 != "notaccept"                                                     { return true  }
+	if argv2 == ""                                                              { return false }
 
 	// NotAccept: 5xx => hard bounce, 4xx => soft bounce
-	softbounce := false
-	if len(argv2) > 0 {
-		// Check the 2nd argument(a status code or a reply code)
-		cv := status.Find(argv2, "")
-		if cv == "" { cv = reply.Find(argv2, "") }
-		if strings.HasPrefix(cv, "4") { softbounce = true }
-	}
-	return softbounce
+	// Check the 2nd argument(a status code or a reply code)
+	cv := status.Find(argv2, ""); if cv == "" { cv = reply.Find(argv2, "") }
+	if strings.HasPrefix(cv, "4") { return true }
+	return false
 }
 
