@@ -23,8 +23,8 @@ func init() {
 		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
 		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
 
-		if strings.HasPrefix(bf.Head["from"][0], `"Mail Delivery System"`) == false  { return sis.RisingUnderway{} }
-		if bf.Head["from"][0] != "Mail delivery failed: returning message to sender" { return sis.RisingUnderway{} }
+		if strings.HasPrefix(bf.Head["from"][0], `"Mail Delivery System"`) == false     { return sis.RisingUnderway{} }
+		if bf.Head["subject"][0] != "Mail delivery failed: returning message to sender" { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"--- The header of the original message is following. ---"}
@@ -63,7 +63,7 @@ func init() {
 			if sisimoji.Aligned(e, []string{"@", "."}) {
 				// general@example.eu OR
 				// the line begin with 4 space characters, end with ":" like "    neko@example.eu:"
-				ce := sisiaddr.S3S4(e); if sisiaddr.IsEmailAddress(ce) == false { continue }
+				ce := sisiaddr.S3S4(strings.Trim(e, ":")); if sisiaddr.IsEmailAddress(ce) == false { continue }
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})
@@ -86,6 +86,7 @@ func init() {
 				alternates += " " + e
 			}
 		}
+
 		if recipients == 0 { return sis.RisingUnderway{} }
 
 		for j, _ := range dscontents {
