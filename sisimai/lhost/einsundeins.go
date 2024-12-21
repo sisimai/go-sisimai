@@ -50,7 +50,7 @@ func init() {
 				continue
 			}
 			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if e == ""                                        { continue }
 
 			// The following address failed:
 			//
@@ -86,7 +86,6 @@ func init() {
 				alternates += " " + e
 			}
 		}
-
 		if recipients == 0 { return sis.RisingUnderway{} }
 
 		for j, _ := range dscontents {
