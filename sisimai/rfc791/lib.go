@@ -1,13 +1,12 @@
-// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package string
+package rfc791
 
-//      _        _                ___            _  _   
-//  ___| |_ _ __(_)_ __   __ _   / (_)_ ____   _| || |  
-// / __| __| '__| | '_ \ / _` | / /| | '_ \ \ / / || |_ 
-// \__ \ |_| |  | | | | | (_| |/ / | | |_) \ V /|__   _|
-// |___/\__|_|  |_|_| |_|\__, /_/  |_| .__/ \_/    |_|  
-//                       |___/       |_|                
+//  ____  _____ ____ _____ ___  _ 
+// |  _ \|  ___/ ___|___  / _ \/ |
+// | |_) | |_ | |      / / (_) | |
+// |  _ <|  _|| |___  / / \__, | |
+// |_| \_\_|   \____|/_/    /_/|_|
 import "strings"
 import "strconv"
 
