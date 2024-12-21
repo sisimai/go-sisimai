@@ -8,8 +8,8 @@ package rfc5322
 // |  _ <|  _|| |___ ___) |__) / __/ / __/ / / |  _ <  __/ (_|  __/ |\ V /  __/ (_| |_ 
 // |_| \_\_|   \____|____/____/_____|_____/_/  |_| \_\___|\___\___|_| \_/ \___|\__,_(_)
 import "strings"
+import "sisimai/rfc791"
 import "sisimai/address"
-import sisimoji "sisimai/string"
 
 // Received() convert Received headers to a structured data
 func Received(argv1 string) [6]string {
@@ -108,8 +108,8 @@ func Received(argv1 string) [6]string {
 		if len(token[e]) == 0 { continue }
 		if strings.IndexByte(token[e], '[') != 0 { continue }
 
-		p := sisimoji.FindIPv4Address(token[e])
-		if len(p) > 0 { token[e] = p[0] } else { token[e] = "" }
+		ce := token[e]; cv := rfc791.FindIPv4Address(&ce)
+		if len(cv) > 0 { token[e] = cv[0] } else { token[e] = "" }
 	}
 	_, e := token["from"]; if e == false { token["from"] = "" }
 
@@ -118,7 +118,9 @@ func Received(argv1 string) [6]string {
 		if token["from"] == "localhost"             { break }
 		if token["from"] == "localhost.localdomain" { break }
 		if strings.Index(token["from"], ".") < 0    { break } // A hostname without a domain name
-		if len(sisimoji.FindIPv4Address(token["from"])) > 0 { break }
+
+		ce := token["from"];
+		if len(rfc791.FindIPv4Address(&ce))  > 0    { break }
 
 		// No need to rewrite token["from"]
 		right = true
