@@ -21,9 +21,8 @@ func IsIPv4Address(argv1 *string) bool {
 	for _, e := range strings.Split(*argv1, ".") {
 		// Check each octet is between 0 and 255
 		v, nyaan := strconv.Atoi(e)
-		if nyaan != nil { return false }
-		if v < 0        { return false }
-		if v > 255      { return false }
+		if nyaan != nil     { return false }
+		if v < 0 || v > 255 { return false }
 	}
 	return true
 }
