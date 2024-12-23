@@ -9,7 +9,7 @@ package sis
 // |____/ \___|_|  \___/|_|  \___|_|  \__,_|\___|\__|
 // sisimai/message.Rise() returns BeforeFact{}
 type BeforeFact struct {
-	From    string              // Unix FROM line ("From ")
+	Sender  string              // Unix FROM line ("From ")
 	Headers map[string][]string // Email headers
 	Payload string              // Email body
 	RFC822  map[string][]string // Email headers of the original message
