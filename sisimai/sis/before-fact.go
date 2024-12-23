@@ -10,10 +10,10 @@ package sis
 // sisimai/message.Rise() returns BeforeFact{}
 type BeforeFact struct {
 	From    string              // Unix FROM line ("From ")
-	Head    map[string][]string // Email headers
-	Body    string              // Email body
-	Digest  []DeliveryMatter    // Decoded results returned from sisimai/lhost/*
+	Headers map[string][]string // Email headers
+	Payload string              // Email body
 	RFC822  map[string][]string // Email headers of the original message
+	Digest  []DeliveryMatter    // Decoded results returned from sisimai/lhost/*
 	Catch   interface{}         // Any data structure returned by the callback function
 }
 
