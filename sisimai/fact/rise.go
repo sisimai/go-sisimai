@@ -7,7 +7,6 @@ package fact
 // | |_ / _` |/ __| __|
 // |  _| (_| | (__| |_ 
 // |_|  \__,_|\___|\__|
-import "fmt"
 import "time"
 import "strings"
 import "net/mail"
@@ -32,11 +31,11 @@ var RFC822Head = rfc5322.HEADERTABLE()
 var ActionList = map[string]bool{ "delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true }
 
 // sisimai/fact.Rise() returns []sis.Fact when it successfully decoded bounce messages
-func Rise(email *string, origin string, args map[string]bool, hook *func()) []sis.Fact {
+func Rise(email *string, origin string, args map[string]bool, hook interface{}) []sis.Fact {
 	// @param  *string         email    Entire email message
 	// @param  string          origin   Path to the original email file
 	// @param  map[string]bool args     {"delivered": false, "vacation": false} as the default
-	// @param  *func()         hook     The pointer to the callback function
+	// @param  interface{}     hook     Callback function
 	// @return []sis.Fact               The list of decoded bounce messages
 	if len(*email) < 1 { return []sis.Fact{} }
 
@@ -407,21 +406,6 @@ func Rise(email *string, origin string, args map[string]bool, hook *func()) []si
 			break REPLYCODE
 		}
 		listoffact = append(listoffact, thing)
-	}
-
-	for j, e := range listoffact {
-		fmt.Printf("List-Of-Fact[%d] = %##v\n", j, e)
-		fmt.Printf("-----------------------------------------------------------------\n")
-		fmt.Printf("--[%d]Origin = [%s]\n", j, e.Origin)
-		fmt.Printf("--[%d]DiagnosticCode = [%s]\n", j, e.DiagnosticCode)
-		fmt.Printf("--[%d]DeliveryStatus = [%s]\n", j, e.DeliveryStatus)
-		fmt.Printf("--[%d]ReplyCode = [%s]\n", j, e.ReplyCode)
-		fmt.Printf("--[%d]Reason = [%s]\n", j, e.Reason)
-		fmt.Printf("--[%d]DecodedBy = [%s]\n", j, e.DecodedBy)
-		fmt.Printf("--[%d]Command = [%s]\n", j, e.Command)
-		fmt.Printf("--[%d]Recipient = [%s]\n", j, e.Recipient.Address)
-		fmt.Printf("--[%d]Lhost = [%s]\n", j, e.Lhost)
-		fmt.Printf("--[%d]Rhost = [%s]\n", j, e.Rhost)
 	}
 	return listoffact
 }
