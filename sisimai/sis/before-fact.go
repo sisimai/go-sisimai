@@ -7,7 +7,6 @@ package sis
 // |  _ \ / _ \ |_ / _ \| '__/ _ \ |_ / _` |/ __| __|
 // | |_) |  __/  _| (_) | | |  __/  _| (_| | (__| |_ 
 // |____/ \___|_|  \___/|_|  \___|_|  \__,_|\___|\__|
-
 // sisimai/message.Rise() returns BeforeFact{}
 type BeforeFact struct {
 	From    string              // Unix FROM line ("From ")
@@ -15,7 +14,7 @@ type BeforeFact struct {
 	Body    string              // Email body
 	Digest  []DeliveryMatter    // Decoded results returned from sisimai/lhost/*
 	RFC822  map[string][]string // Email headers of the original message
-	Catch   func()              // Callback
+	Catch   interface{}         // Any data structure returned by the callback function
 }
 
 func(this *BeforeFact) Void() bool {
