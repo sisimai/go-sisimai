@@ -73,22 +73,22 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 			}
 
 			// Build "Head", "Body" members of BeforeFact
-			beforefact.Head    = makemap(&email.Header, false)
+			beforefact.Headers = makemap(&email.Header, false)
 			bodystring, nyaan := io.ReadAll(email.Body); if nyaan != nil { break RISE }
-			beforefact.Body    = string(bodystring)
+			beforefact.Payload = string(bodystring)
 		}
 
 		// 2. Decode and rewrite the "Subject:" header for deciding the order of MTA functions
-		rawsubject := strings.TrimSpace(beforefact.Head["subject"][0])
+		rawsubject := strings.TrimSpace(beforefact.Headers["subject"][0])
 		if len(rawsubject) > 0 {
 			// Decode MIME-Encoded "Subject:" header
 			if rfc2045.IsEncoded(rawsubject) {
 				// The header is mime-encoded
-				beforefact.Head["subject"][0] = rfc2045.DecodeH(rawsubject)
+				beforefact.Headers["subject"][0] = rfc2045.DecodeH(rawsubject)
 
 			} else {
 				// THe header is not mime-encoded
-				beforefact.Head["subject"][0] = rawsubject
+				beforefact.Headers["subject"][0] = rawsubject
 			}
 
 			// TODO: Remove "Fwd:" string from the "Subject:" header
@@ -96,14 +96,14 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 		}
 
 		// 3. Rewrite message body for detecting the bounce reason
-		TryOnFirst  = lhost.OrderBySubject(beforefact.Head["subject"][0])
+		TryOnFirst  = lhost.OrderBySubject(beforefact.Headers["subject"][0])
 		TryOnFirst  = append(TryOnFirst, DefaultSet...)
 		siftstatus := sift(beforefact, hook); if siftstatus == true { break RISE }
 
 		for _, e := range Boundaries {
 			// Check the message body contains "message/rfc822" or "message/delivery-status" for
 			// decoding the bounce message in the forwarded email
-			if strings.Contains(beforefact.Body, e) { break RISE }
+			if strings.Contains(beforefact.Payload, e) { break RISE }
 		}
 
 		// TODO Implement this block

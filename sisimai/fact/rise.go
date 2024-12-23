@@ -67,10 +67,10 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 				break ADDRESSER
 			}
 
-			if len(addrs["addresser"][0]) == 0 && len(beforefact.Head["to"]) > 0 {
+			if len(addrs["addresser"][0]) == 0 && len(beforefact.Headers["to"]) > 0 {
 				// Fallback: Get the sender address from the header of the bounced email if the address
 				// is not set at the loop above.
-				j := sisiaddr.Find(beforefact.Head["to"][0])
+				j := sisiaddr.Find(beforefact.Headers["to"][0])
 				if len(j[0]) > 0 { addrs["addresser"] = j }
 			}
 			break ADDRESSER
@@ -88,9 +88,9 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 				if len(rfc822data[f]) > 0 { datevalues = append(datevalues, rfc822data[f][0]) }
 			}
 
-			if len(datevalues) < 2 && len(beforefact.Head["date"]) > 0 {
+			if len(datevalues) < 2 && len(beforefact.Headers["date"]) > 0 {
 				// Get the value of "Date:" header of the bounce message
-				datevalues = append(datevalues, beforefact.Head["date"][0])
+				datevalues = append(datevalues, beforefact.Headers["date"][0])
 			}
 			for _, v := range datevalues {
 				// Parse each date string using net/mail.ParseDate()
@@ -117,7 +117,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 		RECEIVED: for {
 			// Try to pick a remote hostname from the error message
 			// Scan "Received:" header of the bounce message
-			le := len(beforefact.Head["received"])
+			le := len(beforefact.Headers["received"])
 			if e.Rhost == "" {
 				// Try to pick a remote hostname from Received: headers of the bounce message
 				if cv := rfc1123.Find(e.Diagnosis); rfc1123.IsInternetHost(cv) { e.Rhost = cv }
@@ -126,7 +126,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 					// internet hostname
 					for ri := le - 1; ri > -1; ri-- {
 						// Check the Received: headers backwards and get a remote hostname
-						cv := rfc5322.Received(beforefact.Head["received"][ri])
+						cv := rfc5322.Received(beforefact.Headers["received"][ri])
 						if rfc1123.IsInternetHost(cv[0]) == false { continue }
 						e.Rhost = cv[0]; break
 					}
@@ -137,7 +137,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 				// Try to pick a local hostname from Received: headers of the bounce message
 				for li := 0; li < le; li++ {
 					// Check the Received: headers forwards and get a local hostnaame
-					cv := rfc5322.Received(beforefact.Head["received"][li])
+					cv := rfc5322.Received(beforefact.Headers["received"][li])
 					if rfc1123.IsInternetHost(cv[0]) == false { continue }
 					e.Lhost = cv[0]; break
 				}
