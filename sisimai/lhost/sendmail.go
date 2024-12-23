@@ -23,13 +23,13 @@ func init() {
 	InquireFor["Sendmail"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Head["x-aol-ip"]) > 0 { return sis.RisingUnderway{} } // X-AOL-IP is a header defined in AOL
+		if len(bf.Headers)            == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload)            == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-aol-ip"]) > 0 { return sis.RisingUnderway{} } // X-AOL-IP is a header defined in AOL
 
 		proceedsto := false
-		if strings.HasPrefix(bf.Head["subject"][0], "Warning: ") ||
-		   strings.HasSuffix(bf.Head["subject"][0], "see transcript for details") {
+		if strings.HasPrefix(bf.Headers["subject"][0], "Warning: ") ||
+		   strings.HasSuffix(bf.Headers["subject"][0], "see transcript for details") {
 			// Subject: Warning: could not send message for past 4 hours
 			// Subject: Returned mail: see transcript for details
 			proceedsto = true
@@ -53,7 +53,7 @@ func init() {
 		permessage := map[string]string{} // Store values of each Per-Message field
 		keystrings := []string{}          // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		readslices := []string{""}        // Copy each line for later reference
 		recipients := uint8(0)            // The number of 'Final-Recipient' header

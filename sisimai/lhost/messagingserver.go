@@ -23,12 +23,12 @@ func init() {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
 		// @see https://docs.oracle.com/en/industries/communications/messaging-server/index.html
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := false
-		if strings.Contains(bf.Head["content-type"][0], "Boundary_(ID_")       { proceedsto = true }
-		if strings.HasPrefix(bf.Head["subject"][0], "Delivery Notification: ") { proceedsto = true }
+		if strings.Contains(bf.Headers["content-type"][0], "Boundary_(ID_")       { proceedsto = true }
+		if strings.HasPrefix(bf.Headers["subject"][0], "Delivery Notification: ") { proceedsto = true }
 		if proceedsto == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
@@ -37,7 +37,7 @@ func init() {
 		messagesof := map[string][]string{"hostunknown": []string{"Illegal host/domain name found"}}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

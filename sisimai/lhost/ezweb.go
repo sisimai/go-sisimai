@@ -21,18 +21,18 @@ func init() {
 	InquireFor["EZweb"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := 0; for {
 			// Pre-process email headers of NON-STANDARD bounce message au by EZweb, as known as ezweb.ne.jp.
 			//   Subject: Mail System Error - Returned Mail
 			//   From: <Postmaster@ezweb.ne.jp>
 			//   Message-Id: <20110000000000.F000000@lsean.ezweb.ne.jp>
-			if strings.Contains(bf.Head["from"][0], "Postmaster@ezweb.ne.jp") { proceedsto++ }
-			if strings.Contains(bf.Head["from"][0], "Postmaster@au.com")      { proceedsto++ }
-			if bf.Head["subject"][0] == "Mail System Error - Returned Mail"   { proceedsto++ }
-			for _, e := range bf.Head["received"] {
+			if strings.Contains(bf.Headers["from"][0], "Postmaster@ezweb.ne.jp") { proceedsto++ }
+			if strings.Contains(bf.Headers["from"][0], "Postmaster@au.com")      { proceedsto++ }
+			if bf.Headers["subject"][0] == "Mail System Error - Returned Mail"   { proceedsto++ }
+			for _, e := range bf.Headers["received"] {
 				//   Received: from ezweb.ne.jp (wmflb12na02.ezweb.ne.jp [222.15.69.197])
 				//   Received: from nmomta.auone-net.jp ([aaa.bbb.ccc.ddd]) by ...
 				if strings.Contains(e, "ezweb.ne.jp (EZweb Mail) with") || strings.Contains(e, ".au.com (") {
@@ -40,8 +40,8 @@ func init() {
 					break
 				}
 			}
-			if strings.Contains(bf.Head["message-id"][0], ".ezweb.ne.jp>") { proceedsto++ }
-			if strings.Contains(bf.Head["message-id"][0], ".au.com>")      { proceedsto++ }
+			if strings.Contains(bf.Headers["message-id"][0], ".ezweb.ne.jp>") { proceedsto++ }
+			if strings.Contains(bf.Headers["message-id"][0], ".au.com>")      { proceedsto++ }
 			break
 		}
 		if proceedsto < 2 { return sis.RisingUnderway{} }
@@ -69,7 +69,7 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		substrings := []string{}          // All the values of "messagesof"
@@ -154,7 +154,7 @@ func init() {
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
-			if len(bf.Head["x-spasign"]) > 0 && bf.Head["x-spasign"][0] == "NG" {
+			if len(bf.Headers["x-spasign"]) > 0 && bf.Headers["x-spasign"][0] == "NG" {
 				// Content-Type: text/plain; ..., X-SPASIGN: NG (spamghetti, au by EZweb)
 				// Filtered recipient returns message that include 'X-SPASIGN' header
 				e.Reason = "filtered"

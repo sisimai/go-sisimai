@@ -19,14 +19,14 @@ func init() {
 	InquireFor["GMX"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		// Envelope-To: <kijitora@mail.example.com>
 		// X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
 		// X-GMX-Antivirus: 0 (no virus found)
 		// X-UI-Out-Filterresults: unknown:0;
-		if len(bf.Head["x-gmx-antispam"]) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-gmx-antispam"]) == 0 { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"--- The header of the original message is following. ---"}
@@ -37,7 +37,7 @@ func init() {
 			"expired": []string{"delivery retry timeout exceeded"},
 		}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

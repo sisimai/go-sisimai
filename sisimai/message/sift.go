@@ -23,45 +23,45 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	// @param  interface{}     hook   The callback function for the decoded bounce message
 	// @return bool                   true:  Successfully got the results
 	//                                false: Failed to get the results
-	if len(bf.Head) == 0 { return false }
-	if len(bf.Body) == 0 { return false }
+	if len(bf.Headers) == 0 { return false }
+	if len(bf.Payload) == 0 { return false }
 
 	// Tidy up each field name and value in the entire message body
-	bf.Body = *(tidy(&bf.Body))
+	bf.Payload = *(tidy(&bf.Payload))
 
 	// Decode BASE64 Encoded message body
-	mesgformat := ""; if len(bf.Head["content-type"]) > 0 {
+	mesgformat := ""; if len(bf.Headers["content-type"]) > 0 {
 		// Content-Type: text/plain; charset=utf8
-		mesgformat = strings.ToLower(bf.Head["content-type"][0])
+		mesgformat = strings.ToLower(bf.Headers["content-type"][0])
 	}
-	ctencoding := ""; if len(bf.Head["content-transfer-encoding"]) > 0 {
+	ctencoding := ""; if len(bf.Headers["content-transfer-encoding"]) > 0 {
 		// Content-Transfer-Encoding: base64
-		ctencoding = strings.ToLower(bf.Head["content-transfer-encoding"][0])
+		ctencoding = strings.ToLower(bf.Headers["content-transfer-encoding"][0])
 	}
 
 	if strings.HasPrefix(mesgformat, "text/plain") || strings.HasPrefix(mesgformat, "text/html") {
 		// Content-Type: text/plain; charset=UTF-8
 		if ctencoding == "base64" {
 			// Content-Transfer-Encoding: base64
-			bf.Body = rfc2045.DecodeB(bf.Body, "")
+			bf.Payload = rfc2045.DecodeB(bf.Payload, "")
 
 		} else if ctencoding == "quoted-printable" {
 			// Content-Transfer-Encoding: quoted-printable
-			bf.Body = rfc2045.DecodeQ(bf.Body)
+			bf.Payload = rfc2045.DecodeQ(bf.Payload)
 		}
 
 		if strings.HasPrefix(mesgformat, "text/html") {
 			// Content-Type: text/html;...
-			bf.Body = *(sisimoji.ToPlain(&bf.Body))
+			bf.Payload = *(sisimoji.ToPlain(&bf.Payload))
 		}
 	} else if strings.HasPrefix(mesgformat, "multipart/") {
 		// In case of Content-Type: multipart/*
-		if cv := rfc2045.MakeFlat(bf.Head["content-type"][0], &bf.Body); cv != nil { bf.Body = *cv }
+		if cv := rfc2045.MakeFlat(bf.Headers["content-type"][0], &bf.Payload); cv != nil { bf.Payload = *cv }
 	}
-	bf.Body = *(sisimoji.ToLF(&bf.Body))
-	bf.Body = strings.ReplaceAll(bf.Body, "\t", " ")
+	bf.Payload = *(sisimoji.ToLF(&bf.Payload))
+	bf.Payload = strings.ReplaceAll(bf.Payload, "\t", " ")
 
-	havecaught := hook.(func(map[string][]string, *string) map[string]interface{})(bf.Head, &bf.Body)
+	havecaught := hook.(func(map[string][]string, *string) map[string]interface{})(bf.Headers, &bf.Payload)
 	havecalled := map[string]bool{}
 	localhostr := sis.RisingUnderway{}
 	modulename := ""

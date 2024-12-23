@@ -20,16 +20,16 @@ func init() {
 	InquireFor["Courier"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := true; for {
 			// Subject: NOTICE: mail delivery status.
 			// Message-ID: <courier.4D025E3A.00001792@5jo.example.org>
-			if strings.Contains(bf.Head["from"][0],    "Courier mail server at ")       { break }
-			if strings.Contains(bf.Head["subject"][0], "NOTICE: mail delivery status.") { break }
-			if strings.Contains(bf.Head["subject"][0], "WARNING: delayed mail.")        { break }
-			if strings.HasPrefix(bf.Head["message-id"][0], "<courier.")                 { break }
+			if strings.Contains(bf.Headers["from"][0],    "Courier mail server at ")       { break }
+			if strings.Contains(bf.Headers["subject"][0], "NOTICE: mail delivery status.") { break }
+			if strings.Contains(bf.Headers["subject"][0], "WARNING: delayed mail.")        { break }
+			if strings.HasPrefix(bf.Headers["message-id"][0], "<courier.")                 { break }
 			proceedsto = false; break
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
@@ -55,7 +55,7 @@ func init() {
 		permessage := map[string]string{} // Store values of each Per-Message field
 		keystrings := []string{}          // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		readslices := []string{""}        // Copy each line for later reference
 		recipients := uint8(0)            // The number of 'Final-Recipient' header

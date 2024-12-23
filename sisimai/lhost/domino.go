@@ -20,12 +20,12 @@ func init() {
 	InquireFor["Domino"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body)            == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := false; for {
-			if strings.HasPrefix(bf.Head["subject"][0], "DELIVERY FAILURE:") { proceedsto = true }
-			if strings.HasPrefix(bf.Head["subject"][0], "DELIVERY_FAILURE:") { proceedsto = true }
+			if strings.HasPrefix(bf.Headers["subject"][0], "DELIVERY FAILURE:") { proceedsto = true }
+			if strings.HasPrefix(bf.Headers["subject"][0], "DELIVERY_FAILURE:") { proceedsto = true }
 			break
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
@@ -49,7 +49,7 @@ func init() {
 		permessage := map[string]string{} // Store values of each Per-Message field
 		keystrings := []string{}          // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		subjecttxt := ""                  // The value of "Subject:"

@@ -19,18 +19,19 @@ func init() {
 	InquireFor["GoogleGroups"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Body, "Google Groups") == false { return sis.RisingUnderway{} }
-		if len(bf.Head["x-failed-recipients"])        == 0     { return sis.RisingUnderway{} }
-		if len(bf.Head["x-google-smtp-source"])       == 0     { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+
+		if strings.Contains(bf.Payload, "Google Groups") == false { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-failed-recipients"])        == 0     { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-google-smtp-source"])       == 0     { return sis.RisingUnderway{} }
 
 		// X-Google-Smtp-Source: APXvYqx67WVONuSclAC3HckRuO768rET6VCNXk6xYv7cW5I1l9kkn35pT4zE29miuroXfMsHzqeVDrOoIjb8hdt7tjtNL2XAomNl7FA=
 		// From: Mail Delivery Subsystem <mailer-daemon@googlemail.com>
 		// Subject: Delivery Status Notification (Failure)
 		// X-Failed-Recipients: libsisimai@googlegroups.com
-		if strings.Contains(bf.Head["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Head["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Headers["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Headers["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
 
 		// Hello kijitora@libsisimai.org,
 		//
@@ -51,13 +52,13 @@ func init() {
 		// Google Groups
 		boundaries := []string{"----- Original message -----", "Content-Type: message/rfc822"}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])
 
 		entiremesg := strings.SplitN(emailparts[0], "\n\n", 5); entiremesg[len(entiremesg) - 1] = ""
 		issuedcode := strings.ReplaceAll(strings.Join(entiremesg, " "), "\n", " ")
-		receivedby := []string{""}; if len(bf.Head["received"]) > 0 { receivedby = bf.Head["received"] }
+		receivedby := []string{""}; if len(bf.Headers["received"]) > 0 { receivedby = bf.Headers["received"] }
 		recordwide := [3]string{
 			rfc5322.Received(receivedby[0])[1], // rhost
 			"onhold",                           // reason
@@ -74,7 +75,7 @@ func init() {
 			break
 		}
 
-		for _, e := range strings.Split(bf.Head["x-failed-recipients"][0], ",") {
+		for _, e := range strings.Split(bf.Headers["x-failed-recipients"][0], ",") {
 			// X-Failed-Recipients: neko@example.jp, cat@example.org, ...
 			if sisiaddr.IsEmailAddress(e) == false { continue }
 			if len(v.Recipient) > 0 {

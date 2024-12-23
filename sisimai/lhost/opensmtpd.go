@@ -18,16 +18,16 @@ func init() {
 	InquireFor["OpenSMTPD"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := uint8(0)
 		ISOPENSMTPD: for {
-			if strings.Contains(bf.Head["subject"][0], "Delivery status notification") { proceedsto++ }
-			if strings.Contains(bf.Head["from"][0], "Mailer Daemon <")                 { proceedsto++ }
+			if strings.Contains(bf.Headers["subject"][0], "Delivery status notification") { proceedsto++ }
+			if strings.Contains(bf.Headers["from"][0], "Mailer Daemon <")                 { proceedsto++ }
 
-			if len(bf.Head["received"]) == 0 { break ISOPENSMTPD }
-			for _, e := range bf.Head["received"] {
+			if len(bf.Headers["received"]) == 0 { break ISOPENSMTPD }
+			for _, e := range bf.Headers["received"] {
 				// Received: from localhost (localhost [local]);
 				//   by localhost (OpenSMTPD) with ESMTPA id 1e2a9eaa;
 				//   for <kijitora@example.jp>;
@@ -99,7 +99,7 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

@@ -19,11 +19,11 @@ func init() {
 	InquireFor["mFILTER"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Head["x-mailer"]) < 1 { return sis.RisingUnderway{} }
-		if bf.Head["x-mailer"][0] != "m-FILTER"       { return sis.RisingUnderway{} }
-		if bf.Head["subject"][0]  != "failure notice" { return sis.RisingUnderway{} }
+		if len(bf.Headers)            == 0                { return sis.RisingUnderway{} }
+		if len(bf.Payload)            == 0                { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-mailer"]) < 1                { return sis.RisingUnderway{} }
+		if bf.Headers["x-mailer"][0]  != "m-FILTER"       { return sis.RisingUnderway{} }
+		if bf.Headers["subject"][0]   != "failure notice" { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"-------original message", "-------original mail info"}
@@ -32,7 +32,7 @@ func init() {
 			"error":   []string{"-------server message"},
 		}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
 		recipients := 0                     // The number of 'Final-Recipient' header
 		markingset := [2]bool{false, false} // [diganosis, command]

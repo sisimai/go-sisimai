@@ -20,8 +20,8 @@ func init() {
 	InquireFor["Gmail"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		// Google Mail
 		// From: Mail Delivery Subsystem <mailer-daemon@googlemail.com>
@@ -69,8 +69,8 @@ func init() {
 		//
 		//   The error that the other server returned was:
 		//   550 5.1.1 <userunknown@example.jp>... User Unknown
-		if strings.Contains(bf.Head["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Head["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Headers["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Headers["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"----- Original message -----", "----- Message header follows -----"}
@@ -163,7 +163,7 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

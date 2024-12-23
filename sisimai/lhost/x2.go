@@ -18,13 +18,13 @@ func init() {
 	InquireFor["X2"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := false
 		emailtitle := []string{"Delivery failure", "failure delivery", "failed delivery"}
-		if strings.Contains(bf.Head["from"][0], "MAILER-DAEMON@")   { proceedsto = true }
-		if sisimoji.HasPrefixAny(bf.Head["subject"][0], emailtitle) { proceedsto = true }
+		if strings.Contains(bf.Headers["from"][0], "MAILER-DAEMON@")   { proceedsto = true }
+		if sisimoji.HasPrefixAny(bf.Headers["subject"][0], emailtitle) { proceedsto = true }
 		if proceedsto == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
@@ -34,7 +34,7 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

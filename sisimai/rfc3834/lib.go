@@ -19,8 +19,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   RisingUnderway      RisingUnderway structure
 	// @see      https://tools.ietf.org/html/rfc3464
-	if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-	if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+	if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+	if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 	boundaries := []string{"__SISIMAI_PSEUDO_BOUNDARY__"}
 	lowerlabel := []string{"from", "to", "subject", "auto-submitted", "precedence", "x-apple-action"}
@@ -42,8 +42,10 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
     };
 	proceedsto := true
 
-	// Set lower-cased value of each header related to auto-response
-	for _, e := range lowerlabel { if len(bf.Head[e]) > 0 { lowervalue[e] = strings.ToLower(bf.Head[e][0]) } }
+	for _, e := range lowerlabel {
+		// Set lower-cased value of each header related to auto-response
+		if len(bf.Headers[e]) > 0 { lowervalue[e] = strings.ToLower(bf.Headers[e][0]) }
+	}
 
 	DETECT_EXCLUSION_MESSAGE: for e := range dontdecode {
 		// Exclude messages from root@
@@ -68,8 +70,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	RECIPIENT_ADDRESS: for _, e := range []string{"from", "return-path"} {
 		// Try to get the recipient adddress from some headers
-		if len(bf.Head[e]) == 0 { continue }
-		cv := sisiaddr.S3S4(bf.Head[e][0]); if sisiaddr.IsEmailAddress(cv) == false { continue }
+		if len(bf.Headers[e]) == 0 { continue }
+		cv := sisiaddr.S3S4(bf.Headers[e][0]); if sisiaddr.IsEmailAddress(cv) == false { continue }
 		v.Recipient = cv
 		recipients += 1
 		break RECIPIENT_ADDRESS
@@ -77,20 +79,20 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	if recipients == 0 { return sis.RisingUnderway{} }
 
 	// Squeeze continuous "\n" in the message body
-	bf.Body     = strings.Trim(strings.ReplaceAll(bf.Body, "\n\n", "\n"), "\n")
-	bodyslices := strings.Split(bf.Body, "\n")
+	bf.Payload  = strings.Trim(strings.ReplaceAll(bf.Payload, "\n\n", "\n"), "\n")
+	bodyslices := strings.Split(bf.Payload, "\n")
 	rfc822part := ""
 
-	if bf.Head["content-type"][0] != "" {
+	if bf.Headers["content-type"][0] != "" {
 		// Get the boundary string and set regular expression for matching with the boundary string.
-		cv := rfc2045.Boundary(bf.Head["content-type"][0], 0)
+		cv := rfc2045.Boundary(bf.Headers["content-type"][0], 0)
 		if cv != "" { boundaries[0] = cv }
 	}
 
 	if len(bodyslices) < 5 {
 		// There is vacation message only in the message body
-		bf.Body = strings.ReplaceAll(bf.Body, "\n", " ")
-		v.Diagnosis = sisimoji.Sweep(bf.Body)
+		bf.Payload  = strings.ReplaceAll(bf.Payload, "\n", " ")
+		v.Diagnosis = sisimoji.Sweep(bf.Payload)
 
 	} else {
 		for _, e := range bodyslices {
@@ -102,15 +104,15 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	for {
 		// Pick the original Subject: value from the bounce message
-		p1 := strings.Index(bf.Head["subject"][0], ": "); if p1 < 0 { break }
+		p1 := strings.Index(bf.Headers["subject"][0], ": "); if p1 < 0 { break }
 		if sisimoji.ContainsAny(lowervalue["subject"], autoreply0["subject"]) == false { break }
-		cv := sisimoji.Sweep(bf.Head["subject"][0][p1 + 2:])
+		cv := sisimoji.Sweep(bf.Headers["subject"][0][p1 + 2:])
 		rfc822part += fmt.Sprintf("Subject: %s\n", cv)
 		break
 	}
 
 	v.Reason    = "vacaion"
-	v.Date      = bf.Head["date"][0]
+	v.Date      = bf.Headers["date"][0]
 	rfc822part += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
 	return sis.RisingUnderway{ Digest: dscontents, RFC822: rfc822part }
 }

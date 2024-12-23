@@ -25,13 +25,13 @@ func init() {
 	InquireFor["Exim"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		// X-Failed-Recipients: kijitora@example.ed.jp
 		thirdparty := false
 		proceedsto := uint8(0)
-		messageidv := bf.Head["message-id"][0]
+		messageidv := bf.Headers["message-id"][0]
 		emailtitle := []string{
 			"Delivery Status Notification",
 			"Mail delivery failed",
@@ -40,7 +40,7 @@ func init() {
 			"Warning: message ",
 			"error(s) in forwarding or filtering",
 		}
-		if strings.Contains(bf.Head["from"][0], "Mail Delivery System") { proceedsto++ }
+		if strings.Contains(bf.Headers["from"][0], "Mail Delivery System") { proceedsto++ }
 		for messageidv != "" {
 			// Message-Id: <E1P1YNN-0003AD-Ga@example.org>
 			if strings.Index(messageidv, "<") !=  0 { break }
@@ -52,16 +52,16 @@ func init() {
 			// Subject: Mail delivery failed: returning message to sender
 			// Subject: Mail delivery failed
 			// Subject: Message frozen
-			if strings.Contains(bf.Head["subject"][0], e) == false { continue }
+			if strings.Contains(bf.Headers["subject"][0], e) == false { continue }
 			proceedsto++; break
 		}
 
 		for {
 			// Exim clones of the third Parties
 			// 1. McAfee Saas (Formerly MXLogic)
-			if len(bf.Head["x-mx-bounce"])    > 0    { thirdparty = true; break }
-			if len(bf.Head["x-mxl-hash"])     > 0    { thirdparty = true; break }
-			if len(bf.Head["x-mxl-notehash"]) > 0    { thirdparty = true; break }
+			if len(bf.Headers["x-mx-bounce"])    > 0 { thirdparty = true; break }
+			if len(bf.Headers["x-mxl-hash"])     > 0 { thirdparty = true; break }
+			if len(bf.Headers["x-mxl-notehash"]) > 0 { thirdparty = true; break }
 			if strings.Contains(messageidv, "<mxl~") { thirdparty = true; break }
 			break
 		}
@@ -175,15 +175,15 @@ func init() {
 			"was frozen on arrival by ",
 		}
 
-		if strings.Contains(bf.Body, "\n----- This ") {
+		if strings.Contains(bf.Payload, "\n----- This ") {
 			// There are extremely rare cases where there are only five hyphens.
 			// https://github.com/sisimai/set-of-emails/blob/master/maildir/bsd/lhost-exim-05.eml
 			// ----- This is a copy of the message, including all the headers. ------
-			bf.Body = strings.Replace(bf.Body, "\n----- This ", "\n------ This ", 1)
+			bf.Payload = strings.Replace(bf.Payload, "\n----- This ", "\n------ This ", 1)
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
 		nextcursor := uint8(0)
 		recipients := 0                     // The number of 'Final-Recipient' header
@@ -192,9 +192,9 @@ func init() {
 		boundary00 := ""                    // Boundary sting
 		v          := &(dscontents[len(dscontents) - 1])
 
-		if bf.Head["content-type"][0] != "" {
+		if bf.Headers["content-type"][0] != "" {
 			// Get the boundary string and set regular expression for matching with the boundary string.
-			boundary00 = rfc2045.Boundary(bf.Head["content-type"][0], 0)
+			boundary00 = rfc2045.Boundary(bf.Headers["content-type"][0], 0)
 		}
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
@@ -362,9 +362,9 @@ func init() {
 			}
 		} else {
 			// Fallback for getting recipient addresses
-			if len(bf.Head["x-failed-recipients"]) > 0 {
+			if len(bf.Headers["x-failed-recipients"]) > 0 {
 				// X-Failed-Recipients: kijitora@example.jp
-				rcptinhead := strings.Split(bf.Head["x-failed-recipients"][0], ",")
+				rcptinhead := strings.Split(bf.Headers["x-failed-recipients"][0], ",")
 				for j, _ := range rcptinhead { rcptinhead[j] = strings.Trim(rcptinhead[j], " ") }
 				recipients  = len(rcptinhead)
 
@@ -380,7 +380,7 @@ func init() {
 
 		// Get the name of the local MTA
 		// Received: from marutamachi.example.org (c192128.example.net [192.0.2.128])
-		receivedby := bf.Head["received"][len(bf.Head["received"]) - 1]
+		receivedby := bf.Headers["received"][len(bf.Headers["received"]) - 1]
 		recvdtoken := rfc5322.Received(receivedby)
 
 		for j, _ := range dscontents {
@@ -524,13 +524,13 @@ func init() {
 			// and when that happens, the message will be returned to you.
 			emailparts[1] += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
 
-			p1 := strings.Index(bf.Body, "The date of the message is: ");    if p1 < 0 { break }
-			p2 := sisimoji.IndexOnTheWay(bf.Body, "\n", p1);                 if p2 < 0 { break }
-			emailparts[1] += fmt.Sprintf("Date: %s\n", bf.Body[p1 + 31:p2])
+			p1 := strings.Index(bf.Payload, "The date of the message is: ");    if p1 < 0 { break }
+			p2 := sisimoji.IndexOnTheWay(bf.Payload, "\n", p1);                 if p2 < 0 { break }
+			emailparts[1] += fmt.Sprintf("Date: %s\n", bf.Payload[p1 + 31:p2])
 
-			p1  = strings.Index(bf.Body, "The subject of the message is: "); if p1 < 0 { break }
-			p2  = sisimoji.IndexOnTheWay(bf.Body, "\n", p1);                 if p2 < 0 { break }
-			emailparts[1] += fmt.Sprintf("Subject: %s\n", bf.Body[p1 + 31:p2])
+			p1  = strings.Index(bf.Payload, "The subject of the message is: "); if p1 < 0 { break }
+			p2  = sisimoji.IndexOnTheWay(bf.Payload, "\n", p1);                 if p2 < 0 { break }
+			emailparts[1] += fmt.Sprintf("Subject: %s\n", bf.Payload[p1 + 31:p2])
 			break
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

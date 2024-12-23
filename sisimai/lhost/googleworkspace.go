@@ -21,12 +21,13 @@ func init() {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
 		// @see https://workspace.google.com/
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Body, "\nDiagnostic-Code:")                         == true  { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Body, "\nFinal-Recipient:")                         == true  { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Head["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Head["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+
+		if strings.Contains(bf.Payload, "\nDiagnostic-Code:")                         == true  { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Payload, "\nFinal-Recipient:")                         == true  { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Headers["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Headers["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
@@ -40,7 +41,7 @@ func init() {
 			"userunknown":  []string{"because the address couldn't be found. Check for typos or unnecessary spaces and try again."},
 		}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

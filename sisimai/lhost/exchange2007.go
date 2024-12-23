@@ -22,8 +22,8 @@ func init() {
 	InquireFor["Exchange2007"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := uint8(0)
 		mailsender := []string{"postmaster@outlook.com", ".onmicrosoft.com"}
@@ -35,9 +35,9 @@ func init() {
 			"Non recapitabile", // it-CH
 			"Olevererbart",     // sv-SE
 		}
-		if sisimoji.ContainsAny(bf.Head["subject"][0], emailtitle) { proceedsto++ }
-		if sisimoji.ContainsAny(bf.Head["from"][0], mailsender)    { proceedsto++ }
-		if len(bf.Head["content-language"]) > 0                    { proceedsto++ }
+		if sisimoji.ContainsAny(bf.Headers["subject"][0], emailtitle) { proceedsto++ }
+		if sisimoji.ContainsAny(bf.Headers["from"][0], mailsender)    { proceedsto++ }
+		if len(bf.Headers["content-language"]) > 0                    { proceedsto++ }
 		if proceedsto < 2 { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
@@ -82,7 +82,7 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
 		recipients := uint8(0)              // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

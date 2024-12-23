@@ -17,12 +17,12 @@ func init() {
 	InquireFor["FML"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
-		if len(bf.Head["x-mlserver"])                     == 0 { return sis.RisingUnderway{} }
-		if strings.Index(bf.Head["from"][0], "-admin@")    < 1 { return sis.RisingUnderway{} }
-		if strings.Index(bf.Head["message-id"][0], ".FML") < 2 { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-mlserver"])                     == 0 { return sis.RisingUnderway{} }
+		if strings.Index(bf.Headers["from"][0], "-admin@")    < 1 { return sis.RisingUnderway{} }
+		if strings.Index(bf.Headers["message-id"][0], ".FML") < 2 { return sis.RisingUnderway{} }
 
 		boundaries := []string{"Original mail as follows:"}
 		errortitle := map[string][]string{
@@ -56,7 +56,7 @@ func init() {
 			"securityerror": []string{"Security alert:"},
 		}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])
 
@@ -100,7 +100,7 @@ func init() {
 
 			for f := range errortitle {
 				// The key is a bounce reason name
-				if sisimoji.ContainsAny(bf.Head["subject"][0], errortitle[f]) == false { continue }
+				if sisimoji.ContainsAny(bf.Headers["subject"][0], errortitle[f]) == false { continue }
 				e.Reason = f; break
 			}
 		}

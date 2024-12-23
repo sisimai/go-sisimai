@@ -20,14 +20,14 @@ func init() {
 	InquireFor["DragonFly"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		// From: MAILER-DAEMON <>
 		// To: kijitora@df.example.jp
 		// Subject: Mail delivery failed
-		if strings.Contains(bf.Head["subject"][0], "Mail delivery failed") == false { return sis.RisingUnderway{} }
-		proceedsto := false; for _, e := range bf.Head["received"] {
+		if strings.Contains(bf.Headers["subject"][0], "Mail delivery failed") == false { return sis.RisingUnderway{} }
+		proceedsto := false; for _, e := range bf.Headers["received"] {
 			// Received: from MAILER-DAEMON
 			//    id e070f
 			//    by df.example.jp (DragonFly Mail Agent v0.13);
@@ -61,7 +61,7 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

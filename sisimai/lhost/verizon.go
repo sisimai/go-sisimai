@@ -17,12 +17,12 @@ func init() {
 	InquireFor["Verizon"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := uint8(0)
-		if strings.Contains(bf.Head["from"][0], "post_master@vtext.com")              { proceedsto = 1 }
-		if sisimoji.Aligned(bf.Head["from"][0], []string{"sysadmin@", ".vzwpix.com"}) { proceedsto = 1 }
+		if strings.Contains(bf.Headers["from"][0], "post_master@vtext.com")              { proceedsto = 1 }
+		if sisimoji.Aligned(bf.Headers["from"][0], []string{"sysadmin@", ".vzwpix.com"}) { proceedsto = 1 }
 		if proceedsto == 0 { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
@@ -33,7 +33,7 @@ func init() {
 			"userunknown": []string{"550 - Requested action not taken: no such user here", "No valid recipients"},
 		}
 
-		if strings.Contains(bf.Body, boundaries[1]) {
+		if strings.Contains(bf.Payload, boundaries[1]) {
 			// Message details:
 			//   Subject: Test message
 			//   Sent date: Wed Apr 29 23:34:45 GMT 2013
@@ -42,13 +42,13 @@ func init() {
 			//   From: sironeko-nekochan-nyaaaaaaaan-nyan@sabineko.example.com
 			// Convert strings above to RFC822 email headers
 			nooriginal = true
-			bf.Body = strings.Replace(bf.Body, "Sent date: ", "Date: ", 1)
-			bf.Body = strings.Replace(bf.Body, "MAIL FROM: ", "Return-Path: ", 1)
-			bf.Body = strings.Replace(bf.Body, "RCPT TO: ",   "To: ", 1)
+			bf.Payload = strings.Replace(bf.Payload, "Sent date: ", "Date: ", 1)
+			bf.Payload = strings.Replace(bf.Payload, "MAIL FROM: ", "Return-Path: ", 1)
+			bf.Payload = strings.Replace(bf.Payload, "RCPT TO: ",   "To: ", 1)
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		v          := &(dscontents[len(dscontents) - 1])
 

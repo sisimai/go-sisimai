@@ -19,18 +19,18 @@ func init() {
 	InquireFor["KDDI"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := false
 		senderlist := []string{"no-reply@.", ".dion.ne.jp"}
 		replyslist := []string{"no-reply@app.auone-net.jp"}
 		ISKDDI: for {
-			replyto := ""; if len(bf.Head["reply-to"]) > 0 { replyto = bf.Head["reply-to"][0] }
-			if sisimoji.ContainsAny(bf.Head["from"][0], senderlist) { proceedsto = true; break ISKDDI }
-			if sisimoji.ContainsAny(replyto, replyslist)            { proceedsto = true; break ISKDDI }
+			replyto := ""; if len(bf.Headers["reply-to"]) > 0 { replyto = bf.Headers["reply-to"][0] }
+			if sisimoji.ContainsAny(bf.Headers["from"][0], senderlist) { proceedsto = true; break ISKDDI }
+			if sisimoji.ContainsAny(replyto, replyslist)               { proceedsto = true; break ISKDDI }
 
-			for _, e := range bf.Head["received"] {
+			for _, e := range bf.Headers["received"] {
 				// Received: from ezweb.ne.jp (nx3oBP05-09.ezweb.ne.jp [59.135.39.233])
 				if strings.Contains(e, "ezweb.ne.jp (") { proceedsto = true; break ISKDDI }
 				if strings.Contains(e, ".au.com (")     { proceedsto = true; break ISKDDI }
@@ -51,7 +51,7 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])
@@ -97,7 +97,7 @@ func init() {
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 			e.Command   = command.Find(e.Diagnosis)
 
-			if len(bf.Head["x-spasign"]) > 0 && bf.Head["x-spasign"][0] == "NG" {
+			if len(bf.Headers["x-spasign"]) > 0 && bf.Headers["x-spasign"][0] == "NG" {
 				// Content-Type: text/plain; ..., X-SPASIGN: NG (spamghetti, au by KDDI)
 				// Filtered recipient returns message that include 'X-SPASIGN' header
 				e.Reason = "filtered"

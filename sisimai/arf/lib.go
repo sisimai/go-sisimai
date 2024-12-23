@@ -21,29 +21,29 @@ func isARF(bf *sis.BeforeFact) bool {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   bool                true if the mail is ARF
 	// @see      https://tools.ietf.org/html/rfc5965
-	if len(bf.Head) == 0 { return false }
-	if len(bf.Body) == 0 { return false }
+	if len(bf.Headers) == 0 { return false }
+	if len(bf.Payload) == 0 { return false }
 
 	abuse := []string{"staff@hotmail.com", "complaints@email-abuse.amazonses.com"}
-	ctype := bf.Head["content-type"][0]
+	ctype := bf.Headers["content-type"][0]
 
 	// Content-Type: multipart/report; report-type=feedback-report; ...
 	if sisimoji.Aligned(ctype, []string{"report-type=", "feedback-report"}) { return true }
 	if strings.Contains(ctype, "multipart/mixed") {
 		// Microsoft (Hotmail, MSN, Live, Outlook) uses its own report format.
 		// Amazon SES Complaints bounces
-		if strings.Contains(bf.Head["subject"][0], "complaint about message from ") {
+		if strings.Contains(bf.Headers["subject"][0], "complaint about message from ") {
 			// From: staff@hotmail.com
 			// From: complaints@email-abuse.amazonses.com
 			// Subject: complaint about message from 192.0.2.1
-			if sisimoji.ContainsAny(bf.Head["from"][0], abuse) { return true }
+			if sisimoji.ContainsAny(bf.Headers["from"][0], abuse) { return true }
 		}
 	}
 
 	APPLE: for {
 		// X-Apple-Unsubscribe: true
-		if len(bf.Head["x-apple-unsubscribe"]) == 0      { break APPLE }
-		if bf.Head["x-apple-unsubscribe"][0]   == "true" { return true }
+		if len(bf.Headers["x-apple-unsubscribe"]) == 0      { break APPLE }
+		if bf.Headers["x-apple-unsubscribe"][0]   == "true" { return true }
 		break APPLE
 	}
 
@@ -55,9 +55,9 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   RisingUnderway      RisingUnderway structure
 	// @see      https://tools.ietf.org/html/rfc5965
-	if len(bf.Head)  == 0 { return sis.RisingUnderway{} }
-	if len(bf.Body)  == 0 { return sis.RisingUnderway{} }
-	if isARF(bf) == false { return sis.RisingUnderway{} }
+	if len(bf.Headers)  == 0     { return sis.RisingUnderway{} }
+	if len(bf.Payload)  == 0     { return sis.RisingUnderway{} }
+	if isARF(bf)        == false { return sis.RisingUnderway{} }
 
 	// http://tools.ietf.org/html/rfc5965
 	// http://en.wikipedia.org/wiki/Feedback_loop_(email)
@@ -84,7 +84,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	}
 
 	dscontents := []sis.DeliveryMatter{{}}
-	emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 	readcursor := uint8(0)            // Points the current cursor position
 	recipients := uint8(0)            // The number of "Final-Recipient" header
 	timestamp0 := ""                  // The value of "Arrival-Date" or "Received-Date"
@@ -205,16 +205,16 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	for recipients == 0 {
 		// There is no recipient address in the message
-		if len(bf.Head["x-apple-unsubscribe"]) > 0 {
+		if len(bf.Headers["x-apple-unsubscribe"]) > 0 {
 			// X-Apple-Unsubscribe: true
-			if bf.Head["x-apple-unsubscribe"][0]         != "true" { break }
-			if strings.Contains(bf.Head["from"][0], "@") == false  { break }
-			dscontents[0].Recipient    = bf.Head["from"][0]
+			if bf.Headers["x-apple-unsubscribe"][0]         != "true" { break }
+			if strings.Contains(bf.Headers["from"][0], "@") == false  { break }
+			dscontents[0].Recipient    = bf.Headers["from"][0]
 			dscontents[0].Diagnosis    = sisimoji.Sweep(emailparts[0])
 			dscontents[0].FeedbackType = "opt-out"
 
 			// Addpend To: field as a pseudo header
-			if emailparts[1] == "" { emailparts[1] = fmt.Sprintf("To: <%s>\n", bf.Head["from"][0]) }
+			if emailparts[1] == "" { emailparts[1] = fmt.Sprintf("To: <%s>\n", bf.Headers["from"][0]) }
 
 		} else {
 			// Pick it from the original message part

@@ -25,8 +25,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   RisingUnderway      RisingUnderway structure
 	// @see      https://tools.ietf.org/html/rfc3464
-	if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-	if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+	if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+	if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 	indicators := lhost.INDICATORS()
 	boundaries := []string{
@@ -39,11 +39,11 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	}
 	startingof := map[string][]string{"message": []string{"Content-Type: message/delivery-status"}}
 
-	for sisimoji.ContainsAny(bf.Body, boundaries) == false {
+	for sisimoji.ContainsAny(bf.Payload, boundaries) == false {
 		// There is no "Content-Type: message/rfc822" line in the message body
 		// Insert "Content-Type: message/rfc822" before "Return-Path:" of the original message
-		cv := "\n\nReturn-Path:"; if strings.Contains(bf.Body, cv) == false { break }
-		bf.Body = strings.Replace(bf.Body, cv, "\n\n" + boundaries[0] + cv, 1)
+		cv := "\n\nReturn-Path:"; if strings.Contains(bf.Payload, cv) == false { break }
+		bf.Payload = strings.Replace(bf.Payload, cv, "\n\n" + boundaries[0] + cv, 1)
 		break
 	}
 	fieldtable := rfc1894.FIELDTABLE()
@@ -51,13 +51,13 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	keystrings := []string{}          // Key list of permessage
 	dscontents := []sis.DeliveryMatter{{}}
 	alternates := sis.DeliveryMatter{}
-	emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 	readcursor := uint8(0)            // Points the current cursor position
 	readslices := []string{""}        // Copy each line for later reference
 	recipients := uint8(0)            // The number of 'Final-Recipient' header
 	beforemesg := ""                  // String before startingof["message"]
 	goestonext := false               // Flag: do not append the line into "beforemesg"
-	isboundary := []string{rfc2045.Boundary(bf.Head["content-type"][0], 0)}
+	isboundary := []string{rfc2045.Boundary(bf.Headers["content-type"][0], 0)}
 	v          := &(dscontents[len(dscontents) - 1])
 
 	for strings.Contains(emailparts[0], "@") == false {
@@ -68,13 +68,13 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		ct := "" // Boundary string found first such as "Content-Type: message/rfc822"
 		for _, e := range boundaries {
 			// Look for a boundary string from the message body
-			p0 = strings.Index(bf.Body, e + "\n"); if p0 < 0 { continue }
+			p0 = strings.Index(bf.Payload, e + "\n"); if p0 < 0 { continue }
 			p1 = p0 + len(e) + 2
 			ct = e; break
 		}
 		if p0 < 0 { break } // There is no boundary string
 
-		cx := bf.Body[p1:]
+		cx := bf.Payload[p1:]
 		p2 := strings.Index(cx, "\n\n")
 		cv := cx[p2 + 2:]
 		emailparts = rfc5322.Part(&cv, []string{ct}, false)

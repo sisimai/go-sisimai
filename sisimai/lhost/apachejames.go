@@ -19,15 +19,15 @@ func init() {
 	InquireFor["ApacheJames"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := false; ISJAMES: for {
 			// Subject:     [BOUNCE]
 			// Message-Id:  JavaMail.
-			if bf.Head["subject"][0] == "[BOUNCE]"                      { proceedsto = true; break ISJAMES }
-			if strings.Contains(bf.Head["message-id"][0], ".JavaMail.") { proceedsto = true; break ISJAMES }
-			for _, e := range bf.Head["received"] {
+			if bf.Headers["subject"][0] == "[BOUNCE]"                      { proceedsto = true; break ISJAMES }
+			if strings.Contains(bf.Headers["message-id"][0], ".JavaMail.") { proceedsto = true; break ISJAMES }
+			for _, e := range bf.Headers["received"] {
 				// Received: from localhost ([127.0.0.1])
 				//    by mx.example.org (JAMES SMTP Server 2.3.2) with SMTP ID 220...
 				if strings.Contains(e, "JAMES SMTP Server") == true     { proceedsto = true; break ISJAMES }
@@ -45,7 +45,7 @@ func init() {
 			"message": []string{"Message details:"},
 		}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)                  // Points the current cursor position
 		recipients := uint8(0)                  // The number of 'Final-Recipient' header
 		alternates := [4]string{"", "", "", ""} // [Envelope-From, Header-From, Date, Subject]

@@ -18,14 +18,14 @@ func init() {
 	InquireFor["MailFoundry"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := false
 		ISMF: for {
 			// Subject: Message delivery has failed
-			if bf.Head["subject"][0] != "Message delivery has failed" { break ISMF }
-			for _, e := range bf.Head["received"] {
+			if bf.Headers["subject"][0] != "Message delivery has failed" { break ISMF }
+			for _, e := range bf.Headers["received"] {
 				// Received: From localhost (127.0.0.1) by smtp9.mf.example.ne.jp (MAILFOUNDRY) id ...
 				if strings.Contains(e, "(MAILFOUNDRY) id") { proceedsto = true; break ISMF }
 			}
@@ -40,7 +40,7 @@ func init() {
 			"error":   []string{"Delivery failed for the following reason:"},
 		}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

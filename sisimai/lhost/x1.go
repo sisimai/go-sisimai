@@ -18,17 +18,17 @@ func init() {
 	InquireFor["X1"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
-		if strings.HasPrefix(bf.Head["subject"][0], "Returned Mail: ")     == false { return sis.RisingUnderway{} }
-		if strings.HasPrefix(bf.Head["from"][0], `"Mail Deliver System" `) == false { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+		if strings.HasPrefix(bf.Headers["subject"][0], "Returned Mail: ")     == false { return sis.RisingUnderway{} }
+		if strings.HasPrefix(bf.Headers["from"][0], `"Mail Deliver System" `) == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"Received: from "}
 		startingof := map[string][]string{"message": []string{"The original message was received at "}}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

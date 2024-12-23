@@ -18,12 +18,12 @@ func init() {
 	InquireFor["Activehunter"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		// From: MAILER-DAEMON
 		// Subject: FAILURE NOTICE :
-		if len(bf.Head["x-ahmailid"]) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-ahmailid"]) == 0 { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822"}
@@ -31,7 +31,7 @@ func init() {
 			"message": []string{"  ----- The following addresses had permanent fatal errors -----"},
 		}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)     // The number of 'Final-Recipient' header
 		readcursor := uint8(0)     // Points the current cursor position
 		v          := &(dscontents[len(dscontents) - 1])

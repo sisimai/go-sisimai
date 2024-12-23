@@ -20,27 +20,27 @@ func init() {
 	InquireFor["InterScanMSS"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := false
 		for {
-			emailtitle := bf.Head["subject"][0]
+			emailtitle := bf.Headers["subject"][0]
 			titletable := []string{
 				"Mail could not be delivered",
 				"メッセージを配信できません。",
 				"メール配信に失敗しました",
 			}
 
-			if strings.HasPrefix(bf.Head["from"][0], `"InterScan`) { proceedsto = true; break }
-			if sisimoji.ContainsAny(emailtitle, titletable)        { proceedsto = true; break }
+			if strings.HasPrefix(bf.Headers["from"][0], `"InterScan`) { proceedsto = true; break }
+			if sisimoji.ContainsAny(emailtitle, titletable)           { proceedsto = true; break }
 			break
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
 		boundaries := []string{"Content-Type: message/rfc822"}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])
 

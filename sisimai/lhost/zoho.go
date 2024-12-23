@@ -18,9 +18,9 @@ func init() {
 	InquireFor["Zoho"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head)               == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body)               == 0 { return sis.RisingUnderway{} }
-		if len(bf.Head["x-zohomail"]) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers)               == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload)               == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-zohomail"]) == 0 { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"\n\nReceived:"}
@@ -31,7 +31,7 @@ func init() {
 			"expired": []string{"Host not reachable"},
 		}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, true)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, true)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

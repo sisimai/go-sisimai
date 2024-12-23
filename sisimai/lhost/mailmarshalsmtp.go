@@ -19,13 +19,13 @@ func init() {
 	InquireFor["MailMarshalSMTP"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
-		if strings.HasPrefix(bf.Head["subject"][0], `Undeliverable Mail: "`) == false { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+		if strings.HasPrefix(bf.Headers["subject"][0], `Undeliverable Mail: "`) == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"}
-		if cv := rfc2045.Boundary(bf.Head["content-type"][0], 1); cv != "" { boundaries = append(boundaries, cv) }
+		if cv := rfc2045.Boundary(bf.Headers["content-type"][0], 1); cv != "" { boundaries = append(boundaries, cv) }
 
 		startingof := map[string][]string{
 			"message": []string{"Your message:"},
@@ -33,7 +33,7 @@ func init() {
 			"rcpts":   []string{"The following recipients were affected:"},
 		}
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		endoferror := false               // Flag for the end of error messages

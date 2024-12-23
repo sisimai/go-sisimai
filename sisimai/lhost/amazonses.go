@@ -25,18 +25,18 @@ func init() {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email(JSON)
 		// @return   RisingUnderway      RisingUnderway structure
 		// @see https://docs.aws.amazon.com/ses/latest/dg/notification-contents.html
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
 		proceedsto := false
-		sespayload := bf.Body
+		sespayload := bf.Payload
 		for {
 			// Remote the following string begins with "--"
 			// --
 			// If you wish to stop receiving notifications from this topic, please click or visit the link below to unsubscribe:
 			// https://sns.us-west-2.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:us-west-2:1...
-			p1 := strings.Index(bf.Body, "\n\n--\n")
-			if p1 > 0 { sespayload = bf.Body[:p1] }
+			p1 := strings.Index(bf.Payload, "\n\n--\n")
+			if p1 > 0 { sespayload = bf.Payload[:p1] }
 			if strings.Contains(sespayload, "!\n ") { sespayload = strings.ReplaceAll(sespayload, "!\n ", "") }
 			p2 := strings.Index(sespayload, `"Message"`)
 

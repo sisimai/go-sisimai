@@ -19,14 +19,14 @@ func init() {
 	InquireFor["Biglobe"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
-		if strings.Contains(bf.Head["from"][0], "postmaster@") == false { return sis.RisingUnderway{} }
-		if strings.Index(bf.Head["subject"][0], "Returned mail:") != 0  { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Headers["from"][0], "postmaster@") == false { return sis.RisingUnderway{} }
+		if strings.Index(bf.Headers["subject"][0], "Returned mail:") != 0  { return sis.RisingUnderway{} }
 		proceedsto := false; for _, e := range []string{"biglobe inacatv tmtv ttv"} {
 			// The From: header should contain one of domain above
-			if strings.Contains(bf.Head["from"][0], "@" + e + ".ne.jp") { proceedsto = true; break }
+			if strings.Contains(bf.Headers["from"][0], "@" + e + ".ne.jp") { proceedsto = true; break }
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
@@ -42,7 +42,7 @@ func init() {
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

@@ -26,17 +26,17 @@ func init() {
 	InquireFor["Postfix"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Head)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Body)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Head["x-aol-ip"]) > 0 { return sis.RisingUnderway{} } // X-AOL-IP: 192.0.2.1
+		if len(bf.Headers)            == 0 { return sis.RisingUnderway{} }
+		if len(bf.Payload)            == 0 { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-aol-ip"]) > 0 { return sis.RisingUnderway{} } // X-AOL-IP: 192.0.2.1
 
 		proceedsto := uint8(0)
-		if strings.Index(bf.Head["subject"][0], "SMTP server: errors from ") > 0 {
+		if strings.Index(bf.Headers["subject"][0], "SMTP server: errors from ") > 0 {
 			// src/smtpd/smtpd_chat.c:|337: post_mail_fprintf(notice, "Subject: %s SMTP server: errors from %s",
 			// src/smtpd/smtpd_chat.c:|338:   var_mail_name, state->namaddr);
 			proceedsto = 2
 
-		} else if bf.Head["subject"][0] == "Undelivered Mail Returned to Sender" {
+		} else if bf.Headers["subject"][0] == "Undelivered Mail Returned to Sender" {
 			// Subject: Undelivered Mail Returned to Sender
 			proceedsto = 1
 		}
@@ -58,7 +58,7 @@ func init() {
 		permessage := map[string]string{} // Store values of each Per-Message field
 		keystrings := []string{}          // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
-		emailparts := rfc5322.Part(&bf.Body, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		nomessages := false               // Delivery report unavailable
 		anotherset := map[string]string{} // Another error information
