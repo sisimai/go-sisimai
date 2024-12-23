@@ -18,9 +18,9 @@ import "sisimai/rfc3834"
 import sisimoji "sisimai/string"
 
 // sift() sifts a bounce mail with each MTA module
-func sift(bf *sis.BeforeFact, hook *func()) bool {
+func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	// @param  *sis.BeforeFact bf     Processing message entity.
-	// @param  *func()         hook   The callback function for the decoded bounce message
+	// @param  interface{}     hook   The callback function for the decoded bounce message
 	// @return bool                   true:  Successfully got the results
 	//                                false: Failed to get the results
 	if len(bf.Head) == 0 { return false }
@@ -61,9 +61,7 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 	bf.Body = *(sisimoji.ToLF(&bf.Body))
 	bf.Body = strings.ReplaceAll(bf.Body, "\t", " ")
 
-	// TODO: Call the hook funcation
-	// hook()
-
+	havecaught := hook.(func(map[string][]string, *string) map[string]interface{})(bf.Head, &bf.Body)
 	havecalled := map[string]bool{}
 	localhostr := sis.RisingUnderway{}
 	modulename := ""
@@ -132,6 +130,7 @@ func sift(bf *sis.BeforeFact, hook *func()) bool {
 	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(localhostr.RFC822)); if nyaan != nil { return false }
 	bf.RFC822 = makemap(&rfc822part.Header, false)
 	bf.Digest = localhostr.Digest
+	bf.Catch  = havecaught
 
 	return true
 }

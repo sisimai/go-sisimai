@@ -43,9 +43,9 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 }
 
 // Rise() works as a constructor of Sisimai::Message
-func Rise(mesg *string, hook *func()) sis.BeforeFact {
+func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 	// @param   *string     mesg  Entire email message
-	// @param   func()      hook  callback method
+	// @param   interface{} hook  callback method
 	// @return  Message           Structured email data
 	if len(*mesg) < 1 { return sis.BeforeFact{} }
 
