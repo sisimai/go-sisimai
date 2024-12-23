@@ -65,11 +65,11 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 			// Build "Message" struct
 			if strings.HasPrefix(*mesg, "From ") {
 				// The message has Unix From line (MAILER-DAEMON Tue Feb 11 00:00:00 2014)
-				beforefact.From = (*mesg)[0:strings.Index(*mesg, "\n")]
+				beforefact.Sender = (*mesg)[0:strings.Index(*mesg, "\n")]
 
 			} else {
 				// Set pseudo UNIX From line
-				beforefact.From = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
+				beforefact.Sender = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 			}
 
 			// Build "Head", "Body" members of BeforeFact
