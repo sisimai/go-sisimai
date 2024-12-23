@@ -47,7 +47,7 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 	// @param   *string     mesg  Entire email message
 	// @param   interface{} hook  callback method
 	// @return  Message           Structured email data
-	if len(*mesg) < 1 { return sis.BeforeFact{} }
+	if mesg == nil || len(*mesg) < 1 { return sis.BeforeFact{} }
 
 	mesg        = sisimoji.ToLF(mesg)
 	parseagain := 0
