@@ -50,7 +50,7 @@ func isARF(bf *sis.BeforeFact) bool {
 	return false
 }
 
-// Inquire() decodes a bounce message which is Abuse Feedback Reporting Format
+// Inquire() decodes a bounce message that is ARF: Abuse Feedback Reporting Formatted email
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   RisingUnderway      RisingUnderway structure

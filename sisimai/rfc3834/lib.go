@@ -14,7 +14,7 @@ import "sisimai/rfc2045"
 import sisimoji "sisimai/string"
 import sisiaddr "sisimai/address"
 
-// Inquire() decodes a bounce message which have fields defined in RFC3464
+// Inquire() decodes a bounce message that includes a vacation message
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   RisingUnderway      RisingUnderway structure
