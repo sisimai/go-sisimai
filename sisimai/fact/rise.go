@@ -281,6 +281,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 			thing.Destination    = ar.Host
 			thing.DiagnosticCode = piece["diagnosticcode"]
 			thing.DiagnosticType = piece["diagnostictype"]
+			thing.FeedbackID     = ""
 			thing.FeedbackType   = e.FeedbackType
 			thing.HardBounce     = false
 			thing.Lhost          = e.Lhost
@@ -405,6 +406,10 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 
 			break REPLYCODE
 		}
+
+		// Feedback-ID: 1.us-west-2.QHuyeCQrGtIIMGKQfVdUhP9hCQR2LglVOrRamBc+Prk=:AmazonSES
+		if len(rfc822data["feedback-id"]) > 0 { thing.FeedbackID = rfc822data["feedback-id"][0] }
+
 		listoffact = append(listoffact, thing)
 	}
 	return listoffact
