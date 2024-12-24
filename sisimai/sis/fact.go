@@ -21,6 +21,7 @@ type Fact struct {
 	Destination     string                  // The domain part of the "Recipinet"
 	DiagnosticCode  string                  // The value of "Diagnostic-Code:" field
 	DiagnosticType  string                  // The 1st part of "Diagnostic-Code:" field
+	FeedbackID      string                  // The value of Feedback-ID: header of the original message
 	FeedbackType    string                  // Feedback Type
 	HardBounce      bool                    // Hard bounce or not
 	Lhost           string                  // local host name/Local MTA
