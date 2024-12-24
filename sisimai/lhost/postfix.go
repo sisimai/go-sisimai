@@ -239,7 +239,7 @@ func init() {
 					if p1 + 6 > len(emailparts[1]) { break }
 
 					// Try to get a recipient address from To: field in the original message at message/rfc822 part
-					p2 := strings.Index(emailparts[1][p1 + 6:], "\n")
+					p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 1)
 					cv := emailparts[1][p1 + 5:p2 + 1]
 					dscontents[len(dscontents) - 1].Recipient = sisiaddr.S3S4(cv)
 					recipients += 1
