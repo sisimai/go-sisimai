@@ -78,7 +78,7 @@ func init() {
 			"Included is a copy of the message header:\n-----------------------------------------", // MXLogic
 		}
 		startingof := map[string][]string{
-			// Error text strings which defined in exim/src/deliver.c
+			// Error text strings which are defined in exim/src/deliver.c
 			//
 			// deliver.c:6292| fprintf(f,
 			// deliver.c:6293|"This message was created automatically by mail delivery software.\n");

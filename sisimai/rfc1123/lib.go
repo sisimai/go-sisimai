@@ -129,7 +129,7 @@ func Find(argv1 string) string {
 	}
 
 	for _, e := range sourcelist {
-		// Pick some strings which is 4 or more length, is including "." character
+		// Pick some strings which have 4 or more length, is including "." character
 		e = strings.TrimRight(e, ".") // Remove "." at the end of the string
 		for _, f := range Prefix0x32 { e = strings.ReplaceAll(e, f, "") }
 		for _, f := range Suffix0x32 { e = strings.ReplaceAll(e, f, "") }

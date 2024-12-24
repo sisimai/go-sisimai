@@ -10,7 +10,7 @@ package rfc3464
 import "strings"
 
 func init() {
-	// Returns []string which is compatible with the value returned from rfc1894.Field()
+	// Returns a []string which is compatible with the value returned from rfc1894.Field()
 	ReturnedBy["PowerMTA"] = func(argv1 string) []string {
 		// @param    string argv1   A line of the error message
 		// @return   []string       []string{"field-name", "value-type", "value", "field-group", "comment"}
