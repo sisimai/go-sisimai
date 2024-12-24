@@ -61,7 +61,8 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	bf.Payload = *(sisimoji.ToLF(&bf.Payload))
 	bf.Payload = strings.ReplaceAll(bf.Payload, "\t", " ")
 
-	havecaught := hook.(func(map[string][]string, *string) map[string]interface{})(bf.Headers, &bf.Payload)
+	cfargument := &sis.CallbackArgs{Headers: bf.Headers, Payload: &bf.Payload}
+	cfreturned := hook.(func(*sis.CallbackArgs) map[string]interface{})(cfargument)
 	havecalled := map[string]bool{}
 	localhostr := sis.RisingUnderway{}
 	modulename := ""
@@ -130,7 +131,7 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(localhostr.RFC822)); if nyaan != nil { return false }
 	bf.RFC822 = makemap(&rfc822part.Header, false)
 	bf.Digest = localhostr.Digest
-	bf.Catch  = havecaught
+	bf.Catch  = cfreturned
 
 	return true
 }
