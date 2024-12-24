@@ -90,9 +90,14 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 				// THe header is not mime-encoded
 				beforefact.Headers["subject"][0] = rawsubject
 			}
-
-			// TODO: Remove "Fwd:" string from the "Subject:" header
-			// TODO: Delete quoted strings, quote symbols(>)
+			cv := strings.ToLower(rawsubject)
+			if strings.HasPrefix(cv, "fwd:") || strings.HasPrefix(cv, "fw:") {
+				// - Remove "Fwd:" string from the "Subject:" header
+				// - Delete quoted strings, quote symbols(>)
+				rawsubject = strings.TrimSpace(rawsubject[strings.Index(cv, ":") + 1:])
+				beforefact.Payload = strings.ReplaceAll(beforefact.Payload, "\n> ", "\n")
+				beforefact.Payload = strings.ReplaceAll(beforefact.Payload, "\n>\n", "\n\n")
+			}
 		}
 
 		// 3. Rewrite message body for detecting the bounce reason
