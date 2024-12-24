@@ -388,7 +388,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 			}
 
 			if ActionList[thing.Action] == false {
-				// There is an action value which is not described at RFC1894
+				// There is an action value that is not described at RFC1894
 				ox := rfc1894.Field("Action: " + thing.Action)
 				if len(ox) > 0 {
 					// Rewrite the value of "Action:" field to the valid value

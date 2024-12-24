@@ -35,7 +35,7 @@ func IsEncoded(argv0 string) bool {
 	return match
 }
 
-// DecodeH() decodes the value of email header which is MIME-Encoded string.
+// DecodeH() decodes the value of email header which is a MIME-Encoded string.
 func DecodeH(argv0 string) string {
 	// @param    string    argvs  MIME-Encoded text
 	// @return   string           MIME-Decoded text
