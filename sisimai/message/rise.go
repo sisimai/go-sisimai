@@ -90,8 +90,7 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 				// THe header is not mime-encoded
 				beforefact.Headers["subject"][0] = rawsubject
 			}
-			cv := strings.ToLower(rawsubject)
-			if strings.HasPrefix(cv, "fwd:") || strings.HasPrefix(cv, "fw:") {
+			if cv := strings.ToLower(rawsubject); strings.HasPrefix(cv, "fwd:") || strings.HasPrefix(cv, "fw:") {
 				// - Remove "Fwd:" string from the "Subject:" header
 				// - Delete quoted strings, quote symbols(>)
 				rawsubject = strings.TrimSpace(rawsubject[strings.Index(cv, ":") + 1:])
