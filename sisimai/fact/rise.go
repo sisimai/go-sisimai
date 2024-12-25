@@ -276,7 +276,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 			thing.Action         = e.Action
 			thing.Addresser      = as
 			thing.Alias          = e.Alias; if len(thing.Alias) == 0 { thing.Alias = ar.Alias }
-			/* TODO: Implemenet o.Catch = */
+			thing.Catch          = beforefact.Catch
 			thing.DeliveryStatus = piece["deliverystatus"]
 			thing.Destination    = ar.Host
 			thing.DiagnosticCode = piece["diagnosticcode"]
