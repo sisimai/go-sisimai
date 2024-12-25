@@ -58,8 +58,7 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 		email, nyaan := mail.ReadMessage(strings.NewReader(*mesg))
 		if nyaan != nil {
 			// Failed to read the message as an email
-			fmt.Printf("ERROR = %s\n", nyaan)
-			break
+			fmt.Printf(" *****error: %s\n", nyaan); break
 
 		} else {
 			// Build "Message" struct
