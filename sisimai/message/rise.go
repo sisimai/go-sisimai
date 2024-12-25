@@ -8,6 +8,7 @@ package message
 // |_| |_| |_|\___||___/___/\__,_|\__, |\___|
 //                                |___/      
 import "io"
+import "os"
 import "fmt"
 import "strings"
 import "net/mail"
@@ -58,7 +59,7 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 		email, nyaan := mail.ReadMessage(strings.NewReader(*mesg))
 		if nyaan != nil {
 			// Failed to read the message as an email
-			fmt.Printf(" *****error: %s\n", nyaan); break
+			fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan)
 
 		} else {
 			// Build "Message" struct
