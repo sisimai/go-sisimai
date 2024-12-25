@@ -50,10 +50,10 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 	if mesg == nil || len(*mesg) < 1 { return sis.BeforeFact{} }
 
 	mesg        = sisimoji.ToLF(mesg)
-	parseagain := 0
+	retryagain := 0
 	beforefact := new(sis.BeforeFact)
 
-	RISE: for parseagain < 2 {
+	RISE: for retryagain < 2 {
 		// 1. Split email data to headers and a body part.
 		email, nyaan := mail.ReadMessage(strings.NewReader(*mesg))
 		if nyaan != nil {
@@ -111,13 +111,15 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 			if strings.Contains(beforefact.Payload, e) { break RISE }
 		}
 
-		// TODO Implement this block
 		// 4. Try to sift again
 		//    There is a bounce message inside of mutipart/*, try to sift the first message/rfc822
-		//    part as a entire message body again.
-		//parseagain++
-		break RISE
+		//    part as a entire message body again. rfc3464/1086-a847b090.eml is the email but the
+		//    results decoded by sisimai are unstable.
+		retryagain++
+		cv := rfc5322.Part(&beforefact.Payload, Boundaries, true)[1]; if len(cv) < 128 { break RISE }
+		mesg = &cv
 	}
+	if beforefact.Void() == true { return sis.BeforeFact{} }
 
 	// TODO Implement this block
 	// 5. Rewrite headers of the original message in the body part
