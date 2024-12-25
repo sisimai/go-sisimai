@@ -119,9 +119,6 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 		mesg = &cv
 	}
 	if beforefact.Void() == true { return sis.BeforeFact{} }
-
-	// TODO Implement this block
-	// 5. Rewrite headers of the original message in the body part
 	return *beforefact
 }
 
