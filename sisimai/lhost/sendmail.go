@@ -228,7 +228,6 @@ func init() {
 				if cv[0] != "" { e.Recipient = cv[0] }
 			}
 		}
-		fmt.Printf("DS = (%##v)\n", dscontents)
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}
 }
