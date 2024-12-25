@@ -37,7 +37,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 	// @param  map[string]bool args     {"delivered": false, "vacation": false} as the default
 	// @param  interface{}     hook     Callback function
 	// @return []sis.Fact               The list of decoded bounce messages
-	if len(*email) < 1 { return []sis.Fact{} }
+	if email == nil || len(*email) < 1 { return []sis.Fact{} }
 
 	beforefact := message.Rise(email, hook); if beforefact.Void() == true { return []sis.Fact{} }
 	rfc822data := beforefact.RFC822
