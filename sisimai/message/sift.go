@@ -7,6 +7,8 @@ package message
 // | | | | | |  __/\__ \__ \ (_| | (_| |  __/
 // |_| |_| |_|\___||___/___/\__,_|\__, |\___|
 //                                |___/      
+import "os"
+import "fmt"
 import "strings"
 import "net/mail"
 import "sisimai/sis"
@@ -26,18 +28,12 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	if len(bf.Headers) == 0 { return false }
 	if len(bf.Payload) == 0 { return false }
 
-	// Tidy up each field name and value in the entire message body
-	bf.Payload = *(tidy(&bf.Payload))
+	bf.Payload = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
+	mesgformat := ""
+	ctencoding := ""
 
-	// Decode BASE64 Encoded message body
-	mesgformat := ""; if len(bf.Headers["content-type"]) > 0 {
-		// Content-Type: text/plain; charset=utf8
-		mesgformat = strings.ToLower(bf.Headers["content-type"][0])
-	}
-	ctencoding := ""; if len(bf.Headers["content-transfer-encoding"]) > 0 {
-		// Content-Transfer-Encoding: base64
-		ctencoding = strings.ToLower(bf.Headers["content-transfer-encoding"][0])
-	}
+	if len(bf.Headers["content-type"])              > 0 { mesgformat = strings.ToLower(bf.Headers["content-type"][0])              }
+	if len(bf.Headers["content-transfer-encoding"]) > 0 { ctencoding = strings.ToLower(bf.Headers["content-transfer-encoding"][0]) }
 
 	if strings.HasPrefix(mesgformat, "text/plain") || strings.HasPrefix(mesgformat, "text/html") {
 		// Content-Type: text/plain; charset=UTF-8
@@ -49,23 +45,21 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 			// Content-Transfer-Encoding: quoted-printable
 			bf.Payload = rfc2045.DecodeQ(bf.Payload)
 		}
+		if strings.HasPrefix(mesgformat, "text/html") { bf.Payload = *(sisimoji.ToPlain(&bf.Payload)) }
 
-		if strings.HasPrefix(mesgformat, "text/html") {
-			// Content-Type: text/html;...
-			bf.Payload = *(sisimoji.ToPlain(&bf.Payload))
-		}
 	} else if strings.HasPrefix(mesgformat, "multipart/") {
 		// In case of Content-Type: multipart/*
 		if cv := rfc2045.MakeFlat(bf.Headers["content-type"][0], &bf.Payload); cv != nil { bf.Payload = *cv }
 	}
-	bf.Payload = *(sisimoji.ToLF(&bf.Payload))
-	bf.Payload = strings.ReplaceAll(bf.Payload, "\t", " ")
+	bf.Payload  = *(sisimoji.ToLF(&bf.Payload))
+	bf.Payload  = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
 
 	cfargument := &sis.CallbackArgs{Headers: bf.Headers, Payload: &bf.Payload}
 	cfreturned := hook.(func(*sis.CallbackArgs) map[string]interface{})(cfargument)
 	havecalled := map[string]bool{}
 	localhostr := sis.RisingUnderway{}
 	modulename := ""
+
 	DECODER: for {
 		// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
 		// 2. sisimai/rfc3464
@@ -128,7 +122,12 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	}
 	if rfc822text != "" { localhostr.RFC822 = rfc822text + "\n" }
 
-	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(localhostr.RFC822)); if nyaan != nil { return false }
+	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(localhostr.RFC822))
+	if nyaan != nil {
+		// Failed to read the original message part
+		fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan)
+		return false
+	}
 	bf.RFC822 = makemap(&rfc822part.Header, false)
 	bf.Digest = localhostr.Digest
 	bf.Catch  = cfreturned
