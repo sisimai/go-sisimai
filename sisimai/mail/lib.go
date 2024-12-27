@@ -58,7 +58,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				// TODO: In the case of that the input data is a binary
 				stdin, nyaan := ioutil.ReadAll(os.Stdin)
 				if len(stdin) == 0 { break }
-				if nyaan != nil { fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan); break }
+				if nyaan != nil { return &ee, nyaan }
 				payload = string(stdin)
 				break
 			}
@@ -84,7 +84,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				ee.Size   += int64(len(cv))
 			}
 		}
-		ee.setNewLine()
+		ee.setNewLine() // TODO: Receive and check the return values
 
 	} else {
 		// UNIX mbox or Maildir/
@@ -102,7 +102,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				// UNIX mbox
 				ee.Kind = "mailbox"
 				ee.File = filepath.Base(argv0)
-				ee.setNewLine()
+				ee.setNewLine() // TODO: Receive and check the return values
 			}
 		} else {
 			// Neither a mailbox nor a maildir exists
@@ -138,10 +138,10 @@ func(this *EmailEntity) Read() (*string, error) {
 }
 
 // *EmailEntity.setNewLine() returns true if the newline code is CRLF or CR or LF
-func(this *EmailEntity) setNewLine() bool {
+func(this *EmailEntity) setNewLine() (bool, error) {
 	// @param    NONE
 	// @return   bool true if the newline code is CRLF or CR or LF
-	if this.Kind == "maildir" { return false }
+	if this.Kind == "maildir" { return false, nil }
 	var bufferedio *bufio.Reader
 	var readbuffer string
 
@@ -151,9 +151,8 @@ func(this *EmailEntity) setNewLine() bool {
 			// UNIX mbox
 			if filep, nyaan := os.Open(this.Path); nyaan != nil {
 				// Failed to open the file
-				fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan)
 				this.NewLine = 0
-				return false
+				return false, nyaan
 
 			} else {
 				// Successfully opened the mbox
@@ -170,22 +169,21 @@ func(this *EmailEntity) setNewLine() bool {
 		_, nyaan := bufferedio.Read(the1st1000)
 		if nyaan != nil && nyaan != io.EOF {
 			// Failed to read the 1st 1000 bytes
-			fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan)
 			this.NewLine = 0
-			return false
+			return false, nyaan
 		}
 		readbuffer = string(the1st1000)
 
 	} else {
 		// Memory
-		if len(this.payload) ==  0 { this.NewLine = 0; return false }
-		if this.payload[0]   == "" { this.NewLine = 0; return false }
+		if len(this.payload) ==  0 { this.NewLine = 0; return false, nil }
+		if this.payload[0]   == "" { this.NewLine = 0; return false, nil }
 		readbuffer = this.payload[0][:1000]
 	}
 
-	if strings.Contains(readbuffer, "\r\n") { this.NewLine = 3; return true }
-	if strings.Contains(readbuffer, "\r")   { this.NewLine = 2; return true }
-	if strings.Contains(readbuffer, "\n")   { this.NewLine = 1; return true }
-	this.NewLine = 0; return false
+	if strings.Contains(readbuffer, "\r\n") { this.NewLine = 3; return true, nil }
+	if strings.Contains(readbuffer, "\r")   { this.NewLine = 2; return true, nil }
+	if strings.Contains(readbuffer, "\n")   { this.NewLine = 1; return true, nil }
+	this.NewLine = 0; return false, nil
 }
 
