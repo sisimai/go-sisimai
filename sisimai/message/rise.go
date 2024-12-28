@@ -8,7 +8,6 @@ package message
 // |_| |_| |_|\___||___/___/\__,_|\__, |\___|
 //                                |___/      
 import "io"
-import "os"
 import "fmt"
 import "strings"
 import "net/mail"
@@ -59,7 +58,9 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 		email, nyaan := mail.ReadMessage(strings.NewReader(*mesg))
 		if nyaan != nil {
 			// Failed to read the message as an email
-			fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan)
+			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true)
+			beforefact.Errors = append(beforefact.Errors, ce)
+			return *beforefact
 
 		} else {
 			// Build "Message" struct
@@ -84,8 +85,12 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 			// Decode MIME-Encoded "Subject:" header
 			if rfc2045.IsEncoded(rawsubject) {
 				// The header is mime-encoded
-				beforefact.Headers["subject"][0] = rfc2045.DecodeH(rawsubject)
-
+				cv, nyaan := rfc2045.DecodeH(rawsubject); beforefact.Headers["subject"][0] = cv
+				if nyaan != nil {
+					// Something wrong when the function decodes the MIME-Encoded Subejct header
+					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+					beforefact.Errors = append(beforefact.Errors, ce)
+				}
 			} else {
 				// THe header is not mime-encoded
 				beforefact.Headers["subject"][0] = rawsubject
