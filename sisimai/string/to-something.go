@@ -103,14 +103,7 @@ func ToUTF8(argv0 []byte, argv1 string) (string, error) {
 	}
 	utf8string := make([]byte, len(argv0) * 3)
 	rightindex, _, nyaan := encodingif.Transform(utf8string, argv0, false)
-	if nyaan != nil { 
-		// Failed to encode?
-		fmt.Fprintf(os.Stderr, " ***warning: %s\n", nyaan)
-		return string(argv0), nyaan
-
-	} else {
-		// Successfully encoded
-		return string(utf8string[:rightindex]), nil
-	}
+	if nyaan != nil { return string(argv0), nyaan }
+	return string(utf8string[:rightindex]), nil
 }
 
