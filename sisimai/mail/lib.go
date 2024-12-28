@@ -103,6 +103,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				ee.Kind = "mailbox"
 				ee.File = filepath.Base(argv0)
 				ee.setNewLine() // TODO: Receive and check the return values
+				if ee.Size == 0 { return &ee, fmt.Errorf("%s is empty", argv0) }
 			}
 		} else {
 			// Neither a mailbox nor a maildir exists
