@@ -33,7 +33,7 @@ func MakeNotDecoded(argv0 string, argv1 bool) *NotDecoded {
 		BecauseOf: argv0,
 		CalledOff: argv1,
 		Timestamp: time.Now(),
-		WhoCalled: runtime.FuncForPC(p).Name() + "():" + string(l),
+		WhoCalled: fmt.Sprintf("%s():%d", runtime.FuncForPC(p).Name(), l),
 	}
 }
 
