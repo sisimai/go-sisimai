@@ -85,15 +85,14 @@ func Date(argv1 string) string {
 		"", // [5] Timezone Offset (0)
 	}
 
-	READ_TIMESTAMP: for _, e := range strings.Split(datestring, " ") {
+	for _, e := range strings.Split(datestring, " ") {
 		// Check, convert each piece and store it to p[*]
 		cw := len(e); if cw == 0 { continue }
 		if cw < 3 {
 			// This piece might be a day such as 1, or 02, or 31
 			cv, nyaan := strconv.ParseUint(e, 10, 8); if nyaan != nil {
 				// Failed to parse as a integer
-				fmt.Fprintf(os.Stderr, " ***warning: %s\n", nyaan)
-				break READ_TIMESTAMP
+				return ""
 
 			} else {
 				// Successfully parsed and convertd to an interger
@@ -131,15 +130,13 @@ func Date(argv1 string) string {
 					// Each element(integer) should be greater equal 0 and less equal 60.
 					cv, nyaan := strconv.ParseUint(f, 10, 8); if nyaan != nil || cv > 60 {
 						// This piece does not seem to a time string
-						fmt.Fprintf(os.Stderr, " ***warning: %s\n", nyaan)
-						break READ_TIMESTAMP
+						return ""
 					}
 					ct = append(ct, uint8(cv))
 				}
 				if len(ct) != 3 {
 					// This piece does not seem to a time string
-					fmt.Fprintf(os.Stderr, " ***warning: Invalid time string `%s`\n", e)
-					break READ_TIMESTAMP
+					return ""
 				}
 				p[4] = fmt.Sprintf("%02d:%02d:%02d", ct[0], ct[1], ct[2])
 
