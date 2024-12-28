@@ -39,17 +39,28 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 		// Content-Type: text/plain; charset=UTF-8
 		if ctencoding == "base64" {
 			// Content-Transfer-Encoding: base64
-			bf.Payload = rfc2045.DecodeB(bf.Payload, "")
-
+			cv, nyaan := rfc2045.DecodeB(bf.Payload, ""); bf.Payload = cv
+			if nyaan != nil {
+				// Something wrong when the function decodes the BASE64 encoded string
+				ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+				bf.Errors = append(bf.Errors, ce)
+			}
 		} else if ctencoding == "quoted-printable" {
 			// Content-Transfer-Encoding: quoted-printable
-			bf.Payload = rfc2045.DecodeQ(bf.Payload)
+			cv, nyaan := rfc2045.DecodeQ(bf.Payload); bf.Payload = cv
+			if nyaan != nil {
+				// Something wrong when the function decodes the Quoted-Printable encoded string
+				ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+				bf.Errors = append(bf.Errors, ce)
+			}
 		}
 		if strings.HasPrefix(mesgformat, "text/html") { bf.Payload = *(sisimoji.ToPlain(&bf.Payload)) }
 
 	} else if strings.HasPrefix(mesgformat, "multipart/") {
 		// In case of Content-Type: multipart/*
-		if cv := rfc2045.MakeFlat(bf.Headers["content-type"][0], &bf.Payload); cv != nil { bf.Payload = *cv }
+		cv, fe := rfc2045.MakeFlat(bf.Headers["content-type"][0], &bf.Payload)
+		if cv != nil                { bf.Payload = *cv                      }
+		if fe != nil && len(fe) > 0 { bf.Errors  = append(bf.Errors, fe...) }
 	}
 	bf.Payload  = *(sisimoji.ToLF(&bf.Payload))
 	bf.Payload  = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
