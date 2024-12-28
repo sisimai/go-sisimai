@@ -7,9 +7,9 @@ package rfc2045
 // | |_) | |_ | |     __) | | | | || ||___ \ 
 // |  _ <|  _|| |___ / __/| |_| |__   _|__) |
 // |_| \_\_|   \____|_____|\___/   |_||____/ 
-import "log"
 import "fmt"
 import "strings"
+import "sisimai/sis"
 import sisimoji "sisimai/string"
 
 // haircut() remove unnecessary header fields except Content-Type, Content-Transfer-Encoding from
@@ -94,16 +94,17 @@ func haircut(block *string, heads bool) []string {
 }
 
 // levelout() splits the second argument: multipart/* blocks by a boundary string in the first argument.
-func levelout(argv0 string, argv1 *string) [][3]string {
+func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 	// @param    string      argv0  The value of Content-Type header
 	// @param    *string     argv1  A pointer to multipart/* message blocks
 	// @return   [][3]string        List of each part of multipart/*
-	if len(argv0)  == 0 { return nil }
-	if len(*argv1) == 0 { return nil }
+	if len(argv0)  == 0 { return nil, nil }
+	if len(*argv1) == 0 { return nil, nil }
 
-	boundary01 := Boundary(argv0, 0); if len(boundary01) == 0 { return nil }
+	boundary01 := Boundary(argv0, 0); if len(boundary01) == 0 { return nil, nil }
 	multiparts := strings.Split(*argv1, boundary01 + "\n")
-	partstable := [][3]string{} // []
+	partstable := [][3]string{}
+	notdecoded := []sis.NotDecoded{}
 
 	// Remove empty or useless preamble and epilogue of multipart/* block
 	if len(multiparts[0])                   < 8 { multiparts = multiparts[1:] }
@@ -124,9 +125,15 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 
 			if len(bodyinside) < 8                               { continue }
 			if strings.Contains(bodyinside, boundary02) == false { continue }
-			v := levelout(f[0], &bodyinside); if v == nil        { continue }
 
+			v, ce := levelout(f[0], &bodyinside)
+			if ce != nil && len(ce) > 0 {
+				// There is any errors
+				notdecoded = append(notdecoded, ce...)
+				if v == nil { continue }
+			}
 			for _, w := range v { partstable = append(partstable, [3]string{w[0], w[1], w[2]}) }
+
 		} else {
 			// The part is not a multipart/* block
 			b := e; if len(f[len(f) - 1]) > 0 { b = f[len(f) - 1] }
@@ -135,9 +142,15 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 			if sisimoji.Is8Bit(&b) || c == "iso-2022-jp" {
 				// Avoid the following errors in DecodeQ()
 				// - quotedprintable: invalid unescaped byte 0x1b in body
-				utf8string, nyaan := sisimoji.ToUTF8([]byte(b), c)
-				if nyaan != nil { log.Fatal(fmt.Printf(" ***error: %s\n", nyaan)) }
-				b = utf8string // Successfuly converted to UTF8
+				if utf8string, nyaan := sisimoji.ToUTF8([]byte(b), c); nyaan != nil {
+					// Failed to convert the string to UTF-8
+					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+					notdecoded = append(notdecoded, ce)
+
+				} else {
+					// Successfuly converted to UTF8
+					b = utf8string
+				}
 			}
 
 			v := [3]string{f[0], f[1], b}
@@ -149,7 +162,7 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 			partstable = append(partstable, v)
 		}
 	}
-	if len(partstable) == 0 { return nil }
+	if len(partstable) == 0 { return nil, notdecoded }
 
 	// Remove `boundary01 + '--'` and strings from the boundary to the end of the body part.
 	boundary01 = strings.Replace(boundary01, "\n", "", -1)
@@ -157,17 +170,17 @@ func levelout(argv0 string, argv1 *string) [][3]string {
 	p := strings.Index(b, boundary01 + "--")
 	if p > -1 { partstable[len(partstable) - 1][2] = strings.SplitN(b, boundary01 + "--", 2)[0] }
 
-	return partstable
+	return partstable, notdecoded
 }
 
 // Makeflat() makes multipart/* part blocks flat and decode each part.
-func MakeFlat(argv0 string, argv1 *string) *string {
+func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 	// @param    string  argv0  The value of Content-Type header
 	// @param    *string argv1  A pointer to multipart/* message blocks
 	// @return   *string        Message body
 	lhead := strings.ToLower(argv0)
-	if strings.Contains(lhead, "multipart/") == false { return nil }
-	if strings.Contains(lhead, "boundary=")  == false { return nil }
+	if strings.Contains(lhead, "multipart/") == false { return nil, nil }
+	if strings.Contains(lhead, "boundary=")  == false { return nil, nil }
 
 	// Some bounce messages include lower-cased "content-type:" field such as the followings:
 	//   - content-type: message/delivery-status        => Content-Type: message/delivery-status
@@ -192,7 +205,7 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 		*argv1 = strings.Replace(*argv1, e + "=", strings.ToLower(e) + "=", -1)
 	}
 	*argv1 = strings.Replace(*argv1, "message/xdelivery-status", "message/delivery-status", -1)
-	multiparts := levelout(argv0, argv1)
+	multiparts, notdecoded := levelout(argv0, argv1)
 	flattenout := ""
 	delimiters := []string{"/delivery-status", "/rfc822", "/feedback-report", "/partial"}
 
@@ -219,12 +232,20 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 			// Check the value of Content-Transfer-Encoding: header
 			if ctencoding == "base64" {
 				// Content-Transfer-Encoding: base64
-				bodystring = DecodeB(bodyinside, "")
-
+				cv, nyaan := DecodeB(bodyinside, ""); bodystring = cv
+				if nyaan != nil {
+					// Something wrong when the function decodes the BASE64 encoded string
+					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+					notdecoded = append(notdecoded, ce)
+				}
 			} else if ctencoding == "quoted-printable" {
 				// Content-Transfer-Encoding: quoted-printable
-				bodystring = DecodeQ(bodyinside)
-
+				cv, nyaan := DecodeQ(bodyinside); bodystring = cv
+				if nyaan != nil {
+					// Something wrong when the function decodes the Quoted-Printable encoded string
+					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+					notdecoded = append(notdecoded, ce)
+				}
 			} else if ctencoding == "7bit" {
 				// Content-Transfer-Encoding: 7bit
 				if ctx := Parameter(e[0], "charset"); strings.HasPrefix(ctx, "iso-2022-") {
@@ -267,6 +288,6 @@ func MakeFlat(argv0 string, argv1 *string) *string {
 		if bodystring[len(bodystring) - 2:len(bodystring)] != "\n\n" { bodystring += "\n\n" }
 		flattenout += bodystring
 	}
-	return &flattenout
+	return &flattenout, notdecoded
 }
 
