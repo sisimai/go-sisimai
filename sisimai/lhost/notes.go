@@ -38,6 +38,7 @@ func init() {
 		characters := rfc2045.Parameter(bf.Headers["content-type"][0], "charset")
 
 		dscontents := []sis.DeliveryMatter{{}}
+		notdecoded := []sis.NotDecoded{}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
@@ -81,7 +82,9 @@ func init() {
 					utf8string, nyaan := sisimoji.ToUTF8([]byte(e), characters)
 					if nyaan != nil {
 						// Failed to convert the string to UTF8
-						v.Diagnosis = removedmsg + fmt.Sprintf(" ***error: %s", nyaan)
+						ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false); ce.DecodedBy = "Notes"
+						notdecoded = append(notdecoded, ce)
+						v.Diagnosis = removedmsg
 
 					} else {
 						// Successfully converted
@@ -109,7 +112,7 @@ func init() {
 				}
 			}
 		}
-		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
+		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1], Errors: notdecoded }
     }
 }
 

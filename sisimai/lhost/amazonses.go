@@ -7,7 +7,6 @@ package lhost
 // | | '_ \ / _ \/ __| __| / / _ \ | '_ ` _ \ / _` |_  / _ \| '_ \\___ \|  _| \___ \ 
 // | | | | | (_) \__ \ |_ / / ___ \| | | | | | (_| |/ / (_) | | | |___) | |___ ___) |
 // |_|_| |_|\___/|___/\__/_/_/   \_\_| |_| |_|\__,_/___\___/|_| |_|____/|_____|____/ 
-import "os"
 import "fmt"
 import "errors"
 import "strings"
@@ -217,6 +216,7 @@ func init() {
 		var whatnotify string      // The first character of "notificationType": "B", "C" or "D"
 		var notifiedto NotifiedTo  // This instance have 3 types: ReturnedTo, Deliveries, Complained
 		var mailinside *mailObject // The pointer to mailObject struct
+		var notdecoded []sis.NotDecoded
 		var jsonerrors error  = errors.New("Invalid JSON format")
 		var jsonstring []byte = []byte(sespayload)
 
@@ -258,8 +258,9 @@ func init() {
 		}
 		if whatnotify == "" {
 			// Failed to loadl/decode JSON
-			fmt.Fprintf(os.Stderr, " ***warning: %s\n", jsonerrors)
-			return sis.RisingUnderway{}
+			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", jsonerrors), true); ce.DecodedBy = "AmazonSES"
+			notdecoded = append(notdecoded, ce)
+			return sis.RisingUnderway{Errors: notdecoded}
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
