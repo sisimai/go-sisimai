@@ -10,72 +10,49 @@ package rfc5322
 /**************************************************************************************************
 3.3.  Date and Time Specification
 
-   Date and time values occur in several header fields.  This section
-   specifies the syntax for a full date and time specification.  Though
-   folding white space is permitted throughout the date-time
-   specification, it is RECOMMENDED that a single space be used in each
-   place that FWS appears (whether it is required or optional); some
-   older implementations will not interpret longer sequences of folding
-   white space correctly.
+  Date and time values occur in several header fields. This section specifies the syntax for a full
+  date and time specification. Though folding white space is permitted throughout the date-time
+  specification, it is RECOMMENDED that a single space be used in each place that FWS appears
+  (whether it is required or optional); some older implementations will not interpret longer se-
+  quences of folding white space correctly.
 
-   date-time       =   [ day-of-week "," ] date time [CFWS]
+    date-time       =   [ day-of-week "," ] date time [CFWS]
+    day-of-week     =   ([FWS] day-name) / obs-day-of-week
+    day-name        =   "Mon" / "Tue" / "Wed" / "Thu" / "Fri" / "Sat" / "Sun"
+    date            =   day month year
+    day             =   ([FWS] 1*2DIGIT FWS) / obs-day
+    month           =   "Jan" / "Feb" / "Mar" / "Apr" / "May" / "Jun" / "Jul" / "Aug" /
+                        "Sep" / "Oct" / "Nov" / "Dec"
+    year            =   (FWS 4*DIGIT FWS) / obs-year
+    time            =   time-of-day zone
+    time-of-day     =   hour ":" minute [ ":" second ]
+    hour            =   2DIGIT / obs-hour
+    minute          =   2DIGIT / obs-minute
+    second          =   2DIGIT / obs-second
+    zone            =   (FWS ( "+" / "-" ) 4DIGIT) / obs-zone
 
-   day-of-week     =   ([FWS] day-name) / obs-day-of-week
+  The day is the numeric day of the month. The year is any numeric year 1900 or later.
 
-   day-name        =   "Mon" / "Tue" / "Wed" / "Thu" /
-                       "Fri" / "Sat" / "Sun"
+  The time-of-day specifies the number of hours, minutes, and optionally seconds since midnight of
+  the date indicated.
 
-   date            =   day month year
+  The date and time-of-day SHOULD express local time.
 
-   day             =   ([FWS] 1*2DIGIT FWS) / obs-day
+  The zone specifies the offset from Coordinated Universal Time (UTC, formerly referred to as GMT
+  that the date and time-of-day represent. The "+" or "-" indicates whether the time-of-day is a-
+  head of (i.e., east of) or behind (i.e., west of) Universal Time. The first two digits indicate
+  the number of hours difference from Universal Time, and the last two digits indicate the number
+  of additional minutes difference from Universal Time. (Hence, +hhmm means +(hh * 60 + mm) minutes,
+  and -hhmm means -(hh * 60 + mm) minutes). The form "+0000" SHOULD be used to indicate a time zone
+  at Universal Time. Though "-0000" also indicates Universal Time, it is used to indicate that the
+  time was generated on a system that may be in a local time zone other than Universal Time and
+  that the date-time contains no information about the local time zone.
 
-   month           =   "Jan" / "Feb" / "Mar" / "Apr" /
-                       "May" / "Jun" / "Jul" / "Aug" /
-                       "Sep" / "Oct" / "Nov" / "Dec"
-
-   year            =   (FWS 4*DIGIT FWS) / obs-year
-
-   time            =   time-of-day zone
-
-   time-of-day     =   hour ":" minute [ ":" second ]
-
-   hour            =   2DIGIT / obs-hour
-
-   minute          =   2DIGIT / obs-minute
-
-   second          =   2DIGIT / obs-second
-
-   zone            =   (FWS ( "+" / "-" ) 4DIGIT) / obs-zone
-
-   The day is the numeric day of the month.  The year is any numeric
-   year 1900 or later.
-
-   The time-of-day specifies the number of hours, minutes, and
-   optionally seconds since midnight of the date indicated.
-
-   The date and time-of-day SHOULD express local time.
-
-   The zone specifies the offset from Coordinated Universal Time (UTC,
-   formerly referred to as "Greenwich Mean Time") that the date and
-   time-of-day represent.  The "+" or "-" indicates whether the time-of-
-   day is ahead of (i.e., east of) or behind (i.e., west of) Universal
-   Time.  The first two digits indicate the number of hours difference
-   from Universal Time, and the last two digits indicate the number of
-   additional minutes difference from Universal Time.  (Hence, +hhmm
-   means +(hh * 60 + mm) minutes, and -hhmm means -(hh * 60 + mm)
-   minutes).  The form "+0000" SHOULD be used to indicate a time zone at
-   Universal Time.  Though "-0000" also indicates Universal Time, it is
-   used to indicate that the time was generated on a system that may be
-   in a local time zone other than Universal Time and that the date-time
-   contains no information about the local time zone.
-
-   A date-time specification MUST be semantically valid.  That is, the
-   day-of-week (if included) MUST be the day implied by the date, the
-   numeric day-of-month MUST be between 1 and the number of days allowed
-   for the specified month (in the specified year), the time-of-day MUST
-   be in the range 00:00:00 through 23:59:60 (the number of seconds
-   allowing for a leap second; see [RFC1305]), and the last two digits
-   of the zone MUST be within the range 00 through 59.
+  A date-time specification MUST be semantically valid. That is, the day-of-week (if included) MUST
+  be the day implied by the date, the numeric day-of-month MUST be between 1 and the number of days
+  allowed for the specified month (in the specified year), the time-of-day MUST be in the range
+  00:00:00 through 23:59:60 (the number of seconds allowing for a leap second; see [RFC1305]), and
+  the last two digits of the zone MUST be within the range 00 through 59.
 **************************************************************************************************/
 import "os"
 import "fmt"
