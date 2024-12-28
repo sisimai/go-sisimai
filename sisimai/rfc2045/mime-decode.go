@@ -8,9 +8,7 @@ package rfc2045
 // |  _ <|  _|| |___ / __/| |_| |__   _|__) |
 // |_| \_\_|   \____|_____|\___/   |_||____/ 
 import "io"
-import "os"
 import "fmt"
-import "log"
 import "mime"
 import "strings"
 import "io/ioutil"
@@ -36,7 +34,7 @@ func IsEncoded(argv0 string) bool {
 }
 
 // DecodeH() decodes the value of email header which is a MIME-Encoded string.
-func DecodeH(argv0 string) string {
+func DecodeH(argv0 string) (string, error) {
 	// @param    string    argvs  MIME-Encoded text
 	// @return   string           MIME-Decoded text
 	toreadable := "" // Human readble text (has decoded)
@@ -87,16 +85,16 @@ func DecodeH(argv0 string) string {
 			if j > 0 { toreadable += " " }; toreadable += e
 		}
 	}
-	return toreadable
+	return toreadable, nil
 }
 
 // DecodeB() decodes Base64 encoded text.
-func DecodeB(argv0 string, argv1 string) string {
+func DecodeB(argv0 string, argv1 string) (string, error) {
 	// @param    string     argv0  Base64 Encoded text
 	// @param    string     argv1  Character set name
 	// @return   string            MIME-Decoded text
-	if len(argv0)  < 8 { return argv0 }
-	if len(argv1) == 0 { argv1 = "utf-8" }
+	if len(argv0)  < 8 { return argv0, nil }
+	if len(argv1) == 0 { argv1 = "utf-8"   }
 
 	decodingif := new(mime.WordDecoder)
 	base64text := strings.TrimSpace(argv0)
@@ -106,17 +104,17 @@ func DecodeB(argv0 string, argv1 string) string {
 
 	if plain, nyaan := decodingif.Decode(base64text); nyaan != nil {
 		// Failed to decode the base64-encoded text
-		log.Fatal(nyaan)
+		return "", nyaan
 
 	} else {
 		// Successfully decoded
 		plainvalue = plain
 	}
-	return plainvalue
+	return plainvalue, nil
 }
 
 // DecodeQ() decodes Quoted-Pritable encdoed text
-func DecodeQ(argv0 string) string {
+func DecodeQ(argv0 string) (string, error) {
 	// @param    string     argv0 Quoted-Printable Encoded text
 	// @return   string           MIME-Decoded text
 	readstring := strings.NewReader(argv0)
@@ -125,12 +123,11 @@ func DecodeQ(argv0 string) string {
 
 	plain, nyaan := ioutil.ReadAll(decodingif); if nyaan != nil {
 		// Failed to decode the quoted-printable text
-		fmt.Fprintf(os.Stderr, " ***warning: %s\n", nyaan)
 		plainvalue = argv0
 	}
 	if len(plain) > 0 { plainvalue = string(plain) }
 
-	return plainvalue
+	return plainvalue, nyaan
 }
 
 // CharacterSet() returns "ISO-2022-JP" as a character set name from "=?ISO-2022-JP?B?...?="
