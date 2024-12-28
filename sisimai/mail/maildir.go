@@ -8,6 +8,7 @@ package mail
 // | | | | | | (_| | | |/ /| | | | | | (_| | | | (_| | | |   
 // |_| |_| |_|\__,_|_|_/_/ |_| |_| |_|\__,_|_|_|\__,_|_|_|   
 import "os"
+import "fmt"
 import "io/ioutil"
 import "path/filepath"
 
@@ -17,39 +18,27 @@ func (this *EmailEntity) readMaildir() (*string, error) {
 	// @return   error    It has reached to the end of the Maildir/
 	if this.handle == nil {
 		// Open the Maildir/
-		filehandle, nyaan := os.Open(this.Dir); if nyaan != nil { return nil, nyaan }
+		filehandle, nyaan := os.Open(this.Dir);  if nyaan != nil { return nil, nyaan }
 		this.handle = filehandle // Successfully opened the Maildir/
 	}
 
 	emailblock := ""
-	if emailfiles, nyaan := this.handle.Readdir(1); nyaan == nil {
+	emailfiles, nyaan := this.handle.Readdir(1); if nyaan != nil { return &emailblock, nyaan }
+
+	for _, e := range emailfiles {
 		// Read each email file in the Maildir/
-		for _, e := range emailfiles {
-			// The element is a directory in the Maildir/, OR the size of email file is 0
-			this.offset += 1
-			if e.IsDir() || e.Size() == 0 { continue }
+		this.offset += 1; if e.IsDir() { continue }
+		this.Size    = e.Size()
+		this.File    = e.Name()
+		this.Path    = filepath.Clean(filepath.FromSlash(this.Dir + "/" + e.Name()))
+		if this.Size == 0 { return &emailblock, fmt.Errorf("%s in Maildir/ is empty", e.Name()) }
 
-			this.Size = e.Size()
-			this.File = e.Name()
-			this.Path = filepath.Clean(filepath.FromSlash(this.Dir + "/" + e.Name()))
-
-			emailbytes := make([]byte, e.Size())
-			if readbuffer, nyaan := ioutil.ReadFile(this.Path); nyaan == nil {
-				// No error, successfully opened each email file
-				emailbytes = append(emailbytes, readbuffer...)
-
-			} else {
-				// Failed to read the email file
-				continue
-			}
-			emailblock = string(emailbytes)
-			break
-		}
-	} else {
-		// Completed to read the Maildir/ or Failed to read the Maildir/
-		return nil, nyaan
+		emailbytes := make([]byte, e.Size())
+		readbuffer, nyaan := ioutil.ReadFile(this.Path); if nyaan != nil { return &emailblock, nyaan }
+		emailbytes  = append(emailbytes, readbuffer...)
+		emailblock  = string(emailbytes)
+		break
 	}
-
 	return &emailblock, nil
 }
 
