@@ -8,8 +8,6 @@ package string
 // \__ \ |_| |  | | | | | (_| |
 // |___/\__|_|  |_|_| |_|\__, |
 //                       |___/ 
-import "os"
-import "fmt"
 import "strings"
 import "golang.org/x/text/encoding"
 import "golang.org/x/text/encoding/japanese"
