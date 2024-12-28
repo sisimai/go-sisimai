@@ -31,15 +31,23 @@ var RFC822Head = rfc5322.HEADERTABLE()
 var ActionList = map[string]bool{ "delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true }
 
 // sisimai/fact.Rise() returns []sis.Fact when it successfully decoded bounce messages
-func Rise(email *string, origin string, args map[string]bool, hook interface{}) []sis.Fact {
+func Rise(email *string, origin string, args map[string]bool, hook interface{}) ([]sis.Fact, []sis.NotDecoded) {
 	// @param  *string         email    Entire email message
 	// @param  string          origin   Path to the original email file
 	// @param  map[string]bool args     {"delivered": false, "vacation": false} as the default
 	// @param  interface{}     hook     Callback function
 	// @return []sis.Fact               The list of decoded bounce messages
-	if email == nil || len(*email) < 1 { return []sis.Fact{} }
+	if email == nil || len(*email) < 1 {
+		// The email message is empty
+		ce := sis.NotDecoded{EmailFile: origin, BecauseOf: "email file is empty", Timestamp: time.Now()}
+		return []sis.Fact{}, []sis.NotDecoded{ce}
+	}
 
-	beforefact := message.Rise(email, hook); if beforefact.Void() == true { return []sis.Fact{} }
+	beforefact := message.Rise(email, hook)
+	if beforefact.Void() == true {
+		return []sis.Fact{}, []sis.NotDecoded{}
+	}
+
 	rfc822data := beforefact.RFC822
 	listoffact := []sis.Fact{}
 
@@ -412,6 +420,6 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 
 		listoffact = append(listoffact, thing)
 	}
-	return listoffact
+	return listoffact, []sis.NotDecoded{}
 }
 
