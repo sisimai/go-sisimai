@@ -12,6 +12,7 @@ package sis
 type RisingUnderway struct {
 	Digest []DeliveryMatter // List of DeliveryMatter structs
 	RFC822 string           // The original message
+	Errors []NotDecoded     // Errors occurred in sisimai/lhost/*
 }
 
 func(this *RisingUnderway) Void() bool {
