@@ -15,6 +15,7 @@ type BeforeFact struct {
 	RFC822  map[string][]string // Email headers of the original message
 	Digest  []DeliveryMatter    // Decoded results returned from sisimai/lhost/*
 	Catch   interface{}         // Any data structure returned by the callback function
+	Errors  []NotDecoded        // All the errors and warnings
 }
 
 func(this *BeforeFact) Void() bool {
