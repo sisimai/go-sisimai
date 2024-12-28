@@ -54,7 +54,6 @@ package rfc5322
   00:00:00 through 23:59:60 (the number of seconds allowing for a leap second; see [RFC1305]), and
   the last two digits of the zone MUST be within the range 00 through 59.
 **************************************************************************************************/
-import "os"
 import "fmt"
 import "strings"
 import "strconv"
@@ -113,23 +112,14 @@ func Date(argv1 string) string {
 			if sisimoji.EqualsAny(upperfirst, MonthName) { p[1] = upperfirst; continue }
 			if sisimoji.EqualsAny(upperfirst, DayOfWeek) { p[3] = upperfirst; continue }
 
-			// This piece is neither a month name or a day of week
-			fmt.Fprintf(os.Stderr, " ***warning: Strange token `%s` appeared\n", e)
-
 		} else if cw == 4 {
 			// This piece might be a 4-digit year such as 1997, 2018
-			cv, nyaan := strconv.ParseUint(e, 10, 16); if nyaan != nil {
-				// Failed to parse as a 4-digit integer
-				fmt.Fprintf(os.Stderr, " ***warning: %s\n", nyaan); continue
-			}
+			cv, nyaan := strconv.ParseUint(e, 10, 16); if nyaan != nil { continue }
 			p[0] = fmt.Sprintf("%04d", cv)
 
 		} else if cw == 5 && (strings.HasPrefix(e, "+") || strings.HasPrefix(e, "-")) {
 			// This piece might be a timezone offset such as "+0900", "-0400"
-			cv, nyaan := strconv.ParseUint(e[1:5], 10, 16); if nyaan != nil {
-				// Failed to parse as a 4-digit integer
-				fmt.Fprintf(os.Stderr, " ***warning: %s\n", nyaan); continue
-			}
+			cv, nyaan := strconv.ParseUint(e[1:5], 10, 16); if nyaan != nil { continue }
 			p[5] = fmt.Sprintf("%s%04d", e[0:1], cv)
 
 		} else if cw > 5 {
