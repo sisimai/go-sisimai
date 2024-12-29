@@ -43,11 +43,11 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 }
 
 // Rise() works as a constructor of Sisimai::Message
-func Rise(mesg *string, hook interface{}) sis.BeforeFact {
+func Rise(mesg *string, hook interface{}) *sis.BeforeFact {
 	// @param   *string     mesg  Entire email message
 	// @param   interface{} hook  callback method
 	// @return  Message           Structured email data
-	if mesg == nil || len(*mesg) < 1 { return sis.BeforeFact{} }
+	if mesg == nil || len(*mesg) < 1 { return &sis.BeforeFact{} }
 
 	mesg        = sisimoji.ToLF(mesg)
 	retryagain := 0
@@ -60,7 +60,7 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 			// Failed to read the message as an email
 			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true)
 			beforefact.Errors = append(beforefact.Errors, ce)
-			return *beforefact
+			return beforefact
 
 		} else {
 			// Build "Message" struct
@@ -123,7 +123,7 @@ func Rise(mesg *string, hook interface{}) sis.BeforeFact {
 		cv := rfc5322.Part(&beforefact.Payload, Boundaries, true)[1]; if len(cv) < 128 { break RISE }
 		mesg = &cv
 	}
-	if beforefact.Void() == true { return sis.BeforeFact{} }
-	return *beforefact
+	if beforefact.Void() == true { return &sis.BeforeFact{} }
+	return beforefact
 }
 
