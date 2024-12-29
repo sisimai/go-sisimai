@@ -17,8 +17,6 @@ type NotDecoded struct {
 	CalledOff bool      // Unrecoverable error, the decoding process have called off
 	BecauseOf string    // An error message of the failure
 	WhoCalled string    // Who called the constructor?
-	Addresser string    // Copy of sis.Fact.Addresser.Address
-	MessageID string    // Copy of sis.Fact.MessageID
 	DecodedBy string    // Copy of sis.Fact.DecodedBy
 	Timestamp time.Time // When the error occurred
 }
@@ -58,5 +56,14 @@ func(this *NotDecoded) Label() string {
 		// The error is not unrecoverable
 		return " ***warning: "
 	}
+}
+
+// Email() receives a path to email and set it into EmailFile
+func(this *NotDecoded) Email(argv1 string) string {
+	// @param    string  argv1  A path to an email being set into the EmailFile
+	// @return   string         The current value of the EmailFile
+	if argv1          == "" { return this.EmailFile  }
+	if this.EmailFile == "" { this.EmailFile = argv1 }
+	return this.EmailFile
 }
 
