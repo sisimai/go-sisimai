@@ -224,7 +224,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 			// There is no valid email address in the To: header of the original message such as
 			// To: <Undisclosed Recipients>
-			if cv == "" { cv = sisiaddr.Undisclosed("r") }
+			if cv == "" { cv = sisiaddr.Undisclosed(true) }
 			dscontents[0].Recipient = cv
 		}
 		recipients++

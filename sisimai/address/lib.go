@@ -10,13 +10,11 @@ package address
 import "strings"
 
 // Undisclosed() returns a pseudo recipient address or a pseudo sender address
-func Undisclosed(a string) string {
-	// @param    string a   Address type: "r" or "s"
+func Undisclosed(f bool) string {
+	// @param    string f   Address type: true = recipient, false = sender
 	// @return   string     Pseudo recipient address or sender address when the "a" is neither "r" nor "s"
-	addr := ""
-	if a == "s" { addr = "sender"    }
-	if a == "r" { addr = "recipient" }
-	return "undisclosed-" + addr + "-in-headers@libsisimai.org.invalid"
+	p := "recipient"; if f == false { p = "sender" }
+	return "undisclosed-" + p + "-in-headers@libsisimai.org.invalid"
 }
 
 // Final() returns a string processed by Ruleset 4 in sendmail.cf
