@@ -39,19 +39,21 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 	// @return []sis.Fact               The list of decoded bounce messages
 	if email == nil || len(*email) < 1 {
 		// The email message is empty
-		ce := sis.NotDecoded{EmailFile: origin, BecauseOf: "email file is empty", Timestamp: time.Now()}
+		ce := *sis.MakeNotDecoded("email file is empty", true); ce.Email(origin)
 		return []sis.Fact{}, []sis.NotDecoded{ce}
 	}
 
-	beforefact := message.Rise(email, hook)
-	if beforefact.Void() == true {
-		return []sis.Fact{}, []sis.NotDecoded{}
+	beforefact := message.Rise(email, hook); if len((*beforefact).Errors) > 0 {
+		// There is some errors while reading the email, decoding the bounce message.
+		// Set the email path to sis.NotDecoded.EmailFile
+		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
 	}
+	if (*beforefact).Void() == true { return []sis.Fact{}, (*beforefact).Errors }
 
-	rfc822data := beforefact.RFC822
+	rfc822data := (*beforefact).RFC822
 	listoffact := []sis.Fact{}
 
-	RISEOF: for _, e := range beforefact.Digest {
+	RISEOF: for _, e := range (*beforefact).Digest {
 		// Create parameters for sis.Fact
 		// - Skip if the value of "recipient" length is 4 or shorter
 		// - Skip if the value of "deliverystatus" begins with "2." such as 2.1.5
@@ -75,10 +77,10 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 				break ADDRESSER
 			}
 
-			if len(addrs["addresser"][0]) == 0 && len(beforefact.Headers["to"]) > 0 {
+			if len(addrs["addresser"][0]) == 0 && len((*beforefact).Headers["to"]) > 0 {
 				// Fallback: Get the sender address from the header of the bounced email if the address
 				// is not set at the loop above.
-				j := sisiaddr.Find(beforefact.Headers["to"][0])
+				j := sisiaddr.Find((*beforefact).Headers["to"][0])
 				if len(j[0]) > 0 { addrs["addresser"] = j }
 			}
 			break ADDRESSER
@@ -96,9 +98,9 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 				if len(rfc822data[f]) > 0 { datevalues = append(datevalues, rfc822data[f][0]) }
 			}
 
-			if len(datevalues) < 2 && len(beforefact.Headers["date"]) > 0 {
+			if len(datevalues) < 2 && len((*beforefact).Headers["date"]) > 0 {
 				// Get the value of "Date:" header of the bounce message
-				datevalues = append(datevalues, beforefact.Headers["date"][0])
+				datevalues = append(datevalues, (*beforefact).Headers["date"][0])
 			}
 			for _, v := range datevalues {
 				// Parse each date string using net/mail.ParseDate()
@@ -125,7 +127,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 		RECEIVED: for {
 			// Try to pick a remote hostname from the error message
 			// Scan "Received:" header of the bounce message
-			le := len(beforefact.Headers["received"])
+			le := len((*beforefact).Headers["received"])
 			if e.Rhost == "" {
 				// Try to pick a remote hostname from Received: headers of the bounce message
 				if cv := rfc1123.Find(e.Diagnosis); rfc1123.IsInternetHost(cv) { e.Rhost = cv }
@@ -134,7 +136,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 					// internet hostname
 					for ri := le - 1; ri > -1; ri-- {
 						// Check the Received: headers backwards and get a remote hostname
-						cv := rfc5322.Received(beforefact.Headers["received"][ri])
+						cv := rfc5322.Received((*beforefact).Headers["received"][ri])
 						if rfc1123.IsInternetHost(cv[0]) == false { continue }
 						e.Rhost = cv[0]; break
 					}
@@ -145,7 +147,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 				// Try to pick a local hostname from Received: headers of the bounce message
 				for li := 0; li < le; li++ {
 					// Check the Received: headers forwards and get a local hostnaame
-					cv := rfc5322.Received(beforefact.Headers["received"][li])
+					cv := rfc5322.Received((*beforefact).Headers["received"][li])
 					if rfc1123.IsInternetHost(cv[0]) == false { continue }
 					e.Lhost = cv[0]; break
 				}
@@ -284,7 +286,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 			thing.Action         = e.Action
 			thing.Addresser      = as
 			thing.Alias          = e.Alias; if len(thing.Alias) == 0 { thing.Alias = ar.Alias }
-			thing.Catch          = beforefact.Catch
+			thing.Catch          = (*beforefact).Catch
 			thing.DeliveryStatus = piece["deliverystatus"]
 			thing.Destination    = ar.Host
 			thing.DiagnosticCode = piece["diagnosticcode"]
@@ -420,6 +422,12 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 
 		listoffact = append(listoffact, thing)
 	}
-	return listoffact, []sis.NotDecoded{}
+
+	if len((*beforefact).Errors) > 0 {
+		// There is some errors while reading the email, decoding the bounce message.
+		// Set the email path to sis.NotDecoded.EmailFile if it is empty
+		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
+	}
+	return listoffact, beforefact.Errors
 }
 
