@@ -21,7 +21,7 @@ func TestUndisclosed(t *testing.T) {
 		t.Run(fn + e.testname, func(t *testing.T) {
 			cx += 1
 			cv := Undisclosed(e.argument)
-			if cv != e.expected { t.Errorf("[%6d]: %s() = (%s)", cx, fn, cv) }
+			if cv != e.expected { t.Errorf("[%6d]: %s() is (%s) not (%s)", cx, fn, cv, e.expected) }
 		})
 	}
 	t.Logf("The number of tests = %d", cx)
@@ -41,7 +41,7 @@ func TestFinal(t *testing.T) {
 		t.Run(fn + e.testname, func(t *testing.T) {
 			cx += 1
 			cv := Final(e.argument)
-			if cv != e.expected { t.Errorf("[%6d]: %s() = (%s)", cx, fn, cv) }
+			if cv != e.expected { t.Errorf("[%6d]: %s() is (%s) not (%s)", cx, fn, cv, e.expected) }
 		})
 	}
 	t.Logf("The number of tests = %d", cx)
