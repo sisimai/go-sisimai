@@ -8,6 +8,7 @@ package address
 // | (_| | (_| | (_| | | |  __/\__ \__ \
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
+import "sisimai/rfc791"
 
 // IsQuotedAddress() checks that the local part of the argument is quoted
 func IsQuotedAddress(email string) bool {
@@ -53,6 +54,30 @@ func IsComment(argv0 string) bool {
 	return true
 }
 
+// IsDomainLiteral() returns true if the domain part is [IPv4:...] or [IPv6:...]
+func IsDomainLiteral(email string) bool {
+	// @param    string email    Email address string
+	// @return   bool            true:  is an domain-literal
+	//                           false: is not an domain-literal
+	email = strings.Trim(email, "<>")
+	if len(email)                     < 16    { return false } // e@[IPv4:0.0.0.0] is 16 characters
+	if strings.HasSuffix(email, "]") == false { return false }
+
+	if strings.Contains(email, "@[IPv4:") {
+		// neko@[IPv4:192.0.2.25]
+		p1 := strings.Index(email, "@[IPv4:")
+		cv := email[p1 + 7:len(email) - 1]
+		return rfc791.IsIPv4Address(&cv)
+
+	} else if strings.Contains(email, "@[IPv6:") {
+		// neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]
+		p1 := strings.Index(email, "@[IPv6:")
+		cv := email[p1 + 7:len(email) - 1]
+		if len(cv) == 39 && strings.Count(cv, ":") == 7 { return true }
+	}
+	return false
+}
+
 // IsEmailAddress() checks that the argument is an email address or not
 func IsEmailAddress(email string) bool {
 	// @param    string email    Email address string
@@ -81,7 +106,6 @@ func IsEmailAddress(email string) bool {
 	if email[0]           == 46 { return false } // '.' at the first character is not allowed in a local part
 	if email[lasta - 1]   == 46 { return false } // '.' before the "@" is not allowed in a local part
 
-	upper := strings.ToUpper(email)
 	quote := IsQuotedAddress(email); if quote == false {
 		// The email address is not a quoted address
 		if strings.Contains(email, " ")  { return false }
@@ -89,6 +113,8 @@ func IsEmailAddress(email string) bool {
 		if strings.Contains(email, ".@") { return false }
 		if strings.Count(email, "@") > 1 { return false }
 	}
+	upper := strings.ToUpper(email)
+	ipv46 := IsDomainLiteral(email)
 	match := true
 
 	for j, e := range(strings.Split(email, "")) {
@@ -125,12 +151,21 @@ func IsEmailAddress(email string) bool {
 			// A domain part of the email address: string after the last "@"
 			if email[j] <   45 { match = false; break } // Before '-'
 			if email[j] ==  47 { match = false; break } // Equals '/'
+			if email[j] ==  92 { match = false; break } // Equals '\'
 			if email[j] >  122 { match = false; break } // After  'z'
 
-			if email[j] > 57 && email[j] < 64 { match = false; break } // ':' to '?'
-			if email[j] > 90 && email[j] < 97 { match = false; break } // '[' to '`'
+			if ipv46 == false {
+				// Such as "example.jp", "neko.example.org"
+				if email[j] >  57 && email[j] <  64 { match = false; break } // ':' to '?'
+				if email[j] >  90 && email[j] <  97 { match = false; break } // '[' to '`'
 
-			if j > lastd {
+			} else {
+				// Such as "[IPv4:192.0.2.25]"
+				if email[j] >  59 && email[j] <  64 { match = false; break } // ';' to '?'
+				if email[j] >  93 && email[j] <  97 { match = false; break } // '^' to '`'
+			}
+
+			if j > lastd && ipv46 == false {
 				// *TLD of the domain part: string after the last '.'
 				if upper[j] < 65 { match = false; break } // Before 'A'
 				if upper[j] > 90 { match = false; break } // After  'Z'
