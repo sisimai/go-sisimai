@@ -21,8 +21,8 @@ func Undisclosed(f bool) string {
 func Final(argv0 string) string {
 	// @param    string argv0  String including an email address like "<neko@example.jp>"
 	// @return   string        String without angle brackets: "neko@example.jp"
-	if len(argv0)            == 0     { return argv0 }
-	if IsEmailAddress(argv0) == false { return argv0 }
+	if argv0                     == "" { return "" }
+	if strings.Count(argv0, "@") != 1  { return argv0 }
 
 	for strings.HasPrefix(argv0, "<") { argv0 = strings.Trim(argv0, "<") }
 	for strings.HasSuffix(argv0, ">") { argv0 = strings.Trim(argv0, ">") }
