@@ -24,11 +24,21 @@ func IsIncluded(argv0 string) bool {
 	// @param    string argv0    String including an email address like "<neko@example.jp>"
 	// @return   bool            true:  is including an email address
 	//                           false: is not including an email address
-	if len(argv0) == 0                           { return false }
-	if strings.HasPrefix(argv0, "<") == false    { return false }
-	if strings.HasSuffix(argv0, ">") == false    { return false }
-	if strings.Contains(argv0,  "@") == false    { return false }
-	if IsEmailAddress(strings.Trim(argv0, "<>")) { return true  }
+	if len(argv0)                     < 5     { return false }
+	if strings.Contains(argv0,  "@") == false { return false }
+
+	if strings.HasPrefix(argv0, "<") && strings.HasSuffix(argv0, ">") {
+		// The argument is like "<neko@example.jp>"
+		if IsEmailAddress(strings.Trim(argv0, "<>")) { return true }
+		return false
+
+	} else {
+		// Such as "nekochan (kijitora) neko@example.jp"
+		for _, e := range strings.Split(argv0, " ") {
+			// Is there any email address string in each element?
+			if IsEmailAddress(e) { return true }
+		}
+	}
 	return false
 }
 
@@ -72,7 +82,13 @@ func IsEmailAddress(email string) bool {
 	if email[lasta - 1]   == 46 { return false } // '.' before the "@" is not allowed in a local part
 
 	upper := strings.ToUpper(email)
-	quote := IsQuotedAddress(email)
+	quote := IsQuotedAddress(email); if quote == false {
+		// The email address is not a quoted address
+		if strings.Contains(email, " ")  { return false }
+		if strings.Contains(email, "..") { return false }
+		if strings.Contains(email, ".@") { return false }
+		if strings.Count(email, "@") > 1 { return false }
+	}
 	match := true
 
 	for j, e := range(strings.Split(email, "")) {
