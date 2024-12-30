@@ -139,7 +139,7 @@ func Find(argv1 string) [3]string {
 					readcursor |= indicators["comment-block"]
 					if strings.HasSuffix(readbuffer[2], ")") { readbuffer[2] += " " }
 					readbuffer[2] += e
-					groupindex = 2
+					groupindex = 3
 				}
 				continue
 			}   // End of if("(")
