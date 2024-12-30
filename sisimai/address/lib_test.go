@@ -10,38 +10,38 @@ package address
 import "testing"
 
 func TestUndisclosed(t *testing.T) {
-	fn := "Undisclosed"
+	fn := "sisimai/address.Undisclosed()"
 	cx := 0
 	ae := []struct {testname string; argument bool; expected string}{
-		{"(true)",  true,  "undisclosed-recipient-in-headers@libsisimai.org.invalid"},
-		{"(false)", false, "undisclosed-sender-in-headers@libsisimai.org.invalid"},
+		{"",  true, "undisclosed-recipient-in-headers@libsisimai.org.invalid"},
+		{"", false, "undisclosed-sender-in-headers@libsisimai.org.invalid"},
 	}
 
 	for _, e := range ae {
-		t.Run(fn + e.testname, func(t *testing.T) {
-			cx += 1
+		t.Run(e.testname, func(t *testing.T) {
 			cv := Undisclosed(e.argument)
-			if cv != e.expected { t.Errorf("[%6d]: %s() is (%s) not (%s)", cx, fn, cv, e.expected) }
+			if cv != e.expected { t.Errorf("[%6d]: %s is (%s) not (%s)", cx, fn, cv, e.expected) }
+			cx += 1
 		})
 	}
 	t.Logf("The number of tests = %d", cx)
 }
 
 func TestFinal(t *testing.T) {
-	fn := "Final"
+	fn := "sisimai/address.Final()"
 	cx := 0
 	ae := []struct{testname string; argument string; expected string}{
-		{"('')", "", ""},
-		{"(<neko>)", "<neko>", "<neko>"},
-		{"(<neko@example.jp>)", "<neko@example.jp>", "neko@example.jp"},
-		{"(<neko@example.jp)",  "<neko@example.jp",  "neko@example.jp"},
-		{"(neko@example.jp>)",  "neko@example.jp>",  "neko@example.jp"},
+		{"", "", ""},
+		{"", "<neko>", "<neko>"},
+		{"", "<neko@example.jp>", "neko@example.jp"},
+		{"",  "<neko@example.jp",  "neko@example.jp"},
+		{"",  "neko@example.jp>",  "neko@example.jp"},
 	}
 	for _, e := range ae {
-		t.Run(fn + e.testname, func(t *testing.T) {
-			cx += 1
+		t.Run(e.testname, func(t *testing.T) {
 			cv := Final(e.argument)
-			if cv != e.expected { t.Errorf("[%6d]: %s() is (%s) not (%s)", cx, fn, cv, e.expected) }
+			if cv != e.expected { t.Errorf("[%6d]: %s is (%s) not (%s)", cx, fn, cv, e.expected) }
+			cx += 1
 		})
 	}
 	t.Logf("The number of tests = %d", cx)

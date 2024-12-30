@@ -11,41 +11,41 @@ package address
 import "testing"
 
 func TestExpandVERP(t *testing.T) {
-	fn := "ExpandVERP"
+	fn := "sisimai/address.ExpandVERP()"
 	cx := 0
 	ae := []struct {testname string; argument string; expected string}{
-		{"(cat+neko=example.jp@example.org)",  "cat+neko=example.jp@example.org", "neko@example.jp"},
-		{"('')", "", ""},
-		{"(+neko!example.jp)", "+neko!example.jp", ""},
-		{"(=neko!example.jp)", "=neko!example.jp", ""},
-		{"(neko)", "neko", ""},
+		{"", "cat+neko=example.jp@example.org", "neko@example.jp"},
+		{"", "", ""},
+		{"", "+neko!example.jp", ""},
+		{"", "=neko!example.jp", ""},
+		{"", "neko", ""},
 	}
 
 	for _, e := range ae {
-		t.Run(fn + e.testname, func(t *testing.T) {
-			cx += 1
+		t.Run(e.testname, func(t *testing.T) {
 			cv := ExpandVERP(e.argument)
-			if cv != e.expected { t.Errorf("[%6d]: %s() is (%s) not (%s)", cx, fn, cv, e.expected) }
+			if cv != e.expected { t.Errorf("[%6d]: %s is (%s) not (%s)", cx, fn, cv, e.expected) }
+			cx += 1
 		})
 	}
 	t.Logf("The number of tests = %d", cx)
 }
 
 func TestExpandAlias(t *testing.T) {
-	fn := "ExpandAlias"
+	fn := "sisimai/addres.ExpandAlias()"
 	cx := 0
 	ae := []struct{testname string; argument string; expected string}{
-		{"('')", "", ""},
-		{"(<neko>)", "<neko>", "<neko>"},
-		{"(<neko@example.jp>)", "<neko@example.jp>", "neko@example.jp"},
-		{"(<neko@example.jp)",  "<neko@example.jp",  "neko@example.jp"},
-		{"(neko@example.jp>)",  "neko@example.jp>",  "neko@example.jp"},
+		{"", "", ""},
+		{"", "<neko>", "<neko>"},
+		{"", "<neko@example.jp>", "neko@example.jp"},
+		{"", "<neko@example.jp",  "neko@example.jp"},
+		{"", "neko@example.jp>",  "neko@example.jp"},
 	}
 	for _, e := range ae {
-		t.Run(fn + e.testname, func(t *testing.T) {
-			cx += 1
+		t.Run(e.testname, func(t *testing.T) {
 			cv := ExpandAlias(e.argument)
-			if cv != e.expected { t.Errorf("[%6d]: %s() is (%s) not (%s)", cx, fn, cv, e.expected) }
+			if cv != e.expected { t.Errorf("[%6d]: %s is (%s) not (%s)", cx, fn, cv, e.expected) }
+			cx += 1
 		})
 	}
 	t.Logf("The number of tests = %d", cx)
