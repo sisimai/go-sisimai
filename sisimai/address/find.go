@@ -238,11 +238,11 @@ func Find(argv1 string) [3]string {
 
 	if IsIncluded(readbuffer[0]) || IsMailerDaemon(readbuffer[0]) {
 		// The email address must not include any character except from 0x20 to 0x7e.
-
 		// - Remove angle brackets, other brackets, and quotations: []<>{}'` except a domain part is
 		//   an IP address like neko@[192.0.2.222]
 		// - Remove angle brackets, other brackets, and quotations: ()[]<>{}'`;. and `"`
-		readbuffer[0] = strings.Trim(readbuffer[0], "<>{}()[]`';.")
+		if IsDomainLiteral(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], "[]{}()`';.") }
+		readbuffer[0] = strings.Trim(readbuffer[0], "<>")
 		if IsQuotedAddress(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], `"`) }
 		emailtable[0] = readbuffer[0]
 	}
