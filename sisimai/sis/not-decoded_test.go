@@ -15,7 +15,7 @@ func TestMakeNotDecoded(t *testing.T) {
 	fn := "MakeNotDecoded"
 	cv := MakeNotDecoded("Test message", true)
 
-	if cv == nil                { t.Fatalf("%s() returns nil", fn) }
+	if cv == nil                { t.Fatalf("%s() = nil", fn) }
 	if cv.EmailFile != ""       { t.Errorf("%s.EmailFile is not empty: %s", cc, cv.EmailFile) }
 	if cv.BecauseOf == ""       { t.Errorf("%s.BecauseOf is empty", cc) }
 	if cv.Timestamp.Unix() == 0 { t.Errorf("%s.Timestamp.Unix() is 0", cc) }
@@ -29,9 +29,9 @@ func TestError(t *testing.T) {
 	cv := &NotDecoded{BecauseOf: "Test for " + fn, EmailFile: "25.eml"}
 	cx := &NotDecoded{BecauseOf: "", EmailFile: "25.eml"}
 
-	if cv == nil                { t.Fatalf("%s() returns nil", fn) }
-	if cv.Error() == ""         { t.Fatalf("%s() returns empty string", fn) }
-	if cx.Error() != ""         { t.Fatalf("%s() returns string %s", fn, cx.Error()) }
+	if cv == nil                { t.Fatalf("%s() = nil", fn) }
+	if cv.Error() == ""         { t.Fatalf("%s() = empty string", fn) }
+	if cx.Error() != ""         { t.Fatalf("%s() = string %s", fn, cx.Error()) }
 }
 
 func TestLabel(t *testing.T) {
@@ -39,18 +39,18 @@ func TestLabel(t *testing.T) {
 	cv := &NotDecoded{BecauseOf: "Test for " + fn, CalledOff: true}
 	cx := &NotDecoded{BecauseOf: "Test for " + fn, CalledOff: false}
 
-	if cv == nil                { t.Fatalf("%s() returns nil", fn) }
-	if strings.HasPrefix(cv.Label(), " *****error") == false { t.Errorf("%s() returns %s", fn, cv.Label()) }
-	if strings.HasPrefix(cx.Label(), " ***warning") == false { t.Errorf("%s() returns %s", fn, cx.Label()) }
+	if cv == nil                { t.Fatalf("%s() = nil", fn) }
+	if strings.HasPrefix(cv.Label(), " *****error") == false { t.Errorf("%s() = (%s)", fn, cv.Label()) }
+	if strings.HasPrefix(cx.Label(), " ***warning") == false { t.Errorf("%s() = (%s)", fn, cx.Label()) }
 }
 
 func TestEmail(t *testing.T) {
 	fn := "Email"
 	cv := &NotDecoded{BecauseOf: "Test for " + fn}
 
-	if cv == nil                { t.Fatalf("%s() returns nil", fn) }
-	if cv.Email("22.eml") == "" { t.Errorf("%s() returns empty string", fn) }
-	if cv.EmailFile != "22.eml" { t.Errorf("%s() returns %s", fn, cv.EmailFile) }
-	if cv.Email("25") == "25"   { t.Errorf("%s() returns 25", fn) }
+	if cv == nil                { t.Fatalf("%s() = nil", fn) }
+	if cv.Email("22.eml") == "" { t.Errorf("%s() = empty string", fn) }
+	if cv.EmailFile != "22.eml" { t.Errorf("%s() = (%s)", fn, cv.EmailFile) }
+	if cv.Email("25") == "25"   { t.Errorf("%s() = 25", fn) }
 }
 
