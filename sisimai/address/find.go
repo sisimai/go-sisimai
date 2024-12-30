@@ -202,25 +202,24 @@ func Find(argv1 string) [3]string {
 			continue
 		}
 	} // End of the loop(for)
-	if emailtable[0] != "" { return emailtable }
 
 	if len(readbuffer[0]) == 0 {
 		// There is no email address
-		if IsEmailAddress(readbuffer[1]) {
+		if IsEmailAddress(readbuffer[1]) == true {
 			// The display name part is an email address like "neko@example.jp"
 			// TODO: Implement this block in p5-sisimai, rb-sisimai
-			readbuffer[0] = "<" + readbuffer[1] + ">"
+			readbuffer[0] = "<" + strings.TrimSpace(readbuffer[1]) + ">"
 
-		} else if IsIncluded(readbuffer[1]) {
+		} else if IsIncluded(readbuffer[1]) == true {
 			// Try to use the string like an email address in the display name
 			for _, e := range strings.Split(readbuffer[1], " ") {
 				// Find an email address
 				if IsEmailAddress(e) == false { continue }
 				readbuffer[0] = e; break
 			}
-		} else if IsMailerDaemon(readbuffer[1]) {
+		} else if IsMailerDaemon(readbuffer[1]) == true {
 			// Allow if the string is MAILER-DAEMON
-			readbuffer[0] = readbuffer[1]
+			readbuffer[0] = strings.TrimSpace(readbuffer[1])
 		}
 	}
 
