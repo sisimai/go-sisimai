@@ -28,7 +28,6 @@ func IsIncluded(argv0 string) bool {
 	if strings.HasPrefix(argv0, "<") == false    { return false }
 	if strings.HasSuffix(argv0, ">") == false    { return false }
 	if strings.Contains(argv0,  "@") == false    { return false }
-	if strings.Contains(argv0,  " ") == true     { return false }
 	if IsEmailAddress(strings.Trim(argv0, "<>")) { return true  }
 	return false
 }
@@ -80,18 +79,19 @@ func IsEmailAddress(email string) bool {
 		// 31 < The ASCII code of each character < 127
 		if j < lasta {
 			// A local part of the email address: string before the last "@"
-			if email[j] <  32 { match = false; break } // Before ' '
-			if email[j] > 126 { match = false; break } // After  '~'
-			if j == 0 { continue }
+			if email[j]  <  32 { match = false; break } // Before ' '
+			if email[j]  > 126 { match = false; break } // After  '~'
+			if j        ==   0 {             continue } // The character is the first character
 
-			if quote {
+			if jp := email[j - 1]; quote == true {
 				// The email address has quoted local part like "neko@cat"@example.org
-				if email[j-1] != 34 {
-					// When the previous character is not '\', `'`, ' ', and '\t' is not allowed
-					if email[j] ==  9 { match = false; break } // '\t'
-					if email[j] == 32 { match = false; break } // ' '
-					if email[j] == 34 { match = false; break } // '\'
-					if email[j] == 92 { match = false; break } // '"'
+				if jp == 92 { // 92 = '\'
+					// When the previous character IS '\', only the followings are allowed: '\', '"'
+					if email[j] != 92 && email[j] != 34 { match = false; break }
+
+				} else {
+					// When the previous character IS NOT '\'
+					if email[j] == 34 && j + 1 < lasta  { match = false; break } // `"` is allowed only immediately before the `@`
 				}
 			} else {
 				// The local part is not quoted
@@ -121,7 +121,6 @@ func IsEmailAddress(email string) bool {
 			}
 		}
 	}
-
 	return match
 }
 
