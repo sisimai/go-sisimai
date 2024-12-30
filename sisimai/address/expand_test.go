@@ -36,10 +36,10 @@ func TestExpandAlias(t *testing.T) {
 	cx := 0
 	ae := []struct{testname string; argument string; expected string}{
 		{"", "", ""},
-		{"", "<neko>", "<neko>"},
-		{"", "<neko@example.jp>", "neko@example.jp"},
-		{"", "<neko@example.jp",  "neko@example.jp"},
-		{"", "neko@example.jp>",  "neko@example.jp"},
+		{"", "<neko>", ""},
+		{"", "<neko@example.jp>", ""},
+		{"", "+neko@example.jp",  ""},
+		{"", "neko+cat@example.jp", "neko@example.jp"},
 	}
 	for _, e := range ae {
 		t.Run(e.testname, func(t *testing.T) {

@@ -32,7 +32,7 @@ func ExpandVERP(email string) string {
 func ExpandAlias(email string) string {
 	// @param    string email  Email alias string
 	// @return   string        Expanded email address
-	if len(email)                   == 0     { return "" }
+	if email                        == ""    { return "" }
 	if IsEmailAddress(email)        == false { return "" }
 	if strings.Contains(email, "+") == false { return "" }
 	if strings.Index(email, "+")     < 1     { return "" }
