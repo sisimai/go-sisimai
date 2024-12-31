@@ -113,3 +113,16 @@ func TestIsEmailAddress(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestIsMailerDaemon(t *testing.T) {
+	fn := "sisimai/address.IsMailerDaemon"
+	cx := 0
+
+	for _, e := range TestPostmaster {
+		t.Run("", func(t *testing.T) {
+			cv := IsMailerDaemon(e)
+			if cv == false { t.Errorf("[%6d]: %s(%s) is (false) not (true)", cx, fn, e) }; cx++
+		})
+	}
+	t.Logf("The number of tests = %d", cx)
+}
+
