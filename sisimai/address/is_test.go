@@ -50,3 +50,22 @@ func TestIsIncluded(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestComment(t *testing.T) {
+	fn := "sisimai/address.IsComment"
+	cx := 0
+	ae := []struct {testname string; argument string; expected bool}{
+		{"", "", false},
+		{"", "<neko@example.jp>", false},
+		{"", "(Kijitora neko)", true},
+		{"", "(Siro(neko))(Meow)", true},
+	}
+
+	for _, e := range ae {
+		t.Run(e.testname, func(t *testing.T) {
+			cv := IsComment(e.argument)
+			if cv != e.expected { t.Errorf("[%6d]: %s(%s) is (%v) not (%v)", cx, fn, e.argument, cv, e.expected) }
+			cx += 1
+		})
+	}
+	t.Logf("The number of tests = %d", cx)
+}
