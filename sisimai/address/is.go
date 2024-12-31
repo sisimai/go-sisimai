@@ -37,6 +37,7 @@ func IsIncluded(argv0 string) bool {
 		// Such as "nekochan (kijitora) neko@example.jp"
 		for _, e := range strings.Split(argv0, " ") {
 			// Is there any email address string in each element?
+			e = strings.Trim(e, "<>")
 			if IsEmailAddress(e) { return true }
 		}
 	}
