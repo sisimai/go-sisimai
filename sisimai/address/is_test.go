@@ -50,7 +50,7 @@ func TestIsIncluded(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
-func TestComment(t *testing.T) {
+func TestIsComment(t *testing.T) {
 	fn := "sisimai/address.IsComment"
 	cx := 0
 	ae := []struct {testname string; argument string; expected bool}{
@@ -69,3 +69,4 @@ func TestComment(t *testing.T) {
 	}
 	t.Logf("The number of tests = %d", cx)
 }
+
