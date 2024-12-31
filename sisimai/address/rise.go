@@ -33,14 +33,13 @@ func Rise(argvs [3]string) EmailAddress {
 	if point > 0 {
 		// Get the local part and the domain part from the email address
 		lpart := argvs[0][:point]
-		dpart := argvs[0][point+1:]
-		email := ExpandVERP(argvs[0]);
+		dpart := argvs[0][point + 1:]
+		email := ExpandVERP(argvs[0])
 		alias := false
 
-		if len(email) == 0 {
+		if email == "" {
 			// Is not a VERP address, try to expand the address as an alias
-			email = ExpandAlias(argvs[0])
-			if len(email) > 0 { alias = true }
+			email = ExpandAlias(argvs[0]); if email != "" { alias = true }
 		}
 
 		if strings.Contains(email, "@") {
