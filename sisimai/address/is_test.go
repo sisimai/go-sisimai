@@ -28,3 +28,22 @@ func TestIsQuotedAddress(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestIsIncluded(t *testing.T) {
+	fn := "sisimai/address.IsIncluded"
+	cx := 0
+	ae := []struct {testname string; argument string; expected bool}{
+		{"", "<neko@example.jp>", true},
+		{"", "<n@e.jp>", true},
+		{"", "Kijitora neko@example.jp (Nekochan)", true},
+		{"", "<mailer-daemon>", false},
+	}
+
+	for _, e := range ae {
+		t.Run(e.testname, func(t *testing.T) {
+			cv := IsIncluded(e.argument)
+			if cv != e.expected { t.Errorf("[%6d]: %s(%s) is (%v) not (%v)", cx, fn, e.argument, cv, e.expected) }
+			cx += 1
+		})
+	}
+	t.Logf("The number of tests = %d", cx)
+}
