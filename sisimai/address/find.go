@@ -280,6 +280,9 @@ func Find(argv1 string) [3]string {
 		break E0
 	}
 
+	// Remove "." at the end of the email address such as "neko@example.jp."
+	emailtable[0] = strings.Trim(emailtable[0], ".")
+
 	// Check and tidy up the comment block
 	if IsComment(readbuffer[2]) { emailtable[2] = strings.TrimSpace(readbuffer[2]) }
 
