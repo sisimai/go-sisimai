@@ -41,3 +41,29 @@ func TestFind(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestS3S4(t *testing.T) {
+	fn := "sisimai/address.S3S4()"
+	cx := 0
+
+	for _, e := range TestEmailAddrs {
+		//if e.testname != "D" { continue }
+		t.Run(e.testname, func(t *testing.T) {
+			cv := S3S4(e.argument)
+			if cv != e.expected { t.Errorf("[%6d]: %s is (%s) not (%s)", cx, fn, cv, e.expected) }; cx++
+		})
+	}
+	for _, e := range TestPostmaster {
+		t.Run("", func(t *testing.T) {
+			cv := S3S4(e)
+			if cv == "" { t.Errorf("[%6d]: %s is empty", cx, fn) }; cx++
+		})
+	}
+
+	for _, e := range TestNotAnEmail {
+		t.Run("", func(t *testing.T) {
+			cv := S3S4(e)
+			if cv != "" { t.Errorf("[%6d]: %s is not empty (%s)", cx, fn, cv) }; cx++
+		})
+	}
+	t.Logf("The number of tests = %d", cx)
+}
