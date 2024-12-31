@@ -8,6 +8,7 @@ package address
 //   | |  __/\__ \ |_ / / (_| | (_| | (_| | | |  __/\__ \__ \_ | |\__ \
 //   |_|\___||___/\__/_/ \__,_|\__,_|\__,_|_|  \___||___/___(_)___|___/
 import "testing"
+import "strings"
 
 func TestIsQuotedAddress(t *testing.T) {
 	fn := "sisimai/address.IsQuotedAddress"
@@ -92,6 +93,21 @@ func TestIsDomainLiteral(t *testing.T) {
 			cv := IsDomainLiteral(e.argument)
 			if cv != e.expected { t.Errorf("[%6d]: %s(%s) is (%v) not (%v)", cx, fn, e.argument, cv, e.expected) }
 			cx += 1
+		})
+	}
+	t.Logf("The number of tests = %d", cx)
+}
+
+func TestIsEmailAddress(t *testing.T) {
+	fn := "sisimai/address.IsEmailAddress"
+	cx := 0
+
+	for _, e := range TestEmailAddrs {
+		t.Run(e.testname, func(t *testing.T) {
+			cv := IsEmailAddress(e.expected)
+			if strings.Contains(e.expected, "@") && cv == false {
+				t.Errorf("[%6d]: %s(%s) is (false) not (true)", cx, fn, e.expected)
+			}; cx++
 		})
 	}
 	t.Logf("The number of tests = %d", cx)
