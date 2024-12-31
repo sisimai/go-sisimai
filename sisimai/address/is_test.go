@@ -70,3 +70,30 @@ func TestIsComment(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestIsDomainLiteral(t *testing.T) {
+	fn := "sisimai/address.IsDomainLiteral"
+	cx := 0
+	ae := []struct {testname string; argument string; expected bool}{
+		{"", "", false},
+		{"", "<neko@example.jp>", false},
+		{"", "<neko@[IPv4:192.0.2.25]>", true},
+		{"", "neko@[IPv4:192.0.2.25]", true},
+		{"", "neko@[Neko:192.0.2.25]", false},
+		{"", "neko@[IPv6:192.0.2.25]", false},
+		{"", "neko@[IPv6:2001:DB8::1]", false},
+		{"", "neko@[IPv5:2001:DB8::1]", false},
+		{"", "<neko@[IPv6:2001:DB8::1]>", false},
+		{"", "neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]", true},
+		{"", "<neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]>", true},
+	}
+
+	for _, e := range ae {
+		t.Run(e.testname, func(t *testing.T) {
+			cv := IsDomainLiteral(e.argument)
+			if cv != e.expected { t.Errorf("[%6d]: %s(%s) is (%v) not (%v)", cx, fn, e.argument, cv, e.expected) }
+			cx += 1
+		})
+	}
+	t.Logf("The number of tests = %d", cx)
+}
+
