@@ -23,7 +23,7 @@ type EmailAddress struct {
 func Rise(argvs [3]string) EmailAddress {
 	// @param    [3]string argvs  ["Email address", "name", "comment"]
 	// @return   EmailAddress     EmailAddress struct when the email address was not valid
-	if len(argvs[0]) == 0 { return EmailAddress{} }
+	if argvs[0] == "" { return EmailAddress{} }
 
 	thing := new(EmailAddress)
 	heads := "<"
@@ -44,6 +44,7 @@ func Rise(argvs [3]string) EmailAddress {
 
 		if strings.Contains(email, "@") {
 			// The address is a VERP or an alias
+			thing.Address = email
 			if alias {
 				// The address is an alias like "neko+cat@example.jp"
 				thing.Alias = argvs[0]
@@ -58,9 +59,9 @@ func Rise(argvs [3]string) EmailAddress {
 		lpart = strings.TrimLeft(lpart, heads)
 		dpart = strings.TrimRight(dpart, tails)
 
-		thing.User    = lpart
-		thing.Host    = dpart
-		thing.Address = lpart + "@" + dpart
+		thing.User = lpart
+		thing.Host = dpart
+		if thing.Address == "" { thing.Address = lpart + "@" + dpart }
 
 	} else {
 		// The argument does not include "@"
