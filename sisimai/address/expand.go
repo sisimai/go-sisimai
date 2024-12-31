@@ -18,12 +18,11 @@ func ExpandVERP(email string) string {
 
 	// bounce+neko=example.org@example.org => neko@example.org
 	local := strings.SplitN(email, "@", 2)[0]
-	pluss := strings.Index(local, "+"); if pluss < 1 { return "" }
-	equal := strings.Index(local, "="); if equal < 1 { return "" }
-	lsize := len(local)
-
-	if pluss > lsize - 1 || equal > lsize - 1 { return "" }
+	pluss := strings.Index(local, "+"); if pluss < 1                  { return "" }
+	equal := strings.Index(local, "="); if equal < 1 || pluss > equal { return "" }
+	lsize := len(local);    if pluss > lsize - 1 || equal > lsize - 1 { return "" }
 	verp1 := strings.Replace(strings.SplitN(local, "+", 2)[1], "=", "@", 1)
+
 	if IsEmailAddress(verp1) { return verp1 }
 	return ""
 }
