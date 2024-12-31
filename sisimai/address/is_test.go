@@ -21,7 +21,7 @@ func TestIsQuotedAddress(t *testing.T) {
 	for _, e := range ae {
 		t.Run(e.testname, func(t *testing.T) {
 			cv := IsQuotedAddress(e.argument)
-			if cv != e.expected { t.Errorf("[%6d]: %s is (%v) not (%v)", cx, fn, cv, e.expected) }
+			if cv != e.expected { t.Errorf("[%6d]: %s(%s) is (%v) not (%v)", cx, fn, e.argument, cv, e.expected) }
 			cx += 1
 		})
 	}
