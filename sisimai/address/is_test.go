@@ -10,7 +10,7 @@ package address
 import "testing"
 
 func TestIsQuotedAddress(t *testing.T) {
-	fn := "sisimai/address.IsQuotedAddress()"
+	fn := "sisimai/address.IsQuotedAddress"
 	cx := 0
 	ae := []struct {testname string; argument string; expected bool}{
 		{"", `"neko@example@jp"@example.org`, true},
@@ -35,7 +35,9 @@ func TestIsIncluded(t *testing.T) {
 		{"", "<neko@example.jp>", true},
 		{"", "<n@e.jp>", true},
 		{"", "Kijitora neko@example.jp (Nekochan)", true},
+		{"", "Sironeko <siro@example.jp> (Meow)", true},
 		{"", "<mailer-daemon>", false},
+		{"", "", false},
 	}
 
 	for _, e := range ae {
@@ -47,3 +49,4 @@ func TestIsIncluded(t *testing.T) {
 	}
 	t.Logf("The number of tests = %d", cx)
 }
+
