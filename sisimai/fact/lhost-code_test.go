@@ -168,10 +168,13 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 							/* Other fields except above */
 							// Action
-							if fs.Action == "" { t.Errorf("%s Action is empty", ee) }; cx++
-							if ActionList[fs.Action] == false {
-								t.Errorf("%s Action (%s) is an invalid value", ee, fs.Action)
-							}; cx++
+							if fs.Reason != "feedback" {
+								// Action is empty when the bounce mesage is a feedback loop
+								if fs.Action == "" { t.Errorf("%s Action is empty", ee) }; cx++
+								if ActionList[fs.Action] == false {
+									t.Errorf("%s Action (%s) is an invalid value", ee, fs.Action)
+								}; cx++
+							}
 
 							// Addresser
 							if fs.Addresser.Address == "" { t.Errorf("%s Addresser.Address is empty", ee) }; cx++
@@ -226,7 +229,10 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 							}; cx++
 
 							// DiagnosticType
-							if fs.DiagnosticType == "" { t.Errorf("%s DiagnosticType is empty", ee) }; cx++
+							if fs.Reason != "feedback" {
+								// DiagnosticType is empty when the bounce mesage is a feedback loop
+								if fs.DiagnosticType == "" { t.Errorf("%s DiagnosticType is empty", ee) }; cx++
+							}
 							if strings.Contains(fs.DiagnosticType, " ") {
 								t.Errorf("%s DiagnosticType includes space characters (%s)", ee, fs.DiagnosticType)
 							}; cx++
