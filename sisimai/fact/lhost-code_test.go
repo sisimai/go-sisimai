@@ -2,11 +2,11 @@
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
-//  _____         _      ____            _      ___       _                        _ 
-// |_   _|__  ___| |_   / / _| __ _  ___| |_   / (_)_ __ | |_ ___ _ __ _ __   __ _| |
-//   | |/ _ \/ __| __| / / |_ / _` |/ __| __| / /| | '_ \| __/ _ \ '__| '_ \ / _` | |
-//   | |  __/\__ \ |_ / /|  _| (_| | (__| |_ / / | | | | | ||  __/ |  | | | | (_| | |
-//   |_|\___||___/\__/_/ |_|  \__,_|\___|\__/_/  |_|_| |_|\__\___|_|  |_| |_|\__,_|_|
+//  _____         _      ___ _               _                      _      
+// |_   _|__  ___| |_   / / | |__   ___  ___| |_       ___ ___   __| | ___ 
+//   | |/ _ \/ __| __| / /| | '_ \ / _ \/ __| __|____ / __/ _ \ / _` |/ _ \
+//   | |  __/\__ \ |_ / / | | | | | (_) \__ \ ||_____| (_| (_) | (_| |  __/
+//   |_|\___||___/\__/_/  |_|_| |_|\___/|___/\__|     \___\___/ \__,_|\___|
 import "testing"
 import "os"
 import "io"
@@ -155,7 +155,12 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 									for _, as := range Alternates[fs.DecodedBy] {
 										if as == enginename { altdecoder = fs.DecodedBy; break }
 									}
+									if enginename == "AmazonSES" {
+										// AmazonSES or RFC3464
+										if fs.DecodedBy == "AmazonSES" || fs.DecodedBy == "RFC3464" { altdecoder = fs.DecodedBy }
+									}
 								}
+
 								if fs.DecodedBy != altdecoder {
 									t.Errorf("%s DecodedBy is (%s) but (%s)", ee, fs.DecodedBy, altdecoder)
 								}
