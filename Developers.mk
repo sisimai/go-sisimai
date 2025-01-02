@@ -22,7 +22,7 @@ count-test-cases:
 
 loc:
 	@ find . -type f -name '*.go' | grep -vE '/(tmp|sbin|internal)/' | grep -v '_test.go' | \
-		xargs grep -vE '(^$$|//|/[*]|[*]/|^ )' | wc -l
+		xargs grep -vE '(^$$|^//|/[*]|[*]/|^ |^--)' | grep -vE "\t+//" | wc -l
 
 clean:
 
