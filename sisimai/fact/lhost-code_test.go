@@ -33,6 +33,17 @@ type IsExpected struct {
 var SampleRoot = "set-of-emails/"
 var PublicDirs = "maildir/bsd/"
 var SecretDirs = "private/"
+var Alternates = map[string][]string{
+	"Exchange2007": []string{"Office365"},
+	"Exim":         []string{"MailRu", "MXLogic"},
+	"qmail":        []string{"X4", "Yahoo"},
+	"RFC3464":      []string{
+		"Amavis", "Aol", "AmazonWorkMail", "Barracuda", "Bigfoot", "Facebook", "GSuite", "McAfee",
+		"MessageLabs", "Outlook", "PowerMTA", "ReceivingSES", "SendGrid", "SurfControl", "Yandex",
+		"X5",
+	},
+}
+
 var ArgForRise = map[string]bool {"delivered": true, "vacation": true}
 var TestReturn = map[string]interface{}{"neko-dono": []string{"Michitsuna", "Suzu"}}
 var CallbackFn = func(arg *sis.CallbackArgs) map[string]interface{} { return TestReturn }
@@ -137,8 +148,18 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 							if fs.DecodedBy != enginename {
 								// DecodedBy
-								t.Errorf("%s DecodedBy is (%s) but (%s)", ee, fs.DecodedBy, enginename)
-							}
+								altdecoder := enginename
+								if len(Alternates[fs.DecodedBy]) > 0 {
+									// The MTA module in sisimai/lhost is a removed module
+									// https://github.com/sisimai/go-sisimai/issues/7
+									for _, as := range Alternates[fs.DecodedBy] {
+										if as == enginename { altdecoder = fs.DecodedBy; break }
+									}
+								}
+								if fs.DecodedBy != altdecoder {
+									t.Errorf("%s DecodedBy is (%s) but (%s)", ee, fs.DecodedBy, altdecoder)
+								}
+							}; cx++
 
 							/* Other fields except above */
 							// Action
