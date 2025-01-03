@@ -58,16 +58,16 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 	prefixpath := "../../" + SampleRoot
 	hostprefix := ""
 
-	if strings.HasPrefix(t.Name(), "TestLhost") == true { hostprefix = "lhost" }
-	if strings.HasPrefix(t.Name(), "TestRhost") == true { hostprefix = "rhost" }
+	if strings.HasPrefix(t.Name(), "TestLhost") == true { hostprefix = "lhost-" }
+	if strings.HasPrefix(t.Name(), "TestRhost") == true { hostprefix = "rhost-" }
 
 	if publictest == true {
 		// Public samples are in set-of-emails/maildir/bsd/lhost-*.eml
-		prefixpath += PublicDirs + hostprefix + "-" + strings.ToLower(enginename)
+		prefixpath += PublicDirs + hostprefix + strings.ToLower(enginename)
 
 	} else {
 		// Private samples are in set-of-emails/private/lhost-* directory
-		prefixpath += SecretDirs + hostprefix + "-" + strings.ToLower(enginename) + "/"
+		prefixpath += SecretDirs + hostprefix + strings.ToLower(enginename) + "/"
 	}
 	if len(isexpected) == 0 { t.Skip() }
 
