@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc1123
 
@@ -49,6 +49,9 @@ func IsInternetHost(argv1 string) bool {
 	// @see https://datatracker.ietf.org/doc/html/rfc1123
 	if len(argv1) <   4 { return false }
 	if len(argv1) > 255 { return false }
+
+	// Deal "localhost", "localhost6" as a valid hostname
+	if argv1 == "localhost" || argv1 == "localhost6" { return true }
 
 	if strings.Contains(argv1, ".") == false { return false }
 	if strings.Contains(argv1, "..") == true { return false }
