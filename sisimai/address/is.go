@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
 
@@ -102,7 +102,7 @@ func IsEmailAddress(email string) bool {
 	lastd := strings.LastIndex(email, ".")
 
 	if len(email)         > 254 { return false } // The maximum length of an email address is 254
-	if lasta < 1 || lasta >  64 { return false } // The maximum lenght of a local part is 64
+	if lasta < 1 || lasta >  64 { return false } // The maximum length of a local part is 64
 	if len(email) - lasta > 253 { return false } // The maximum lenght of a domain part is 253
 	if email[0]           == 46 { return false } // '.' at the first character is not allowed in a local part
 	if email[lasta - 1]   == 46 { return false } // '.' before the "@" is not allowed in a local part
