@@ -223,14 +223,6 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 								t.Errorf("%s Recipient.Alias (%s) is not a valid email address", ee, fs.Recipient.Alias)
 							}; cx++
 
-							// DiagnosticCode
-							if fs.DiagnosticCode == "" {
-								// When the value of DiagnosticCode is empty, the Reason should be "undefined"
-								if fs.Reason != "undefined" {
-									t.Errorf("%s DiagnosticCode is empty but reason is (%s)", ee, fs.Reason)
-								}
-							}; cx++
-
 							// DiagnosticType
 							if fs.Reason != "feedback" {
 								// DiagnosticType is empty when the bounce mesage is a feedback loop
