@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lda
 
@@ -16,7 +16,7 @@ var LocalAgent = map[string][]string{
 	// dovecot/src/deliver/deliver.c
 	// 11: #define DEFAULT_MAIL_REJECTION_HUMAN_REASON \
 	// 12: "Your message to <%t> was automatically rejected:%n%r"
-	"dovecot":    []string{"your message to ", " was automatically rejected:"},
+	"dovecot":    []string{"your message to <", "> was automatically rejected:"},
 	"mail.local": []string{"mail.local: "},
 	"procmail":   []string{"procmail: ", "/procmail "},
 	"maildrop":   []string{"maildrop: "},
