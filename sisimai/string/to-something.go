@@ -84,9 +84,8 @@ func ToUTF8(argv0 []byte, argv1 string) (string, error) {
 	// @param    []byte argv0     Some encoded text
 	// @param    string argv1     Encoding name of the argv0
 	// @return   string, error    Converted string or an error
-	if len(argv0) == 0  { return "", nil }
-	if argv1      == "" { return "", nil }
-	if argv1 == "utf-8" { return string(argv0), nil }
+	if len(argv0) == 0  || argv1 == ""         { return "", nil }
+	if argv1 == "utf-8" || argv1 == "us-ascii" { return string(argv0), nil }
 
 	var encodingif *encoding.Decoder
 	switch argv1 {
