@@ -11,6 +11,7 @@ package string
 import "strings"
 import "golang.org/x/text/encoding"
 import "golang.org/x/text/encoding/japanese"
+import "fmt"
 
 // ToLF() replace CR and CR/LF to LF.
 func ToLF(argv0 *string) *string {
@@ -92,12 +93,9 @@ func ToUTF8(argv0 []byte, argv1 string) (string, error) {
 		case "iso-2022-jp": encodingif = japanese.ISO2022JP.NewDecoder()
 		case "shift_jis":   encodingif = japanese.ShiftJIS.NewDecoder()
 		case "euc-jp":      encodingif = japanese.EUCJP.NewDecoder()
-	/*
 	default:
-		// TODO: Use "charmap" package when the encoding name is not Japanese
-		// We have no sample email from Notes written in non-Japanese except English
-		// A bounce mail written in Russian also fails (signal SIGSEGV: segmentation violation)
-	*/
+		ce := fmt.Errorf("Unsupported encoding: %s, see https://github.com/sisimai/go-sisimai/issues/42", argv1)
+		return string(argv0), ce
 	}
 	utf8string := make([]byte, len(argv0) * 3)
 	rightindex, _, nyaan := encodingif.Transform(utf8string, argv0, false)
