@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reply
 
@@ -40,7 +40,7 @@ func Find(argv1 string, argv2 string) string {
 	esmtpreply := ""
 	for _, e := range replycodes {
 		// Try to find an SMTP Reply Code from the given string
-		appearance := strings.Count(esmtperror, e); if appearance < 1 { continue }
+		appearance := strings.Count(esmtperror, e); if appearance == 0 { continue }
 		startingat := 1
 
 		for j := 0; j < appearance; j++ {
@@ -49,8 +49,8 @@ func Find(argv1 string, argv2 string) string {
 			formerchar := []byte(esmtperror[replyindex - 1:replyindex])[0]
 			latterchar := []byte(esmtperror[replyindex + 3:replyindex + 4])[0]
 
-			if formerchar > 45 && formerchar < 58 { startingat += replyindex + 3; continue }
-			if latterchar > 45 && latterchar < 58 { startingat += replyindex + 3; continue }
+			if formerchar > 45 && formerchar < 58 { startingat += replyindex + 3; continue } // '.' => '9'
+			if latterchar > 45 && latterchar < 58 { startingat += replyindex + 3; continue } // '.' => '9'
 			esmtpreply = e
 			break
 		}
