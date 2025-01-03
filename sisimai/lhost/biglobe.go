@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -24,7 +24,9 @@ func init() {
 
 		if strings.Contains(bf.Headers["from"][0], "postmaster@") == false { return sis.RisingUnderway{} }
 		if strings.Index(bf.Headers["subject"][0], "Returned mail:") != 0  { return sis.RisingUnderway{} }
-		proceedsto := false; for _, e := range []string{"biglobe inacatv tmtv ttv"} {
+
+		jpprovider := []string{"biglobe", "inacatv", "tmtv", "ttv"}
+		proceedsto := false; for _, e := range jpprovider {
 			// The From: header should contain one of domain above
 			if strings.Contains(bf.Headers["from"][0], "@" + e + ".ne.jp") { proceedsto = true; break }
 		}
