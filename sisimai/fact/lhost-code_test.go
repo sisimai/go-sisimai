@@ -55,16 +55,19 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 	// @param    [][]IsExpected isexpected The list of results
 	// @param    bool           publictest false if set-of-emails/private
 	cx := 0
-	//functionsi := "sisimai/lhost.Inquire[" + enginename + "]"
 	prefixpath := "../../" + SampleRoot
+	hostprefix := ""
+
+	if strings.HasPrefix(t.Name(), "TestLhost") == true { hostprefix = "lhost" }
+	if strings.HasPrefix(t.Name(), "TestRhost") == true { hostprefix = "rhost" }
 
 	if publictest == true {
 		// Public samples are in set-of-emails/maildir/bsd/lhost-*.eml
-		prefixpath += PublicDirs + "lhost-" + strings.ToLower(enginename)
+		prefixpath += PublicDirs + hostprefix + "-" + strings.ToLower(enginename)
 
 	} else {
 		// Private samples are in set-of-emails/private/lhost-* directory
-		prefixpath += SecretDirs + "lhost-" + strings.ToLower(enginename) + "/"
+		prefixpath += SecretDirs + hostprefix + "-" + strings.ToLower(enginename) + "/"
 	}
 	if len(isexpected) == 0 { t.Skip() }
 
