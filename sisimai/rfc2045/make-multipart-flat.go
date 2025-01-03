@@ -142,15 +142,12 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 			if sisimoji.Is8Bit(&b) || c == "iso-2022-jp" {
 				// Avoid the following errors in DecodeQ()
 				// - quotedprintable: invalid unescaped byte 0x1b in body
-				if utf8string, nyaan := sisimoji.ToUTF8([]byte(b), c); nyaan != nil {
+				utf8string, nyaan := sisimoji.ToUTF8([]byte(b), c); if nyaan != nil {
 					// Failed to convert the string to UTF-8
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
 					notdecoded = append(notdecoded, ce)
-
-				} else {
-					// Successfuly converted to UTF8
-					b = utf8string
 				}
+				b = utf8string
 			}
 
 			v := [3]string{f[0], f[1], b}
