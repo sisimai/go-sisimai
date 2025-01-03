@@ -9,6 +9,7 @@ package address
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
 import "sisimai/rfc791"
+import "sisimai/rfc1123"
 
 // IsQuotedAddress() checks that the local part of the argument is quoted
 func IsQuotedAddress(email string) bool {
@@ -150,6 +151,7 @@ func IsEmailAddress(email string) bool {
 			}
 		} else {
 			// A domain part of the email address: string after the last "@"
+			if email[j] ==  64 {             continue } // '@'
 			if email[j] <   45 { match = false; break } // Before '-'
 			if email[j] ==  47 { match = false; break } // Equals '/'
 			if email[j] ==  92 { match = false; break } // Equals '\'
@@ -172,6 +174,10 @@ func IsEmailAddress(email string) bool {
 				if upper[j] > 90 { match = false; break } // After  'Z'
 			}
 		}
+	}
+	if match == true && ipv46 == false {
+		// Check that the domain part is a valid internet host or not
+		match = rfc1123.IsInternetHost(email[lasta + 1:])
 	}
 	return match
 }
