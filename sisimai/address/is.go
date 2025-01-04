@@ -110,10 +110,12 @@ func IsEmailAddress(email string) bool {
 
 	quote := IsQuotedAddress(email); if quote == false {
 		// The email address is not a quoted address
-		if strings.Contains(email, " ")  { return false }
-		if strings.Contains(email, "..") { return false }
-		if strings.Contains(email, ".@") { return false }
 		if strings.Count(email, "@") > 1 { return false }
+		if strings.Contains(email, " ")  { return false }
+
+		// Non-RFC compliant email addresses still persist in the world.
+		// if strings.Contains(email, "..") { return false }
+		// if strings.Contains(email, ".@") { return false }
 	}
 	upper := strings.ToUpper(email)
 	ipv46 := IsDomainLiteral(email)
@@ -139,8 +141,9 @@ func IsEmailAddress(email string) bool {
 				}
 			} else {
 				// The local part is not quoted
-				// ".." is not allowed in a local part when the local part is not quoted by ""
-				if e == "." && email[j-1] == 46 { match = false; break }
+				// ".." is not allowed in a local part when the local part is not quoted by "" but
+				// Non-RFC compliant email addresses still persist in the world.
+				// if e == "." && email[j-1] == 46 { match = false; break }
 
 				// The following characters are not allowed in a local part without "..."@example.jp
 				if e == "," || e == "@" { match = false; break }
