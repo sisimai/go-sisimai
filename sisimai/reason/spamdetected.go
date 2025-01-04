@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
 
@@ -130,10 +130,11 @@ func init() {
 	ProbesInto["SpamDetected"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is spamdetected, false: is not spamdetected
-		if fo.Reason == "spamdetected"                      { return true }
-		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true }
-		if fo.Command == "CONN" || fo.Command == "EHLO" || fo.Command == "HELO" ||
-		   fo.Command == "MAIL" || fo.Command == "RCPT" { return false }
+		commandset := []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}
+		if fo.DeliveryStatus == ""                          { return false }
+		if fo.Reason == "spamdetected"                      { return true  }
+		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true  }
+		if sisimoji.EqualsAny(fo.Command, commandset)       { return false }
 		return IncludedIn["SpamDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
