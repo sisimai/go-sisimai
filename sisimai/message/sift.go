@@ -7,7 +7,6 @@ package message
 // | | | | | |  __/\__ \__ \ (_| | (_| |  __/
 // |_| |_| |_|\___||___/___/\__,_|\__, |\___|
 //                                |___/      
-import "os"
 import "fmt"
 import "strings"
 import "net/mail"
@@ -136,7 +135,8 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(localhostr.RFC822))
 	if nyaan != nil {
 		// Failed to read the original message part
-		fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan)
+		ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+		bf.Errors = append(bf.Errors, ce)
 		return false
 	}
 	bf.RFC822 = makemap(&rfc822part.Header, false)
