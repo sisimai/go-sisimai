@@ -117,8 +117,8 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 			// Content-Type: field; see set-of-emails/maildir/bsd/lhost-x1-01.eml
 			e = fmt.Sprintf("Content-Type: text/plain\n\n%s", e)
 		}
-		f := haircut(&e, false)
-		if strings.Contains(f[0], "multipart/") {
+
+		if f := haircut(&e, false); strings.Contains(f[0], "multipart/") {
 			// There is nested multipart/* block
 			boundary02 := Boundary(f[0], -1); if len(boundary02) == 0 { continue }
 			bodyinside := strings.SplitN(f[2], "\n\n", 2)[1]
@@ -147,7 +147,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
 					notdecoded = append(notdecoded, ce)
 				}
-				b = utf8string
+				if utf8string != "" { b = utf8string }
 			}
 
 			v := [3]string{f[0], f[1], b}
