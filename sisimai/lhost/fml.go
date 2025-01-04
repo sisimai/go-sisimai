@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -11,6 +11,7 @@ import "strings"
 import "sisimai/sis"
 import "sisimai/rfc5322"
 import sisimoji "sisimai/string"
+import "fmt"
 
 func init() {
 	// Decode bounce messages from fml mailing list server/manager: https://www.fml.org
@@ -104,6 +105,9 @@ func init() {
 				e.Reason = f; break
 			}
 		}
+
+		// Set pseudo "To:" header into the original message part
+		if emailparts[1] == "" { emailparts[1] += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient) }
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
