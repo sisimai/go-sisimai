@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -7,6 +7,7 @@ package lhost
 // | | '_ \ / _ \/ __| __| / /| | | |/ _ \| '_ ` _ \| | '_ \ / _ \ 
 // | | | | | (_) \__ \ |_ / / | |_| | (_) | | | | | | | | | | (_) |
 // |_|_| |_|\___/|___/\__/_/  |____/ \___/|_| |_| |_|_|_| |_|\___/ 
+import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc1894"
@@ -42,6 +43,13 @@ func init() {
 				"no se encuentra en el Directorio de Domino",
 				"non répertorié dans l'annuaire Domino",
 				"Domino ディレクトリには見つかりません",
+			},
+		}
+		exceptutf8 := map[string][][]string{
+			// Try to match with the order of each elements for non utf-8 encoded error message
+			// such as ISO-8859-1
+			"userunknown": [][]string{
+				[]string{"non r", "pertori", "dans l'annuaire Domino"}, // "non répertorié dans l'annuaire Domino",
 			},
 		}
 
@@ -156,11 +164,30 @@ func init() {
 					break FINDREASON
 				}
 			}
+
+			EXCEPTUTF8: for r := range exceptutf8 {
+				// The key name is a bounce reason name
+				if e.Reason != "" { break EXCEPTUTF8 }
+				for _, f := range exceptutf8[r] {
+					// Try to find an error message including lower-cased string listed in messagesof
+					if sisimoji.Aligned(e.Diagnosis, f) == false { continue }
+					e.Reason = r
+					break EXCEPTUTF8
+				}
+			}
 		}
 
-		// Set "subjecttxt" as a Subject if there is no original message in the bounce mail.
-		if strings.Contains(emailparts[1], "\nSubject:") == false { emailparts[1] += "Subject: " + subjecttxt + "\n" }
-
+		if emailparts[1] == "" {
+			// The original message is empty
+			if strings.Contains(emailparts[1], "\nTo:") == false {
+				// Set "To:" header into the original message
+				emailparts[1] += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
+			}
+			if strings.Contains(emailparts[1], "\nSubject:") == false {
+				// Set "subjecttxt" as a Subject if there is no original message in the bounce mail.
+				emailparts[1] += "Subject: " + subjecttxt + "\n"
+			}
+		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
 }
