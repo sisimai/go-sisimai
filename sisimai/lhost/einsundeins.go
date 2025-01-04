@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -7,6 +7,7 @@ package lhost
 // | | '_ \ / _ \/ __| __| / /|  _| | | '_ \/ __| | | | '_ \ / _` |  _| | | '_ \/ __|
 // | | | | | (_) \__ \ |_ / / | |___| | | | \__ \ |_| | | | | (_| | |___| | | | \__ \
 // |_|_| |_|\___/|___/\__/_/  |_____|_|_| |_|___/\___/|_| |_|\__,_|_____|_|_| |_|___/
+import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc5322"
@@ -60,7 +61,8 @@ func init() {
 			//
 			// Mail size limit exceeded. For explanation visit
 			// http://postmaster.1and1.com/en/error-messages?ip=%1s
-			if sisimoji.Aligned(e, []string{"@", "."}) {
+			if sisimoji.Aligned(e, []string{"@", "."}) &&
+			   (strings.HasSuffix(e, ":") || strings.Contains(e, " ") == false) {
 				// general@example.eu OR
 				// the line begin with 4 space characters, end with ":" like "    neko@example.eu:"
 				ce := sisiaddr.S3S4(strings.Trim(e, ":")); if sisiaddr.IsEmailAddress(ce) == false { continue }
@@ -123,6 +125,9 @@ func init() {
 				}
 			}
 		}
+
+		// Set pseudo "To:" header into the original message
+		if emailparts[1] == "" { emailparts[1] += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient) }
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
