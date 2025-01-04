@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
 
@@ -120,8 +120,7 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	}
 
 	// Convert headers of the original message to data structure/map[string][]string
-	rfc822text := ""
-	for _, e := range strings.Split(localhostr.RFC822, "\n") {
+	rfc822text := ""; for _, e := range strings.Split(localhostr.RFC822, "\n") {
 		// Append each line of localhostr.RFC822 to rfc822text except malformed headers
 		if e == "" && rfc822text != ""  { break } // The blank line between the header and the body
 		if strings.Index(e, ":") < 1 {            // The line does not contain ":" or begins with ":"
