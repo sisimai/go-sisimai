@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -240,14 +240,6 @@ func init() {
 
 			if ce == true || sisimoji.ContainsAny(e, startingof["alias"]) {
 				// The line is including an email address
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					anotherone = append(anotherone, "")
-					rightindex++
-					v = &(dscontents[rightindex])
-				}
-
 				if sisimoji.ContainsAny(e, startingof["alias"]) {
 					// The line does not include an email address
 					// deliver.c:4549|  printed = US"an undisclosed address";
@@ -261,7 +253,6 @@ func init() {
 					//   mikeneko@example.jp <nekochan@example.org>: ...
 					p1 := strings.Index(e, "<")
 					p2 := strings.Index(e, ">:")
-
 					if p1 > 1 && p2 > 1 {
 						// There are an email address and an error message in the line
 						// parser.c:743| while (bracket_count-- > 0) if (*s++ != '>')
@@ -276,11 +267,21 @@ func init() {
 						v.Diagnosis = sisimoji.Sweep(e[p2 + 1:])
 
 					} else {
-						// There is an email address only in the line
-						//   kijitora@example.jp
-						cv = sisiaddr.S3S4(e[2:])
+						// There is an email address only in the line, such as "  kijitora@example.jp"
+						// --- OR ---
+						// "  kijitora@example.jp: forced freeze"
+						p3 := strings.LastIndex(e, ": "); if p3 < 0 { p3 = len(e) }
+						cv  = sisiaddr.S3S4(e[2:p3])
 					}
 					if sisiaddr.IsEmailAddress(cv) == false { continue }
+				}
+
+				if len(v.Recipient) > 0 && cv != v.Recipient {
+					// There are multiple recipient addresses in the message body.
+					dscontents = append(dscontents, sis.DeliveryMatter{})
+					anotherone = append(anotherone, "")
+					rightindex++
+					v = &(dscontents[rightindex])
 				}
 				v.Recipient = cv
 				recipients++
@@ -404,7 +405,10 @@ func init() {
 				// Status: 5.0.0
 				e.Diagnosis = dscontents[0].Diagnosis
 				if e.Spec        == "" { e.Spec = dscontents[0].Spec   }
-				if anotherone[0] != "" { anotherone[j] = anotherone[0] }
+				if anotherone[0] != "" {
+					if len(anotherone) <= j { anotherone = append(anotherone, "") }
+					anotherone[j] = anotherone[0]
+				}
 			}
 
 			if len(anotherone) > j && anotherone[j] != "" {
