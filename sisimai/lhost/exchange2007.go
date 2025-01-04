@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -35,12 +35,6 @@ func init() {
 			"Non recapitabile", // it-CH
 			"Olevererbart",     // sv-SE
 		}
-		if sisimoji.ContainsAny(bf.Headers["subject"][0], emailtitle) { proceedsto++ }
-		if sisimoji.ContainsAny(bf.Headers["from"][0], mailsender)    { proceedsto++ }
-		if len(bf.Headers["content-language"]) > 0                    { proceedsto++ }
-		if proceedsto < 2 { return sis.RisingUnderway{} }
-
-		indicators := INDICATORS()
 		boundaries := []string{
 			"Original Message Headers",
 			"Original message headers:",             // en-US
@@ -80,7 +74,14 @@ func init() {
 			"RESOLVER.RST.RecipSizeLimit":    "exceedlimit",   // 550 5.2.3 RESOLVER.RST.RecipSizeLimit
 			"QUEUE.Expired":                  "expired",       // 550 4.4.7 QUEUE.Expired
 		}
+		if sisimoji.ContainsAny(bf.Headers["subject"][0], emailtitle) { proceedsto++ }
+		if sisimoji.ContainsAny(bf.Headers["from"][0], mailsender)    { proceedsto++ }
+		if sisimoji.ContainsAny(bf.Payload, startingof["error"])      { proceedsto++ }
+		if sisimoji.ContainsAny(bf.Payload, startingof["message"])    { proceedsto++ }
+		if len(bf.Headers["content-language"]) > 0                    { proceedsto++ }
+		if proceedsto < 2 { return sis.RisingUnderway{} }
 
+		indicators := INDICATORS()
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
