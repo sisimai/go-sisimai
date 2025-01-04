@@ -36,10 +36,10 @@ func ToLF(argv0 *string) *string {
 func ToPlain(argv0 *string) *string {
 	// @param    [*string] argv0  HTML text
 	// @return   [*string]        Plain text
-	if len(*argv0) == 0 { return argv0 }
+	if *argv0 == "" { return argv0 }
 
 	xhtml := *argv0
-	lower := strings.ToLower(*argv0)
+	lower := strings.ToLower(*argv0); if strings.Contains(lower, "<body") == false { return argv0 }
 	plain := "" // Plain text (including no HTML element)
 	body0 := -1 // Index of the beginning of the <body> element
 
