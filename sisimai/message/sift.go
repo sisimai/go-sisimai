@@ -119,7 +119,7 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 		localhostr.Digest[j].Agent = modulename
 	}
 
-	if strings.Contains(localhostr.RFC822, "\nFrom:") == false && len(bf.Headers["to"][0]) > 0 {
+	if strings.Contains(localhostr.RFC822, "\nFrom:") == false && len(bf.Headers["to"]) > 0 {
 		// There is no "From:" header, pick the email address from the "To:" header of the
 		// bounce message
 		localhostr.RFC822 = fmt.Sprintf("From: %s\n%s", bf.Headers["to"][0], localhostr.RFC822)
