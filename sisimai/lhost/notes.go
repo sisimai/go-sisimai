@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -64,7 +64,6 @@ func init() {
 			if strings.Contains(e, "@") && strings.Contains(e, " ") == false {
 				// kijitora@notes.example.jp
 				if sisiaddr.IsEmailAddress(e) == false { continue }
-
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})
@@ -95,6 +94,15 @@ func init() {
 					v.Diagnosis += " " + e
 				}
 			}
+		}
+		
+		for recipients == 0 {
+			// Pick an email address from "To:" header of the original message
+			p0 := strings.Index(emailparts[1], "\n\n");  if p0 < 0 { p0 = len(emailparts[1]) }
+			p1 := strings.Index(emailparts[1], "\nTo:"); if p1 < 0 || p1 > p0 { break }
+			p2 := strings.Index(emailparts[1][p1 + 4:], "\n")
+			cv := sisiaddr.S3S4(emailparts[1][p1 + 4:p1 + p2 + 4])
+			dscontents[0].Recipient = cv; recipients++; break
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
 
