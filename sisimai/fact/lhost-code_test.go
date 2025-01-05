@@ -188,9 +188,15 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 						// Addresser
 						if fs.Addresser.Address == "" { t.Errorf("%s Addresser.Address is empty", ee) }; cx++
-						if fs.Addresser.Alias   != "" { t.Errorf("%s Addresser.Alias is (%s) not empty", ee, fs.Addresser.Alias) }; cx++
-						if fs.Addresser.Verp    != "" { t.Errorf("%s Addresser.Verp is (%s) not empty", ee, fs.Addresser.Verp) }; cx++
 						if fs.Addresser.User    == "" { t.Errorf("%s Addresser.User is empty", ee) }; cx++
+						if sisiaddr.IsQuotedAddress(fs.Addresser.Address) == false {
+							if fs.Addresser.Alias != "" && strings.Contains(fs.Addresser.Address, "+") == false {
+								t.Errorf("%s Addresser.Alias is (%s) not empty", ee, fs.Addresser.Alias)
+							}; cx++
+							if fs.Addresser.Verp  != "" && strings.Contains(fs.Addresser.Address, "=") == false {
+								t.Errorf("%s Addresser.Verp is (%s) not empty", ee, fs.Addresser.Verp)
+							}; cx++
+						}
 						if fs.Addresser.Host    == "" { t.Errorf("%s Addresser.User is empty", ee) }; cx++
 						if fs.Addresser.Host    != fs.SenderDomain {
 							// SenderDomain
