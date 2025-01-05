@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -58,7 +58,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 		// - Skip if the value of "recipient" length is 4 or shorter
 		// - Skip if the value of "deliverystatus" begins with "2." such as 2.1.5
 		// - Skip if the value of "reason" is "vacation"
-		if len(e.Recipient)   < 5                                         { continue RISEOF }
+		if sisiaddr.IsEmailAddress(e.Recipient) == false                  { continue RISEOF }
 		if args["delivered"] != true && strings.HasPrefix(e.Status, "2.") { continue RISEOF }
 		if args["vacation"]  != true && e.Reason == "vaction"             { continue RISEOF }
 
@@ -89,9 +89,8 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 
 		TIMESTAMP: for {
 			// Convert from the value of "Date" or the date string to time.Time
-			datevalues := []string{}
+			datevalues := []string{}; if len(e.Date) > 0 { datevalues = append(datevalues, e.Date) }
 
-			if len(e.Date) > 0 { datevalues = append(datevalues, e.Date) }
 			for _, f := range RFC822Head["date"] {
 				// Date information did not exist in message/delivery-status part.
 				// Get the value of "Date:" header or other date related headers.
@@ -120,7 +119,6 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 				}
 			}
 			if clock.IsZero() { continue RISEOF }
-
 			break TIMESTAMP
 		}
 
@@ -207,7 +205,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 			piece["diagnosticcode"] = e.Diagnosis
 			piece["deliverystatus"] = e.Status
 			piece["replycode"]      = e.ReplyCode
-			if len(e.Diagnosis) == 0 { break DIAGNOSTICCODE }
+			if e.Diagnosis == "" { break DIAGNOSTICCODE }
 
 			// Get an SMTP Reply Code and an SMTP Enhanced Status Code
 			piece["diagnosticcode"] = strings.ReplaceAll(piece["diagnosticcode"], "\r", "")
@@ -217,7 +215,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 
 			if len(cr) == 3 {
 				// There is an SMTP reply code in the error message 
-				if len(piece["replycode"]) == 0 { piece["replycode"] = cr }
+				if piece["replycode"] == "" { piece["replycode"] = cr }
 				if strings.Contains(piece["diagnosticcode"], cr + "-") {
 					// 550-5.7.1 [192.0.2.222] Our system has detected that this message is
 					// 550-5.7.1 likely unsolicited mail. To reduce the amount of spam sent to Gmail,
@@ -316,9 +314,9 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 		ALIAS: for {
 			// Look up the Envelope-To address from the Received: header in the original message
 			// when the recipient address is same with the value of piece["alias"].
-			if len(thing.Alias) == 0                  { break ALIAS }
-			if thing.Recipient.Address != thing.Alias { break ALIAS }
-			if len(rfc822data["received"]) == 0       { break ALIAS }
+			if thing.Alias                 == ""          { break ALIAS }
+			if thing.Recipient.Address     != thing.Alias { break ALIAS }
+			if len(rfc822data["received"]) == 0           { break ALIAS }
 
 			recv := rfc822data["received"]
 			hops := len(recv)
