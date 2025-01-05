@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -7,7 +7,6 @@ package lhost
 // | | '_ \ / _ \/ __| __| / /  \  /  |_ \ 
 // | | | | | (_) \__ \ |_ / /   /  \ ___) |
 // |_|_| |_|\___/|___/\__/_/   /_/\_\____/ 
-import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc1894"
@@ -140,12 +139,6 @@ func init() {
 			}
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 		}
-		if emailparts[1] == "" {
-			// The original message part is empty, set "To:", "Date:" headers
-			emailparts[1] += fmt.Sprintf("To: %s\n", dscontents[0].Recipient)
-			emailparts[1] += fmt.Sprintf("Date: %s\n", dscontents[0].Date)
-		}
-
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
 }
