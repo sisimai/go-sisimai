@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -8,7 +8,6 @@ package lhost
 // | | | | | (_) \__ \ |_ / / (_| | | | | | | (_| | | |
 // |_|_| |_|\___/|___/\__/_/ \__, |_| |_| |_|\__,_|_|_|
 //                              |_|                    
-import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc5322"
@@ -195,7 +194,7 @@ func init() {
 					rightindex++
 					v = &(dscontents[rightindex])
 				}
-				v.Recipient = sisiaddr.S3S4(e[:strings.Index(e, ":")])
+				v.Recipient = sisiaddr.S3S4(e[1:strings.Index(e, ">:")])
 				recipients += 1
 
 			} else if len(dscontents) == int(recipients) {
@@ -267,12 +266,6 @@ func init() {
 			}
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 		}
-
-		if strings.Contains(emailparts[1], "\nFrom:") == false {
-			// There is no From: headers in the original message part
-			emailparts[1] += fmt.Sprintf("\nFrom: <%s>\n", bf.Headers["to"][0])
-		}
-
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
 }
