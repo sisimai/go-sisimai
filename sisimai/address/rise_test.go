@@ -100,13 +100,13 @@ func TestRise(t *testing.T) {
 				}; cx++
 
 				if cv.Verp != "" {
-					if strings.Count(cv.Address, "=") > 0 { t.Errorf("[%6d]: %s.Address includes '=' (%s)", cx, on, cv.Address)   }; cx++
-					if strings.Count(cv.Verp, "=")   == 0 { t.Errorf("[%6d]: %s.Verp does not include '=' (%s)", cx, on, cv.Verp) }; cx++
+					if strings.Count(cv.Address, "=") < 1 { t.Errorf("[%6d]: %s.Address does not include '=' (%s)", cx, on, cv.Address) }; cx++
+					if strings.Count(cv.Verp, "=")    > 0 { t.Errorf("[%6d]: %s.Verp includes '=' (%s)", cx, on, cv.Verp) }; cx++
 				}
 
 				if cv.Alias != "" {
-					if strings.Count(cv.Address, "+") > 0 { t.Errorf("[%6d]: %s.Address includes '+' (%s)", cx, on, cv.Address)     }; cx++
-					if strings.Count(cv.Alias, "+")  == 0 { t.Errorf("[%6d]: %s.Alias does not include '+' (%s)", cx, on, cv.Alias) }; cx++
+					if strings.Count(cv.Address, "+") < 1 { t.Errorf("[%6d]: %s.Address does not include '+' (%s)", cx, on, cv.Address) }; cx++
+					if strings.Count(cv.Alias, "+")   > 0 { t.Errorf("[%6d]: %s.Alias includes '+' (%s)", cx, on, cv.Alias) }; cx++
 				}
 
 				if cv.Name    != e.displays { t.Errorf("[%6d]: %s.Name is (%s) not (%s)", cx, on, cv.Name, e.displays)    }; cx++

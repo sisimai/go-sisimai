@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
 
@@ -13,8 +13,8 @@ type EmailAddress struct {
 	Address string // Email address
 	User    string // Local part of the email addres
 	Host    string // Domain part of the email address
-	Verp    string // VERP
-	Alias   string // Alias of the email address
+	Verp    string // Expanded VERP address
+	Alias   string // Expanded Alias of the email address
 	Name    string // Display name
 	Comment string // (Comment)
 }
@@ -26,42 +26,28 @@ func Rise(argvs [3]string) EmailAddress {
 	if argvs[0] == "" { return EmailAddress{} }
 
 	thing := new(EmailAddress)
+	email := Final(argvs[0])
 	heads := "<"
 	tails := ">,.;"
-	point := strings.LastIndex(argvs[0], "@")
 
-	if point > 0 {
+	if lasta := strings.LastIndex(email, "@"); lasta > 0 {
 		// Get the local part and the domain part from the email address
-		lpart := argvs[0][:point]
-		dpart := argvs[0][point + 1:]
-		email := ExpandVERP(argvs[0])
-		alias := false
+		lpart := email[:lasta]     // Local part of the address:  "neko"
+		dpart := email[lasta + 1:] // Domain part of the address: "example.jp"
 
-		if email == "" {
-			// Is not a VERP address, try to expand the address as an alias
-			email = ExpandAlias(argvs[0]); if email != "" { alias = true }
-		}
+		if other := ExpandVERP(email); other != "" {
+			// The email address is a VERP address such as "neko+cat=example.jp@example.org"
+			thing.Verp = other
 
-		if strings.Contains(email, "@") {
-			// The address is a VERP or an alias
-			thing.Address = email
-			if alias {
-				// The address is an alias like "neko+cat@example.jp"
-				thing.Alias = argvs[0]
-
-			} else {
-				// The address is a VERP: b+neko=example.jp@example.org
-				thing.Verp  = argvs[0]
-			}
+		} else if other := ExpandAlias(email); other != "" {
+			// The email address is an alias address such as "neko+cat@example.jp"
+			thing.Alias = other
 		}
 
 		// Remove the folowing characters: "<", ">", ",", ".", and ";" from the email address
-		lpart = strings.TrimLeft(lpart, heads)
-		dpart = strings.TrimRight(dpart, tails)
-
-		thing.User = lpart
-		thing.Host = dpart
-		if thing.Address == "" { thing.Address = lpart + "@" + dpart }
+		lpart = strings.TrimLeft(lpart, heads);  thing.User = lpart
+		dpart = strings.TrimRight(dpart, tails); thing.Host = dpart
+		thing.Address = lpart + "@" + dpart
 
 	} else {
 		// The argument does not include "@"
@@ -70,7 +56,7 @@ func Rise(argvs [3]string) EmailAddress {
 
 		// The argument does not include " "
 		thing.User    = argvs[0]
-		thing.Address = argvs[0]
+		thing.Address = thing.User
 	}
 
 	thing.Name    = argvs[1]
