@@ -119,17 +119,16 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 		localhostr.Digest[j].Agent = modulename
 	}
 
-	if localhostr.RFC822 == "" {
+	if strings.Contains(localhostr.RFC822, "\nFrom:") == false && len(bf.Headers["to"][0]) > 0 {
+		// There is no "From:" header, pick the email address from the "To:" header of the
+		// bounce message
+		localhostr.RFC822 = fmt.Sprintf("From: %s\n%s", bf.Headers["to"][0], localhostr.RFC822)
+	}
+	di := &(localhostr.Digest[0])
+	if strings.Contains(localhostr.RFC822, "\nTo:") == false && di.Recipient != "" {
 		// The original message block is empty, insert some values picked from localhostr.Digest as
 		// a pseudo header such as "To:", "Date:".
-		p := &(localhostr.Digest[0])
-		if len(bf.Headers["to"]) > 0 {
-			// There is no "From:" header, pick the email address from the "To:" header of the
-			///bounce message
-			localhostr.RFC822 += fmt.Sprintf("From: %s\n", bf.Headers["to"][0])
-		}
-		if p.Recipient != "" { localhostr.RFC822 += fmt.Sprintf("To: <%s>\n", p.Recipient) }
-		if p.Date      != "" { localhostr.RFC822 += fmt.Sprintf("Date: %s\n", p.Date)      }
+		localhostr.RFC822 = fmt.Sprintf("To: <%s>\n%s", di.Recipient, localhostr.RFC822)
 	}
 
 	// Convert headers of the original message to data structure/map[string][]string
