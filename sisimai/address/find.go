@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
 
@@ -243,6 +243,7 @@ func Find(argv1 string) [3]string {
 		// - Remove angle brackets, other brackets, and quotations: ()[]<>{}'`;. and `"`
 		if IsDomainLiteral(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], "[]{}()`';.") }
 		readbuffer[0] = strings.Trim(readbuffer[0], "<>")
+		readbuffer[0] = Final(readbuffer[0])
 		if IsQuotedAddress(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], `"`) }
 		emailtable[0] = readbuffer[0]
 	}
@@ -270,8 +271,9 @@ func Find(argv1 string) [3]string {
 			// Try to pick an email address from each element in readbuffer
 			for _, f := range strings.Split(e, " ") {
 				// Find an email address like string from each element splitted by " "
-				if f == "" || strings.Index(f, "@") < 1            { continue }
-				f = strings.Trim(f, "<>{}()[]`';."); if len(f) < 5 { continue }
+				if f == "" || strings.Index(f, "@") < 1          { continue }
+				f = strings.Trim(f, "{}()[]`';."); if len(f) < 5 { continue }
+				f = Final(f)
 
 				if IsQuotedAddress(f) == false { e = strings.Trim(e, `"`)    }
 				if IsEmailAddress(f)  == true  { emailtable[0] = f; break E0 }
