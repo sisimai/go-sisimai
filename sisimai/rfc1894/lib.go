@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc1894
 
@@ -205,8 +205,8 @@ func Field(argv0 string) []string {
 	if sisimoji.Aligned(table[2], []string{" (", ")"}) {
 		// Extract text enclosed in parentheses as comments
 		// Reporting-MTA: dns; mr21p30im-asmtp004.me.example.com (tcp-daemon)
-		p1 := strings.Index(table[2], " (")
-		p2 := strings.Index(table[2], ")" )
+		p1 := strings.LastIndex(table[2], " (")
+		p2 := strings.LastIndex(table[2], ")" )
 		table[4] = table[2][p1 + 2:p2]
 		table[2] = table[2][0:p1]
 	}
