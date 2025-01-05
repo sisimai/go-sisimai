@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
 
@@ -15,15 +15,16 @@ func ExpandVERP(email string) string {
 	// @return   string        Email address
 	if email                        == ""    { return "" }
 	if strings.Contains(email, "@") == false { return "" }
+	if IsQuotedAddress(email)       == true  { return "" } // Do not expand "neko+cat=example.jp"@example.org
 
 	// bounce+neko=example.org@example.org => neko@example.org
 	local := strings.SplitN(email, "@", 2)[0]
 	pluss := strings.Index(local, "+"); if pluss < 1                  { return "" }
 	equal := strings.Index(local, "="); if equal < 1 || pluss > equal { return "" }
 	lsize := len(local);    if pluss > lsize - 1 || equal > lsize - 1 { return "" }
-	verp1 := strings.Replace(strings.SplitN(local, "+", 2)[1], "=", "@", 1)
+	xverp := strings.Replace(strings.SplitN(local, "+", 2)[1], "=", "@", 1)
 
-	if IsEmailAddress(verp1) { return verp1 }
+	if IsEmailAddress(xverp) { return xverp }
 	return ""
 }
 
@@ -33,6 +34,7 @@ func ExpandAlias(email string) string {
 	// @return   string        Expanded email address
 	if email                        == ""    { return "" }
 	if IsEmailAddress(email)        == false { return "" }
+	if IsQuotedAddress(email)       == true  { return "" } // Do not expand "neko+cat"@example.org
 	if strings.Contains(email, "+") == false { return "" }
 	if strings.Index(email, "+")     < 1     { return "" }
 
