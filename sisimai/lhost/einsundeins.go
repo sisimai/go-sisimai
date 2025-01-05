@@ -7,7 +7,6 @@ package lhost
 // | | '_ \ / _ \/ __| __| / /|  _| | | '_ \/ __| | | | '_ \ / _` |  _| | | '_ \/ __|
 // | | | | | (_) \__ \ |_ / / | |___| | | | \__ \ |_| | | | | (_| | |___| | | | \__ \
 // |_|_| |_|\___/|___/\__/_/  |_____|_|_| |_|___/\___/|_| |_|\__,_|_____|_|_| |_|___/
-import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/rfc5322"
@@ -125,10 +124,6 @@ func init() {
 				}
 			}
 		}
-
-		// Set pseudo "To:" header into the original message
-		if emailparts[1] == "" { emailparts[1] += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient) }
-
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
     }
 }

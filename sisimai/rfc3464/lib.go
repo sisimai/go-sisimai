@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc3464
 
@@ -7,7 +7,6 @@ package rfc3464
 // | |_) | |_ | |     |_ \| || |_| '_ \| || |_ 
 // |  _ <|  _|| |___ ___) |__   _| (_) |__   _|
 // |_| \_\_|   \____|____/   |_|  \___/   |_|  
-import "fmt"
 import "strings"
 import "sisimai/sis"
 import "sisimai/lhost"
@@ -281,10 +280,6 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		if e.Status == "" { e.Status = status.Find(e.Diagnosis, e.ReplyCode) }
 		if e.Status == "" { e.Status = alternates.Status                     }
 	}
-
-	// Set the recipient address as To: header in the original message part
-	if emailparts[1] == "" { emailparts[1] = fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient) }
-
 	return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 }
 
