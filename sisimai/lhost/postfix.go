@@ -94,7 +94,7 @@ func init() {
 					recipients += 1
 				}
 				reply, nyaan := strconv.ParseUint(p.Reply, 10, 16)
-				if nyaan != nil && reply < 400 { continue }
+				if nyaan != nil || reply < 400 { continue }
 
 				commandset = append(commandset, e.Command)
 				if len(v.Diagnosis) == 0 { v.Diagnosis = strings.Join(p.Text, " ") }
