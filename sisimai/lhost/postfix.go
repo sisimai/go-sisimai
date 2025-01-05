@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -276,20 +276,16 @@ func init() {
 
 					if len(e.Status) == 0 || strings.HasSuffix(e.Status, ".0.0") {
 						// Check the value of D.S.N. in "anotherset"
+						// The delivery status code is neither an empty nor *.0.0
 						as = status.Find(anotherset["diagnosis"], e.ReplyCode)
-						if len(as) > 0 && strings.HasSuffix(as, ".0.0") == false {
-							// The delivery status code is neither an empty nor *.0.0
-							e.Status = as
-						}
+						if len(as) > 0 && strings.HasSuffix(as, ".0.0") == false { e.Status = as }
 					}
 
 					if len(e.ReplyCode) == 0 || strings.HasSuffix(e.ReplyCode, "00") {
 						// Check the value of the SMTP reply code in anotherset
+						// The SMTP reply code is neither an empty nor *00 
 						ar = reply.Find(anotherset["diagnosis"], e.Status)
-						if len(ar) > 0 && strings.HasSuffix(ar, "00") == false {
-							// The SMTP reply code is neither an empty nor *00 
-							e.ReplyCode = ar
-						}
+						if len(ar) > 0 && strings.HasSuffix(ar, "00") == false { e.ReplyCode = ar }
 					}
 
 					for {
@@ -321,7 +317,6 @@ func init() {
 			if e.Spec != "" { continue }
 			if sisimoji.Aligned(e.Diagnosis, []string{"host ", " said:"}) { e.Spec = "SMTP" }
 		}
-
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}
 }
