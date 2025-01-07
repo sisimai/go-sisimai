@@ -91,7 +91,7 @@ func init() {
 							dscontents = append(dscontents, sis.DeliveryMatter{})
 							v = &(dscontents[len(dscontents) - 1])
 						}
-						v.Recipient = o[2]
+						v.Recipient = sisiaddr.Final(o[2])
 						recipients += 1
 
 					} else {
