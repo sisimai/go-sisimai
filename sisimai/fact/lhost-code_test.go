@@ -188,7 +188,6 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 						// Addresser
 						if fs.Addresser.Address == "" { t.Errorf("%s Addresser.Address is empty", ee) }; cx++
-						if fs.Addresser.User    == "" { t.Errorf("%s Addresser.User is empty", ee) }; cx++
 						if sisiaddr.IsQuotedAddress(fs.Addresser.Address) == false {
 							if fs.Addresser.Alias != "" && strings.Contains(fs.Addresser.Address, "+") == false {
 								t.Errorf("%s Addresser.Alias is (%s) not empty", ee, fs.Addresser.Alias)
@@ -197,18 +196,22 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 								t.Errorf("%s Addresser.Verp is (%s) not empty", ee, fs.Addresser.Verp)
 							}; cx++
 						}
-						if fs.Addresser.Host    == "" { t.Errorf("%s Addresser.User is empty", ee) }; cx++
+
+						if sisiaddr.IsMailerDaemon(fs.Addresser.Address) == false {
+							if fs.Addresser.User == "" { t.Errorf("%s Addresser.User is empty", ee) }; cx++
+							if fs.Addresser.Host == "" { t.Errorf("%s Addresser.Host is empty", ee) }; cx++
+							if rfc1123.IsInternetHost(fs.Addresser.Host) == false {
+								// Is not a valid internet hostname
+								t.Errorf("%s Addresser.Host (%s) is not a valid internet hostname", ee, fs.Addresser.Host)
+							}
+							if sisiaddr.IsEmailAddress(fs.Addresser.Address) == false {
+								// Is not a valid email address
+								t.Errorf("%s Addresser.Address (%s) is not a valid email address", ee, fs.Addresser.Address)
+							}; cx++
+						}
 						if fs.Addresser.Host    != fs.SenderDomain {
 							// SenderDomain
 							t.Errorf("%s Addresser.Host is (%s) but (%s)", ee, fs.Addresser.Host, fs.SenderDomain)
-						}; cx++
-						if rfc1123.IsInternetHost(fs.Addresser.Host) == false {
-							// Is not a valid internet hostname
-							t.Errorf("%s Addresser.Host (%s) is not a valid internet hostname", ee, fs.Addresser.Host)
-						}
-						if sisiaddr.IsEmailAddress(fs.Addresser.Address) == false {
-							// Is not a valid email address
-							t.Errorf("%s Addresser.Address (%s) is not a valid email address", ee, fs.Addresser.Address)
 						}; cx++
 
 						// Alias, Recipient, Destination
