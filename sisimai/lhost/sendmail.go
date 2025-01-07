@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -221,8 +221,8 @@ func init() {
 				break
 			}
 
-			if strings.HasSuffix(e.Recipient, "@") {
-				// @example.jp, no local part
+			if strings.HasPrefix(e.Recipient, "@") {
+				// There is no local part in the recipient address such as "@mail.example.org"
 				// Get the email address from the value of Diagnostic-Code field
 				cv := sisiaddr.Find(e.Diagnosis)
 				if cv[0] != "" { e.Recipient = cv[0] }
