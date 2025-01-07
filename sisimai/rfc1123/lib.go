@@ -60,7 +60,7 @@ func IsInternetHost(argv1 string) bool {
 	if strings.HasSuffix(argv1, "-") == true { return false }
 
 	// Allow the hostname starting with A-Label: "xn--" of IDN(Internationalized Domain Name)
-	if strings.Contains(argv1, "--") == true && string.HasPrefix(argv1, "xn--") == false { return false }
+	if strings.Contains(argv1, "--") == true && strings.HasPrefix(argv1, "xn--") == false { return false }
 
 	hostnameok := true
 	for _, e := range strings.Split(strings.ToUpper(argv1), "") {
