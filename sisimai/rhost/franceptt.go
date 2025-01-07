@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -137,7 +137,6 @@ func init() {
 				"spf/dns de votre nom de domaine",
 			},
 		}
-
 		issuedcode := strings.ToLower(strings.ReplaceAll(fo.DiagnosticCode, "_", "-"))
 		labelindex := -1
 		errorlabel := ""
@@ -152,10 +151,10 @@ func init() {
 
 		if errorlabel != "" {
 			// There is a label (like "LPN") in the error message
-			substrings := issuedcode[labelindex + len(errorlabel) - 1:]
-			for _, e := range errorcodes {
+			codenumber := strings.SplitN(issuedcode[labelindex + len(errorlabel) - 1:], " ", 2)[0]
+			for e := range errorcodes {
 				// The key is a code number like "525"
-				if strings.Contains(substrings, e) == false { continue }
+				if strings.HasSuffix(codenumber, e) == false { continue }
 				reasontext = errorcodes[e]
 				break
 			}
