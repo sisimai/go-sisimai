@@ -105,8 +105,12 @@ func IsEmailAddress(email string) bool {
 	if len(email)         > 254 { return false } // The maximum length of an email address is 254
 	if lasta < 1 || lasta >  64 { return false } // The maximum length of a local part is 64
 	if len(email) - lasta > 253 { return false } // The maximum lenght of a domain part is 253
-	if email[0]           == 46 { return false } // '.' at the first character is not allowed in a local part
-	if email[lasta - 1]   == 46 { return false } // '.' before the "@" is not allowed in a local part
+
+	// "." as the first character of the local part and ".@" are not allowed in a local part when
+	// the local part is not quoted by "", but Non-RFC compliant email addresses still persist in
+	// the world.
+	// if email[0]         == 46 { return false } // '.' at the first character is not allowed in a local part
+	// if email[lasta - 1] == 46 { return false } // '.' before the "@" is not allowed in a local part
 
 	quote := IsQuotedAddress(email); if quote == false {
 		// The email address is not a quoted address
