@@ -16,8 +16,8 @@ var GetRetried = Retry()
 var ClassOrder = [][]string{
 	[]string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "HasMoved", "NoRelaying", "AuthFailure",
-		"UserUnknown", "Filtered", "RequirePTR", "NotCompliantRFC", "BadReputation", "Rejected",
-		"ContentError", "HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked",
+		"UserUnknown", "Filtered", "RequirePTR", "NotCompliantRFC", "BadReputation", "ContentError",
+		"Rejected", "HostUnknown", "SpamDetected", "Speeding", "TooManyConn", "Blocked",
     },
     []string{
 		"MailboxFull", "AuthFailure", "BadReputation", "Speeding", "SpamDetected", "VirusDetected",
