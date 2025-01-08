@@ -109,7 +109,7 @@ func TestLhostV5sendmail(t *testing.T) {
 		{{"1049", 1, "5.0.911", "550", "userunknown",      true, ""}},
 		{{"1050", 1, "5.0.971", "553", "blocked",         false, ""}},
 		{{"1051", 1, "5.0.911", "550", "userunknown",      true, ""},
-		 {"1051", 1, "5.0.911", "550", "userunknown",      true, ""}},
+		 {"1051", 2, "5.0.911", "550", "userunknown",      true, ""}},
 		{{"1052", 1, "5.0.971", "550", "blocked",         false, ""},
 		 {"1052", 2, "5.0.912", "550", "hostunknown",      true, ""},
 		 {"1052", 3, "5.0.912", "550", "hostunknown",      true, ""},
