@@ -153,7 +153,6 @@ func init() {
 					// Get the recipient address from "To:" header at the original message
 					cv := sisiaddr.S3S4(emailparts[1][p1 + 5:p2])
 					if sisiaddr.IsEmailAddress(cv) == false { return sis.RisingUnderway{} }
-
 					dscontents[0].Recipient = cv; recipients++
 				}
 			}
