@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -51,6 +51,7 @@ func init() {
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[1] == "" { return sis.RisingUnderway{} }
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
+		anotherone := map[uint8]string{}  // Other error messages
 		remotehost := ""                  // The last remote hostname
 		curcommand := ""                  // THe last SMTP command
 		v          := &(dscontents[len(dscontents) - 1])
@@ -81,11 +82,15 @@ func init() {
 				p2 := sisimoji.IndexOnTheWay(e, ">", p1)
 				cv := sisiaddr.S3S4(e[p1:p2 + 1])
 
+				// Keep error messages before "While talking to ..." line
+				if remotehost == "" { anotherone[recipients] += " " + e; continue }
+
 				if cv == v.Recipient || (curcommand == "MAIL" && strings.HasPrefix(e, "<<< ")) {
 					// The recipient address is the same address with the last appeared address
 					// like "550 <mikeneko@example.co.jp>... User unknown"
 					// Append this line to the string which is keeping error messages
 					v.Diagnosis += " " + e
+					v.ReplyCode  = reply.Find(e, "")
 					curcommand   = ""
 
 				} else {
@@ -99,7 +104,9 @@ func init() {
 					recipients++
 					v.Recipient = cv
 					v.Rhost     = remotehost
+					v.ReplyCode = reply.Find(e, "")
 					v.Diagnosis += " " + e
+					if v.Command == "" { v.Command = curcommand }
 				}
 			} else {
 				// This line does not include a recipient address
@@ -109,29 +116,54 @@ func init() {
 
 				} else {
 					// Append this line into the error message string
-					v.Diagnosis += " " + e
+					if strings.HasPrefix(e, ">>>") || strings.HasPrefix(e, "<<< ") {
+						// >>> DATA
+						// <<< 550 Your E-Mail is redundant.  You cannot send E-Mail to yourself (shironeko@example.jp).
+						// >>> QUIT
+						// <<< 421 dns.example.org Sorry, unable to contact destination SMTP daemon.
+						// <<< 550 Requested User Mailbox not found. No such user here.
+						v.Diagnosis += " " + e
+
+					} else {
+						// 421 Other error message
+						anotherone[recipients] += " " + e
+					}
 				}
 			}
 		}
 
 		if recipients == 0 {
 			// There is no recipient address in the error message
-			p1 := strings.Index(emailparts[1], "\nTo: ")
-			p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 6)
+			for e := range anotherone {
+				// Try to pick an recipient address, a reply code, and error messages
+				cv := sisiaddr.S3S4(anotherone[e]); if cv == "" { continue }
+				cr := reply.Find(anotherone[e], "")
+				dscontents[e].Recipient = cv
+				dscontents[e].ReplyCode = cr
+				dscontents[e].Diagnosis = anotherone[e]
+				recipients++
+			}
 
-			// Get the recipient address from "To:" header at the original message
-			if p1 > 0 { dscontents[0].Recipient = sisiaddr.S3S4(emailparts[1][p1 + 5:p2]) }
-			if sisiaddr.IsEmailAddress(dscontents[0].Recipient) == false { return sis.RisingUnderway{} }
-			recipients++
+			if recipients == 0 {
+				// Try to pick an recipient address from the original message
+				p1 := strings.Index(emailparts[1], "\nTo: ")
+				p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 6)
+
+				// Get the recipient address from "To:" header at the original message
+				if p1 > 0 { dscontents[0].Recipient = sisiaddr.S3S4(emailparts[1][p1 + 5:p2]) }
+				if sisiaddr.IsEmailAddress(dscontents[0].Recipient) == false { return sis.RisingUnderway{} }
+				recipients++
+			}
 		}
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis
 			e := &(dscontents[j])
+			if e.Diagnosis == "" { e.Diagnosis = anotherone[uint8(j)] }
+			if e.Command   == "" { e.Command   = command.Find(e.Diagnosis) }
 
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 			e.ReplyCode = reply.Find(e.Diagnosis, "")
-			e.Command   = command.Find(e.Diagnosis)
 
 			// There is no local part in the recipient email address like "@example.jp"
 			// Get an email address from the value of Diagnostic-Code: field
