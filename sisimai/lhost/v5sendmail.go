@@ -53,7 +53,7 @@ func init() {
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		anotherone := map[uint8]string{}  // Other error messages
 		remotehost := ""                  // The last remote hostname
-		curcommand := ""                  // THe last SMTP command
+		curcommand := ""                  // The last SMTP command
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
@@ -116,7 +116,7 @@ func init() {
 
 				} else {
 					// Append this line into the error message string
-					if strings.HasPrefix(e, ">>>") || strings.HasPrefix(e, "<<< ") {
+					if strings.HasPrefix(e, ">>> ") || strings.HasPrefix(e, "<<< ") {
 						// >>> DATA
 						// <<< 550 Your E-Mail is redundant.  You cannot send E-Mail to yourself (shironeko@example.jp).
 						// >>> QUIT
@@ -155,6 +155,7 @@ func init() {
 				recipients++
 			}
 		}
+		if recipients == 0 { return sis.RisingUnderway{} }
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis
