@@ -149,10 +149,13 @@ func init() {
 				p1 := strings.Index(emailparts[1], "\nTo: ")
 				p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 6)
 
-				// Get the recipient address from "To:" header at the original message
-				if p1 > 0 { dscontents[0].Recipient = sisiaddr.S3S4(emailparts[1][p1 + 5:p2]) }
-				if sisiaddr.IsEmailAddress(dscontents[0].Recipient) == false { return sis.RisingUnderway{} }
-				recipients++
+				if p1 > 0 {
+					// Get the recipient address from "To:" header at the original message
+					cv := sisiaddr.S3S4(emailparts[1][p1 + 5:p2])
+					if sisiaddr.IsEmailAddress(cv) == false { return sis.RisingUnderway{} }
+
+					dscontents[0].Recipient = cv; recipients++
+				}
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
