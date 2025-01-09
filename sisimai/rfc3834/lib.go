@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc3834
 
@@ -18,7 +18,7 @@ import sisiaddr "sisimai/address"
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   RisingUnderway      RisingUnderway structure
-	// @see      https://tools.ietf.org/html/rfc3464
+	// @see      https://tools.ietf.org/html/rfc3834
 	if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
 	if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
 
@@ -111,7 +111,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		break
 	}
 
-	v.Reason    = "vacaion"
+	v.Reason    = "vacation"
 	v.Date      = bf.Headers["date"][0]
 	rfc822part += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
 	return sis.RisingUnderway{ Digest: dscontents, RFC822: rfc822part }
