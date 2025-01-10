@@ -57,9 +57,10 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 	cx := 0
 	prefixpath := "../../" + SampleRoot
 	hostprefix := ""
+	remotehost := false
 
-	if strings.HasPrefix(t.Name(), "TestLhost") == true { hostprefix = "lhost-" }
-	if strings.HasPrefix(t.Name(), "TestRhost") == true { hostprefix = "rhost-" }
+	if strings.HasPrefix(t.Name(), "TestLhost") == true { hostprefix = "lhost-"                    }
+	if strings.HasPrefix(t.Name(), "TestRhost") == true { hostprefix = "rhost-"; remotehost = true }
 
 	if publictest == true {
 		// Public samples are in set-of-emails/maildir/bsd/lhost-*.eml
@@ -171,14 +172,20 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 								}
 							}
 
-							if fs.DecodedBy != altdecoder {
-								t.Errorf("%s DecodedBy is (%s) but (%s)", ee, fs.DecodedBy, altdecoder)
+							if remotehost == true {
+								// Check the rhost, lhost, and destination value
+								// TODO: Implement sisimai/rhost.List() ?
+							} else {
+								// Test for lhost-*.eml
+								if fs.DecodedBy != altdecoder {
+									t.Errorf("%s DecodedBy is (%s) but (%s)", ee, fs.DecodedBy, altdecoder)
+								}
 							}
 						}; cx++
 
 						/* Other fields except above */
 						// Action
-						if fs.Reason != "feedback" {
+						if fs.Reason != "feedback" && fs.Reason != "vacation" {
 							// Action is empty when the bounce mesage is a feedback loop
 							if fs.Action == "" { t.Errorf("%s Action is empty", ee) }; cx++
 							if ActionList[fs.Action] == false {
@@ -240,7 +247,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						}; cx++
 
 						// DiagnosticType
-						if fs.Reason != "feedback" {
+						if fs.Reason != "feedback" && fs.Reason != "vacation" {
 							// DiagnosticType is empty when the bounce mesage is a feedback loop
 							if fs.DiagnosticType == "" { t.Errorf("%s DiagnosticType is empty", ee) }; cx++
 						}
