@@ -277,14 +277,14 @@ func init() {
 					if len(e.Status) == 0 || strings.HasSuffix(e.Status, ".0.0") {
 						// Check the value of D.S.N. in "anotherset"
 						// The delivery status code is neither an empty nor *.0.0
-						as = status.Find(anotherset["diagnosis"], e.ReplyCode)
+						as = status.Find(anotherset["diagnosis"], "")
 						if len(as) > 0 && strings.HasSuffix(as, ".0.0") == false { e.Status = as }
 					}
 
 					if len(e.ReplyCode) == 0 || strings.HasSuffix(e.ReplyCode, "00") {
 						// Check the value of the SMTP reply code in anotherset
 						// The SMTP reply code is neither an empty nor *00 
-						ar = reply.Find(anotherset["diagnosis"], e.Status)
+						ar = reply.Find(anotherset["diagnosis"], "")
 						if len(ar) > 0 && strings.HasSuffix(ar, "00") == false { e.ReplyCode = ar }
 					}
 
