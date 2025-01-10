@@ -144,7 +144,7 @@ func init() {
 
 		for _, e := range codelabels {
 			// Try to find an error code prefix like "LPN"
-			labelindex = strings.Index(issuedcode, e); if labelindex < 0 { continue }
+			labelindex = strings.LastIndex(issuedcode, e);  if labelindex < 0 { continue }
 			errorlabel = e; if strings.Contains(issuedcode, e + "-") { errorlabel += "-" }
 			break
 		}
