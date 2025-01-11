@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -36,13 +36,10 @@ var RhostClass = map[string][]string{
 func Name(fo *sis.Fact) string {
 	// @param    *sis.Fact fo    Decoded data
 	// @return   string          rhost class name or an empty string
-	if fo.DiagnosticCode == "" { return "" }
-
 	clienthost := strings.ToLower(fo.Lhost)
 	remotehost := strings.ToLower(fo.Rhost)
 	domainpart := strings.ToLower(fo.Destination)
 	rhostclass := ""
-	if len(remotehost + domainpart + clienthost) == 0 { return "" }
 
 	FINDRHOST: for rhostclass == "" {
 		// Try to match the hostname patterns with the following order:
