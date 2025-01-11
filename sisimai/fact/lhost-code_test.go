@@ -15,6 +15,7 @@ import "errors"
 import "strings"
 import "path/filepath"
 import "sisimai/sis"
+import "sisimai/rhost"
 import "sisimai/rfc1123"
 import "sisimai/smtp/command"
 import sisimbox "sisimai/mail"
@@ -58,9 +59,15 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 	prefixpath := "../../" + SampleRoot
 	hostprefix := ""
 	remotehost := false
+	rhostclass := ""
 
-	if strings.HasPrefix(t.Name(), "TestLhost") == true { hostprefix = "lhost-"                    }
-	if strings.HasPrefix(t.Name(), "TestRhost") == true { hostprefix = "rhost-"; remotehost = true }
+	if strings.HasPrefix(t.Name(), "TestLhost") == true { hostprefix = "lhost-" }
+	if strings.HasPrefix(t.Name(), "TestRhost") == true {
+		// TestRhost***, rhost-***-01.eml
+		hostprefix = "rhost-"
+		remotehost = true
+		rhostclass = strings.Replace(t.Name(), "TestRhost", "", 1)
+	}
 
 	if publictest == true {
 		// Public samples are in set-of-emails/maildir/bsd/lhost-*.eml
@@ -174,7 +181,9 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 							if remotehost == true {
 								// Check the rhost, lhost, and destination value
-								// TODO: Implement sisimai/rhost.List() ?
+								cv := rhost.Name(&fs)
+								if cv == "" { t.Errorf("%s rhost.Name returns (empty) but (%s)", ee, rhostclass) }
+
 							} else {
 								// Test for lhost-*.eml
 								if fs.DecodedBy != altdecoder {
