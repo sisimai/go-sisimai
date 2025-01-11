@@ -32,10 +32,10 @@ var RhostClass = map[string][]string{
 	"YahooInc":    []string{".yahoodns.net"},
 }
 
-// Find() detects the bounce reason from certain remote hosts
-func Find(fo *sis.Fact) string {
-	// @param    *sis.Fact fo    Struct to be detected the reason
-	// @return   string          Bounce reason name or an empty string
+// Name() returns the rhost class name
+func Name(fo *sis.Fact) string {
+	// @param    *sis.Fact fo    Decoded data
+	// @return   string          rhost class name or an empty string
 	if fo.DiagnosticCode == "" { return "" }
 
 	clienthost := strings.ToLower(fo.Lhost)
@@ -75,8 +75,14 @@ func Find(fo *sis.Fact) string {
 		}
 		break
 	}
-	if rhostclass == "" { return "" }
+	return rhostclass
+}
 
+// Find() detects the bounce reason from certain remote hosts
+func Find(fo *sis.Fact) string {
+	// @param    *sis.Fact fo    Decoded data
+	// @return   string          Bounce reason name or an empty string
+	rhostclass := Name(fo); if rhostclass == "" { return "" }
 	return ReturnedBy[rhostclass](fo)
 }
 
