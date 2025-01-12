@@ -65,7 +65,13 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	bf.Payload  = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
 
 	cfargument := &sis.CallbackArgs{Headers: bf.Headers, Payload: &bf.Payload}
-	cfreturned := hook.(func(*sis.CallbackArgs) map[string]interface{})(cfargument)
+	cvv, nyaan := hook.(func(*sis.CallbackArgs) (map[string]interface{}, error))(cfargument)
+	if nyaan != nil {
+		// Something wrong when the 1st callback function executed
+		ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+		bf.Errors = append(bf.Errors, ce)
+	}
+
 	havecalled := map[string]bool{}
 	localhostr := sis.RisingUnderway{}
 	modulename := ""
@@ -152,7 +158,7 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	}
 	bf.RFC822 = makemap(&rfc822part.Header, false)
 	bf.Digest = localhostr.Digest
-	bf.Catch  = cfreturned
+	bf.Catch  = cvv
 
 	return true
 }
