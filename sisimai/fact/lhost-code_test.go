@@ -45,9 +45,9 @@ var Alternates = map[string][]string{
 	},
 }
 
-var ArgForRise = map[string]bool {"delivered": true, "vacation": true}
 var TestReturn = map[string]interface{}{"neko-dono": []string{"Michitsuna", "Suzu"}}
-var CallbackFn = func(arg *sis.CallbackArgs) map[string]interface{} { return TestReturn }
+var CallbackFn = func(arg *sis.CallbackArgs) (map[string]interface{}, error) { return TestReturn, nil }
+var ArgForRise = &sis.DecodingArgs{Delivered: true, Vacation: true, Callback1: CallbackFn}
 
 // EngineTest() is called from lhost/*_test.go, rhost/*_test.go, rfc3464/lib_test.go, arf/lib_test.go.
 func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publictest bool) {
@@ -123,7 +123,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						if emailthing.Size == 0 { t.Errorf("%s %s is empty", ee, ef); continue }; cx++
 
 						mesg = sisimoji.ToLF(mesg)
-						fact, nyaan := Rise(mesg, emailthing.Path, ArgForRise, CallbackFn)
+						fact, nyaan := Rise(mesg, emailthing.Path, ArgForRise)
 						if nyaan     != nil { t.Logf("%s %s", ee, nyaan[0].Error()) }; cx++
 						if len(fact) != 0   { sisi = append(sisi, fact...) }
 					}
