@@ -31,11 +31,10 @@ var RFC822Head = rfc5322.HEADERTABLE()
 var ActionList = map[string]bool{ "delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true }
 
 // sisimai/fact.Rise() returns []sis.Fact when it successfully decoded bounce messages
-func Rise(email *string, origin string, args map[string]bool, hook interface{}) ([]sis.Fact, []sis.NotDecoded) {
-	// @param  *string         email    Entire email message
-	// @param  string          origin   Path to the original email file
-	// @param  map[string]bool args     {"delivered": false, "vacation": false} as the default
-	// @param  interface{}     hook     Callback function
+func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
+	// @param  *string           email    Entire email message
+	// @param  string            origin   Path to the original email file
+	// @param  *sis.DecodingArgs args     Arguments for decoding(delivered, vacation, callbacks)
 	// @return []sis.Fact               The list of decoded bounce messages
 	if email == nil || len(*email) < 1 {
 		// The email message is empty
@@ -43,7 +42,7 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 		return []sis.Fact{}, []sis.NotDecoded{ce}
 	}
 
-	beforefact := message.Rise(email, hook); if len((*beforefact).Errors) > 0 {
+	beforefact := message.Rise(email, args.Callback1); if len((*beforefact).Errors) > 0 {
 		// There is some errors while reading the email, decoding the bounce message.
 		// Set the email path to sis.NotDecoded.EmailFile
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
@@ -58,9 +57,9 @@ func Rise(email *string, origin string, args map[string]bool, hook interface{}) 
 		// - Skip if the value of "recipient" length is 4 or shorter
 		// - Skip if the value of "deliverystatus" begins with "2." such as 2.1.5
 		// - Skip if the value of "reason" is "vacation"
-		if sisiaddr.IsEmailAddress(e.Recipient) == false                  { continue RISEOF }
-		if args["delivered"] != true && strings.HasPrefix(e.Status, "2.") { continue RISEOF }
-		if args["vacation"]  != true && e.Reason == "vaction"             { continue RISEOF }
+		if sisiaddr.IsEmailAddress(e.Recipient) == false               { continue RISEOF }
+		if args.Delivered != true && strings.HasPrefix(e.Status, "2.") { continue RISEOF }
+		if args.Vacation  != true && e.Reason == "vaction"             { continue RISEOF }
 
 		addrs := map[string][3]string{} // Addresser, and Recipient
 		piece := map[string]string{}    // Each element except email addresses

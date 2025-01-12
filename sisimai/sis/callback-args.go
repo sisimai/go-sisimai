@@ -9,7 +9,7 @@ package sis
 //  \____\__,_|_|_|_.__/ \__,_|\___|_|\_\/_/   \_\_|  \__, |___/
 //                                                    |___/     
 // CallbackArgs{} is an argument of the callback functions that are called at sisimai.Rise() and 
-// sisimai/message.sift()
+// sisimai/message.sift(). It is aliased to sisimai.CallbackArgs at the libsisimai.go
 type CallbackArgs struct {
 	Headers map[string][]string
 	Payload *string
