@@ -19,11 +19,11 @@ import "sisimai/rfc3834"
 import sisimoji "sisimai/string"
 
 // sift() sifts a bounce mail with each MTA module
-func sift(bf *sis.BeforeFact, hook interface{}) bool {
-	// @param  *sis.BeforeFact bf     Processing message entity.
-	// @param  interface{}     hook   The callback function for the decoded bounce message
-	// @return bool                   true:  Successfully got the results
-	//                                false: Failed to get the results
+func sift(bf *sis.BeforeFact, hook sis.CfParameter1) bool {
+	// @param  *sis.BeforeFact  bf     Processing message entity.
+	// @param  sis.CfParameter1 hook   The callback function for the decoded bounce message
+	// @return bool                    true:  Successfully got the results
+	//                                 false: Failed to get the results
 	if len(bf.Headers) == 0 { return false }
 	if len(bf.Payload) == 0 { return false }
 
@@ -64,12 +64,14 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	bf.Payload  = *(sisimoji.ToLF(&bf.Payload))
 	bf.Payload  = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
 
-	cfargument := &sis.CallbackArgs{Headers: bf.Headers, Payload: &bf.Payload}
-	cvv, nyaan := hook.(func(*sis.CallbackArgs) (map[string]interface{}, error))(cfargument)
-	if nyaan != nil {
-		// Something wrong when the 1st callback function executed
-		ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
-		bf.Errors = append(bf.Errors, ce)
+	if hook != nil {
+		// Execute the first callback function
+		cvv, nyaan := hook(&sis.CallbackArgs{Headers: bf.Headers, Payload: &bf.Payload}); if nyaan != nil {
+			// Something wrong when the 1st callback function executed
+			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+			bf.Errors = append(bf.Errors, ce)
+		}
+		bf.Catch = cvv
 	}
 
 	havecalled := map[string]bool{}
@@ -158,7 +160,6 @@ func sift(bf *sis.BeforeFact, hook interface{}) bool {
 	}
 	bf.RFC822 = makemap(&rfc822part.Header, false)
 	bf.Digest = localhostr.Digest
-	bf.Catch  = cvv
 
 	return true
 }

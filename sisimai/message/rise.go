@@ -43,10 +43,10 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 }
 
 // Rise() works as a constructor of Sisimai::Message
-func Rise(mesg *string, hook interface{}) *sis.BeforeFact {
-	// @param   *string     mesg  Entire email message
-	// @param   interface{} hook  callback method
-	// @return  Message           Structured email data
+func Rise(mesg *string, hook sis.CfParameter1) *sis.BeforeFact {
+	// @param   *string          mesg  Entire email message
+	// @param   sis.CfParameter1 hook  Callback Function
+	// @return  Message                Structured email data
 	if mesg == nil || len(*mesg) < 1 { return &sis.BeforeFact{} }
 
 	mesg        = sisimoji.ToLF(mesg)
