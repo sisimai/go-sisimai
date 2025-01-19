@@ -24,7 +24,7 @@ import "path/filepath"
  | Dir        | o         | o         |           |            |
  | File       | o         | o         |           |            |
  | Size       | o         |           | o         | o          |
- | NewLine    | o         |           | o         | o          |
+ | newline    | o         |           | o         | o          |
  | offset     | o         | o         | o         | o          |
  | handle     | o         | o         |           |            |
  | payload    |           | o         | o         | o          |
@@ -34,9 +34,9 @@ type EmailEntity struct {
 	Path    string   // Path to the mbox, Maildir/, or "<MEMORY>" or "<STDIN>"
 	Dir     string   // Directory name of mbox, Maildir/
 	File    string   // File name of the mbox, each file in Maildir/
-	NewLine uint8    // 0 = undefined, 1 = LF, 2 = CR, 3 = CRLF
 	Size    int64    // Payload size
 	offset  int64    // Offset position
+	newline uint8    // 0 = undefined, 1 = LF, 2 = CR, 3 = CRLF
 	handle  *os.File // https://pkg.go.dev/os#File
 	payload []string // Each email message/file name
 }
@@ -155,7 +155,7 @@ func(this *EmailEntity) setNewLine() (bool, error) {
 			// UNIX mbox
 			if filep, nyaan := os.Open(this.Path); nyaan != nil {
 				// Failed to open the file
-				this.NewLine = 0
+				this.newline = 0
 				return false, nyaan
 
 			} else {
@@ -173,21 +173,21 @@ func(this *EmailEntity) setNewLine() (bool, error) {
 		_, nyaan := bufferedio.Read(the1st1000)
 		if nyaan != nil && nyaan != io.EOF {
 			// Failed to read the 1st 1000 bytes
-			this.NewLine = 0
+			this.newline = 0
 			return false, nyaan
 		}
 		readbuffer = string(the1st1000)
 
 	} else {
 		// Memory
-		if len(this.payload) ==  0 { this.NewLine = 0; return false, nil }
-		if this.payload[0]   == "" { this.NewLine = 0; return false, nil }
+		if len(this.payload) ==  0 { this.newline = 0; return false, nil }
+		if this.payload[0]   == "" { this.newline = 0; return false, nil }
 		readbuffer = this.payload[0][:1000]
 	}
 
-	if strings.Contains(readbuffer, "\r\n") { this.NewLine = 3; return true, nil }
-	if strings.Contains(readbuffer, "\r")   { this.NewLine = 2; return true, nil }
-	if strings.Contains(readbuffer, "\n")   { this.NewLine = 1; return true, nil }
-	this.NewLine = 0; return false, nil
+	if strings.Contains(readbuffer, "\r\n") { this.newline = 3; return true, nil }
+	if strings.Contains(readbuffer, "\r")   { this.newline = 2; return true, nil }
+	if strings.Contains(readbuffer, "\n")   { this.newline = 1; return true, nil }
+	this.newline = 0; return false, nil
 }
 
