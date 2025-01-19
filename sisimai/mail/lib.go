@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package mail
 
@@ -13,8 +13,8 @@ import "os"
 import "fmt"
 import "bufio"
 import "strings"
-import "path/filepath"
 import "io/ioutil"
+import "path/filepath"
 
 /* EmailEntity struct keeps each parameter of UNIX mbox, Maildir/.
  | FIELD      | UNIX mbox | Maildir/  | Memory    | <STDIN>    |
@@ -25,6 +25,9 @@ import "io/ioutil"
  | File       | o         | o         |           |            |
  | Size       | o         |           | o         | o          |
  | NewLine    | o         |           | o         | o          |
+ | offset     | o         | o         | o         | o          |
+ | handle     | o         | o         |           |            |
+ | payload    |           | o         | o         | o          |
 */
 type EmailEntity struct {
 	Kind    string   // "mailbox", "maildir", "memory" or "stdin"
@@ -35,7 +38,7 @@ type EmailEntity struct {
 	Size    int64    // Payload size
 	offset  int64    // Offset position
 	handle  *os.File // https://pkg.go.dev/os#File
-	payload []string // Each email message
+	payload []string // Each email message/file name
 }
 
 // Rise() is a constructor of EmailEntity struct
