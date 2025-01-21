@@ -94,17 +94,19 @@ func Rise(argv0 string) (*EmailEntity, error) {
 		if filestatus, nyaan:= os.Stat(argv0); nyaan == nil {
 			// the file or the maildir exist
 			ee.Path = argv0
-			ee.Size = filestatus.Size()
 
 			if filestatus.IsDir() {
 				// Maildir/
 				ee.Kind = "maildir"
 				ee.Dir  = argv0
+				cw, ce := ee.readMaildir(); if ce != nil { return &ee, ce }
+				ee.Size = int64(cw)
 
 			} else {
 				// UNIX mbox
 				ee.Kind = "mailbox"
 				ee.File = filepath.Base(argv0)
+				ee.Size = filestatus.Size()
 				ee.setNewLine() // TODO: Receive and check the return values
 				if ee.Size == 0 { return &ee, fmt.Errorf("%s is empty", argv0) }
 			}
@@ -134,7 +136,7 @@ func(this *EmailEntity) Read() (*string, error) {
 
 	switch this.Kind {
 		case "mailbox": email, nyaan = this.readMailbox()
-		case "maildir": email, nyaan = this.readMaildir()
+		case "maildir": email, nyaan = this.readEmail()
 		case "memory":  email, nyaan = this.readMemory()
 		case "stdin":   email, nyaan = this.readSTDIN()
 	}
