@@ -40,8 +40,11 @@ func(this *EmailEntity) readEmail() (*string, error) {
 
 	for {
 		// Try to read the email file
-		cf := filepath.Clean(filepath.FromSlash(this.Dir + "/" + this.payload[this.offset]))
+		this.File = this.payload[this.offset]
+		this.Path = filepath.Clean(filepath.FromSlash(this.Dir + "/" + this.File))
 		this.offset++
+		cf := this.Path
+
 		buf, nyaan := os.ReadFile(cf); if nyaan != nil || len(buf) == 0 {
 			// Failed to read the email file or the email file is empty
 			if this.offset >= this.Size { return nil, io.EOF }
