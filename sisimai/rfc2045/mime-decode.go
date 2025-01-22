@@ -11,7 +11,6 @@ import "io"
 import "fmt"
 import "mime"
 import "strings"
-import "io/ioutil"
 import "mime/quotedprintable"
 import "golang.org/x/net/html/charset"
 
@@ -121,7 +120,7 @@ func DecodeQ(argv0 string) (string, error) {
 	decodingif := quotedprintable.NewReader(readstring)
 	plainvalue := ""
 
-	plain, nyaan := ioutil.ReadAll(decodingif); if nyaan != nil {
+	plain, nyaan := io.ReadAll(decodingif); if nyaan != nil {
 		// Failed to decode the quoted-printable text
 		plainvalue = argv0
 	}
