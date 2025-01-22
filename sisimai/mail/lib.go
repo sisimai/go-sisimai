@@ -13,7 +13,6 @@ import "os"
 import "fmt"
 import "bufio"
 import "strings"
-import "io/ioutil"
 import "path/filepath"
 
 /* EmailEntity struct keeps each parameter of UNIX mbox, Maildir/.
@@ -59,7 +58,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 			for {
 				// Read all strings from STDIN, and store them to ee.payload
 				// TODO: In the case of that the input data is a binary
-				stdin, nyaan := ioutil.ReadAll(os.Stdin)
+				stdin, nyaan := io.ReadAll(os.Stdin)
 				if len(stdin) == 0 { break }
 				if nyaan != nil { return &ee, nyaan }
 				payload = string(stdin)
