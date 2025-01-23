@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package mail
 
@@ -25,7 +25,7 @@ func(this *EmailEntity) readMailbox() (*string, error) {
 
 	seekoffset := this.offset;                     if this.offset  < 0 { seekoffset = 0 }
 	_, nyaan   := this.handle.Seek(seekoffset, 0); if nyaan != nil { return nil, nyaan  }
-	lineending := 0;                               if this.NewLine > 2 { lineending = 1 }
+	lineending := 0;                               if this.newline > 2 { lineending = 1 }
 	unixmboxio := bufio.NewScanner(this.handle)
 	readbuffer := ""
 	emailblock := ""

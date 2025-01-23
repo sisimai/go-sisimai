@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package mail
 
@@ -14,7 +14,6 @@ import "fmt"
 import "bufio"
 import "strings"
 import "path/filepath"
-import "io/ioutil"
 
 /* EmailEntity struct keeps each parameter of UNIX mbox, Maildir/.
  | FIELD      | UNIX mbox | Maildir/  | Memory    | <STDIN>    |
@@ -24,18 +23,21 @@ import "io/ioutil"
  | Dir        | o         | o         |           |            |
  | File       | o         | o         |           |            |
  | Size       | o         |           | o         | o          |
- | NewLine    | o         |           | o         | o          |
+ | newline    | o         |           | o         | o          |
+ | offset     | o         | o         | o         | o          |
+ | handle     | o         | o         |           |            |
+ | payload    |           | o         | o         | o          |
 */
 type EmailEntity struct {
 	Kind    string   // "mailbox", "maildir", "memory" or "stdin"
 	Path    string   // Path to the mbox, Maildir/, or "<MEMORY>" or "<STDIN>"
 	Dir     string   // Directory name of mbox, Maildir/
 	File    string   // File name of the mbox, each file in Maildir/
-	NewLine uint8    // 0 = undefined, 1 = LF, 2 = CR, 3 = CRLF
 	Size    int64    // Payload size
 	offset  int64    // Offset position
+	newline uint8    // 0 = undefined, 1 = LF, 2 = CR, 3 = CRLF
 	handle  *os.File // https://pkg.go.dev/os#File
-	payload []string // Each email message
+	payload []string // Each email message/file name
 }
 
 // Rise() is a constructor of EmailEntity struct
@@ -56,7 +58,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 			for {
 				// Read all strings from STDIN, and store them to ee.payload
 				// TODO: In the case of that the input data is a binary
-				stdin, nyaan := ioutil.ReadAll(os.Stdin)
+				stdin, nyaan := io.ReadAll(os.Stdin)
 				if len(stdin) == 0 { break }
 				if nyaan != nil { return &ee, nyaan }
 				payload = string(stdin)
@@ -91,17 +93,19 @@ func Rise(argv0 string) (*EmailEntity, error) {
 		if filestatus, nyaan:= os.Stat(argv0); nyaan == nil {
 			// the file or the maildir exist
 			ee.Path = argv0
-			ee.Size = filestatus.Size()
 
 			if filestatus.IsDir() {
 				// Maildir/
 				ee.Kind = "maildir"
 				ee.Dir  = argv0
+				cw, ce := ee.readMaildir(); if ce != nil { return &ee, ce }
+				ee.Size = int64(cw)
 
 			} else {
 				// UNIX mbox
 				ee.Kind = "mailbox"
 				ee.File = filepath.Base(argv0)
+				ee.Size = filestatus.Size()
 				ee.setNewLine() // TODO: Receive and check the return values
 				if ee.Size == 0 { return &ee, fmt.Errorf("%s is empty", argv0) }
 			}
@@ -131,7 +135,7 @@ func(this *EmailEntity) Read() (*string, error) {
 
 	switch this.Kind {
 		case "mailbox": email, nyaan = this.readMailbox()
-		case "maildir": email, nyaan = this.readMaildir()
+		case "maildir": email, nyaan = this.readEmail()
 		case "memory":  email, nyaan = this.readMemory()
 		case "stdin":   email, nyaan = this.readSTDIN()
 	}
@@ -152,7 +156,7 @@ func(this *EmailEntity) setNewLine() (bool, error) {
 			// UNIX mbox
 			if filep, nyaan := os.Open(this.Path); nyaan != nil {
 				// Failed to open the file
-				this.NewLine = 0
+				this.newline = 0
 				return false, nyaan
 
 			} else {
@@ -170,21 +174,21 @@ func(this *EmailEntity) setNewLine() (bool, error) {
 		_, nyaan := bufferedio.Read(the1st1000)
 		if nyaan != nil && nyaan != io.EOF {
 			// Failed to read the 1st 1000 bytes
-			this.NewLine = 0
+			this.newline = 0
 			return false, nyaan
 		}
 		readbuffer = string(the1st1000)
 
 	} else {
 		// Memory
-		if len(this.payload) ==  0 { this.NewLine = 0; return false, nil }
-		if this.payload[0]   == "" { this.NewLine = 0; return false, nil }
+		if len(this.payload) ==  0 { this.newline = 0; return false, nil }
+		if this.payload[0]   == "" { this.newline = 0; return false, nil }
 		readbuffer = this.payload[0][:1000]
 	}
 
-	if strings.Contains(readbuffer, "\r\n") { this.NewLine = 3; return true, nil }
-	if strings.Contains(readbuffer, "\r")   { this.NewLine = 2; return true, nil }
-	if strings.Contains(readbuffer, "\n")   { this.NewLine = 1; return true, nil }
-	this.NewLine = 0; return false, nil
+	if strings.Contains(readbuffer, "\r\n") { this.newline = 3; return true, nil }
+	if strings.Contains(readbuffer, "\r")   { this.newline = 2; return true, nil }
+	if strings.Contains(readbuffer, "\n")   { this.newline = 1; return true, nil }
+	this.newline = 0; return false, nil
 }
 
