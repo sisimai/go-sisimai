@@ -33,12 +33,13 @@ type EmailEntity struct {
 	Path    string   // Path to the mbox, Maildir/, or "<MEMORY>" or "<STDIN>"
 	Dir     string   // Directory name of mbox, Maildir/
 	File    string   // File name of the mbox, each file in Maildir/
-	Size    int64    // Payload size
-	offset  int64    // Offset position
+	Size    int      // Payload size
+	offset  int      // Offset position
 	newline uint8    // 0 = undefined, 1 = LF, 2 = CR, 3 = CRLF
 	handle  *os.File // https://pkg.go.dev/os#File
 	payload []string // Each email message/file name
 }
+const maximumSize = 2000 * 1024 * 1024 * 1024
 
 // Rise() is a constructor of EmailEntity struct
 func Rise(argv0 string) (*EmailEntity, error) {
@@ -58,14 +59,20 @@ func Rise(argv0 string) (*EmailEntity, error) {
 			for {
 				// Read all strings from STDIN, and store them to ee.payload
 				// TODO: In the case of that the input data is a binary
-				stdin, nyaan := io.ReadAll(os.Stdin)
-				if len(stdin) == 0 { break }
-				if nyaan != nil { return &ee, nyaan }
+				stdin, nyaan  := io.ReadAll(os.Stdin); if nyaan != nil { return &ee, nyaan }
+				if textlength := len(stdin); textlength == 0 || textlength > maximumSize {
+					// The input text is empty or too large (2GB)
+					return &ee, fmt.Errorf("input text is empty or too large: %s bytes", textlength)
+				}
 				payload = string(stdin)
 				break
 			}
 		} else {
 			// Email data is in a string(memory)
+			if textlength := len(argv0); textlength == 0 || textlength > maximumSize {
+				// The input text is empty or too large (2GB)
+				return &ee, fmt.Errorf("input text is empty or too large: %s bytes", textlength)
+			}
 			ee.Kind = "memory"
 			ee.Path = "<MEMORY>"
 			payload = argv0
@@ -74,7 +81,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 		if cw := CountUnixMboxFrom(&payload); cw < 2 {
 			// There is 1 or 0 "From " line in the payload
 			ee.payload = append(ee.payload, payload)
-			ee.Size = int64(len(payload))
+			ee.Size = len(payload)
 
 		} else {
 			// There is 2 or more "From " line in the payload
@@ -83,7 +90,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				if uf == "" { continue }
 				cv := fmt.Sprintf("From %s\n", uf)
 				ee.payload = append(ee.payload, cv)
-				ee.Size   += int64(len(cv))
+				ee.Size   += len(cv)
 			}
 		}
 		ee.setNewLine() // TODO: Receive and check the return values
@@ -99,15 +106,18 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				ee.Kind = "maildir"
 				ee.Dir  = argv0
 				cw, ce := ee.listMaildir(); if ce != nil { return &ee, ce }
-				ee.Size = int64(cw)
+				ee.Size = cw
 
 			} else {
 				// UNIX mbox
+				cw := filestatus.Size(); if cw == 0 || cw > maximumSize {
+					// The mbox is empty or too large (2GB)
+					return &ee, fmt.Errorf("%s is empty or too large: %s bytes", argv0, ee.Size)
+				}
+				ee.Size = int(cw)
 				ee.Kind = "mailbox"
 				ee.File = filepath.Base(argv0)
-				ee.Size = filestatus.Size()
 				ee.setNewLine() // TODO: Receive and check the return values
-				if ee.Size == 0 { return &ee, fmt.Errorf("%s is empty", argv0) }
 			}
 		} else {
 			// Neither a mailbox nor a maildir exists
