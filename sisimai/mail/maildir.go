@@ -31,8 +31,8 @@ func(this *EmailEntity) listMaildir() (int, error) {
 	return len(this.payload), nil
 }
 
-// readEmail() reads each email file in the Maildir/
-func(this *EmailEntity) readEmail() (*string, error) {
+// readMaildir() reads each email file in the Maildir/
+func(this *EmailEntity) readMaildir() (*string, error) {
 	// @return   *string  Contents of the each file in the Maildir/
 	// @return   error    It has reached to the end of the Maildir/
 	if this.Size == 0           { return nil, fmt.Errorf("there is no email file in %s", this.Dir) }

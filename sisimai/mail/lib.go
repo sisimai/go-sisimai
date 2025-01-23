@@ -135,7 +135,7 @@ func(this *EmailEntity) Read() (*string, error) {
 
 	switch this.Kind {
 		case "mailbox": email, nyaan = this.readMailbox()
-		case "maildir": email, nyaan = this.readEmail()
+		case "maildir": email, nyaan = this.readMaildir()
 		case "memory":  email, nyaan = this.readMemory()
 		case "stdin":   email, nyaan = this.readSTDIN()
 	}
