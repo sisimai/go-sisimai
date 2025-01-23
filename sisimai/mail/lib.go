@@ -98,7 +98,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				// Maildir/
 				ee.Kind = "maildir"
 				ee.Dir  = argv0
-				cw, ce := ee.readMaildir(); if ce != nil { return &ee, ce }
+				cw, ce := ee.listMaildir(); if ce != nil { return &ee, ce }
 				ee.Size = int64(cw)
 
 			} else {

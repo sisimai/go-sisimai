@@ -12,8 +12,8 @@ import "os"
 import "fmt"
 import "path/filepath"
 
-// readMaildir() is a Maildir/ reader, works as a iterator.
-func(this *EmailEntity) readMaildir() (int, error) {
+// listMaildir() is a Maildir/ reader, works as a iterator.
+func(this *EmailEntity) listMaildir() (int, error) {
 	// @return   int      The number of email files in the Maildir/
 	// @return   error    Errors while reading the Maildir/
 	if this.handle == nil {
