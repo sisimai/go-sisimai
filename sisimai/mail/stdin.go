@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package mail
 
@@ -12,7 +12,7 @@ import "io"
 func (this *EmailEntity) readSTDIN() (*string, error) {
 	// @return   *string  Contents of the mbox input from STDIN
 	// @return   error    It has reached to the end of the mbox
-	if this.Size == 0 || this.offset >= int64(len(this.payload)) { return nil, io.EOF }
+	if this.Size == 0 || this.offset >= len(this.payload) { return nil, io.EOF }
 
 	emailblock := this.payload[this.offset]
 	this.offset++

@@ -23,7 +23,7 @@ func(this *EmailEntity) readMailbox() (*string, error) {
 		this.handle = filehandle // Successfully opened the mbox
 	}
 
-	seekoffset := this.offset;                     if this.offset  < 0 { seekoffset = 0 }
+	seekoffset := int64(this.offset);              if this.offset  < 0 { seekoffset = 0 }
 	_, nyaan   := this.handle.Seek(seekoffset, 0); if nyaan != nil { return nil, nyaan  }
 	lineending := 0;                               if this.newline > 2 { lineending = 1 }
 	unixmboxio := bufio.NewScanner(this.handle)
@@ -37,8 +37,8 @@ func(this *EmailEntity) readMailbox() (*string, error) {
 		if strings.HasPrefix(e, "From ") && readbuffer != "" {
 			// The line is a UNIX From line such as "From MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 			// This UNIX From line is the beginning of the second or later email message
-			emailblock  = readbuffer; readbuffer = ""
-			this.offset += int64(len(emailblock) + (thisheight * lineending))
+			emailblock   = readbuffer; readbuffer = ""
+			this.offset += len(emailblock) + (thisheight * lineending)
 			break
 		}
 		thisheight += 1
@@ -47,8 +47,8 @@ func(this *EmailEntity) readMailbox() (*string, error) {
 
 	if readbuffer != "" {
 		// The last email message in the UNIX mbox
-		emailblock  = readbuffer
-		this.offset += int64(len(readbuffer) + (thisheight * lineending))
+		emailblock   = readbuffer
+		this.offset += len(readbuffer) + (thisheight * lineending)
 		this.handle.Close()
 	}
 	return &emailblock, nil
