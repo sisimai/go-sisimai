@@ -138,14 +138,13 @@ func CountUnixMboxFrom(argv0 *string) uint {
 
 // *EmailEntity.Read() is an email reader, works as an iterator.
 func(this *EmailEntity) Read() (*string, error) {
-	// @param    NONE
 	// @return   *string Contents of mbox/Maildir
 	var email *string // Email contents: headers and entire message body
 	var nyaan  error  // Some errors while reading an email file
 
 	switch this.Kind {
-		case "mailbox": email, nyaan = this.readMailbox()
 		case "maildir": email, nyaan = this.readMaildir()
+		case "mailbox": email, nyaan = this.readMailbox()
 		case "memory":  email, nyaan = this.readMemory()
 		case "stdin":   email, nyaan = this.readSTDIN()
 	}
