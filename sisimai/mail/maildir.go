@@ -42,13 +42,12 @@ func(this *EmailEntity) readMaildir() (*string, error) {
 		// Try to read the email file
 		this.File = this.payload[this.offset]; this.offset++
 		this.Path = filepath.Clean(filepath.FromSlash(this.Dir + "/" + this.File))
-
-		buf, nyaan := os.ReadFile(this.Path); if nyaan != nil || len(buf) == 0 {
+		b, nyaan := os.ReadFile(this.Path); if nyaan != nil || len(b) == 0 {
 			// Failed to read the email file or the email file is empty
 			if this.offset >= this.Size { return nil, io.EOF }
 			continue
 		}
-		cv := string(buf); return &cv, nil
+		cv := string(b); return &cv, nil
 	}
 }
 
