@@ -31,7 +31,7 @@ func(this *EmailEntity) listMaildir() (int, error) {
 	return len(this.payload), nil
 }
 
-// readMaildir() reads each email file in the Maildir/
+// readMaildir() reads each email file in the Maildir/, do not call this from inside of the goroutine.
 func(this *EmailEntity) readMaildir() (*string, error) {
 	// @return   *string  Contents of the each file in the Maildir/
 	// @return   error    It has reached to the end of the Maildir/
