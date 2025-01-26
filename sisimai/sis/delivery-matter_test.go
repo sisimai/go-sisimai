@@ -146,6 +146,19 @@ func TestDeliveryMatter(t *testing.T) {
 	cx++; if ct == false          { t.Errorf("%s(status, 5.1.2) returns false", fn) }
 	cx++; if cv.Status != "5.1.2" { t.Errorf("%s(status, 5.1.2) did not updated: %s", fn, cv.Status) }
 
+	// AsRFC1894
+	fn = "AsRFC1894"
+	ae = []string{
+		"action", "status", "arrival-date", "last-attempt-date", "diagnostic-code", "final-recipient",
+		"original-recipient", "x-actual-recipient", "reporting-mta", "remote-mta", "received-from-mta",
+	}
+
+	cx++; if cv.AsRFC1894("")    != "" { t.Errorf("%s() did not return an empty string: %s", fn, cv.AsRFC1894("")) }
+	cx++; if cv.AsRFC1894("cat") != "" { t.Errorf("%s(cat) did not return an empty string: %s", fn, cv.AsRFC1894("cat")) }
+	for _, e := range ae {
+		cx++; if cv.AsRFC1894(e) == "" { t.Errorf("%s(%s) returns empty", fn, e) }
+	}
+
 	t.Logf("The number of tests = %d", cx)
 }
 
