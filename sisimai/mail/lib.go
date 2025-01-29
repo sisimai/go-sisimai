@@ -62,7 +62,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				stdin, nyaan  := io.ReadAll(os.Stdin); if nyaan != nil { return &ee, nyaan }
 				if textlength := len(stdin); textlength == 0 || textlength > maximumSize {
 					// The input text is empty or too large (2GB)
-					return &ee, fmt.Errorf("input text is empty or too large: %s bytes", textlength)
+					return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
 				}
 				payload = string(stdin)
 				break
@@ -71,7 +71,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 			// Email data is in a string(memory)
 			if textlength := len(argv0); textlength == 0 || textlength > maximumSize {
 				// The input text is empty or too large (2GB)
-				return &ee, fmt.Errorf("input text is empty or too large: %s bytes", textlength)
+				return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
 			}
 			ee.Kind = "memory"
 			ee.Path = "<MEMORY>"
@@ -112,7 +112,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				// UNIX mbox
 				cw := filestatus.Size(); if cw == 0 || cw > maximumSize {
 					// The mbox is empty or too large (2GB)
-					return &ee, fmt.Errorf("%s is empty or too large: %s bytes", argv0, ee.Size)
+					return &ee, fmt.Errorf("%s is empty or too large: %d bytes", argv0, ee.Size)
 				}
 				ee.Size = int(cw)
 				ee.Kind = "mailbox"
