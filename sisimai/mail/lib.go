@@ -22,7 +22,7 @@ import "path/filepath"
  | Path       | o         | o         | o         | o          |
  | Dir        | o         | o         |           |            |
  | File       | o         | o         |           |            |
- | Size       | o         |           | o         | o          |
+ | Size       | o         | o         | o         | o          |
  | newline    | o         |           | o         | o          |
  | offset     | o         | o         | o         | o          |
  | handle     | o         | o         |           |            |
@@ -117,6 +117,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				ee.Size = int(cw)
 				ee.Kind = "mailbox"
 				ee.File = filepath.Base(argv0)
+				ee.Dir  = filepath.Dir(argv0)
 				ee.setNewLine() // TODO: Receive and check the return values
 			}
 		} else {
