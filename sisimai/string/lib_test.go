@@ -27,7 +27,7 @@ func TestToken(t *testing.T) {
 
 func TestIs8Bit(t *testing.T) {
 	fn := "sisimai/string.Is8Bit"
-	ae := []string{"nekochan", "Suzu"}
+	ae := []string{"nekochan", "Suzu", ""}
 	je := []string{"ニャーン", "道綱"}
 	cx := 0
 
