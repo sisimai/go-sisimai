@@ -46,6 +46,7 @@ func TestIsPermanent(t *testing.T) {
 	for _, e := range PermErrors {
 		cx++; if cv := IsPermanent(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
+	cx++; if IsPermanent("") == true { t.Errorf("%s(%s) returns true", fn, "") }
 
 	t.Logf("The number of tests = %d", cx)
 }
@@ -57,6 +58,7 @@ func TestIsTemporary(t *testing.T) {
 	for _, e := range TempErrors {
 		cx++; if cv := IsTemporary(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
+	cx++; if IsTemporary("") == true { t.Errorf("%s(%s) returns true", fn, "") }
 
 	t.Logf("The number of tests = %d", cx)
 }
