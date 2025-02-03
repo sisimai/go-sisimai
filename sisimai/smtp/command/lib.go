@@ -21,6 +21,17 @@ var Detectable = []string{
 	"MAIL F", "RCPT", "RCPT T", "DATA", "QUIT", "XFORWARD",
 }
 
+// Test() checks that an SMTP command in the argument is valid or not
+func Test(argv0 string) bool {
+	// @param    string argv0  An SMTP command
+	// @return   bool          false: Is not a valid SMTP command
+	//                         true:  Is a valid SMTP command
+	// @since v5.2.0
+	if len(argv0) < 4                          { return false }
+	if sisimoji.ContainsAny(argv0, Availables) { return true  }
+	return false
+}
+
 func Find(argv0 string) string {
 	// @param    string argv0  Text including SMTP command
 	// @return   string        Found SMTP command
