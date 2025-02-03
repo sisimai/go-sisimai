@@ -54,7 +54,8 @@ func TestTest(t *testing.T) {
 			cx++; if cv := Test(f); cv == false { t.Errorf("%s(%s) returns false", fn, f) }
 		}
 	}
-	cx++; if cv := Test(""); cv == true { t.Errorf("%s(%s) returns true", fn, "") }
+	cx++; if cv := Test("");    cv == true { t.Errorf("%s(%s) returns true", fn, "") }
+	cx++; if cv := Test("cat"); cv == true { t.Errorf("%s(%s) returns true", fn, "cat") }
 
 	t.Logf("The number of tests = %d", cx)
 }
