@@ -114,5 +114,7 @@ func TestTest(t *testing.T) {
 	cx++; if Test("")   == true { t.Errorf("%s(%s) returns true", fn, "") }
 	cx++; if Test("1")  == true { t.Errorf("%s(%s) returns true", fn, "1") }
 	cx++; if Test("22") == true { t.Errorf("%s(%s) returns true", fn, "22") }
+
+	t.Logf("The number of tests = %d", cx)
 }
 
