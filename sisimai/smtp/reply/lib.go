@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reply
 
@@ -8,14 +8,6 @@ package reply
 // \__ \ | | | | | |_| |_) / /| | |  __/ |_) | | |_| |
 // |___/_| |_| |_|\__| .__/_/ |_|  \___| .__/|_|\__, |
 //                   |_|               |_|      |___/ 
-var ReplyCode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "354"}
-var ReplyCode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "456", "458", "459"}
-var ReplyCode5 = []string{
-	"550", "552", "553", "551", "521", "525", "502", "520", "523", "524", "530", "533", "534", "535", "538",
-	"551", "555", "556", "554", "557", "500", "501", "502", "503", "504",
-}
-var CodeOfSMTP = map[string][]string{"2": ReplyCode2, "4": ReplyCode4, "5": ReplyCode5}
-
 /* http://www.ietf.org/rfc/rfc5321.txt
 //-------------------------------------------------------------------------------------------------
   4.2.1.  Reply Code Severities and Theory
@@ -84,4 +76,12 @@ var CodeOfSMTP = map[string][]string{"2": ReplyCode2, "4": ReplyCode4, "5": Repl
 // 555   MAIL FROM/RCPT TO parameters not recognized or not implemented
 // 556   Domain does not accept mail (See RFC7504)
 // 557   draft-moore-email-addrquery-01
+//
+var ReplyCode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "354"}
+var ReplyCode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "456", "458", "459"}
+var ReplyCode5 = []string{
+	"550", "552", "553", "551", "521", "525", "502", "520", "523", "524", "530", "533", "534", "535", "538",
+	"551", "555", "556", "554", "557", "500", "501", "502", "503", "504",
+}
+var CodeOfSMTP = map[string][]string{"2": ReplyCode2, "4": ReplyCode4, "5": ReplyCode5}
 
