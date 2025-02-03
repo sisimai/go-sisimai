@@ -45,6 +45,20 @@ var IsntErrors = []string{
 	"",
 }
 
+func TestTest(t *testing.T) {
+	fn := "sisimai/smtp/command.Test"
+	cx := 0
+
+	for e := range SMTPErrors {
+		for _, f := range SMTPErrors[e] {
+			cx++; if cv := Test(f); cv == false { t.Errorf("%s(%s) returns false", fn, f) }
+		}
+	}
+	cx++; if cv := Test(""); cv == true { t.Errorf("%s(%s) returns true", fn, "") }
+
+	t.Logf("The number of tests = %d", cx)
+}
+
 func TestFind(t *testing.T) {
 	fn := "sisimai/smtp/command.Find"
 	cx := 0
