@@ -50,3 +50,14 @@ func TestIsPermanent(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestIsTemporary(t *testing.T) {
+	fn := "sisimai/smtp/failure.IsTemporary"
+	cx := 0
+
+	for _, e := range TempErrors {
+		cx++; if cv := IsTemporary(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
+	}
+
+	t.Logf("The number of tests = %d", cx)
+}
+
