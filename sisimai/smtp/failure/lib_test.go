@@ -12,8 +12,8 @@ import "testing"
 
 var SoftBounce = []string{
 	"blocked", "contenterror", "exceedlimit", "expired", "failedstarttls", "filtered", "mailboxfull",
-	"mailererror", "mesgtoobig", "networkerror", "norelaying", "rejected", "securityerror",
-	"spamdetected", "suspend", "systemerror", "systemfull", "toomanyconn", "undefined", "onhold",
+	"mailererror", "mesgtoobig", "networkerror", "norelaying", "rejected", "securityerror", "spamdetected",
+	"suppressed", "suspend", "systemerror", "systemfull", "toomanyconn", "undefined", "onhold",
 }
 var HardBounce = []string{"userunknown", "hostunknown", "hasmoved", "notaccept"}
 var IsntBounce = []string{"delivered", "feedback", "vacation"}
@@ -59,6 +59,18 @@ func TestIsTemporary(t *testing.T) {
 		cx++; if cv := IsTemporary(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
 	cx++; if IsTemporary("") == true { t.Errorf("%s(%s) returns true", fn, "") }
+
+	t.Logf("The number of tests = %d", cx)
+}
+
+func TestIsHardBounce(t *testing.T) {
+	fn := "sisimai/smtp/failure.IsHardBounce"
+	cx := 0
+
+	for _, e := range HardBounce {
+		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
+	}
+	cx++; if IsHardBounce("notaccept", "503 Not accept any email") == false { t.Errorf("%s(%s) returns false", fn, "notaccept") }
 
 	t.Logf("The number of tests = %d", cx)
 }
