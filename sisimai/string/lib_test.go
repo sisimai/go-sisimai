@@ -37,3 +37,21 @@ func TestIs8Bit(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestSqueeze(t *testing.T) {
+	fn := "sisimai/string.Sweep"
+	cx := 0
+	ae := []struct {text string; char string; expected string}{
+		{"neko		meow	cat", "	", "neko	meow	cat"},
+		{"neko      meow   cat", " ", "neko meow cat"},
+		{"neko//////meow///cat", "/", "neko/meow/cat"},
+		{"neko::meow:::::::cat", ":", "neko:meow:cat"},
+		{"nekochan", "", "nekochan"},
+		{"nekonekopoint", "neko", "nekopoint"},
+		{"", "?", ""},
+	}
+	for _, e := range ae {
+		cx++; if Squeeze(e.text, e.char) != e.expected { t.Errorf("%s(%s, %s) returns %s", fn, e.text, e.char, e.expected) }
+	}
+	t.Logf("The number of tests = %d", cx)
+}
+
