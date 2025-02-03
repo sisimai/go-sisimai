@@ -91,7 +91,7 @@ var SMTPErrors = []string{
 }
 
 func TestFind(t *testing.T) {
-	fn := "sisimai/smtp/reply.Test"
+	fn := "sisimai/smtp/reply.Find"
 	cx := 0
 
 	for _, e := range SMTPErrors {
