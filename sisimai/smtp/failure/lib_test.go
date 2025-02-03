@@ -75,3 +75,14 @@ func TestIsHardBounce(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestIsSoftBounce(t *testing.T) {
+	fn := "sisimai/smtp/failure.IsSoftBounce"
+	cx := 0
+
+	for _, e := range SoftBounce {
+		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
+	}
+	cx++; if IsSoftBounce("notaccept", "458 Not accept any email") == false { t.Errorf("%s(%s) returns false", fn, "notaccept") }
+
+	t.Logf("The number of tests = %d", cx)
+}
