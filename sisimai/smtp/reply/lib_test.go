@@ -107,3 +107,12 @@ func TestFind(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestTest(t *testing.T) {
+	fn := "sisimai/smtp/reply.Test"
+	cx := 0
+
+	cx++; if Test("")   == true { t.Errorf("%s(%s) returns true", fn, "") }
+	cx++; if Test("1")  == true { t.Errorf("%s(%s) returns true", fn, "1") }
+	cx++; if Test("22") == true { t.Errorf("%s(%s) returns true", fn, "22") }
+}
+
