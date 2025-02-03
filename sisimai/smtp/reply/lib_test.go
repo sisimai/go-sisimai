@@ -103,6 +103,9 @@ func TestFind(t *testing.T) {
 		cx++; if Test(cv) == false { t.Errorf("%s(%s) returns an invalid code: %s", fn, e, cv) }
 		cx++; if Test(cy) == false { t.Errorf("%s(%s, %s) returns an invalid code: %s", fn, e, cw, cv) }
 	}
+	cx++; if Find("", "")   != "" { t.Errorf("%s(%s) does not return an empty string", fn, "") }
+	cx++; if Find("", "1")  != "" { t.Errorf("%s(%s) does not return an empty string", fn, "1") }
+	cx++; if Find("", "22") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "22") }
 
 	t.Logf("The number of tests = %d", cx)
 }
