@@ -209,7 +209,7 @@ func TestLhostExim(t *testing.T) {
 		{{"1139", 1, "5.0.918", "550", "rejected",        false, ""}},
 		{{"1140", 1, "5.0.945", "",    "toomanyconn",     false, ""}},
 		{{"1141", 1, "5.0.910", "",    "filtered",        false, ""}},
-		{{"1142", 1, "5.0.971", "",    "virusdetected",   false, ""}},
+		{{"1142", 1, "5.0.981", "",    "virusdetected",   false, ""}},
 		{{"1143", 1, "5.0.911", "550", "userunknown",      true, ""}},
 		{{"1145", 1, "5.0.934", "500", "mesgtoobig",      false, ""}},
 		{{"1146", 1, "5.0.911", "550", "userunknown",      true, ""}},
