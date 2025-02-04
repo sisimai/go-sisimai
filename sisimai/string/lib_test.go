@@ -38,7 +38,7 @@ func TestIs8Bit(t *testing.T) {
 }
 
 func TestSqueeze(t *testing.T) {
-	fn := "sisimai/string.Sweep"
+	fn := "sisimai/string.Squeeze"
 	cx := 0
 	ae := []struct {text string; char string; expected string}{
 		{"neko		meow	cat", "	", "neko	meow	cat"},
