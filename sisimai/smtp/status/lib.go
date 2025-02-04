@@ -554,7 +554,7 @@ func Code(argv0 string, argv1 bool) string {
 		"systemfull":      "4.0.931",
 		"syntaxerror":     "4.0.902",
 		"toomanyconn":     "4.0.945",
-	//	"userunknown":    "4.0.911",
+	//	"userunknown":     "4.0.911",
 		"undefined":       "4.0.900",
 		"virusdetected":   "4.0.981",
 	}
