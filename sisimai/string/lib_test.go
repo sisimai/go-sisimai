@@ -87,3 +87,23 @@ func TestContainsOnlyNumbers(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestAligned(t *testing.T) {
+	fn := "sisimai/string.Aligned"
+	cw := "Final-Recipient: rfc822; <neko@example.jp>"
+	cx := 0
+
+	cx++; if Aligned(cw, []string{"rfc822", "<", "@", ">"}) == false { t.Errorf("%s(%s) returns false", fn, cw) }
+	cx++; if Aligned(cw, []string{"rfc822", " ", "@", ">"}) == false { t.Errorf("%s(%s) returns false",  fn, cw) }
+	cx++; if Aligned(cw, []string{"rfc822", ";", "<", ">"}) == false { t.Errorf("%s(%s) returns false",  fn, cw) }
+	cx++; if Aligned(cw, []string{"Final-", ":", ";", ">"}) == false { t.Errorf("%s(%s) returns false",  fn, cw) }
+	cx++; if Aligned(cw, []string{"rfc822", "[", "@", ">"}) == true  { t.Errorf("%s(%s) returns true",  fn, cw) }
+	cx++; if Aligned(cw, []string{"rfc822", "<", "@", " "}) == true  { t.Errorf("%s(%s) returns true",  fn, cw) }
+
+	cx++; if Aligned("", []string{})          == true { t.Errorf("%s(%s) returns true",  fn, "") }
+	cx++; if Aligned("neko", []string{})      == true { t.Errorf("%s(%s) returns true",  fn, "neko") }
+	cx++; if Aligned("", []string{"neko"})    == true { t.Errorf("%s(%s) returns true",  fn, "") }
+	cx++; if Aligned("cat", []string{"neko"}) == true { t.Errorf("%s(%s) returns true",  fn, "cat") }
+
+	t.Logf("The number of tests = %d", cx)
+}
+
