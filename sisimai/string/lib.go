@@ -73,7 +73,7 @@ func Sweep(argv1 string) string {
 		// Delete all the string after a boundary string like " --neko-chan"
 		if strings.Contains(argv1, "-- ")  { break }
 		if strings.Contains(argv1, "--\t") { break }
-		argv1 = argv1[0:strings.Index(argv1, " --") - 1]
+		argv1 = argv1[0:strings.Index(argv1, " --")]
 	}
 	return argv1
 }
@@ -82,12 +82,9 @@ func Sweep(argv1 string) string {
 func ContainsOnlyNumbers(argv1 string) bool {
 	// @param    string argv1  String
 	// @return   bool          true, false
-	if len(argv1) == 0 { return false }
-
-	match := true
-	for _, e := range argv1 { if e < 48 || e > 57 { match = false; break } }
-
-	return match
+	if argv1 == "" { return false }
+	for _, e := range argv1 { if e < 48 || e > 57 { return false } }
+	return true
 }
 
 // Aligned() checks if each element of the 2nd argument is aligned in the 1st argument or not
