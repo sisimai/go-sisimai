@@ -55,3 +55,35 @@ func TestSqueeze(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestSweep(t *testing.T) {
+	fn := "sisimai/string.Sweep"
+	cx := 0
+	ae := []struct {arg string; exp string}{
+		{" neko		meow	cat ", "neko meow cat"},
+		{"neko      meow   cat --nekochan kijitora", "neko meow cat"},
+		{"", ""},
+	}
+	for _, e := range ae {
+		cx++; if cv := Sweep(e.arg); cv != e.exp { t.Errorf("%s(%s) returns %s", fn, e.arg, cv) }
+	}
+
+	t.Logf("The number of tests = %d", cx)
+}
+
+func TestContainsOnlyNumbers(t *testing.T) {
+	fn := "sisimai/string.ContainsOnlyNumbers"
+	cx := 0
+	et := []string{"1", "23", "456", "78910"}
+	ef := []string{"A", "B1", "C12", "34D5E"}
+
+	for _, e := range et {
+		cx++; if cv := ContainsOnlyNumbers(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
+	}
+	for _, e := range ef {
+		cx++; if cv := ContainsOnlyNumbers(e); cv == true  { t.Errorf("%s(%s) returns true",  fn, e) }
+	}
+	cx++; if cv := ContainsOnlyNumbers("");    cv == true  { t.Errorf("%s(%s) returns true",  fn, "") }
+
+	t.Logf("The number of tests = %d", cx)
+}
+
