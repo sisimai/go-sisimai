@@ -31,13 +31,21 @@ func TestReceived(t *testing.T) {
 		"by 10.194.5.104 with SMTP id r8csp190892wjr; Fri, 18 Jul 2014 00:31:04 -0700 (PDT)",
 		"from gargamel.example.com (192.0.2.146) by athena.internal.example.com with SMTP; 12 Jun 2013 02:22:14 -0000",
 	}
+	je := []string{
+		"(qmail 10000 invoked by uid 999); 24 Apr 2013 00:00:00 +0900",
+		"(qmail 222 invoked from network); 29 Apr 2010 23:34:45 +0900",
+	}
 	for _, e := range ae {
 		cv := Received(e)
 		cw := 0; for _, f := range cv { cw += len(f) }
-		cx++; if len(cv) == 0  { t.Errorf("%s(%s) returns empty", fn, e)  }
-		cx++; if len(cv) != 6  { t.Errorf("%s(%s) returns %v", fn, e, cv) }
-		cx++; if cw      == 0  { t.Errorf("%s(%s) contains only empty strings", fn, e) }
-		//cx++; if cv[0] == "" && cv[1] == ""  {
+		cx++; if len(cv) == 0 { t.Errorf("%s(%s) returns empty", fn, e)  }
+		cx++; if len(cv) != 6 { t.Errorf("%s(%s) returns %v", fn, e, cv) }
+		cx++; if cw      == 0 { t.Errorf("%s(%s) contains only empty strings", fn, e) }
+	}
+	for _, e := range je {
+		cv := Received(e)
+		cw := 0; for _, f := range cv { cw += len(f) }
+		cx++; if cw != 0 { t.Errorf("%s(%s) contains only empty strings", fn, e) }
 	}
 	cx++; if cv := Received(""); cv[0] != "" { t.Errorf("%s() returns %v", fn, cv) }
 
