@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc5322
 
@@ -106,10 +106,16 @@ func Date(argv1 string) string {
 				}
 			}
 		} else if cw == 3 || (cw == 4 && strings.HasSuffix(e, ",")) {
-			// 3 characters: "Feb" or "Thu" or "Thu,"
-			upperfirst := strings.ToUpper(e[0:1]) + strings.ToLower(e[1:3])
-			if sisimoji.EqualsAny(upperfirst, MonthName) { p[1] = upperfirst; continue }
-			if sisimoji.EqualsAny(upperfirst, DayOfWeek) { p[3] = upperfirst; continue }
+			// 3 characters: "Feb" or "Thu" or "Thu,", or 3-digit date like "029"
+			if sisimoji.ContainsOnlyNumbers(e) && strings.HasPrefix(e, "0") {
+				// Tue, 029 Apr 2019 23:34:45 -0800 (PST)
+				p[2] = e[1:]
+
+			} else {
+				upperfirst := strings.ToUpper(e[0:1]) + strings.ToLower(e[1:3])
+				if sisimoji.EqualsAny(upperfirst, MonthName) { p[1] = upperfirst; continue }
+				if sisimoji.EqualsAny(upperfirst, DayOfWeek) { p[3] = upperfirst; continue }
+			}
 
 		} else if cw == 4 {
 			// This piece might be a 4-digit year such as 1997, 2018
@@ -154,7 +160,7 @@ func Date(argv1 string) string {
 	if p[0] == "" && year2digit > 0 {
 		// 4-digit year string is empty, try to use 2-digit year instead.
 		yy  := "20"; if year2digit > 81 { yy = "19" } // RFC822 is published August, 1982
-		p[0] = fmt.Sprintf("%s%s", yy, year2digit)
+		p[0] = fmt.Sprintf("%s%2d", yy, int(year2digit))
 	}
 	if p[3] == "" { p[3] = "Thu"   } // Set "Thu" for now
 	if p[5] == "" { p[5] = "+0000" } // Deal as UTC
