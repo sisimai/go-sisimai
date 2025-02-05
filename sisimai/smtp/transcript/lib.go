@@ -1,4 +1,4 @@
-// Copyright (C) 2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package transcript
 
@@ -65,9 +65,9 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 	// @param    string  argv1   A label string of a SMTP cilent
 	// @param    string  argv2   A label string of a SMTP server
 	// @return   []TranscriptLog Structured data
-	if len(argv0) < 1 { return []TranscriptLog{} }
-	if len(argv1) < 1 { argv1 = ">>>" } // Label for an SMTP client
-	if len(argv2) < 1 { argv2 = "<<<" } // Label for an SMTP server
+	if argv0 == "" { return []TranscriptLog{} }
+	if argv1 == "" { argv1 = ">>>" } // Label for an SMTP client
+	if argv2 == "" { argv2 = "<<<" } // Label for an SMTP server
 
 	// 1. Get the position of ">>>" and "<<<"
 	p1 := strings.Index(argv0, argv1); if p1 < 0 { return []TranscriptLog{} }
@@ -186,7 +186,7 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 
 // *TranscriptLog.Void() returns true if it does not include any transcript log
 func(this *TranscriptLog) Void() bool {
-	if len(this.Command) == 0 { return false }
-	return true
+	if this.Command == "" { return true }
+	return false
 }
 
