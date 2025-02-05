@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package sis
 
@@ -7,9 +7,6 @@ package sis
 // | |_ / _` |/ __| __|
 // |  _| (_| | (__| |_ 
 // |_|  \__,_|\___|\__|
-//                     
-import "os"
-import "fmt"
 import "time"
 import "encoding/json"
 import a "sisimai/address"
@@ -63,17 +60,16 @@ func(this Fact) MarshalJSON() ([]byte, error) {
 }
 
 // Dump() returns a serialized sis.Fact{} structure as a JSON string
-func(this Fact) Dump() string {
+func(this Fact) Dump() (string, error) {
 	// @param    NONE
 	// @return   string  Serialized sis.Fact{} as a JSON string
 	if jsonb, nyaan := json.Marshal(this); nyaan != nil {
 		// Failed to serialize, returns an empty string
-		fmt.Fprintf(os.Stderr, " *****error: %s\n", nyaan)
-		return ""
+		return "", nyaan
 
 	} else {
 		// Successfully serialized
-		return string(jsonb)
+		return string(jsonb), nil
 	}
 }
 
