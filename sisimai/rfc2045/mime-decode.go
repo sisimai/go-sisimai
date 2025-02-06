@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
 
@@ -127,19 +127,5 @@ func DecodeQ(argv0 string) (string, error) {
 	if len(plain) > 0 { plainvalue = string(plain) }
 
 	return plainvalue, nyaan
-}
-
-// CharacterSet() returns "ISO-2022-JP" as a character set name from "=?ISO-2022-JP?B?...?="
-func CharacterSet(argv0 string) string {
-	// @param    string argv0  Base64 or Quoted-Printable encoded text
-	// @return   string        A character set name like "iso-2022-jp"
-	if strings.HasPrefix(argv0, "=?") == false { return "" }
-	if strings.HasSuffix(argv0, "?=") == false { return "" }
-
-	argv1 := strings.ToUpper(argv0)
-	index := strings.Index(argv1, "?B?"); if index < 0 { index = strings.Index(argv1, "?Q?") }
-
-	if index < 0 { return "" }
-	return argv1[2:index]
 }
 

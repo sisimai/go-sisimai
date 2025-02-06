@@ -32,6 +32,20 @@ func Parameter(argv0 string, argv1 string) string {
 	return cf
 }
 
+// CharacterSet() returns "ISO-2022-JP" as a character set name from "=?ISO-2022-JP?B?...?="
+func CharacterSet(argv0 string) string {
+	// @param    string argv0  Base64 or Quoted-Printable encoded text
+	// @return   string        A character set name like "iso-2022-jp"
+	if strings.HasPrefix(argv0, "=?") == false { return "" }
+	if strings.HasSuffix(argv0, "?=") == false { return "" }
+
+	argv1 := strings.ToUpper(argv0)
+	index := strings.Index(argv1, "?B?"); if index < 0 { index = strings.Index(argv1, "?Q?") }
+
+	if index < 0 { return "" }
+	return argv1[2:index]
+}
+
 // Boundary() finds a boundary string from the value of Content-Type header.
 func Boundary(argv0 string, start int) string {
 	// @param    string  argv0    The value of Content-Type header
