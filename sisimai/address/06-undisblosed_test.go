@@ -24,26 +24,7 @@ func TestUndisclosed(t *testing.T) {
 			cx += 1
 		})
 	}
-	t.Logf("The number of tests = %d", cx)
-}
 
-func TestFinal(t *testing.T) {
-	fn := "sisimai/address.Final()"
-	cx := 0
-	ae := []struct{testname string; argument string; expected string}{
-		{"", "", ""},
-		{"", "<neko>", "<neko>"},
-		{"", "<neko@example.jp>", "neko@example.jp"},
-		{"",  "<neko@example.jp",  "neko@example.jp"},
-		{"",  "neko@example.jp>",  "neko@example.jp"},
-	}
-	for _, e := range ae {
-		t.Run(e.testname, func(t *testing.T) {
-			cv := Final(e.argument)
-			if cv != e.expected { t.Errorf("[%6d]: %s is (%s) not (%s)", cx, fn, cv, e.expected) }
-			cx += 1
-		})
-	}
 	t.Logf("The number of tests = %d", cx)
 }
 
