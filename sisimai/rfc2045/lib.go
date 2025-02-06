@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
 
@@ -14,25 +14,22 @@ func Parameter(argv0 string, argv1 string) string {
 	// @param    string argv0  The value of Content-Type: header
 	// @param    string argv1  Lower-cased attribute name of the parameter
     // @return   string        The value of the parameter
-	if len(argv0) == 0 { return "" }
-
-	parameterq := ""
-	paramindex := 0
+	if argv0 == "" { return "" }
+	cv := ""
+	ci := 0
 
 	if len(argv1) > 0 {
 		// There is a parameter name in the second argument
-		parameterq = strings.ToLower(argv1) + "="
-		paramindex = strings.Index(strings.ToLower(argv0), parameterq)
+		cv = strings.ToLower(argv1) + "="
+		ci = strings.Index(strings.ToLower(argv0), cv); if ci == -1 { return "" }
 	}
-	if paramindex == -1 { return "" }
 
 	// Find the value of the parameter name specified in "argv1"
-	foundtoken := strings.Split(argv0[paramindex + len(parameterq):], ";")[0]
-	if argv1 != "boundary" { foundtoken = strings.ToLower(foundtoken) }
-	foundtoken  = strings.Replace(foundtoken, `'`, "", -1)
-	foundtoken  = strings.Replace(foundtoken, `"`, "", -1)
+	cf := strings.Split(argv0[ci + len(cv):], ";")[0]; if argv1 != "boundary" { cf = strings.ToLower(cf) }
+	cf  = strings.Replace(cf, `'`, "", -1)
+	cf  = strings.Replace(cf, `"`, "", -1)
 
-	return foundtoken
+	return cf
 }
 
 // Boundary() finds a boundary string from the value of Content-Type header.
