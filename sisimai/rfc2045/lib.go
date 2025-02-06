@@ -39,8 +39,8 @@ func Boundary(argv0 string, start int) string {
 	//                             0: Start of boundary: "--boundary"
 	//                             1: End of boundary" "--boundary--"
 	// @return   string            Boundary string
-	if len(argv0) == 0 { return "" }; btext := Parameter(argv0, "boundary")
-	if len(btext) == 0 { return "" }
+	if argv0 == "" { return "" }; btext := Parameter(argv0, "boundary")
+	if btext == "" { return "" }
 
 	// Content-Type: multipart/mixed; boundary=Apple-Mail-5--931376066
 	// Content-Type: multipart/report; report-type=delivery-status;
