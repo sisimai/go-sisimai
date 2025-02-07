@@ -11,15 +11,16 @@ import "testing"
 import "strings"
 import sisimoji "sisimai/string"
 
+var ae = []string{
+	"authfailure", "badreputation", "blocked", "contenterror", "exceedlimit", "expired", "failedstarttls",
+	"feedback", "filtered", "hasmoved", "hostunknown", "mailboxfull", "mailererror", "mesgtoobig",
+	"networkerror", "norelaying", "notaccept", "notcompliantrfc", "onhold", "policyviolation",
+	"rejected", "requireptr", "securityerror", "spamdetected", "speeding", "suppressed", "suspend",
+	"syntaxerror", "systemerror", "systemfull", "toomanyconn", "userunknown", "virusdetected",
+}
+
 func TestIndex(t *testing.T) {
 	fn := "sisimai/reason.Index"
-	ae := []string{
-		"authfailure", "badreputation", "blocked", "contenterror", "exceedlimit", "expired", "failedstarttls",
-		"feedback", "filtered", "hasmoved", "hostunknown", "mailboxfull", "mailererror", "mesgtoobig",
-		"networkerror", "norelaying", "notaccept", "notcompliantrfc", "onhold", "policyviolation",
-		"rejected", "requireptr", "securityerror", "spamdetected", "speeding", "suppressed", "suspend",
-		"syntaxerror", "systemerror", "systemfull", "toomanyconn", "userunknown", "virusdetected",
-	}
 	cx := 0
 	cv := Index()
 
