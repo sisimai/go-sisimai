@@ -49,3 +49,17 @@ func TestRetry(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestIsExplicit(t *testing.T) {
+	fn := "sisimai/reason.IsExplicit"
+	cx := 0
+
+	for _, e := range ae {
+		if e == "onhold" { continue }
+		cx++; if cv := IsExplicit(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
+	}
+	if IsExplicit("")          == true  { t.Errorf("%s() returns true", fn) }
+	if IsExplicit("onhold")    == true  { t.Errorf("%s(onhold) returns true", fn) }
+	if IsExplicit("undefined") == true  { t.Errorf("%s(undefined) returns true", fn) }
+
+	t.Logf("The number of tests = %d", cx)
+}
