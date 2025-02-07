@@ -35,3 +35,16 @@ func TestIndex(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestRetry(t *testing.T) {
+	fn := "sisimai/reason.Retry"
+	cx := 0
+	cv := Retry()
+
+	cx++; if len(cv) ==  0 { t.Errorf("%s() returns empty", fn) }
+	for e := range cv {
+		cx++; if cv[e] == false { t.Errorf("%s() returns a value which is false: %s", fn, e) }
+	}
+
+	t.Logf("The number of tests = %d", cx)
+}
+
