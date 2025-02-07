@@ -55,7 +55,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 	// @param    string         enginename MTA module name such as "OpenSMTPD"
 	// @param    [][]IsExpected isexpected The list of results
 	// @param    bool           publictest false if set-of-emails/private
-	cx := 0
+	cx         := 0
 	prefixpath := "../../" + SampleRoot
 	hostprefix := ""
 	remotehost := false
@@ -87,20 +87,20 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 			ef := ""; if publictest == true {
 				// Try to stat(2) for the public sample email
 				ef = fmt.Sprintf("%s-%s.eml", prefixpath, e[0].Label)
-				if _, nyaan := os.Stat(ef); nyaan != nil {
+				cx++; if _, nyaan := os.Stat(ef); nyaan != nil {
 					t.Errorf("%s cannot read the sample email: %s", ee, nyaan)
-				}; cx++
+				}
 			} else {
 				// Try to find the email file path in the set-of-emails/private, the file exists as
 				// a file name such as private/lhost-opensmtpd/1012-933ce597.eml
 				match, nyaan  := filepath.Glob(prefixpath + e[0].Label + "-*.eml")
-				if nyaan      != nil { t.Errorf("%s something wrong: %s", ee, nyaan) }; cx++
-				if len(match) == 0   { t.Errorf("%s email not found: %s", ee, nyaan) }; cx++
+				cx++; if nyaan      != nil { t.Errorf("%s something wrong: %s", ee, nyaan) }
+				cx++; if len(match) == 0   { t.Errorf("%s email not found: %s", ee, nyaan) }
 				for _, f := range match { ef = f; break }
 			}
 
 			emailthing, nyaan := sisimbox.Rise(ef)
-			if nyaan != nil {
+			cx++; if nyaan != nil {
 				// No sample email specified in sisimai/fact/*-test.go
 				t.Errorf("%s failed to load the sample email: %s", ee, nyaan)
 
@@ -109,7 +109,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 				sisi := []sis.Fact{}; for {
 					if mesg, nyaan := emailthing.Read(); nyaan != nil {
 						// Failed to read the email
-						if errors.Is(nyaan, io.EOF) {
+						cx++; if errors.Is(nyaan, io.EOF) {
 							// sisimai has reached to the end of email/directory
 							break
 
@@ -117,51 +117,51 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 							// Something wrong, sisimai failed to read the email as a text
 							t.Errorf("%s failed to read the sample email: %s", ee, nyaan)
 							continue
-						}; cx++
+						}
 					} else {
 						// Read and decode each email file as a string
-						if emailthing.Size == 0 { t.Errorf("%s %s is empty", ee, ef); continue }; cx++
+						cx++; if emailthing.Size == 0 { t.Errorf("%s %s is empty", ee, ef); continue }
 
 						mesg = sisimoji.ToLF(mesg)
 						fact, nyaan := Rise(mesg, emailthing.Path, ArgForRise)
-						if nyaan     != nil { t.Logf("%s %s", ee, nyaan[0].Error()) }; cx++
-						if len(fact) != 0   { sisi = append(sisi, fact...) }
+						cx++; if nyaan != nil { t.Logf("%s %s", ee, nyaan[0].Error()) }
+						if len(fact) != 0 { sisi = append(sisi, fact...) }
 					}
 				}
-				if len(sisi) == 0   { t.Errorf("%s failed to decode any bounce message in %s", ee, ef) }; cx++
+				cx++; if len(sisi) == 0 { t.Errorf("%s failed to decode any bounce message in %s", ee, ef) }
 
-				for j, fs := range sisi {
+				cx++; for j, fs := range sisi {
 					// Compare each decoded element with each expected value
-					if j < len(e) {
+					cx++; if j < len(e) {
 						ev := e[j]
 						ee  = fmt.Sprintf("%s[%4s-%02d]", enginename, ev.Label, ev.Index)
 
-						if fs.DeliveryStatus != ev.Status {
+						cx++; if fs.DeliveryStatus != ev.Status {
 							// DeliveryStatus
 							t.Errorf("%s Status is (%s) but (%s)", ee, fs.DeliveryStatus, ev.Status)
-						}; cx++
+						}
 
-						if fs.ReplyCode != ev.ReplyCode {
+						cx++; if fs.ReplyCode != ev.ReplyCode {
 							// ReplyCode
 							t.Errorf("%s ReplyCode is (%s) but (%s)", ee, fs.ReplyCode, ev.ReplyCode)
-						}; cx++
+						}
 
-						if fs.Reason != ev.Reason {
+						cx++; if fs.Reason != ev.Reason {
 							// Reason
 							t.Errorf("%s Reason is (%s) but (%s)", ee, fs.Reason, ev.Reason)
-						}; cx++
+						}
 
-						if fs.HardBounce != ev.HardBounce {
+						cx++; if fs.HardBounce != ev.HardBounce {
 							// HardBounce
 							t.Errorf("%s HardBounce is (%t) but (%t)", ee, fs.HardBounce, ev.HardBounce)
-						}; cx++
+						}
 
-						if ev.AnotherOne != "" {
+						cx++; if ev.AnotherOne != "" {
 							// AnotherOne
-							if fs.Reason == "feedback" && fs.FeedbackType != ev.AnotherOne {
+							cx++; if fs.Reason == "feedback" && fs.FeedbackType != ev.AnotherOne {
 								// For example "FeedbackType"
 								t.Errorf("%s FeedbackType is (%s) but (%s)", ee, fs.FeedbackType, ev.AnotherOne)
-							}; cx++
+							}
 						}
 
 						if fs.DecodedBy != enginename {
@@ -179,7 +179,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 								}
 							}
 
-							if remotehost == true {
+							cx++; if remotehost == true {
 								// Check the rhost, lhost, and destination value
 								cv := rhost.Name(&fs)
 								if cv == "" { t.Errorf("%s rhost.Name returns (empty) but (%s)", ee, rhostclass) }
@@ -190,126 +190,126 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 									t.Errorf("%s DecodedBy is (%s) but (%s)", ee, fs.DecodedBy, altdecoder)
 								}
 							}
-						}; cx++
+						}
 
 						/* Other fields except above */
 						// Action
-						if fs.Reason != "feedback" && fs.Reason != "vacation" {
+						cx++; if fs.Reason != "feedback" && fs.Reason != "vacation" {
 							// Action is empty when the bounce mesage is a feedback loop
-							if fs.Action == "" { t.Errorf("%s Action is empty", ee) }; cx++
-							if ActionList[fs.Action] == false {
+							cx++; if fs.Action == "" { t.Errorf("%s Action is empty", ee) }
+							cx++; if ActionList[fs.Action] == false {
 								t.Errorf("%s Action (%s) is an invalid value", ee, fs.Action)
-							}; cx++
+							}
 						}
 
 						// Addresser
-						if fs.Addresser.Address == "" { t.Errorf("%s Addresser.Address is empty", ee) }; cx++
-						if sisiaddr.IsQuotedAddress(fs.Addresser.Address) == false {
-							if fs.Addresser.Alias != "" && strings.Contains(fs.Addresser.Address, "+") == false {
+						cx++; if fs.Addresser.Address == "" { t.Errorf("%s Addresser.Address is empty", ee) }
+						cx++; if sisiaddr.IsQuotedAddress(fs.Addresser.Address) == false {
+							cx++; if fs.Addresser.Alias != "" && strings.Contains(fs.Addresser.Address, "+") == false {
 								t.Errorf("%s Addresser.Alias is (%s) not empty", ee, fs.Addresser.Alias)
-							}; cx++
-							if fs.Addresser.Verp  != "" && strings.Contains(fs.Addresser.Address, "=") == false {
+							}
+							cx++; if fs.Addresser.Verp  != "" && strings.Contains(fs.Addresser.Address, "=") == false {
 								t.Errorf("%s Addresser.Verp is (%s) not empty", ee, fs.Addresser.Verp)
-							}; cx++
+							}
 						}
 
-						if sisiaddr.IsMailerDaemon(fs.Addresser.Address) == false {
-							if fs.Addresser.User == "" { t.Errorf("%s Addresser.User is empty", ee) }; cx++
-							if fs.Addresser.Host == "" { t.Errorf("%s Addresser.Host is empty", ee) }; cx++
-							if rfc1123.IsInternetHost(fs.Addresser.Host) == false {
+						cx++; if sisiaddr.IsMailerDaemon(fs.Addresser.Address) == false {
+							cx++; if fs.Addresser.User == "" { t.Errorf("%s Addresser.User is empty", ee) }
+							cx++; if fs.Addresser.Host == "" { t.Errorf("%s Addresser.Host is empty", ee) }
+							cx++; if rfc1123.IsInternetHost(fs.Addresser.Host) == false {
 								// Is not a valid internet hostname
 								t.Errorf("%s Addresser.Host (%s) is not a valid internet hostname", ee, fs.Addresser.Host)
 							}
-							if sisiaddr.IsEmailAddress(fs.Addresser.Address) == false {
+							cx++; if sisiaddr.IsEmailAddress(fs.Addresser.Address) == false {
 								// Is not a valid email address
 								t.Errorf("%s Addresser.Address (%s) is not a valid email address", ee, fs.Addresser.Address)
-							}; cx++
+							}
 						}
-						if fs.Addresser.Host    != fs.SenderDomain {
+						cx++; if fs.Addresser.Host != fs.SenderDomain {
 							// SenderDomain
 							t.Errorf("%s Addresser.Host is (%s) but (%s)", ee, fs.Addresser.Host, fs.SenderDomain)
-						}; cx++
+						}
 
 						// Alias, Recipient, Destination
-						if fs.Recipient.Address == "" { t.Errorf("%s Recipient.Address is empty", ee) }; cx++
-						if fs.Recipient.User    == "" { t.Errorf("%s Recipient.User is empty", ee) }; cx++
-						if fs.Recipient.Host    == "" { t.Errorf("%s Recipient.User is empty", ee) }; cx++
-						if fs.Recipient.Host    != fs.Destination { 
+						cx++; if fs.Recipient.Address == "" { t.Errorf("%s Recipient.Address is empty", ee) }
+						cx++; if fs.Recipient.User    == "" { t.Errorf("%s Recipient.User is empty", ee)    }
+						cx++; if fs.Recipient.Host    == "" { t.Errorf("%s Recipient.User is empty", ee)    }
+						cx++; if fs.Recipient.Host    != fs.Destination { 
 							// Destination
 							t.Errorf("%s Recipient.Host is (%s) but (%s)", ee, fs.Recipient.Host, fs.Destination)
-						}; cx++
-						if rfc1123.IsInternetHost(fs.Recipient.Host) == false {
+						}
+						cx++; if rfc1123.IsInternetHost(fs.Recipient.Host) == false {
 							// Is not a valid internet hostname
 							t.Errorf("%s Recipient.Host (%s) is not a valid internet hostname", ee, fs.Recipient.Host)
 						}
-						if sisiaddr.IsEmailAddress(fs.Recipient.Address) == false {
+						cx++; if sisiaddr.IsEmailAddress(fs.Recipient.Address) == false {
 							// Is not a valid email address
 							t.Errorf("%s Recipient.Address (%s) is not a valid email address", ee, fs.Recipient.Address)
-						}; cx++
-						if fs.Recipient.Verp != "" && sisiaddr.IsEmailAddress(fs.Recipient.Verp) == false {
+						}
+						cx++; if fs.Recipient.Verp != "" && sisiaddr.IsEmailAddress(fs.Recipient.Verp) == false {
 							// Is not a valid email address
 							t.Errorf("%s Recipient.Verp (%s) is not a valid email address", ee, fs.Recipient.Verp)
-						}; cx++
-						if fs.Recipient.Alias != "" && sisiaddr.IsEmailAddress(fs.Recipient.Alias) == false {
+						}
+						cx++; if fs.Recipient.Alias != "" && sisiaddr.IsEmailAddress(fs.Recipient.Alias) == false {
 							// Is not a valid email address
 							t.Errorf("%s Recipient.Alias (%s) is not a valid email address", ee, fs.Recipient.Alias)
-						}; cx++
+						}
 
 						// DiagnosticType
-						if fs.Reason != "feedback" && fs.Reason != "vacation" {
+						cx++; if fs.Reason != "feedback" && fs.Reason != "vacation" {
 							// DiagnosticType is empty when the bounce mesage is a feedback loop
-							if fs.DiagnosticType == "" { t.Errorf("%s DiagnosticType is empty", ee) }; cx++
+							cx++; if fs.DiagnosticType == "" { t.Errorf("%s DiagnosticType is empty", ee) }
 						}
-						if strings.Contains(fs.DiagnosticType, " ") {
+						cx++; if strings.Contains(fs.DiagnosticType, " ") {
 							t.Errorf("%s DiagnosticType includes space characters (%s)", ee, fs.DiagnosticType)
-						}; cx++
+						}
 
 						// FeedbackID
-						if strings.Contains(fs.FeedbackID, " ") {
+						cx++; if strings.Contains(fs.FeedbackID, " ") {
 							t.Errorf("%s FeedbackID includes space characters (%s)", ee, fs.FeedbackID)
-						}; cx++
+						}
 
 						// Lhost, Rhost
-						if strings.Contains(fs.Lhost, " ") { t.Errorf("%s Lhost includes space characters (%s)", ee, fs.Lhost) }; cx++
-						if strings.Contains(fs.Rhost, " ") { t.Errorf("%s Rhost includes space characters (%s)", ee, fs.Rhost) }; cx++
+						cx++; if strings.Contains(fs.Lhost, " ") { t.Errorf("%s Lhost includes space characters (%s)", ee, fs.Lhost) }
+						cx++; if strings.Contains(fs.Rhost, " ") { t.Errorf("%s Rhost includes space characters (%s)", ee, fs.Rhost) }
 
 						// ListID
-						if strings.Contains(fs.ListID, " ") { t.Errorf("%s ListID includes space characters (%s)", ee, fs.ListID) }; cx++
+						cx++; if strings.Contains(fs.ListID, " ") { t.Errorf("%s ListID includes space characters (%s)", ee, fs.ListID) }
 
 						// MessageID
-						if strings.Contains(fs.MessageID, " ") {
+						cx++; if strings.Contains(fs.MessageID, " ") {
 							t.Errorf("%s MessageID includes space characters (%s)", ee, fs.MessageID)
-						}; cx++
+						}
 
 						// Origin
-						if fs.Origin == "" { t.Errorf("%s Origin is empty", ee) }; cx++
+						cx++; if fs.Origin == "" { t.Errorf("%s Origin is empty", ee) }
 
 						// Command
-						if fs.Command != "" && command.Test(fs.Command) == false {
+						cx++; if fs.Command != "" && command.Test(fs.Command) == false {
 							t.Errorf("%s Command (%s) is an invalid SMTP command", ee, fs.Command)
-						}; cx++
+						}
 
 						// Subject (not needed to test)
 						// Timestamp (not needed to test)
 						// TimezoneOffset (not needed to test)
 
 						// Token
-						if fs.Token      == "" { t.Errorf("%s Token is empty", ee) }; cx++
-						if len(fs.Token) != 40 { t.Errorf("%s Token (%s) is not 40 characaters", ee, fs.Token) }; cx++
+						cx++; if fs.Token      == "" { t.Errorf("%s Token is empty", ee) }
+						cx++; if len(fs.Token) != 40 { t.Errorf("%s Token (%s) is not 40 characaters", ee, fs.Token) }
 
-						if jx, je := fs.Dump(); len(jx) == 0 || je != nil {
+						cx++; if jx, je := fs.Dump(); len(jx) == 0 || je != nil {
 							// Dump()
 							t.Errorf("%s Dump() returned an empty string or error: %s", ee, je)
 
 						} else {
 							// Check the string as a JSON
-							if strings.Contains(jx, "{") == false {
+							cx++; if strings.Contains(jx, "{") == false {
 								t.Errorf("%s Dump() returned invalid JSON string (%s)", ee, jx[:20])
 							}
-						}; cx++
+						}
 					} else{
 						// THe number of fact is greater than the number of expected values
-						t.Errorf("%s missing the expected values", ee); cx++
+						t.Errorf("%s missing the expected values", ee)
 					}
 				}
 			}
