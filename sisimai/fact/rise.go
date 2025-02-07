@@ -166,7 +166,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 					for _, w := range ee {
 						// Get a hostname from the string like "127.0.0.1 x109-20.example.com 192.0.2.20"
 						// or "mx.sp.example.jp 192.0.2.135"
-						if rfc791.IsIPv4Address(&w) { continue }
+						if rfc791.IsIPv4Address(w) { continue }
 						*v = w; break
 					}
 					if strings.Index(*v, " ") > 0 { *v = ee[0] }

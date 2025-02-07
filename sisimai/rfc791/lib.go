@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc791
 
@@ -11,14 +11,13 @@ import "strings"
 import "strconv"
 
 // IsIPv4Address() returns "true" when the given string is an IPv4 address
-func IsIPv4Address(argv1 *string) bool {
-	// @param    *string argv1 IPv4 address like "192.0.2.25"
+func IsIPv4Address(argv1 string) bool {
+	// @param    string  argv1 IPv4 address like "192.0.2.25"
 	// @return   bool          true:  is an IPv4 address
 	//                         false: is not an IPv4 address
-	if argv1 == nil || len(*argv1) < 7 { return false }
-	if strings.Count(*argv1, ".") != 3 { return false }
+	if len(argv1) < 7 || strings.Count(argv1, ".") != 3 { return false }
 
-	for _, e := range strings.Split(*argv1, ".") {
+	for _, e := range strings.Split(argv1, ".") {
 		// Check each octet is between 0 and 255
 		v, nyaan := strconv.Atoi(e)
 		if nyaan != nil     { return false }
@@ -46,7 +45,7 @@ func FindIPv4Address(argv1 *string) []string {
 	for _, e := range strings.Split(argv2, " ") {
 		// Find a string including an IPv4 address
 		if !strings.Contains(e, ".") { continue }   // IPv4 address must include "." character
-		if !IsIPv4Address(&e)        { continue }   // The string is an IPv4 address or not
+		if !IsIPv4Address(e)         { continue }   // The string is an IPv4 address or not
 		ipv4a = append(ipv4a, e)
 	}
 	return ipv4a

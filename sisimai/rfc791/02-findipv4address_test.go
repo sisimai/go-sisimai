@@ -22,9 +22,9 @@ func TestFindIPv4Address(t *testing.T) {
 
 	for _, e := range ae {
 		cv := FindIPv4Address(&e.text)
-		cx++; if len(cv) == 0           { t.Errorf("%s(%s) returns empty", fn, e.text)     } 
-		cx++; if cv[0] != e.expected    { t.Errorf("%s(%s) returns %s", fn, e.text, cv[0]) }
-		cx++; if !IsIPv4Address(&cv[0]) { t.Errorf("IsIPv4Address(%s) is false", cv[0])    }
+		cx++; if len(cv) == 0          { t.Errorf("%s(%s) returns empty", fn, e.text)     } 
+		cx++; if cv[0] != e.expected   { t.Errorf("%s(%s) returns %s", fn, e.text, cv[0]) }
+		cx++; if !IsIPv4Address(cv[0]) { t.Errorf("IsIPv4Address(%s) is false", cv[0])    }
 	}
 	for _, e := range ce {
 		cv := FindIPv4Address(&e)

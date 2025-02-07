@@ -28,11 +28,11 @@ func TestIsIPv4Address(t *testing.T) {
 	}
 
 	for _, e := range ae {
-		cx++; if cv := IsIPv4Address(&e.text); cv != e.expected {
+		cx++; if cv := IsIPv4Address(e.text); cv != e.expected {
 			t.Errorf("%s(%s) returns %t", fn, e.text, e.expected)
 		}
 	}
-	cx++; if IsIPv4Address(nil) == true { t.Errorf("%s(nil) returns true", fn) }
+	cx++; if IsIPv4Address("") == true { t.Errorf("%s(nil) returns true", fn) }
 
 	t.Logf("The number of tests = %d", cx)
 }

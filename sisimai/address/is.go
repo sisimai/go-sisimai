@@ -69,7 +69,7 @@ func IsDomainLiteral(email string) bool {
 		// neko@[IPv4:192.0.2.25]
 		p1 := strings.Index(email, "@[IPv4:")
 		cv := email[p1 + 7:len(email) - 1]
-		return rfc791.IsIPv4Address(&cv)
+		return rfc791.IsIPv4Address(cv)
 
 	} else if strings.Contains(email, "@[IPv6:") {
 		// neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]
