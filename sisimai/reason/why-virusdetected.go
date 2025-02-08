@@ -9,6 +9,7 @@ package reason
 //    \_/  |_|_|   \__,_|___/____/ \___|\__\___|\___|\__\___|\__,_|
 import "strings"
 import "sisimai/sis"
+import sisimoji "sisimai/string"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -34,10 +35,9 @@ func init() {
 	ProbesInto["VirusDetected"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is virusdetected, false: is not virusdetected
-		if fo.Reason == "virusdetected"                 { return true  }
-		if fo.Command == "CONN"                         { return false }
-		if fo.Command == "EHLO" || fo.Command == "HELO" { return false }
-		if fo.Command == "MAIL" || fo.Command == "RCPT" { return false }
+		if fo        == nil             { return false }
+		if fo.Reason == "virusdetected" { return true  }
+		if sisimoji.EqualsAny(fo.Command, []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}) { return false }
 		return IncludedIn["VirusDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
