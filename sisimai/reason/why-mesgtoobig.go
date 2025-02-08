@@ -43,17 +43,16 @@ func init() {
 	ProbesInto["MesgTooBig"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is mesgtoobig, false: is not mesgtoobig
-		if fo.Reason == "mesgtoobig"                      { return true }
-
-		statuscode := fo.DeliveryStatus
-		tempreason := status.Name(statuscode)
+		if fo        == nil          { return false }
+		if fo.Reason == "mesgtoobig" { return true  }
 
 		// Delivery status code points "mesgtoobig".
 		// Status: 5.3.4
 		// Diagnostic-Code: SMTP; 552 5.3.4 Error: message file too big
 		// Diagnostic-Code: SMTP; 552 5.2.3 Message length exceeds administrative limit
-		if tempreason == "mesgtoobig"                           { return true }
-		if tempreason == "exceedlimit" || statuscode == "5.2.3" { return false }
+		tempreason    := status.Name(statuscode)
+		if tempreason == "mesgtoobig"                                  { return true  }
+		if tempreason == "exceedlimit" || fo.DeliveryStatus == "5.2.3" { return false }
 		return IncludedIn["MesgTooBig"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
