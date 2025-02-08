@@ -150,11 +150,8 @@ func IsEmailAddress(email string) bool {
 				// if e == "." && email[j-1] == 46 { match = false; break }
 
 				// The following characters are not allowed in a local part without "..."@example.jp
-				if e == "," || e == "@" { match = false; break }
-				if e == ":" || e == ";" { match = false; break }
-				if e == "(" || e == ")" { match = false; break }
-				if e == "<" || e == ">" { match = false; break }
-				if e == "[" || e == "]" { match = false; break }
+				if e == "," || e == "@" || e == ":" || e == ";" || e == "(" { match = false; break }
+				if e == ")" || e == "<" || e == ">" || e == "[" || e == "]" { match = false; break }
 			}
 		} else {
 			// A domain part of the email address: string after the last "@"
@@ -182,10 +179,9 @@ func IsEmailAddress(email string) bool {
 			}
 		}
 	}
-	if match == true && ipv46 == false {
-		// Check that the domain part is a valid internet host or not
-		match = rfc1123.IsInternetHost(email[lasta + 1:])
-	}
+
+	// Check that the domain part is a valid internet host or not
+	if match == true && ipv46 == false { match = rfc1123.IsInternetHost(email[lasta + 1:]) }
 	return match
 }
 
