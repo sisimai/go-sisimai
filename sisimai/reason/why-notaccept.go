@@ -10,6 +10,7 @@ package reason
 //                                     |_|        
 import "strings"
 import "sisimai/sis"
+import sisimoji "sisimai/string"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -37,9 +38,10 @@ func init() {
 	ProbesInto["NotAccept"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is notaccept, false: is not notaccept
-		if fo.Reason == "notaccept"                                                { return true  }
-		if fo.ReplyCode == "521" || fo.ReplyCode == "554" || fo.ReplyCode == "556" { return true  }
-		if fo.Command != "MAIL"                                                    { return false }
+		if fo        == nil         { return false }
+		if fo.Reason == "notaccept" { return true  }
+		if sisimoji.EqualsAny(fo.ReplyCode, []string{"521", "554", "556"}) { return true  }
+		if fo.Command != "MAIL"                                            { return false }
 		return IncludedIn["NotAccept"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
