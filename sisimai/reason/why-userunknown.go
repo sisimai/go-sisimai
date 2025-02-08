@@ -143,7 +143,8 @@ func init() {
 	ProbesInto["UserUnknown"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is userunknown, false: is not userunknown
-		if fo.Reason == "userunknown" { return true }
+		if fo        == nil           { return false }
+		if fo.Reason == "userunknown" { return true  }
 
 		tempreason := status.Name(fo.DeliveryStatus); if tempreason == "suspend" { return false }
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
@@ -153,10 +154,8 @@ func init() {
 			//   Status: 5.1.1
 			//   Diagnostic-Code: SMTP; 550 5.1.1 <***@example.jp>:
 			//     Recipient address rejected: User unknown in local recipient table
-			prematches := []string{"NoRelaying", "Blocked", "MailboxFull", "HasMoved", "Rejected", "NotAccept"}
 			matchother := false
-
-			for _, e := range prematches {
+			for _, e := range []string{"NoRelaying", "Blocked", "MailboxFull", "HasMoved", "Rejected", "NotAccept"} {
 				// Check the value of "Diagnostic-Code" with other error patterns.
 				if IncludedIn[e](issuedcode) == false { continue }
 				matchother = true; break
@@ -165,10 +164,8 @@ func init() {
 
 		} else {
 			// The reason name found by fo.DeliveryStatus is not "userunknown", or is empty
-			if fo.Command == "RCPT" {
-				// When the SMTP command is not "RCPT", the session rejected by other reason, maybe.
-				if IncludedIn["UserUnknown"](strings.ToLower(fo.DiagnosticCode)) { return true }
-			}
+			// When the SMTP command is not "RCPT", the session rejected by other reason, maybe.
+			if fo.Command == "RCPT" && IncludedIn["UserUnknown"](issuedcode) { return true }
 		}
 		return false
 	}
