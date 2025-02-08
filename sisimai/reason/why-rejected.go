@@ -11,6 +11,7 @@ package reason
 import "strings"
 import "sisimai/sis"
 import "sisimai/smtp/status"
+import sisimoji "sisimai/string"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -91,7 +92,8 @@ func init() {
 	ProbesInto["Rejected"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is rejected, false: is not rejected
-		if fo.Reason == "rejected" { return true }
+		if fo        == nil        { return false }
+		if fo.Reason == "rejected" { return true  }
 
 		tempreason := status.Name(fo.DeliveryStatus)
 		if tempreason == ""         { tempreason = "undefined" }
@@ -109,8 +111,7 @@ func init() {
 				// Except "userunknown"
 				if IncludedIn["Rejected"](issuedcode) == true { return true }
 			}
-		} else if tempreason == "onhold"        || tempreason == "undefined" ||
-		          tempreason == "securityerror" || tempreason == "systemerror" {
+		} else if IsExplicit(tempreason) == false || sisimoji.EqualsAny(tempreason, []string{"securityerror", "systemerror"}) {
 			// Try to match with message patterns when the temporary reason is "onhold", "undefined",
 			// "securityerror", or "systemerror"
 			if IncludedIn["Rejected"](issuedcode) == true { return true }
