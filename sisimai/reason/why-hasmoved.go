@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
 
@@ -15,6 +15,7 @@ func init() {
 	IncludedIn["HasMoved"] = func(argv1 string) bool {
 		// @param    string argv1 Does the string include any of the strings listed in the pattern?
 		// @return   bool         true: Included, false: did not include
+		if argv1 == "" { return false }
 		index := []string{" has been replaced by "}
 
 		for _, v := range index { if strings.Contains(argv1, v) { return true }}

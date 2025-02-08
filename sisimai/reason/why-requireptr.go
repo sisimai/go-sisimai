@@ -18,6 +18,8 @@ func init() {
 	IncludedIn["RequirePTR"] = func(argv1 string) bool {
 		// @param    string argv1 Does the string include any of the strings listed in the pattern?
 		// @return   bool         true: Included, false: did not include
+		if argv1 == "" { return false }
+
 		index := []string{
 			"access denied. ip name lookup failed",
 			"all mail servers must have a ptr record with a valid reverse dns entry",

@@ -18,6 +18,8 @@ func init() {
 	IncludedIn["Blocked"] = func(argv1 string) bool {
 		// @param    string argv1 Does the string include any of the strings listed in the pattern?
 		// @return   bool         true: Included, false: did not include
+		if argv1 == "" { return false }
+
 		index := []string{
 			" said: 550 blocked",
 			"//www.spamcop.net/bl.",

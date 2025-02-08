@@ -18,6 +18,8 @@ func init() {
 	IncludedIn["SpamDetected"] = func(argv1 string) bool {
 		// @param    string argv1 Does the string include any of the strings listed in the pattern?
 		// @return   bool         true: Included, false: did not include
+		if argv1 == "" { return false }
+
 		index := []string{
 			" - spam",
 			"//www.spamhaus.org/help/help_spam_16.htm",
