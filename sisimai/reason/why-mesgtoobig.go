@@ -50,7 +50,7 @@ func init() {
 		// Status: 5.3.4
 		// Diagnostic-Code: SMTP; 552 5.3.4 Error: message file too big
 		// Diagnostic-Code: SMTP; 552 5.2.3 Message length exceeds administrative limit
-		tempreason    := status.Name(statuscode)
+		tempreason    := status.Name(fo.DeliveryStatus)
 		if tempreason == "mesgtoobig"                                  { return true  }
 		if tempreason == "exceedlimit" || fo.DeliveryStatus == "5.2.3" { return false }
 		return IncludedIn["MesgTooBig"](strings.ToLower(fo.DiagnosticCode))
