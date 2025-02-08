@@ -50,9 +50,10 @@ func init() {
 	ProbesInto["NoRelaying"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is norelaying, false: is not norelaying
-		if fo.Reason == "norelaying" { return true }
-		if fo.Reason == "securityerror" || fo.Reason == "systemerror" || fo.Reason == "undefined" { return false }
-		if fo.Command == "CONN" || fo.Command == "EHLO" || fo.Command == "HELO" { return false }
+		if fo         == nil          { return false }
+		if fo.Reason  == "norelaying" { return true  }
+		if fo.Reason  == "securityerror" || fo.Reason == "systemerror" || fo.Reason == "undefined" { return false }
+		if fo.Command == "CONN"          || fo.Command == "EHLO"       || fo.Command == "HELO"     { return false }
 		return IncludedIn["NoRelaying"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
