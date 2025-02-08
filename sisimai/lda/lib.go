@@ -78,7 +78,7 @@ var MessagesOf = map[string]map[string][]string{
 func Find(fo *sis.Fact) string {
 	// @param    *sis.Fact fo    Struct to be detected the reason
 	// @return   string          Bounce reason name or an empty string
-	if fo.DiagnosticCode == ""                  { return "" }
+	if fo == nil || fo.DiagnosticCode == ""     { return "" }
 	if fo.Command != "" && fo.Command != "DATA" { return "" }
 
 	deliversby := "" // LDA; Local Delivery Agent name
