@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
 
@@ -23,7 +23,8 @@ func init() {
 	ProbesInto["Suppressed"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is suppressed, false: is not suppressed
-		if fo.Reason == "suppressed" { return true }
+		if fo        == nil          { return false }
+		if fo.Reason == "suppressed" { return true  }
 		return IncludedIn["Suppressed"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

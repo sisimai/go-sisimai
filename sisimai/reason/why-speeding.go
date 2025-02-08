@@ -37,7 +37,8 @@ func init() {
 		// Status: 4.7.1
 		// Remote-MTA: dns; smtp.example.jp
 		// Diagnostic-Code: smtp; 451 4.7.1 <mx.example.org[192.0.2.2]>: Client host rejected: Please try again slower
-		if fo.Reason == "speeding" { return true }
+		if fo        == nil        { return false }
+		if fo.Reason == "speeding" { return true  }
 		return IncludedIn["Speeding"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

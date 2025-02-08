@@ -49,7 +49,8 @@ func init() {
 	ProbesInto["HostUnknown"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is hostunknown, false: is not hostunknown
-		if fo.Reason == "hostunknown" { return true }
+		if fo        == nil           { return false }
+		if fo.Reason == "hostunknown" { return true  }
 
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 		if status.Name(fo.DeliveryStatus) == "hostunknown" {

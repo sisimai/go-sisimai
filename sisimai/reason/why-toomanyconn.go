@@ -44,8 +44,9 @@ func init() {
 	ProbesInto["TooManyConn"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is toomanyconn, false: is not toomanyconn
-		if fo.Reason == "toomanyconn"                      { return true }
-		if status.Name(fo.DeliveryStatus) == "toomanyconn" { return true }
+		if fo == nil                                       { return false }
+		if fo.Reason == "toomanyconn"                      { return true  }
+		if status.Name(fo.DeliveryStatus) == "toomanyconn" { return true  }
 		return IncludedIn["TooManyConn"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

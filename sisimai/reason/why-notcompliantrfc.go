@@ -31,7 +31,8 @@ func init() {
 	ProbesInto["NotCompliantRFC"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is notcompliantrfc, false: is not notcompliantrfc
-		if fo.Reason == "notcompliantrfc" { return true }
+		if fo        == nil               { return false }
+		if fo.Reason == "notcompliantrfc" { return true  }
 		return IncludedIn["NotCompliantRFC"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

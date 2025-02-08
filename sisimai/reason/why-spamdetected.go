@@ -133,7 +133,7 @@ func init() {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is spamdetected, false: is not spamdetected
 		commandset := []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}
-		if fo.DeliveryStatus == ""                          { return false }
+		if fo == nil || fo.DeliveryStatus == ""             { return false }
 		if fo.Reason == "spamdetected"                      { return true  }
 		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true  }
 		if sisimoji.EqualsAny(fo.Command, commandset)       { return false }

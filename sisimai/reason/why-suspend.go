@@ -52,8 +52,8 @@ func init() {
 	ProbesInto["Suspend"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is suspend, false: is not suspend
-		if fo.Reason == "suspend" { return true }
-		if fo.ReplyCode == "525"  { return true }
+		if fo == nil                                       { return false }
+		if fo.Reason == "suspend" || fo.ReplyCode == "525" { return true  }
 		return IncludedIn["Suspend"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

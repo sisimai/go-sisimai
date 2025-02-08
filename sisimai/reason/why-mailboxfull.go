@@ -82,8 +82,9 @@ func init() {
 		// Delivery status code points "mailboxfull".
 		// Status: 4.2.2
 		// Diagnostic-Code: SMTP; 450 4.2.2 <***@example.jp>... Mailbox Full
-		if fo.Reason == "mailboxfull"                      { return true }
-		if status.Name(fo.DeliveryStatus) == "mailboxfull" { return true }
+		if fo == nil                                       { return false }
+		if fo.Reason == "mailboxfull"                      { return true  }
+		if status.Name(fo.DeliveryStatus) == "mailboxfull" { return true  }
 		return IncludedIn["MailboxFull"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

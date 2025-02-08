@@ -115,8 +115,9 @@ func init() {
 	ProbesInto["Blocked"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is blocked, false: is not blocked
-		if fo.Reason == "blocked"                      { return true }
-		if status.Name(fo.DeliveryStatus) == "blocked" { return true }
+		if fo == nil                                   { return false }
+		if fo.Reason == "blocked"                      { return true  }
+		if status.Name(fo.DeliveryStatus) == "blocked" { return true  }
 		return IncludedIn["Blocked"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

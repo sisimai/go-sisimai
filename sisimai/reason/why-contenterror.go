@@ -38,6 +38,7 @@ func init() {
 	ProbesInto["ContentError"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is contenterror, false: is not contenterror
+		if fo == nil                                        { return false }
 		if fo.Reason == "contenterror"                      { return true  }
 		if ProbesInto["SpamDetected"](fo) == true           { return false }
 		if status.Name(fo.DeliveryStatus) == "contenterror" { return true  }

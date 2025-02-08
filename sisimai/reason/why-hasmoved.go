@@ -26,7 +26,8 @@ func init() {
 	ProbesInto["HasMoved"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is hasmoved, false: is not hasmoved
-		if fo.Reason == "hasmoved" { return true }
+		if fo        == nil        { return false }
+		if fo.Reason == "hasmoved" { return true  }
 		return IncludedIn["HasMoved"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

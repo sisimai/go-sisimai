@@ -58,8 +58,9 @@ func init() {
 	ProbesInto["RequirePTR"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is requireptr, false: is not requireptr
-		if fo.Reason == "requireptr"                      { return true }
-		if status.Name(fo.DeliveryStatus) == "requireptr" { return true }
+		if fo == nil                                      { return false }
+		if fo.Reason == "requireptr"                      { return true  }
+		if status.Name(fo.DeliveryStatus) == "requireptr" { return true  }
 		return IncludedIn["RequirePTR"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

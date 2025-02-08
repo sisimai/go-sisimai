@@ -30,8 +30,9 @@ func init() {
 
 		// Status: 5.2.3
 		// Diagnostic-Code: SMTP; 552 5.2.3 Message size exceeds fixed maximum message size
-		if fo.Reason == "exceedlimit"                      { return true }
-		if status.Name(fo.DeliveryStatus) == "exceedlimit" { return true }
+		if fo == nil                                       { return false }
+		if fo.Reason == "exceedlimit"                      { return true  }
+		if status.Name(fo.DeliveryStatus) == "exceedlimit" { return true  }
 		return IncludedIn["ExceedLimit"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
