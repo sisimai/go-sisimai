@@ -10,6 +10,7 @@ package reason
 import "strings"
 import "sisimai/sis"
 import "sisimai/smtp/status"
+import sisimoji "sisimai/string"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -45,24 +46,22 @@ func init() {
 	ProbesInto["Filtered"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is filtered, false: is not filtered
-		if fo.Reason == "filtered" { return true }
+		if fo        == nil        { return false }
+		if fo.Reason == "filtered" { return true  }
 
 		tempreason := status.Name(fo.DeliveryStatus); if tempreason == "suspend" { return false }
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 
 		if tempreason == "filtered" {
 			// The value of delivery status code points "filtered".
-			if IncludedIn["UserUnknown"](issuedcode) == true { return true }
-			if IncludedIn["Filtered"](issuedcode)    == true { return true }
+			if IncludedIn["UserUnknown"](issuedcode) || IncludedIn["Filtered"](issuedcode) { return true }
 
 		} else {
 			// The value of "Reason" is not "filtered" when the value of "fo.Command" is an SMTP
 			// command to be sent before the SMTP DATA command because all the MTAs read the headers
 			// and the entire message body after the DATA command.
-			if fo.Command == "CONN" || fo.Command == "EHLO" || fo.Command == "HELO" { return false }
-			if fo.Command == "MAIL" || fo.Command == "RCPT"                         { return false }
-			if IncludedIn["Filtered"](issuedcode)    == true                        { return true  }
-			if IncludedIn["UserUnknown"](issuedcode) == true                        { return true  }
+			if sisimoji.EqualsAny(fo.Command, []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}) { return false }
+			if IncludedIn["Filtered"](issuedcode) || IncludedIn["UserUnknown"](issuedcode)      { return true  }
 		}
 		return false
 	}
