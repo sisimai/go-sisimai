@@ -36,43 +36,40 @@ var RhostClass = map[string][]string{
 func Name(fo *sis.Fact) string {
 	// @param    *sis.Fact fo    Decoded data
 	// @return   string          rhost class name or an empty string
+	if fo == nil { return "" }
+
+	// Try to match the hostname patterns with the following order:
+	// 1. destination: The domain part of the recipient address
+	// 2. rhost: remote hostname
+	// 3. lhost: local MTA hostname
 	clienthost := strings.ToLower(fo.Lhost)
 	remotehost := strings.ToLower(fo.Rhost)
 	domainpart := strings.ToLower(fo.Destination)
-	rhostclass := ""
-
-	FINDRHOST: for rhostclass == "" {
-		// Try to match the hostname patterns with the following order:
-		// 1. destination: The domain part of the recipient address
-		// 2. rhost: remote hostname
-		// 3. lhost: local MTA hostname
-		for e := range RhostClass {
-			// Try to match the domain part of the recipient address with each value of RhostClass
-			for _, r := range RhostClass[e] {
-				// - Whether "r" includes the domain part of the recipient address or not
-				if strings.HasSuffix(r, domainpart) { rhostclass = e; break FINDRHOST }
-			}
+	for e := range RhostClass {
+		// Try to match the domain part of the recipient address with each value of RhostClass
+		for _, r := range RhostClass[e] {
+			// - Whether "r" includes the domain part of the recipient address or not
+			if strings.HasSuffix(r, domainpart) { return e }
 		}
-
-		for e := range RhostClass {
-			// Try to match the remote host with each value of RhostClass
-			for _, r := range RhostClass[e] {
-				// - Whether the remote host (fo.Rhost) includes "r" or not
-				if strings.HasSuffix(remotehost, r) { rhostclass = e; break FINDRHOST }
-			}
-		}
-
-		// Neither the remote host nor the destination did not matched with any value of RhostClass
-		for e := range RhostClass {
-			// Try to match the client host with each value of RhostClass
-			for _, r := range RhostClass[e] {
-				// - Whether the local MTA host (fo.Lhost) includes "r" or not
-				if strings.HasSuffix(clienthost, r) { rhostclass = e; break FINDRHOST }
-			}
-		}
-		break
 	}
-	return rhostclass
+
+	for e := range RhostClass {
+		// Try to match the remote host with each value of RhostClass
+		for _, r := range RhostClass[e] {
+			// - Whether the remote host (fo.Rhost) includes "r" or not
+			if strings.HasSuffix(remotehost, r) { return e }
+		}
+	}
+
+	// Neither the remote host nor the destination did not matched with any value of RhostClass
+	for e := range RhostClass {
+		// Try to match the client host with each value of RhostClass
+		for _, r := range RhostClass[e] {
+			// - Whether the local MTA host (fo.Lhost) includes "r" or not
+			if strings.HasSuffix(clienthost, r) { return e }
+		}
+	}
+	return ""
 }
 
 // Find() detects the bounce reason from certain remote hosts

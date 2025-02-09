@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -18,7 +18,7 @@ func init() {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
 		// @see      https://technet.microsoft.com/en-us/library/bb232118
-		if fo.DiagnosticCode              == ""    { return "" }
+		if fo == nil || fo.DiagnosticCode == ""    { return "" }
 		if status.Test(fo.DeliveryStatus) == false { return "" }
 
 		messagesof := map[string][][4]string{
@@ -752,10 +752,9 @@ func init() {
 
 		statuscode := fo.DeliveryStatus
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
-		reasontext := ""
 		thirddigit, nyaan := strconv.ParseUint(strings.Split(statuscode, ".")[2], 10, 16); if nyaan != nil { return "" }
 
-		FINDREASON: for e := range messagesof {
+		for e := range messagesof {
 			// The key name is a bounce reason name
 			for _, f := range messagesof[e] {
 				// f = [4]string{"status-code", "min", "max", "error message"}
@@ -766,21 +765,16 @@ func init() {
 				} else {
 					// This error code have a range
 					if strings.Contains(statuscode, f[0]) == false { continue }
-					if f[1] == "" { continue }
-					if f[2] == "" { continue }
+					if f[1] == "" || f[2] == ""                    { continue }
 
 					p1, nyaan := strconv.ParseUint(f[1], 10, 16); if nyaan != nil { continue }
 					p2, nyaan := strconv.ParseUint(f[2], 10, 16); if nyaan != nil { continue }
-					if thirddigit < p1 { continue }
-					if thirddigit > p2 { continue }
+					if thirddigit < p1 || thirddigit > p2                         { continue }
 				}
-				if strings.Contains(issuedcode, f[3]) == false { continue }
-				reasontext = e
-				break FINDREASON
+				if strings.Contains(issuedcode, f[3]) { return e }
 			}
 		}
-
-		return reasontext
+		return ""
 	}
 }
 

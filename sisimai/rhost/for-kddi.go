@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -15,21 +15,17 @@ func init() {
 	ReturnedBy["KDDI"] = func(fo *sis.Fact) string {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
-		if fo.DiagnosticCode == "" { return "" }
+		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string]string{
 			"filtered":    "550 : user unknown", // The response was: 550 : User unknown
 			"userunknown": ">: user unknown",    // The response was: 550 <...>: User unknown
 		}
-		issuedcode := strings.ToLower(fo.DiagnosticCode)
-		reasontext := ""
-
-		for e := range messagesof {
+		issuedcode := strings.ToLower(fo.DiagnosticCode); for e := range messagesof {
 			// The key name is a bounce reason name
-			if strings.Contains(issuedcode, messagesof[e]) == false { continue }
-			reasontext = e; break
+			if strings.Contains(issuedcode, messagesof[e]) { return e }
 		}
-		return reasontext
+		return ""
 	}
 }
 

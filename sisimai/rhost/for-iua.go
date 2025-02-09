@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -16,7 +16,7 @@ func init() {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
 		// @see      https://www.i.ua/
-		if fo.DiagnosticCode == "" { return "" }
+		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := map[string]string{
 			// https://mail.i.ua/err/$(CODE)/

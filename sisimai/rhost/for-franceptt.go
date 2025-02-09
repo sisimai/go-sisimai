@@ -18,7 +18,7 @@ func init() {
 		// @return   string          Detected bounce reason name
 		// @see      https://www.postmastery.com/orange-postmaster-smtp-error-codes-ofr/
 		// @see      https://smtpfieldmanual.com/provider/orange
-		if fo.DiagnosticCode == "" { return "" }
+		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := map[string]string{
 			// - 550 5.7.1 Service unavailable; client [192.0.2.1] blocked using Spamhaus
@@ -140,7 +140,6 @@ func init() {
 		issuedcode := strings.ToLower(strings.ReplaceAll(fo.DiagnosticCode, "_", "-"))
 		labelindex := -1
 		errorlabel := ""
-		reasontext := ""
 
 		for _, e := range codelabels {
 			// Try to find an error code prefix like "LPN"
@@ -154,21 +153,16 @@ func init() {
 			codenumber := strings.SplitN(issuedcode[labelindex + len(errorlabel) - 1:], " ", 2)[0]
 			for e := range errorcodes {
 				// The key is a code number like "525"
-				if strings.HasSuffix(codenumber, e) == false { continue }
-				reasontext = errorcodes[e]
-				break
+				if strings.HasSuffix(codenumber, e) { return errorcodes[e] }
 			}
 		}
 
-		if reasontext == "" {
-			// There is no error label in the error message
-			for e := range messagesof {
-				// The key name is a bounce reason name
-				if sisimoji.ContainsAny(issuedcode, messagesof[e]) == false { continue }
-				reasontext = e; break
-			}
+		// There is no error label in the error message
+		for e := range messagesof {
+			// The key name is a bounce reason name
+			if sisimoji.ContainsAny(issuedcode, messagesof[e]) { return e }
 		}
-		return reasontext
+		return ""
 	}
 }
 

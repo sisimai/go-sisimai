@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -16,8 +16,8 @@ func init() {
 	ReturnedBy["Mimecast"] = func(fo *sis.Fact) string {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
-		if reply.Test(fo.ReplyCode) == false { return "" }
-		if fo.DiagnosticCode        == ""    { return "" }
+		if fo == nil || fo.DiagnosticCode == "" { return "" }
+		if reply.Test(fo.ReplyCode) == false    { return "" }
 
 		messagesof := map[string][][2]string{
 			// https://community.mimecast.com/s/article/Mimecast-SMTP-Error-Codes-842605754
@@ -293,19 +293,15 @@ func init() {
 			},
 		}
 
-		issuedcode := strings.ToLower(fo.DiagnosticCode)
-		reasontext := ""
-		FINDREASON: for e := range messagesof {
+		issuedcode := strings.ToLower(fo.DiagnosticCode); for e := range messagesof {
 			// The key name is a bounce reason name
 			for _, f := range messagesof[e] {
 				// Try to find each SMTP reply code, error message
-				if fo.ReplyCode                       != f[0]  { continue }
-				if strings.Contains(issuedcode, f[1]) == false { continue }
-				reasontext = e
-				break FINDREASON
+				if fo.ReplyCode              != f[0]  { continue }
+				if strings.Contains(issuedcode, f[1]) { return e }
 			}
 		}
-		return reasontext
+		return ""
 	}
 }
 

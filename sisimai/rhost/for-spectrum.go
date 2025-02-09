@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -18,7 +18,7 @@ func init() {
 	ReturnedBy["Spectrum"] = func(fo *sis.Fact) string {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
-		if fo.DiagnosticCode == "" { return "" }
+		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := [][3]string{
 			// https://www.spectrumbusiness.net/support/internet/understanding-email-error-codes
@@ -114,7 +114,6 @@ func init() {
 		issuedcode := fo.DiagnosticCode
 		labelindex := strings.Index(issuedcode, "AUP#"); if labelindex < 0 { return "" }
 		codestring := ""
-		reasontext := ""
 
 		for _, e := range issuedcode[labelindex + 4:] {
 			// Try to get the four digit error code number from the error message
@@ -132,8 +131,7 @@ func init() {
 			// Try to find an error code matches with the code in the value of fo.DiagnosticCode
 			if codestring == e[0] {
 				// ["1500", "", "reason"] or ["1500", "1550", "reason"]
-				reasontext = e[2]
-				break;
+				return e[2]
 
 			} else {
 				// Check the code number is inlcuded the range like ["1500", "1550", 'reason']
@@ -141,14 +139,11 @@ func init() {
 
 				coderange0, nyaan := strconv.ParseUint(e[0], 10, 16); if nyaan != nil { continue }
 				coderange1, nyaan := strconv.ParseUint(e[1], 10, 16); if nyaan != nil { continue }
-				if codenumber < coderange0 { continue }
-				if codenumber > coderange1 { continue }
-
-				reasontext = e[2]
-				break
+				if codenumber < coderange0 || codenumber > coderange1                 { continue }
+				return e[2]
 			}
 		}
-		return reasontext
+		return ""
 	}
 }
 

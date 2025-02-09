@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -17,20 +17,18 @@ func init() {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
 		// @see      https://www.broadcom.com/products/cybersecurity/email
-		if fo.DiagnosticCode == "" { return "" }
+		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
 			"securityerror": []string{"Please turn on SMTP Authentication in your mail client"},
 			"userunknown":   []string{"542 ", " Rejected", "No such user"},
 		}
 
-		reasontext := ""
 		for e := range messagesof {
 			// Each key is an error reason name
-			if sisimoji.ContainsAny(fo.DiagnosticCode, messagesof[e]) == false { continue }
-			reasontext = e; break
+			if sisimoji.ContainsAny(fo.DiagnosticCode, messagesof[e]) { return e }
 		}
-		return reasontext
+		return ""
 	}
 }
 

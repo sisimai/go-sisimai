@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -17,7 +17,7 @@ func init() {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
 		// @see      https://www.facebook.com/postmaster/response_codes
-		if fo.DiagnosticCode                        == ""    { return "" }
+		if fo == nil || fo.DiagnosticCode == ""              { return "" }
 		if strings.Contains(fo.DiagnosticCode, "-") == false { return "" }
 
 		errorcodes := map[string][]string{
@@ -85,16 +85,14 @@ func init() {
 				"POL-P5",   // The message contains a virus.
 			},
 		}
+
 		errorindex := strings.Index(fo.DiagnosticCode, "-")
 		errorlabel := fo.DiagnosticCode[errorindex - 3:errorindex + 3]
-		reasontext := ""
-
 		for e := range errorcodes {
 			// The key is a bounce reason name
-			if sisimoji.EqualsAny(errorlabel, errorcodes[e]) == false { continue }
-			reasontext = e; break
+			if sisimoji.EqualsAny(errorlabel, errorcodes[e]) { return e }
 		}
-		return reasontext
+		return ""
 	}
 }
 

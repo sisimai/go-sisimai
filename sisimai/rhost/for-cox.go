@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -16,6 +16,8 @@ func init() {
 	ReturnedBy["Cox"] = func(fo *sis.Fact) string {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
+		if fo == nil || fo.DiagnosticCode == "" { return "" }
+
 		errorcodes := map[string]string{
 			// CXBL
 			// - The sending IP address has been blocked by Cox due to exhibiting spam-like behavior.
@@ -148,11 +150,9 @@ func init() {
 		if reasontext == "" {
 			// There is no error code in the error message
 			issuedcode = strings.ToLower(issuedcode)
-
 			for e := range messagesof {
 				// Try to find with each error message defined in "messagesof"
-				if sisimoji.ContainsAny(issuedcode, messagesof[e]) == false { continue }
-				reasontext = e; break
+				if sisimoji.ContainsAny(issuedcode, messagesof[e]) { return e }
 			}
 		}
 		return reasontext

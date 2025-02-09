@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -18,7 +18,7 @@ func init() {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
 		// @see      https://ca.godaddy.com/help/fix-rejected-email-with-a-bounce-error-40685
-		if fo.DiagnosticCode == "" { return "" }
+		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := map[string]string{
 			// Sender bounces
@@ -217,8 +217,6 @@ func init() {
 
 		issuedcode := fo.DiagnosticCode
 		positionib := strings.Index(issuedcode, " IB")
-		reasontext := ""
-
 		if positionib > 1 {
 			// 192.0.2.22 has sent to too many recipients this hour. IB607 ...
 			errorlabel := issuedcode[positionib + 1:positionib + 6]
@@ -229,11 +227,10 @@ func init() {
 			issuedcode = strings.ToLower(issuedcode)
 			for e := range messagesof {
 				// The key is a bounce reason name
-				if sisimoji.ContainsAny(issuedcode, messagesof[e]) == false { continue }
-				reasontext = e; break
+				if sisimoji.ContainsAny(issuedcode, messagesof[e]) { return e }
 			}
 		}
-		return reasontext
+		return ""
 	}
 }
 

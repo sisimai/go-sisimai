@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rhost
 
@@ -17,7 +17,7 @@ func init() {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
 		// @see      https://workspace.google.com/
-		if fo.DiagnosticCode == "" { return "" }
+		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
 			"hostunknown":  []string{" responded with code NXDOMAIN", "Domain name not found"},
@@ -27,7 +27,6 @@ func init() {
 		}
 		statuscode := ""; if fo.DeliveryStatus != "" { statuscode = string(fo.DeliveryStatus[0]) }
 		esmtpreply := ""; if fo.ReplyCode      != "" { esmtpreply = string(fo.ReplyCode[0])      }
-		reasontext := ""
 
 		for e := range messagesof {
 			// The key is a bounce reason name
@@ -35,9 +34,9 @@ func init() {
 			if e == "networkerror" && (statuscode == "5" || esmtpreply == "5") { continue }
 			if e == "hostunknown"  && (statuscode == "4" || statuscode == "")  { continue }
 			if e == "hostunknown"  && (esmtpreply == "4" || esmtpreply == "")  { continue }
-			reasontext = e; break
+			return e
 		}
-		return reasontext
+		return ""
 	}
 }
 
