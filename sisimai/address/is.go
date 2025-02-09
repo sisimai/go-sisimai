@@ -197,10 +197,7 @@ func IsMailerDaemon(email string) bool {
 		"postmaster@", "(postmaster)", "<postmaster>",
 	}
 	for _, e := range table {
-		if strings.Contains(value, e) || value == "mailer-daemon" || value == "postmaster" {
-			match = true
-			break
-		}
+		if strings.Contains(value, e) || value == "mailer-daemon" || value == "postmaster" { return true }
 	}
 	return match
 }

@@ -27,8 +27,6 @@ func Rise(argvs [3]string) EmailAddress {
 
 	thing := new(EmailAddress)
 	email := Final(argvs[0])
-	heads := "<"
-	tails := ">,.;"
 
 	if lasta := strings.LastIndex(email, "@"); lasta > 0 {
 		// Get the local part and the domain part from the email address
@@ -45,8 +43,8 @@ func Rise(argvs [3]string) EmailAddress {
 		}
 
 		// Remove the folowing characters: "<", ">", ",", ".", and ";" from the email address
-		lpart = strings.TrimLeft(lpart, heads);  thing.User = lpart
-		dpart = strings.TrimRight(dpart, tails); thing.Host = dpart
+		lpart = strings.TrimLeft(lpart, "<");     thing.User = lpart
+		dpart = strings.TrimRight(dpart, ">,.;"); thing.Host = dpart
 		thing.Address = lpart + "@" + dpart
 
 	} else {

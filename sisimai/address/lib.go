@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package address
 
@@ -21,7 +21,6 @@ func Undisclosed(f bool) string {
 func Final(argv0 string) string {
 	// @param    string argv0  String including an email address like "<neko@example.jp>"
 	// @return   string        String without angle brackets: "neko@example.jp"
-	if argv0                     == "" { return "" }
 	if strings.Count(argv0, "@") != 1  { return argv0 }
 
 	for strings.HasPrefix(argv0, "<") { argv0 = strings.Trim(argv0, "<") }
