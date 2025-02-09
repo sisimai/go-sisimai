@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc5322
 
@@ -16,8 +16,7 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 	// @param    []string cutby    String list of the message/rfc822 or the beginning of the original message part
 	// @param    bool     keeps    Flag for keeping strings after "\n\n"
 	// @return   []string          { "Error message lines", "The original message" }
-	if len(*email) == 0 { return [2]string{"", ""} }
-	if len(cutby)  == 0 { return [2]string{"", ""} }
+	if email == nil || *email == "" || len(cutby) == 0 { return [2]string{"", ""} }
 
 	positionor := -1 // A position of the boundary string
 	formerpart := "" // The error message part
@@ -49,7 +48,7 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 		latterpart = ""
 	}
 
-	if len(latterpart) > 0 {
+	if latterpart != "" {
 		// Remove blank lines, the message body of the original message, and append "\n" at the end
 		// of the original message headers
 		// 1. Remove leading blank lines
@@ -60,8 +59,7 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 			if e == " " || e == "\n" || e == "\r" { continue }
 
 			// There is leading space characters at the head of parts[1]
-			p := strings.Index(latterpart, e)
-			if p > 0 { latterpart = latterpart[p:len(latterpart)] }
+			if p := strings.Index(latterpart, e); p > 0 { latterpart = latterpart[p:len(latterpart)] }
 			break
 		}
 
