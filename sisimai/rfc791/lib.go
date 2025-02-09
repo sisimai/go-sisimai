@@ -35,11 +35,7 @@ func FindIPv4Address(argv1 *string) []string {
 
 	// Rewrite: "mx.example.jp[192.0.2.1]" => "mx.example.jp 192.0.2.1"
 	argv2 := *argv1
-	argv2  = strings.ReplaceAll(argv2, "(", " ",)
-	argv2  = strings.ReplaceAll(argv2, ")", " ",)
-	argv2  = strings.ReplaceAll(argv2, "[", " ",)
-	argv2  = strings.ReplaceAll(argv2, "]", " ",)
-	argv2  = strings.ReplaceAll(argv2, ",", " ",)
+	for _, e := range []string{"(", ")", "[", "]", ","} { argv2 = strings.ReplaceAll(argv2, e, " ") }
 	ipv4a := []string{}
 
 	for _, e := range strings.Split(argv2, " ") {
