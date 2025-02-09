@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc5322
 
@@ -39,8 +39,7 @@ func HEADERFIELDS(group string) []string {
 	// @param    string group  RFC822 Header group name
 	// @return   []string      RFC822 Header list
 	table := HEADERTABLE()
-	if len(group) == 0        { return []string{} }
-	if len(table[group]) == 0 { return []string{} }
+	if group == "" || len(table[group]) == 0 { return []string{} }
 	return table[group]
 }
 
