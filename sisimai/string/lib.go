@@ -19,8 +19,7 @@ func Token(argv1 string, argv2 string, epoch int) string {
 	// @param    int    epoch  Machine time of the email bounce
 	// @return   string        Message token(MD5 hex digest) or empty string if the any argument is missing
 	// @see      http://en.wikipedia.org/wiki/ASCII
-	if len(argv1) == 0 { return "" }
-	if len(argv2) == 0 { return "" }
+	if argv1 == "" || len(argv2) == 0 { return "" }
 
 	// Format: STX(0x02) Sender-Address RS(0x1e) Recipient-Address ETX(0x03)
 	plain := fmt.Sprintf("\x02%s\x1e%s\x1e%d\x03", strings.ToLower(argv1), strings.ToLower(argv2), epoch)
@@ -49,8 +48,8 @@ func Squeeze(argv1 string, chars string) string {
 	// @param    string argv1  String including redundant characters like "neko  chan"
 	// @param    string chars  Characters to be squeezed 
 	// @return   string        Squeezed string like "neko chan"
-	if len(argv1) == 0 { return ""    }
-	if len(chars) == 0 { return argv1 }
+	if argv1      == "" { return ""    }
+	if len(chars) == 0  { return argv1 }
 
 	for strings.Contains(argv1, chars + chars) {
 		// Remove redundant characters from "argv1"
@@ -63,7 +62,7 @@ func Squeeze(argv1 string, chars string) string {
 func Sweep(argv1 string) string {
 	// @param    string argv1  String to be cleaned
 	// @return   string        Cleaned out string
-	if len(argv1) == 0 { return "" }
+	if argv1 == "" { return "" }
 
 	argv1 = strings.ReplaceAll(argv1, "\t", " ")
 	argv1 = strings.TrimSpace(argv1)
@@ -93,12 +92,10 @@ func Aligned(argv1 string, argv2 []string) bool {
 	// @param    []string argv2  List including the ordered strings
 	// @return   bool
 	// @since    v5.2.0
-	if len(argv1) == 0 { return false }
-	if len(argv2) == 0 { return false }
+	if argv1 == "" || len(argv2) == 0 { return false }
 
 	align := -1
 	right :=  0
-
 	for _, e := range argv2 {
 		// Get the position of each element in the 1st argument using index()
 		if align > 0 { argv1 = argv1[align + 1:] }

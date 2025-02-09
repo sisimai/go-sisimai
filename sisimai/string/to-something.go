@@ -18,7 +18,7 @@ import "fmt"
 func ToLF(argv0 *string) *string {
 	// @param    *string argv0  Text including CR or CR/LF
 	// @return   *string        LF converted text
-	if len(*argv0) == 0 { return argv0 }
+	if argv0 == nil || *argv0 == "" { return argv0 }
 
 	characters := [2]string{"\r\n", "\r"}
 	crreplaced := *argv0
@@ -36,14 +36,12 @@ func ToLF(argv0 *string) *string {
 func ToPlain(argv0 *string) *string {
 	// @param    [*string] argv0  HTML text
 	// @return   [*string]        Plain text
-	if *argv0 == "" { return argv0 }
+	if argv0 == nil || *argv0 == "" { return argv0 }
 
 	xhtml := *argv0
 	lower := strings.ToLower(*argv0); if strings.Contains(lower, "<body") == false { return argv0 }
-	plain := "" // Plain text (including no HTML element)
-	body0 := -1 // Index of the beginning of the <body> element
-
-	for _, e := range []string{">", " ", "\t", "\n"} {
+	plain := ""
+	body0 := -1; for _, e := range []string{">", " ", "\t", "\n"} {
 		// Find the position of <body?, and remove the HTML header part
 		body0  = strings.Index(lower, "<body" + e); if body0 < 0 { continue }
 		body0 += len("<body>") + 1
@@ -85,7 +83,7 @@ func ToUTF8(argv0 []byte, argv1 string) (string, error) {
 	// @param    []byte argv0     Some encoded text
 	// @param    string argv1     Encoding name of the argv0
 	// @return   string, error    Converted string or an error
-	if len(argv0) == 0  || argv1 == ""         { return "", nil }
+	if len(argv0) == 0  || argv1 == ""         { return "", nil            }
 	if argv1 == "utf-8" || argv1 == "us-ascii" { return string(argv0), nil }
 
 	var encodingif *encoding.Decoder

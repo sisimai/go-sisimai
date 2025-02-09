@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package string
 
@@ -15,12 +15,11 @@ func ContainsAny(argv1 string, argv2 []string) bool {
 	// @param    string   argv1 A string containing any substring listed in argv2
 	// @param    []string argv2 A list of strings to find in argv1
 	// @return   bool
-	if len(argv1) == 0 { return false }
-	if len(argv2) == 0 { return false }
+	if argv1 == "" || len(argv2) == 0 { return false }
 
 	for _, e := range argv2 {
 		// It works like `grep { index($e, $_) > -1 } @list` in Perl
-		if strings.Contains(argv1, e) { return true }
+		if strings.Contains(argv1, e) { return true  }
 	}
 	return false
 }
@@ -30,8 +29,7 @@ func EqualsAny(argv1 string, argv2 []string) bool {
 	// @param    string   argv1 A string containing any substring listed in argv2
 	// @param    []string argv2 A list of strings to find in argv1
 	// @return   bool
-	if len(argv1) == 0 { return false }
-	if len(argv2) == 0 { return false }
+	if argv1 == "" || len(argv2) == 0 { return false }
 
 	for _, e := range argv2 {
 		// It works like `grep { $e eq $_ } @list` in Perl
@@ -45,8 +43,7 @@ func HasPrefixAny(argv1 string, argv2 []string) bool {
 	// @param    string   argv1 A string containing any substring listed in argv2
 	// @param    []string argv2 A list of strings to find in argv1
 	// @return   bool
-	if len(argv1) == 0 { return false }
-	if len(argv2) == 0 { return false }
+	if argv1 == "" || len(argv2) == 0 { return false }
 
 	for _, e := range argv2 {
 		// It works like `grep { index($e, $_) == 0 } @list` in Perl
