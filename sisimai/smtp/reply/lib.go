@@ -8,23 +8,22 @@ package reply
 // \__ \ | | | | | |_| |_) / /| | |  __/ |_) | | |_| |
 // |___/_| |_| |_|\__| .__/_/ |_|  \___| .__/|_|\__, |
 //                   |_|               |_|      |___/ 
-/* http://www.ietf.org/rfc/rfc5321.txt
+// http://www.ietf.org/rfc/rfc5321.txt
 //-------------------------------------------------------------------------------------------------
-  4.2.1.  Reply Code Severities and Theory
-       2yz  Positive Completion reply
-       3yz  Positive Intermediate reply
-       4yz  Transient Negative Completion reply
-       5yz  Permanent Negative Completion reply
+// 4.2.1.  Reply Code Severities and Theory
+//   2yz  Positive Completion reply
+//   3yz  Positive Intermediate reply
+//   4yz  Transient Negative Completion reply
+//   5yz  Permanent Negative Completion reply
 
-       x0z  Syntax: These replies refer to syntax errors, syntactically correct commands that do
-            not fit any functional category, and unimplemented or superfluous commands.
-       x1z  Information: These are replies to requests for information, such as status or help.
-       x2z  Connections: These are replies referring to the transmission channel.
-       x3z  Unspecified.
-       x4z  Unspecified.
-       x5z  Mail system: These replies indicate the status of the receiver mail system vis-a-vis
-            the requested transfer or other mail system action.
-*/
+//   x0z  Syntax: These replies refer to syntax errors, syntactically correct commands that do not
+//        fit any functional category, and unimplemented or superfluous commands.
+//   x1z  Information: These are replies to requests for information, such as status or help.
+//   x2z  Connections: These are replies referring to the transmission channel.
+//   x3z  Unspecified.
+//   x4z  Unspecified.
+//   x5z  Mail system: These replies indicate the status of the receiver mail system vis-a-vis the
+//        requested transfer or other mail system action.
 
 // 211  System status, or system help reply
 // 214  Help message (Information on how to use the receiver or the meaning of a particular

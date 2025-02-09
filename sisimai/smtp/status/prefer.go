@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package status
 
@@ -16,8 +16,8 @@ func Prefer(argv0, argv1, argv2 string) string {
 	// @param    string argv1  The delivery status value picked from the error message
 	// @param    string argv2  The value of An SMTP Reply Code
 	// @return   String        The preferred value
-	if len(argv0) < 1 { return argv1 }
-	if len(argv1) < 1 { return argv0 }
+	if argv0 == "" { return argv1 }
+	if argv1 == "" { return argv0 }
 
 	statuscode := argv0; if len(statuscode) < 5 { return argv1     }
 	codeinmesg := argv1; if len(codeinmesg) < 5 { return argv0     }

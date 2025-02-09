@@ -574,8 +574,7 @@ func Code(argv0 string, argv1 bool) string {
 func Name(argv0 string) string {
 	// @param    string argv0 Delivery status code(D.S.N.)
 	// @return   string       Reason name or an empty string
-	if len(argv0)   < 5     { return "" }
-	if Test(argv0) == false { return "" }
+	if len(argv0) < 5 || Test(argv0) == false { return "" }
 
 	standardcr := map[string]string{
 		"2.1.5":  "delivered",			// Successfully delivered

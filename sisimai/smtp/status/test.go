@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package status
 
@@ -15,8 +15,7 @@ import "strconv"
 func Test(argv1 string) bool {
 	// @param    string argv1  Status code(DSN)
 	// @return   bool          false = Invalid status code, true = Valid status code
-	if len(argv1) < 5 { return false }
-	if len(argv1) > 7 { return false }
+	if len(argv1) < 5 || len(argv1) > 7 { return false }
 
 	token := []int16{} // Each digit like [5,7,26] converted from "5.7.26"
 	for _, e := range strings.Split(argv1, ".") {
