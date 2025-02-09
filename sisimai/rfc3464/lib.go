@@ -24,8 +24,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   RisingUnderway      RisingUnderway structure
 	// @see      https://tools.ietf.org/html/rfc3464
-	if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-	if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+	if bf == nil || len(bf.Headers) == 0 || bf.Payload == "" { return sis.RisingUnderway{} }
 
 	indicators := lhost.INDICATORS()
 	boundaries := []string{
@@ -37,6 +36,9 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		"Content-Disposition: inline", // See lhost-amavis-*.eml, lhost-facebook-*.eml
 	}
 	startingof := map[string][]string{"message": []string{"Content-Type: message/delivery-status"}}
+	dontappend := []string{
+		"Content-", "This is a MIME", "This is a multi", "This is an auto", "This multi-part", "###", "***", "--",
+	}
 
 	for sisimoji.ContainsAny(bf.Payload, boundaries) == false {
 		// There is no "Content-Type: message/rfc822" line in the message body
@@ -76,8 +78,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		cx := bf.Payload[p1:]
 		p2 := strings.Index(cx, "\n\n")
 		cv := cx[p2 + 2:]
-		emailparts = rfc5322.Part(&cv, []string{ct}, false)
-		break;
+		emailparts = rfc5322.Part(&cv, []string{ct}, false); break
 	}
 
 	for strings.Contains(emailparts[0], startingof["message"][0]) == false {
@@ -112,8 +113,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			for {
 				// Append each string before startingof["message"][0] except the following patterns
 				// for the later reference
-				if e == ""    { break } // Blank line
-				if goestonext { break } // Skip if the part is text/html, image/icon in multipart/*
+				if e == ""  || goestonext { break } // Skip if the line is empty or the part is text/html, image/icon in multipart/*
 
 				// This line is a boundary kept in "multiparts" as a string, when the end of
 				// the boundary appeared, the condition above also returns true.
@@ -135,16 +135,9 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 					}
 					break
 				}
-				if strings.HasPrefix(e, "Content-")        { break } // Content-Disposition, ...
-				if strings.HasPrefix(e, "This is a MIME")  { break } // This is a MIME-formatted message.
-				if strings.HasPrefix(e, "This is a multi") { break } // This is a multipart message in MIME format
-				if strings.HasPrefix(e, "This is an auto") { break } // This is an automatically generated ...
-				if strings.HasPrefix(e, "This multi-part") { break } // This multi-part MIME message contains...
-				if strings.HasPrefix(e, "###")             { break } // A frame like #####
-				if strings.HasPrefix(e, "***")             { break } // A frame like *****
-				if strings.HasPrefix(e, "--")              { break } // Boundary string
-				if strings.Contains(e, "--- The follow")   { break } // ----- The following addresses had delivery problems -----
-				if strings.Contains(e, "--- Transcript")   { break } // ----- Transcript of session follows -----
+				if sisimoji.HasPrefixAny(e, dontappend)  { break }
+				if strings.Contains(e, "--- The follow") { break } // ----- The following addresses had delivery problems -----
+				if strings.Contains(e, "--- Transcript") { break } // ----- Transcript of session follows -----
 				beforemesg += e + " "; break
 			}
 			continue
