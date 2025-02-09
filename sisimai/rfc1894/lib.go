@@ -144,8 +144,7 @@ func Field(argv0 string) []string {
 	parts := strings.SplitN(argv0, ":", 2) // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
 	label := strings.ToLower(parts[0])     // "final-recipient"
 	group, nyaan := fieldgroup[label]      // "addr"
-	if nyaan == false              { return []string{} }
-	if len(captureson[group]) == 0 { return []string{} }
+	if nyaan == false || len(captureson[group]) == 0 { return []string{} }
 
 	match := false
 	for _, e := range captureson[group] {
