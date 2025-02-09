@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package sis
 
@@ -16,6 +16,12 @@ type BeforeFact struct {
 	Digest  []DeliveryMatter    // Decoded results returned from sisimai/lhost/*
 	Catch   interface{}         // Any data structure returned by the callback function
 	Errors  []NotDecoded        // All the errors and warnings
+}
+
+func(this *BeforeFact) Empty() bool {
+	if len(this.Headers) == 0  { return true }
+	if this.Payload      == "" { return true }
+	return false
 }
 
 func(this *BeforeFact) Void() bool {

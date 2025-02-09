@@ -37,7 +37,8 @@ func TestBeforeFact(t *testing.T) {
 	cx++; if len(cv.Digest[0].Action)   == 0   { t.Errorf("%s.Digest.Action is empty", fn) }
 	cx++; if cv.Catch                   != nil { t.Errorf("%s.Catch is not nil", fn) }
 	cx++; if len(cv.Errors)             != 1   { t.Errorf("%s.Errors have not 1 element", fn) }
-	cx++; if cv.Void() == true                 { t.Errorf("%s.Digest returns true", fn) }
+	cx++; if cv.Void()  == true                { t.Errorf("%s.Void() returns true", fn) }
+	cx++; if cv.Empty() == true                { t.Errorf("%s.Empty() returns true", fn) }
 	t.Logf("The number of tests = %d", cx)
 }
 
