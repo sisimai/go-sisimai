@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc5322
 
@@ -10,6 +10,7 @@ package rfc5322
 import "strings"
 import "sisimai/rfc791"
 import "sisimai/address"
+import sisimoji "sisimai/string"
 
 // Received() convert Received headers to a structured data
 func Received(argv1 string) [6]string {
@@ -40,6 +41,7 @@ func Received(argv1 string) [6]string {
 	//       for <mary@example.net>;  21 Nov 1997 10:05:43 -0600
 	recvd := strings.Split(argv1, " ")
 	label := [6]string{"from", "by", "via", "with", "id", "for"}
+	skips := []string{"unknown", "localhost", "[127.0.0.1]", "[IPv6:::1]"}
 	token := make(map[string]string)
 	other := []string{}
 	alter := []string{}
@@ -93,19 +95,15 @@ func Received(argv1 string) [6]string {
 
 	for _, e := range other {
 		// Check alternatives in "other", and then delete uninformative values.
-		if len(e) < 4         { continue }
-		if e == "unknown"     { continue }
-		if e == "localhost"   { continue }
-		if e == "[127.0.0.1]" { continue }
-		if e == "[IPv6:::1]"  { continue }
-		if strings.IndexByte(e, '.') == -1 { continue }
-		if strings.IndexByte(e, '=')  >  1 { continue }
+		if len(e) < 4 || sisimoji.EqualsAny(e, skips) { continue }
+		if strings.IndexByte(e, '.') == -1            { continue }
+		if strings.IndexByte(e, '=')  >  1            { continue }
 		alter = append(alter, e)
 	}
 
 	for _, e := range []string{"from", "by"} {
 		// Remove square brackets from the IP address such as "[192.0.2.25]"
-		if len(token[e]) == 0 { continue }
+		if token[e] == ""                        { continue }
 		if strings.IndexByte(token[e], '[') != 0 { continue }
 
 		ce := token[e]; cv := rfc791.FindIPv4Address(&ce)
@@ -129,15 +127,13 @@ func Received(argv1 string) [6]string {
 
 	for {
 		// Try to rewrite uninformative hostnames and IP addresses in token["from"]
-		if right == true   { break } // There is no need to rewrite
-		if len(alter) == 0 { break } // There is no alternative for rewriting
+		if right == true || len(alter) == 0          { break } // There is no alternative for rewriting
 		if strings.Contains(alter[0], token["from"]) { break }
 
-		if strings.HasPrefix(token["from"], "localhost") {
-			// "localhost" or "localhost.localdomain"
-		} else if strings.IndexByte(token["from"], '.') == -1 {
+		if strings.IndexByte(token["from"], '.') == -1 {
 			// A hostname without a domain name such as "mail", "mx", or "mbox"
 			if strings.IndexByte(alter[0], '.') > 0 { token["from"] = alter[0] }
+
 		} else {
 			// An IPv4 address
 			token["from"] = alter[0]
@@ -150,7 +146,7 @@ func Received(argv1 string) [6]string {
 
 	for _, e := range label {
 		// Delete an invalid value
-		if len(token[e]) == 0              { token[e] = ""; continue }
+		if token[e] == ""                  { token[e] = ""; continue }
 		if strings.Contains(token[e], " ") { token[e] = ""; continue }
 		if strings.Contains(token[e], "[") { strings.Replace(token[e], "[", "", 1) }
 		if strings.Contains(token[e], "]") { strings.Replace(token[e], "]", "", 1) }
