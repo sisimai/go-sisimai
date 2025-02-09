@@ -16,7 +16,7 @@ import "os"
 func TestMakeMap(t *testing.T) {
 	fn := "sisimai/message.makemap"
 	cx := 0
-	ae := "../../set-of-emails/maildir/bsd/lhost-opensmtpd-17.eml"
+	ae := "../set-of-emails/maildir/bsd/lhost-opensmtpd-17.eml"
 	bx, _ := os.ReadFile(ae); if len(bx) == 0 {
 		cx++; t.Fatalf("os.ReadFile(%s) returns an empty string", ae)
 	}

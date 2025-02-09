@@ -27,7 +27,7 @@ func TestRise(t *testing.T) {
 	fs := "BeforeFact"
 	cx := 0
 	en := 0
-	ae := "../../set-of-emails/mailbox/mbox-0"
+	ae := "../set-of-emails/mailbox/mbox-0"
 	c1 := func(arg *sis.CallbackArgs) (map[string]interface{}, error) {
 		data := make(map[string]interface{})
 		head := []string{"X-Mailer", "Return-Path"}

@@ -17,7 +17,7 @@ import sisimoji "libsisimai.org/sisimai/string"
 
 func TestRise(t *testing.T) {
 	fn := "sisimai/smtp/transcript.Rise"
-	ef := "../../../set-of-emails/maildir/bsd/lhost-postfix-75.eml"
+	ef := "../../set-of-emails/maildir/bsd/lhost-postfix-75.eml"
 	cc := []string{"CONN", "HELO", "EHLO", "AUTH", "MAIL", "RCPT", "DATA", "QUIT", "RSET", "XFORWARD"}
 	cx := 0
 

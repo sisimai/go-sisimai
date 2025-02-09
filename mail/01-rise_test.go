@@ -24,16 +24,17 @@ import "os"
  | handle     | o         | o         |           |            |
  | payload    |           | o         | o         | o          |
 */
-var Mailtxt = "../../set-of-emails/maildir/bsd/lhost-opensmtpd-01.eml"
+var RootDir = "../set-of-emails"
+var Mailtxt = RootDir + "/maildir/bsd/lhost-opensmtpd-01.eml"
 var Mailbox = []string{
-	"../../set-of-emails/mailbox/mbox-0",
-	"../../set-of-emails/mailbox/mbox-1",
+	RootDir + "/mailbox/mbox-0",
+	RootDir + "/mailbox/mbox-1",
 }
 var Maildir = []string{
-	"../../set-of-emails/maildir/bsd",
-	"../../set-of-emails/maildir/dos",
-	"../../set-of-emails/maildir/mac",
-	"../../set-of-emails/maildir/err",
+	RootDir + "/maildir/bsd",
+	RootDir + "/maildir/dos",
+	RootDir + "/maildir/mac",
+	RootDir + "/maildir/err",
 }
 
 func TestRise(t *testing.T) {

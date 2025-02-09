@@ -56,7 +56,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 	// @param    [][]IsExpected isexpected The list of results
 	// @param    bool           publictest false if set-of-emails/private
 	cx         := 0
-	prefixpath := "../../" + SampleRoot
+	prefixpath := "../" + SampleRoot
 	hostprefix := ""
 	remotehost := false
 	rhostclass := ""
