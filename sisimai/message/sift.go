@@ -24,8 +24,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter1) bool {
 	// @param  sis.CfParameter1 hook   The callback function for the decoded bounce message
 	// @return bool                    true:  Successfully got the results
 	//                                 false: Failed to get the results
-	if len(bf.Headers) == 0 { return false }
-	if len(bf.Payload) == 0 { return false }
+	if bf == nil || bf.Empty() == true { return false }
 
 	bf.Payload = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
 	mesgformat := ""
@@ -78,7 +77,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter1) bool {
 	localhostr := sis.RisingUnderway{}
 	modulename := ""
 
-	DECODER: for {
+	DECODER: for bf.Empty() == false {
 		// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
 		// 2. sisimai/rfc3464
 		// 3. sisimai/arf
