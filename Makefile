@@ -32,10 +32,10 @@ build:
 	$(GO) build lib$(NAME).go
 
 test:
-	go test `find sisimai -type f -name '*_test.go' | xargs dirname | sort | uniq`
+	go test `find ./ -type f -name '*_test.go' | xargs dirname | sort | uniq`
 
 coverage:
-	go test `find sisimai -type f -name '*_test.go' | xargs dirname | sort | uniq` -coverprofile=$(COVERS)
+	go test `find ./ -type f -name '*_test.go' | xargs dirname | sort | uniq` -coverprofile=$(COVERS)
 
 $(REPOS_TARGETS):
 	$(MAKE) -f Repository.mk $@
