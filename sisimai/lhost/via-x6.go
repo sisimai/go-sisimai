@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -20,8 +20,7 @@ func init() {
 	InquireFor["X6"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 		if strings.HasPrefix(bf.Headers["subject"][0], "There was an error sending your mail") == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
@@ -86,6 +85,6 @@ func init() {
 			e.Rhost     = rfc1123.Find(e.Diagnosis)
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-    }
+	}
 }
 

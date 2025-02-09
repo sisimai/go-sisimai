@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -18,12 +18,8 @@ func init() {
 	InquireFor["Activehunter"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
-
-		// From: MAILER-DAEMON
-		// Subject: FAILURE NOTICE :
-		if len(bf.Headers["x-ahmailid"]) == 0 { return sis.RisingUnderway{} }
+		if bf == nil || len(bf.Headers) == 0 || bf.Payload == "" { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-ahmailid"]) == 0                    { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822"}
@@ -80,6 +76,6 @@ func init() {
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-    }
+	}
 }
 

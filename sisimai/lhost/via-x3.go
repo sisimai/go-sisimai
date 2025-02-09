@@ -20,8 +20,7 @@ func init() {
 	InquireFor["X3"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 		if strings.HasPrefix(bf.Headers["from"][0],    "Mail Delivery System")         == false { return sis.RisingUnderway{} }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Delivery status notification") == false { return sis.RisingUnderway{} }
 
@@ -140,6 +139,6 @@ func init() {
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-    }
+	}
 }
 

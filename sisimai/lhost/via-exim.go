@@ -25,8 +25,7 @@ func init() {
 	InquireFor["Exim"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
 		// X-Failed-Recipients: kijitora@example.ed.jp
 		thirdparty := false
@@ -538,6 +537,6 @@ func init() {
 			break
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-    }
+	}
 }
 

@@ -17,9 +17,7 @@ func init() {
 	InquireFor["FML"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
-
+		if bf == nil || bf.Empty() == true                        { return sis.RisingUnderway{} }
 		if len(bf.Headers["x-mlserver"])                     == 0 { return sis.RisingUnderway{} }
 		if strings.Index(bf.Headers["from"][0], "-admin@")    < 1 { return sis.RisingUnderway{} }
 		if strings.Index(bf.Headers["message-id"][0], ".FML") < 2 { return sis.RisingUnderway{} }
@@ -67,7 +65,6 @@ func init() {
 
 			p1 := strings.Index(e, "<")
 			p2 := strings.Index(e, ">")
-
 			if p1 > 0 && p2 > 0 {
 				// You are not a member of this mailing list <neko-meeting@example.org>.
 				if len(v.Recipient) > 0 {
@@ -105,6 +102,6 @@ func init() {
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-    }
+	}
 }
 

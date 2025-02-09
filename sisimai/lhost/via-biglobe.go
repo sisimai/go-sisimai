@@ -19,9 +19,7 @@ func init() {
 	InquireFor["Biglobe"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
-
+		if bf == nil || bf.Empty() == true                                 { return sis.RisingUnderway{} }
 		if strings.Contains(bf.Headers["from"][0], "postmaster@") == false { return sis.RisingUnderway{} }
 		if strings.Index(bf.Headers["subject"][0], "Returned mail:") != 0  { return sis.RisingUnderway{} }
 

@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -24,8 +24,7 @@ func init() {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email(JSON)
 		// @return   RisingUnderway      RisingUnderway structure
 		// @see https://docs.aws.amazon.com/ses/latest/dg/notification-contents.html
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
 		proceedsto := false
 		sespayload := bf.Payload
@@ -200,7 +199,7 @@ func init() {
 			ReportingMTA          string   // "dsn; a27-33.smtp-out.us-west-2.amazonses.com"
 		}
 		type Deliveries struct {
-			NotificationType string
+			NotificationType      string
 			Mail      mailObject
 			Delivery  sentstatus // This field is present only if the notificationType is Complaint 
 		}
@@ -339,6 +338,6 @@ func init() {
 		if mailinside.CommonHeaders.Subject != ""      { cv += fmt.Sprintf("Subject: %s\n", mailinside.CommonHeaders.Subject) }
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: cv }
-    }
+	}
 }
 

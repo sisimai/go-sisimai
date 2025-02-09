@@ -21,8 +21,7 @@ func init() {
 	InquireFor["V5sendmail"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Returned mail: ") == false { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
@@ -175,8 +174,7 @@ func init() {
 			p2 := strings.Index(e.Diagnosis, ">"); if p2 < 0 { continue }
 			e.Recipient = sisiaddr.S3S4(e.Diagnosis[p1:p2 + 1])
 		}
-
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-    }
+	}
 }
 

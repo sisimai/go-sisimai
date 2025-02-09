@@ -22,8 +22,7 @@ func init() {
 	InquireFor["Exchange2007"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
 		proceedsto := uint8(0)
 		mailsender := []string{"postmaster@outlook.com", ".onmicrosoft.com"}
@@ -178,6 +177,6 @@ func init() {
 		}
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-    }
+	}
 }
 

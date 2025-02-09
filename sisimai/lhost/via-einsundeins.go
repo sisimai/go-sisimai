@@ -20,9 +20,7 @@ func init() {
 	InquireFor["EinsUndEins"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers) == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload) == 0 { return sis.RisingUnderway{} }
-
+		if bf == nil || bf.Empty() == true                                                 { return sis.RisingUnderway{} }
 		if strings.HasPrefix(bf.Headers["from"][0], `"Mail Delivery System"`) == false     { return sis.RisingUnderway{} }
 		if bf.Headers["subject"][0] != "Mail delivery failed: returning message to sender" { return sis.RisingUnderway{} }
 
@@ -125,6 +123,6 @@ func init() {
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-    }
+	}
 }
 

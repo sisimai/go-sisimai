@@ -26,8 +26,7 @@ func init() {
 	InquireFor["Postfix"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if len(bf.Headers)            == 0 { return sis.RisingUnderway{} }
-		if len(bf.Payload)            == 0 { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 		if len(bf.Headers["x-aol-ip"]) > 0 { return sis.RisingUnderway{} } // X-AOL-IP: 192.0.2.1
 
 		proceedsto := uint8(0)
