@@ -51,13 +51,11 @@ func IsInternetHost(argv1 string) bool {
 	if len(argv1) > 255 { return false }
 
 	// Deal "localhost", "localhost6" as a valid hostname
-	if argv1 == "localhost" || argv1 == "localhost6" { return true }
-
-	if strings.Contains(argv1, ".") == false { return false }
-	if strings.Contains(argv1, "..") == true { return false }
-	if strings.HasPrefix(argv1, ".") == true { return false }
-	if strings.HasPrefix(argv1, "-") == true { return false }
-	if strings.HasSuffix(argv1, "-") == true { return false }
+	if argv1 == "localhost" || argv1 == "localhost6"    { return true  }
+	if strings.Contains(argv1, ".")  == false           { return false }
+	if strings.Contains(argv1, "..") == true            { return false }
+	if sisimoji.HasPrefixAny(argv1, []string{".", "-"}) { return false }
+	if strings.HasSuffix(argv1, "-") == true            { return false }
 
 	// Allow the hostname starting with A-Label: "xn--" of IDN(Internationalized Domain Name)
 	if strings.Contains(argv1, "--") == true && strings.HasPrefix(argv1, "xn--") == false { return false }
