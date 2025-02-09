@@ -83,11 +83,8 @@ func haircut(block *string, heads bool) []string {
 
 	for {
 		// LOWER CHUNK: Append LF before the lower chunk into the 2nd element of multipart1
-		if len(lowerchunk) == 0    { break }
-		if lowerchunk[0:1] == "\n" { break }
-
-		multipart1[2] += "\n"
-		break
+		if lowerchunk == "" || lowerchunk[0:1] == "\n" { break }
+		multipart1[2] += "\n"; break
 	}
 	multipart1[2] += lowerchunk
 	return multipart1[:]
@@ -98,10 +95,8 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 	// @param    string      argv0  The value of Content-Type header
 	// @param    *string     argv1  A pointer to multipart/* message blocks
 	// @return   [][3]string        List of each part of multipart/*
-	if len(argv0)  == 0 { return nil, nil }
-	if len(*argv1) == 0 { return nil, nil }
-
-	boundary01 := Boundary(argv0, 0); if len(boundary01) == 0 { return nil, nil }
+	if argv0 == "" || argv1 == nil || *argv1 == ""        { return nil, nil }
+	boundary01 := Boundary(argv0, 0); if boundary01 == "" { return nil, nil }
 	multiparts := strings.Split(*argv1, boundary01 + "\n")
 	partstable := [][3]string{}
 	notdecoded := []sis.NotDecoded{}
@@ -122,9 +117,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 			// There is nested multipart/* block
 			boundary02 := Boundary(f[0], -1); if len(boundary02) == 0 { continue }
 			bodyinside := strings.SplitN(f[2], "\n\n", 2)[1]
-
-			if len(bodyinside) < 8                               { continue }
-			if strings.Contains(bodyinside, boundary02) == false { continue }
+			if len(bodyinside) < 8 || strings.Contains(bodyinside, boundary02) == false { continue }
 
 			v, ce := levelout(f[0], &bodyinside)
 			if ce != nil && len(ce) > 0 {
