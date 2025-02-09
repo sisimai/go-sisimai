@@ -36,8 +36,7 @@ func Parameter(argv0 string, argv1 string) string {
 func CharacterSet(argv0 string) string {
 	// @param    string argv0  Base64 or Quoted-Printable encoded text
 	// @return   string        A character set name like "iso-2022-jp"
-	if strings.HasPrefix(argv0, "=?") == false { return "" }
-	if strings.HasSuffix(argv0, "?=") == false { return "" }
+	if strings.HasPrefix(argv0, "=?") == false || strings.HasSuffix(argv0, "?=") == false { return "" }
 
 	argv1 := strings.ToUpper(argv0)
 	index := strings.Index(argv1, "?B?"); if index < 0 { index = strings.Index(argv1, "?Q?") }
