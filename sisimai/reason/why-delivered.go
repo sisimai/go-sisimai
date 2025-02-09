@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
 
@@ -7,8 +7,7 @@ package reason
 // | | | |/ _ \ | \ \ / / _ \ '__/ _ \/ _` |
 // | |_| |  __/ | |\ V /  __/ | |  __/ (_| |
 // |____/ \___|_|_| \_/ \___|_|  \___|\__,_|
-//                                          
-import "sisimai/sis"
+import "libsisimai.org/sisimai/sis"
 
 func init() {
 	IncludedIn["Delivered"] = func(argv1 string) bool { return false }

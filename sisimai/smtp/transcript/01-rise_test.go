@@ -11,9 +11,9 @@ package transcript
 import "testing"
 import "strings"
 import "os"
-import "sisimai/smtp/reply"
-import "sisimai/smtp/status"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/smtp/reply"
+import "libsisimai.org/sisimai/smtp/status"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func TestRise(t *testing.T) {
 	fn := "sisimai/smtp/transcript.Rise"

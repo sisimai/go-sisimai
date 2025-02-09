@@ -9,11 +9,11 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/  |_| \_|\___/ \__\___||___/
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc2045"
-import "sisimai/rfc5322"
-import sisiaddr "sisimai/address"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc2045"
+import "libsisimai.org/sisimai/rfc5322"
+import sisiaddr "libsisimai.org/sisimai/address"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from HCL Notes (Formerly IBM Notes(Formerly Lotus Notes))

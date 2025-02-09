@@ -11,12 +11,12 @@ import "fmt"
 import "errors"
 import "strings"
 import "encoding/json"
-import "sisimai/sis"
-import "sisimai/rfc1123"
-import "sisimai/smtp/reply"
-import "sisimai/smtp/status"
-import "sisimai/smtp/command"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc1123"
+import "libsisimai.org/sisimai/smtp/reply"
+import "libsisimai.org/sisimai/smtp/status"
+import "libsisimai.org/sisimai/smtp/command"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Amazon SES(Sending): https://aws.amazon.com/ses/

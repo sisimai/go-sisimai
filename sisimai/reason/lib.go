@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
 
@@ -6,7 +6,7 @@ package reason
 // | '__/ _ \/ _` / __|/ _ \| '_ \ 
 // | | |  __/ (_| \__ \ (_) | | | |
 // |_|  \___|\__,_|___/\___/|_| |_|
-import "sisimai/sis"
+import "libsisimai.org/sisimai/sis"
 
 // Keep each function (pointer) defined in sisimai/reason/*.go to check/detect the bounce reason
 var IncludedIn = map[string]func(string) bool {}

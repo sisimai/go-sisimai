@@ -9,11 +9,11 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/  |___|_|  |_|\__,_|_|_|____/ \___|_|    \_/ \___|_|   
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc5322"
-import "sisimai/smtp/command"
-import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/smtp/command"
+import sisimoji "libsisimai.org/sisimai/string"
+import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Progress iMail Server: https://community.progress.com/s/products/imailserver

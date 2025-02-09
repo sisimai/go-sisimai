@@ -7,10 +7,10 @@ package reason
 //   / _ \| | | | __| '_ \| |_ / _` | | | | | | '__/ _ \
 //  / ___ \ |_| | |_| | | |  _| (_| | | | |_| | | |  __/
 // /_/   \_\__,_|\__|_| |_|_|  \__,_|_|_|\__,_|_|  \___|
-import "strings"
-import "sisimai/sis"
-import "sisimai/smtp/status"
-import sisimoji "sisimai/string"
+import libsisimai.org/"strings"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/smtp/status"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern

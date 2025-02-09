@@ -9,9 +9,9 @@ package transcript
 // |___/_| |_| |_|\__| .__/_/   \__|_|  \__,_|_| |_|___/\___|_|  |_| .__/ \__|
 //                   |_|                                           |_|        
 import "strings"
-import "sisimai/smtp/reply"
-import "sisimai/smtp/status"
-import "sisimai/smtp/command"
+import "libsisimai.org/sisimai/smtp/reply"
+import "libsisimai.org/sisimai/smtp/status"
+import "libsisimai.org/sisimai/smtp/command"
 
 /* SMTP Transcript log is like the following ------------------------------------------------------
  Out: 220 mx22.example.com ESMTP MAIL SYSTEM

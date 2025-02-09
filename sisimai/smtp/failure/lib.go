@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package failure
 
@@ -9,8 +9,8 @@ package failure
 // |___/_| |_| |_|\__| .__/_/ |_|  \__,_|_|_|\__,_|_|  \___|
 //                   |_|                                    
 import "strings"
-import "sisimai/smtp/reply"
-import "sisimai/smtp/status"
+import "libsisimai.org/sisimai/smtp/reply"
+import "libsisimai.org/sisimai/smtp/status"
 
 // IsPermanent() returns true if the given string indicates a permanent error
 func IsPermanent(argv1 string) bool {

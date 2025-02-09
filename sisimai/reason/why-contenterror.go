@@ -8,8 +8,8 @@ package reason
 // | |__| (_) | | | | ||  __/ | | | |_| |___| |  | | | (_) | |   
 //  \____\___/|_| |_|\__\___|_| |_|\__|_____|_|  |_|  \___/|_|   
 import "strings"
-import "sisimai/sis"
-import "sisimai/smtp/status"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/smtp/status"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern

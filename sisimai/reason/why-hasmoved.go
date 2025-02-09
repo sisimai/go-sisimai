@@ -8,7 +8,7 @@ package reason
 // |  _  | (_| \__ \ |  | | (_) \ V /  __/ (_| |
 // |_| |_|\__,_|___/_|  |_|\___/ \_/ \___|\__,_|
 import "strings"
-import "sisimai/sis"
+import "libsisimai.org/sisimai/sis"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern

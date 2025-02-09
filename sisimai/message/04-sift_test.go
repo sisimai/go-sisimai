@@ -13,7 +13,7 @@ import "strings"
 import "io"
 import "os"
 import "net/mail"
-import "sisimai/sis"
+import "libsisimai.org/sisimai/sis"
 
 func TestSift(t *testing.T) {
 	fn := "sisimai/message.sift"

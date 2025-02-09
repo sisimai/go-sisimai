@@ -9,10 +9,10 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/  \____|\___/ \___/ \__, |_|\___| \_/\_/ \___/|_|  |_|\_\___/ .__/ \__,_|\___\___|
 //                                              |___/                                   |_|                   
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc5322"
-import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+import sisimoji "libsisimai.org/sisimai/string"
+import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Google Workspace except a bounce mail returned from Google Workspace

@@ -8,7 +8,7 @@ package rfc1123
 // |  _ <|  _|| |___| | |/ __/ ___) |
 // |_| \_\_|   \____|_|_|_____|____/ 
 import "strings"
-import sisimoji "sisimai/string"
+import sisimoji "libsisimai.org/sisimai/string"
 
 var Sandwiched = [][]string{
 	// (Postfix) postfix/src/smtp/smtp_proto.c: "host %s said: %s (in reply to %s)",

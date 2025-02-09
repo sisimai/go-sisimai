@@ -9,10 +9,10 @@ package rfc3834
 // |_| \_\_|   \____|____/ \___/____/   |_|  
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc2045"
-import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc2045"
+import sisimoji "libsisimai.org/sisimai/string"
+import sisiaddr "libsisimai.org/sisimai/address"
 
 // Inquire() decodes a bounce message that includes a vacation message
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {

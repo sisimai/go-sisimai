@@ -9,12 +9,12 @@ package arf
 // /_/   \_\_| \_\_|    
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import "sisimai/lhost"
-import "sisimai/rfc1894"
-import "sisimai/rfc5322"
-import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/lhost"
+import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/rfc5322"
+import sisimoji "libsisimai.org/sisimai/string"
+import sisiaddr "libsisimai.org/sisimai/address"
 
 // isARF() returns true if the bounce mail is Abuse Feedback Reporting Format
 func isARF(bf *sis.BeforeFact) bool {

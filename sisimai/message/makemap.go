@@ -9,7 +9,7 @@ package message
 //                                |___/      
 import "strings"
 import "net/mail"
-import sisimoji "sisimai/string"
+import sisimoji "libsisimai.org/sisimai/string"
 
 // makemap() converts a mail.Header struct to a map[string][]string
 func makemap(argv0 *mail.Header, argv1 bool) map[string][]string {

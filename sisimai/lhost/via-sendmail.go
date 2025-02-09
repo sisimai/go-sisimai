@@ -9,14 +9,14 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/ |___/\___|_| |_|\__,_|_| |_| |_|\__,_|_|_|
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc1894"
-import "sisimai/rfc5322"
-import "sisimai/smtp/reply"
-import "sisimai/smtp/status"
-import "sisimai/smtp/command"
-import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/smtp/reply"
+import "libsisimai.org/sisimai/smtp/status"
+import "libsisimai.org/sisimai/smtp/command"
+import sisimoji "libsisimai.org/sisimai/string"
+import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// V8Sendmail: /usr/sbin/sendmail

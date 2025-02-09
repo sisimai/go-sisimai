@@ -8,8 +8,8 @@ package rhost
 // | |  | | | | (_) \__ \ |_ / / | |  | | | | | | | |  __/ (_| (_| \__ \ |_ 
 // |_|  |_| |_|\___/|___/\__/_/  |_|  |_|_|_| |_| |_|\___|\___\__,_|___/\__|
 import "strings"
-import "sisimai/sis"
-import "sisimai/smtp/reply"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/smtp/reply"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service

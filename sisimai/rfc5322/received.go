@@ -8,9 +8,9 @@ package rfc5322
 // |  _ <|  _|| |___ ___) |__) / __/ / __/ / / |  _ <  __/ (_|  __/ |\ V /  __/ (_| |_ 
 // |_| \_\_|   \____|____/____/_____|_____/_/  |_| \_\___|\___\___|_| \_/ \___|\__,_(_)
 import "strings"
-import "sisimai/rfc791"
-import "sisimai/address"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/rfc791"
+import "libsisimai.org/sisimai/address"
+import sisimoji "libsisimai.org/sisimai/string"
 
 // Received() convert Received headers to a structured data
 func Received(argv1 string) [6]string {

@@ -10,9 +10,9 @@ package lhost
 //                                 |_|                                                          
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc5322"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from James: https://james.apache.org/

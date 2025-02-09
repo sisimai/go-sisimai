@@ -9,10 +9,10 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/  |_|  |_|\__,_|_|_|_|  |_|\__,_|_|  |___/_| |_|\__,_|_|____/|_|  |_| |_| |_|    
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc2045"
-import "sisimai/rfc5322"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc2045"
+import "libsisimai.org/sisimai/rfc5322"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Trustwave Secure Email Gateway: https://www.trustwave.com/en-us/services/email-security/

@@ -8,8 +8,8 @@ package address
 // | (_| | (_| | (_| | | |  __/\__ \__ \
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
-import "sisimai/rfc791"
-import "sisimai/rfc1123"
+import "libsisimai.org/sisimai/rfc791"
+import "libsisimai.org/sisimai/rfc1123"
 
 // IsQuotedAddress() checks that the local part of the argument is quoted
 func IsQuotedAddress(email string) bool {

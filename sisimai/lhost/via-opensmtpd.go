@@ -9,9 +9,9 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/  \___/| .__/ \___|_| |_|____/|_|  |_| |_| |_|   |____/ 
 //                                 |_|                                              
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc5322"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from penSMTPD: https://www.opensmtpd.org/

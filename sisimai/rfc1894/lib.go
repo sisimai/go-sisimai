@@ -8,7 +8,7 @@ package rfc1894
 // |  _ <|  _|| |___| | (_) \__, |__   _|
 // |_| \_\_|   \____|_|\___/  /_/   |_|  
 import "strings"
-import sisimoji "sisimai/string"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func FIELDINDEX() []string {
 	return []string{

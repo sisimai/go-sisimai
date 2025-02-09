@@ -9,12 +9,12 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/  |____/ \___/|_| |_| |_|_|_| |_|\___/ 
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc1894"
-import "sisimai/rfc5322"
-import "sisimai/smtp/status"
-import sisiaddr "sisimai/address"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/smtp/status"
+import sisiaddr "libsisimai.org/sisimai/address"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from HCL Domino

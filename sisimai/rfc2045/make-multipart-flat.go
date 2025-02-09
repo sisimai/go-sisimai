@@ -9,8 +9,8 @@ package rfc2045
 // |_| \_\_|   \____|_____|\___/   |_||____/ 
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import sisimoji "libsisimai.org/sisimai/string"
 
 // haircut() remove unnecessary header fields except Content-Type, Content-Transfer-Encoding from
 // multipart/* block.

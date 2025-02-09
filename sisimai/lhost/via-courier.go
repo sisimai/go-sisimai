@@ -9,11 +9,11 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/  \____\___/ \__,_|_|  |_|\___|_|   
 import "fmt"
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc1894"
-import "sisimai/rfc5322"
-import "sisimai/smtp/command"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/smtp/command"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Courier MTA: https://www.courier-mta.org/

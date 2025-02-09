@@ -7,8 +7,8 @@ package reason
 // | | |  __/ (_| \__ \ (_) | | | |
 // |_|  \___|\__,_|___/\___/|_| |_|
 import "strings"
-import "sisimai/sis"
-import "sisimai/smtp/status"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/smtp/status"
 
 // Find() detects and returns the bounce reason
 func Find(fo *sis.Fact) string {

@@ -8,16 +8,16 @@ package rfc3464
 // |  _ <|  _|| |___ ___) |__   _| (_) |__   _|
 // |_| \_\_|   \____|____/   |_|  \___/   |_|  
 import "strings"
-import "sisimai/sis"
-import "sisimai/lhost"
-import "sisimai/rfc1894"
-import "sisimai/rfc2045"
-import "sisimai/rfc5322"
-import "sisimai/smtp/reply"
-import "sisimai/smtp/status"
-import "sisimai/smtp/command"
-import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/lhost"
+import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/rfc2045"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/smtp/reply"
+import "libsisimai.org/sisimai/smtp/status"
+import "libsisimai.org/sisimai/smtp/command"
+import sisimoji "libsisimai.org/sisimai/string"
+import sisiaddr "libsisimai.org/sisimai/address"
 
 // Inquire() decodes a bounce message that has fields defined in RFC3464
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {

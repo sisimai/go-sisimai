@@ -8,12 +8,12 @@ package lhost
 // | | | | | (_) \__ \ |_ / /| |_| | | | | | | (_| | | |
 // |_|_| |_|\___/|___/\__/_/  \____|_| |_| |_|\__,_|_|_|
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc5322"
-import "sisimai/rfc1123"
-import "sisimai/smtp/status"
-import sisiaddr "sisimai/address"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/rfc1123"
+import "libsisimai.org/sisimai/smtp/status"
+import sisiaddr "libsisimai.org/sisimai/address"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Gmail: https://mail.google.com/

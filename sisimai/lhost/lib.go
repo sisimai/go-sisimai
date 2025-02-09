@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -7,7 +7,7 @@ package lhost
 // | | '_ \ / _ \/ __| __|
 // | | | | | (_) \__ \ |_ 
 // |_|_| |_|\___/|___/\__|
-import "sisimai/sis"
+import "libsisimai.org/sisimai/sis"
 
 // Keep each function for decoding a bounce mail
 var InquireFor = map[string]func(*sis.BeforeFact) sis.RisingUnderway {}
@@ -26,8 +26,8 @@ func INDEX() []string {
 		"Activehunter", "AmazonSES", "ApacheJames", "Biglobe", "Courier", "Domino", "DragonFly", "EZweb",
 		"EinsUndEins", "Exchange2003", "Exchange2007", "Exim", "FML", "GMX", "GoogleGroups", "Gmail",
 		"GoogleWorkspace", "IMailServer", "InterScanMSS", "KDDI", "MailFoundry", "MailMarshalSMTP",
-		"MessagingServer", "Notes", "OpenSMTPD", "Postfix", "Sendmail", "V5sendmail",
-		"Verizon", "X1", "X2", "X3", "X6", "Zoho", "mFILTER", "qmail",
+		"MessagingServer", "Notes", "OpenSMTPD", "Postfix", "Sendmail", "V5sendmail", "Verizon",
+		"X1", "X2", "X3", "X6", "Zoho", "mFILTER", "qmail",
 	}
 }
 

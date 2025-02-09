@@ -9,13 +9,13 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/  |_____/_/\_\___|_| |_|\__,_|_| |_|\__, |\___|_____|\___/ \___//_/   
 //                                                              |___/                             
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc1123"
-import "sisimai/rfc5322"
-import "sisimai/smtp/reply"
-import "sisimai/smtp/status"
-import sisiaddr "sisimai/address"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc1123"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/smtp/reply"
+import "libsisimai.org/sisimai/smtp/status"
+import sisiaddr "libsisimai.org/sisimai/address"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Microsoft Exchange Server 2007: https://www.microsoft.com/microsoft-365/exchange/email

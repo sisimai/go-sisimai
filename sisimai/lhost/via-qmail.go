@@ -9,11 +9,11 @@ package lhost
 // |_|_| |_|\___/|___/\__/_/ \__, |_| |_| |_|\__,_|_|_|
 //                              |_|                    
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc5322"
-import "sisimai/smtp/command"
-import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/smtp/command"
+import sisimoji "libsisimai.org/sisimai/string"
+import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from qmail: https://cr.yp.to/qmail.html

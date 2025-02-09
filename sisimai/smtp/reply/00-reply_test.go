@@ -9,7 +9,7 @@ package reply
 //   |_|\___||___/\__/_/ |___/_| |_| |_|\__| .__/_/ |_|  \___| .__/|_|\__, |
 //                                         |_|               |_|      |___/ 
 import "testing"
-import "sisimai/smtp/status"
+import "libsisimai.org/sisimai/smtp/status"
 
 var SMTPErrors = []string{
 	"smtp; 250 2.1.5 Ok",

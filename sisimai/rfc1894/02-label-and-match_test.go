@@ -9,7 +9,7 @@ package rfc1894
 //   |_|\___||___/\__/_/  |_| \_\_|   \____|_|\___/  /_/   |_|  
 import "testing"
 import "strings"
-import sisimoji "sisimai/string"
+import sisimoji "libsisimai.org/sisimai/string"
 
 var FieldList = []string{
 	"Reporting-MTA: dns; mx.example.jp",

@@ -8,9 +8,9 @@ package lhost
 // | | | | | (_) \__ \ |_ / /    \ V /  __/ |  | |/ / (_) | | | |
 // |_|_| |_|\___/|___/\__/_/      \_/ \___|_|  |_/___\___/|_| |_|
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc5322"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Verizon: https://www.verizon.com/

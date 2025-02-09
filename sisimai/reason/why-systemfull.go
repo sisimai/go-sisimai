@@ -9,7 +9,7 @@ package reason
 // |____/ \__, |___/\__\___|_| |_| |_|_|   \__,_|_|_|
 //        |___/                                      
 import "strings"
-import "sisimai/sis"
+import "libsisimai.org/sisimai/sis"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern

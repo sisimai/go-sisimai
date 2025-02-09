@@ -8,7 +8,7 @@ package address
 // | (_| | (_| | (_| | | |  __/\__ \__ \
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
-import sisimoji "sisimai/string"
+import sisimoji "libsisimai.org/sisimai/string"
 
 // S3S4() runs like ruleset 3,4 of sendmail.cf
 func S3S4(argv1 string) string {

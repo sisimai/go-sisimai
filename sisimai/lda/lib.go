@@ -8,8 +8,8 @@ package lda
 // | |___| |_| / ___ \ 
 // |_____|____/_/   \_\
 import "strings"
-import "sisimai/sis"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import sisimoji "libsisimai.org/sisimai/string"
 
 var LocalAgent = map[string][]string{
 	// Each error message should be a lower-cased string

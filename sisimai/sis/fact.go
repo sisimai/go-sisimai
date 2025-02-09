@@ -9,7 +9,7 @@ package sis
 // |_|  \__,_|\___|\__|
 import "time"
 import "encoding/json"
-import a "sisimai/address"
+import a "libsisimai.org/sisimai/address"
 
 // sisimai/fact.Rise() returns []sis.Fact
 type Fact struct {

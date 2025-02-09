@@ -8,11 +8,11 @@ package lhost
 // | | | | | (_) \__ \ |_ / /| | | | | |  _|  | || |___| | | |___|  _ < 
 // |_|_| |_|\___/|___/\__/_/ |_| |_| |_|_|   |___|_____|_| |_____|_| \_\
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc5322"
-import "sisimai/smtp/command"
-import sisiaddr "sisimai/address"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/smtp/command"
+import sisiaddr "libsisimai.org/sisimai/address"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Digital Arts m-FILTER: https://www.daj.jp/bs/mf/

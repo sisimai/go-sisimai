@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package sis
 //  ____       _ _                      __  __       _   _            
@@ -8,13 +8,13 @@ package sis
 // |____/ \___|_|_| \_/ \___|_|   \__, |_|  |_|\__,_|\__|\__\___|_|   
 //                                |___/                               
 import "strings"
-import "sisimai/rfc1123"
-import "sisimai/rfc1894"
-import "sisimai/smtp/reply"
-import "sisimai/smtp/status"
-import "sisimai/smtp/command"
-import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
+import "libsisimai.org/sisimai/rfc1123"
+import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/smtp/reply"
+import "libsisimai.org/sisimai/smtp/status"
+import "libsisimai.org/sisimai/smtp/command"
+import sisimoji "libsisimai.org/sisimai/string"
+import sisiaddr "libsisimai.org/sisimai/address"
 
 var Fields1894 = rfc1894.FIELDTABLE()
 type DeliveryMatter struct {

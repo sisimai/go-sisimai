@@ -8,9 +8,9 @@ package lhost
 // | | | | | (_) \__ \ |_ / / |  _| | |  | | |___ 
 // |_|_| |_|\___/|___/\__/_/  |_|   |_|  |_|_____|
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc5322"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from fml mailing list server/manager: https://www.fml.org

@@ -8,8 +8,8 @@ package rhost
 // | |  | | | | (_) \__ \ |_ / /| |_| |___) | |_| | | ||  __/
 // |_|  |_| |_|\___/|___/\__/_/  \____|____/ \__,_|_|\__\___|
 // Google Workspace (formerly G Suite) https://workspace.google.com/
-import "sisimai/sis"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service

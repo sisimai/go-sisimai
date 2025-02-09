@@ -8,12 +8,12 @@ package lhost
 // | | | | | (_) \__ \ |_ / / | |___ / /_ \ V  V /  __/ |_) |
 // |_|_| |_|\___/|___/\__/_/  |_____/____| \_/\_/ \___|_.__/ 
 import "strings"
-import "sisimai/sis"
-import "sisimai/rfc1894"
-import "sisimai/rfc5322"
-import "sisimai/smtp/command"
-import sisimoji "sisimai/string"
-import sisiaddr "sisimai/address"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/smtp/command"
+import sisimoji "libsisimai.org/sisimai/string"
+import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from au EZweb: https://www.au.com/mobile/

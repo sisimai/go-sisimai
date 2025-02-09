@@ -10,13 +10,13 @@ package message
 import "fmt"
 import "strings"
 import "net/mail"
-import "sisimai/sis"
-import "sisimai/arf"
-import "sisimai/lhost"
-import "sisimai/rfc2045"
-import "sisimai/rfc3464"
-import "sisimai/rfc3834"
-import sisimoji "sisimai/string"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/arf"
+import "libsisimai.org/sisimai/lhost"
+import "libsisimai.org/sisimai/rfc2045"
+import "libsisimai.org/sisimai/rfc3464"
+import "libsisimai.org/sisimai/rfc3834"
+import sisimoji "libsisimai.org/sisimai/string"
 
 // sift() sifts a bounce mail with each MTA module
 func sift(bf *sis.BeforeFact, hook sis.CfParameter1) bool {

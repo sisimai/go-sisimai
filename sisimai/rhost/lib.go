@@ -8,7 +8,7 @@ package rhost
 // | |  | | | | (_) \__ \ |_ 
 // |_|  |_| |_|\___/|___/\__|
 import "strings"
-import "sisimai/sis"
+import "libsisimai.org/sisimai/sis"
 
 var ReturnedBy = map[string]func(*sis.Fact) string {}
 var RhostClass = map[string][]string{
