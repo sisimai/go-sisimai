@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
 
@@ -24,11 +24,8 @@ func makemap(argv0 *mail.Header, argv1 bool) map[string][]string {
 		// Each key name is the lower-cased string, each value is an array ([]string{})
 		// The field name of an email header does not contain " "
 		f := strings.ToLower(e)
-		if strings.Contains(f, " ")               { continue }
-		if strings.Contains(f, "authentication-") { continue } // Authentication-Results:
-		if strings.HasPrefix(f, "arc-")           { continue } // ARC-Seal:, ARC-Authentication-Results:, ....
-		if strings.HasPrefix(f, "dkim-")          { continue } // DKIM-Sigunature:
-		if strings.HasPrefix(f, "-spf")           { continue } // Received-SPF:
+		if sisimoji.ContainsAny(f,  []string{" ", "authentication-"})  { continue }
+		if sisimoji.HasPrefixAny(f, []string{"arc-", "dkim-", "-spf"}) { continue }
 		headermaps[f] = v
 	}
 
@@ -50,8 +47,7 @@ func makemap(argv0 *mail.Header, argv1 bool) map[string][]string {
 		// The following fields should be exist
 		if len(headermaps[e]) == 0 { headermaps[e] = []string{""} }
 	}
-	if headermaps["subject"][0] == ""    { return headermaps }
-	if argv1                    == false { return headermaps }
+	if headermaps["subject"][0] == "" || argv1 == false { return headermaps }
 
 	if sisimoji.Is8Bit(&(headermaps["subejct"][0])) {
 		// The "Subject:" header is including multibyte character, is not a MIME-Encoded text.

@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
 
@@ -74,20 +74,17 @@ func tidy(argv0 *string) *string {
 					// Diagnostic-Code: x-unix;
 					//   /var/email/kijitora/Maildir/tmp/1000000000.A000000B00000.neko22:
 					//   Disk quota exceeded
-					if fn != "Diagnostic-Code"                   { break }
-					if len(ab) != 1                              { break }
+					if fn != "Diagnostic-Code" || len(ab)   != 1 { break }
 					if strings.IndexByte(lines[i + 1], ' ') != 0 { break }
 
-					ab = append(ab, "")
-					break
+					ab = append(ab, ""); break
 				}
 				bf = strings.Join(ab, "; ")
 				ab = []string{}
 
 			} else {
 				// There is no ";" in the field
-				if strings.Index(fn, "-Date")       > 0 { break }
-				if strings.Index(fn, "-Message-ID") > 0 { break }
+				if strings.Index(fn, "-Date") > 0 || strings.Index(fn, "-Message-ID") > 0 { break }
 				bf = strings.ToLower(bf)
 			}
 			break
