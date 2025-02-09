@@ -18,6 +18,7 @@ RM    := rm -f
 GOROOT := $(shell echo $$GOROOT)
 GOPATH := $(shell echo $$GOPATH)
 DOMAIN := libsisimai.org
+COVERS := coverage.txt
 
 .DEFAULT_GOAL = git-status
 REPOS_TARGETS = git-status git-push git-commit-amend git-tag-list git-diff git-reset-soft \
@@ -32,6 +33,9 @@ build:
 
 test:
 	go test `find sisimai -type f -name '*_test.go' | xargs dirname | sort | uniq`
+
+coverage:
+	go test `find sisimai -type f -name '*_test.go' | xargs dirname | sort | uniq` -coverprofile=$(COVERS)
 
 $(REPOS_TARGETS):
 	$(MAKE) -f Repository.mk $@
