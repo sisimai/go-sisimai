@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package arf
 
@@ -21,8 +21,7 @@ func isARF(bf *sis.BeforeFact) bool {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   bool                true if the mail is ARF
 	// @see      https://tools.ietf.org/html/rfc5965
-	if len(bf.Headers) == 0 { return false }
-	if len(bf.Payload) == 0 { return false }
+	if bf == nil || bf.Empty() == true { return false }
 
 	abuse := []string{"staff@hotmail.com", "complaints@email-abuse.amazonses.com"}
 	ctype := bf.Headers["content-type"][0]
@@ -55,9 +54,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   RisingUnderway      RisingUnderway structure
 	// @see      https://tools.ietf.org/html/rfc5965
-	if len(bf.Headers)  == 0     { return sis.RisingUnderway{} }
-	if len(bf.Payload)  == 0     { return sis.RisingUnderway{} }
-	if isARF(bf)        == false { return sis.RisingUnderway{} }
+	if bf == nil || bf.Empty() || isARF(bf) == false { return sis.RisingUnderway{} }
 
 	// http://tools.ietf.org/html/rfc5965
 	// http://en.wikipedia.org/wiki/Feedback_loop_(email)
