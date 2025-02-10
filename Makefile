@@ -28,9 +28,6 @@ REPOS_TARGETS = git-status git-push git-commit-amend git-tag-list git-diff git-r
 				git-rm-cached git-branch
 # -------------------------------------------------------------------------------------------------
 .PHONY: clean
-init:
-	test -e $(NAME)/go.mod || cd ./$(NAME) && $(GO) mod init $(NAME)
-
 build:
 	$(GO) build lib$(NAME).go
 

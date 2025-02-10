@@ -42,6 +42,9 @@ loc:
 coverage:
 	@ $(GO) test -v $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
 
+init:
+	test -e ./go.mod || $(GO) mod init $(LIBSISIMAI)/$(NAME)
+
 update-go-mod:
 	@ $(GO) mod tidy
 
