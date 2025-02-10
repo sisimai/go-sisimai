@@ -85,8 +85,7 @@ func Find(argv1 string, argv2 string) string {
 
 		if strings.Index(readbuffer, ".0.0") == 1 || readbuffer == "4.4.7" {
 			// Find another status code except *.0.0, 4.4.7
-			anotherone = readbuffer
-			continue
+			anotherone = readbuffer; continue
 		}
 
 		// The 2nd digit of the detail is not a number
