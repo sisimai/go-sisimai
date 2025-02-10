@@ -70,17 +70,16 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			// Detect an email address from message/rfc822 part
 			for _, f := range RFC822Head["addresser"] {
 				// Check each header in message/rfc822 part
-				if len(rfc822data[f])                              == 0 { continue }
-				j := sisiaddr.Find(rfc822data[f][0]); if len(j[0]) == 0 { continue }
-				addrs["addresser"] = j
-				break ADDRESSER
+				if len(rfc822data[f])                         == 0  { continue }
+				j := sisiaddr.Find(rfc822data[f][0]); if j[0] == "" { continue }
+				addrs["addresser"] = j; break ADDRESSER
 			}
 
 			if len(addrs["addresser"][0]) == 0 && len((*beforefact).Headers["to"]) > 0 {
 				// Fallback: Get the sender address from the header of the bounced email if the address
 				// is not set at the loop above.
 				j := sisiaddr.Find((*beforefact).Headers["to"][0])
-				if len(j[0]) > 0 { addrs["addresser"] = j }
+				if j[0] != "" { addrs["addresser"] = j }
 			}
 			break ADDRESSER
 		}
@@ -88,7 +87,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 		TIMESTAMP: for {
 			// Convert from the value of "Date" or the date string to time.Time
-			datevalues := []string{}; if len(e.Date) > 0 { datevalues = append(datevalues, e.Date) }
+			datevalues := []string{}; if e.Date != "" { datevalues = append(datevalues, e.Date) }
 
 			for _, f := range RFC822Head["date"] {
 				// Date information did not exist in message/delivery-status part.
@@ -152,7 +151,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 			for _, v := range []*string{&e.Rhost, &e.Lhost} {
 				// Check and rewrite each host name
-				if len(*v) == 0 { continue }
+				if *v == "" { continue }
 
 				// Use the domain part as a remote/local host when the value is an email address
 				if strings.Contains(*v, "@") { *v = strings.Split(*v, "@")[1] }
@@ -182,8 +181,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			if len(rfc822data["message-id"])                                          == 0     { break MESG_ID }
 			if sisimoji.Aligned(rfc822data["message-id"][0], []string{"<", "@", ">"}) == false { break MESG_ID }
 
-			piece["messageid"] = strings.Trim(rfc822data["message-id"][0], "<>")
-			break MESG_ID
+			piece["messageid"] = strings.Trim(rfc822data["message-id"][0], "<>"); break MESG_ID
 		}
 
 		LIST_ID: for {
@@ -194,8 +192,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			p0 := strings.Index(rfc822data["list-id"][0], "<");                   if p0 < 0 { break LIST_ID }
 			p1 := strings.Index(rfc822data["list-id"][0], ">");                   if p1 < 0 { break LIST_ID }
 
-			piece["listid"] = rfc822data["list-id"][0][p0 + 1:p1]
-			break LIST_ID
+			piece["listid"] = rfc822data["list-id"][0][p0 + 1:p1]; break LIST_ID
 		}
 
 		DIAGNOSTICCODE: for {
@@ -263,7 +260,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			piece["diagnostictype"] = e.Spec
 			piece["reason"]         = e.Reason
 
-			if len(e.Spec) > 0 { break DIAGNOSTICTYPE }
+			if e.Spec != "" { break DIAGNOSTICTYPE }
 			if piece["reason"] == "mailererror"                               { piece["diagnostictype"] = "X-UNIX" }
 			if piece["reason"] != "feedback" && piece["reason"] != "vacation" { piece["diagnostictype"] = "SMTP"   }
 			break DIAGNOSTICTYPE
@@ -282,7 +279,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 			thing.Action         = e.Action
 			thing.Addresser      = as
-			thing.Alias          = e.Alias; if len(thing.Alias) == 0 { thing.Alias = ar.Alias }
+			thing.Alias          = e.Alias; if thing.Alias == "" { thing.Alias = ar.Alias }
 			thing.Catch          = (*beforefact).Catch
 			thing.DeliveryStatus = piece["deliverystatus"]
 			thing.Destination    = ar.Host
@@ -298,7 +295,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			thing.Reason         = piece["reason"]
 			thing.Rhost          = e.Rhost
 			thing.Recipient      = ar
-			thing.ReplyCode      = piece["replycode"]; if len(thing.ReplyCode) == 0 { reply.Find(piece["diagnosticcode"], "") }
+			thing.ReplyCode      = piece["replycode"]; if thing.ReplyCode == "" { reply.Find(piece["diagnosticcode"], "") }
 			thing.DecodedBy      = e.Agent
 			thing.Command        = piece["command"]
 			thing.SenderDomain   = as.Host
@@ -313,19 +310,17 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		ALIAS: for {
 			// Look up the Envelope-To address from the Received: header in the original message
 			// when the recipient address is same with the value of piece["alias"].
-			if thing.Alias                 == ""          { break ALIAS }
-			if thing.Recipient.Address     != thing.Alias { break ALIAS }
-			if len(rfc822data["received"]) == 0           { break ALIAS }
+			if thing.Recipient.Address != thing.Alias                { break ALIAS }
+			if thing.Alias == "" || len(rfc822data["received"]) == 0 { break ALIAS }
 
 			recv := rfc822data["received"]
 			hops := len(recv)
 			for i := hops - 1; hops >= 0; hops-- {
 				// Search for the string " for " from the Received: header
-				if strings.Contains(recv[i], " for ") == false { continue }
+				if strings.Index(recv[i], " for ") == -1   { continue }
 				or := rfc5322.Received(recv[i])
 
-				if len(or) == 0                            { continue }
-				if len(or[5]) == 0                         { continue }
+				if len(or) == 0 || or[5] == ""             { continue }
 				if sisiaddr.IsEmailAddress(or[5]) == false { continue }
 				if or[5] == thing.Recipient.Address        { continue }
 
@@ -344,8 +339,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			or  = reason.Find(&thing); if reason.IsExplicit(or) { thing.Reason = or; break REASON }
 
 			if thing.DiagnosticCode != "" { re = "onhold" }
-			thing.Reason = re
-			break REASON
+			thing.Reason = re; break REASON
 		}
 
 		HARDBOUNCE: for {
@@ -365,7 +359,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 		DELIVERYSTATUS: for {
 			// Set a pseudo status code
-			if len(thing.DeliveryStatus) > 0 { break DELIVERYSTATUS }
+			if thing.DeliveryStatus != "" { break DELIVERYSTATUS }
 
 			smtperrors := thing.ReplyCode + " " + piece["diagnosticcode"]
 			if len(smtperrors) < 4 { smtperrors = "" }
@@ -397,8 +391,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 			if ActionList[thing.Action] == false {
 				// There is an action value that is not described at RFC1894
-				ox := rfc1894.Field("Action: " + thing.Action)
-				if len(ox) > 0 {
+				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 {
 					// Rewrite the value of "Action:" field to the valid value
 					//
 					// The syntax for the action-field is:
