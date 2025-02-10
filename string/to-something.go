@@ -12,7 +12,6 @@ package string
 import "fmt"
 import "strings"
 import "golang.org/x/text/encoding"
-//import "golang.org/x/text/encoding/japanese"
 
 // ToLF() replace CR and CR/LF to LF.
 func ToLF(argv0 *string) *string {
