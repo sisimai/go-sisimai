@@ -47,5 +47,6 @@ diff push branch:
 
 # -------------------------------------------------------------------------------------------------
 clean:
-	go clean -testcache
+	$(GO) clean -testcache
+	$(MAKE) -f Developers.mk $@
 

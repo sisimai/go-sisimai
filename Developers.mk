@@ -49,4 +49,5 @@ update-go-mod:
 	@ $(GO) mod tidy
 
 clean:
+	$(RM) ./$(COVERAGETO)
 
