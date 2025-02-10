@@ -1,6 +1,5 @@
 module libsisimai.org/sisimai
-
-go 1.22
+go 1.15
 
 require (
 	golang.org/x/net v0.30.0
