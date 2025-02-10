@@ -22,10 +22,7 @@ func tidy(argv0 *string) *string {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
 		p0 := strings.IndexByte(e, ':'); if p0 < 0                    { email += e + "\n"; continue }
 		cf := strings.ToLower(e[0:p0]);  if strings.Contains(cf, " ") { email += e + "\n"; continue }
-		fn := FieldTable[cf]
-
-		// There is neither ":" character nor a field listed in FieldTable
-		if len(fn) == 0 { email += e + "\n"; continue }
+		fn := FieldTable[cf];            if fn == ""                  { email += e + "\n"; continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
 		ab := []string{}
@@ -35,8 +32,7 @@ func tidy(argv0 *string) *string {
 			// Such as Diagnostic-Code, Remote-MTA, and so on
 			// - Before: Diagnostic-Code: SMTP;550 User unknown
 			// - After:  Diagnostic-Code: smtp; 550 User unknown
-			match := false
-			for _, f := range Fields1894 {
+			match := false; for _, f := range Fields1894 {
 				// The field name is not listed in RFC1894
 				if fn == f || fn == "Content-Type" { match = true; break }
 			}
@@ -104,8 +100,7 @@ func tidy(argv0 *string) *string {
 		// 4. Concatenate the field name and the field value
 		for _, f := range strings.Split(bf, " ") {
 			// Remove redundant space characters
-			if len(f) == 0 { continue }
-			ab = append(ab, f)
+			if f != "" { ab = append(ab, f) }
 		}
 		email += fmt.Sprintf("%s: %s\n", fn, strings.Join(ab, " "))
 	}
