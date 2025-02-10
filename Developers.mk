@@ -12,6 +12,10 @@ NAME  := sisimai
 MKDIR := mkdir -p
 LS    := ls -1
 CP    := cp
+GO    := go
+
+GOROOT := $(shell echo $$GOROOT)
+GOPATH := $(shell echo $$GOPATH)
 
 LIBSISIMAI := libsisimai.org
 SISIMAIDIR := address arf fact lda lhost mail message reason rfc1123 rfc1894 rfc2045 rfc3464 \
@@ -23,20 +27,23 @@ COVERAGETO := coverage.txt
 .PHONY: clean
 
 test:
-	@ go test $(addprefix ./, $(SISIMAIDIR))
+	@ $(GO) test $(addprefix ./, $(SISIMAIDIR))
 
 list-test-files:
 	@ find $(SISIMAIDIR) -type f -name '*_test.go'
 
 count-test-cases:
-	@ go test -v $(addprefix ./, $(SISIMAIDIR)) | grep 'The number of ' | awk '{ cx += $$7 } END { print cx }'
+	@ $(GO) test -v $(addprefix ./, $(SISIMAIDIR)) | grep 'The number of ' | awk '{ cx += $$7 } END { print cx }'
 
 loc:
 	@ find libsisimai.go $(SISIMAIDIR) -type f -name '*.go' -not -name '*_test.go' | \
 		xargs grep -vE '(^$$|^//|/[*]|[*]/|^ |^--)' | grep -vE "\t+//" | wc -l
 
 coverage:
-	@ go test -v $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
+	@ $(GO) test -v $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
+
+update-go-mod:
+	@ $(GO) mod tidy
 
 clean:
 

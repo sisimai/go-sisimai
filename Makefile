@@ -37,6 +37,7 @@ build:
 test:
 	$(MAKE) -f Developers.mk $@
 
+# -------------------------------------------------------------------------------------------------
 $(REPOS_TARGETS):
 	$(MAKE) -f Repository.mk $@
 
@@ -46,6 +47,7 @@ remove-added-file:        git-rm-cached
 diff push branch:
 	@$(MAKE) git-$@
 
+# -------------------------------------------------------------------------------------------------
 clean:
 	go clean -testcache
 
