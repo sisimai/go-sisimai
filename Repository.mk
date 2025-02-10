@@ -1,4 +1,4 @@
-# go-sisimai/Repository.mk
+# libsisimai.org/sisimai/Repository.mk
 #  ____                      _ _                               _    
 # |  _ \ ___ _ __   ___  ___(_) |_ ___  _ __ _   _   _ __ ___ | | __
 # | |_) / _ \ '_ \ / _ \/ __| | __/ _ \| '__| | | | | '_ ` _ \| |/ /
