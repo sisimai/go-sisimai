@@ -1,4 +1,4 @@
-# go-sisimai/Makefile
+# libsisimai.org/sisimai/Makefile
 #  __  __       _         __ _ _      
 # |  \/  | __ _| | _____ / _(_) | ___ 
 # | |\/| |/ _` | |/ / _ \ |_| | |/ _ \
@@ -17,26 +17,24 @@ RM    := rm -f
 
 GOROOT := $(shell echo $$GOROOT)
 GOPATH := $(shell echo $$GOPATH)
-DOMAIN := libsisimai.org
-COVERS := coverage.txt
+
+LIBSISIMAI := libsisimai.org
+SISIMAIDIR := address arf fact lda lhost mail message reason rfc1123 rfc1894 rfc2045 rfc3464 \
+			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/command smtp/failure smtp/reply  \
+			  smtp/status smtp/transcript string
 
 .DEFAULT_GOAL = git-status
 REPOS_TARGETS = git-status git-push git-commit-amend git-tag-list git-diff git-reset-soft \
 				git-rm-cached git-branch
 # -------------------------------------------------------------------------------------------------
 .PHONY: clean
-init:
-	test -e $(NAME)/go.mod || cd ./$(NAME) && $(GO) mod init $(NAME)
-
 build:
 	$(GO) build lib$(NAME).go
 
 test:
-	go test `find sisimai -type f -name '*_test.go' | xargs dirname | sort | uniq`
+	$(MAKE) -f Developers.mk $@
 
-coverage:
-	go test `find sisimai -type f -name '*_test.go' | xargs dirname | sort | uniq` -coverprofile=$(COVERS)
-
+# -------------------------------------------------------------------------------------------------
 $(REPOS_TARGETS):
 	$(MAKE) -f Repository.mk $@
 
@@ -46,6 +44,7 @@ remove-added-file:        git-rm-cached
 diff push branch:
 	@$(MAKE) git-$@
 
+# -------------------------------------------------------------------------------------------------
 clean:
 	go clean -testcache
 
