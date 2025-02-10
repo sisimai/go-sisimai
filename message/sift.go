@@ -122,7 +122,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter1) bool {
 
 	for j, _ := range localhostr.Digest {
 		// Set the value of "Agent" such as "Postfix", "Sendmail", or "OpenSMTPD"
-		if len(localhostr.Digest[j].Agent) > 0 { continue }
+		if localhostr.Digest[j].Agent != "" { continue }
 		localhostr.Digest[j].Agent = modulename
 	}
 
