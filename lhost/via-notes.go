@@ -7,10 +7,8 @@ package lhost
 // | | '_ \ / _ \/ __| __| / /|  \| |/ _ \| __/ _ \/ __|
 // | | | | | (_) \__ \ |_ / / | |\  | (_) | ||  __/\__ \
 // |_|_| |_|\___/|___/\__/_/  |_| \_|\___/ \__\___||___/
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
 import sisiaddr "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
@@ -33,9 +31,6 @@ func init() {
 				"ディレクトリのリストにありません",
 			},
 		}
-		removedmsg := "MULTIBYTE CHARACTERS HAVE BEEN REMOVED"
-		characters := rfc2045.Parameter(bf.Headers["content-type"][0], "charset")
-
 		dscontents := []sis.DeliveryMatter{{}}
 		notdecoded := []sis.NotDecoded{}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
@@ -73,28 +68,10 @@ func init() {
 
 			} else {
 				// Get error messages
-				if strings.HasPrefix(e, "-") { continue }
-				if sisimoji.Is8Bit(&e) || characters == "iso-2022-jp" {
-					// The error message is not ISO-8859-1
-					if characters == "" { v.Diagnosis = removedmsg; continue } // No "charset" parameter
-					utf8string, nyaan := sisimoji.ToUTF8([]byte(e), characters)
-					if nyaan != nil {
-						// Failed to convert the string to UTF8
-						ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false); ce.DecodedBy = "Notes"
-						notdecoded = append(notdecoded, ce)
-						v.Diagnosis = removedmsg
-
-					} else {
-						// Successfully converted
-						v.Diagnosis += " " + utf8string
-					}
-				} else {
-					// The error message does not include multi-byte characters
-					v.Diagnosis += " " + e
-				}
+				if strings.HasPrefix(e, "-") == false { v.Diagnosis += " " + e }
 			}
 		}
-		
+
 		for recipients == 0 {
 			// Pick an email address from "To:" header of the original message
 			p0 := strings.Index(emailparts[1], "\n\n");  if p0 < 0 { p0 = len(emailparts[1]) }
