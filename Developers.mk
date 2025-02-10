@@ -27,20 +27,20 @@ COVERAGETO := coverage.txt
 .PHONY: clean
 
 test:
-	@ $(GO) test $(addprefix ./, $(SISIMAIDIR))
+	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
 
 list-test-files:
 	@ find $(SISIMAIDIR) -type f -name '*_test.go'
 
 count-test-cases:
-	@ $(GO) test -v $(addprefix ./, $(SISIMAIDIR)) | grep 'The number of ' | awk '{ cx += $$7 } END { print cx }'
+	@ $(GO) test -v ./ $(addprefix ./, $(SISIMAIDIR)) | grep 'The number of ' | awk '{ cx += $$7 } END { print cx }'
 
 loc:
 	@ find libsisimai.go $(SISIMAIDIR) -type f -name '*.go' -not -name '*_test.go' | \
 		xargs grep -vE '(^$$|^//|/[*]|[*]/|^ |^--)' | grep -vE "\t+//" | wc -l
 
 coverage:
-	@ $(GO) test -v $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
+	@ $(GO) test -v ./ $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
 
 init:
 	test -e ./go.mod || $(GO) mod init $(LIBSISIMAI)/$(NAME)
