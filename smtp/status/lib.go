@@ -487,7 +487,6 @@ func Code(argv0 string, argv1 bool) string {
 	// @return   string        Internal delivery status code or an empty string
 	if len(argv0) < 6 { return "" }
 
-	internalcr := ""
 	codetable0 := map[string]string{
 		"authfailure":     "5.0.926",
 		"badreputation":   "5.0.975",
@@ -559,15 +558,8 @@ func Code(argv0 string, argv1 bool) string {
 		"virusdetected":   "4.0.981",
 	}
 
-	if argv1 == true {
-		// Returns the matched temporary error code
-		internalcr = codetable1[argv0]
-
-	} else {
-		// Returns the matched permanent error code
-		internalcr = codetable0[argv0]
-	}
-	return internalcr
+	if argv1 == true { return codetable1[argv0] }
+	return codetable0[argv0]
 }
 
 // Name() returns a reason string matched with the given delivery status code
