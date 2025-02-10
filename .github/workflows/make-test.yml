@@ -1,0 +1,22 @@
+name: make test
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["*"]
+jobs:
+  maketest:
+    name: Make Test with Go 
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: ["1.11", "1.23"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go-version }}
+      - run:  go mod tidy
+      - run:  go build -v ./...
+      - run:  make -f Developers.mk test
+

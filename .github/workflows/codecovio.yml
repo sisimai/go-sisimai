@@ -1,0 +1,27 @@
+name: Upload coverage reports to Codecov
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["*"]
+jobs:
+  codecov:
+    runs-on: ubuntu-latest
+    container: go:latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Setting up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.22
+      - name: Execute cover command
+        run:  make -f Developers.mk coverage
+      - name: Run Codecov on GitHub Actions
+        uses: codecov/codecov-action@v5
+        with:
+          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
