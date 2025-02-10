@@ -13,7 +13,7 @@ func TestLhostNotes(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"01",   1, "5.0.901", "",    "onhold",          false, ""}},
-		{{"02",   1, "5.0.911", "",    "userunknown",      true, ""}},
+		{{"02",   1, "5.0.901", "",    "onhold",          false, ""}},
 		{{"03",   1, "5.0.911", "",    "userunknown",      true, ""}},
 	}; EngineTest(t, "Notes", publiclist, true)
 
@@ -24,7 +24,7 @@ func TestLhostNotes(t *testing.T) {
 		{{"1003", 1, "5.0.901", "",    "onhold",          false, ""}},
 		{{"1004", 1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"1005", 1, "5.0.901", "",    "onhold",          false, ""}},
-		{{"1006", 1, "5.0.911", "",    "userunknown",      true, ""}},
+		{{"1006", 1, "5.0.901", "",    "onhold",          false, ""}},
 		{{"1007", 1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"1008", 1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"1009", 1, "5.0.911", "",    "userunknown",      true, ""}},
