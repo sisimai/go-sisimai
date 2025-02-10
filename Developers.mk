@@ -15,22 +15,28 @@ CP    := cp
 
 LIBSISIMAI := libsisimai.org
 SISIMAIDIR := address arf fact lda lhost mail message reason rfc1123 rfc1894 rfc2045 rfc3464 \
-			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp string
+			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/command smtp/failure smtp/reply  \
+			  smtp/status smtp/transcript string
 COVERAGETO := coverage.txt
 
 # -------------------------------------------------------------------------------------------------
 .PHONY: clean
 
+test:
+	@ go test $(addprefix ./, $(SISIMAIDIR))
+
 list-test-files:
 	@ find $(SISIMAIDIR) -type f -name '*_test.go'
 
 count-test-cases:
-	@ go test -v `find $(SISIMAIDIR) -type f -name '*_test.go' | xargs dirname | sort | uniq | sed -e 's|^|./|g'` | \
-		grep 'The number of ' | awk '{ cx += $$7 } END { print cx }'
+	@ go test -v $(addprefix ./, $(SISIMAIDIR)) | grep 'The number of ' | awk '{ cx += $$7 } END { print cx }'
 
 loc:
 	@ find libsisimai.go $(SISIMAIDIR) -type f -name '*.go' -not -name '*_test.go' | \
 		xargs grep -vE '(^$$|^//|/[*]|[*]/|^ |^--)' | grep -vE "\t+//" | wc -l
+
+coverage:
+	@ go test -v $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
 
 clean:
 

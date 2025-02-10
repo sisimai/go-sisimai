@@ -1,4 +1,4 @@
-# go-sisimai/Makefile
+# libsisimai.org/sisimai/Makefile
 #  __  __       _         __ _ _      
 # |  \/  | __ _| | _____ / _(_) | ___ 
 # | |\/| |/ _` | |/ / _ \ |_| | |/ _ \
@@ -17,8 +17,11 @@ RM    := rm -f
 
 GOROOT := $(shell echo $$GOROOT)
 GOPATH := $(shell echo $$GOPATH)
-DOMAIN := libsisimai.org
-COVERS := coverage.txt
+
+LIBSISIMAI := libsisimai.org
+SISIMAIDIR := address arf fact lda lhost mail message reason rfc1123 rfc1894 rfc2045 rfc3464 \
+			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp string
+COVERAGETO := coverage.txt
 
 .DEFAULT_GOAL = git-status
 REPOS_TARGETS = git-status git-push git-commit-amend git-tag-list git-diff git-reset-soft \
@@ -32,10 +35,7 @@ build:
 	$(GO) build lib$(NAME).go
 
 test:
-	go test `find ./ -type f -name '*_test.go' | xargs dirname | sort | uniq`
-
-coverage:
-	go test `find ./ -type f -name '*_test.go' | xargs dirname | sort | uniq` -coverprofile=$(COVERS)
+	$(MAKE) -f Developers.mk $@
 
 $(REPOS_TARGETS):
 	$(MAKE) -f Repository.mk $@
