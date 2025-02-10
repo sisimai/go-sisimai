@@ -22,6 +22,7 @@ LIBSISIMAI := libsisimai.org
 SISIMAIDIR := address arf fact lda lhost mail message reason rfc1123 rfc1894 rfc2045 rfc3464 \
 			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/command smtp/failure smtp/reply  \
 			  smtp/status smtp/transcript string
+BUILDFLAGS := -ldflags="-s -w" -trimpath
 
 .DEFAULT_GOAL = git-status
 REPOS_TARGETS = git-status git-push git-commit-amend git-tag-list git-diff git-reset-soft \
@@ -29,7 +30,7 @@ REPOS_TARGETS = git-status git-push git-commit-amend git-tag-list git-diff git-r
 # -------------------------------------------------------------------------------------------------
 .PHONY: clean
 build:
-	$(GO) build lib$(NAME).go
+	CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) lib$(NAME).go
 
 test:
 	$(MAKE) -f Developers.mk $@
