@@ -24,23 +24,16 @@ func Token(argv1 string, argv2 string, epoch int) string {
 	// Format: STX(0x02) Sender-Address RS(0x1e) Recipient-Address ETX(0x03)
 	plain := fmt.Sprintf("\x02%s\x1e%s\x1e%d\x03", strings.ToLower(argv1), strings.ToLower(argv2), epoch)
 	crypt := sha1.New(); crypt.Write([]byte(plain))
-	token := crypt.Sum(nil)
-
-	return fmt.Sprintf("%x", token)
+	return fmt.Sprintf("%x", crypt.Sum(nil))
 }
 
 // Is8Bit() checks the argument is including an 8-bit character or not
 func Is8Bit(argv1 *string) bool {
 	// @param    *string argv1  Any string to be checked
-	// @return   bool           false:  ASCII Characters only
+	// @return   bool           false: ASCII Characters only
 	//                          true:  Including an 8-bit character
-	eight := false
-	for _, e := range *argv1 {
-		if e < 128 { continue }
-		eight = true
-		break
-	}
-	return eight
+	for _, e := range *argv1 { if e > 127 { return true } }
+	return false
 }
 
 // Squeeze() remove redundant characters
