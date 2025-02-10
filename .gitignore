@@ -1,2 +1,5 @@
+coverage.*
+sbin/
+stash/
 set-of-emails/private
 tmp/
