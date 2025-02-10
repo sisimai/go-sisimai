@@ -9,10 +9,10 @@ package string
 // \__ \ |_| |  | | | | | (_| |
 // |___/\__|_|  |_|_| |_|\__, |
 //                       |___/ 
+import "fmt"
 import "strings"
 import "golang.org/x/text/encoding"
-import "golang.org/x/text/encoding/japanese"
-import "fmt"
+//import "golang.org/x/text/encoding/japanese"
 
 // ToLF() replace CR and CR/LF to LF.
 func ToLF(argv0 *string) *string {
@@ -86,15 +86,11 @@ func ToUTF8(argv0 []byte, argv1 string) (string, error) {
 	if len(argv0) == 0  || argv1 == ""         { return "", nil            }
 	if argv1 == "utf-8" || argv1 == "us-ascii" { return string(argv0), nil }
 
-	var encodingif *encoding.Decoder
-	switch argv1 {
-		case "iso-2022-jp": encodingif = japanese.ISO2022JP.NewDecoder()
-		case "shift_jis":   encodingif = japanese.ShiftJIS.NewDecoder()
-		case "euc-jp":      encodingif = japanese.EUCJP.NewDecoder()
-	default:
+	var encodingif *encoding.Decoder; if encodingif == nil {
 		ce := fmt.Errorf("Unsupported encoding: %s, see https://github.com/sisimai/go-sisimai/issues/42", argv1)
 		return string(argv0), ce
 	}
+
 	utf8string := make([]byte, len(argv0) * 3)
 	rightindex, _, nyaan := encodingif.Transform(utf8string, argv0, false)
 	if nyaan != nil { return string(argv0), nyaan }

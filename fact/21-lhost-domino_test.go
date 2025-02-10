@@ -13,7 +13,7 @@ func TestLhostDomino(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"01",   1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"02",   1, "5.0.0",   "",    "userunknown",      true, ""}},
+		{{"02",   1, "5.0.0",   "",    "onhold",          false, ""}}, // #50
 		{{"03",   1, "5.0.0",   "",    "networkerror",    false, ""}},
 	}; EngineTest(t, "Domino", publiclist, true)
 
@@ -21,11 +21,11 @@ func TestLhostDomino(t *testing.T) {
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"1001", 1, "5.0.0",   "",    "onhold",          false, ""}},
 		{{"1002", 1, "5.1.1",   "",    "userunknown",      true, ""}},
-		{{"1003", 1, "5.0.0",   "",    "userunknown",      true, ""}},
-		{{"1004", 1, "5.0.0",   "",    "userunknown",      true, ""}},
+		{{"1003", 1, "5.0.0",   "",    "onhold",          false, ""}},
+		{{"1004", 1, "5.0.0",   "",    "onhold",          false, ""}},
 		{{"1005", 1, "5.0.0",   "",    "onhold",          false, ""}},
 		{{"1006", 1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"1007", 1, "5.0.0",   "",    "userunknown",      true, ""}},
+		{{"1007", 1, "5.0.0",   "",    "onhold",          false, ""}},
 		{{"1008", 1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"1009", 1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"1010", 1, "5.0.911", "",    "userunknown",      true, ""}},
