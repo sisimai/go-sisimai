@@ -14,7 +14,7 @@ func TestLhostAmavis(t *testing.T) {
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"01",   1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"02",   1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"03",   1, "5.7.0",   "554", "spamdetected",    false, ""}},
+		{{"03",   1, "5.7.0",   "554", "notcompliantrfc",  false, ""}},
 	}
 	EngineTest(t, "Amavis", publiclist, true)
 
@@ -22,7 +22,7 @@ func TestLhostAmavis(t *testing.T) {
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"1001", 1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"1002", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1003", 1, "5.7.0",   "554", "spamdetected",    false, ""}},
+		{{"1003", 1, "5.7.0",   "554", "notcompliantrfc",  false, ""}},
 	}; EngineTest(t, "Amavis", secretlist, false)
 }
 
