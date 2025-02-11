@@ -190,7 +190,7 @@ func init() {
 							p1 := strings.Index(e, "> ")
 							p2 := strings.Index(e[p1:], "(expanded from ")
 							p3 := strings.Index(e[p2 + 14:], ">):")
-							p4 := p3 + p2 + 14 + 3
+							p4 := p3 + p2 + 14 + 3 // len("(expanded from ") + len(">):")
 							anotherset["recipient"] = sisiaddr.S3S4(e[0:p1])
 							anotherset["alias"]     = sisiaddr.S3S4(e[p2 + 15:])
 							if len(e) > p4 { anotherset["diagnosis"] = e[p4:] }
