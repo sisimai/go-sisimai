@@ -1,12 +1,14 @@
 // Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc2045
-
 //  ____  _____ ____ ____   ___  _  _  ____  
 // |  _ \|  ___/ ___|___ \ / _ \| || || ___| 
 // | |_) | |_ | |     __) | | | | || ||___ \ 
 // |  _ <|  _|| |___ / __/| |_| |__   _|__) |
 // |_| \_\_|   \____|_____|\___/   |_||____/ 
+
+// Package "rfc2045" provides functions for RFC2045; Multipurpose Internet Mail Extensions (MIME)
+// Part One: Format of Internet Message Bodies (https://datatracker.ietf.org/doc/html/rfc2045)
+package rfc2045
 import "strings"
 
 // Parameter() finds a value of specified parameter name from Content-Type header.
