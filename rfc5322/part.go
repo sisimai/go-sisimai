@@ -1,12 +1,12 @@
 // Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc5322
-
 //  ____  _____ ____ ____ _________  ____  
 // |  _ \|  ___/ ___| ___|___ /___ \|___ \ 
 // | |_) | |_ | |   |___ \ |_ \ __) | __) |
 // |  _ <|  _|| |___ ___) |__) / __/ / __/ 
 // |_| \_\_|   \____|____/____/_____|_____|
+
+package rfc5322
 import "strings"
 
 // Part() splits the entire message body given as the 1st argument into error message lines and the

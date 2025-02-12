@@ -1,12 +1,15 @@
 // Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc5322
-
 //  ____  _____ ____ ____ _________  ____  
 // |  _ \|  ___/ ___| ___|___ /___ \|___ \ 
 // | |_) | |_ | |   |___ \ |_ \ __) | __) |
 // |  _ <|  _|| |___ ___) |__) / __/ / __/ 
 // |_| \_\_|   \____|____/____/_____|_____|
+
+// Package "rfc5322" provides functions for email addresses, Date: header, Received: headers, and
+// other headers and messages related to RFC5322 (https://datatracker.ietf.org/doc/html/rfc5322)
+package rfc5322
+
 func FIELDINDEX() []string {
 	// The following fields are not referred in Sisimai
 	// Resent-From Resent-Sender Resent-Cc Cc Bcc Resent-Bcc In-Reply-To References Comments Keywords

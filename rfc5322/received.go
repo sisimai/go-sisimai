@@ -1,12 +1,12 @@
 // Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc5322
-
 //  ____  _____ ____ ____ _________  ____     ______               _               _   
 // |  _ \|  ___/ ___| ___|___ /___ \|___ \   / /  _ \ ___  ___ ___(_)_   _____  __| |_ 
 // | |_) | |_ | |   |___ \ |_ \ __) | __) | / /| |_) / _ \/ __/ _ \ \ \ / / _ \/ _` (_)
 // |  _ <|  _|| |___ ___) |__) / __/ / __/ / / |  _ <  __/ (_|  __/ |\ V /  __/ (_| |_ 
 // |_| \_\_|   \____|____/____/_____|_____/_/  |_| \_\___|\___\___|_| \_/ \___|\__,_(_)
+
+package rfc5322
 import "strings"
 import "libsisimai.org/sisimai/rfc791"
 import sisimoji "libsisimai.org/sisimai/string"
