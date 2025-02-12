@@ -1,13 +1,16 @@
 // Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package status
-
 //                _           __   _        _             
 //  ___ _ __ ___ | |_ _ __   / /__| |_ __ _| |_ _   _ ___ 
 // / __| '_ ` _ \| __| '_ \ / / __| __/ _` | __| | | / __|
 // \__ \ | | | | | |_| |_) / /\__ \ || (_| | |_| |_| \__ \
 // |___/_| |_| |_|\__| .__/_/ |___/\__\__,_|\__|\__,_|___/
 //                   |_|                                  
+
+// Package "smtp/status" provides functions related to SMTP Status codes such as 4.2.2, 5.1.1
+// http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
+package status
+
 /* http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
 ---------------------------------------------------------------------------------------------------
  [Class Sub-Codes]
