@@ -1,12 +1,12 @@
 // Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package lhost
-
 //  _ _               _      _____          _           
 // | | |__   ___  ___| |_   / / _ \ _ __ __| | ___ _ __ 
 // | | '_ \ / _ \/ __| __| / / | | | '__/ _` |/ _ \ '__|
 // | | | | | (_) \__ \ |_ / /| |_| | | | (_| |  __/ |   
 // |_|_| |_|\___/|___/\__/_/  \___/|_|  \__,_|\___|_|   
+
+package lhost
 import "strings"
 
 // OrderBySubject() returns an MTA Order decided by the first word of the "Subject": header.
