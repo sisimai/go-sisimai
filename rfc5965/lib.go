@@ -1,12 +1,15 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc5965
-
 //  ____  _____ ____ ____  ___   __  ____  
 // |  _ \|  ___/ ___| ___|/ _ \ / /_| ___| 
 // | |_) | |_ | |   |___ \ (_) | '_ \___ \ 
 // |  _ <|  _|| |___ ___) \__, | (_) |__) |
 // |_| \_\_|   \____|____/  /_/ \___/____/ 
+
+// Package "rfc5964" provides a function related to RFC5965; An Extensible Format for Email Feedback
+// Reports (https://datatracker.ietf.org/doc/html/rfc5965)
+package rfc5965
+
 func FIELDINDEX() []string {
 	// https://datatracker.ietf.org/doc/html/rfc5965
 	return []string{
