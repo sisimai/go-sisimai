@@ -11,7 +11,6 @@ package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rfc5322"
-import sisiaddr "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
@@ -80,7 +79,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				if sisiaddr.IsEmailAddress(e) == false { continue }
+				if rfc5322.IsEmailAddress(e) == false { continue }
 				v.Recipient = e
 				recipients += 1
 

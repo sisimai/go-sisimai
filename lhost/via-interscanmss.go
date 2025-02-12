@@ -60,7 +60,7 @@ func init() {
 				p3 := strings.LastIndex(e, "<")
 				p4 := strings.LastIndex(e, ">")
 				cr := sisiaddr.Find(e[p3:p4 + 1])
-				if len(cr) == 0 || sisiaddr.IsEmailAddress(cr[0]) == false { continue }
+				if len(cr) == 0 || rfc5322.IsEmailAddress(cr[0]) == false { continue }
 
 				if len(v.Recipient) > 0 && strings.Contains(cr[0], v.Recipient) == false {
 					// There are multiple recipient addresses in the message body.

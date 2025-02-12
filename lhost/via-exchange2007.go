@@ -152,7 +152,7 @@ func init() {
 			p3 := sisimoji.IndexOnTheWay(emailparts[0], "\n", p2 + 20);     if p3 < 0 { break }
 			cv := sisiaddr.S3S4(emailparts[0][p2 + 20:p3])
 
-			if sisiaddr.IsEmailAddress(cv) == false { break }
+			if rfc5322.IsEmailAddress(cv) == false { break }
 			dscontents[0].Recipient = cv
 			recipients++
 		}
