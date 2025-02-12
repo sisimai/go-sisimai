@@ -1,12 +1,12 @@
 // Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package sis
-
 //  _   _       _   ____                     _          _ 
 // | \ | | ___ | |_|  _ \  ___  ___ ___   __| | ___  __| |
 // |  \| |/ _ \| __| | | |/ _ \/ __/ _ \ / _` |/ _ \/ _` |
 // | |\  | (_) | |_| |_| |  __/ (_| (_) | (_| |  __/ (_| |
 // |_| \_|\___/ \__|____/ \___|\___\___/ \__,_|\___|\__,_|
+
+package sis
 import "fmt"
 import "time"
 import "runtime"

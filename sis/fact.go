@@ -1,12 +1,14 @@
 // Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package sis
-
 //  _____          _   
 // |  ___|_ _  ___| |_ 
 // | |_ / _` |/ __| __|
 // |  _| (_| | (__| |_ 
 // |_|  \__,_|\___|\__|
+
+// Package "sis" provides types for data structure of sisimai
+package sis
+
 import "time"
 import "encoding/json"
 

@@ -1,6 +1,5 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package sis
 //  ____  _     _             _   _           _                               
 // |  _ \(_)___(_)_ __   __ _| | | |_ __   __| | ___ _ ____      ____ _ _   _ 
 // | |_) | / __| | '_ \ / _` | | | | '_ \ / _` |/ _ \ '__\ \ /\ / / _` | | | |
@@ -8,7 +7,9 @@ package sis
 // |_| \_\_|___/_|_| |_|\__, |\___/|_| |_|\__,_|\___|_|    \_/\_/ \__,_|\__, |
 //                      |___/                                           |___/ 
 
-// Each MTA function in sisimai/lhost returns RisingUnderway{}
+package sis
+
+// Each MTA function in lhost package returns sis.RisingUnderway
 type RisingUnderway struct {
 	Digest []DeliveryMatter // List of DeliveryMatter structs
 	RFC822 string           // The original message

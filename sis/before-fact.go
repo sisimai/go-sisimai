@@ -1,12 +1,13 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package sis
-
 //  ____        __                _____          _   
 // | __ )  ___ / _| ___  _ __ ___|  ___|_ _  ___| |_ 
 // |  _ \ / _ \ |_ / _ \| '__/ _ \ |_ / _` |/ __| __|
 // | |_) |  __/  _| (_) | | |  __/  _| (_| | (__| |_ 
 // |____/ \___|_|  \___/|_|  \___|_|  \__,_|\___|\__|
+
+package sis
+
 // sisimai/message.Rise() returns BeforeFact{}
 type BeforeFact struct {
 	Sender  string              // Unix FROM line ("From ")
