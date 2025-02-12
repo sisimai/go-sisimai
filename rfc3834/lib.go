@@ -1,12 +1,15 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc3834
-
 //  ____  _____ ____ _____  ___ _____ _  _   
 // |  _ \|  ___/ ___|___ / ( _ )___ /| || |  
 // | |_) | |_ | |     |_ \ / _ \ |_ \| || |_ 
 // |  _ <|  _|| |___ ___) | (_) |__) |__   _|
 // |_| \_\_|   \____|____/ \___/____/   |_|  
+
+// Package "rfc3834" provides functions like a MTA module in "lhost" package for decoding automatic
+// responded messages formatted according to RFC3834; Recommendations for Automatic Responses to 
+// Electronic Mail (https://datatracker.ietf.org/doc/html/rfc3834)
+package rfc3834
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
