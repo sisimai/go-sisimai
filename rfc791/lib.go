@@ -1,12 +1,14 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc791
-
 //  ____  _____ ____ _____ ___  _ 
 // |  _ \|  ___/ ___|___  / _ \/ |
 // | |_) | |_ | |      / / (_) | |
 // |  _ <|  _|| |___  / / \__, | |
 // |_| \_\_|   \____|/_/    /_/|_|
+
+// Package "rfc791" provides functions related to IPv4 address described in RFC791; INTERNET PROTOCOL
+// (https://datatracker.ietf.org/doc/html/rfc791)
+package rfc791
 import "strings"
 import "strconv"
 
