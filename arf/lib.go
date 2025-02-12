@@ -143,7 +143,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				// Original-Rcpt-To header field is optional and may appear any number of times as appropriate:
 				// Original-Rcpt-To: <kijitora@example.jp>
 				// Removal-Recipient: user@example.com
-				cv := sisiaddr.S3S4(e[strings.Index(e, " ") + 1:]); if sisiaddr.IsEmailAddress(cv) == false       { continue }
+				cv := sisiaddr.S3S4(e[strings.Index(e, " ") + 1:]); if rfc5322.IsEmailAddress(cv) == false        { continue }
 				cw := len(dscontents);                              if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
 
 				if len(v.Recipient) > 0 {
