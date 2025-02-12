@@ -16,8 +16,8 @@ func TestArgs(t *testing.T) {
 
 	cx++; if cv.Delivered == true { t.Errorf("%s.Delivered is true", fn) }
 	cx++; if cv.Vacation  == true { t.Errorf("%s.Vacation  is true", fn) }
+	cx++; if cv.Callback0 != nil  { t.Errorf("%s.Callback0 is not nil: %v", fn, cv.Callback0) }
 	cx++; if cv.Callback1 != nil  { t.Errorf("%s.Callback1 is not nil: %v", fn, cv.Callback1) }
-	cx++; if cv.Callback2 != nil  { t.Errorf("%s.Callback2 is not nil: %v", fn, cv.Callback2) }
 
 	t.Logf("The number of tests = %d", cx)
 }

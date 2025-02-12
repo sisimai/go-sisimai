@@ -48,7 +48,7 @@ var Alternates = map[string][]string{
 
 var TestReturn = map[string]interface{}{"neko-dono": []string{"Michitsuna", "Suzu"}}
 var CallbackFn = func(arg *sis.CallbackArgs) (map[string]interface{}, error) { return TestReturn, nil }
-var ArgForRise = &sis.DecodingArgs{Delivered: true, Vacation: true, Callback1: CallbackFn}
+var ArgForRise = &sis.DecodingArgs{Delivered: true, Vacation: true, Callback0: CallbackFn}
 
 // EngineTest() is called from lhost/*_test.go, rhost/*_test.go, rfc3464/lib_test.go, arf/lib_test.go.
 func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publictest bool) {
