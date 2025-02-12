@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022,2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
 
@@ -43,9 +43,9 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 }
 
 // Rise() works as a constructor of Sisimai::Message
-func Rise(mesg *string, hook sis.CfParameter1) *sis.BeforeFact {
+func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 	// @param   *string          mesg  Entire email message
-	// @param   sis.CfParameter1 hook  Callback Function
+	// @param   sis.CfParameter0 hook  Callback Function
 	// @return  Message                Structured email data
 	if mesg == nil || len(*mesg) < 1 { return &sis.BeforeFact{} }
 

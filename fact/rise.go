@@ -42,7 +42,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		return []sis.Fact{}, []sis.NotDecoded{ce}
 	}
 
-	beforefact := message.Rise(email, args.Callback1); if len((*beforefact).Errors) > 0 {
+	beforefact := message.Rise(email, args.Callback0); if len((*beforefact).Errors) > 0 {
 		// There is some errors while reading the email, decoding the bounce message.
 		// Set the email path to sis.NotDecoded.EmailFile
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }

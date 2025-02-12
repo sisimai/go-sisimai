@@ -24,8 +24,8 @@ const libname string = "sisimai"
 const version string = "5.2.0"
 const patchlv uint8  = 0
 type  CallbackArgs = sis.CallbackArgs
+type  CfParameter0 = sis.CfParameter0
 type  CfParameter1 = sis.CfParameter1
-type  CfParameter2 = sis.CfParameter2
 
 // Version() returns the version number of sisimai
 func Version() string {
@@ -42,8 +42,8 @@ func Args() *sis.DecodingArgs {
 	return &sis.DecodingArgs{
 		Delivered: false, // Include sis.Fact{}.Action = "delivered" records in the decoded data
 		Vacation:  false, // Include sis.Fact{}.Reason = "vacation" records in the decoded data
-		Callback1: nil,   // The 1st callback function
-		Callback2: nil,   // The 2nd callback function
+		Callback0: nil,   // [0] The 1st callback function
+		Callback1: nil,   // [1] The 2nd callback function
 	}
 }
 
@@ -90,7 +90,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 			if len(fact)  > 0 { sisidigest = append(sisidigest, fact...)  }
 			if len(nyaan) > 0 { notdecoded = append(notdecoded, nyaan...) }
 
-			if args.Callback2 != nil {
+			if args.Callback1 != nil {
 				// Run the 2nd callback function specified with the 3rd argument of Sisimai.Rise() after
 				// reading each email file in Maildir/ every time
 				carg := &sis.CallbackArgs{
@@ -102,8 +102,8 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 					},
 					Payload: mesg,
 				}
-				//args.Callback2.(func(*sis.CallbackArgs))(carg)
-				if _, nyaan := args.Callback2(carg); nyaan != nil {
+				//args.Callback1.(func(*sis.CallbackArgs))(carg)
+				if _, nyaan := args.Callback1(carg); nyaan != nil {
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true); ce.Email(emailthing.Path)
 					notdecoded = append(notdecoded, ce)
 				}
