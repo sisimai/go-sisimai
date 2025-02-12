@@ -36,7 +36,7 @@ func Version() string {
 	return v
 }
 
-// Args() returns the pointer to sis.DecodingArgs{}
+// Args() returns the pointer to sis.DecodingArgs{} as the 2nd argument of Rise() function
 func Args() *sis.DecodingArgs {
 	// @param   NONE
 	// @return  *sis.DecodingArgs
