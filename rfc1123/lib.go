@@ -1,12 +1,14 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc1123
-
 //  ____  _____ ____ _ _ ____  _____ 
 // |  _ \|  ___/ ___/ / |___ \|___ / 
 // | |_) | |_ | |   | | | __) | |_ \ 
 // |  _ <|  _|| |___| | |/ __/ ___) |
 // |_| \_\_|   \____|_|_|_____|____/ 
+
+// package "rfc1123" provides functions related to Internet hosts described in RFC1123
+// https://datatracker.ietf.org/doc/html/rfc1123
+package rfc1123
 import "strings"
 import "libsisimai.org/sisimai/rfc791"
 import sisimoji "libsisimai.org/sisimai/string"
