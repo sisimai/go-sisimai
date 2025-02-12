@@ -1,13 +1,13 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package reason
-
 //  ____            _                 _____                     
 // / ___| _   _ ___| |_ ___ _ __ ___ | ____|_ __ _ __ ___  _ __ 
 // \___ \| | | / __| __/ _ \ '_ ` _ \|  _| | '__| '__/ _ \| '__|
 //  ___) | |_| \__ \ ||  __/ | | | | | |___| |  | | | (_) | |   
 // |____/ \__, |___/\__\___|_| |_| |_|_____|_|  |_|  \___/|_|   
 //        |___/                                                 
+
+package reason
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import sisimoji "libsisimai.org/sisimai/string"
