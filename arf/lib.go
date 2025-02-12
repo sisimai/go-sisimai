@@ -1,12 +1,13 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package arf
-
 //     _    ____  _____ 
 //    / \  |  _ \|  ___|
 //   / _ \ | |_) | |_   
 //  / ___ \|  _ <|  _|  
 // /_/   \_\_| \_\_|    
+
+// Package "arf" provides ARF: Abuse Report Format related functions
+package arf
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
