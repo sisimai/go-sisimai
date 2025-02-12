@@ -57,7 +57,7 @@ func init() {
 			// ------- Returned Message --------
 			if strings.Contains(e, "@") && strings.Contains(e, " ") == false {
 				// kijitora@notes.example.jp
-				if sisiaddr.IsEmailAddress(e) == false { continue }
+				if rfc5322.IsEmailAddress(e) == false { continue }
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})

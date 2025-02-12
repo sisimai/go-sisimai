@@ -8,6 +8,7 @@ package address
 // | (_| | (_| | (_| | | |  __/\__ \__ \
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
+import "libsisimai.org/sisimai/rfc5322"
 
 // Undisclosed() returns a pseudo recipient address or a pseudo sender address
 func Undisclosed(f bool) string {
@@ -30,7 +31,7 @@ func Final(argv0 string) string {
 	useris := argv0[0:atmark]
 	hostis := argv0[atmark+1:]
 
-	if IsQuotedAddress(argv0) == false {
+	if rfc5322.IsQuotedAddress(argv0) == false {
 		// Remove all the angle brackets from the local part
 		useris = strings.ReplaceAll(useris, "<", "")
 		useris = strings.ReplaceAll(useris, ">", "")
@@ -42,3 +43,40 @@ func Final(argv0 string) string {
 	return useris + "@" + hostis
 }
 
+// IsIncluded() returns true if the string include an email address
+func IsIncluded(argv0 string) bool {
+	// @param    string argv0    String including an email address like "<neko@example.jp>"
+	// @return   bool            true:  is including an email address
+	//                           false: is not including an email address
+	if len(argv0) < 5 || strings.Contains(argv0,  "@") == false { return false }
+	if strings.HasPrefix(argv0, "<") && strings.HasSuffix(argv0, ">") {
+		// The argument is like "<neko@example.jp>"
+		if rfc5322.IsEmailAddress(strings.Trim(argv0, "<>")) { return true }
+		return false
+
+	} else {
+		// Such as "nekochan (kijitora) neko@example.jp"
+		for _, e := range strings.Split(argv0, " ") {
+			// Is there any email address string in each element?
+			e = strings.Trim(e, "<>"); if rfc5322.IsEmailAddress(e) { return true }
+		}
+	}
+	return false
+}
+
+// IsMailerDaemon() checks that the argument is mailer-daemon or not
+func IsMailerDaemon(email string) bool {
+	// @param    string email    Email address
+	// @return   bool            true:  is a mailer-daemon
+	//                           false: is not a mailer-daemon
+	match := false
+	value := strings.ToLower(email)
+	table := []string{
+		"mailer-daemon@", "(mailer-daemon)", "<mailer-daemon>", "mailer-daemon ",
+		"postmaster@", "(postmaster)", "<postmaster>",
+	}
+	for _, e := range table {
+		if strings.Contains(value, e) || value == "mailer-daemon" || value == "postmaster" { return true }
+	}
+	return match
+}

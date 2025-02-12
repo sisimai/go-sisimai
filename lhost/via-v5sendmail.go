@@ -151,7 +151,7 @@ func init() {
 				if p1 > 0 {
 					// Get the recipient address from "To:" header at the original message
 					cv := sisiaddr.S3S4(emailparts[1][p1 + 5:p2])
-					if sisiaddr.IsEmailAddress(cv) == false { return sis.RisingUnderway{} }
+					if rfc5322.IsEmailAddress(cv) == false { return sis.RisingUnderway{} }
 					dscontents[0].Recipient = cv; recipients++
 				}
 			}
@@ -169,7 +169,7 @@ func init() {
 
 			// There is no local part in the recipient email address like "@example.jp"
 			// Get an email address from the value of Diagnostic-Code: field
-			if sisiaddr.IsEmailAddress(e.Recipient) == true  { continue }
+			if rfc5322.IsEmailAddress(e.Recipient) == true   { continue }
 			p1 := strings.Index(e.Diagnosis, "<"); if p1 < 0 { continue }
 			p2 := strings.Index(e.Diagnosis, ">"); if p2 < 0 { continue }
 			e.Recipient = sisiaddr.S3S4(e.Diagnosis[p1:p2 + 1])

@@ -8,6 +8,8 @@ package address
 // | (_| | (_| | (_| | | |  __/\__ \__ \
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
+import "libsisimai.org/sisimai/rfc1123"
+import "libsisimai.org/sisimai/rfc5322"
 import sisimoji "libsisimai.org/sisimai/string"
 
 // S3S4() runs like ruleset 3,4 of sendmail.cf
@@ -88,7 +90,7 @@ func Find(argv1 string) [3]string {
 					if IsIncluded(readbuffer[0]) {
 						// The value of readbuffer[0] is a valid email address
 						// "e" is a part of the display name or the comment
-						if IsComment(readbuffer[2]) { readbuffer[2] += e } else { readbuffer[1] += e }
+						if rfc5322.IsComment(readbuffer[2]) { readbuffer[2] += e } else { readbuffer[1] += e }
 					}
 				}
 				continue
@@ -104,7 +106,7 @@ func Find(argv1 string) [3]string {
 
 				} else {
 					// ">" is a part of the comment block or the display name
-					if IsComment(readbuffer[2]) { readbuffer[2] += e } else { readbuffer[1] += e }
+					if rfc5322.IsComment(readbuffer[2]) { readbuffer[2] += e } else { readbuffer[1] += e }
 				}
 				continue
 			}   // End of if(">")
@@ -205,7 +207,7 @@ func Find(argv1 string) [3]string {
 
 	if len(readbuffer[0]) == 0 {
 		// There is no email address
-		if IsEmailAddress(readbuffer[1]) == true {
+		if rfc5322.IsEmailAddress(readbuffer[1]) == true {
 			// The display name part is an email address like "neko@example.jp"
 			// TODO: Implement this block in p5-sisimai, rb-sisimai
 			readbuffer[0] = "<" + strings.TrimSpace(readbuffer[1]) + ">"
@@ -214,7 +216,7 @@ func Find(argv1 string) [3]string {
 			// Try to use the string like an email address in the display name
 			for _, e := range strings.Split(readbuffer[1], " ") {
 				// Find an email address
-				if IsEmailAddress(e) == false { continue }
+				if rfc5322.IsEmailAddress(e) == false { continue }
 				readbuffer[0] = e; break
 			}
 		} else if IsMailerDaemon(readbuffer[1]) == true {
@@ -241,10 +243,10 @@ func Find(argv1 string) [3]string {
 		// - Remove angle brackets, other brackets, and quotations: []<>{}'` except a domain part is
 		//   an IP address like neko@[192.0.2.222]
 		// - Remove angle brackets, other brackets, and quotations: ()[]<>{}'`;. and `"`
-		if IsDomainLiteral(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], "[]{}()`';.") }
+		if rfc1123.IsDomainLiteral(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], "[]{}()`';.") }
 		readbuffer[0] = strings.Trim(readbuffer[0], "<>")
 		readbuffer[0] = Final(readbuffer[0])
-		if IsQuotedAddress(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], `"`) }
+		if rfc5322.IsQuotedAddress(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], `"`) }
 		emailtable[0] = readbuffer[0]
 	}
 
@@ -258,7 +260,7 @@ func Find(argv1 string) [3]string {
 			readbuffer[1] = sisimoji.Squeeze(readbuffer[1], " ")
 			break
 		}
-		if IsQuotedAddress(readbuffer[1]) == false {
+		if rfc5322.IsQuotedAddress(readbuffer[1]) == false {
 			// Trim `"` from the display name when the value is not like "neko-cat"@libsisimai.org
 			readbuffer[1] = strings.Trim(readbuffer[1], `"`)
 		}
@@ -275,8 +277,8 @@ func Find(argv1 string) [3]string {
 				f = strings.Trim(f, "{}()[]`';."); if len(f) < 5 { continue }
 				f = Final(f)
 
-				if IsQuotedAddress(f) == false { e = strings.Trim(e, `"`)    }
-				if IsEmailAddress(f)  == true  { emailtable[0] = f; break E0 }
+				if rfc5322.IsQuotedAddress(f) == false { e = strings.Trim(e, `"`)    }
+				if rfc5322.IsEmailAddress(f)  == true  { emailtable[0] = f; break E0 }
 			}
 		}
 		break E0
@@ -286,7 +288,7 @@ func Find(argv1 string) [3]string {
 	emailtable[0] = strings.Trim(emailtable[0], ".")
 
 	// Check and tidy up the comment block
-	if IsComment(readbuffer[2]) { emailtable[2] = strings.TrimSpace(readbuffer[2]) }
+	if rfc5322.IsComment(readbuffer[2]) { emailtable[2] = strings.TrimSpace(readbuffer[2]) }
 
 	return emailtable
 }

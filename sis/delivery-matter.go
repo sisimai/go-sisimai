@@ -10,11 +10,11 @@ package sis
 import "strings"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 var Fields1894 = rfc1894.FIELDTABLE()
 type DeliveryMatter struct {
@@ -82,7 +82,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 
 		case "alias":
 			// Only valid email addresses are accepted
-			if this.Alias == argv1 || sisiaddr.IsEmailAddress(argv1) == false { return false }
+			if this.Alias == argv1 || rfc5322.IsEmailAddress(argv1) == false { return false }
 			this.Alias = argv1
 
 		case "command":
@@ -117,7 +117,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 
 		case "recipient":
 			// Only valid email addresses are accepted
-			if this.Recipient == argv1 || sisiaddr.IsEmailAddress(argv1) == false { return false }
+			if this.Recipient == argv1 || rfc5322.IsEmailAddress(argv1) == false { return false }
 			this.Recipient = argv1
 
 		case "replycode":

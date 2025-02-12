@@ -8,23 +8,24 @@ package address
 // | (_| | (_| | (_| | | |  __/\__ \__ \
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
+import "libsisimai.org/sisimai/rfc5322"
 
 // ExpandVERP() gets the original recipient address from VERP
 func ExpandVERP(email string) string {
 	// @param    string email  VERP Address
 	// @return   string        Email address
-	if email                        == ""    { return "" }
-	if strings.Contains(email, "@") == false { return "" }
-	if IsQuotedAddress(email)       == true  { return "" } // Do not expand "neko+cat=example.jp"@example.org
+	if email                          == ""    { return "" }
+	if strings.Contains(email, "@")   == false { return "" }
+	if rfc5322.IsQuotedAddress(email) == true  { return "" } // Do not expand "neko+cat=example.jp"@example.org
 
-	// bounce+neko=example.org@example.org => neko@example.org
+	// bounce+neko=example.org@example.jp => neko@example.jp
 	local := strings.SplitN(email, "@", 2)[0]
 	pluss := strings.Index(local, "+"); if pluss < 1                  { return "" }
 	equal := strings.Index(local, "="); if equal < 1 || pluss > equal { return "" }
 	lsize := len(local);    if pluss > lsize - 1 || equal > lsize - 1 { return "" }
 	xverp := strings.Replace(strings.SplitN(local, "+", 2)[1], "=", "@", 1)
 
-	if IsEmailAddress(xverp) { return xverp }
+	if rfc5322.IsEmailAddress(xverp) { return xverp }
 	return ""
 }
 
@@ -32,11 +33,9 @@ func ExpandVERP(email string) string {
 func ExpandAlias(email string) string {
 	// @param    string email  Email alias string
 	// @return   string        Expanded email address
-	if email                        == ""    { return "" }
-	if IsEmailAddress(email)        == false { return "" }
-	if IsQuotedAddress(email)       == true  { return "" } // Do not expand "neko+cat"@example.org
-	if strings.Contains(email, "+") == false { return "" }
-	if strings.Index(email, "+")     < 1     { return "" }
+	if email == "" || strings.Index(email, "+") < 1 { return "" }
+	if rfc5322.IsEmailAddress(email)  == false      { return "" }
+	if rfc5322.IsQuotedAddress(email) == true       { return "" } // Do not expand "neko+cat"@example.org
 
 	// neko+straycat@example.org => neko@example.org
 	lpart := email[0:strings.Index(email, "+")]

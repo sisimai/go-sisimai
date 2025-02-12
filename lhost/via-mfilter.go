@@ -11,7 +11,6 @@ import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisiaddr "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
@@ -42,7 +41,7 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.Index(e, "@") > 1 && strings.Contains(e, " ") == false && sisiaddr.IsEmailAddress(e) {
+				if strings.Index(e, "@") > 1 && strings.Contains(e, " ") == false && rfc5322.IsEmailAddress(e) {
 					// This line contains an email address only: "kijitora@example.jp"
 					readcursor |= indicators["deliverystatus"]
 				}
@@ -68,7 +67,7 @@ func init() {
 			if strings.Contains(e, "@") && strings.Contains(e, " ") == false {
 				// 以下のメールアドレスへの送信に失敗しました。
 				// kijitora@example.jp
-				if sisiaddr.IsEmailAddress(e) == false { continue }
+				if rfc5322.IsEmailAddress(e) == false { continue }
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})

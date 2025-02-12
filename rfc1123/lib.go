@@ -8,6 +8,7 @@ package rfc1123
 // |  _ <|  _|| |___| | |/ __/ ___) |
 // |_| \_\_|   \____|_|_|_____|____/ 
 import "strings"
+import "libsisimai.org/sisimai/rfc791"
 import sisimoji "libsisimai.org/sisimai/string"
 
 var Sandwiched = [][]string{
@@ -76,6 +77,30 @@ func IsInternetHost(argv1 string) bool {
 		if e[0] > 47 && e[0] < 58  { hostnameok = false; break }
 	}
 	return hostnameok
+}
+
+// IsDomainLiteral() returns true if the domain part is [IPv4:...] or [IPv6:...]
+func IsDomainLiteral(email string) bool {
+	// @param    string email    Email address string
+	// @return   bool            true:  is an domain-literal
+	//                           false: is not an domain-literal
+	email = strings.Trim(email, "<>")
+	if len(email)                     < 16    { return false } // e@[IPv4:0.0.0.0] is 16 characters
+	if strings.HasSuffix(email, "]") == false { return false }
+
+	if strings.Contains(email, "@[IPv4:") {
+		// neko@[IPv4:192.0.2.25]
+		p1 := strings.Index(email, "@[IPv4:")
+		cv := email[p1 + 7:len(email) - 1]
+		return rfc791.IsIPv4Address(cv)
+
+	} else if strings.Contains(email, "@[IPv6:") {
+		// neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]
+		p1 := strings.Index(email, "@[IPv6:")
+		cv := email[p1 + 7:len(email) - 1]
+		if len(cv) == 39 && strings.Count(cv, ":") == 7 { return true }
+	}
+	return false
 }
 
 // Find() returns a valid internet hostname found from the argument

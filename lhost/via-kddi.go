@@ -75,7 +75,7 @@ func init() {
 					v = &(dscontents[len(dscontents) - 1])
 				}
 				cv := sisiaddr.S3S4(e[strings.Index(e, "<"):])
-				if sisiaddr.IsEmailAddress(cv) == false { continue }
+				if rfc5322.IsEmailAddress(cv) == false { continue }
 				v.Recipient = cv
 				recipients += 1
 

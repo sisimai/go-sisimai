@@ -17,6 +17,7 @@ import "path/filepath"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rhost"
 import "libsisimai.org/sisimai/rfc1123"
+import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimbox "libsisimai.org/sisimai/mail"
 import sisimoji "libsisimai.org/sisimai/string"
@@ -210,7 +211,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 						// Addresser
 						cx++; if fs.Addresser.Address == "" { t.Errorf("%s Addresser.Address is empty", ee) }
-						cx++; if sisiaddr.IsQuotedAddress(fs.Addresser.Address) == false {
+						cx++; if rfc5322.IsQuotedAddress(fs.Addresser.Address) == false {
 							cx++; if fs.Addresser.Alias != "" && strings.Contains(fs.Addresser.Address, "+") == false {
 								t.Errorf("%s Addresser.Alias is (%s) not empty", ee, fs.Addresser.Alias)
 							}
@@ -226,7 +227,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 								// Is not a valid internet hostname
 								t.Errorf("%s Addresser.Host (%s) is not a valid internet hostname", ee, fs.Addresser.Host)
 							}
-							cx++; if sisiaddr.IsEmailAddress(fs.Addresser.Address) == false {
+							cx++; if rfc5322.IsEmailAddress(fs.Addresser.Address) == false {
 								// Is not a valid email address
 								t.Errorf("%s Addresser.Address (%s) is not a valid email address", ee, fs.Addresser.Address)
 							}
@@ -248,15 +249,15 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 							// Is not a valid internet hostname
 							t.Errorf("%s Recipient.Host (%s) is not a valid internet hostname", ee, fs.Recipient.Host)
 						}
-						cx++; if sisiaddr.IsEmailAddress(fs.Recipient.Address) == false {
+						cx++; if rfc5322.IsEmailAddress(fs.Recipient.Address) == false {
 							// Is not a valid email address
 							t.Errorf("%s Recipient.Address (%s) is not a valid email address", ee, fs.Recipient.Address)
 						}
-						cx++; if fs.Recipient.Verp != "" && sisiaddr.IsEmailAddress(fs.Recipient.Verp) == false {
+						cx++; if fs.Recipient.Verp != "" && rfc5322.IsEmailAddress(fs.Recipient.Verp) == false {
 							// Is not a valid email address
 							t.Errorf("%s Recipient.Verp (%s) is not a valid email address", ee, fs.Recipient.Verp)
 						}
-						cx++; if fs.Recipient.Alias != "" && sisiaddr.IsEmailAddress(fs.Recipient.Alias) == false {
+						cx++; if fs.Recipient.Alias != "" && rfc5322.IsEmailAddress(fs.Recipient.Alias) == false {
 							// Is not a valid email address
 							t.Errorf("%s Recipient.Alias (%s) is not a valid email address", ee, fs.Recipient.Alias)
 						}

@@ -272,7 +272,7 @@ func init() {
 						p3 := strings.LastIndex(e, ": "); if p3 < 0 { p3 = len(e) }
 						cv  = sisiaddr.S3S4(e[2:p3])
 					}
-					if sisiaddr.IsEmailAddress(cv) == false { continue }
+					if rfc5322.IsEmailAddress(cv) == false { continue }
 				}
 
 				if len(v.Recipient) > 0 && cv != v.Recipient {

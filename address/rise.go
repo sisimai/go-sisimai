@@ -8,24 +8,15 @@ package address
 // | (_| | (_| | (_| | | |  __/\__ \__ \
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
 import "strings"
-
-type EmailAddress struct {
-	Address string // Email address
-	User    string // Local part of the email addres
-	Host    string // Domain part of the email address
-	Verp    string // Expanded VERP address
-	Alias   string // Expanded Alias of the email address
-	Name    string // Display name
-	Comment string // (Comment)
-}
+import "libsisimai.org/sisimai/sis"
 
 // Rise() is a constructor of Sisimai::Address
-func Rise(argvs [3]string) EmailAddress {
+func Rise(argvs [3]string) sis.EmailAddress {
 	// @param    [3]string argvs  ["Email address", "name", "comment"]
-	// @return   EmailAddress     EmailAddress struct when the email address was not valid
-	if argvs[0] == "" { return EmailAddress{} }
+	// @return   sis.EmailAddress EmailAddress struct when the email address was not valid
+	if argvs[0] == "" { return sis.EmailAddress{} }
 
-	thing := new(EmailAddress)
+	thing := new(sis.EmailAddress)
 	email := Final(argvs[0])
 
 	if lasta := strings.LastIndex(email, "@"); lasta > 0 {
@@ -49,8 +40,8 @@ func Rise(argvs [3]string) EmailAddress {
 
 	} else {
 		// The argument does not include "@"
-		if IsMailerDaemon(argvs[0]) == false { return EmailAddress{} }
-		if strings.Contains(argvs[0], " ")   { return EmailAddress{} }
+		if IsMailerDaemon(argvs[0]) == false { return sis.EmailAddress{} }
+		if strings.Contains(argvs[0], " ")   { return sis.EmailAddress{} }
 
 		// The argument does not include " "
 		thing.User    = argvs[0]
@@ -60,11 +51,5 @@ func Rise(argvs [3]string) EmailAddress {
 	thing.Name    = argvs[1]
 	thing.Comment = argvs[2]
 	return *thing
-}
-
-// *EmailAddress.Void() returns true if it does not include a valid email address
-func(this *EmailAddress) Void() bool {
-	if len(this.Address) == 0 { return true }
-	return false
 }
 

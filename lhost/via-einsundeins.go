@@ -62,7 +62,7 @@ func init() {
 			   (strings.HasSuffix(e, ":") || strings.Contains(e, " ") == false) {
 				// general@example.eu OR
 				// the line begin with 4 space characters, end with ":" like "    neko@example.eu:"
-				ce := sisiaddr.S3S4(strings.Trim(e, ":")); if sisiaddr.IsEmailAddress(ce) == false { continue }
+				ce := sisiaddr.S3S4(strings.Trim(e, ":")); if rfc5322.IsEmailAddress(ce) == false { continue }
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})

@@ -75,7 +75,7 @@ func init() {
 				//   Recipient address: @smtp.example.net:kijitora@server
 				//   Original address: kijitora@example.jp
 				cv := sisiaddr.S3S4(e[strings.Index(e, ": ") + 2:])
-				if sisiaddr.IsEmailAddress(cv) == false { continue }
+				if rfc5322.IsEmailAddress(cv) == false { continue }
 
 				if len(v.Recipient) > 0 && cv != v.Recipient {
 					// There are multiple recipient addresses in the message body.

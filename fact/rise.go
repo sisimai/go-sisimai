@@ -57,7 +57,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		// - Skip if the value of "recipient" length is 4 or shorter
 		// - Skip if the value of "deliverystatus" begins with "2." such as 2.1.5
 		// - Skip if the value of "reason" is "vacation"
-		if sisiaddr.IsEmailAddress(e.Recipient) == false               { continue RISEOF }
+		if rfc5322.IsEmailAddress(e.Recipient) == false                { continue RISEOF }
 		if args.Delivered != true && strings.HasPrefix(e.Status, "2.") { continue RISEOF }
 		if args.Vacation  != true && e.Reason == "vaction"             { continue RISEOF }
 
@@ -320,9 +320,9 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 				if strings.Index(recv[i], " for ") == -1   { continue }
 				or := rfc5322.Received(recv[i])
 
-				if len(or) == 0 || or[5] == ""             { continue }
-				if sisiaddr.IsEmailAddress(or[5]) == false { continue }
-				if or[5] == thing.Recipient.Address        { continue }
+				if len(or) == 0 || or[5] == ""            { continue }
+				if rfc5322.IsEmailAddress(or[5]) == false { continue }
+				if or[5] == thing.Recipient.Address       { continue }
 
 				thing.Alias = or[5]; break
 			}
