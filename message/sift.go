@@ -19,9 +19,9 @@ import "libsisimai.org/sisimai/rfc3834"
 import sisimoji "libsisimai.org/sisimai/string"
 
 // sift() sifts a bounce mail with each MTA module
-func sift(bf *sis.BeforeFact, hook sis.CfParameter1) bool {
+func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	// @param  *sis.BeforeFact  bf     Processing message entity.
-	// @param  sis.CfParameter1 hook   The callback function for the decoded bounce message
+	// @param  sis.CfParameter0 hook   The callback function for the decoded bounce message
 	// @return bool                    true:  Successfully got the results
 	//                                 false: Failed to get the results
 	if bf == nil || bf.Empty() == true { return false }

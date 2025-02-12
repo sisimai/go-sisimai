@@ -27,7 +27,7 @@ func TestRise(t *testing.T) {
 	cx := 0
 	en := 0
 	ae := "../set-of-emails/mailbox/mbox-0"
-	c1 := func(arg *sis.CallbackArgs) (map[string]interface{}, error) {
+	c0 := func(arg *sis.CallbackArgs) (map[string]interface{}, error) {
 		data := make(map[string]interface{})
 		head := []string{"X-Mailer", "Return-Path"}
 		for _, e := range head {
@@ -53,7 +53,7 @@ func TestRise(t *testing.T) {
 	for {
 		if ef, ee := eo.Read(); ef != nil || ee == nil {
 			en += 1
-			cv := Rise(ef, c1)
+			cv := Rise(ef, c0)
 			cx++; if cv.Void() == true  { t.Errorf("%s.Void() returns true", fs) }
 			cx++; if len(cv.Errors) > 0 {
 				for _, de := range cv.Errors {

@@ -12,8 +12,8 @@ import "testing"
 
 // Delivered bool // Include sis.Fact{}.Action = "delivered" records in the decoded data
 // Vacation  bool // Include sis.Fact{}.Reason = "vacation" records in the decoded data
-// Callback1 CfParameter1 // The 1st callback function
-// Callback2 CfParameter2 // The 2nd callback function
+// Callback0 CfParameter0 // [0] The 1st callback function
+// Callback1 CfParameter1 // [1] The 2nd callback function
 func TestDecodingArgs(t *testing.T) {
 	fn := "sis.DecodingArgs"
 	c1 := func(arg *CallbackArgs) (map[string]interface{}, error) {
@@ -24,16 +24,16 @@ func TestDecodingArgs(t *testing.T) {
 	cv := &DecodingArgs{
 		Delivered: false,
 		Vacation:  false,
-		Callback1: c1,
-		Callback2: c2,
+		Callback0: c1,
+		Callback1: c2,
 	}
 	cx := 0
 
 	cx++; if cv           == nil   { t.Fatalf("%s{} = nil", fn) }
 	cx++; if cv.Delivered != false { t.Errorf("%s.Delivered is not false", fn) }
 	cx++; if cv.Vacation  != false { t.Errorf("%s.Vacation is not nil", fn) }
+	cx++; if cv.Callback0 == nil   { t.Errorf("%s.Callback0 is nil", fn) }
 	cx++; if cv.Callback1 == nil   { t.Errorf("%s.Callback1 is nil", fn) }
-	cx++; if cv.Callback2 == nil   { t.Errorf("%s.Callback1 is nil", fn) }
 
 	t.Logf("The number of tests = %d", cx)
 }
