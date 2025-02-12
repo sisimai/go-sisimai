@@ -1,12 +1,14 @@
 // Copyright (C) 2020-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package fact
-
 //   __            _     ____  _          
 //  / _| __ _  ___| |_  |  _ \(_)___  ___ 
 // | |_ / _` |/ __| __| | |_) | / __|/ _ \
 // |  _| (_| | (__| |_ _|  _ <| \__ \  __/
 // |_|  \__,_|\___|\__(_)_| \_\_|___/\___|
+
+// Package "fact" provide a function for generating structs keeping decoded bounce mail data
+package fact
+
 import "time"
 import "strings"
 import "net/mail"
