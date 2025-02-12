@@ -48,7 +48,6 @@ func Args() *sis.DecodingArgs {
 }
 
 // sisimai.Rise() is a function for decoding bounce mails in a mailbox or a Maildir/
-//func Rise(path string, args map[string]bool, c___ []interface{}) (*[]sis.Fact, *[]sis.NotDecoded) {
 func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) {
 	// @param   string            path  Path to mbox or Maildir/ or "STDIN"
 	// @param   *sis.DecodingArgs args  Arguments for decoding
