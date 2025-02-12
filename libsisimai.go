@@ -9,7 +9,8 @@
 
 // sisimai is a library that decodes complex and diverse bounce emails and outputs the results of the
 // delivery failure, such as the reason for the bounce and the recipient email address, in structured
-// data. It is also possible to output in JSON format.
+// data. It is also possible to output in JSON format. 
+// More information are available at https://libsisimai.org
 package sisimai
 
 import "io"
