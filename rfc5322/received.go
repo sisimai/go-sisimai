@@ -9,7 +9,6 @@ package rfc5322
 // |_| \_\_|   \____|____/____/_____|_____/_/  |_| \_\___|\___\___|_| \_/ \___|\__,_(_)
 import "strings"
 import "libsisimai.org/sisimai/rfc791"
-import "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
 
 // Received() convert Received headers to a structured data
@@ -142,7 +141,7 @@ func Received(argv1 string) [6]string {
 	}
 	if len(token["by"])   == 0 { delete(token, "by")   }
 	if len(token["from"]) == 0 { delete(token, "from") }
-	if len(token["for"])   > 0 { token["for"] = address.S3S4(token["for"]) }
+	if len(token["for"])   > 0 { token["for"] = strings.Trim(token["for"], "<>") }
 
 	for _, e := range label {
 		// Delete an invalid value
