@@ -1,12 +1,14 @@
 // Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package message
-
 //  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
 // | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
 // | | | | | |  __/\__ \__ \ (_| | (_| |  __/
 // |_| |_| |_|\___||___/___/\__,_|\__, |\___|
 //                                |___/      
+
+// Package "message" provides functions to read email message as a string, to tidy up each line
+package message
+
 import "io"
 import "fmt"
 import "strings"

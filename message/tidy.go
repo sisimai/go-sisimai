@@ -1,12 +1,12 @@
 // Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package message
-
 //  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
 // | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
 // | | | | | |  __/\__ \__ \ (_| | (_| |  __/
 // |_| |_| |_|\___||___/___/\__,_|\__, |\___|
 //                                |___/      
+
+package message
 import "fmt"
 import "strings"
 
