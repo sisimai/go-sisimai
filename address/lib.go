@@ -8,6 +8,7 @@
 
 // Package "address" provide functions related to an email address
 package address
+
 import "strings"
 import "libsisimai.org/sisimai/rfc5322"
 
