@@ -15,6 +15,7 @@ package sisimai
 import "io"
 import "fmt"
 import "errors"
+import "strings"
 import "libsisimai.org/sisimai/sis"
 import sisimbox "libsisimai.org/sisimai/mail"
 import sisifact "libsisimai.org/sisimai/fact"
@@ -45,6 +46,26 @@ func Args() *sis.DecodingArgs {
 		Callback0: nil,   // [0] The 1st callback function
 		Callback1: nil,   // [1] The 2nd callback function
 	}
+}
+
+// sisimai.Dump() returns decoded data as a JSON string
+func Dump(path string, args *sis.DecodingArgs) (*string, *[]sis.NotDecoded) {
+	// @param   string            path  Path to mbox or Maildir/ or "STDIN"
+	// @param   *sis.DecodingArgs args  Arguments for decoding
+	// @return  *string
+	sisidigest, notdecoded := Rise(path, args); if len(*sisidigest) == 0 { return nil, notdecoded }
+	serialized := []string{}
+
+	for _, e := range *sisidigest {
+		cj, nyaan := e.Dump(); if nyaan != nil {
+			*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false))
+		}
+		if cj != "" { serialized = append(serialized, cj) }
+	}
+	if len(serialized) == 0 { return nil, notdecoded }
+
+	jsonstring := "[" + strings.Join(serialized, ",") + "]"
+	return &jsonstring, notdecoded
 }
 
 // sisimai.Rise() is a function for decoding bounce mails in a mailbox or a Maildir/
