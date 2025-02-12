@@ -1,12 +1,14 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package lda
-
 //  _     ____    _    
 // | |   |  _ \  / \   
 // | |   | | | |/ _ \  
 // | |___| |_| / ___ \ 
 // |_____|____/_/   \_\
+
+// Package "lda" provides a function to detect a bounce reason due to errors returned from LDA
+package lda
+
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import sisimoji "libsisimai.org/sisimai/string"
