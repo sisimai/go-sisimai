@@ -1,12 +1,12 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rhost
-
 //       _               _      ___         _ 
 //  _ __| |__   ___  ___| |_   / / \   ___ | |
 // | '__| '_ \ / _ \/ __| __| / / _ \ / _ \| |
 // | |  | | | | (_) \__ \ |_ / / ___ \ (_) | |
 // |_|  |_| |_|\___/|___/\__/_/_/   \_\___/|_|
+
+package rhost
 import "libsisimai.org/sisimai/sis"
 import sisimoji "libsisimai.org/sisimai/string"
 
