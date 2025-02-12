@@ -1,13 +1,14 @@
 // Copyright (C) 2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package transcript
-
 //                _           ___                                 _       _   
 //  ___ _ __ ___ | |_ _ __   / / |_ _ __ __ _ _ __  ___  ___ _ __(_)_ __ | |_ 
 // / __| '_ ` _ \| __| '_ \ / /| __| '__/ _` | '_ \/ __|/ __| '__| | '_ \| __|
 // \__ \ | | | | | |_| |_) / / | |_| | | (_| | | | \__ \ (__| |  | | |_) | |_ 
 // |___/_| |_| |_|\__| .__/_/   \__|_|  \__,_|_| |_|___/\___|_|  |_| .__/ \__|
 //                   |_|                                           |_|        
+
+// Package "smtp/transcript" provides functions related to SMTP transcript logs
+package transcript
 import "strings"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
