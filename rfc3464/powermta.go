@@ -1,12 +1,12 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc3464
-
 //  ____  _____ ____ _____ _  _    __   _  _     ______                        __  __ _____  _    
 // |  _ \|  ___/ ___|___ /| || |  / /_ | || |   / /  _ \ _____      _____ _ __|  \/  |_   _|/ \   
 // | |_) | |_ | |     |_ \| || |_| '_ \| || |_ / /| |_) / _ \ \ /\ / / _ \ '__| |\/| | | | / _ \  
 // |  _ <|  _|| |___ ___) |__   _| (_) |__   _/ / |  __/ (_) \ V  V /  __/ |  | |  | | | |/ ___ \ 
 // |_| \_\_|   \____|____/   |_|  \___/   |_|/_/  |_|   \___/ \_/\_/ \___|_|  |_|  |_| |_/_/   \_\
+
+package rfc3464
 import "strings"
 
 func init() {
