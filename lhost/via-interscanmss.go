@@ -1,12 +1,12 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package lhost
-
 //  _ _               _      _____       _            ____                  __  __ ____ ____  
 // | | |__   ___  ___| |_   / /_ _|_ __ | |_ ___ _ __/ ___|  ___ __ _ _ __ |  \/  / ___/ ___| 
 // | | '_ \ / _ \/ __| __| / / | || '_ \| __/ _ \ '__\___ \ / __/ _` | '_ \| |\/| \___ \___ \ 
 // | | | | | (_) \__ \ |_ / /  | || | | | ||  __/ |   ___) | (_| (_| | | | | |  | |___) |__) |
 // |_|_| |_|\___/|___/\__/_/  |___|_| |_|\__\___|_|  |____/ \___\__,_|_| |_|_|  |_|____/____/ 
+
+package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rfc5322"
