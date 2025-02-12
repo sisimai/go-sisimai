@@ -19,7 +19,6 @@ import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
-import sisiaddr "libsisimai.org/sisimai/address"
 import sisimbox "libsisimai.org/sisimai/mail"
 
 func TestRise(t *testing.T) {
@@ -96,7 +95,7 @@ func TestRise(t *testing.T) {
 				cx++; if  e.Agent == "" { t.Errorf("%s.Digest.Agent is empty", fs) }
 				cx++; for e.Alias != "" {
 					cx++; if e.Alias == e.Recipient { t.Errorf("%s.Digest.Alias is %s", fs, e.Alias) }
-					cx++; if sisiaddr.IsEmailAddress(e.Alias) == false && strings.HasPrefix(e.Alias, "|/") == false {
+					cx++; if rfc5322.IsEmailAddress(e.Alias) == false && strings.HasPrefix(e.Alias, "|/") == false {
 						t.Errorf("%s.Alias is an invalid value: %s", fs, e.Alias)
 					}
 					break
@@ -136,7 +135,7 @@ func TestRise(t *testing.T) {
 				cx++; if  e.Recipient == "" { t.Errorf("%s.Recipient is empty", fs) }
 				cx++; for e.Recipient != "" {
 					cx++; if e.Recipient == e.Alias { t.Errorf("%s.Recipient is the same value with Alias", fs) }
-					cx++; if sisiaddr.IsEmailAddress(e.Recipient) == false {
+					cx++; if rfc5322.IsEmailAddress(e.Recipient) == false {
 						t.Errorf("%s.Recipient is an invalid email address: %s", fs, e.Recipient)
 					}
 					break
