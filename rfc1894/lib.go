@@ -1,12 +1,14 @@
 // Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package rfc1894
-
 //  ____  _____ ____ _  ___  ___  _  _   
 // |  _ \|  ___/ ___/ |( _ )/ _ \| || |  
 // | |_) | |_ | |   | |/ _ \ (_) | || |_ 
 // |  _ <|  _|| |___| | (_) \__, |__   _|
 // |_| \_\_|   \____|_|\___/  /_/   |_|  
+
+// Package "rfc1894" provides funtions related to RFC1894; An Extensible Message Format for Delivery
+// Status Notifications (https://datatracker.ietf.org/doc/html/rfc1894)
+package rfc1894
 import "strings"
 import sisimoji "libsisimai.org/sisimai/string"
 
