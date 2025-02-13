@@ -14,15 +14,13 @@
 - [**README-JA(日本語)**](README-JA.md)
 - [What is Sisimai](#what-is-sisimai)
     - [The key features of Sisimai](#the-key-features-of-sisimai)
-    - [Command line demo](#command-line-demo)
 - [Setting Up Sisimai](#setting-up-sisimai)
     - [System requirements](#system-requirements)
-    - [Install](#install)
+    - [Install and Build](#install)
 - [Usage](#usage)
     - [Basic usage](#basic-usage)
     - [Convert to JSON](#convert-to-json)
     - [Callback feature](#callback-feature)
-    - [One-Liner](#one-liner)
     - [Output example](#output-example)
 - [Contributing](#contributing)
     - [Bug report](#bug-report)
@@ -204,7 +202,7 @@ func main() {
 }
 ```
 
-Convert the entire decoded results to JSON
+Convert to JSON
 ---------------------------------------------------------------------------------------------------
 The following code snippet illustrates the use of the `libsisimai.org/sisimai.Dump()` function to
 obtain decoded bounce email data in JSON array format.
