@@ -92,14 +92,11 @@ func IsDomainLiteral(email string) bool {
 
 	if strings.Contains(email, "@[IPv4:") {
 		// neko@[IPv4:192.0.2.25]
-		p1 := strings.Index(email, "@[IPv4:")
-		cv := email[p1 + 7:len(email) - 1]
-		return rfc791.IsIPv4Address(cv)
+		return rfc791.IsIPv4Address(sisimoji.Select(email, "@[IPv4:", "]", 0))
 
 	} else if strings.Contains(email, "@[IPv6:") {
 		// neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]
-		p1 := strings.Index(email, "@[IPv6:")
-		cv := email[p1 + 7:len(email) - 1]
+		cv := sisimoji.Select(email, "@[IPv6:", "]", 0)
 		if len(cv) == 39 && strings.Count(cv, ":") == 7 { return true }
 	}
 	return false
