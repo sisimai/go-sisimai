@@ -143,12 +143,8 @@ func init() {
 
 			if recipients == 0 {
 				// Try to pick an recipient address from the original message
-				p1 := strings.Index(emailparts[1], "\nTo: ")
-				p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 6)
-
-				if p1 > 0 {
+				if cv := sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0); cv != "" {
 					// Get the recipient address from "To:" header at the original message
-					cv := sisiaddr.S3S4(emailparts[1][p1 + 5:p2])
 					if rfc5322.IsEmailAddress(cv) == false { return sis.RisingUnderway{} }
 					dscontents[0].Recipient = cv; recipients++
 				}
