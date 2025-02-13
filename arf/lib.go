@@ -216,9 +216,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 		} else {
 			// Pick it from the original message part
-			p1 := strings.Index(emailparts[1], "\nTo:");               if p1  < 0  { break }
-			p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 4); if p2  < 0  { break }
-			cv := sisiaddr.S3S4(emailparts[1][p1 + 4:p2])
+			cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo:", "\n", 0))
 
 			// There is no valid email address in the To: header of the original message such as
 			// To: <Undisclosed Recipients>
