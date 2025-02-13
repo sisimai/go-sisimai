@@ -72,13 +72,11 @@ func init() {
 			}
 		}
 
-		for recipients == 0 {
+		if recipients == 0 {
 			// Pick an email address from "To:" header of the original message
-			p0 := strings.Index(emailparts[1], "\n\n");  if p0 < 0 { p0 = len(emailparts[1]) }
-			p1 := strings.Index(emailparts[1], "\nTo:"); if p1 < 0 || p1 > p0 { break }
-			p2 := strings.Index(emailparts[1][p1 + 4:], "\n")
-			cv := sisiaddr.S3S4(emailparts[1][p1 + 4:p1 + p2 + 4])
-			dscontents[0].Recipient = cv; recipients++; break
+			if cv := sisimoji.Select(emailparts[1], "\nTo:", "\n", 0); cv != "" {
+				dscontents[0].Recipient = sisiaddr.S3S4(cv); recipients++
+			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
 
