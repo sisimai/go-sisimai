@@ -62,17 +62,14 @@ func init() {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
 			if len(e) == 0 { continue }
-
-			p1 := strings.Index(e, "<")
-			p2 := strings.Index(e, ">")
-			if p1 > 0 && p2 > 0 {
+			if cv := sisimoji.Select(e, "<", ">", 0); cv != "" {
 				// You are not a member of this mailing list <neko-meeting@example.org>.
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = e[p1:p2]
+				v.Recipient = cv
 				v.Diagnosis = e
 				recipients += 1
 
