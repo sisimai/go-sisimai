@@ -9,6 +9,7 @@
 package rhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service
@@ -32,13 +33,7 @@ func init() {
 			"10": "filtered",    // Not in the list Mail address management.
 		}
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
-		partofaddr := ".i.ua/err/"
-		if strings.Contains(issuedcode, partofaddr) == false { return "" }
-
-		errorindex := strings.Index(issuedcode, partofaddr)
-		codenumber := issuedcode[errorindex + len(partofaddr):errorindex + len(partofaddr) + 1]
-		if strings.HasSuffix(codenumber, "/") { codenumber = strings.TrimRight(codenumber, "/") }
-
+		codenumber := sisimoji.Select(issuedcode, ".i.ua/err/", "/", 0); if codenumber == "" { return "" }
 		return errorcodes[codenumber]
 	}
 }
