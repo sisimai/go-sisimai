@@ -69,14 +69,13 @@ func init() {
 			v.Diagnosis += e + " "
 		}
 
-		for recipients == 0 {
-			// Pick the recipient address from the value of To: header of the original message after
-			// Content-Type: message/rfc822 field
-			p0 := strings.Index(emailparts[1], "\nTo:");   if p0  < 0  { break }
-			p1 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p0 + 2)
-			cv := sisiaddr.S3S4(emailparts[1][p0 + 4:p1]); if cv == "" { break }
-			dscontents[0].Recipient = cv
-			recipients++
+		if recipients == 0 {
+			// Pick the recipient address from the value of To: header of the original message
+			// after Content-Type: message/rfc822 field
+			if cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo:", "\n", 0)); cv != "" {
+				dscontents[0].Recipient = cv
+				recipients++
+			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
 
