@@ -16,6 +16,7 @@ type RisingUnderway struct {
 	Errors []NotDecoded     // Errors occurred in sisimai/lhost/*
 }
 
+// *RisingUnderway.Void() returns true when Digest is empty
 func(this *RisingUnderway) Void() bool {
 	// @param    NONE
 	// @return   bool   Returns true if RisingUnderway.Digest is empty
