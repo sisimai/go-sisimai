@@ -191,10 +191,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			// Get the value of List-Id header: "List name <list-id@example.org>"
 			if len(rfc822data["list-id"])                                          == 0     { break LIST_ID }
 			if sisimoji.Aligned(rfc822data["list-id"][0], []string{"<", ".", ">"}) == false { break LIST_ID }
-			p0 := strings.Index(rfc822data["list-id"][0], "<");                   if p0 < 0 { break LIST_ID }
-			p1 := strings.Index(rfc822data["list-id"][0], ">");                   if p1 < 0 { break LIST_ID }
-
-			piece["listid"] = rfc822data["list-id"][0][p0 + 1:p1]; break LIST_ID
+			piece["listid"] = sisimoji.Select(rfc822data["list-id"][0], "<", ">", 0);         break LIST_ID
 		}
 
 		DIAGNOSTICCODE: for {
@@ -319,7 +316,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			hops := len(recv)
 			for i := hops - 1; hops >= 0; hops-- {
 				// Search for the string " for " from the Received: header
-				if strings.Index(recv[i], " for ") == -1   { continue }
+				if strings.Index(recv[i], " for ") == -1  { continue }
 				or := rfc5322.Received(recv[i])
 
 				if len(or) == 0 || or[5] == ""            { continue }
