@@ -22,6 +22,7 @@
     - [Convert to JSON](#convert-to-json)
     - [Callback feature](#callback-feature)
     - [Output example](#output-example)
+- [Differences between Go vs. Perl](#differences-between-go-and-perl)
 - [Contributing](#contributing)
     - [Bug report](#bug-report)
     - [Emails could not be decoded](#emails-could-not-be-decoded)
@@ -56,14 +57,14 @@ The key features of Sisimai
     * struct ([sisimai/sis.Fact](https://github.com/sisimai/go-sisimai/blob/master/sisimai/sis/fact.go))
     * JSON (by using [`encoding/json`](https://pkg.go.dev/encoding/json))
 * __Easy to Install, Use.__
-  * `go get -u libsisimai.org/sisimai@latest`
+  * `$ go get -u libsisimai.org/sisimai@latest`
   * `import "libsisimai.org/sisimai"`
 * __High Precision of Analysis__
   * Support [55 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
   * Support Feedback Loop Message(ARF)
   * Can detect [36 bounce reasons](https://libsisimai.org/en/reason/)
 
-[^2]: The callback function allows you to add your own data under the `Catch` accessor.
+[^2]: The callback function allows you to add your own data under the `Catch` field.
 
 Setting Up Sisimai
 ===================================================================================================
@@ -124,6 +125,8 @@ Once you have written `sisid.go`, build an executable binary with `go build` com
 $ CGO_ENABLED=0 go build -o ./sisid ./sisid.go
 ```
 
+Specifying the path to a bounce email (or Maildir/) as the first argument will output the decoded 
+results as a JSON string.
 ```shell
 $ ./sisid ./path/to/bounce-mail.eml | jq
 {
@@ -221,8 +224,6 @@ func main() {
     if json != nil && *json != "" { fmt.Printf("%s\n", *json)   }
     if len(*nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", *nyaan) }
 }
-
-
 ```
 
 Callback feature
@@ -309,7 +310,7 @@ func main() {
         return true, nil
     }
 
-    // sisi is a pointer to []sis.Facti
+    // sisi is a pointer to []sis.Fact
     sisi, nyaan := sisimai.Rise(path, args)
     if len(*sisi) > 0 {
         for _, e := range *sisi {
@@ -358,7 +359,7 @@ Output example
 ]
 ```
 
-Differences between Go vs. Perl
+Differences between Go and Perl
 ===================================================================================================
 The following table show the differences between the Go version of Sisimai and the Perl version of
 [sisimai](https://github.com/sisimai/p5-sisimai/https://github.com/sisimai/p5-sisimai/tree/5-stable).
@@ -367,15 +368,14 @@ Features
 ---------------------------------------------------------------------------------------------------
 | Features                                             | Go                 | Perl                |
 |------------------------------------------------------|--------------------|---------------------|
-| System requirements (Perl)                           | 1.17 -             | 5.26 -              |
+| System requirements                                  | 1.17 -             | 5.26 -              |
 | Dependencies (Except standard libs/core modules)     | 2 packages         | 2 modules           |
 | Source lines of code                                 | 9,600 lines        | 9,900 lines         |
-| The number of tests in t/, xt/ directory             | 134,000 tests      | 319,000 tests       | 
+| The number of tests in                               | 134,000 tests      | 319,000 tests       | 
 | The number of bounce emails decoded per second[^4]   | 1200 emails        | 400 emails          |
 | License                                              | 2 Clause BSD       | 2 Caluse BSD        |
 | Commercial support                                   | Available          | Available           |
 
-[^3]: The 2nd argument of `c___` parameter at `Sisimai->rise` method
 [^4]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Go 1.22/Perl 5.30
 
 Contributing
@@ -407,7 +407,7 @@ Related sites
 
 See also
 ---------------------------------------------------------------------------------------------------
-* [README-JA.md - README.md in Japanese(日本語)](https://github.com/sisimai/p5-sisimai/blob/master/README-JA.md)
+* [README-JA.md - README.md in Japanese(日本語)](https://github.com/sisimai/go-sisimai/blob/master/README-JA.md)
 * [RFC3463 - Enhanced Mail System Status Codes](https://tools.ietf.org/html/rfc3463)
 * [RFC3464 - An Extensible Message Format for Delivery Status Notifications](https://tools.ietf.org/html/rfc3464)
 * [RFC3834 - Recommendations for Automatic Responses to Electronic Mail](https://tools.ietf.org/html/rfc3834)
@@ -420,7 +420,7 @@ Author
 
 Copyright
 ===================================================================================================
-Copyright (C) 2014-2025 azumakuniyuki, All Rights Reserved.
+Copyright (C) 2014-2025 azumakuniyuki and sisimai development team, All Rights Reserved.
 
 License
 ===================================================================================================
