@@ -9,9 +9,11 @@
 
 package sis
 
-// DecodingArgs is an argument of the sisimai.Rise() function
+// CfParameter* is an argument of the callback function specified at sisimai.Rise()
 type CfParameter0 func(arg *CallbackArgs) (map[string]interface{}, error)
 type CfParameter1 func(arg *CallbackArgs) (bool, error)
+
+// DecodingArgs is an argument of the sisimai.Rise() function
 type DecodingArgs struct {
 	Delivered bool // Include sis.Fact{}.Action = "delivered" records in the decoded data
 	Vacation  bool // Include sis.Fact{}.Reason = "vacation" records in the decoded data
