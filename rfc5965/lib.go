@@ -7,7 +7,7 @@
 // |_| \_\_|   \____|____/  /_/ \___/____/ 
 
 // Package "rfc5964" provides a function related to RFC5965; An Extensible Format for Email Feedback
-// Reports (https://datatracker.ietf.org/doc/html/rfc5965)
+// Reports https://datatracker.ietf.org/doc/html/rfc5965
 package rfc5965
 
 func FIELDINDEX() []string {

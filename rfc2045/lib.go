@@ -7,7 +7,7 @@
 // |_| \_\_|   \____|_____|\___/   |_||____/ 
 
 // Package "rfc2045" provides functions for RFC2045; Multipurpose Internet Mail Extensions (MIME)
-// Part One: Format of Internet Message Bodies (https://datatracker.ietf.org/doc/html/rfc2045)
+// Part One: Format of Internet Message Bodies https://datatracker.ietf.org/doc/html/rfc2045
 package rfc2045
 import "strings"
 

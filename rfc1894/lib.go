@@ -7,7 +7,7 @@
 // |_| \_\_|   \____|_|\___/  /_/   |_|  
 
 // Package "rfc1894" provides funtions related to RFC1894; An Extensible Message Format for Delivery
-// Status Notifications (https://datatracker.ietf.org/doc/html/rfc1894)
+// Status Notifications https://datatracker.ietf.org/doc/html/rfc1894
 package rfc1894
 import "strings"
 import sisimoji "libsisimai.org/sisimai/string"

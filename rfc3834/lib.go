@@ -8,7 +8,7 @@
 
 // Package "rfc3834" provides functions like a MTA module in "lhost" package for decoding automatic
 // responded messages formatted according to RFC3834; Recommendations for Automatic Responses to 
-// Electronic Mail (https://datatracker.ietf.org/doc/html/rfc3834)
+// Electronic Mail https://datatracker.ietf.org/doc/html/rfc3834
 package rfc3834
 import "fmt"
 import "strings"

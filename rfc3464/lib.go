@@ -8,7 +8,7 @@
 
 // Package "rfc3464" provides functions like a MTA module in "lhost" package for decoding bounce
 // messages formatted according to RFC3464; An Extensible Message Format for Delivery Status Notifications
-// (https://datatracker.ietf.org/doc/html/rfc3464)
+// https://datatracker.ietf.org/doc/html/rfc3464
 package rfc3464
 import "strings"
 import "libsisimai.org/sisimai/sis"
