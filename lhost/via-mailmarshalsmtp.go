@@ -90,27 +90,24 @@ func init() {
 					// Reporting-MTA:      <relay.xxxxxxxxxxxx.com>
 					// MessageName:        <B549996730000.000000000001.0003.mml>
 					// Last-Attempt-Date:  <16:21:07 seg, 22 Dezembro 2014>
-					p1 := strings.Index(e, "<"); if p1 < 0 { continue }
-					p2 := strings.Index(e, ">"); if p2 < 0 { continue }
-
 					if strings.HasPrefix(e, "Original Sender: ") {
 						// Original Sender:    <originalsender@example.com>
 						// Use this line instead of "From" header of the original message.
-						emailparts[1] += fmt.Sprintf("From: %s\n", e[p1 + 1:p2])
+						emailparts[1] += fmt.Sprintf("From: %s\n", sisimoji.Select(e, "<", ">", 0))
 
 					} else if strings.HasPrefix(e, "Sender-MTA: ") {
 						// Sender-MTA:         <10.11.12.13>
-						v.Lhost = e[p1 + 1:p2]
+						v.Lhost = sisimoji.Select(e, "<", ">", 0)
 
 					} else if strings.HasPrefix(e, "Reporting-MTA: ") {
 						// Reporting-MTA:      <relay.xxxxxxxxxxxx.com>
-						v.Rhost = e[p1 + 1:p2]
+						v.Rhost = sisimoji.Select(e, "<", ">", 0)
 
 					} else if strings.Contains(e, " From:") || strings.Contains(e, " Subject:") {
 						//    From:    originalsender@example.com
 						//    Subject: ...
-						p1 = strings.Index(e, " From:"); if p1 < 0 { p1 = strings.Index(e, " Subject:") }
-						p2 = strings.Index(e, ":")
+						p1 := strings.Index(e, " From:"); if p1 < 0 { p1 = strings.Index(e, " Subject:") }
+						p2 := strings.Index(e, ":")
 						emailparts[1] += fmt.Sprintf("%s: %s\n", e[p1 + 1:p2], sisimoji.Sweep(e[p2 + 1:]))
 					}
 				}
