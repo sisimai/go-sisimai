@@ -20,7 +20,7 @@
     - [解析結果をJSONで得る | Convert to JSON](#convert-to-json)
     - [コールバック機能 | Callback feature](#callback-feature)
     - [出力例 | Output example](#output-example)
-- [Go言語版SisimaiとPerl版の違い](#differences-between-go-and-perl)
+- [Go言語版Sisimaiと他の言語版との違い](#differences-between-go-and-others)
 - [Contributing](#contributing)
     - [バグ報告 | Bug report](#bug-report)
     - [解析できないメール | Emails could not be decoded](#emails-could-not-be-decoded)
