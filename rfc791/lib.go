@@ -6,8 +6,8 @@
 // |  _ <|  _|| |___  / / \__, | |
 // |_| \_\_|   \____|/_/    /_/|_|
 
-// Package "rfc791" provides functions related to IPv4 address described in RFC791; INTERNET PROTOCOL
-// (https://datatracker.ietf.org/doc/html/rfc791)
+// Package "rfc791" provides functions related to IPv4 address described in RFC791
+// https://datatracker.ietf.org/doc/html/rfc791
 package rfc791
 import "strings"
 import "strconv"
@@ -28,7 +28,7 @@ func IsIPv4Address(argv1 string) bool {
 	return true
 }
 
-// FindIPv4Address() find IPv4 addresses from the given string
+// FindIPv4Address() finds IPv4 addresses from the given string
 func FindIPv4Address(argv1 *string) []string {
 	// @param    *string   argv1 String including an IPv4 address
 	// @return   []string        List of IPv4 addresses
