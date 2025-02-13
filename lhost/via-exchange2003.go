@@ -195,10 +195,8 @@ func init() {
 
 			if sisimoji.Aligned(e.Diagnosis, []string{"MSEXCH:", "(", ")"}) {
 				//     MSEXCH:IMS:KIJITORA CAT:EXAMPLE:EXCHANGE 0 (000C05A6) Unknown Recipient
-				p1 := strings.Index(e.Diagnosis, "(")
-				p2 := strings.Index(e.Diagnosis, ")")
-				capturedcode := e.Diagnosis[p1 + 1:p2]
-				errormessage := e.Diagnosis[p2 + 1:]
+				capturedcode := sisimoji.Select(e.Diagnosis, "(", ")", 0)
+				errormessage := e.Diagnosis[strings.Index(e.Diagnosis, ")") + 1:]
 
 				FINDREASON: for r := range errorcodes {
 					// The key name is a bounce reason name
