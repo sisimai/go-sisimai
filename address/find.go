@@ -230,10 +230,7 @@ func Find(argv1 string) [3]string {
 		// - (cat)nekochan@example.org
 		// - nekochan(cat)cat@example.org
 		// - nekochan(cat)@example.org
-		p1 := strings.Index(readbuffer[0], "(")
-		p2 := strings.Index(readbuffer[0], ")")
-		ce := readbuffer[0][p1:p2 + 1]
-
+		ce := "(" + sisimoji.Select(readbuffer[0], "(", ")", 0) + ")"
 		readbuffer[0] = strings.Replace(readbuffer[0], ce, "", 1)
 		if len(readbuffer[2]) == 0 { readbuffer[2] = ce } else { readbuffer[2] += " " + ce }
 	}
