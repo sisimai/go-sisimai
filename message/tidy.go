@@ -53,9 +53,7 @@ func tidy(argv0 *string) *string {
 						// - Reporting-MTA: DNS; ...               => dns
 						// - Final-Recipient: RFC822; ...          => rfc822
 						if strings.IndexByte(f, ' ') > 0 { break }
-
-						p2 := strings.IndexByte(f, '=')
-						if p2 > 0 {
+						if p2 := strings.IndexByte(f, '='); p2 > 0 {
 							// charset=, boundary=, and other pairs divided by "="
 							ps = strings.ToLower(f[0:p2])
 							f  = strings.Replace(f, f[0:p2], ps, 1)
