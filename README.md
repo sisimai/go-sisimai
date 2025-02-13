@@ -22,7 +22,7 @@
     - [Convert to JSON](#convert-to-json)
     - [Callback feature](#callback-feature)
     - [Output example](#output-example)
-- [Differences between Go vs. Perl](#differences-between-go-and-perl)
+- [Differences between Go vs. Others](#differences-between-go-and-others)
 - [Contributing](#contributing)
     - [Bug report](#bug-report)
     - [Emails could not be decoded](#emails-could-not-be-decoded)
@@ -359,22 +359,23 @@ Output example
 ]
 ```
 
-Differences between Go and Perl
+Differences between Go and Others
 ===================================================================================================
-The following table show the differences between the Go version of Sisimai and the Perl version of
-[sisimai](https://github.com/sisimai/p5-sisimai/https://github.com/sisimai/p5-sisimai/tree/5-stable).
+The following table show the differences between the Go version of Sisimai and the other language 
+versions: [p5-sisimai](https://github.com/sisimai/p5-sisimai/tree/5-stable) and
+[rb-sisimai](https://github.com/sisimai/rb-sisimai/tree/5-stable).
 
 Features
 ---------------------------------------------------------------------------------------------------
-| Features                                             | Go                 | Perl                |
-|------------------------------------------------------|--------------------|---------------------|
-| System requirements                                  | 1.17 -             | 5.26 -              |
-| Dependencies (Except standard libs/core modules)     | 2 packages         | 2 modules           |
-| Source lines of code                                 | 9,600 lines        | 9,900 lines         |
-| The number of tests in                               | 134,000 tests      | 319,000 tests       | 
-| The number of bounce emails decoded per second[^4]   | 1200 emails        | 400 emails          |
-| License                                              | 2 Clause BSD       | 2 Caluse BSD        |
-| Commercial support                                   | Available          | Available           |
+| Features                                     | Go             | Perl            | Ruby  / JRuby |
+|----------------------------------------------|----------------|-----------------|---------------|
+| System requirements                          | 1.17 -         | 5.26 -          | 2.4 - / 9.2 - |
+| Dependencies (Except standard libs)          | 2 packages     | 2 modules       | 1 gem         |
+| Source lines of code                         | 9,600 lines    | 9,900 lines     | 9,800 lines   |
+| The number of tests                          | 134,000 tests  | 319,000 tests   | 410,000 tests |
+| The number of bounce emails decoded/sec [^4] | 1200 emails    | 400 emails      | 340 emails    |
+| License                                      | 2 Clause BSD   | 2 Caluse BSD    | 2 Clause BSD  |
+| Commercial support                           | Available      | Available       | Available     |
 
 [^4]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Go 1.22/Perl 5.30
 
