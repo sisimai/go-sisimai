@@ -58,6 +58,7 @@ The key features of Sisimai
     * struct ([sisimai/sis.Fact](https://github.com/sisimai/go-sisimai/blob/master/sisimai/sis/fact.go))
     * JSON (by using [`encoding/json`](https://pkg.go.dev/encoding/json))
 * __Easy to Install, Use.__
+  * `go get -u libsisimai.org/sisimai@latest`
   * `import "libsisimai.org/sisimai"`
 * __High Precision of Analysis__
   * Support [55 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
@@ -123,6 +124,9 @@ func main() {
 Once you have written `sisid.go`, build an executable binary with `go build` command.
 ```shell
 $ CGO_ENABLED=0 go build -o ./sisid ./sisid.go
+```
+
+```shell
 $ ./sisid ./path/to/bounce-mail.eml | jq
 {
   "addresser": "michistuna@example.org",
