@@ -76,10 +76,8 @@ func init() {
 			if sisimoji.Aligned(e, []string{" <", "@", ">..."}) || strings.Contains(strings.ToUpper(e), ">>> RCPT TO:") {
 				// 550 <kijitora@example.org>... User unknown
 				// >>> RCPT To:<kijitora@example.org>
-				p0 := strings.Index(e, " ")
-				p1 := sisimoji.IndexOnTheWay(e, "<", p0)
-				p2 := sisimoji.IndexOnTheWay(e, ">", p1)
-				cv := sisiaddr.S3S4(e[p1:p2 + 1])
+				ce := sisimoji.Select(e, " <", ">...", 0); if ce == "" { ce = sisimoji.Select(e, ":<", ">", 0) }
+				cv := sisiaddr.S3S4(ce)
 
 				// Keep error messages before "While talking to ..." line
 				if remotehost == "" { anotherone[recipients] += " " + e; continue }
