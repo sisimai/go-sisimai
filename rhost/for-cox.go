@@ -138,13 +138,7 @@ func init() {
 		}
 
 		issuedcode := fo.DiagnosticCode + " "
-		codenumber := ""
-		for {
-			p0 := strings.Index(issuedcode,  "AUP#");  if p0 < 0 { break }
-			p1 := strings.Index(issuedcode[p0:], " "); if p1 < 0 { break }
-			codenumber = issuedcode[p0 + 4:p0 + p1]
-			break
-		}
+		codenumber := sisimoji.Select(issuedcode, "AUP#", " ", 0)
 		reasontext := errorcodes[codenumber]
 
 		if reasontext == "" {
