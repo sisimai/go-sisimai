@@ -100,15 +100,12 @@ func init() {
 			if sisimoji.Aligned(e, []string{"<", "@", ">"}) &&
 			   (strings.Index(e, "Recipient: <") > 1 || strings.HasPrefix(e, "<")) {
 				// Recipient: <******@ezweb.ne.jp> OR <***@ezweb.ne.jp>: 550 user unknown ...
-				p1 := strings.Index(e, "<")
-				p2 := strings.Index(e, ">")
-
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient  = sisiaddr.S3S4(e[p1 + 1:p2])
+				v.Recipient = sisiaddr.S3S4(sisimoji.Select(e, "<", ">", 0))
 				v.Diagnosis += " " + e
 				recipients += 1
 
