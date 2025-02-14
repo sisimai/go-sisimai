@@ -525,14 +525,14 @@ func init() {
 			// and when that happens, the message will be returned to you.
 			emailparts[1] += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
 
-			p1 := strings.Index(bf.Payload, "The date of the message is: ");    if p1 < 0 { break }
-			p2 := sisimoji.IndexOnTheWay(bf.Payload, "\n", p1);                 if p2 < 0 { break }
-			emailparts[1] += fmt.Sprintf("Date: %s\n", bf.Payload[p1 + 31:p2])
-
-			p1  = strings.Index(bf.Payload, "The subject of the message is: "); if p1 < 0 { break }
-			p2  = sisimoji.IndexOnTheWay(bf.Payload, "\n", p1);                 if p2 < 0 { break }
-			emailparts[1] += fmt.Sprintf("Subject: %s\n", bf.Payload[p1 + 31:p2])
-			break
+			if cv := sisimoji.Select(bf.Payload, "The date of the message is: ", "\n", 0); cv != "" {
+				// The date of the message is:    Thu, 22 Apr 2016 23:34:45 +0900
+				emailparts[1] += fmt.Sprintf("Date: %s\n", strings.Trim(cv, " "))
+			}
+			if cv := sisimoji.Select(bf.Payload, "The subject of the message is: ", "\n", 0); cv != "" {
+				// The date of the message is:    Thu, 22 Apr 2016 23:34:45 +0900
+				emailparts[1] += fmt.Sprintf("Subject: %s\n", strings.Trim(cv, " "))
+			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}
