@@ -144,8 +144,7 @@ func init() {
 						}
 					} else if o[3] == "code" {
 						// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
-						v.Spec = o[1]
-						if strings.ToUpper(o[1]) == "X-POSTFIX" { v.Spec = "SMTP" }
+						v.Spec = o[1]; if strings.ToUpper(o[1]) == "X-POSTFIX" { v.Spec = "SMTP" }
 						v.Diagnosis = o[2]
 
 					} else {
@@ -178,9 +177,8 @@ func init() {
 						if strings.Contains(e, "(in reply to ") || strings.Contains(e, "command)") {
 							// Find an SMTP command from a string like the following:
 							// 5.1.1 <userunknown@example.co.jp>... User Unknown (in reply to RCPT TO
-							cv := command.Find(e)
-							if len(cv) > 0                      { commandset = append(commandset, cv) }
-							if len(anotherset["diagnosis"]) > 0 { anotherset["diagnosis"] += " " + e  }
+							if cv := command.Find(e); len(cv) > 0 { commandset = append(commandset, cv) }
+							if len(anotherset["diagnosis"]) > 0   { anotherset["diagnosis"] += " " + e  }
 
 						} else if sisimoji.Aligned(e, []string{"<", "@", ">", "(expanded from <", "):"}) {
 							// <r@example.ne.jp> (expanded from <kijitora@example.org>): user ...
@@ -224,13 +222,13 @@ func init() {
 				v.Recipient = anotherset["recipient"]
 				recipients += 1
 
-			} else {
+			} else if nomessages == true {
 				// Get a recipient address from message/rfc822 part if the delivery report was unavailable:
 				// "--- Delivery report unavailable ---"
-				if nomessages == true {
+				if cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0)); cv != "" {
 					// Try to get a recipient address from To: field in the original message at message/rfc822 part
-					cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0))
-					if cv != "" { dscontents[len(dscontents) - 1].Recipient = cv; recipients += 1 }
+					dscontents[len(dscontents) - 1].Recipient = cv
+					recipients += 1
 				}
 			}
 		}
