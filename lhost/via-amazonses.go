@@ -46,9 +46,7 @@ func init() {
 				//  "TopicArn" : "arn:aws:sns:us-west-2:123456789012:SES-EJ-B",
 				//  "Message" : "{\"notificationType\"...
 				if strings.Contains(sespayload, "\\") { sespayload = strings.ReplaceAll(sespayload, "\\",   "") }
-				p3 := sisimoji.IndexOnTheWay(sespayload, "{",  p2 + 9)
-				p4 := sisimoji.IndexOnTheWay(sespayload, "\n", p2 + 9)
-				sespayload = sespayload[p3:p4]
+				sespayload = "{" + sisimoji.Select(sespayload, "{", "\n", p2 + 9)
 				sespayload = strings.TrimRight(sespayload, ",")
 				sespayload = strings.TrimRight(sespayload, `"`)
 			}
