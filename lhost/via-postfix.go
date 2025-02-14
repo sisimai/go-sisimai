@@ -227,18 +227,10 @@ func init() {
 			} else {
 				// Get a recipient address from message/rfc822 part if the delivery report was unavailable:
 				// "--- Delivery report unavailable ---"
-				for {
-					p1 := strings.Index(emailparts[1], "\nTo: ")
-					if nomessages == false         { break }
-					if p1 < 1                      { break }
-					if p1 + 6 > len(emailparts[1]) { break }
-
+				if nomessages == true {
 					// Try to get a recipient address from To: field in the original message at message/rfc822 part
-					p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 1)
-					cv := emailparts[1][p1 + 5:p2 + 1]
-					dscontents[len(dscontents) - 1].Recipient = sisiaddr.S3S4(cv)
-					recipients += 1
-					break
+					cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0))
+					if cv != "" { dscontents[len(dscontents) - 1].Recipient = cv; recipients += 1 }
 				}
 			}
 		}
