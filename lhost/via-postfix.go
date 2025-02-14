@@ -186,13 +186,9 @@ func init() {
 							// <r@example.ne.jp> (expanded from <kijitora@example.org>): user ...
 							// OR
 							// <kijitora@exmaple.jp>: ...
-							p1 := strings.Index(e, "> ")
-							p2 := strings.Index(e[p1:], "(expanded from ")
-							p3 := strings.Index(e[p2 + 14:], ">):")
-							p4 := p3 + p2 + 14 + 3 // len("(expanded from ") + len(">):")
-							anotherset["recipient"] = sisiaddr.S3S4(e[0:p1])
-							anotherset["alias"]     = sisiaddr.S3S4(e[p2 + 15:])
-							if len(e) > p4 { anotherset["diagnosis"] = e[p4:] }
+							anotherset["recipient"] = sisiaddr.S3S4(sisimoji.Select(e, "<", "< ", 0))
+							anotherset["alias"]     = sisiaddr.S3S4(sisimoji.Select(e, "(expanded from ", "):", 0))
+							if p1 := strings.Index(e, ">): ") + 4; len(e) > p1 { anotherset["diagnosis"] = e[p1:] }
 
 						} else if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"<", "@", ">:"}) {
 							// <kijitora@exmaple.jp>: ...
