@@ -250,9 +250,7 @@ func init() {
 					//   kijitora@example.jp
 					//   sabineko@example.jp: forced freeze
 					//   mikeneko@example.jp <nekochan@example.org>: ...
-					p1 := strings.Index(e, "<")
-					p2 := strings.Index(e, ">:")
-					if p1 > 1 && p2 > 1 {
+					cv  = sisiaddr.S3S4(sisimoji.Select(e, "<", ">:", 0)); if cv != "" {
 						// There are an email address and an error message in the line
 						// parser.c:743| while (bracket_count-- > 0) if (*s++ != '>')
 						// parser.c:744|   {
@@ -262,15 +260,15 @@ func init() {
 						// parser.c:748|     s-1, (int)(s - US mailbox - 1), mailbox);
 						// parser.c:749|   goto PARSE_FAILED;
 						// parser.c:750|   }
-						cv = sisiaddr.S3S4(e[p1:p2 + 1])
-						v.Diagnosis = sisimoji.Sweep(e[p2 + 1:])
+						//cv = sisiaddr.S3S4(cv)
+						v.Diagnosis = sisimoji.Sweep(e[strings.Index(e, ">:") + 1:])
 
 					} else {
 						// There is an email address only in the line, such as "  kijitora@example.jp"
 						// --- OR ---
 						// "  kijitora@example.jp: forced freeze"
-						p3 := strings.LastIndex(e, ": "); if p3 < 0 { p3 = len(e) }
-						cv  = sisiaddr.S3S4(e[2:p3])
+						p1 := strings.LastIndex(e, ": "); if p1 < 0 { p1 = len(e) }
+						cv  = sisiaddr.S3S4(e[2:p1])
 					}
 					if rfc5322.IsEmailAddress(cv) == false { continue }
 				}
