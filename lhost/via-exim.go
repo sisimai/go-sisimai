@@ -428,7 +428,7 @@ func init() {
 			}
 
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
-			p1 := strings.Index(e.Diagnosis, "__"); if p1 > 1 { e.Diagnosis = e.Diagnosis[0:p1] }
+			if p1 := strings.Index(e.Diagnosis, "__"); p1 > 1 { e.Diagnosis = e.Diagnosis[0:p1] }
 
 			if e.Rhost == "" { e.Rhost = rfc1123.Find(e.Diagnosis) }
 			if e.Lhost == "" { e.Lhost = recvdtoken[0] }
