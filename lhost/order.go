@@ -51,9 +51,7 @@ func OrderBySubject(title string) []string {
 	}
 
 	// The following order is decided by the first 2 words of Subject: header
-	title = strings.Replace(title, "[", " ", -1)
-	title = strings.Replace(title, "]", " ", -1)
-	title = strings.Replace(title, "_", " ", -1)
+	for _, e := range []string{"[", "]", "_"} { title = strings.Replace(title, e, " ", -1) }
 
 	// Squeeze duplicated space characters
 	for strings.Contains(title, "  ") { title = strings.ReplaceAll(title, "  ", " ") }
@@ -70,11 +68,7 @@ func OrderBySubject(title string) []string {
 		// Postmaster notify, returned mail, ...
 		first = strings.Join(words[0:2], "-")
 	}
-
-	first = strings.ReplaceAll(first, `:`, "")
-	first = strings.ReplaceAll(first, `,`, "")
-	first = strings.ReplaceAll(first, `*`, "")
-	first = strings.ReplaceAll(first, `"`, "")
+	for _, e := range []string{`:`, `,`, `*`, `"`} { first = strings.ReplaceAll(first, e, "") }
 	return table[first]
 }
 
