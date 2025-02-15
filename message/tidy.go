@@ -20,9 +20,9 @@ func tidy(argv0 *string) *string {
 	// Find and tidy up fields defined in RFC5322, RFC1894, and RFC5965
 	for i, e := range lines {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
-		p0 := strings.IndexByte(e, ':'); if p0 < 0                    { email += e + "\n"; continue }
-		cf := strings.ToLower(e[0:p0]);  if strings.Contains(cf, " ") { email += e + "\n"; continue }
-		fn := FieldTable[cf];            if fn == ""                  { email += e + "\n"; continue }
+		p0 := strings.IndexByte(e, ':'); if p0 < 0                         { email += e + "\n"; continue }
+		cf := strings.ToLower(e[0:p0]);  if strings.IndexByte(cf, ' ') > 0 { email += e + "\n"; continue }
+		fn := FieldTable[cf];            if fn == ""                       { email += e + "\n"; continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
 		ab := []string{}
