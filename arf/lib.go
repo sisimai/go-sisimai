@@ -182,8 +182,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			} else if strings.HasPrefix(e, "Reporting-MTA: ") {
 				// The header is optional and MUST NOT appear more than once.
 				// Reporting-MTA: dns; mx.example.jp
-				cv := rfc1894.Field(e); if len(cv) == 0 { continue }
-				reportedby = cv[2]
+				if cv := rfc1894.Field(e); len(cv) > 0 { reportedby = cv[2] }
 
 			} else if strings.HasPrefix(e, "Source-IP: ") {
 				// The header is optional and MUST NOT appear more than once.
