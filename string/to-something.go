@@ -18,9 +18,7 @@ func ToLF(argv0 *string) *string {
 	// @return   *string        LF converted text
 	if argv0 == nil || *argv0 == "" { return argv0 }
 
-	characters := [2]string{"\r\n", "\r"}
-	crreplaced := *argv0
-	for _, e := range characters {
+	crreplaced := *argv0; for _, e := range [2]string{"\r\n", "\r"} {
 		// Convert CRLF and CR to LF
 		if strings.Contains(crreplaced, e) == false { continue }
 		crreplaced = strings.ReplaceAll(crreplaced, e, "\n")
