@@ -54,7 +54,7 @@ func init() {
 			// kijitora@notes.example.jp
 			//
 			// ------- Returned Message --------
-			if strings.Contains(e, "@") && strings.Contains(e, " ") == false {
+			if strings.IndexByte(e, '@') > 0 && strings.IndexByte(e, ' ') < 0 {
 				// kijitora@notes.example.jp
 				if rfc5322.IsEmailAddress(e) == false { continue }
 				if len(v.Recipient) > 0 {

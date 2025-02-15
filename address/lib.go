@@ -50,7 +50,7 @@ func IsIncluded(argv0 string) bool {
 	// @param    string argv0    String including an email address like "<neko@example.jp>"
 	// @return   bool            true:  is including an email address
 	//                           false: is not including an email address
-	if len(argv0) < 5 || strings.Contains(argv0,  "@") == false { return false }
+	if len(argv0) < 5 || strings.IndexByte(argv0,  '@') < 0 { return false }
 	if strings.HasPrefix(argv0, "<") && strings.HasSuffix(argv0, ">") {
 		// The argument is like "<neko@example.jp>"
 		if rfc5322.IsEmailAddress(strings.Trim(argv0, "<>")) { return true }

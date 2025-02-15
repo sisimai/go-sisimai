@@ -116,7 +116,7 @@ func Find(argv1 string) [3]string {
 				if readcursor & indicators["email-address"] > 0 {
 					// An email address including a comment like the followings:
 					// <"neko(cat)"@example.org> or <neko(cat)@example.org>
-					if strings.Contains(readbuffer[0], `"`) {
+					if strings.IndexByte(readbuffer[0], '"') > -1 {
 						// Quoted local part in the email address like <"neko(cat)"@example.org>
 						readbuffer[0] += e
 
@@ -151,7 +151,7 @@ func Find(argv1 string) [3]string {
 				if readcursor & indicators["email-address"] > 0 {
 					// An email address including a comment like the followings:
 					// <"neko(cat)"@example.org> or <neko(cat)@example.org>
-					if strings.Contains(readbuffer[0], `"`) {
+					if strings.IndexByte(readbuffer[0], '"') > -1 {
 						// Quoted local part in the email address like <"neko(cat)"@example.org>
 						readbuffer[0] += e
 
@@ -269,7 +269,7 @@ func Find(argv1 string) [3]string {
 			// Try to pick an email address from each element in readbuffer
 			for _, f := range strings.Split(e, " ") {
 				// Find an email address like string from each element splitted by " "
-				if f == "" || strings.Index(f, "@") < 1          { continue }
+				if f == "" || strings.IndexByte(f, '@') < 1      { continue }
 				f = strings.Trim(f, "{}()[]`';."); if len(f) < 5 { continue }
 				f = Final(f)
 

@@ -73,7 +73,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				cv := sisiaddr.S3S4(e[strings.Index(e, "<"):])
+				cv := sisiaddr.S3S4(e[strings.IndexByte(e, '<'):])
 				if rfc5322.IsEmailAddress(cv) { v.Recipient = cv; recipients++ }
 
 			} else if strings.Contains(e, "Your mail sent on: ") {

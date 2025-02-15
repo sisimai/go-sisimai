@@ -57,7 +57,7 @@ func init() {
 			//
 			// The following recipients were affected:
 			//    neko@example.com
-			if strings.HasPrefix(e, "    ") && strings.Contains(e, "@") {
+			if strings.HasPrefix(e, "    ") && strings.IndexByte(e, '@') > 0 {
 				// The following recipients were affected:
 				//    neko@example.com
 				if len(v.Recipient) > 0 {
@@ -107,7 +107,7 @@ func init() {
 						//    From:    originalsender@example.com
 						//    Subject: ...
 						p1 := strings.Index(e, " From:"); if p1 < 0 { p1 = strings.Index(e, " Subject:") }
-						p2 := strings.Index(e, ":")
+						p2 := strings.IndexByte(e, ':')
 						emailparts[1] += fmt.Sprintf("%s: %s\n", e[p1 + 1:p2], sisimoji.Sweep(e[p2 + 1:]))
 					}
 				}

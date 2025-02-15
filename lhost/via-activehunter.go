@@ -48,7 +48,7 @@ func init() {
 			//
 			//  ----- Transcript of session follows -----
 			// 550 sorry, no mailbox here by that name (#5.1.1 - chkusr)
-			if strings.HasPrefix(e, ">>> ") && strings.Contains(e, "@") {
+			if strings.HasPrefix(e, ">>> ") && strings.IndexByte(e, '@') > 0 {
 				// >>> kijitora@example.org <kijitora@example.org>
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.

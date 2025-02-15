@@ -54,7 +54,7 @@ func IsInternetHost(argv1 string) bool {
 
 	// Deal "localhost", "localhost6" as a valid hostname
 	if argv1 == "localhost" || argv1 == "localhost6"    { return true  }
-	if strings.Contains(argv1, ".")  == false           { return false }
+	if strings.IndexByte(argv1, '.') == -1              { return false }
 	if strings.Contains(argv1, "..") == true            { return false }
 	if sisimoji.HasPrefixAny(argv1, []string{".", "-"}) { return false }
 	if strings.HasSuffix(argv1, "-") == true            { return false }
@@ -160,7 +160,7 @@ func Find(argv1 string) string {
 		for _, f := range Prefix0x32 { e = strings.ReplaceAll(e, f, "") }
 		for _, f := range Suffix0x32 { e = strings.ReplaceAll(e, f, "") }
 
-		if len(e) < 4 || strings.Contains(e, ".") == false || IsInternetHost(e) == false { continue }
+		if len(e) < 4 || strings.IndexByte(e, '.') < 0 || IsInternetHost(e) == false { continue }
 		foundtoken = append(foundtoken, e)
 	}
 	if len(foundtoken) == 0 { return ""            }

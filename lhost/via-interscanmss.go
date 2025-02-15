@@ -49,15 +49,15 @@ func init() {
 
 			p1 := strings.Index(e, " <<< ") // Sent <<< ...
 			p2 := strings.Index(e, " >>> ") // Received >>> ...
-			if strings.Index(e, "@") > 1 && strings.Index(e, " <") > 1 && 
+			if strings.IndexByte(e, '@') > 1 && strings.Index(e, " <") > 1 && 
 			   (p1 > 1 || p2 > 1 || strings.Contains(e, "Unable to deliver ")) {
 				// Sent <<< RCPT TO:<kijitora@example.co.jp>
 				// Received >>> 550 5.1.1 <kijitora@example.co.jp>... user unknown
 				// Received >>> 550 5.1.1 unknown user.
 				// Unable to deliver message to <kijitora@neko.example.jp>
 				// Unable to deliver message to <neko@example.jp> (and other recipients in the same domain).
-				p3 := strings.LastIndex(e, "<")
-				p4 := strings.LastIndex(e, ">")
+				p3 := strings.LastIndexByte(e, '<')
+				p4 := strings.LastIndexByte(e, '>')
 				cr := sisiaddr.Find(e[p3:p4 + 1])
 				if len(cr) == 0 || rfc5322.IsEmailAddress(cr[0]) == false { continue }
 

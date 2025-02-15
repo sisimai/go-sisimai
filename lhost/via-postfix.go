@@ -188,7 +188,7 @@ func init() {
 
 						} else if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"<", "@", ">:"}) {
 							// <kijitora@exmaple.jp>: ...
-							anotherset["recipient"] = sisiaddr.S3S4(e[0:strings.Index(e, ">") + 1])
+							anotherset["recipient"] = sisiaddr.S3S4(e[0:strings.IndexByte(e, '>') + 1])
 							anotherset["diagnosis"] = e[strings.Index(e, ">:") + 2:]
 
 						} else if strings.Contains(e, "--- Delivery report unavailable ---") {

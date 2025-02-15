@@ -145,8 +145,8 @@ func init() {
 
 						if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"@", ">.", " "}) {
 							// <kijitora@example.co.jp>... Deferred: Name server: example.co.jp.: host name lookup failure
-							anotherset["recipient"] = sisiaddr.S3S4(e[0:strings.Index(e, ">")])
-							anotherset["diagnosis"] = e[strings.Index(e," ") + 1:]
+							anotherset["recipient"] = sisiaddr.S3S4(e[0:strings.IndexByte(e, '>')])
+							anotherset["diagnosis"] = e[strings.IndexByte(e, ' ') + 1:]
 
 						} else {
 							// ----- Transcript of session follows -----

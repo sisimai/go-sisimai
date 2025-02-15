@@ -162,9 +162,9 @@ func init() {
 
 			// There is no local part in the recipient email address like "@example.jp"
 			// Get an email address from the value of Diagnostic-Code: field
-			if rfc5322.IsEmailAddress(e.Recipient) == true   { continue }
-			p1 := strings.Index(e.Diagnosis, "<"); if p1 < 0 { continue }
-			p2 := strings.Index(e.Diagnosis, ">"); if p2 < 0 { continue }
+			if rfc5322.IsEmailAddress(e.Recipient) == true       { continue }
+			p1 := strings.IndexByte(e.Diagnosis, '<'); if p1 < 0 { continue }
+			p2 := strings.IndexByte(e.Diagnosis, '>'); if p2 < 0 { continue }
 			e.Recipient = sisiaddr.S3S4(e.Diagnosis[p1:p2 + 1])
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

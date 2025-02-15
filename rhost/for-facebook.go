@@ -17,8 +17,8 @@ func init() {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   string          Detected bounce reason name
 		// @see      https://www.facebook.com/postmaster/response_codes
-		if fo == nil || fo.DiagnosticCode == ""              { return "" }
-		if strings.Contains(fo.DiagnosticCode, "-") == false { return "" }
+		if fo == nil || fo.DiagnosticCode == ""          { return "" }
+		if strings.IndexByte(fo.DiagnosticCode, '-') < 0 { return "" }
 
 		errorcodes := map[string][]string{
 			// http://postmaster.facebook.com/response_codes
@@ -86,7 +86,7 @@ func init() {
 			},
 		}
 
-		errorindex := strings.Index(fo.DiagnosticCode, "-")
+		errorindex := strings.IndexByte(fo.DiagnosticCode, '-')
 		errorlabel := fo.DiagnosticCode[errorindex - 3:errorindex + 3]
 		for e := range errorcodes {
 			// The key is a bounce reason name

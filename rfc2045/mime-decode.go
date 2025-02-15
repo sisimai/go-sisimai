@@ -47,7 +47,7 @@ func DecodeH(argv0 string) (string, error) {
 	stringlist := []string{}
 	replacingc := []string{".", "[", "]"}
 
-	if strings.Contains(argv0, " ") {
+	if strings.IndexByte(argv0, ' ') > 0 {
 		// The argument string include 1 or more space characters
 		stringlist = strings.Split(argv0, " ")
 

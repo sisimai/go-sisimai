@@ -144,8 +144,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				// Original-Rcpt-To header field is optional and may appear any number of times as appropriate:
 				// Original-Rcpt-To: <kijitora@example.jp>
 				// Removal-Recipient: user@example.com
-				cv := sisiaddr.S3S4(e[strings.Index(e, " ") + 1:]); if rfc5322.IsEmailAddress(cv) == false        { continue }
-				cw := len(dscontents);                              if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
+				cv := sisiaddr.S3S4(e[strings.IndexByte(e, ' ') + 1:]); if rfc5322.IsEmailAddress(cv) == false        { continue }
+				cw := len(dscontents);                                  if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
 
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -158,7 +158,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			} else if strings.HasPrefix(e, "Feedback-Type: ") {
 				// The header field MUST appear exactly once.
 				// Feedback-Type: abuse
-				v.FeedbackType = e[strings.Index(e, " ") + 1:]
+				v.FeedbackType = e[strings.IndexByte(e, ' ') + 1:]
 
 			} else if strings.HasPrefix(e, "Authentication-Results: ") {
 				// "Authentication-Results" indicates the result of one or more authentication checks
@@ -177,7 +177,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				// Arrival-Date header is optional and MUST NOT appear more than once.
 				// Received-Date: Thu, 29 Apr 2010 00:00:00 JST
 				// Arrival-Date: Thu, 29 Apr 2010 00:00:00 +0000
-				timestamp0 = e[strings.Index(e, " ") + 1:]
+				timestamp0 = e[strings.IndexByte(e, ' ') + 1:]
 
 			} else if strings.HasPrefix(e, "Reporting-MTA: ") {
 				// The header is optional and MUST NOT appear more than once.
@@ -187,7 +187,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			} else if strings.HasPrefix(e, "Source-IP: ") {
 				// The header is optional and MUST NOT appear more than once.
 				// Source-IP: 192.0.2.45
-				remotehost = e[strings.Index(e, " ") + 1:]
+				remotehost = e[strings.IndexByte(e, ' ') + 1:]
 
 			} else if strings.HasPrefix(e, "Original-Mail-From: ") {
 				// the header is optional and MUST NOT appear more than once.
@@ -204,8 +204,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		// There is no recipient address in the message
 		if len(bf.Headers["x-apple-unsubscribe"]) > 0 {
 			// X-Apple-Unsubscribe: true
-			if bf.Headers["x-apple-unsubscribe"][0]         != "true" { break }
-			if strings.Contains(bf.Headers["from"][0], "@") == false  { break }
+			if bf.Headers["x-apple-unsubscribe"][0] != "true"    { break }
+			if strings.IndexByte(bf.Headers["from"][0], '@') < 0 { break }
 			dscontents[0].Recipient    = bf.Headers["from"][0]
 			dscontents[0].Diagnosis    = sisimoji.Sweep(emailparts[0])
 			dscontents[0].FeedbackType = "opt-out"

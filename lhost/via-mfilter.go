@@ -41,7 +41,7 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.Index(e, "@") > 1 && strings.Contains(e, " ") == false && rfc5322.IsEmailAddress(e) {
+				if strings.IndexByte(e, '@') > 1 && strings.IndexByte(e, ' ') < 0 && rfc5322.IsEmailAddress(e) {
 					// This line contains an email address only: "kijitora@example.jp"
 					readcursor |= indicators["deliverystatus"]
 				}
@@ -63,7 +63,7 @@ func init() {
 			// DATA
 			//
 			// -------original message
-			if strings.Contains(e, "@") && strings.Contains(e, " ") == false {
+			if strings.IndexByte(e, '@') > 0 && strings.IndexByte(e, ' ') < 0 {
 				// 以下のメールアドレスへの送信に失敗しました。
 				// kijitora@example.jp
 				if rfc5322.IsEmailAddress(e) == false { continue }

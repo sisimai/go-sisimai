@@ -52,9 +52,9 @@ func ToPlain(argv0 *string) *string {
 		xhtml = xhtml[:p0] + xhtml[p1 + 8:]
 	}
 
-	for strings.Contains(xhtml, "<") || strings.Contains(xhtml, ">") {
+	for strings.IndexByte(xhtml, '<') > -1 || strings.IndexByte(xhtml, '>') > -1 {
 		// Find "<" from HTML element and remove string until ">"
-		p0 := strings.Index(xhtml, "<");         if p0 < 0 { break }
+		p0 := strings.IndexByte(xhtml, '<');     if p0 < 0 { break }
 		p1 := IndexOnTheWay(xhtml, ">", p0 + 2); if p1 < 0 { break }
 
 		if p0 >  0 { plain += xhtml[0:p0] + " "      }

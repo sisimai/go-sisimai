@@ -70,7 +70,7 @@ func init() {
 			// ----_Biglobe000000/00000.biglobe.ne.jp
 			// Content-Type: message/rfc822
 			//
-			if strings.Index(e, "@") > 1 && strings.Contains(e, " ") == false {
+			if strings.IndexByte(e, '@') > 1 && strings.IndexByte(e, ' ') < 0 {
 				//    ----- The following addresses had delivery problems -----
 				// ********@***.biglobe.ne.jp
 				if len(v.Recipient) > 0 {

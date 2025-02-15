@@ -14,14 +14,14 @@ import "libsisimai.org/sisimai/rfc5322"
 func ExpandVERP(email string) string {
 	// @param    string email  VERP Address
 	// @return   string        Email address
-	if email                          == ""    { return "" }
-	if strings.Contains(email, "@")   == false { return "" }
-	if rfc5322.IsQuotedAddress(email) == true  { return "" } // Do not expand "neko+cat=example.jp"@example.org
+	if email                          == ""   { return "" }
+	if strings.IndexByte(email, '@')  == -1   { return "" }
+	if rfc5322.IsQuotedAddress(email) == true { return "" } // Do not expand "neko+cat=example.jp"@example.org
 
 	// bounce+neko=example.org@example.jp => neko@example.jp
 	local := strings.SplitN(email, "@", 2)[0]
-	pluss := strings.Index(local, "+"); if pluss < 1                  { return "" }
-	equal := strings.Index(local, "="); if equal < 1 || pluss > equal { return "" }
+	pluss := strings.IndexByte(local, '+'); if pluss < 1                  { return "" }
+	equal := strings.IndexByte(local, '='); if equal < 1 || pluss > equal { return "" }
 	lsize := len(local);    if pluss > lsize - 1 || equal > lsize - 1 { return "" }
 	xverp := strings.Replace(strings.SplitN(local, "+", 2)[1], "=", "@", 1)
 
@@ -33,11 +33,11 @@ func ExpandVERP(email string) string {
 func ExpandAlias(email string) string {
 	// @param    string email  Email alias string
 	// @return   string        Expanded email address
-	if email == "" || strings.Index(email, "+") < 1 { return "" }
-	if rfc5322.IsEmailAddress(email)  == false      { return "" }
-	if rfc5322.IsQuotedAddress(email) == true       { return "" } // Do not expand "neko+cat"@example.org
+	if email == "" || strings.IndexByte(email, '+') < 1 { return "" }
+	if rfc5322.IsEmailAddress(email)  == false          { return "" }
+	if rfc5322.IsQuotedAddress(email) == true           { return "" } // Do not expand "neko+cat"@example.org
 
 	// neko+straycat@example.org => neko@example.org
-	return email[0:strings.Index(email, "+")] + "@" + strings.SplitN(email, "@", 2)[1]
+	return email[0:strings.IndexByte(email, '+')] + "@" + strings.SplitN(email, "@", 2)[1]
 }
 
