@@ -46,8 +46,7 @@ func init() {
 					readcursor |= indicators["deliverystatus"]
 				}
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// このメールは「m-FILTER」が自動的に生成して送信しています。
 			// メールサーバーとの通信中、下記の理由により

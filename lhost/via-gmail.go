@@ -174,8 +174,7 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// Technical details of permanent failure:=20
 			// Google tried to deliver your message, but it was rejected by the recipient =
@@ -203,9 +202,7 @@ func init() {
 					v = &(dscontents[len(dscontents) - 1])
 				}
 				cv := sisiaddr.S3S4(strings.Trim(e, " "))
-				if rfc5322.IsEmailAddress(cv) == false { continue }
-				v.Recipient = cv
-				recipients += 1
+				if rfc5322.IsEmailAddress(cv) == true { v.Recipient = cv; recipients++ }
 
 			} else {
 				// Error message lines except "    neko@example.jp" line
@@ -232,18 +229,15 @@ func init() {
 					// The key name is a bounce reason name
 					for _, f := range messagesof[r] {
 						// Try to find an error message including lower-cased string listed in messagesof
-						if strings.Contains(e.Diagnosis, f) == false { continue }
-						e.Reason = r; break FINDREASON
+						if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 					}
 				}
 			}
 			if e.Reason == "" { continue }
 
 			// Set a pseudo status code and override the bounce reason
-			e.Status = status.Find(e.Diagnosis, e.ReplyCode)
-
-			if e.Status == "" || strings.Contains(e.Status, ".0") { continue }
-			e.Reason = status.Name(e.Status)
+			e.Status = status.Find(e.Diagnosis, e.ReplyCode);  if e.Status == "" { continue }
+			if strings.Contains(e.Status, ".0") == false { e.Reason = status.Name(e.Status) }
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

@@ -83,8 +83,7 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if sisimoji.HasPrefixAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// The user(s) account is disabled.
 			//
@@ -110,7 +109,7 @@ func init() {
 				recipients += 1
 
 			} else {
-				f := rfc1894.Match(e); if f > 0 {
+				if f := rfc1894.Match(e); f > 0 {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
 					v.Update(v.AsRFC1894(o[0]), o[2])
@@ -129,8 +128,7 @@ func init() {
 
 					} else {
 						// Check the error message
-						isincluded := false
-						for _, r := range substrings {
+						isincluded := false; for _, r := range substrings {
 							// Try to find that the line contains any error message text
 							if strings.Contains(e, r) == false { continue }
 							v.Diagnosis += " " + e
@@ -160,8 +158,7 @@ func init() {
 					// The key name is a bounce reason name
 					for _, f := range messagesof[r] {
 						// Try to find an error message including lower-cased string listed in messagesof
-						if strings.Contains(e.Diagnosis, f) == false { continue }
-						e.Reason = r; break FINDREASON
+						if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 					}
 				}
 			}

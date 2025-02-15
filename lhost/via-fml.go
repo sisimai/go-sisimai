@@ -61,7 +61,8 @@ func init() {
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
-			if len(e) == 0 { continue }
+			if e == "" { continue }
+
 			if cv := sisimoji.Select(e, "<", ">", 0); cv != "" {
 				// You are not a member of this mailing list <neko-meeting@example.org>.
 				if len(v.Recipient) > 0 {
@@ -87,15 +88,13 @@ func init() {
 
 			for f := range errortable {
 				// The key is a bounce reason name
-				if sisimoji.ContainsAny(e.Diagnosis, errortable[f]) == false { continue }
-				e.Reason = f; break
+				if sisimoji.ContainsAny(e.Diagnosis, errortable[f]) { e.Reason = f; break }
 			}
 			if e.Reason != "" { continue }
 
 			for f := range errortitle {
 				// The key is a bounce reason name
-				if sisimoji.ContainsAny(bf.Headers["subject"][0], errortitle[f]) == false { continue }
-				e.Reason = f; break
+				if sisimoji.ContainsAny(bf.Headers["subject"][0], errortitle[f]) { e.Reason = f; break }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

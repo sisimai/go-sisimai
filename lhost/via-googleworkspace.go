@@ -21,9 +21,9 @@ func init() {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
 		// @see https://workspace.google.com/
-		if bf == nil || bf.Empty() == true                             { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Payload, "\nDiagnostic-Code:") == true  { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Payload, "\nFinal-Recipient:") == true  { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true                            { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Payload, "\nDiagnostic-Code:") == true { return sis.RisingUnderway{} }
+		if strings.Contains(bf.Payload, "\nFinal-Recipient:") == true { return sis.RisingUnderway{} }
 		if strings.Contains(bf.Headers["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
 		if strings.Contains(bf.Headers["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
 
@@ -56,8 +56,7 @@ func init() {
 				}
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// ** Message not delivered **
 			// You're sending this from a different address or alias using the 'Send mail as' feature.
@@ -65,8 +64,7 @@ func init() {
 			// Learn more here: https://support.google.com/mail/?p=CustomFromDenied
 			// The response was:
 			// Unspecified Error (SENT_SECOND_EHLO): Smtp server does not advertise AUTH capability
-			if strings.HasPrefix(e, "Content-Type:") == true { continue }
-			v.Diagnosis += e + " "
+			if strings.HasPrefix(e, "Content-Type:") == false { v.Diagnosis += e + " " }
 		}
 
 		if recipients == 0 {
@@ -88,8 +86,7 @@ func init() {
 				// The key name is a bounce reason name
 				for _, f := range messagesof[r] {
 					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) == false { continue }
-					e.Reason = r; break FINDREASON
+					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 				}
 			}
 		}

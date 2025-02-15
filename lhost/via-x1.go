@@ -39,8 +39,7 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// The original message was received at Thu, 29 Apr 2010 23:34:45 +0900 (JST)
 			// from shironeko@example.jp

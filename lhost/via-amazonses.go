@@ -286,8 +286,7 @@ func init() {
 
 				for f := range reasonpair {
 					// Try to find the bounce reason by "bounceSubType"
-					if reasonpair[f] != (*o).BounceSubType { continue }
-					v.Reason = f; break
+					if reasonpair[f] == (*o).BounceSubType { v.Reason = f; break }
 				}
 			}
 		} else if whatnotify == "C" {

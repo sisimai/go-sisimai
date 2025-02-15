@@ -29,7 +29,7 @@ func init() {
 			for _, e := range bf.Headers["received"] {
 				// Received: from localhost ([127.0.0.1])
 				//    by mx.example.org (JAMES SMTP Server 2.3.2) with SMTP ID 220...
-				if strings.Contains(e, "JAMES SMTP Server") == true     { proceedsto = true; break ISJAMES }
+				if strings.Contains(e, "JAMES SMTP Server") == true        { proceedsto = true; break ISJAMES }
 			}
 			break
 		}
@@ -64,8 +64,7 @@ func init() {
 				if e != "" { v.Diagnosis += e + " " }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// Message details:
 			//   Subject: Nyaaan

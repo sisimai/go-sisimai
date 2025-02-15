@@ -54,8 +54,7 @@ func init() {
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// This is a MIME-encapsulated message.
 			//
@@ -85,8 +84,7 @@ func init() {
 
 			} else {
 				// The boundary string or the error messages
-				if strings.Contains(e, "--") { continue }
-				v.Diagnosis += e + " "
+				if strings.Contains(e, "--") == false { v.Diagnosis += e + " " }
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
@@ -100,13 +98,12 @@ func init() {
 				// The key name is a bounce reason name
 				for _, f := range messagesof[r] {
 					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) == false { continue }
-					e.Reason = r; break FINDREASON
+					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 				}
 			}
 		}
 
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
-    }
+	}
 }
 

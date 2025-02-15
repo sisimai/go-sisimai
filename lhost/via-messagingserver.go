@@ -50,8 +50,7 @@ func init() {
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// --Boundary_(ID_0000000000000000000000)
 			// Content-type: text/plain; charset=us-ascii
@@ -137,9 +136,8 @@ func init() {
 
 				} else if strings.HasPrefix(e, "Reporting-MTA: ") {
 					// Reporting-MTA: dns;mr21p30im-asmtp004.me.com (tcp-daemon)
-					if strings.Contains(v.Lhost, ".")     { continue }
-					f := rfc1894.Field(e); if len(f) == 0 { continue }
-					v.Lhost = f[2]
+					if strings.Contains(v.Lhost, ".")    { continue       }
+					if f := rfc1894.Field(e); len(f) > 0 { v.Lhost = f[2] }
 				}
 			}
 		}
@@ -154,8 +152,7 @@ func init() {
 				// The key name is a bounce reason name
 				for _, f := range messagesof[r] {
 					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) == false { continue }
-					e.Reason = r; break FINDREASON
+					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 				}
 			}
 		}

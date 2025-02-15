@@ -50,8 +50,7 @@ func init() {
 
 			for _, e := range bf.Headers["received"] {
 				// Received: by ***.**.** with Internet Mail Service (5.5.2657.72)
-				if strings.Contains(e, tryto[3]) == false { continue }
-				proceedsto = true; break
+				if strings.Contains(e, tryto[3]) { proceedsto = true; break }
 			}
 			break
 		}
@@ -107,8 +106,7 @@ func init() {
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if statuspart == true                             { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || statuspart == true { continue }
 
 			if connvalues == len(connheader) {
 				// did not reach the following recipient(s):
@@ -212,8 +210,7 @@ func init() {
 			}
 
 			// Could not detect the reason from the value of "diagnosis", copy alternative error message 
-			if e.Reason      != "" { continue }
-			if anotherone[j] == "" { continue }
+			if e.Reason != "" || anotherone[j] == "" { continue }
 			e.Diagnosis = anotherone[j] + " " + e.Diagnosis
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 		}

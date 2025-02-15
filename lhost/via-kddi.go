@@ -62,8 +62,7 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			if strings.Contains(e, " Could not be delivered to: <") {
 				// Your mail sent on: Thu, 29 Apr 2010 11:04:47 +0900
@@ -75,9 +74,7 @@ func init() {
 					v = &(dscontents[len(dscontents) - 1])
 				}
 				cv := sisiaddr.S3S4(e[strings.Index(e, "<"):])
-				if rfc5322.IsEmailAddress(cv) == false { continue }
-				v.Recipient = cv
-				recipients += 1
+				if rfc5322.IsEmailAddress(cv) { v.Recipient = cv; recipients++ }
 
 			} else if strings.Contains(e, "Your mail sent on: ") {
 				// Your mail sent on: Thu, 29 Apr 2010 11:04:47 +0900
@@ -109,8 +106,7 @@ func init() {
 					// The key name is a bounce reason name
 					for _, f := range messagesof[r] {
 						// Try to find an error message including lower-cased string listed in messagesof
-						if strings.Contains(e.Diagnosis, f) == false { continue }
-						e.Reason = r; break FINDREASON
+						if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 					}
 				}
 			}

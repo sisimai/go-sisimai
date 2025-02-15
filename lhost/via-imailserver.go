@@ -47,8 +47,7 @@ func init() {
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
-			p0 := strings.Index(e, ": ")
-			if (p0 > 8 && sisimoji.Aligned(e, []string{": ", "@"})) || strings.HasPrefix(e, "undeliverable ") {
+			if (strings.Index(e, ": ") > 8 && sisimoji.Aligned(e, []string{": ", "@"})) || strings.HasPrefix(e, "undeliverable ") {
 				// Unknown user: kijitora@example.com
 				// undeliverable to kijitora@example.com
 				if len(v.Recipient) > 0 {
@@ -68,8 +67,7 @@ func init() {
 
 				} else {
 					// Error message after "Body of message generated response:" line
-					if alternates == "" { continue }
-					alternates += " " + e
+					if alternates != "" { alternates += " " + e }
 				}
 			}
 		}
@@ -91,8 +89,7 @@ func init() {
 				// The key name is a bounce reason name
 				for _, f := range messagesof[r] {
 					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) == false { continue }
-					e.Reason = r; break FINDREASON
+					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 				}
 			}
 		}

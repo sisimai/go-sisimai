@@ -71,7 +71,6 @@ func init() {
 			for _, e := range transcript {
 				// Pick email addresses, error messages, and the last SMTP command.
 				v  = &(dscontents[len(dscontents) - 1])
-				p := e.Response
 
 				if e.Command == "EHLO" || e.Command == "HELO" {
 					// Use the argument of EHLO/HELO command as a value of "lhost"
@@ -91,13 +90,12 @@ func init() {
 					v.Recipient = e.Argument
 					recipients += 1
 				}
-				reply, nyaan := strconv.ParseUint(p.Reply, 10, 16)
-				if nyaan != nil || reply < 400 { continue }
+				if reply, nyaan := strconv.ParseUint(e.Response.Reply, 10, 16); nyaan != nil || reply < 400 { continue }
 
 				commandset = append(commandset, e.Command)
-				if len(v.Diagnosis) == 0 { v.Diagnosis = strings.Join(p.Text, " ") }
-				if len(v.ReplyCode) == 0 { v.ReplyCode = p.Reply  }
-				if len(v.Status)    == 0 { v.Status    = p.Status }
+				if len(v.Diagnosis) == 0 { v.Diagnosis = strings.Join(e.Response.Text, " ") }
+				if len(v.ReplyCode) == 0 { v.ReplyCode = e.Response.Reply  }
+				if len(v.Status)    == 0 { v.Status    = e.Response.Status }
 			}
 		} else {
 			// The message body is a general bounce mail message of Postfix
@@ -119,7 +117,7 @@ func init() {
 				}
 				if readcursor & indicators["deliverystatus"] == 0 { continue }
 
-				f := rfc1894.Match(e); if f > 0 {
+				if f := rfc1894.Match(e); f > 0 {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
 					z := fieldtable[o[0]]

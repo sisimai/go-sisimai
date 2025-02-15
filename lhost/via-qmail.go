@@ -177,8 +177,7 @@ func init() {
 				if sisimoji.ContainsAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// <kijitora@example.jp>:
 			// 192.0.2.153 does not like recipient.
@@ -207,8 +206,7 @@ func init() {
 					// Connected to 192.0.2.112 but my name was rejected.
 					// Giving up on 192.0.2.135.
 					// remote host 203.138.180.112 said:...
-					cv := sisimoji.Select(e + " ", r, " ", 0); if cv == "" { continue }
-					v.Rhost = sisimoji.Sweep(cv); break
+					if cv := sisimoji.Select(e + " ", r, " ", 0); cv != "" { v.Rhost = sisimoji.Sweep(cv); break }
 				}
 			}
 		}
@@ -245,16 +243,12 @@ func init() {
 						if f == ""        { continue }
 						for r := range messagesof {
 							// The key name is a bounce reason name
-							if sisimoji.ContainsAny(f, messagesof[r]) == false { continue }
-							e.Reason = r
-							break FINDREASON
+							if sisimoji.ContainsAny(f, messagesof[r]) { e.Reason = r; break FINDREASON }
 						}
 
 						for r := range failonldap {
 							// The key name is a bounce reason name
-							if sisimoji.ContainsAny(f, failonldap[r]) == false { continue }
-							e.Reason = r
-							break FINDREASON
+							if sisimoji.ContainsAny(f, failonldap[r]) { e.Reason = r; break FINDREASON }
 						}
 						if strings.Contains(f, hasexpired) { e.Reason = "expired" }
 					}
