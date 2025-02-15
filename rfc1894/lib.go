@@ -148,8 +148,7 @@ func Field(argv0 string) []string {
 	group, nyaan := fieldgroup[label]      // "addr"
 	if nyaan == false || len(captureson[group]) == 0 { return []string{} }
 
-	match := false
-	for _, e := range captureson[group] {
+	match := false; for _, e := range captureson[group] {
 		// Try to match with each pattern of Per-Message field, Per-Recipient field
 		if label == strings.ToLower(e) { match = true; break }
 	}
