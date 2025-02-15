@@ -40,8 +40,8 @@ func Rise(argvs [3]string) sis.EmailAddress {
 
 	} else {
 		// The argument does not include "@"
-		if IsMailerDaemon(argvs[0]) == false { return sis.EmailAddress{} }
-		if strings.Contains(argvs[0], " ")   { return sis.EmailAddress{} }
+		if IsMailerDaemon(argvs[0]) == false     { return sis.EmailAddress{} }
+		if strings.IndexByte(argvs[0], ' ') > -1 { return sis.EmailAddress{} }
 
 		// The argument does not include " "
 		thing.User    = argvs[0]
