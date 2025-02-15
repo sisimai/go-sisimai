@@ -58,9 +58,9 @@ func Received(argv1 string) [6]string {
 		token[cf] = strings.ToLower(recvd[j + 1]);
 		for _, f := range chars { token[cf] = strings.ReplaceAll(token[cf], f, "") }
 
-		if cf != "from"                          { continue }
-		if j + 2 > len(recvd) - 1                { break    }
-		if strings.Index(recvd[j + 2], "(") != 0 { continue }
+		if cf != "from"                              { continue }
+		if j + 2 > len(recvd) - 1                    { break    }
+		if strings.IndexByte(recvd[j + 2], '(') != 0 { continue }
 
 		// Get and keep a hostname in the comment as follows:
 		// from mx1.example.com (c213502.kyoto.example.ne.jp [192.0.2.135]) by mx.example.jp (V8/cf)
@@ -106,9 +106,9 @@ func Received(argv1 string) [6]string {
 
 	for {
 		// Prefer hostnames over IP addresses, except for localhost.localdomain and similar.
-		if token["from"] == "localhost"             { break }
-		if token["from"] == "localhost.localdomain" { break }
-		if strings.Index(token["from"], ".") < 0    { break } // A hostname without a domain name
+		if token["from"] == "localhost"              { break }
+		if token["from"] == "localhost.localdomain"  { break }
+		if strings.IndexByte(token["from"], '.') < 0 { break } // A hostname without a domain name
 		if ce := token["from"]; len(rfc791.FindIPv4Address(&ce)) > 0 { break }
 
 		// No need to rewrite token["from"]
@@ -137,10 +137,10 @@ func Received(argv1 string) [6]string {
 
 	for _, e := range label {
 		// Delete an invalid value
-		if token[e] == ""                  { token[e] = ""; continue }
-		if strings.Contains(token[e], " ") { token[e] = ""; continue }
-		if strings.Contains(token[e], "[") { strings.Replace(token[e], "[", "", 1) }
-		if strings.Contains(token[e], "]") { strings.Replace(token[e], "]", "", 1) }
+		if token[e] == ""                        { token[e] = ""; continue }
+		if strings.IndexByte(token[e], ' ') > -1 { token[e] = ""; continue }
+		if strings.IndexByte(token[e], '[') > -1 { strings.Replace(token[e], "[", "", 1) }
+		if strings.IndexByte(token[e], ']') > -1 { strings.Replace(token[e], "]", "", 1) }
 	}
 
 	return [6]string{token["from"], token["by"], token["via"], token["with"], token["id"], token["for"]}
