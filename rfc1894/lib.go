@@ -41,7 +41,7 @@ func FIELDTABLE() map[string]string {
 func Label(argv0 string) string {
 	// @param    string  argv0 A line including field and value defined in RFC3464
 	// @return   string        Lower-cased field name as a label
-	if argv0 == "" || strings.Index(argv0, ":") < 1 { return "" }
+	if argv0 == "" || strings.IndexByte(argv0, ':') < 1 { return "" }
 	return strings.ToLower(strings.SplitN(argv0, ":", 2)[0])
 }
 
@@ -166,7 +166,7 @@ func Field(argv0 string) []string {
 		// - Final-Recipient: RFC822; kijitora@example.jp
 		// - Diagnostic-Code: SMTP; 550 5.1.1 <kijitora@example.jp>... User Unknown
 		// - Remote-MTA: DNS; mx.example.jp
-		if strings.Contains(parts[1], ";") {
+		if strings.IndexByte(parts[1], ';') > 0 {
 			// There is a valid sub type (including ";")
 			v := strings.SplitN(parts[1], ";", 2)
 			if len(v) > 0 { table[1] = strings.ToUpper(strings.TrimSpace(v[0])) }
