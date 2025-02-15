@@ -207,11 +207,8 @@ func init() {
 					// Connected to 192.0.2.112 but my name was rejected.
 					// Giving up on 192.0.2.135.
 					// remote host 203.138.180.112 said:...
-					p1 := strings.Index(e, r); if p1 < 0 { continue }
-					cm := len(r)
-					p2 := sisimoji.IndexOnTheWay(e, " ", p1 + cm + 1); if p2 < 0 { p2 = strings.LastIndex(e, ".") }
-					v.Rhost = sisimoji.Sweep(e[p1 + cm:p2])
-					break
+					cv := sisimoji.Select(e + " ", r, " ", 0); if cv == "" { continue }
+					v.Rhost = sisimoji.Sweep(cv); break
 				}
 			}
 		}
