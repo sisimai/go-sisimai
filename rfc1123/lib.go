@@ -50,8 +50,7 @@ func IsInternetHost(argv1 string) bool {
 	// @return   bool          true:  is a valid Internet hostname
 	//                         false: is not a valid Internet hostname
 	// @see https://datatracker.ietf.org/doc/html/rfc1123
-	if len(argv1) <   4 { return false }
-	if len(argv1) > 255 { return false }
+	if len(argv1) < 4 || len(argv1) > 255 { return false }
 
 	// Deal "localhost", "localhost6" as a valid hostname
 	if argv1 == "localhost" || argv1 == "localhost6"    { return true  }
@@ -161,9 +160,7 @@ func Find(argv1 string) string {
 		for _, f := range Prefix0x32 { e = strings.ReplaceAll(e, f, "") }
 		for _, f := range Suffix0x32 { e = strings.ReplaceAll(e, f, "") }
 
-		if len(e) < 4                        { continue }
-		if strings.Contains(e, ".") == false { continue }
-		if IsInternetHost(e) == false        { continue }
+		if len(e) < 4 || strings.Contains(e, ".") == false || IsInternetHost(e) == false { continue }
 		foundtoken = append(foundtoken, e)
 	}
 	if len(foundtoken) == 0 { return ""            }
