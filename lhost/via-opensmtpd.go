@@ -130,8 +130,8 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = e[:strings.Index(e, ":")]
-				v.Diagnosis = e[strings.Index(e, ":") + 1:]
+				v.Recipient = e[:strings.IndexByte(e, ':')]
+				v.Diagnosis = e[strings.IndexByte(e, ':') + 1:]
 				recipients += 1
 			}
 		}

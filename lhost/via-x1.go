@@ -54,7 +54,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				p1 := strings.Index(e, " ")
+				p1 := strings.IndexByte(e, ' ')
 				cv := sisiaddr.S3S4(e[:p1]); if rfc5322.IsEmailAddress(cv) == false { continue }
 				v.Recipient  = cv
 				v.Diagnosis += " " + e

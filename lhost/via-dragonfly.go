@@ -91,7 +91,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e[strings.Index(e, "<"):])
+				v.Recipient = sisiaddr.S3S4(e[strings.IndexByte(e, '<'):])
 				recipients += 1
 
 			} else {
@@ -104,7 +104,7 @@ func init() {
 				if len(v.Rhost) > 0                                   { continue }
 
 				p := strings.SplitN(e, " ", 3)
-				if strings.Index(p[0], ".") > 1 { v.Rhost = p[0] } else { v.Rhost = p[1] }
+				if strings.IndexByte(p[0], '.') > 1 { v.Rhost = p[0] } else { v.Rhost = p[1] }
 				v.Command = command.Find(e)
 			}
 		}

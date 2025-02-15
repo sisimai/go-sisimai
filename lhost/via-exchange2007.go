@@ -105,7 +105,7 @@ func init() {
 			// //550 5.1.1 RESOLVER.ADR.RecipNotFound; not found ////
 			//
 			// Original message headers:
-			if strings.Contains(e, " ") == false && strings.Index(e, "@") > 1 {
+			if strings.IndexByte(e, ' ') < 0 && strings.IndexByte(e, '@') > 1 {
 				// This line includes an email address only
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -159,7 +159,7 @@ func init() {
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 
 			p0 := -1
-			p1 := strings.Index(e.Diagnosis, ";")
+			p1 := strings.IndexByte(e.Diagnosis, ';')
 			for _, r := range startingof["error"] {
 				// Find an error message and an error code 
 				p0 = strings.Index(e.Diagnosis, r); if p0 > -1 { break }

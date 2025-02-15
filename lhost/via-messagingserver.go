@@ -87,11 +87,11 @@ func init() {
 
 			} else if strings.HasPrefix(e, "  Date: ") {
 				//   Date: Fri, 21 Nov 2014 23:34:45 +0900
-				v.Date = e[strings.Index(e, ":") + 2:]
+				v.Date = e[strings.IndexByte(e, ':') + 2:]
 
 			} else if strings.HasPrefix(e, "  Reason: ") {
 				//   Reason: Remote SMTP server has rejected address
-				v.Diagnosis = e[strings.Index(e, ":") + 2:]
+				v.Diagnosis = e[strings.IndexByte(e, ':') + 2:]
 
 			} else if strings.HasPrefix(e, "  Diagnostic code: ") {
 				//   Diagnostic code: smtp;550 5.1.1 <kijitora@example.jp>... User Unknown
@@ -109,7 +109,7 @@ func init() {
 
 				if cv := strings.Split(sisimoji.Select(e, " (", ")", 0), "|"); len(cv) == 5 {
 					// (TCP|17.111.174.67|47323|192.0.2.225|25)
-					if cv[0] != "TCP" || strings.Contains(v.Rhost, ".") { continue }
+					if cv[0] != "TCP" || strings.IndexByte(v.Rhost, '.') > 0 { continue }
 					if rfc791.IsIPv4Address(cv[1]) { v.Lhost = cv[1] }
 					if rfc791.IsIPv4Address(cv[3]) { v.Rhost = cv[3] }
 				}
@@ -127,17 +127,17 @@ func init() {
 				// Diagnostic-code: smtp;550 5.1.1 <kijitora@example.jp>... User Unknown
 				if strings.HasPrefix(e, "Status: ") {
 					// Status: 5.1.1 (Remote SMTP server has rejected address)
-					if v.Status    == "" { v.Status = status.Find(e, v.ReplyCode)  }
-					if v.Diagnosis == "" { v.Diagnosis = e[strings.Index(e, "("):] }
+					if v.Status    == "" { v.Status = status.Find(e, v.ReplyCode)      }
+					if v.Diagnosis == "" { v.Diagnosis = e[strings.IndexByte(e, '('):] }
 
 				} else if strings.HasPrefix(e, "Arrival-Date: ") {
 					// Arrival-date: Thu, 29 Apr 2014 23:34:45 +0000 (GMT)
-					if v.Date == "" { v.Date = e[strings.Index(e, ":") + 2:] }
+					if v.Date == "" { v.Date = e[strings.IndexByte(e, ':') + 2:] }
 
 				} else if strings.HasPrefix(e, "Reporting-MTA: ") {
 					// Reporting-MTA: dns;mr21p30im-asmtp004.me.com (tcp-daemon)
-					if strings.Contains(v.Lhost, ".")    { continue       }
-					if f := rfc1894.Field(e); len(f) > 0 { v.Lhost = f[2] }
+					if strings.IndexByte(v.Lhost, '.') > 0 { continue        }
+					if cv := rfc1894.Field(e); len(cv) > 0 { v.Lhost = cv[2] }
 				}
 			}
 		}

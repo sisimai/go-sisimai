@@ -190,7 +190,7 @@ func init() {
 			//
 			// The error that the other server returned was:
 			// 550 5.1.1 <userunknown@example.jp>... User Unknown
-			if strings.HasPrefix(e, " ") && strings.Index(e, "@") > 0 {
+			if strings.HasPrefix(e, " ") && strings.IndexByte(e, '@') > 0 {
 				// Delivery to the following recipient failed permanently:
 				//
 				//      userunknown@example.jp

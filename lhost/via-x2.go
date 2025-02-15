@@ -60,7 +60,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e[:strings.Index(e, ":")])
+				v.Recipient = sisiaddr.S3S4(e[:strings.IndexByte(e, ':')])
 				recipients += 1
 
 			} else {

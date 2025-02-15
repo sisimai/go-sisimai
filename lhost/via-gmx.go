@@ -61,7 +61,7 @@ func init() {
 			// SMTP error from remote server after RCPT command:
 			// host: mx.example.jp
 			// 5.1.1 <shironeko@example.jp>... User Unknown
-			if (strings.Index(e, "@") > 1 && strings.HasPrefix(e, `"`)) || strings.HasPrefix(e, "<") {
+			if (strings.IndexByte(e, '@') > 1 && strings.HasPrefix(e, `"`)) || strings.HasPrefix(e, "<") {
 				// "shironeko@example.jp":
 				// ---- OR ----
 				// <kijitora@6jo.example.co.jp>

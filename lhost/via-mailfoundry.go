@@ -57,14 +57,14 @@ func init() {
 			// Server mx22.example.org[192.0.2.222] failed with: 550 <kijitora@example.org> No such user here
 			//
 			// This has been a permanent failure.  No further delivery attempts will be made.
-			if strings.HasPrefix(e, "Unable to deliver message to: <") && strings.Contains(e, "@") {
+			if strings.HasPrefix(e, "Unable to deliver message to: <") && strings.IndexByte(e, '@') > 0 {
 				// Unable to deliver message to: <kijitora@example.org>
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e[strings.Index(e, "<"):])
+				v.Recipient = sisiaddr.S3S4(e[strings.IndexByte(e, '<'):])
 				recipients += 1
 
 			} else {

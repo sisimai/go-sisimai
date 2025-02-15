@@ -58,7 +58,7 @@ func init() {
 			// Mail size limit exceeded. For explanation visit
 			// http://postmaster.1and1.com/en/error-messages?ip=%1s
 			if sisimoji.Aligned(e, []string{"@", "."}) &&
-			   (strings.HasSuffix(e, ":") || strings.Contains(e, " ") == false) {
+			   (strings.HasSuffix(e, ":") || strings.IndexByte(e, ' ') < 0 ) {
 				// general@example.eu OR
 				// the line begin with 4 space characters, end with ":" like "    neko@example.eu:"
 				ce := sisiaddr.S3S4(strings.Trim(e, ":")); if rfc5322.IsEmailAddress(ce) == false { continue }

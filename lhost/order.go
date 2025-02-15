@@ -60,7 +60,7 @@ func OrderBySubject(title string) []string {
 	words := strings.SplitN(strings.ToLower(title), " ", 3)
 	first := ""
 
-	if word0 := strings.Index(words[0], ":"); word0 > 0 {
+	if word0 := strings.IndexByte(words[0], ':'); word0 > 0 {
 		// Undeliverable: ..., notify: ...
 		first = strings.ToLower(title[:word0])
 

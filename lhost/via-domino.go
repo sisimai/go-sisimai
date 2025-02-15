@@ -95,7 +95,7 @@ func init() {
 				v.Recipient = e
 				recipients += 1
 
-			} else if strings.HasPrefix(e, "  ") && strings.Contains(e, "@") && strings.Index(e[3:], " ") < 0 {
+			} else if strings.HasPrefix(e, "  ") && strings.IndexByte(e, '@') > 0 && strings.IndexByte(e[3:], ' ') < 0 {
 				// Continued from the line "was not delivered to:"
 				//   kijitora@example.net
 				v.Recipient = sisiaddr.S3S4(e[2:])
