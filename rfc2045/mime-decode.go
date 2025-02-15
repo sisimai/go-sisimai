@@ -33,9 +33,6 @@ func IsEncoded(argv0 string) bool {
 func DecodeH(argv0 string) (string, error) {
 	// @param    string    argvs  MIME-Encoded text
 	// @return   string           MIME-Decoded text
-	toreadable := "" // Human readble text (has decoded)
-	stringlist := []string{}
-	replacingc := []string{".", "[", "]"}
 	decodingif := new(mime.WordDecoder); if CharacterSet(argv0) != "UTF-8" {
 		// The character set is not UTF-8
 		decodingif.CharsetReader = func(c string, v io.Reader) (io.Reader, error) {
@@ -43,6 +40,10 @@ func DecodeH(argv0 string) (string, error) {
 			return eo.NewDecoder().Reader(v), nil
 		}
 	}
+
+	toreadable := "" // Human readble text (has decoded)
+	stringlist := []string{}
+	replacingc := []string{".", "[", "]"}
 
 	if strings.Contains(argv0, " ") {
 		// The argument string include 1 or more space characters
@@ -72,9 +73,9 @@ func DecodeH(argv0 string) (string, error) {
 			for _, c := range replacingc { e = strings.Replace(e, "?=" + c, "?=", -1) }
 		}
 
-		if f, nyaan := decodingif.DecodeHeader(e); nyaan == nil {
+		if cv, nyaan := decodingif.DecodeHeader(e); nyaan == nil {
 			// Successfully decoded
-			if j > 0 { toreadable += " " }; toreadable += f
+			if j > 0 { toreadable += " " }; toreadable += cv
 
 		} else {
 			// Failed to decode
