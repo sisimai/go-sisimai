@@ -38,8 +38,6 @@ func ExpandAlias(email string) string {
 	if rfc5322.IsQuotedAddress(email) == true       { return "" } // Do not expand "neko+cat"@example.org
 
 	// neko+straycat@example.org => neko@example.org
-	lpart := email[0:strings.Index(email, "+")]
-	dpart := strings.SplitN(email, "@", 2)[1]
-	return lpart + "@" + dpart
+	return email[0:strings.Index(email, "+")] + "@" + strings.SplitN(email, "@", 2)[1]
 }
 
