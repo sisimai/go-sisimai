@@ -71,7 +71,6 @@ func init() {
 			for _, e := range transcript {
 				// Pick email addresses, error messages, and the last SMTP command.
 				v  = &(dscontents[len(dscontents) - 1])
-				p := e.Response
 
 				if e.Command == "EHLO" || e.Command == "HELO" {
 					// Use the argument of EHLO/HELO command as a value of "lhost"
@@ -91,13 +90,12 @@ func init() {
 					v.Recipient = e.Argument
 					recipients += 1
 				}
-				reply, nyaan := strconv.ParseUint(p.Reply, 10, 16)
-				if nyaan != nil || reply < 400 { continue }
+				if reply, nyaan := strconv.ParseUint(e.Response.Reply, 10, 16); nyaan != nil || reply < 400 { continue }
 
 				commandset = append(commandset, e.Command)
-				if len(v.Diagnosis) == 0 { v.Diagnosis = strings.Join(p.Text, " ") }
-				if len(v.ReplyCode) == 0 { v.ReplyCode = p.Reply  }
-				if len(v.Status)    == 0 { v.Status    = p.Status }
+				if len(v.Diagnosis) == 0 { v.Diagnosis = strings.Join(e.Response.Text, " ") }
+				if len(v.ReplyCode) == 0 { v.ReplyCode = e.Response.Reply  }
+				if len(v.Status)    == 0 { v.Status    = e.Response.Status }
 			}
 		} else {
 			// The message body is a general bounce mail message of Postfix
@@ -119,7 +117,7 @@ func init() {
 				}
 				if readcursor & indicators["deliverystatus"] == 0 { continue }
 
-				f := rfc1894.Match(e); if f > 0 {
+				if f := rfc1894.Match(e); f > 0 {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
 					z := fieldtable[o[0]]
@@ -144,8 +142,7 @@ func init() {
 						}
 					} else if o[3] == "code" {
 						// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
-						v.Spec = o[1]
-						if strings.ToUpper(o[1]) == "X-POSTFIX" { v.Spec = "SMTP" }
+						v.Spec = o[1]; if strings.ToUpper(o[1]) == "X-POSTFIX" { v.Spec = "SMTP" }
 						v.Diagnosis = o[2]
 
 					} else {
@@ -178,21 +175,16 @@ func init() {
 						if strings.Contains(e, "(in reply to ") || strings.Contains(e, "command)") {
 							// Find an SMTP command from a string like the following:
 							// 5.1.1 <userunknown@example.co.jp>... User Unknown (in reply to RCPT TO
-							cv := command.Find(e)
-							if len(cv) > 0                      { commandset = append(commandset, cv) }
-							if len(anotherset["diagnosis"]) > 0 { anotherset["diagnosis"] += " " + e  }
+							if cv := command.Find(e); len(cv) > 0 { commandset = append(commandset, cv) }
+							if len(anotherset["diagnosis"]) > 0   { anotherset["diagnosis"] += " " + e  }
 
 						} else if sisimoji.Aligned(e, []string{"<", "@", ">", "(expanded from <", "):"}) {
 							// <r@example.ne.jp> (expanded from <kijitora@example.org>): user ...
 							// OR
 							// <kijitora@exmaple.jp>: ...
-							p1 := strings.Index(e, "> ")
-							p2 := strings.Index(e[p1:], "(expanded from ")
-							p3 := strings.Index(e[p2 + 14:], ">):")
-							p4 := p3 + p2 + 14 + 3 // len("(expanded from ") + len(">):")
-							anotherset["recipient"] = sisiaddr.S3S4(e[0:p1])
-							anotherset["alias"]     = sisiaddr.S3S4(e[p2 + 15:])
-							if len(e) > p4 { anotherset["diagnosis"] = e[p4:] }
+							anotherset["recipient"] = sisiaddr.S3S4(sisimoji.Select(e, "<", "< ", 0))
+							anotherset["alias"]     = sisiaddr.S3S4(sisimoji.Select(e, "(expanded from ", "):", 0))
+							if p1 := strings.Index(e, ">): ") + 4; len(e) > p1 { anotherset["diagnosis"] = e[p1:] }
 
 						} else if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"<", "@", ">:"}) {
 							// <kijitora@exmaple.jp>: ...
@@ -228,21 +220,13 @@ func init() {
 				v.Recipient = anotherset["recipient"]
 				recipients += 1
 
-			} else {
+			} else if nomessages == true {
 				// Get a recipient address from message/rfc822 part if the delivery report was unavailable:
 				// "--- Delivery report unavailable ---"
-				for {
-					p1 := strings.Index(emailparts[1], "\nTo: ")
-					if nomessages == false         { break }
-					if p1 < 1                      { break }
-					if p1 + 6 > len(emailparts[1]) { break }
-
+				if cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0)); cv != "" {
 					// Try to get a recipient address from To: field in the original message at message/rfc822 part
-					p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 1)
-					cv := emailparts[1][p1 + 5:p2 + 1]
-					dscontents[len(dscontents) - 1].Recipient = sisiaddr.S3S4(cv)
+					dscontents[len(dscontents) - 1].Recipient = cv
 					recipients += 1
-					break
 				}
 			}
 		}

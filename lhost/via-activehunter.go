@@ -40,8 +40,7 @@ func init() {
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if e == ""                                        { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			//  ----- The following addresses had permanent fatal errors -----
 			//
@@ -63,9 +62,8 @@ func init() {
 				//  ----- Transcript of session follows -----
 				// 550 sorry, no mailbox here by that name (#5.1.1 - chkusr)
 				cr := []rune(e[0:1])
-				if cr[0] < 48 || cr[0] > 122 { continue } // 48 = '0', 122 = 'z'
-				if v.Diagnosis != ""         { continue }
-				v.Diagnosis = e
+				if cr[0] < 48 || cr[0] > 122 { continue        } // 48 = '0', 122 = 'z'
+				if v.Diagnosis == ""         { v.Diagnosis = e }
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }

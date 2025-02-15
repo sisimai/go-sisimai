@@ -103,8 +103,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			}
 			for _, v := range datevalues {
 				// Parse each date string using net/mail.ParseDate()
-				times, nyaan := mail.ParseDate(v); if nyaan != nil { continue }
-				clock = times; break
+				if times, nyaan := mail.ParseDate(v); nyaan == nil { clock = times; break }
 			}
 			if clock.IsZero() {
 				// Failed to parse the date string at the previous loop,
@@ -113,8 +112,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 					// Try to parse the date string tidied by rfc5322.Date()
 					j := rfc5322.Date(v); if j != "" {
 						// rfc5322.Date() returned a valid date string
-						times, nyaan := mail.ParseDate(j); if nyaan != nil { continue }
-						clock = times; break
+						if times, nyaan := mail.ParseDate(j); nyaan == nil { clock = times; break }
 					}
 				}
 			}
@@ -146,8 +144,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 				for li := 0; li < le; li++ {
 					// Check the Received: headers forwards and get a local hostnaame
 					cv := rfc5322.Received((*beforefact).Headers["received"][li])
-					if rfc1123.IsInternetHost(cv[0]) == false { continue }
-					e.Lhost = cv[0]; break
+					if rfc1123.IsInternetHost(cv[0]) { e.Lhost = cv[0]; break }
 				}
 			}
 
@@ -167,8 +164,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 					for _, w := range ee {
 						// Get a hostname from the string like "127.0.0.1 x109-20.example.com 192.0.2.20"
 						// or "mx.sp.example.jp 192.0.2.135"
-						if rfc791.IsIPv4Address(w) { continue }
-						*v = w; break
+						if rfc791.IsIPv4Address(w) == false { *v = w; break }
 					}
 					if strings.Index(*v, " ") > 0 { *v = ee[0] }
 				}
@@ -191,10 +187,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			// Get the value of List-Id header: "List name <list-id@example.org>"
 			if len(rfc822data["list-id"])                                          == 0     { break LIST_ID }
 			if sisimoji.Aligned(rfc822data["list-id"][0], []string{"<", ".", ">"}) == false { break LIST_ID }
-			p0 := strings.Index(rfc822data["list-id"][0], "<");                   if p0 < 0 { break LIST_ID }
-			p1 := strings.Index(rfc822data["list-id"][0], ">");                   if p1 < 0 { break LIST_ID }
-
-			piece["listid"] = rfc822data["list-id"][0][p0 + 1:p1]; break LIST_ID
+			piece["listid"] = sisimoji.Select(rfc822data["list-id"][0], "<", ">", 0);         break LIST_ID
 		}
 
 		DIAGNOSTICCODE: for {
@@ -319,7 +312,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			hops := len(recv)
 			for i := hops - 1; hops >= 0; hops-- {
 				// Search for the string " for " from the Received: header
-				if strings.Index(recv[i], " for ") == -1   { continue }
+				if strings.Index(recv[i], " for ") == -1  { continue }
 				or := rfc5322.Received(recv[i])
 
 				if len(or) == 0 || or[5] == ""            { continue }
@@ -335,7 +328,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		REASON: for thing.Reason == "" || RetryIndex[thing.Reason] {
 			// Decide the reason of the email bounce
 			// The value of thing.Reason is empty or is needed to check with other values again
-			re := thing.Reason;        if re == "" { re = "undefined" }
+			re := thing.Reason;        if re == ""              { re = "undefined"                }
 			or := lda.Find(&thing);    if reason.IsExplicit(or) { thing.Reason = or; break REASON }
 			or  = rhost.Find(&thing);  if reason.IsExplicit(or) { thing.Reason = or; break REASON }
 			or  = reason.Find(&thing); if reason.IsExplicit(or) { thing.Reason = or; break REASON }
@@ -352,9 +345,8 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 			} else {
 				// The Reason is not "delivered", or "feedback", or "vacation"
-				smtperrors := piece["deliverystatus"] + " " + piece["diagnosticcode"]
-				if len(smtperrors) < 4 { smtperrors = "" }
-				thing.HardBounce = failure.IsHardBounce(thing.Reason, smtperrors)
+				cv := piece["deliverystatus"] + " " + piece["diagnosticcode"]; if len(cv) < 4 { cv = "" }
+				thing.HardBounce = failure.IsHardBounce(thing.Reason, cv)
 			}
 			break HARDBOUNCE
 		}
@@ -363,10 +355,9 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			// Set a pseudo status code
 			if thing.DeliveryStatus != "" { break DELIVERYSTATUS }
 
-			smtperrors := thing.ReplyCode + " " + piece["diagnosticcode"]
-			if len(smtperrors) < 4 { smtperrors = "" }
-			permanent0 := failure.IsPermanent(smtperrors)
-			temporary0 := failure.IsTemporary(smtperrors)
+			ce := thing.ReplyCode + " " + piece["diagnosticcode"]; if len(ce) < 4 { ce = "" }
+			permanent0 := failure.IsPermanent(ce)
+			temporary0 := failure.IsTemporary(ce)
 			temporary1 := temporary0; if !permanent0 && !temporary0 { temporary1 = false }
 			thing.DeliveryStatus = status.Code(thing.Reason, temporary1)
 			break DELIVERYSTATUS

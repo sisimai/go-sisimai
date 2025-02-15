@@ -70,8 +70,7 @@ func init() {
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// Your message
 			//
@@ -169,9 +168,7 @@ func init() {
 				if e.Reason != "" { break EXCEPTUTF8 }
 				for _, f := range exceptutf8[r] {
 					// Try to find an error message including lower-cased string listed in messagesof
-					if sisimoji.Aligned(e.Diagnosis, f) == false { continue }
-					e.Reason = r
-					break EXCEPTUTF8
+					if sisimoji.Aligned(e.Diagnosis, f) { e.Reason = r; break EXCEPTUTF8 }
 				}
 			}
 		}

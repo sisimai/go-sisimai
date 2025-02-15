@@ -20,25 +20,21 @@ func IsEncoded(argv0 string) bool {
 	// @return   bool              true: Not MIME encoded string
     //                             false: MIME encoded string
 	argv0  = strings.ToUpper(argv0)
-	match := false
-	for {
-		// =?UTF-8?B?44OL44Oj44O844Oz?=
-		if !strings.Contains(argv0, "=?") { break } // Begins with "=?"
-		if !strings.Contains(argv0, "?=") { break } // Ends with "?="
-		if len(argv0) < 8                 { break } // String length should be 8 or more
-		if strings.Contains(argv0, "?B?") || strings.Contains(argv0, "?Q?") { match = true }
-		break
-	}
-	return match
+
+	// =?UTF-8?B?44OL44Oj44O844Oz?=
+	if strings.Contains(argv0, "=?") == false { return false } // Should begin with "=?"
+	if strings.Contains(argv0, "?=") == false { return false } // Should end with "?="
+	if len(argv0) < 8                         { return false } // Should be 8 or more length
+	if strings.Contains(argv0, "?B?") || strings.Contains(argv0, "?Q?") { return true }
+	return false
 }
 
 // DecodeH() decodes the value of email header which is a MIME-Encoded string.
 func DecodeH(argv0 string) (string, error) {
 	// @param    string    argvs  MIME-Encoded text
 	// @return   string           MIME-Decoded text
-	toreadable := "" // Human readble text (has decoded)
-	stringlist := []string{}
-	replacingc := []string{".", "[", "]"}
+	if argv0 == "" { return "", nil }
+
 	decodingif := new(mime.WordDecoder); if CharacterSet(argv0) != "UTF-8" {
 		// The character set is not UTF-8
 		decodingif.CharsetReader = func(c string, v io.Reader) (io.Reader, error) {
@@ -46,6 +42,10 @@ func DecodeH(argv0 string) (string, error) {
 			return eo.NewDecoder().Reader(v), nil
 		}
 	}
+
+	toreadable := "" // Human readble text (has decoded)
+	stringlist := []string{}
+	replacingc := []string{".", "[", "]"}
 
 	if strings.Contains(argv0, " ") {
 		// The argument string include 1 or more space characters
@@ -75,9 +75,9 @@ func DecodeH(argv0 string) (string, error) {
 			for _, c := range replacingc { e = strings.Replace(e, "?=" + c, "?=", -1) }
 		}
 
-		if f, nyaan := decodingif.DecodeHeader(e); nyaan == nil {
+		if cv, nyaan := decodingif.DecodeHeader(e); nyaan == nil {
 			// Successfully decoded
-			if j > 0 { toreadable += " " }; toreadable += f
+			if j > 0 { toreadable += " " }; toreadable += cv
 
 		} else {
 			// Failed to decode
@@ -96,8 +96,7 @@ func DecodeB(argv0 string, argv1 string) (string, error) {
 	if len(argv1) == 0 { argv1 = "utf-8"   }
 
 	decodingif := new(mime.WordDecoder)
-	base64text := strings.TrimSpace(argv0)
-	base64text  = strings.Join(strings.Split(base64text, "\n"), "")
+	base64text := strings.Join(strings.Split(strings.TrimSpace(argv0), "\n"), "")
 	base64text  = fmt.Sprintf("=?%s?B?%s?=", argv1, base64text)
 	plainvalue := ""
 

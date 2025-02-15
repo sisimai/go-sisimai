@@ -10,6 +10,7 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc791"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
@@ -49,8 +50,7 @@ func init() {
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// --Boundary_(ID_0000000000000000000000)
 			// Content-type: text/plain; charset=us-ascii
@@ -105,18 +105,14 @@ func init() {
 			} else if strings.HasPrefix(e, "  Remote system: ") {
 				//   Remote system: dns;mx.example.jp (TCP|17.111.174.67|47323|192.0.2.225|25)
 				//     (6jo.example.jp ESMTP SENDMAIL-VM)
-				p1 := strings.Index(e, ";"); if p1 < 0 { continue }
-				p2 := strings.Index(e, "("); if p2 < 0 { continue }
-				v.Rhost = e[p1 + 1:p2 - 1]
+				v.Rhost = sisimoji.Select(e, ";", " (", 0); if v.Rhost == "" { continue }
 
-				// The value does not include ".", use IP address instead.
-				// (TCP|17.111.174.67|47323|192.0.2.225|25)
-				ss := strings.Split(e[p2 + 1:], "|")
-				if len(ss) == 0 || ss[0] != "TCP" { continue }
-				if len(ss) > 1 { v.Lhost = ss[1] }
-				if strings.Contains(v.Rhost, ".") { continue }
-				if len(ss) > 3 { v.Rhost = ss[3] }
-
+				if cv := strings.Split(sisimoji.Select(e, " (", ")", 0), "|"); len(cv) == 5 {
+					// (TCP|17.111.174.67|47323|192.0.2.225|25)
+					if cv[0] != "TCP" || strings.Contains(v.Rhost, ".") { continue }
+					if rfc791.IsIPv4Address(cv[1]) { v.Lhost = cv[1] }
+					if rfc791.IsIPv4Address(cv[3]) { v.Rhost = cv[3] }
+				}
 			} else {
 				// Original-envelope-id: 0NFC009FLKOUVMA0@mr21p30im-asmtp004.me.com
 				// Reporting-MTA: dns;mr21p30im-asmtp004.me.com (tcp-daemon)
@@ -140,9 +136,8 @@ func init() {
 
 				} else if strings.HasPrefix(e, "Reporting-MTA: ") {
 					// Reporting-MTA: dns;mr21p30im-asmtp004.me.com (tcp-daemon)
-					if strings.Contains(v.Lhost, ".")     { continue }
-					f := rfc1894.Field(e); if len(f) == 0 { continue }
-					v.Lhost = f[2]
+					if strings.Contains(v.Lhost, ".")    { continue       }
+					if f := rfc1894.Field(e); len(f) > 0 { v.Lhost = f[2] }
 				}
 			}
 		}
@@ -157,8 +152,7 @@ func init() {
 				// The key name is a bounce reason name
 				for _, f := range messagesof[r] {
 					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) == false { continue }
-					e.Reason = r; break FINDREASON
+					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 				}
 			}
 		}

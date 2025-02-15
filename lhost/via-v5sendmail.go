@@ -63,8 +63,7 @@ func init() {
 				if strings.Contains(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			//    ----- Transcript of session follows -----
 			// While talking to smtp.example.com:
@@ -76,10 +75,8 @@ func init() {
 			if sisimoji.Aligned(e, []string{" <", "@", ">..."}) || strings.Contains(strings.ToUpper(e), ">>> RCPT TO:") {
 				// 550 <kijitora@example.org>... User unknown
 				// >>> RCPT To:<kijitora@example.org>
-				p0 := strings.Index(e, " ")
-				p1 := sisimoji.IndexOnTheWay(e, "<", p0)
-				p2 := sisimoji.IndexOnTheWay(e, ">", p1)
-				cv := sisiaddr.S3S4(e[p1:p2 + 1])
+				ce := sisimoji.Select(e, " <", ">...", 0); if ce == "" { ce = sisimoji.Select(e, ":<", ">", 0) }
+				cv := sisiaddr.S3S4(ce)
 
 				// Keep error messages before "While talking to ..." line
 				if remotehost == "" { anotherone[recipients] += " " + e; continue }
@@ -145,12 +142,8 @@ func init() {
 
 			if recipients == 0 {
 				// Try to pick an recipient address from the original message
-				p1 := strings.Index(emailparts[1], "\nTo: ")
-				p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 6)
-
-				if p1 > 0 {
+				if cv := sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0); cv != "" {
 					// Get the recipient address from "To:" header at the original message
-					cv := sisiaddr.S3S4(emailparts[1][p1 + 5:p2])
 					if rfc5322.IsEmailAddress(cv) == false { return sis.RisingUnderway{} }
 					dscontents[0].Recipient = cv; recipients++
 				}

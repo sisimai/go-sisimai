@@ -57,12 +57,10 @@ func anotherone(fo *sis.Fact) string {
 	trytomatch := false
 	forsubject := ""
 
-	for trytomatch == false {
+	if trytomatch == false {
 		// Set true when the reasontext is listed in GetRetried or fo.DiagnosticType is "SMTP"
-		if reasontext == ""            { trytomatch = true; break }
-		if GetRetried[reasontext]      { trytomatch = true; break }
-		if fo.DiagnosticType == "SMTP" { trytomatch = true; break }
-		break
+		if reasontext == "" || GetRetried[reasontext] { trytomatch = true }
+		if fo.DiagnosticType == "SMTP"                { trytomatch = true }
 	}
 
 	if trytomatch == true {

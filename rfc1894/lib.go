@@ -148,8 +148,7 @@ func Field(argv0 string) []string {
 	group, nyaan := fieldgroup[label]      // "addr"
 	if nyaan == false || len(captureson[group]) == 0 { return []string{} }
 
-	match := false
-	for _, e := range captureson[group] {
+	match := false; for _, e := range captureson[group] {
 		// Try to match with each pattern of Per-Message field, Per-Recipient field
 		if label == strings.ToLower(e) { match = true; break }
 	}
@@ -206,10 +205,8 @@ func Field(argv0 string) []string {
 	if sisimoji.Aligned(table[2], []string{" (", ")"}) {
 		// Extract text enclosed in parentheses as comments
 		// Reporting-MTA: dns; mr21p30im-asmtp004.me.example.com (tcp-daemon)
-		p1 := strings.LastIndex(table[2], " (")
-		p2 := strings.LastIndex(table[2], ")" )
-		table[4] = table[2][p1 + 2:p2]
-		table[2] = table[2][0:p1]
+		table[4] = sisimoji.Select(table[2], " (", ")", 0)
+		table[2] = table[2][0:strings.Index(table[2], " (")]
 	}
 
 	return table

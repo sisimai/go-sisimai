@@ -22,8 +22,7 @@ func init() {
 		// @return   RisingUnderway      RisingUnderway structure
 		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
-		proceedsto := false
-		for {
+		proceedsto := false; for {
 			emailtitle := bf.Headers["subject"][0]
 			titletable := []string{
 				"Mail could not be delivered",
@@ -84,8 +83,7 @@ func init() {
 			} else if p1 > 0 || p2 > 0 {
 				// Error messages are not written in English
 				if strings.Contains(e, " >>> ") { v.Command = command.Find(e) }
-				p3 := strings.Index(e, " <<< "); if p3 < 0 { continue }
-				v.Diagnosis = e[p3 + 4:]
+				if p3 := strings.Index(e, " <<< "); p3 > -1 { v.Diagnosis = e[p3 + 4:] }
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }

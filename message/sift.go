@@ -87,8 +87,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 			if havecalled[r] || r == "ARF" || strings.HasPrefix(r, "RFC") { continue }
 			localhostr    = lhost.InquireFor[r](bf)
 			havecalled[r] = true
-			modulename    = r
-			if localhostr.Void() == false { break DECODER }
+			if localhostr.Void() == false { modulename = r; break DECODER }
 		}
 
 		if havecalled["rfc3464"] == false {
@@ -96,24 +95,21 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 			// When the all of sisimai/lhost/*.go modules did not return the decoded data
 			localhostr = rfc3464.Inquire(bf)
 			havecalled["rfc3464"] = true
-			modulename = "RFC3464"
-			if localhostr.Void() == false { break DECODER }
+			if localhostr.Void() == false { modulename = "RFC3464"; break DECODER }
 		}
 
 		if havecalled["arf"] == false {
 			// 3. call sisimai/arf
 			// Try to decode the message as a Feedback Loop message
 			localhostr = arf.Inquire(bf)
-			modulename = "ARF"
-			if localhostr.Void() == false { break DECODER }
+			if localhostr.Void() == false { modulename = "ARF"; break DECODER }
 		}
 
 		if havecalled["rfc3834"] == false {
 			// 4. call sisimai/rfc3834
 			// Try to sift the message as auto reply message defined in RFC3834
 			localhostr = rfc3834.Inquire(bf)
-			modulename = "RFC3834"
-			if localhostr.Void() == false { break DECODER }
+			if localhostr.Void() == false { modulename = "RFC3834"; break DECODER }
 		}
 		break // as of now, we have no sample email for coding this block
 
@@ -122,8 +118,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 
 	for j, _ := range localhostr.Digest {
 		// Set the value of "Agent" such as "Postfix", "Sendmail", or "OpenSMTPD"
-		if localhostr.Digest[j].Agent != "" { continue }
-		localhostr.Digest[j].Agent = modulename
+		if localhostr.Digest[j].Agent == "" { localhostr.Digest[j].Agent = modulename }
 	}
 
 	if strings.Contains(localhostr.RFC822, "\nFrom:") == false && len(bf.Headers["to"]) > 0 {

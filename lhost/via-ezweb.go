@@ -83,8 +83,7 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if sisimoji.HasPrefixAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// The user(s) account is disabled.
 			//
@@ -100,20 +99,17 @@ func init() {
 			if sisimoji.Aligned(e, []string{"<", "@", ">"}) &&
 			   (strings.Index(e, "Recipient: <") > 1 || strings.HasPrefix(e, "<")) {
 				// Recipient: <******@ezweb.ne.jp> OR <***@ezweb.ne.jp>: 550 user unknown ...
-				p1 := strings.Index(e, "<")
-				p2 := strings.Index(e, ">")
-
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient  = sisiaddr.S3S4(e[p1 + 1:p2])
+				v.Recipient = sisiaddr.S3S4(sisimoji.Select(e, "<", ">", 0))
 				v.Diagnosis += " " + e
 				recipients += 1
 
 			} else {
-				f := rfc1894.Match(e); if f > 0 {
+				if f := rfc1894.Match(e); f > 0 {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
 					v.Update(v.AsRFC1894(o[0]), o[2])
@@ -132,8 +128,7 @@ func init() {
 
 					} else {
 						// Check the error message
-						isincluded := false
-						for _, r := range substrings {
+						isincluded := false; for _, r := range substrings {
 							// Try to find that the line contains any error message text
 							if strings.Contains(e, r) == false { continue }
 							v.Diagnosis += " " + e
@@ -163,8 +158,7 @@ func init() {
 					// The key name is a bounce reason name
 					for _, f := range messagesof[r] {
 						// Try to find an error message including lower-cased string listed in messagesof
-						if strings.Contains(e.Diagnosis, f) == false { continue }
-						e.Reason = r; break FINDREASON
+						if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 					}
 				}
 			}

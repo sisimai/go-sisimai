@@ -39,8 +39,7 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// The original message was received at Thu, 29 Apr 2010 23:34:45 +0900 (JST)
 			// from shironeko@example.jp
@@ -79,13 +78,10 @@ func init() {
 			e := &(dscontents[j])
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 
-			for e.Date == "" {
+			if e.Date == "" {
 				// The original message was received at Thu, 29 Apr 2010 23:34:45 +0900 (JST)
 				// from shironeko@example.jp
-				p1 := strings.Index(e.Diagnosis, " at "); if p1 < 0 { break }
-				p2 := strings.Index(e.Diagnosis, "from"); if p2 < 0 { break }
-				e.Date = e.Diagnosis[p1 + 4:p2 - 1]
-				break
+				e.Date = strings.Trim(sisimoji.Select(e.Diagnosis, " at ", "from", 0), " ")
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

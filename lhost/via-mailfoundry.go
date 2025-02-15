@@ -20,15 +20,14 @@ func init() {
 		// @return   RisingUnderway      RisingUnderway structure
 		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
-		proceedsto := false
-		ISMF: for {
+		proceedsto := false; for {
 			// Subject: Message delivery has failed
-			if bf.Headers["subject"][0] != "Message delivery has failed" { break ISMF }
+			if bf.Headers["subject"][0] != "Message delivery has failed" { break }
 			for _, e := range bf.Headers["received"] {
 				// Received: From localhost (127.0.0.1) by smtp9.mf.example.ne.jp (MAILFOUNDRY) id ...
-				if strings.Contains(e, "(MAILFOUNDRY) id") { proceedsto = true; break ISMF }
+				if strings.Contains(e, "(MAILFOUNDRY) id") { proceedsto = true; break }
 			}
-			break ISMF
+			break
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
@@ -51,8 +50,7 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// Unable to deliver message to: <kijitora@example.org>
 			// Delivery failed for the following reason:
@@ -71,9 +69,8 @@ func init() {
 
 			} else {
 				// Error messages
-				if e == startingof["error"][0] { v.Diagnosis = e; continue }
-				if v.Diagnosis == ""         { continue }
-				if strings.HasPrefix(e, "-") { continue }
+				if e == startingof["error"][0] { v.Diagnosis = e;   continue }
+				if v.Diagnosis == "" || strings.HasPrefix(e, "-") { continue }
 				v.Diagnosis += " " + e
 			}
 		}

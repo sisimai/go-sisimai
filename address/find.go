@@ -216,8 +216,7 @@ func Find(argv1 string) [3]string {
 			// Try to use the string like an email address in the display name
 			for _, e := range strings.Split(readbuffer[1], " ") {
 				// Find an email address
-				if rfc5322.IsEmailAddress(e) == false { continue }
-				readbuffer[0] = e; break
+				if rfc5322.IsEmailAddress(e) { readbuffer[0] = e; break }
 			}
 		} else if IsMailerDaemon(readbuffer[1]) == true {
 			// Allow if the string is MAILER-DAEMON
@@ -230,10 +229,7 @@ func Find(argv1 string) [3]string {
 		// - (cat)nekochan@example.org
 		// - nekochan(cat)cat@example.org
 		// - nekochan(cat)@example.org
-		p1 := strings.Index(readbuffer[0], "(")
-		p2 := strings.Index(readbuffer[0], ")")
-		ce := readbuffer[0][p1:p2 + 1]
-
+		ce := "(" + sisimoji.Select(readbuffer[0], "(", ")", 0) + ")"
 		readbuffer[0] = strings.Replace(readbuffer[0], ce, "", 1)
 		if len(readbuffer[2]) == 0 { readbuffer[2] = ce } else { readbuffer[2] += " " + ce }
 	}

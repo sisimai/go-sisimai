@@ -60,7 +60,7 @@ func IsIncluded(argv0 string) bool {
 		// Such as "nekochan (kijitora) neko@example.jp"
 		for _, e := range strings.Split(argv0, " ") {
 			// Is there any email address string in each element?
-			e = strings.Trim(e, "<>"); if rfc5322.IsEmailAddress(e) { return true }
+			if rfc5322.IsEmailAddress(strings.Trim(e, "<>")) { return true }
 		}
 	}
 	return false
@@ -71,7 +71,6 @@ func IsMailerDaemon(email string) bool {
 	// @param    string email    Email address
 	// @return   bool            true:  is a mailer-daemon
 	//                           false: is not a mailer-daemon
-	match := false
 	value := strings.ToLower(email)
 	table := []string{
 		"mailer-daemon@", "(mailer-daemon)", "<mailer-daemon>", "mailer-daemon ",
@@ -80,5 +79,5 @@ func IsMailerDaemon(email string) bool {
 	for _, e := range table {
 		if strings.Contains(value, e) || value == "mailer-daemon" || value == "postmaster" { return true }
 	}
-	return match
+	return false
 }

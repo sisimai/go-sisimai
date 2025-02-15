@@ -74,7 +74,7 @@ func init() {
 			}
 			if readcursor & indicators["deliverystatus"] == 0 { continue }
 
-			f := rfc1894.Match(e); if f > 0 {
+			if f := rfc1894.Match(e); f > 0 {
 				// "e" matched with any field defined in RFC3464
 				o := rfc1894.Field(e); if len(o) == 0 { continue }
 				z := fieldtable[o[0]]
@@ -200,8 +200,7 @@ func init() {
 			for {
 				// Replace or append the error message in "diagnosis" with the ESMTP Reply Code
 				// when the following conditions have matched
-				if len(esmtpreply) == 0 { break }
-				if recipients != 1      { break }
+				if len(esmtpreply) == 0 || recipients != 1 { break }
 
 				e.Diagnosis = fmt.Sprintf("%s %s", strings.Join(esmtpreply, " "), e.Diagnosis)
 				break
@@ -211,20 +210,13 @@ func init() {
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 			if e.Command == "" { if len(esmtpreply) > 0 { e.Command = "EHLO" }}
 
-			for {
-				// Check alternative status code and override it
-				if len(anotherset["status"]) == 0 { break }
-				if status.Test(e.Status) == true  { break }
-
-				e.Status = anotherset["status"]
-				break
-			}
+			// Check alternative status code and override it
+			if len(anotherset["status"]) > 0 && status.Test(e.Status) == false { e.Status = anotherset["status"] }
 
 			if strings.HasPrefix(e.Recipient, "@") {
 				// There is no local part in the recipient address such as "@mail.example.org"
 				// Get the email address from the value of Diagnostic-Code field
-				cv := sisiaddr.Find(e.Diagnosis)
-				if cv[0] != "" { e.Recipient = cv[0] }
+				if cv := sisiaddr.Find(e.Diagnosis); cv[0] != "" { e.Recipient = cv[0] }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

@@ -46,8 +46,7 @@ func init() {
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
-			if len(e) == 0                                    { continue }
+			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// ------- Failure Reasons  --------
 			//
@@ -72,13 +71,11 @@ func init() {
 			}
 		}
 
-		for recipients == 0 {
+		if recipients == 0 {
 			// Pick an email address from "To:" header of the original message
-			p0 := strings.Index(emailparts[1], "\n\n");  if p0 < 0 { p0 = len(emailparts[1]) }
-			p1 := strings.Index(emailparts[1], "\nTo:"); if p1 < 0 || p1 > p0 { break }
-			p2 := strings.Index(emailparts[1][p1 + 4:], "\n")
-			cv := sisiaddr.S3S4(emailparts[1][p1 + 4:p1 + p2 + 4])
-			dscontents[0].Recipient = cv; recipients++; break
+			if cv := sisimoji.Select(emailparts[1], "\nTo:", "\n", 0); cv != "" {
+				dscontents[0].Recipient = sisiaddr.S3S4(cv); recipients++
+			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
 
@@ -91,8 +88,7 @@ func init() {
 				// The key name is a bounce reason name
 				for _, f := range messagesof[r] {
 					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) == false { continue }
-					e.Reason = r; break FINDREASON
+					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
 				}
 			}
 		}

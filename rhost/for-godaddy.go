@@ -216,11 +216,10 @@ func init() {
 		}
 
 		issuedcode := fo.DiagnosticCode
-		positionib := strings.Index(issuedcode, " IB")
-		if positionib > 1 {
+		errorlabel := "IB" + sisimoji.Select(issuedcode, " IB", " ", 0)
+		if errorcodes[errorlabel] != "" {
 			// 192.0.2.22 has sent to too many recipients this hour. IB607 ...
-			errorlabel := issuedcode[positionib + 1:positionib + 6]
-			if errorcodes[errorlabel] != "" { return errorcodes[errorlabel] }
+			return errorcodes[errorlabel]
 
 		} else {
 			// There is no " IB***" error code in the error message

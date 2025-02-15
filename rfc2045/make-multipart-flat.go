@@ -36,14 +36,13 @@ func haircut(block *string, heads bool) []string {
 		//   Content-Type: text/plain; charset=us-ascii
 		if strings.HasPrefix(e, "Content-Type:") {
 			// Content-Type: ***
-			v := strings.SplitN(e, " ", 2)
-			if strings.Contains(v[1], "boundary=") {
+			if cv := strings.SplitN(e, " ", 2); strings.Contains(cv[1], "boundary=") {
 				// Do not convert to lower-cased when the value of Content-Type include a boundary string
-				headerpart[0] = v[1]
+				headerpart[0] = cv[1]
 
 			} else {
 				// The value of Content-Type does not include a boundary string
-				headerpart[0] = strings.ToLower(v[1])
+				headerpart[0] = strings.ToLower(cv[1])
 			}
 		} else if strings.HasPrefix(e, "Content-Transfer-Encoding:") {
 			// Content-Transfer-Encodig: ***
@@ -61,6 +60,7 @@ func haircut(block *string, heads bool) []string {
 	}
 	if heads { return headerpart[:] }
 
+	mediatable := []string{"/rfc822", "/delivery-status", "/feedback-report"}
 	mediatypev := strings.ToLower(headerpart[1])
 	ctencoding := headerpart[1]
 	multipart1 := [...]string{headerpart[0], headerpart[1], ""}
@@ -72,20 +72,14 @@ func haircut(block *string, heads bool) []string {
 		// Do not append Content-Transfer-Encoding: header when the part is the original message:
 		// Content-Type is message/rfc822 or text/rfc822-headers, or message/delivery-status, or
 		// message/feedback-report
-		if strings.Contains(mediatypev, "/rfc822")          { break }
-		if strings.Contains(mediatypev, "/delivery-status") { break }
-		if strings.Contains(mediatypev, "/feedback-report") { break }
-		if len(ctencoding) == 0                             { break }
-
+		if sisimoji.ContainsAny(mediatypev, mediatable) || ctencoding == "" { break }
 		multipart1[2] += fmt.Sprintf("Content-Transfer-Encoding: %s\n", ctencoding)
 		break
 	}
 
-	for {
-		// LOWER CHUNK: Append LF before the lower chunk into the 2nd element of multipart1
-		if lowerchunk == "" || lowerchunk[0:1] == "\n" { break }
-		multipart1[2] += "\n"; break
-	}
+	// LOWER CHUNK: Append LF before the lower chunk into the 2nd element of multipart1
+	if lowerchunk != "" && lowerchunk[0:1] != "\n" { multipart1[2] += "\n" }
+
 	multipart1[2] += lowerchunk
 	return multipart1[:]
 }
@@ -113,52 +107,53 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 			e = fmt.Sprintf("Content-Type: text/plain\n\n%s", e)
 		}
 
-		if f := haircut(&e, false); strings.Contains(f[0], "multipart/") {
+		if cf := haircut(&e, false); strings.Contains(cf[0], "multipart/") {
 			// There is nested multipart/* block
-			boundary02 := Boundary(f[0], -1); if len(boundary02) == 0 { continue }
-			bodyinside := strings.SplitN(f[2], "\n\n", 2)[1]
+			boundary02 := Boundary(cf[0], -1); if len(boundary02) == 0 { continue }
+			bodyinside := strings.SplitN(cf[2], "\n\n", 2)[1]
 			if len(bodyinside) < 8 || strings.Contains(bodyinside, boundary02) == false { continue }
 
-			v, ce := levelout(f[0], &bodyinside)
+			cv, ce := levelout(cf[0], &bodyinside)
 			if ce != nil && len(ce) > 0 {
 				// There is any errors
 				notdecoded = append(notdecoded, ce...)
-				if v == nil { continue }
+				if cv == nil { continue }
 			}
-			for _, w := range v { partstable = append(partstable, [3]string{w[0], w[1], w[2]}) }
+			for _, w := range cv { partstable = append(partstable, [3]string{w[0], w[1], w[2]}) }
 
 		} else {
 			// The part is not a multipart/* block
-			b := e; if len(f[len(f) - 1]) > 0 { b = f[len(f) - 1] }
-			c := Parameter(f[0], "charset")
+			cw := len(cf)
+			ub := e; if len(cf[cw - 1]) > 0 { ub = cf[cw - 1] }
 
-			if sisimoji.Is8Bit(&b) {
+			if sisimoji.Is8Bit(&ub) {
 				// Avoid the following errors in DecodeQ()
 				// - quotedprintable: invalid unescaped byte 0x1b in body
-				utf8string, nyaan := sisimoji.ToUTF8([]byte(b), c); if nyaan != nil {
+				cz := Parameter(cf[0], "charset")
+				utf8string, nyaan := sisimoji.ToUTF8([]byte(ub), cz); if nyaan != nil {
 					// Failed to convert the string to UTF-8
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
 					notdecoded = append(notdecoded, ce)
 				}
-				if utf8string != "" { b = utf8string }
+				if utf8string != "" { ub = utf8string }
 			}
 
-			v := [3]string{f[0], f[1], b}
-			for len(f[0]) > 0 {
-				if f[0] == "" || b == "" || strings.Contains(b, "\n\n") == false { break }
-				v[2] = strings.SplitN(b, "\n\n", 2)[1]
+			cv := [3]string{cf[0], cf[1], ub}; for len(cf[0]) > 0 {
+				if cf[0] == "" || ub == "" || strings.Contains(ub, "\n\n") == false { break }
+				cv[2] = strings.SplitN(ub, "\n\n", 2)[1]
 				break
 			}
-			partstable = append(partstable, v)
+			partstable = append(partstable, cv)
 		}
 	}
 	if len(partstable) == 0 { return nil, notdecoded }
 
 	// Remove `boundary01 + '--'` and strings from the boundary to the end of the body part.
 	boundary01 = strings.Replace(boundary01, "\n", "", -1)
-	b := partstable[len(partstable) - 1][2]
-	p := strings.Index(b, boundary01 + "--")
-	if p > -1 { partstable[len(partstable) - 1][2] = strings.SplitN(b, boundary01 + "--", 2)[0] }
+	cw := len(partstable)
+	bo := partstable[cw - 1][2]
+	p1 := strings.Index(bo, boundary01 + "--")
+	if p1 > -1 { partstable[cw - 1][2] = strings.SplitN(bo, boundary01 + "--", 2)[0] }
 
 	return partstable, notdecoded
 }
@@ -195,6 +190,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 		*argv1 = strings.Replace(*argv1, e + "=", strings.ToLower(e) + "=", -1)
 	}
 	*argv1 = strings.Replace(*argv1, "message/xdelivery-status", "message/delivery-status", -1)
+
 	multiparts, notdecoded := levelout(argv0, argv1)
 	flattenout := ""
 	delimiters := []string{"/delivery-status", "/rfc822", "/feedback-report", "/partial"}
@@ -214,11 +210,10 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 			if strings.Contains(lhead, "multipart/alternative") { continue }
 			istexthtml = true
 		}
-		ctencoding := e[1] // The value of Content-Transfer-Encoding header
 		bodyinside := e[2] // Message body of the part
 		bodystring := ""
 
-		if len(ctencoding) > 0 {
+		if ctencoding := e[1]; len(ctencoding) > 0 {
 			// Check the value of Content-Transfer-Encoding: header
 			if ctencoding == "base64" {
 				// Content-Transfer-Encoding: base64

@@ -58,14 +58,10 @@ func Sweep(argv1 string) string {
 	// @return   string        Cleaned out string
 	if argv1 == "" { return "" }
 
-	argv1 = strings.ReplaceAll(argv1, "\t", " ")
-	argv1 = strings.TrimSpace(argv1)
-	argv1 = Squeeze(argv1, " ")
-
+	argv1 = Squeeze(strings.TrimSpace(strings.ReplaceAll(argv1, "\t", " ")), " ")
 	for strings.Contains(argv1, " --") {
 		// Delete all the string after a boundary string like " --neko-chan"
 		if strings.Contains(argv1, "-- ")  { break }
-		if strings.Contains(argv1, "--\t") { break }
 		argv1 = argv1[0:strings.Index(argv1, " --")]
 	}
 	return argv1
@@ -113,5 +109,32 @@ func IndexOnTheWay(argv0, argv1 string, start int) int {
 	if start < 0 || start >= len(argv0) { return -1 }
 	fi := strings.Index(argv0[start:], argv1); if fi == -1 { return -1 }
 	return fi + start
+}
+
+// Select() returns a string selected between the 2nd argument and 3rd argument from the 1st argument
+func Select(argv0, begin, until string, start int) string {
+	// @param    string argv0  The string to be searched for example "From: <neko@example.jp>"
+	// @param    string begin  Substring such as "<"
+	// @param    string until  Substring such as ">"
+	// @param    int    start  The index position for seeking
+	// @return   string        selected string such as "neko@example.jp"
+	if argv0 == "" || begin == "" || until == "" || start < 0 { return "" }
+
+	textlength := [3]int{len(argv0), len(begin), len(until)}
+	sourcetext := argv0
+
+	if start > 0 {
+		if start > textlength[0] - 2 { return "" }
+		sourcetext = argv0[start:]
+		textlength[0] = len(sourcetext)
+	}
+
+	if textlength[0] < 3 || textlength[0] <= (textlength[1] + textlength[2]) { return "" }
+	indextable   := [3]int{0, -1, -1}
+	indextable[1] = strings.Index(sourcetext, begin); if indextable[1] == -1 { return "" }
+	indextable[2] = strings.Index(sourcetext[indextable[1] + textlength[1] + 1:], until)
+
+	if indextable[2] < 0 { return "" }; indextable[2] += indextable[1] + textlength[1] + 1
+	return sourcetext[indextable[1] + textlength[1]:indextable[2]]
 }
 

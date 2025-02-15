@@ -22,14 +22,10 @@ func Test(argv1 string) bool {
 		digit, nyaan := strconv.Atoi(e); if nyaan != nil { break }
 		token = append(token, int16(digit))
 	}
-
 	if len(token) != 3 { return false } // The number of elements should be 3 like [5,1,1]
-	if token[0]    < 2 { return false } // Status: 1.x.y does not exist
-	if token[0]   == 3 { return false } // Status: 3.x.y does not exist
-	if token[0]    > 5 { return false } // Status: 6.x.y does not exist
-	if token[1]    < 0 { return false }
-	if token[1]    > 7 { return false }
-	if token[2]    < 0 { return false }
+
+	if token[0] < 2 || token[0] == 3 || token[0] > 5 { return false } // Status: [136].y.z does not exist
+	if token[1] < 0 || token[1]  > 7 || token[2] < 0 { return false }
 	return true
 }
 
