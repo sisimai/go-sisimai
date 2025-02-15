@@ -153,12 +153,12 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 				if *v == "" { continue }
 
 				// Use the domain part as a remote/local host when the value is an email address
-				if strings.Contains(*v, "@") { *v = strings.Split(*v, "@")[1] }
+				if strings.IndexByte(*v, '@') > 0 { *v = strings.Split(*v, "@")[1] }
 
 				// Remove [], (), \r, and strings before "="
 				for _, c := range []string{"(", ")", "[", "]", "\r"} { *v = strings.ReplaceAll(*v, c, "") }
-				if strings.Contains(*v, "=") { *v = strings.SplitN(*v, "=", 2)[1] }
-				if strings.Contains(*v, " ") {
+				if strings.IndexByte(*v, '=') > -1 { *v = strings.SplitN(*v, "=", 2)[1] }
+				if strings.IndexByte(*v, ' ') > -1 {
 					// Check a space character in each value and get the first hostname
 					ee := strings.Split(*v, " ")
 					for _, w := range ee {
@@ -166,7 +166,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 						// or "mx.sp.example.jp 192.0.2.135"
 						if rfc791.IsIPv4Address(w) == false { *v = w; break }
 					}
-					if strings.Index(*v, " ") > 0 { *v = ee[0] }
+					if strings.IndexByte(*v, ' ') > 0 { *v = ee[0] }
 				}
 				if strings.HasSuffix(*v, ".") { *v = strings.TrimRight(*v, ".") } // Remove "." at the end of the value
 			}
