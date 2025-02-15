@@ -49,7 +49,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 	// @return   *mail.EmailEntity Pointer to mail.EmailEntity struct
 	ee := EmailEntity{}
 
-	if argv0 == "STDIN" || strings.Contains(argv0, "\n") {
+	if argv0 == "STDIN" || strings.IndexByte(argv0, '\n') > -1 {
 		// Read from STDIN or Memory(string)
 		payload := ""
 
@@ -198,9 +198,9 @@ func(this *EmailEntity) setNewLine() (bool, error) {
 		readbuffer = this.payload[0][:1000]
 	}
 
-	if strings.Contains(readbuffer, "\r\n") { this.newline = 3; return true, nil }
-	if strings.Contains(readbuffer, "\r")   { this.newline = 2; return true, nil }
-	if strings.Contains(readbuffer, "\n")   { this.newline = 1; return true, nil }
+	if strings.Contains(readbuffer, "\r\n")     { this.newline = 3; return true, nil }
+	if strings.IndexByte(readbuffer, '\r') > -1 { this.newline = 2; return true, nil }
+	if strings.IndexByte(readbuffer, '\n') > -1 { this.newline = 1; return true, nil }
 	this.newline = 0; return false, nil
 }
 
