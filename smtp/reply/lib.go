@@ -102,8 +102,7 @@ func Test(argv0 string) bool {
 	if reply >  557 { return false } // The maximum SMTP Reply code is 557
 
 	first := reply % 100
-	if first >  59 { return false }  // For example, 499 is not an SMTP Reply code
-
+	if first >   59 { return false } // For example, 499 is not an SMTP Reply code
 	if first == 2 {
 		// 2yz
 		if reply == 235                { return true  } // 235 is a valid code for AUTH (RFC4954)
@@ -111,12 +110,8 @@ func Test(argv0 string) bool {
 		if reply  > 221 && reply < 250 { return false } // There is no reply code between 221 and 250
 		return true
 	}
+	if first == 3 && reply != 354 { return false }
 
-	if first == 3 {
-		// 3yz
-		if reply != 354 { return false }
-		return true
-	}
 	return true
 }
 

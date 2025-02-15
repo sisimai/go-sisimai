@@ -159,9 +159,8 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 
 				for _, f := range strings.Split(parameters, " ") {
 					// SIZE=22022, PROTO=SMTP, and so on
-					if strings.IndexByte(f, '=') < 1             { continue }
-					if len(f) < 3                                { continue }
-					ee := strings.Split(f, "="); if len(ee) != 2 { continue }
+					if strings.IndexByte(f, '=') < 1 || len(f) < 3 { continue }
+					ee := strings.Split(f, "=");   if len(ee) != 2 { continue }
 					cursession.Parameter[strings.ToLower(ee[0])] = ee[1]
 				}
 			}

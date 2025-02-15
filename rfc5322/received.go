@@ -41,28 +41,26 @@ func Received(argv1 string) [6]string {
 	recvd := strings.Split(argv1, " ")
 	label := [6]string{"from", "by", "via", "with", "id", "for"}
 	skips := []string{"unknown", "localhost", "[127.0.0.1]", "[IPv6:::1]"}
+	chars := []string{"(", ")", ";"} // Removed by strings.ReplaceAll()
 	token := make(map[string]string)
 	other := []string{}
 	alter := []string{}
 	right := false
 
-	for i, e := range recvd {
+	for j, e := range recvd {
 		// Look up each label defined in label from Received header
-		f := strings.ToLower(e)
-		p := false
-		for _, v := range label { if f == v { p = true; break } }
+		cf := strings.ToLower(e)
+		cb := false
 
-		if p == false             { continue }
-		if i + 1 > len(recvd) - 1 { continue }
+		for _, v := range label { if cf == v { cb = true; break } }
+		if cb == false || j + 1 > len(recvd) - 1 { continue }
 
-		token[f] = strings.ToLower(recvd[i + 1]);
-		token[f] = strings.ReplaceAll(token[f], "(", "")
-		token[f] = strings.ReplaceAll(token[f], ")", "")
-		token[f] = strings.ReplaceAll(token[f], ";", "")
+		token[cf] = strings.ToLower(recvd[j + 1]);
+		for _, f := range chars { token[cf] = strings.ReplaceAll(token[cf], f, "") }
 
-		if f != "from"                           { continue }
-		if i + 2 > len(recvd) - 1                { break    }
-		if strings.Index(recvd[i + 2], "(") != 0 { continue }
+		if cf != "from"                          { continue }
+		if j + 2 > len(recvd) - 1                { break    }
+		if strings.Index(recvd[j + 2], "(") != 0 { continue }
 
 		// Get and keep a hostname in the comment as follows:
 		// from mx1.example.com (c213502.kyoto.example.ne.jp [192.0.2.135]) by mx.example.jp (V8/cf)
@@ -78,18 +76,14 @@ func Received(argv1 string) [6]string {
 		// }
 		// The 2nd element after the current element is NOT a continuation of the current element
 		// such as "(c213502.kyoto.example.ne.jp)"
-		other    = append(other, recvd[i + 2])
-		other[0] = strings.ReplaceAll(other[0], "(", "")
-		other[0] = strings.ReplaceAll(other[0], ")", "")
-		other[0] = strings.ReplaceAll(other[0], ";", "")
+		other = append(other, recvd[j + 2])
+		for _, f := range chars { other[0] = strings.ReplaceAll(other[0], f, "") }
 
 		// The 2nd element after the current element is a continuation of the current element.
 		// such as "(c213502.kyoto.example.ne.jp", "[192.0.2.135])"
-		if i + 3 > len(recvd) - 1 { break }
-		other    = append(other, recvd[i + 3])
-		other[1] = strings.ReplaceAll(other[1], "(", "")
-		other[1] = strings.ReplaceAll(other[1], ")", "")
-		other[1] = strings.ReplaceAll(other[1], ";", "")
+		if j + 3 > len(recvd) - 1 { break }
+		other = append(other, recvd[j + 3])
+		for _, f := range chars { other[1] = strings.ReplaceAll(other[1], f, "") }
 	}
 
 	for _, e := range other {
@@ -115,9 +109,7 @@ func Received(argv1 string) [6]string {
 		if token["from"] == "localhost"             { break }
 		if token["from"] == "localhost.localdomain" { break }
 		if strings.Index(token["from"], ".") < 0    { break } // A hostname without a domain name
-
-		ce := token["from"];
-		if len(rfc791.FindIPv4Address(&ce))  > 0    { break }
+		if ce := token["from"]; len(rfc791.FindIPv4Address(&ce)) > 0 { break }
 
 		// No need to rewrite token["from"]
 		right = true

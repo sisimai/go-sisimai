@@ -88,8 +88,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	if bf.Headers["content-type"][0] != "" {
 		// Get the boundary string and set regular expression for matching with the boundary string.
-		cv := rfc2045.Boundary(bf.Headers["content-type"][0], 0)
-		if cv != "" { boundaries[0] = cv }
+		if cv := rfc2045.Boundary(bf.Headers["content-type"][0], 0); cv != "" { boundaries[0] = cv }
 	}
 
 	if len(bodyslices) < 5 {

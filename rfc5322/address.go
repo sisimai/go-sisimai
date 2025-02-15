@@ -44,8 +44,7 @@ func IsEmailAddress(email string) bool {
 
 	quote := IsQuotedAddress(email); if quote == false {
 		// The email address is not a quoted address
-		if strings.Count(email, "@") > 1 { return false }
-		if strings.Contains(email, " ")  { return false }
+		if strings.Count(email, "@") > 1 || strings.Contains(email, " ") { return false }
 
 		// Non-RFC compliant email addresses still persist in the world.
 		// if strings.Contains(email, "..") { return false }
@@ -120,8 +119,7 @@ func IsQuotedAddress(email string) bool {
 	// @param    string email    Email address string
 	// @return   bool            true:  the local part is quoted
 	//                           false: the local part is not quoted
-	if strings.HasPrefix(email, `"`) == false { return false }
-	if strings.Contains(email, `"@`) == false { return false }
+	if strings.HasPrefix(email, `"`) == false || strings.Contains(email, `"@`) == false { return false }
 	return true
 }
 

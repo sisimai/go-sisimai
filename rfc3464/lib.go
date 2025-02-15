@@ -145,8 +145,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			}
 			continue
 		}
-		if readcursor & indicators["deliverystatus"] == 0 { continue }
-		if e == ""                                        { continue }
+		if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
 		if f := rfc1894.Match(e); f > 0 {
 			// This line matched with any field defined in RFC3464
