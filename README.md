@@ -90,6 +90,17 @@ $ go get -u libsisimai.org/sisimai@latest
 go: added golang.org/x/net v0.35.0
 go: added golang.org/x/text v0.22.0
 go: added libsisimai.org/sisimai v0.0.1
+
+$ cat ./go.mod
+module example.com/sisimaicli
+
+go 1.20
+
+require (
+	golang.org/x/net v0.35.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
+	libsisimai.org/sisimai v0.0.3 // indirect
+)
 ```
 
 ### Build
@@ -371,9 +382,9 @@ Features
 |----------------------------------------------|----------------|-----------------|---------------|
 | System requirements                          | 1.17 -         | 5.26 -          | 2.4 - / 9.2 - |
 | Dependencies (Except standard libs)          | 2 packages     | 2 modules       | 1 gem         |
-| Source lines of code                         | 9,600 lines    | 9,900 lines     | 9,800 lines   |
+| Source lines of code                         | 9,400 lines    | 9,900 lines     | 9,800 lines   |
 | The number of tests                          | 134,000 tests  | 319,000 tests   | 410,000 tests |
-| The number of bounce emails decoded/sec [^4] | 1200 emails    | 400 emails      | 340 emails    |
+| The number of bounce emails decoded/sec [^4] | 1200 emails    | 450 emails      | 340 emails    |
 | License                                      | 2 Clause BSD   | 2 Caluse BSD    | 2 Clause BSD  |
 | Commercial support                           | Available      | Available       | Available     |
 

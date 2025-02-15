@@ -87,6 +87,17 @@ $ go get -u libsisimai.org/sisimai@latest
 go: added golang.org/x/net v0.35.0
 go: added golang.org/x/text v0.22.0
 go: added libsisimai.org/sisimai v0.0.1
+
+$ cat ./go.mod
+module example.com/sisimaicli
+
+go 1.20
+
+require (
+	golang.org/x/net v0.35.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
+	libsisimai.org/sisimai v0.0.3 // indirect
+)
 ```
 
 ### Build
@@ -362,9 +373,9 @@ Features
 |-----------------------------------------|-----------------|-------------------|-----------------|
 | 動作環境                                | 1.17 -          | 5.26 -            | 2.4 - / 9.2 -   |
 | 依存モジュール数(標準パッケージを除く)  | 2 パッケージ    | 2 モジュール      | 1 gem           |
-| ソースコードの行数                      | 9,600 行        | 9,900 行          | 9,800 行        |
+| ソースコードの行数                      | 9,400 行        | 9,900 行          | 9,800 行        |
 | テスト件数                              | 134,000 件      | 319,000 件        | 410,000 件      |
-| 1秒間に解析できるバウンスメール数[^4]   | 1200 通         | 400 通            | 340 通          |
+| 1秒間に解析できるバウンスメール数[^4]   | 1200 通         | 450 通            | 340 通          |
 | ライセンス                              | 二条項BSD       | 二条項BSD         | 二条項BSD       |
 | 開発会社による商用サポート              | 提供中          | 提供中            | 提供中          |
 
