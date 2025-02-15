@@ -57,8 +57,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 
 	RISE: for retryagain < 2 {
 		// 1. Split email data to headers and a body part.
-		email, nyaan := mail.ReadMessage(strings.NewReader(*mesg))
-		if nyaan != nil {
+		if email, nyaan := mail.ReadMessage(strings.NewReader(*mesg)); nyaan != nil {
 			// Failed to read the message as an email
 			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true)
 			beforefact.Errors = append(beforefact.Errors, ce)

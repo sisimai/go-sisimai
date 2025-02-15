@@ -42,11 +42,10 @@ func tidy(argv0 *string) *string {
 				// The field including one or more ";"
 				for _, f := range strings.Split(bf, ";") {
 					// 2-1. Trim leading and trailing space characters from the current buffer
-					f   = strings.Trim(f, " ")
-					ps := ""
+					f = strings.Trim(f, " ")
 
 					// 2-2. Convert some parameters to the lower-cased string
-					for {
+					ps := ""; for {
 						// For example,
 						// - Content-Type: Message/delivery-status => message/delivery-status
 						// - Content-Type: Charset=UTF8            => charset=utf8
