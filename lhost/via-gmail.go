@@ -220,16 +220,12 @@ func init() {
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
 			e.Rhost     = rfc1123.Find(e.Diagnosis)
 
-			for {
+			if cv := sisimoji.Select(e.Diagnosis, " (state ", ")", 0); len(statetable[cv]) > 0 {
 				// Find "(state 18)" and pick "18" as a key of statetable
-				p1 := strings.LastIndex(e.Diagnosis, " (state "); if p1 < 0  { break }
-				p2 := strings.LastIndex(e.Diagnosis, ")");        if p2 < 0  { break }
-				                                                  if p1 > p2 { break }
-				cu := e.Diagnosis[p1 + 8:p2];    if len(statetable[cu]) == 0 { break }
-				e.Command = statetable[cu][0]
-				e.Reason  = statetable[cu][1]
-				break
+				e.Command = statetable[cv][0]
+				e.Reason  = statetable[cv][1]
 			}
+
 			if e.Reason == "" {
 				// There is no state code in the error message
 				FINDREASON: for r := range messagesof {
