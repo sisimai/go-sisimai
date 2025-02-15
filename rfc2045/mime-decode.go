@@ -20,16 +20,13 @@ func IsEncoded(argv0 string) bool {
 	// @return   bool              true: Not MIME encoded string
     //                             false: MIME encoded string
 	argv0  = strings.ToUpper(argv0)
-	match := false
-	for {
-		// =?UTF-8?B?44OL44Oj44O844Oz?=
-		if !strings.Contains(argv0, "=?") { break } // Begins with "=?"
-		if !strings.Contains(argv0, "?=") { break } // Ends with "?="
-		if len(argv0) < 8                 { break } // String length should be 8 or more
-		if strings.Contains(argv0, "?B?") || strings.Contains(argv0, "?Q?") { match = true }
-		break
-	}
-	return match
+
+	// =?UTF-8?B?44OL44Oj44O844Oz?=
+	if strings.Contains(argv0, "=?") == false { return false } // Should begin with "=?"
+	if strings.Contains(argv0, "?=") == false { return false } // Should end with "?="
+	if len(argv0) < 8                         { return false } // Should be 8 or more length
+	if strings.Contains(argv0, "?B?") || strings.Contains(argv0, "?Q?") { return true }
+	return false
 }
 
 // DecodeH() decodes the value of email header which is a MIME-Encoded string.
