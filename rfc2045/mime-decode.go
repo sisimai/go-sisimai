@@ -96,8 +96,7 @@ func DecodeB(argv0 string, argv1 string) (string, error) {
 	if len(argv1) == 0 { argv1 = "utf-8"   }
 
 	decodingif := new(mime.WordDecoder)
-	base64text := strings.TrimSpace(argv0)
-	base64text  = strings.Join(strings.Split(base64text, "\n"), "")
+	base64text := strings.Join(strings.Split(strings.TrimSpace(argv0), "\n"), "")
 	base64text  = fmt.Sprintf("=?%s?B?%s?=", argv1, base64text)
 	plainvalue := ""
 
