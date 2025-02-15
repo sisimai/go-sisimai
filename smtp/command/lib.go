@@ -45,7 +45,7 @@ func Find(argv0 string) string {
 	for _, e := range Detectable {
 		// Find an SMTP command from the given string
 		p0 := strings.Index(argv0, e); if p0 < 0 { continue }
-		if strings.Contains(e, " ") == false {
+		if strings.IndexByte(e, ' ') < 0 {
 			// For example, "RCPT T" does not appear in an email address or a domain name
 			cx := true; for {
 				// Exclude an SMTP command in the part of an email address, a domain name, such as
