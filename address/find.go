@@ -216,8 +216,7 @@ func Find(argv1 string) [3]string {
 			// Try to use the string like an email address in the display name
 			for _, e := range strings.Split(readbuffer[1], " ") {
 				// Find an email address
-				if rfc5322.IsEmailAddress(e) == false { continue }
-				readbuffer[0] = e; break
+				if rfc5322.IsEmailAddress(e) { readbuffer[0] = e; break }
 			}
 		} else if IsMailerDaemon(readbuffer[1]) == true {
 			// Allow if the string is MAILER-DAEMON
