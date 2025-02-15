@@ -64,7 +64,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	isboundary := []string{rfc2045.Boundary(bf.Headers["content-type"][0], 0)}
 	v          := &(dscontents[len(dscontents) - 1])
 
-	for strings.Contains(emailparts[0], "@") == false {
+	for strings.IndexByte(emailparts[0], '@') == -1 {
 		// There is no email address in the first element of emailparts
 		// There is a bounce message inside of message/rfc822 part at lhost-x5-*, rfc3464/1311
 		p0 := -1 // The index of the boundary string found first
@@ -203,7 +203,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 					// Check the first element is a field defined in RFC1894 or not
 					if strings.HasPrefix(cv[4], "reason:") {
 						// cv[4] is a string line "reason:mailboxfull"
-						v.Reason = cv[4][strings.Index(cv[4], ":") + 1:]
+						v.Reason = cv[4][strings.IndexByte(cv[4], ':') + 1:]
 					}
 				} else {
 					// Set the value picked from "X-*" field to the member of sis.DeliveryMatter
