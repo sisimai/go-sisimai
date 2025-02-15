@@ -10,7 +10,7 @@ package address
 import "strings"
 import "libsisimai.org/sisimai/sis"
 
-// Rise() is a constructor of Sisimai::Address
+// Rise() is a constructor of sis.EmailAddress
 func Rise(argvs [3]string) sis.EmailAddress {
 	// @param    [3]string argvs  ["Email address", "name", "comment"]
 	// @return   sis.EmailAddress EmailAddress struct when the email address was not valid
