@@ -33,6 +33,8 @@ func IsEncoded(argv0 string) bool {
 func DecodeH(argv0 string) (string, error) {
 	// @param    string    argvs  MIME-Encoded text
 	// @return   string           MIME-Decoded text
+	if argv0 == "" { return "", nil }
+
 	decodingif := new(mime.WordDecoder); if CharacterSet(argv0) != "UTF-8" {
 		// The character set is not UTF-8
 		decodingif.CharsetReader = func(c string, v io.Reader) (io.Reader, error) {
