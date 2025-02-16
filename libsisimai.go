@@ -59,7 +59,8 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 
 	emailthing, nyaan := sisimbox.Rise(path); if nyaan != nil {
 		// The file does not exist, or is not a regular file.
-		ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true); ce.Email(emailthing.Path)
+		ef := "<STDIN>"; if emailthing != nil { ef = emailthing.Path }
+		ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true); ce.Email(ef)
 		notdecoded = append(notdecoded, ce)
 		return &sisidigest, &notdecoded
 	}
