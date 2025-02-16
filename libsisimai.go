@@ -49,26 +49,6 @@ func Args() *sis.DecodingArgs {
 	}
 }
 
-// sisimai.Dump() returns decoded data as a JSON string
-func Dump(path string, args *sis.DecodingArgs) (*string, *[]sis.NotDecoded) {
-	// @param   string            path  Path to mbox or Maildir/ or "STDIN"
-	// @param   *sis.DecodingArgs args  Arguments for decoding
-	// @return  *string
-	sisidigest, notdecoded := Rise(path, args); if len(*sisidigest) == 0 { return nil, notdecoded }
-	serialized := []string{}
-
-	for _, e := range *sisidigest {
-		cj, nyaan := e.Dump(); if nyaan != nil {
-			*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false))
-		}
-		if cj != "" { serialized = append(serialized, cj) }
-	}
-	if len(serialized) == 0 { return nil, notdecoded }
-
-	jsonstring := "[" + strings.Join(serialized, ",") + "]"
-	return &jsonstring, notdecoded
-}
-
 // sisimai.Rise() is a function for decoding bounce mails in a mailbox or a Maildir/
 func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) {
 	// @param   string            path  Path to mbox or Maildir/ or "STDIN"
@@ -135,5 +115,25 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 	// TODO: Add warning information of the decoding results into notdecoded as sis.NotDecoded{}
 	// when the reason is "onhold" or "undefined"
 	return &sisidigest, &notdecoded
+}
+
+// sisimai.Dump() returns decoded data as a JSON string
+func Dump(path string, args *sis.DecodingArgs) (*string, *[]sis.NotDecoded) {
+	// @param   string            path  Path to mbox or Maildir/ or "STDIN"
+	// @param   *sis.DecodingArgs args  Arguments for decoding
+	// @return  *string
+	sisidigest, notdecoded := Rise(path, args); if len(*sisidigest) == 0 { return nil, notdecoded }
+	serialized := []string{}
+
+	for _, e := range *sisidigest {
+		cj, nyaan := e.Dump(); if nyaan != nil {
+			*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false))
+		}
+		if cj != "" { serialized = append(serialized, cj) }
+	}
+	if len(serialized) == 0 { return nil, notdecoded }
+
+	jsonstring := "[" + strings.Join(serialized, ",") + "]"
+	return &jsonstring, notdecoded
 }
 
