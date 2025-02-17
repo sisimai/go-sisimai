@@ -93,8 +93,8 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 			if len(nyaan) > 0 { notdecoded = append(notdecoded, nyaan...) }
 
 			if args.Callback1 != nil {
-				// Run the 2nd callback function specified with the 3rd argument of Sisimai.Rise() after
-				// reading each email file in Maildir/ every time
+				// Run the callback function stored in sis.DecodingArgs.Callback1 specified with the
+				// 2nd argument of Sisimai.Rise() after reading each email file every time
 				carg := &sis.CallbackArgs{
 					Headers: map[string][]string{
 						"path": []string{emailthing.Path},
@@ -104,7 +104,6 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 					},
 					Payload: mesg,
 				}
-				//args.Callback1.(func(*sis.CallbackArgs))(carg)
 				if _, nyaan := args.Callback1(carg); nyaan != nil {
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true); ce.Email(emailthing.Path)
 					notdecoded = append(notdecoded, ce)
