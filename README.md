@@ -46,7 +46,7 @@ in structured data. It is also possible to output in JSON format.
 The key features of Sisimai
 ---------------------------------------------------------------------------------------------------
 * __Decode email bounces to structured data__
-  * Sisimai provides detailed insights into bounce emails by extracting 26 key data points.[^2]
+  * Sisimai provides detailed insights into bounce emails by extracting 26 key data points.[^1]
     * __Essential information__: `Timestamp`, `Origin`
     * __Sender information__: `Addresser`, `SenderDomain`, 
     * __Recipient information__: `Recipient`, `Destination`, `Alias`
@@ -61,11 +61,11 @@ The key features of Sisimai
   * `$ go get -u libsisimai.org/sisimai@latest`
   * `import "libsisimai.org/sisimai"`
 * __High Precision of Analysis__
-  * Support [55 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
+  * Support [58 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
   * Support Feedback Loop Message(ARF)
   * Can detect [36 bounce reasons](https://libsisimai.org/en/reason/)
 
-[^2]: The callback function allows you to add your own data under the `Catch` field.
+[^1]: The callback function allows you to add your own data under the `Catch` field.
 
 
 Command line demo
@@ -393,11 +393,11 @@ Features
 | Dependencies (Except standard libs)          | 2 packages     | 2 modules       | 1 gem         |
 | Source lines of code                         | 9,400 lines    | 9,900 lines     | 9,800 lines   |
 | The number of tests                          | 134,000 tests  | 319,000 tests   | 410,000 tests |
-| The number of bounce emails decoded/sec [^4] | 1200 emails    | 450 emails      | 340 emails    |
+| The number of bounce emails decoded/sec [^2] | 1200 emails    | 450 emails      | 340 emails    |
 | License                                      | 2 Clause BSD   | 2 Caluse BSD    | 2 Clause BSD  |
 | Commercial support                           | Available      | Available       | Available     |
 
-[^4]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Go 1.22/Perl 5.30
+[^2]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Go 1.22/Perl 5.30
 
 Contributing
 ===================================================================================================

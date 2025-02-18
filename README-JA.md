@@ -42,7 +42,7 @@ Sisimai(シシマイ)は複雑で多種多様なバウンスメールを解析�
 The key features of Sisimai
 ---------------------------------------------------------------------------------------------------
 * __バウンスメールを構造化したデータに変換__
-  * 以下26項目の情報を含むデータ構造[^2]
+  * 以下26項目の情報を含むデータ構造[^1]
     * __基本的情報__: `Timestamp`, `Origin`
     * __発信者情報__: `Addresser`, `SenderDomain`, 
     * __受信者情報__: `Recipient`, `Destination`, `Alias`
@@ -57,11 +57,11 @@ The key features of Sisimai
   * `$ go get -u libsisimai.org/sisimai@latest`
   * `import "libsisimai.org/sisimai"`
 * __高い解析精度__
-  * [55種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
+  * [58種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
   * Feedback Loop(ARF)にも対応
   * [36種類のバウンス理由](https://libsisimai.org/en/reason/)を検出
 
-[^2]: コールバック機能を使用すると`Catch`フィールドの下に独自のデータを追加できます
+[^1]: コールバック機能を使用すると`Catch`フィールドの下に独自のデータを追加できます
 
 Command line demo
 ---------------------------------------------------------------------------------------------------
@@ -381,11 +381,11 @@ Features
 | 依存モジュール数(標準パッケージを除く)  | 2 パッケージ    | 2 モジュール      | 1 gem           |
 | ソースコードの行数                      | 9,400 行        | 9,900 行          | 9,800 行        |
 | テスト件数                              | 134,000 件      | 319,000 件        | 410,000 件      |
-| 1秒間に解析できるバウンスメール数[^4]   | 1200 通         | 450 通            | 340 通          |
+| 1秒間に解析できるバウンスメール数[^2]   | 1200 通         | 450 通            | 340 通          |
 | ライセンス                              | 二条項BSD       | 二条項BSD         | 二条項BSD       |
-| 開発会社による商用サポート              | 提供中          | 提供中            | 提供中          |
+| 開発会社による商用サポート              | 準備中          | 提供中            | 提供中          |
 
-[^4]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Go 1.22/Perl 5.30
+[^2]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Go 1.22/Perl 5.30
 
 Contributing
 ===================================================================================================
