@@ -260,7 +260,7 @@ func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
     args := sisimai.Args() // sis.DecodingArgs{}
 
-    args.Callback0 = func(arg *sisimai.CallbackArgs) (map[string]interface{}, error) {
+    args.Callback0 = func(arg *sisimai.CallbackArg0) (map[string]interface{}, error) {
         // - この関数は解析処理実行前に呼び出される
         // - 例えば元メールにある"X-Delivery-App-ID:"ヘッダーの値を取り出してdata["x-delivery-app-id"]に入れる
         // - dataに入れた値はsis.Fact構造体のCatchを通して型アサーションを経て参照可能
@@ -309,7 +309,7 @@ func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
     args := sisimai.Args() // sis.DecodingArgs{}
 
-    args.Callback1 = func(arg *sisimai.CallbackArgs) (bool, error) {
+    args.Callback1 = func(arg *sisimai.CallbackArg1) (bool, error) {
         // - 解析対象になったメールのファイルごとに呼び出される
         // - 例えば解析したメールの中身を/tmpにファイルとして保存するなど
         if nyaan := ioutil.WriteFile("/tmp/copy.eml", []byte(*arg.Payload), 0400); nyaan != nil {

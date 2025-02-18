@@ -270,7 +270,7 @@ func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
     args := sisimai.Args() // sis.DecodingArgs{}
 
-    args.Callback0 = func(arg *sisimai.CallbackArgs) (map[string]interface{}, error) {
+    args.Callback0 = func(arg *sisimai.CallbackArg0) (map[string]interface{}, error) {
         // - This function allows users to add custom processing to the email before parsing.
         // - For example, you can extract the delivery ID from the "X-Delivery-App-ID:" header
         //   and store it in the data map like this: data["x-delivery-app-id"] = "neko22-2".
@@ -311,7 +311,7 @@ func main() {
 The function set in `args.Callback1` is called at `sisimai.Rise()` function for dealing each email
 file after decoding each bounce message.
 
-```perl
+```go
 package main
 import "os"
 import "io/ioutil"
@@ -321,10 +321,10 @@ func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
     args := sisimai.Args() // sis.DecodingArgs{}
 
-    args.Callback1 = func(arg *sisimai.CallbackArgs) (bool, error) {
+    args.Callback1 = func(arg *sisimai.CallbackArg1) (bool, error) {
         // - This function defines custom operations that the user wants to perform on the parsed email file.
         // - For example, you can write the contents of the parsed bounce email to a file in /tmp/.
-        if nyaan := ioutil.WriteFile("/tmp/copy.eml", []byte(*arg.Payload), 0400); nyaan != nil {
+        if nyaan := ioutil.WriteFile("/tmp/copy.eml", []byte(*arg.Mail), 0400); nyaan != nil {
             return false, nyaan
         }
         return true, nil

@@ -9,10 +9,19 @@
 
 package sis
 
-// CallbackArgs is an argument of the callback functions that are called at sisimai.Rise() and
-// message.sift(). It is aliased to sisimai.CallbackArgs at the libsisimai.go
-type CallbackArgs struct {
+// CallbackArg0 is an argument of the first callback function that are called at message.sift().
+// It is aliased to sisimai.CallbackArg0 at the libsisimai.go
+type CallbackArg0 struct {
 	Headers map[string][]string // Email headers of the bounce mail
 	Payload *string             // Entire message body of the bounce mail
+}
+
+// CallbackArg1 is an argument of the callback functions that are called at sisimai.Rise(). It is
+// aliased to sisimai.CallbackArg1 at the libsisimai.go
+type CallbackArg1 struct {
+	Path  string // Path to the original email file or "<STDIN>" or "<MEMORY>"
+	Kind  string // Kind of the original email file or "stdin" or "memory"
+	Mail *string // Entire message body of the bounce mail including all the headers
+	Fact *[]Fact // Decoded results
 }
 

@@ -10,8 +10,8 @@
 package sis
 
 // CfParameter* is an argument of the callback function specified at sisimai.Rise()
-type CfParameter0 func(arg *CallbackArgs) (map[string]interface{}, error)
-type CfParameter1 func(arg *CallbackArgs) (bool, error)
+type CfParameter0 func(arg *CallbackArg0) (map[string]interface{}, error)
+type CfParameter1 func(arg *CallbackArg1) (bool, error)
 
 // DecodingArgs is an argument of the sisimai.Rise() function
 type DecodingArgs struct {

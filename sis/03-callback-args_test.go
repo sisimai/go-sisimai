@@ -10,10 +10,10 @@ package sis
 //                                                                                     |___/     
 import "testing"
 
-func TestCallbackArgs(t *testing.T) {
-	cc := "CallbackArgs"
-	fn := "sis.CallbackArgs"
-	cv := &CallbackArgs{
+func TestCallbackArg0(t *testing.T) {
+	cc := "CallbackArg0"
+	fn := "sis.CallbackArg0"
+	cv := &CallbackArg0{
 		Headers: map[string][]string{"Nekochan": []string{"Kijitora", "Michistuna"}},
 		Payload: &cc,
 	}
@@ -25,3 +25,22 @@ func TestCallbackArgs(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestCallbackArg1(t *testing.T) {
+	cc := "CallbackArg1"
+	fn := "sis.CallbackArg1"
+	cv := &CallbackArg1{
+		Path: "/var/mail/root",
+		Kind: "mailbox",
+		Mail: &cc,
+		Fact: nil,
+	}
+	cx := 0
+
+	cx++; if cv == nil                      { t.Fatalf("%s{} = nil", fn) }
+	cx++; if cv.Path    != "/var/mail/root" { t.Errorf("%s.Path is %s", fn, cv.Path) }
+	cx++; if cv.Kind    != "mailbox"        { t.Errorf("%s.Kind is %s", fn, cv.Kind) }
+	cx++; if (*cv.Mail) == ""               { t.Errorf("%s.Mail is empty", fn) }
+	cx++; if (*cv).Fact != nil              { t.Errorf("%s.Fact is not nil", fn) }
+
+	t.Logf("The number of tests = %d", cx)
+}

@@ -25,7 +25,8 @@ import sisimoji "libsisimai.org/sisimai/string"
 const libname string = "sisimai"
 const version string = "5.2.0"
 const patchlv uint8  = 0
-type  CallbackArgs = sis.CallbackArgs
+type  CallbackArg0 = sis.CallbackArg0
+type  CallbackArg1 = sis.CallbackArg1
 type  CfParameter0 = sis.CfParameter0
 type  CfParameter1 = sis.CfParameter1
 
@@ -95,15 +96,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 			if args.Callback1 != nil {
 				// Run the callback function stored in sis.DecodingArgs.Callback1 specified with the
 				// 2nd argument of Sisimai.Rise() after reading each email file every time
-				carg := &sis.CallbackArgs{
-					Headers: map[string][]string{
-						"path": []string{emailthing.Path},
-						"dir":  []string{emailthing.Dir},
-						"file": []string{emailthing.File},
-						"kind": []string{emailthing.Kind},
-					},
-					Payload: mesg,
-				}
+				carg := &sis.CallbackArg1{Path: emailthing.Path, Kind: emailthing.Kind, Mail: mesg, Fact: &fact}
 				if _, nyaan := args.Callback1(carg); nyaan != nil {
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true); ce.Email(emailthing.Path)
 					notdecoded = append(notdecoded, ce)

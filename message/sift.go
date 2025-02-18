@@ -65,7 +65,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 
 	if hook != nil {
 		// Execute the first callback function
-		cvv, nyaan := hook(&sis.CallbackArgs{Headers: bf.Headers, Payload: &bf.Payload}); if nyaan != nil {
+		cvv, nyaan := hook(&sis.CallbackArg0{Headers: bf.Headers, Payload: &bf.Payload}); if nyaan != nil {
 			// Something wrong when the 1st callback function executed
 			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
 			bf.Errors = append(bf.Errors, ce)
