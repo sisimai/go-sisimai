@@ -16,11 +16,11 @@ import "testing"
 // Callback1 CfParameter1 // [1] The 2nd callback function
 func TestDecodingArgs(t *testing.T) {
 	fn := "sis.DecodingArgs"
-	c1 := func(arg *CallbackArgs) (map[string]interface{}, error) {
+	c1 := func(arg *CallbackArg0) (map[string]interface{}, error) {
 		data := make(map[string]interface{}); data["nekochan"] = []string{"kijitora", "nyaaaan"}
 		return data, nil
 	}
-	c2 := func(arg *CallbackArgs) (bool, error) { return true, nil }
+	c2 := func(arg *CallbackArg1) (bool, error) { return true, nil }
 	cv := &DecodingArgs{
 		Delivered: false,
 		Vacation:  false,
