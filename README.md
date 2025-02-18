@@ -14,6 +14,7 @@
 - [**README-JA(日本語)**](README-JA.md)
 - [What is Sisimai](#what-is-sisimai)
     - [The key features of Sisimai](#the-key-features-of-sisimai)
+    - [Command line demo](#command-line-demo)
 - [Setting Up Sisimai](#setting-up-sisimai)
     - [System requirements](#system-requirements)
     - [Install and Build](#install)
@@ -65,6 +66,14 @@ The key features of Sisimai
   * Can detect [36 bounce reasons](https://libsisimai.org/en/reason/)
 
 [^2]: The callback function allows you to add your own data under the `Catch` field.
+
+
+Command line demo
+---------------------------------------------------------------------------------------------------
+The following screen shows a demonstration of `Dump` function of libsimai.org/sisimai package at
+the command line using Go(go-sisimai) and `jq` command.
+![](https://libsisimai.org/static/images/demo/sisimai-5-cli-dump-g01.gif)
+
 
 Setting Up Sisimai
 ===================================================================================================

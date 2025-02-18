@@ -12,6 +12,7 @@
 - [**README(English)**](README.md)
 - [シシマイ? | What is Sisimai](#what-is-sisimai)
     - [主な特徴的機能 | The key features of Sisimai](#the-key-features-of-sisimai)
+    - [コマンドラインでのデモ | command line demo](#command-line-demo)
 - [シシマイを使う準備 | Setting Up Sisimai](#setting-up-sisimai)
     - [動作環境 | System requirements](#system-requirements)
     - [インストールとビルド | Install and Build](#install)
@@ -62,6 +63,11 @@ The key features of Sisimai
 
 [^2]: コールバック機能を使用すると`Catch`フィールドの下に独自のデータを追加できます
 
+Command line demo
+---------------------------------------------------------------------------------------------------
+次の画像のように、Go版シシマイ(go-sisimai)の`Dump()`関数を使うとコマンドラインから簡単に
+バウンスメールを解析することができます。
+![](https://libsisimai.org/static/images/demo/sisimai-5-cli-dump-g01.gif)
 
 Setting Up Sisimai
 ===================================================================================================
