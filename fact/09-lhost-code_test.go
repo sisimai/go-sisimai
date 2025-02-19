@@ -302,7 +302,10 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 							t.Errorf("%s Timestamp (%s) is an invalid string", ee, fs.Timestamp)
 						}
 
-						// TimezoneOffset (not needed to test)
+						// TimezoneOffset
+						cx++; if strings.Contains(fs.TimezoneOffset, " ") {
+							t.Errorf("%s TimezoneOffset (%s) includes space characters", ee, fs.TimezoneOffset)
+						}
 
 						// Token
 						cx++; if fs.Token      == "" { t.Errorf("%s Token is empty", ee) }
