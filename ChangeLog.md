@@ -3,9 +3,9 @@ RELEASE NOTES for Go version of Sisimai
 - releases: "https://github.com/sisimai/go-sisimai/releases"
 - document: "https://libsisimai.org/"
 
-v0.0.5 - Public Beta5
+v0.0.6 - Public Beta6
 ---------------------------------------------------------------------------------------------------
-- release: "Tue, 18 Feb 2025 16:14:21 +0900 (JST)"
-- version: "0.0.5"
+- release: "Wed, 19 Feb 2025 09:31:14 +0900 (JST)"
+- version: "0.0.6"
 - changes:
 
