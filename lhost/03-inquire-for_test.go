@@ -28,14 +28,15 @@ func TestInquireFor(t *testing.T) {
 			RFC822:  map[string][]string{},
 			Digest:  []sis.DeliveryMatter{},
 		}
-		cx++; if cv := InquireFor[e](nil); cv.Void() == false { t.Errorf("%s(%s).Void() return false", fn, e) }
-		cx++; if cv := InquireFor[e](bf);  cv.Void() == false { t.Errorf("%s(%s).Void() return false", fn, e) }
+		cx++; if cv := InquireFor[e](nil); cv.Void() == false { t.Errorf("%s[%s]().Void() return false", fn, e) }
+		cx++; if cv := InquireFor[e](bf);  cv.Void() == false { t.Errorf("%s[%s]().Void() return false", fn, e) }
 
 		bf.Payload = ""
-		cx++; if cv := InquireFor[e](bf);  cv.Void() == false { t.Errorf("%s(%s).Void() return false", fn, e) }
+		cx++; if cv := InquireFor[e](bf);  cv.Void() == false { t.Errorf("%s[%s]().Void() return false", fn, e) }
 
+		bf.Payload = "nekochan"
 		bf.Headers = map[string][]string{}
-		cx++; if cv := InquireFor[e](bf);  cv.Void() == false { t.Errorf("%s(%s).Void() return false", fn, e) }
+		cx++; if cv := InquireFor[e](bf);  cv.Void() == false { t.Errorf("%s[%s]().Void() return false", fn, e) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
