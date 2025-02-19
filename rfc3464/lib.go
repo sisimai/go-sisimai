@@ -27,7 +27,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @param    *sis.BeforeFact bf  Message body of a bounce email
 	// @return   RisingUnderway      RisingUnderway structure
 	// @see      https://tools.ietf.org/html/rfc3464
-	if bf == nil || len(bf.Headers) == 0 || bf.Payload == "" { return sis.RisingUnderway{} }
+	if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
 	indicators := lhost.INDICATORS()
 	boundaries := []string{
