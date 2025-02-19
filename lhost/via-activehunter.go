@@ -18,8 +18,8 @@ func init() {
 	InquireFor["Activehunter"] = func(bf *sis.BeforeFact) sis.RisingUnderway {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
-		if bf == nil || len(bf.Headers) == 0 || bf.Payload == "" { return sis.RisingUnderway{} }
-		if len(bf.Headers["x-ahmailid"]) == 0                    { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true    { return sis.RisingUnderway{} }
+		if len(bf.Headers["x-ahmailid"]) == 0 { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822"}
