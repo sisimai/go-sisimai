@@ -297,7 +297,11 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						}
 
 						// Subject (not needed to test)
-						// Timestamp (not needed to test)
+						// Timestamp
+						cx++; if fs.Timestamp.Day() == 0 {
+							t.Errorf("%s Timestamp (%s) is an invalid string", ee, fs.Timestamp)
+						}
+
 						// TimezoneOffset (not needed to test)
 
 						// Token
