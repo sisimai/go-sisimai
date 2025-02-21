@@ -16,6 +16,7 @@ func TestSweep(t *testing.T) {
 	ae := []struct {arg string; exp string}{
 		{" neko		meow	cat ", "neko meow cat"},
 		{"neko      meow   cat --nekochan kijitora", "neko meow cat"},
+		{"-- --", "-- --"},
 		{"", ""},
 	}
 	for _, e := range ae {
