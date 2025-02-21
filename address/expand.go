@@ -22,7 +22,7 @@ func ExpandVERP(email string) string {
 	local := strings.SplitN(email, "@", 2)[0]
 	pluss := strings.IndexByte(local, '+'); if pluss < 1                  { return "" }
 	equal := strings.IndexByte(local, '='); if equal < 1 || pluss > equal { return "" }
-	lsize := len(local);    if pluss > lsize - 1 || equal > lsize - 1 { return "" }
+	lsize := len(local);      if pluss >= lsize - 1 || equal >= lsize - 1 { return "" }
 	xverp := strings.Replace(strings.SplitN(local, "+", 2)[1], "=", "@", 1)
 
 	if rfc5322.IsEmailAddress(xverp) { return xverp }
