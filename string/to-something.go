@@ -23,8 +23,6 @@ func ToLF(argv0 *string) *string {
 		if strings.Contains(crreplaced, e) == false { continue }
 		crreplaced = strings.ReplaceAll(crreplaced, e, "\n")
 	}
-
-	if len(crreplaced) == 0 { return argv0 }
 	return &crreplaced
 }
 
