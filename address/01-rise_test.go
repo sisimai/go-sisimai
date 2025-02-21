@@ -24,7 +24,7 @@ var TestEmailAddrs = []struct {testname string; argument string; expected string
 	{"", "akari@chatora.neko <akari@example.jp>", "akari@example.jp", "akari@chatora.neko", ""},
 	{"", "mari <mari@example.jp> mari@host.int", "mari@example.jp", "mari mari@host.int", ""},
 	{"", "8suke@example.gov (Mayuge-Neko)", "8suke@example.gov", "8suke@example.gov", "(Mayuge-Neko)"},
-	{"", "Shibainu Hachibe. (Harima-no-kami) 8be@example.gov", "8be@example.gov", "Shibainu Hachibe. 8be@example.gov", "(Harima-no-kami)"},
+	{"", "Shibainu, Hachibe. (Harima-no-kami) 8be@example.gov", "8be@example.gov", "Shibainu, Hachibe. 8be@example.gov", "(Harima-no-kami)"},
 	{"", "neko(miaow)chan@example.jp", "nekochan@example.jp", "nekochan@example.jp", "(miaow)"},
 	{"", "(miaow)neko@example.jp", "neko@example.jp", "neko@example.jp", "(miaow)"},
 	{"", "neko(miaow)@example.jp", "neko@example.jp", "neko@example.jp", "(miaow)"},
@@ -64,7 +64,7 @@ var TestPostmaster = []string{
 	"postmaster",
 	"postmaster@example.org",
 }
-var TestNotAnEmail = []string{"1", "neko", `neko%example.jp`, ""}
+var TestNotAnEmail = []string{"1", "neko", `neko%example.jp`, "", "\n\nneko\n\n"}
 
 func TestRise(t *testing.T) {
 	on := "EmailAddress"
