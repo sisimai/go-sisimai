@@ -27,6 +27,7 @@ func TestIndexOnTheWay(t *testing.T) {
 	}
 	cx++; if cv := IndexOnTheWay("neko", ":", -1); cv != -1 { t.Errorf("%s(%s) returns %d", fn, "neko", cv) }
 	cx++; if cv := IndexOnTheWay("neko", ":", 22); cv != -1 { t.Errorf("%s(%s) returns %d", fn, "neko", cv) }
+	cx++; if cv := IndexOnTheWay("neko", ":",  1); cv != -1 { t.Errorf("%s(%s) returns %d", fn, "neko", cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }

@@ -20,6 +20,13 @@ func TestSelect(t *testing.T) {
 		{"Status: 4.4.0 (undefined routing status)", " (", ")", 1, "undefined routing status"},
 		{"550-5.7.26 The MAIL FROM domain [email.example.jp] has an SPF", " [", "] ", 10, "email.example.jp"},
 	}
+	je := []struct {arg string; b string; u string; s int; exp string}{
+		{"", "", "", -1, "" },
+		{"n", "", "", -1, "" },
+		{"n", "e", "", -1, "" },
+		{"n", "e", "k", -1, "" },
+		{"n", "e", "k",  0, "" },
+	}
 
 	for _, e := range ae {
 		cx++; if cv := Select(e.arg, e.b, e.u, e.s); cv != e.exp {
@@ -27,6 +34,12 @@ func TestSelect(t *testing.T) {
 		}
 		cx++; if cv := Select(e.arg, e.b, e.u, e.s * 10 + 50); cv == e.exp {
 			t.Errorf("%s(%s..., %s, %s, %d) returns [%s]", fn, e.arg[e.s:e.s + 10], e.b, e.u, e.s, e.exp)
+		}
+	}
+
+	for _, e := range je {
+		cx++; if cv := Select(e.arg, e.b, e.u, e.s); cv != e.exp {
+			t.Errorf("%s(%s..., %s, %s, %d) returns [%s]", fn, e.arg[e.s:e.s + 10], e.b, e.u, e.s, cv)
 		}
 	}
 
