@@ -65,7 +65,7 @@ func TestRise(t *testing.T) {
 			cx++; if  cv.Sender == "" { t.Errorf("%s.Sender is empty", fs)  }
 			cx++; for cv.Sender != "" {
 				cx++; if strings.Contains(strings.ToUpper(cv.Sender), "MAILER-DAEMON") == false &&
-						 strings.Contains(cv.Sender, "@")             == false {
+						 strings.Contains(cv.Sender, "@") == false {
 							 t.Errorf("%s.Sender include neither mailer-daemon nor @: %s", fs, cv.Sender)
 				}
 				break
