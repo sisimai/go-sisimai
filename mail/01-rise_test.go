@@ -128,6 +128,8 @@ func TestRead(t *testing.T) {
 			cx++; if eo.File != ""         { t.Errorf("%s.File is not empty: %s", cf, eo.File) }
 		}
 	}
+
+	t.Logf("The number of tests = %d", cx)
 }
 
 func TestCountUnixMboxFrom(t *testing.T) {
