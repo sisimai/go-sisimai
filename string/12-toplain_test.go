@@ -37,7 +37,8 @@ func TestToPlain(t *testing.T) {
 	cx++; if strings.Contains(*cv, "maketest") == false { t.Errorf("%s(...) does not contain maketest", fn) }
 
 	ce := ""
-	cx++; if cv = ToLF(&ce); *cv != "" { t.Errorf("%s() returns %s", fn, *cv) }
+	cx++; if cv = ToPlain(nil); cv != nil { t.Errorf("%s(nil) returns %s", fn, *cv) }
+	cx++; if cv = ToPlain(&ce); *cv != "" { t.Errorf("%s('') returns %s", fn, *cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }
