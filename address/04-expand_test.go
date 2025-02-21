@@ -15,9 +15,13 @@ func TestExpandVERP(t *testing.T) {
 	cx := 0
 	ae := []struct {testname string; argument string; expected string}{
 		{"", "cat+neko=example.jp@example.org", "neko@example.jp"},
+		{"", "+@example.org", ""},
+		{"", "=@example.org", ""},
+		{"", "+=@example.org", ""},
 		{"", "", ""},
 		{"", "+neko!example.jp", ""},
 		{"", "=neko!example.jp", ""},
+		{"", "cat+neko=meow@example@jp", ""},
 		{"", "neko", ""},
 	}
 
@@ -39,6 +43,8 @@ func TestExpandAlias(t *testing.T) {
 		{"", "<neko>", ""},
 		{"", "<neko@example.jp>", ""},
 		{"", "+neko@example.jp",  ""},
+		{"", "neko+example+jp",  ""},
+		{"", `"neko+example+jp"@example.org`,  ""},
 		{"", "neko+cat@example.jp", "neko@example.jp"},
 	}
 	for _, e := range ae {
