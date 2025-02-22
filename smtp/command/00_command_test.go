@@ -35,6 +35,12 @@ var SMTPErrors = map[string][]string{
 		"Email rejected per DMARC policy for libsisimai.org (in reply to end of DATA command)",
 		"SMTP Server <192.0.2.223> refused to accept your message (DATA), with the following error message",
 	},
+	"STARTTLS": []string{
+		"Out: 250-STARTTLS",
+	},
+	"XFORWARD": []string{
+		"In:  XFORWARD PROTO=SMTP HELO=neko2-nyaan3.y.example.co.jp",
+	},
 }
 var IsntErrors = []string{
 	"nekochan",
