@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/smtp/status"
 func IsPermanent(argv1 string) bool {
 	// @param   string argv1  String including SMTP Status code
 	// @return  bool          true(permanet error), false(is not a permanent error)
-	if len(argv1) == 0 { return false }
+	if argv1 == "" { return false }
 
 	statuscode := status.Find(argv1, "");  if statuscode == "" { statuscode = reply.Find(argv1, "") }
 	if strings.HasPrefix(statuscode, "5")                      { return true }
