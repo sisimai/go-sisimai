@@ -15,8 +15,7 @@ func TestToPlain(t *testing.T) {
 	fn := "sisimai/string.ToPlain"
 	cx := 0
 	cw := `<html>
-        <head>
-        </head>
+        <head><style>h1 { color: red; } </style></head>
         <body>
             <h1>neko</h1>
             <div>
