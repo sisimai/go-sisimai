@@ -9,6 +9,7 @@ package reply
 //   |_|\___||___/\__/_/ |___/_| |_| |_|\__| .__/_/ |_|  \___| .__/|_|\__, |
 //                                         |_|               |_|      |___/ 
 import "testing"
+import "strconv"
 import "libsisimai.org/sisimai/smtp/status"
 
 var SMTPErrors = []string{
@@ -106,6 +107,7 @@ func TestFind(t *testing.T) {
 	cx++; if Find("", "")   != "" { t.Errorf("%s(%s) does not return an empty string", fn, "") }
 	cx++; if Find("", "1")  != "" { t.Errorf("%s(%s) does not return an empty string", fn, "1") }
 	cx++; if Find("", "22") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "22") }
+	cx++; if Find("", "x-unix; 127") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "x-unix; 127") }
 
 	t.Logf("The number of tests = %d", cx)
 }
@@ -114,9 +116,49 @@ func TestTest(t *testing.T) {
 	fn := "sisimai/smtp/reply.Test"
 	cx := 0
 
+	for j := 200; j < 270; j++ {
+		cv := strconv.Itoa(j); if cv != "" {
+			if j == 235 {
+				cx++; if Test(cv) == false { t.Errorf("%s(%d) returns false", fn, j) }
+			} else if (j < 211 || j > 253) || (j > 221 && j < 250) {
+				cx++; if Test(cv) == true  { t.Errorf("%s(%d) returns true", fn, j) }
+			} else {
+				cx++; if Test(cv) == false { t.Errorf("%s(%d) returns false", fn, j) }
+			}
+		}
+	}
+	for j := 350; j < 370; j++ {
+		cv := strconv.Itoa(j); if cv != "" {
+			if j == 354 {
+				cx++; if Test(cv) == false { t.Errorf("%s(%d) returns false", fn, j) }
+			} else {
+				cx++; if Test(cv) == true  { t.Errorf("%s(%d) returns true", fn, j) }
+			}
+		}
+	}
+	for j := 400; j < 500; j++ {
+		cv := strconv.Itoa(j); if cv != "" {
+			if j % 100 > 59 {
+				cx++; if Test(cv) == true  { t.Errorf("%s(%d) returns true", fn, j) }
+			} else {
+				cx++; if Test(cv) == false { t.Errorf("%s(%d) returns false", fn, j) }
+			}
+		}
+	}
+	for j := 500; j < 600; j++ {
+		cv := strconv.Itoa(j); if cv != "" {
+			if j % 100 > 59 || j > 557 {
+				cx++; if Test(cv) == true  { t.Errorf("%s(%d) returns true", fn, j) }
+			} else {
+				cx++; if Test(cv) == false { t.Errorf("%s(%d) returns false", fn, j) }
+			}
+		}
+	}
+
 	cx++; if Test("")   == true { t.Errorf("%s(%s) returns true", fn, "") }
 	cx++; if Test("1")  == true { t.Errorf("%s(%s) returns true", fn, "1") }
 	cx++; if Test("22") == true { t.Errorf("%s(%s) returns true", fn, "22") }
+	cx++; if Test("ne") == true { t.Errorf("%s(%s) returns true", fn, "ne") }
 
 	t.Logf("The number of tests = %d", cx)
 }
