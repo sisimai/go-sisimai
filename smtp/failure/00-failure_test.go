@@ -47,6 +47,9 @@ func TestIsPermanent(t *testing.T) {
 		cx++; if cv := IsPermanent(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
 	cx++; if IsPermanent("") == true { t.Errorf("%s(%s) returns true", fn, "") }
+	cx++; if IsPermanent("3.14") == true { t.Errorf("%s(3.14) returns true", fn) }
+	cx++; if IsPermanent("450")  == true { t.Errorf("%s(550) returns true", fn) }
+	cx++; if IsPermanent("neko") == true { t.Errorf("%s(neko) returns true", fn) }
 
 	t.Logf("The number of tests = %d", cx)
 }
@@ -59,6 +62,9 @@ func TestIsTemporary(t *testing.T) {
 		cx++; if cv := IsTemporary(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
 	cx++; if IsTemporary("") == true { t.Errorf("%s(%s) returns true", fn, "") }
+	cx++; if IsTemporary("3.14") == true { t.Errorf("%s(3.14) returns true", fn) }
+	cx++; if IsTemporary("521")  == true { t.Errorf("%s(550) returns true", fn) }
+	cx++; if IsTemporary("neko") == true { t.Errorf("%s(neko) returns true", fn) }
 
 	t.Logf("The number of tests = %d", cx)
 }
