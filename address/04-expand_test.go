@@ -18,6 +18,7 @@ func TestExpandVERP(t *testing.T) {
 		{"", "+@example.org", ""},
 		{"", "=@example.org", ""},
 		{"", "+=@example.org", ""},
+		{"", "=+@example.org", ""},
 		{"", "", ""},
 		{"", "+neko!example.jp", ""},
 		{"", "=neko!example.jp", ""},

@@ -64,7 +64,7 @@ var TestPostmaster = []string{
 	"postmaster",
 	"postmaster@example.org",
 }
-var TestNotAnEmail = []string{"1", "neko", `neko%example.jp`, "", "\n\nneko\n\n"}
+var TestNotAnEmail = []string{"1", "neko", `neko%example.jp`, `neko cat-example.jp`, "", "\n\nneko\n\n"}
 
 func TestRise(t *testing.T) {
 	on := "EmailAddress"
