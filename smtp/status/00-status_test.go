@@ -103,13 +103,17 @@ func TestTest(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
-	fn := "sisimai/smtp/status.Test"
+	fn := "sisimai/smtp/status.Find"
 	cx := 0
 
 	for _, e := range SMTPErrors {
-		cx++; if cv := Find(e, ""); cv == "" { t.Errorf("%s(%s) returns empty", fn, e) }
+		cx++; if cv := Find(e, "");  cv == "" { t.Errorf("%s(%s) returns empty", fn, e) }
 	}
-	cx++; if cv := Find("", "");    cv != "" { t.Errorf("%s('') returns (%s)", fn, cv) }
+	cx++; if cv := Find("smtp; 2.1.5 250 OK", "1"); cv == "" { t.Errorf("%s(..., 1) returns empty", fn) }
+	cx++; if cv := Find("smtp; 2.1.5 250 OK", "2"); cv == "" { t.Errorf("%s(..., 2) returns empty", fn) }
+	cx++; if cv := Find("smtp; 2.1.5 250 OK", "4"); cv != "" { t.Errorf("%s(..., 4) returns %s", fn, cv) }
+	cx++; if cv := Find("smtp; 2.1.5 250 OK", "5"); cv != "" { t.Errorf("%s(..., 5) returns %s", fn, cv) }
+	cx++; if cv := Find("", "");                    cv != "" { t.Errorf("%s('', '') returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }
