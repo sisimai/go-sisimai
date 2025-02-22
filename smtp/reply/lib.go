@@ -92,7 +92,7 @@ var CodeOfSMTP = map[string][]string{"2": ReplyCode2, "4": ReplyCode4, "5": Repl
 
 // Test() checks whether a reply code is a valid code or not
 func Test(argv0 string) bool {
-	// @param    string argv1  Reply Code(DSN)
+	// @param    string argv1  SMTP Reply Code
 	// @return   Bool          true = Invalid reply code, false = Valid reply code
 	if len(argv0) < 3 { return false }
 
