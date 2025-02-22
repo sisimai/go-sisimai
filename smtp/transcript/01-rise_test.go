@@ -61,6 +61,16 @@ func TestRise(t *testing.T) {
 		}
 	}
 
+	ct = Rise(cw, "", "");    cx++; if len(ct) > 0 { t.Errorf("%s.Void() returns %v", fn, ct) }
+	ct = Rise(cw, ">>>", ""); cx++; if len(ct) > 0 { t.Errorf("%s.Void() returns %v", fn, ct) }
+	ct = Rise(cw, "", "<<<"); cx++; if len(ct) > 0 { t.Errorf("%s.Void() returns %v", fn, ct) }
+
+	cw = "<<<  OK\n>>>  NEKO\n<<<  Closed\n"
+	ct = Rise(cw, "", "");    cx++; if ct[0].Void() == true { t.Errorf("%s.Void() returns true", fn) }
+
+	cw = "<<< Error\n>>> NEKO"
+	ct = Rise(cw, "", "");    cx++; if ct[0].Void() == true { t.Errorf("%s.Void() returns true", fn) }
+
 	t.Logf("The number of tests = %d", cx)
 }
 
