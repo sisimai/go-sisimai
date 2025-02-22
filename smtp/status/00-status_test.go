@@ -115,6 +115,9 @@ func TestFind(t *testing.T) {
 	cx++; if cv := Find("smtp; 2.1.5 250 OK", "5"); cv != "" { t.Errorf("%s(..., 5) returns %s", fn, cv) }
 	cx++; if cv := Find("", "");                    cv != "" { t.Errorf("%s('', '') returns %s", fn, cv) }
 
+	cx++; if cv := Find("192.0.2.2: 4.1.2 ", "4"); cv == "" { t.Errorf("%s(..., 1) returns empty", fn) }
+
+
 	t.Logf("The number of tests = %d", cx)
 }
 
