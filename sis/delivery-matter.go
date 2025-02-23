@@ -63,8 +63,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 	// @param    string argv0  A lower-cased member name of sis.DeliveryMatter{}
 	// @param    string argv1  The value to be updated
 	// @return   bool          true if it has successfully updated
-	if argv0 == "" { return false } // Member name is missing
-	if argv1 == "" { return false } // Empty value is not allowd in this function
+	if argv0 == "" || argv1 == "" { return false }
 
 	actionlist := []string{"delayed", "delivered", "expanded", "failed", "relayed"}
 	feedbacklo := []string{"abuse", "dkim", "fraud", "miscategorized", "not-spam", "opt-out", "virus", "other"}
@@ -148,8 +147,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 func(this *DeliveryMatter) AsRFC1894(argv1 string) string {
 	// @param    string argv1  A field name defined in RFC1894
 	// @return   string        A member name of sis.DeliveryMatter
-	if len(argv1)             == 0 { return "" }
-	if len(Fields1894[argv1]) == 0 { return "" }
+	if argv1 == "" || len(Fields1894[argv1]) == 0 { return "" }
 
 	switch argv1 {
 		// Available values are the followings:
