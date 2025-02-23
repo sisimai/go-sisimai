@@ -46,6 +46,8 @@ func TestDate(t *testing.T) {
 	}
 	cx++; if cv := Date("");     cv != "" { t.Errorf("%s() returns %s", fn, cv) }
 	cx++; if cv := Date("Neko"); cv != "" { t.Errorf("%s() returns %s", fn, cv) }
+	cx++; if cv := Date("MX 0"); cv != "" { t.Errorf("%s() returns %s", fn, cv) }
+	cx++; if cv := Date("75 1"); cv != "" { t.Errorf("%s() returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }
