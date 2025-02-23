@@ -72,7 +72,13 @@ func TestIsEmailAddress(t *testing.T) {
 	cw := "nyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan@example.jp"
 	cx++; if IsEmailAddress(cw) == true { t.Errorf("%s(%s) returns true", fn, cw[0:25]) }
 
-	cw  = "neko@nyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan.jp"
+	cw  = "22@nyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan.jp"
+	cx++; if IsEmailAddress(cw) == true { t.Errorf("%s(%s) returns true", fn, cw[0:25]) }
+
+	cw  = "neko@example.jp@example.org"
+	cx++; if IsEmailAddress(cw) == true { t.Errorf("%s(%s) returns true", fn, cw[0:25]) }
+
+	cw  = "neko example.jp@example.org"
 	cx++; if IsEmailAddress(cw) == true { t.Errorf("%s(%s) returns true", fn, cw[0:25]) }
 
 	t.Logf("The number of tests = %d", cx)
