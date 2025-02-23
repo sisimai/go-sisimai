@@ -393,7 +393,7 @@ Features
 | Dependencies (Except standard libs)          | 2 packages     | 2 modules       | 1 gem         |
 | Supported character sets                     | UTF-8 only     | UTF-8,etc. [^2] | UTF-8,etc.[^3]|
 | Source lines of code                         | 9,400 lines    | 9,900 lines     | 9,800 lines   |
-| The number of tests                          | 139,500 tests  | 319,000 tests   | 410,000 tests |
+| The number of tests                          | 141,200 tests  | 320,000 tests   | 410,000 tests |
 | The number of bounce emails decoded/sec [^4] | 1200 emails    | 450 emails      | 340 emails    |
 | License                                      | 2 Clause BSD   | 2 Caluse BSD    | 2 Clause BSD  |
 | Commercial support                           | Coming soon    | Available       | Available     |
