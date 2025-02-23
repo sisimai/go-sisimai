@@ -93,6 +93,18 @@ Nyaaan
 		cx++; if len(cv) == 0               { t.Errorf("%s() returns empty", fn) }
 		cx++; if len(cv) != 2               { t.Errorf("%s() returns invalid elements: %d", fn, len(cv)) }
 		cx++; if cv[0] != "" || cv[1] != "" { t.Errorf("%s() contains invalid string: %s %s", fn, cv[0], cv[1]) }
+
+		ce  = "nekochan meow"
+		cv  = Part(&ce, []string{"cat"}, bo)
+		cx++; if len(cv) == 0               { t.Errorf("%s() returns empty", fn) }
+		cx++; if len(cv) != 2               { t.Errorf("%s() returns invalid elements: %d", fn, len(cv)) }
+		cx++; if cv[0] == "" && cv[1] != "" { t.Errorf("%s() contains invalid string: %s %s", fn, cv[0], cv[1]) }
+
+		ce  = "nekochan meumeu"
+		cv  = Part(&ce, []string{"nekochan"}, bo)
+		cx++; if len(cv) == 0               { t.Errorf("%s() returns empty", fn) }
+		cx++; if len(cv) != 2               { t.Errorf("%s() returns invalid elements: %d", fn, len(cv)) }
+		cx++; if cv[0] == "" && cv[1] != "" { t.Errorf("%s() contains invalid string: %s %s", fn, cv[0], cv[1]) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
