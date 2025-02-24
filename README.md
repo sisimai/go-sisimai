@@ -5,11 +5,6 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/sisimai/go-sisimai/make-test.yml)
 ![Codecov](https://img.shields.io/codecov/c/github/sisimai/go-sisimai)
 
-> [!CAUTION]
-> The Go language version of sisimai is currently in **Public Beta**.
-> The API of `libsisimai.org/sisimai` and internal specifications are subject to significant
-> changes until the official v5.2.0 release.
-
 > [!NOTE]
 > Sisimai is a Go package but it can be used in any environment that JSON can be read, such as PHP,
 > Java, Python, and Rust. By obtaining the analysis results, it is very useful for understanding the

@@ -5,10 +5,6 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/sisimai/go-sisimai/make-test.yml)
 ![Codecov](https://img.shields.io/codecov/c/github/sisimai/go-sisimai)
 
-> [!CAUTION]
-> Go言語版のシシマイは現時点でPublic Betaですので、正式なリリース(v5.2.0)まではAPIが変更になったり
-> 内部仕様が多く変わったり頻繁にクラッシュすることがあります。
-
 > [!NOTE]
 > SisimaiはGoパッケージですが、PHPやJava、PythonやRustなどJSONを読める言語であれば、どのような環境
 > においても解析結果を得ることでバウンスの発生状況を捉えるのにとても有用です。
