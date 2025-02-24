@@ -64,6 +64,9 @@ func TestRisingUnderWay(t *testing.T) {
 	cx++; if cw.Spec         == "" { t.Errorf("%s.Rhost is empty", fn) }
 	cx++; if cw.Status       == "" { t.Errorf("%s.Status is empty", fn) }
 
+	cv.Digest = nil
+	cx++; if cv.Void() == false    { t.Errorf("%s.Void() returns false", fn) }
+
 	t.Logf("The number of tests = %d", cx)
 }
 
