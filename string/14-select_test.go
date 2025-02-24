@@ -21,6 +21,8 @@ func TestSelect(t *testing.T) {
 		{"550-5.7.26 The MAIL FROM domain [email.example.jp] has an SPF", " [", "] ", 10, "email.example.jp"},
 	}
 	je := []struct {arg string; b string; u string; s int; exp string}{
+		{"From: <neko@example.jp> Kijitora", "(", ">", 0, ""},
+		{"From: <neko@example.jp> Kijitora", "<", ")", 0, ""},
 		{"", "", "", -1, "" },
 		{"n", "", "", -1, "" },
 		{"n", "e", "", -1, "" },
