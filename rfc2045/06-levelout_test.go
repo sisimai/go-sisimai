@@ -52,6 +52,16 @@ Arrival-Date: Tue, 23 Dec 2014 20:39:34 +0000
 		cx++; if e[2]   == "" { t.Errorf("%s(%s)[2] is empty", fn, ae[:20]) }
 	}
 
+	ae = ""
+	cv, ce = levelout("", &ae)
+	cx++; if cv != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
+	cx++; if ce != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
+
+	cv, ce = levelout("", nil)
+	cx++; if cv != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
+	cx++; if ce != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
+
+
 	t.Logf("The number of tests = %d", cx)
 }
 
