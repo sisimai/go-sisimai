@@ -7,7 +7,6 @@ package rfc3464
 //   | |/ _ \/ __| __| / /| |_) | |_ | |     |_ \| || |_| '_ \| || |_ 
 //   | |  __/\__ \ |_ / / |  _ <|  _|| |___ ___) |__   _| (_) |__   _|
 //   |_|\___||___/\__/_/  |_| \_\_|   \____|____/   |_|  \___/   |_|  
-//                                                                    
 import "testing"
 import "os"
 import "io"
@@ -16,21 +15,19 @@ import "net/mail"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rfc5322"
 
-var testfiles = []string{
-	"rfc3464-01", "rfc3464-03", "rfc3464-04", "rfc3464-06", "rfc3464-07", "rfc3464-08", "rfc3464-09",
-	"rfc3464-10", "rfc3464-26", "rfc3464-28", "rfc3464-29", "rfc3464-34", "rfc3464-40", "rfc3464-43",
-	"rfc3464-51", "rfc3464-53", "rfc3464-55", "rfc3464-56", "rfc3464-57", "rfc3464-58", "rfc3464-59",
-	"rfc3464-60", "rfc3464-61", "rfc3464-62", "rfc3464-63", "rfc3464-64", "rfc3464-65", 
-}
-
 func TestInquire(t *testing.T) {
 	fn := "sisimai/rfc3464.Inquire"
+	ae := []string{
+		"rfc3464-01", "rfc3464-03", "rfc3464-04", "rfc3464-06", "rfc3464-07", "rfc3464-08", "rfc3464-09",
+		"rfc3464-10", "rfc3464-26", "rfc3464-28", "rfc3464-29", "rfc3464-34", "rfc3464-40", "rfc3464-43",
+		"rfc3464-51", "rfc3464-53", "rfc3464-55", "rfc3464-56", "rfc3464-57", "rfc3464-58", "rfc3464-59",
+		"rfc3464-60", "rfc3464-61", "rfc3464-62", "rfc3464-63", "rfc3464-64", "rfc3464-65", 
+	}
 	cx := 0
-
 	cv := Inquire(nil) 
 	cx++; if cv.Void() == false { t.Errorf("%s(nil).Void() returns false", fn) }
 
-	for _, e := range testfiles {
+	for _, e := range ae {
 		ef := "../set-of-emails/maildir/bsd/" + e + ".eml"; eb, _ := os.ReadFile(ef); ee := string(eb)
 		eo, _ := mail.ReadMessage(strings.NewReader(ee))
 		bo, _ := io.ReadAll(eo.Body)
