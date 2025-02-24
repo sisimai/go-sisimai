@@ -15,7 +15,7 @@ import "net/mail"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rfc5322"
 
-func TestInquire(t *testing.T) {
+func TestInquire10(t *testing.T) {
 	en := "Activehunter"
 	fn := "sisimai/lhost.InquireFor[" + en + "]"
 	ae := []string{
