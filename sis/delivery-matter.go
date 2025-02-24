@@ -10,14 +10,12 @@
 package sis
 import "strings"
 import "libsisimai.org/sisimai/rfc1123"
-import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var Fields1894 = rfc1894.FIELDTABLE()
 type DeliveryMatter struct {
 	Action       string     // The value of Action header
 	Agent        string     // MTA name
@@ -147,7 +145,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 func(this *DeliveryMatter) AsRFC1894(argv1 string) string {
 	// @param    string argv1  A field name defined in RFC1894
 	// @return   string        A member name of sis.DeliveryMatter
-	if argv1 == "" || len(Fields1894[argv1]) == 0 { return "" }
+	if argv1 == "" { return "" }
 
 	switch argv1 {
 		// Available values are the followings:
