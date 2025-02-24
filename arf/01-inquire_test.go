@@ -8,11 +8,34 @@ package arf
 //   | |  __/\__ \ |_ / / ___ \|  _ <|  _|  
 //   |_|\___||___/\__/_/_/   \_\_| \_\_|    
 import "testing"
+import "os"
+import "io"
+import "strings"
+import "net/mail"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+
+var testfiles = []string{
+	"arf-01", "arf-02", "arf-11", "arf-12", "arf-14", "arf-15", "arf-16", "arf-17", "arf-18",
+	"arf-19", "arf-20", "arf-21", "arf-22", "arf-23", "arf-24", "arf-25", "arf-26",
+}
 
 func TestIsARF(t *testing.T) {
 	fn := "sisimai/arf.isARF"
 	cx := 0
 	cx++; if isARF(nil) == true { t.Errorf("%s(nil) returns true", fn) }
+
+	for _, e := range testfiles {
+		ef := "../set-of-emails/maildir/bsd/" + e + ".eml"; eb, _ := os.ReadFile(ef); ee := string(eb)
+		eo, _ := mail.ReadMessage(strings.NewReader(ee))
+		bo, _ := io.ReadAll(eo.Body)
+		bf    := &sis.BeforeFact{
+			Headers: rfc5322.Headers(&eo.Header, false),
+			Payload: string(bo),
+		}
+
+		cx++; if isARF(bf) == false { t.Errorf("%s(%s) returns false", fn, e) }
+	}
 
 	t.Logf("The number of tests = %d", cx)
 }
@@ -20,9 +43,28 @@ func TestIsARF(t *testing.T) {
 func TestInquire(t *testing.T) {
 	fn := "sisimai/arf.Inquire"
 	cx := 0
-	cv := Inquire(nil) 
 
+	cv := Inquire(nil) 
 	cx++; if cv.Void() == false { t.Errorf("%s(nil).Void() returns false", fn) }
+
+	for _, e := range testfiles {
+		ef := "../set-of-emails/maildir/bsd/" + e + ".eml"; eb, _ := os.ReadFile(ef); ee := string(eb)
+		eo, _ := mail.ReadMessage(strings.NewReader(ee))
+		bo, _ := io.ReadAll(eo.Body)
+		bf    := &sis.BeforeFact{
+			Headers: rfc5322.Headers(&eo.Header, false),
+			Payload: string(bo),
+		}
+
+		cv = Inquire(bf)
+		cx++; if cv.Void() == true            { t.Errorf("%s(%s).Void() returns true", fn, e) }
+		cx++; if len(cv.Digest) < 1           { t.Errorf("%s(%s).Digest is empty", fn, e) }
+		cx++; if cv.Digest[0].Agent     != "" { t.Errorf("%s(%s).Digest.Agent is not empty", fn, e) }
+		cx++; if cv.Digest[0].Recipient == "" { t.Errorf("%s(%s).Digest.Recipient is empty", fn, e) }
+		cx++; if cv.RFC822 == ""              { t.Errorf("%s(%s).RFC822 is empty", fn, e) }
+		cx++; if cv.Digest[0].Reason    == "" { t.Errorf("%s(%s).Digest.Reason is empty", fn, e) }
+	}
+
 	t.Logf("The number of tests = %d", cx)
 }
 
