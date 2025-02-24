@@ -8,6 +8,8 @@ package sisimai
 //   | |  __/\__ \ |_ / / | | | |_) \__ \ \__ \ | | | | | | (_| | |
 //   |_|\___||___/\__/_/  |_|_|_.__/|___/_|___/_|_| |_| |_|\__,_|_|
 import "testing"
+import "os"
+import "os/exec"
 import "strings"
 import sisimoji "libsisimai.org/sisimai/string"
 
@@ -20,6 +22,12 @@ func TestRise(t *testing.T) {
 	normals := []string{"maildir/not"}
 	sisiarg := Args(); sisiarg.Delivered = true; sisiarg.Vacation = true
 	errorat := []string{"lhost-office365-13.eml"}
+	notfile := []string{"/dev/null", "/dev/neko"}
+	isempty := "/tmp/empty-file-for-test-of-sisimai"
+
+	sisiarg.Callback1 = func(arg *CallbackArg1) (bool, error) {
+		return true, nil
+	}
 
 	for _, e := range samples {
 		ef := "./" + rootdir + e
@@ -58,6 +66,21 @@ func TestRise(t *testing.T) {
 
 		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, ef, *cv) }
 		cx++; if len(*ce) != 0 { t.Errorf("%s(%s) returns error: %v", fn, ef, ce) }
+	}
+
+	for _, e := range notfile {
+		cv, ce := Rise(e, sisiarg)
+
+		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, e, *cv) }
+		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, e) }
+	}
+
+	comm := exec.Command("touch", isempty); nyaan := comm.Run()
+	if nyaan == nil {
+		cv, ce := Rise(isempty, sisiarg)
+		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, isempty, *cv) }
+		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, isempty) }
+		os.Remove(isempty)
 	}
 
 	t.Logf("The number of tests = %d", cx)
