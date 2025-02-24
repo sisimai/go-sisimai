@@ -35,7 +35,10 @@ func TestToPlain(t *testing.T) {
 	cx++; if strings.Contains(*cv, "sisimai")  == false { t.Errorf("%s(...) does not contain sisimai",  fn) }
 	cx++; if strings.Contains(*cv, "maketest") == false { t.Errorf("%s(...) does not contain maketest", fn) }
 
-	ce := ""
+	ce := "<html></html>"
+	cx++; if cv = ToPlain(&ce); *cv == "" { t.Errorf("%s(%s) returns %s", fn, ce, *cv) }
+
+	ce  = ""
 	cx++; if cv = ToPlain(nil); cv != nil { t.Errorf("%s(nil) returns %s", fn, *cv) }
 	cx++; if cv = ToPlain(&ce); *cv != "" { t.Errorf("%s('') returns %s", fn, *cv) }
 
