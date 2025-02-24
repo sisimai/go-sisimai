@@ -23,7 +23,7 @@ func TestEmailAddress(t *testing.T) {
 		Comment: "(meow)",
 	}
 
-	cx++; if cv == nil                        { t.Fatalf("%s{} = nil", cc) }
+	cx++; if cv == nil        { t.Fatalf("%s{} = nil", cc) }
 	cx++; if cv.Address == "" { t.Errorf("%s.Address is empty", cc) }
 	cx++; if cv.User    == "" { t.Errorf("%s.User is empty", cc) }
 	cx++; if cv.Host    == "" { t.Errorf("%s.Host is empty", cc) }
@@ -38,6 +38,9 @@ func TestEmailAddress(t *testing.T) {
 	cx++; if strings.Contains(cv.Host, "@")    == true  { t.Errorf("%s.Host includes @: %s", cc, cv.Host) }
 	cx++; if strings.Contains(cv.Verp, "@")    == false { t.Errorf("%s.Verp does not include @: %s", cc, cv.Verp) }
 	cx++; if strings.Contains(cv.Alias, "@")   == false { t.Errorf("%s.Alias does not include @: %s", cc, cv.Alias) }
+
+	cv  = &EmailAddress{}
+	cx++; if cv.Void() == false { t.Errorf("%s.Void() returns false", cc) }
 
 	t.Logf("The number of tests = %d", cx)
 }
