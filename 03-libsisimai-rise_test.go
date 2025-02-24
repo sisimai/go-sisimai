@@ -8,6 +8,7 @@ package sisimai
 //   | |  __/\__ \ |_ / / | | | |_) \__ \ \__ \ | | | | | | (_| | |
 //   |_|\___||___/\__/_/  |_|_|_.__/|___/_|___/_|_| |_| |_|\__,_|_|
 import "testing"
+import "fmt"
 import "os"
 import "os/exec"
 import "strings"
@@ -77,6 +78,10 @@ func TestRise(t *testing.T) {
 
 	comm := exec.Command("touch", isempty); nyaan := comm.Run()
 	if nyaan == nil {
+
+		sisiarg.Callback1 = func(arg *CallbackArg1) (bool, error) {
+			return true, fmt.Errorf("Fake error: nyaan?")
+		}
 		cv, ce := Rise(isempty, sisiarg)
 		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, isempty, *cv) }
 		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, isempty) }
