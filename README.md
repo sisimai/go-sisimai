@@ -6,9 +6,11 @@
 ![Codecov](https://img.shields.io/codecov/c/github/sisimai/go-sisimai)
 
 > [!NOTE]
-> Sisimai is a Go package but it can be used in any environment that JSON can be read, such as PHP,
-> Java, Python, and Rust. By obtaining the analysis results, it is very useful for understanding the
-> bounce occurrence status. 
+> Sisimai is a library provided as a Go package that decodes various formats of bounce emails and
+> outputs structured data necessary for analysis, such as destination addresses and bounce reasons.
+> Besides Go, it is very useful for grasping the occurrence status of bounces by obtaining decoded
+> results in any environment as long as it is a language that can read JSON, such as PHP, Java,
+> Python, and Rust.
 
 - [**README-JA(日本語)**](README-JA.md)
 - [What is Sisimai](#what-is-sisimai)

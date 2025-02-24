@@ -6,8 +6,10 @@
 ![Codecov](https://img.shields.io/codecov/c/github/sisimai/go-sisimai)
 
 > [!NOTE]
-> SisimaiはGoパッケージですが、PHPやJava、PythonやRustなどJSONを読める言語であれば、どのような環境
-> においても解析結果を得ることでバウンスの発生状況を捉えるのにとても有用です。
+> Sisimaiは多種多様な形式のバウンスメールを解析して宛先アドレスやバウンス理由など分析に必要な情報を
+> 構造化して出力するライブラリでGoパッケージとして提供しています。Go言語以外でもPHPやJava、Pythonや
+> RustなどJSONを読める言語であれば、どのような環境においても解析結果を得ることでバウンスの発生状況を
+> 捉えるのにとても有用です。
 
 - [**README(English)**](README.md)
 - [シシマイ? | What is Sisimai](#what-is-sisimai)
