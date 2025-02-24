@@ -125,9 +125,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			}
 			continue
 		}
-		if readcursor & indicators["deliverystatus"] == 0 { continue }
-		if len(e) == 0                                    { continue }
-		if e == reportfrom             { reportpart = true; continue }
+		if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+		if e == reportfrom { reportpart = true; continue }
 
 		if reportpart {
 			// Content-Type: message/feedback-report
