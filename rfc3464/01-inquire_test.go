@@ -22,6 +22,7 @@ func TestInquire(t *testing.T) {
 		"rfc3464-10", "rfc3464-26", "rfc3464-28", "rfc3464-29", "rfc3464-34", "rfc3464-40", "rfc3464-43",
 		"rfc3464-51", "rfc3464-53", "rfc3464-55", "rfc3464-56", "rfc3464-57", "rfc3464-58", "rfc3464-59",
 		"rfc3464-60", "rfc3464-61", "rfc3464-62", "rfc3464-63", "rfc3464-64", "rfc3464-65", 
+		"lhost-powermta-01", "lhost-powermta-02", "lhost-powermta-03",
 	}
 	cx := 0
 	cv := Inquire(nil) 
