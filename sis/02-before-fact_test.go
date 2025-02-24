@@ -39,6 +39,23 @@ func TestBeforeFact(t *testing.T) {
 	cx++; if len(cv.Errors)             != 1   { t.Errorf("%s.Errors have not 1 element", fn) }
 	cx++; if cv.Void()  == true                { t.Errorf("%s.Void() returns true", fn) }
 	cx++; if cv.Empty() == true                { t.Errorf("%s.Empty() returns true", fn) }
+
+	cv.Headers = nil
+	cx++; if cv.Empty() == false { t.Errorf("%s.Empty() returns false", fn) }
+	cx++; if cv.Void()  == true  { t.Errorf("%s.Void() returns true", fn) }
+
+	cv.Payload = ""
+	cx++; if cv.Empty() == false { t.Errorf("%s.Empty() returns false", fn) }
+	cx++; if cv.Void()  == true  { t.Errorf("%s.Void() returns true", fn) }
+
+	cv.Digest = nil
+	cx++; if cv.Empty() == false { t.Errorf("%s.Empty() returns false", fn) }
+	cx++; if cv.Void()  == false { t.Errorf("%s.Void() returns false", fn) }
+
+	cv.RFC822 = nil
+	cx++; if cv.Empty() == false { t.Errorf("%s.Empty() returns false", fn) }
+	cx++; if cv.Void()  == false { t.Errorf("%s.Void() returns false", fn) }
+
 	t.Logf("The number of tests = %d", cx)
 }
 
