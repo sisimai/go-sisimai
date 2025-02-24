@@ -16,6 +16,7 @@ import "libsisimai.org/sisimai/lhost"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc3464"
 import "libsisimai.org/sisimai/rfc3834"
+import "libsisimai.org/sisimai/rfc5322"
 import sisimoji "libsisimai.org/sisimai/string"
 
 // sift() sifts a bounce mail with each MTA module
@@ -152,7 +153,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		bf.Errors = append(bf.Errors, ce)
 		return false
 	}
-	bf.RFC822 = makemap(&rfc822part.Header, false)
+	bf.RFC822 = rfc5322.Headers(&rfc822part.Header, false)
 	bf.Digest = localhostr.Digest
 
 	return true

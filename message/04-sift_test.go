@@ -14,6 +14,7 @@ import "io"
 import "os"
 import "net/mail"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
 
 func TestSift(t *testing.T) {
 	fn := "sisimai/message.sift"
@@ -30,10 +31,10 @@ func TestSift(t *testing.T) {
 	}
 
 	bf.Sender  = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
-	bf.Headers = makemap(&em.Header, false)
+	bf.Headers = rfc5322.Headers(&em.Header, false)
 	bf.Payload = string(eb)
 
-	cx++; if len(bf.Headers) == 0             { t.Errorf("makemap() returns empty headers") }
+	cx++; if len(bf.Headers) == 0             { t.Errorf("rfc5322.Headers() returns empty headers") }
 	cx++; if cv := sift(nil, nil); cv == true { t.Errorf("%s(nil) returns true", fn) }
 	cx++; if cv := sift(bf, nil); cv == false { t.Errorf("%s(bf) returns false", fn) }
 	cx++; if len(bf.Digest)  == 0             { t.Errorf("bf.Digest is empty") }

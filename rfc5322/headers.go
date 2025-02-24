@@ -1,18 +1,18 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-//  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
-// | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
-// | | | | | |  __/\__ \__ \ (_| | (_| |  __/
-// |_| |_| |_|\___||___/___/\__,_|\__, |\___|
-//                                |___/      
+//  ____  _____ ____ ____ _________  ____  
+// |  _ \|  ___/ ___| ___|___ /___ \|___ \ 
+// | |_) | |_ | |   |___ \ |_ \ __) | __) |
+// |  _ <|  _|| |___ ___) |__) / __/ / __/ 
+// |_| \_\_|   \____|____/____/_____|_____|
 
-package message
+package rfc5322
 import "strings"
 import "net/mail"
 import sisimoji "libsisimai.org/sisimai/string"
 
-// makemap() converts a mail.Header struct to a map[string][]string
-func makemap(argv0 *mail.Header, argv1 bool) map[string][]string {
+// Headers() converts a mail.Header struct to a map[string][]string
+func Headers(argv0 *mail.Header, argv1 bool) map[string][]string {
 	// @param    *mail.Header      argv0 Email header data
 	// @param    bool              argv1 Decode "Subject:" header or not
 	// @return   map[string]string       Structured email header data
