@@ -1,0 +1,51 @@
+// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// This software is distributed under The BSD 2-Clause License.
+package lhost
+
+//  _____         _      ___ _               _   
+// |_   _|__  ___| |_   / / | |__   ___  ___| |_ 
+//   | |/ _ \/ __| __| / /| | '_ \ / _ \/ __| __|
+//   | |  __/\__ \ |_ / / | | | | | (_) \__ \ |_ 
+//   |_|\___||___/\__/_/  |_|_| |_|\___/|___/\__|
+import "testing"
+import "os"
+import "io"
+import "strings"
+import "net/mail"
+import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/rfc5322"
+
+func TestInquire50(t *testing.T) {
+	en := "qmail"
+	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	ae := []string{
+		"lhost-qmail-01", "lhost-qmail-02", "lhost-qmail-03", "lhost-qmail-04", "lhost-qmail-05",
+		"lhost-qmail-06", "lhost-qmail-07", "lhost-qmail-08", "lhost-qmail-09", "lhost-qmail-10",
+		"lhost-qmail-11", "lhost-qmail-12", "lhost-qmail-13", "lhost-qmail-14", "lhost-qmail-15",
+		"lhost-qmail-16", "lhost-qmail-17", "lhost-qmail-18", "lhost-qmail-19", "lhost-qmail-20",
+		"lhost-qmail-21", "lhost-qmail-22", "lhost-qmail-23", "lhost-qmail-24", "lhost-qmail-25", 
+	}
+	cv := InquireFor[en](nil) 
+	cx := 0
+	cx++; if cv.Void() == false { t.Errorf("%s(nil).Void() returns false", fn) }
+
+	for _, e := range ae {
+		ef := "../set-of-emails/maildir/bsd/" + e + ".eml"; eb, _ := os.ReadFile(ef); ee := string(eb)
+		eo, _ := mail.ReadMessage(strings.NewReader(ee))
+		bo, _ := io.ReadAll(eo.Body)
+		bf    := &sis.BeforeFact{
+			Headers: rfc5322.Headers(&eo.Header, false),
+			Payload: string(bo),
+		}
+
+		cv = InquireFor[en](bf)
+		cx++; if cv.Void() == true            { t.Errorf("%s(%s).Void() returns true", fn, e) }
+		cx++; if len(cv.Digest) < 1           { t.Errorf("%s(%s).Digest is empty", fn, e) }
+		cx++; if cv.Digest[0].Agent     != "" { t.Errorf("%s(%s).Digest.Agent is not empty", fn, e) }
+		cx++; if cv.Digest[0].Recipient == "" { t.Errorf("%s(%s).Digest.Recipient is empty", fn, e) }
+		cx++; if cv.RFC822 == ""              { t.Errorf("%s(%s).RFC822 is empty (%d)", fn, e, len(cv.RFC822)) }
+	}
+
+	t.Logf("The number of tests = %d", cx)
+}
+
