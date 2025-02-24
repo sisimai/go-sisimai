@@ -8,6 +8,8 @@ package sisimai
 //   | |  __/\__ \ |_ / / | | | |_) \__ \ \__ \ | | | | | | (_| | |
 //   |_|\___||___/\__/_/  |_|_|_.__/|___/_|___/_|_| |_| |_|\__,_|_|
 import "testing"
+import "os"
+import "os/exec"
 import "strings"
 
 func TestDump(t *testing.T) {
@@ -17,6 +19,8 @@ func TestDump(t *testing.T) {
 	rootdir := "set-of-emails/"
 	samples := []string{"mailbox/mbox-0", "mailbox/mbox-1", "maildir/bsd"}
 	normals := []string{"maildir/not"}
+	notfile := []string{"/dev/null", "/dev/neko"}
+	isempty := "/tmp/empty-file-for-test-of-sisimai"
 	sisiarg := Args(); sisiarg.Delivered = true; sisiarg.Vacation = true
 
 	for _, e := range samples {
@@ -31,6 +35,21 @@ func TestDump(t *testing.T) {
 		ef := "./" + rootdir + e
 		cv, _ := Dump(ef, sisiarg)
 		cx++; if cv != nil { t.Errorf("%s(%s) returns results: %v", fn, ef, *cv) }
+	}
+
+	for _, e := range notfile {
+		cv, ce := Rise(e, sisiarg)
+
+		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, e, *cv) }
+		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, e) }
+	}
+
+	comm := exec.Command("touch", isempty); nyaan := comm.Run()
+	if nyaan == nil {
+		cv, ce := Rise(isempty, sisiarg)
+		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, isempty, *cv) }
+		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, isempty) }
+		os.Remove(isempty)
 	}
 
 	t.Logf("The number of tests = %d", cx)
