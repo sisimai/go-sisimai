@@ -30,6 +30,13 @@ Reason: 550 neko@dest.example.net... No such user`
 	cx++; if cv[1] != "quoted-printable"            { t.Errorf("%s(%s)[1] returns %s", fn, ae[:20], cv[1]) }
 	cx++; if cv[2] == ""                            { t.Errorf("%s(%s)[2] returns empty", fn, ae[:20])     }
 
+	cw := "nekochan"
+	cv  = haircut(&cw, false)
+	cx++; if len(cv) == 0  { t.Errorf("%s(%s) returns an empty list", fn, cw) }
+	cx++; if len(cv) != 2  { t.Errorf("%s(%s) returns invalid list: %d", fn, cw, len(cv)) }
+	cx++; if cv[0]   != "" { t.Errorf("%s(%s)[0] returns %s", fn, cw, cv[0]) }
+	cx++; if cv[1]   != "" { t.Errorf("%s(%s)[1] returns %s", fn, cw, cv[1]) }
+
 	t.Logf("The number of tests = %d", cx)
 }
 
