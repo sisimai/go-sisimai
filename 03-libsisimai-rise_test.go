@@ -63,10 +63,14 @@ func TestRise(t *testing.T) {
 
 	for _, e := range normals {
 		ef := "./" + rootdir + e
+
+		sisiarg.Callback1 = func(arg *CallbackArg1) (bool, error) {
+			return true, fmt.Errorf("Fake error: nyaan?")
+		}
 		cv, ce := Rise(ef, sisiarg)
 
 		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, ef, *cv) }
-		cx++; if len(*ce) != 0 { t.Errorf("%s(%s) returns error: %v", fn, ef, ce) }
+		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns empty error", fn, ef) }
 	}
 
 	for _, e := range notfile {
@@ -78,10 +82,6 @@ func TestRise(t *testing.T) {
 
 	comm := exec.Command("touch", isempty); nyaan := comm.Run()
 	if nyaan == nil {
-
-		sisiarg.Callback1 = func(arg *CallbackArg1) (bool, error) {
-			return true, fmt.Errorf("Fake error: nyaan?")
-		}
 		cv, ce := Rise(isempty, sisiarg)
 		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, isempty, *cv) }
 		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, isempty) }
