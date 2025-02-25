@@ -1,11 +1,13 @@
-RELEASE NOTES for Go version of Sisimai
+RELEASE NOTES for the Go version of Sisimai
 ===================================================================================================
 - releases: "https://github.com/sisimai/go-sisimai/releases"
 - document: "https://libsisimai.org/"
 
-v0.0.6 - Public Beta6
+v5.2.0 - The first release
 ---------------------------------------------------------------------------------------------------
-- release: "Wed, 19 Feb 2025 09:31:14 +0900 (JST)"
-- version: "0.0.6"
+- release: "Tue, 25 Feb 2025 10:48:25 +0900 (JST)"
+- version: "5.2.0"
 - changes:
+  - The first release of the Go version of sisimai
+  - The Go version of sisimai available at `go get libsisimai.org/sisimai`
 
