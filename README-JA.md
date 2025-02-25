@@ -94,7 +94,7 @@ go: creating new go.mod: module example.com/sisimaicli
 $ go get -u libsisimai.org/sisimai@latest
 go: added golang.org/x/net v0.35.0
 go: added golang.org/x/text v0.22.0
-go: added libsisimai.org/sisimai v0.0.1
+go: added libsisimai.org/sisimai v5.2.0
 
 $ cat ./go.mod
 module example.com/sisimaicli
@@ -104,7 +104,7 @@ go 1.20
 require (
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
-	libsisimai.org/sisimai v0.0.3 // indirect
+	libsisimai.org/sisimai v5.2.0 // indirect
 )
 ```
 
