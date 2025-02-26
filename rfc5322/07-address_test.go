@@ -70,10 +70,16 @@ func TestIsEmailAddress(t *testing.T) {
 		})
 	}
 	cw := "nyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan@example.jp"
+	cx++; if len(cw) < 255 { t.Errorf("%s(%s) test address is too short (%d)", fn, cw[0:25], len(cw)) }
 	cx++; if IsEmailAddress(cw) == true { t.Errorf("%s(%s) returns true", fn, cw[0:25]) }
 
 	cw  = "22@nyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan.jp"
+	cx++; if len(cw) < 255 { t.Errorf("%s(%s) test address is too short (%d)", fn, cw[0:25], len(cw)) }
 	cx++; if IsEmailAddress(cw) == true { t.Errorf("%s(%s) returns true", fn, cw[0:25]) }
+
+	cw  = "2@nyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan.jp"
+	cx++; if len(cw) > 254 { t.Errorf("%s(%s) test address is too long (%d)", fn, cw[0:25], len(cw)) }
+	cx++; if IsEmailAddress(cw) == false { t.Errorf("%s(%s) returns false", fn, cw[0:25]) }
 
 	cw  = "neko@example.jp@example.org"
 	cx++; if IsEmailAddress(cw) == true { t.Errorf("%s(%s) returns true", fn, cw[0:25]) }
