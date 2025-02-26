@@ -34,7 +34,7 @@ func IsEmailAddress(email string) bool {
 
 	if len(email)         > 254 { return false } // The maximum length of an email address is 254
 	if lasta < 1 || lasta >  64 { return false } // The maximum length of a local part is 64
-	if len(email) - lasta > 252 { return false } // The maximum lenght of a domain part is 253 or 252
+	if len(email) - lasta > 252 { return false } // The maximum length of a domain part is 253 or 252
 
 	// "." as the first character of the local part and ".@" are not allowed in a local part when
 	// the local part is not quoted by "", but Non-RFC compliant email addresses still persist in
