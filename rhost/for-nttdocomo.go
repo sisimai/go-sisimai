@@ -98,18 +98,18 @@ func init() {
 			} else {
 				// Rejected by other SMTP commands: AUTH, MAIL,
 				//   もしもこのブロックを通過するNTTドコモからのエラーメッセージを見つけたら
-				//   https://github.com/sisimai/p5-sisimai/issues からご連絡ねがいます。
+				//   https://github.com/sisimai/go-sisimai/issues からご連絡ねがいます。
 				//
 				//   If you found a error message from mfsmax.docomo.ne.jp which passes this block,
-				//   please open an issue at https://github.com/sisimai/p5-sisimai/issues .
+				//   please open an issue at https://github.com/sisimai/go-sisimai/issues .
 			}
 		} else {
 			// Status: field is neither 5.0.0 nor values defined in code above
 			//   もしもこのブロックを通過するNTTドコモからのエラーメッセージを見つけたら
-			//   https://github.com/sisimai/p5-sisimai/issues からご連絡ねがいます。
+			//   https://github.com/sisimai/go-sisimai/issues からご連絡ねがいます。
 			//
 			//   If you found a error message from mfsmax.docomo.ne.jp which passes this block,
-			//   please open an issue at https://github.com/sisimai/p5-sisimai .
+			//   please open an issue at https://github.com/sisimai/go-sisimai .
 		}
 		return reasontext
 	}
