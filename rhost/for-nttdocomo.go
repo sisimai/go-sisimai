@@ -20,8 +20,9 @@ func init() {
 
 		messagesof := map[string][]string{
 			"mailboxfull": []string{"552 too much mail data"},
-			"toomanyconn": []string{"552 too many recipients"},
 			"syntaxerror": []string{"503 bad sequence of commands", "504 command parameter not implemented"},
+			"toomanyconn": []string{"552 too many recipients"},
+			"userunknown": []string{"550 unknown user"},
 		}
 		statuscode := fo.DeliveryStatus
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
@@ -57,7 +58,12 @@ func init() {
 		} else {
 			// The value of "Diagnostic-Code:" field is not empty
 			for e := range messagesof {
-				// The key name is a bounce reason name
+				// - The key name is a bounce reason name
+				// - https://github.com/sisimai/go-sisimai/issues/64
+				// - After March 12, 2025, if an error message contains "550 Unknown user", the
+				//   bounce reason will be definitively "userunknown". This is because NTT DOCOMO
+				//   no longer rejects emails via SMTP for domain-specific rejection or specified
+				//   reception filters.
 				if sisimoji.ContainsAny(issuedcode, messagesof[e]) { return e }
 			}
 		}
