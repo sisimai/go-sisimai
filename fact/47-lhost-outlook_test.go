@@ -36,8 +36,8 @@ func TestLhostOutlook(t *testing.T) {
 		 {"1019", 2, "5.2.2",   "550", "mailboxfull",     false, ""}},
 		{{"1023", 1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"1024", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1025", 1, "5.5.0",   "550", "filtered",        false, ""}},
-		{{"1026", 1, "5.5.0",   "550", "filtered",        false, ""}},
+		{{"1025", 1, "5.5.0",   "550", "userunknown",      true, ""}},
+		{{"1026", 1, "5.5.0",   "550", "userunknown",      true, ""}},
 		{{"1027", 1, "5.5.0",   "550", "userunknown",      true, ""}},
 	}; EngineTest(t, "Outlook", secretlist, false)
 }

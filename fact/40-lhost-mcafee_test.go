@@ -22,13 +22,13 @@ func TestLhostMcAfee(t *testing.T) {
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.910", "550", "filtered",        false, ""}},
+		{{"1001", 1, "5.0.911", "550", "userunknown",      true, ""}},
 		{{"1002", 1, "5.0.910", "550", "filtered",        false, ""}},
 		{{"1003", 1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"1004", 1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"1005", 1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"1006", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1007", 1, "5.0.910", "550", "filtered",        false, ""}},
+		{{"1007", 1, "5.0.911", "550", "userunknown",      true, ""}},
 		{{"1008", 1, "5.0.910", "550", "filtered",        false, ""}},
 		{{"1009", 1, "5.0.910", "550", "filtered",        false, ""}},
 	}; EngineTest(t, "McAfee", secretlist, false)
