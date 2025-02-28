@@ -24,7 +24,7 @@ func Find(argv1 string, argv2 string) string {
 
 	givenclass := argv2[0:1]
 	eestatuses := []string{}
-	esmtperror := " " + argv1 + " "
+	esmtperror := " " + argv1 + "   " // Why 3 space characters? see https://github.com/sisimai/p5-sisimai/issues/574
 	lookingfor := map[string]string{}
 	indextable := []int{}
 	ip4address := rfc791.FindIPv4Address(&esmtperror)

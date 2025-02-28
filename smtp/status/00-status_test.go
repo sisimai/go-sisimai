@@ -46,6 +46,15 @@ var SMTPErrors = []string{
 	"SMTP; 550 5.7.25 The ip address sending this message does not have a ptr record setup",
 	"smtp; 550-5.7.1 This message is not RFC 5322 compliant. There are multiple Subject 550-5.7.1 headers",
 }
+var p5issue574 = []string{
+	// https://github.com/sisimai/p5-sisimai/issues/574
+	"SMTP; 5.0.",
+	"SMTP; 5.1. ",
+	"NEKO; 5.2. ",
+	"NYAN; 5.3..",
+	"E 5.4..",
+	"5 5.5..",
+}
 
 func TestCode(t *testing.T) {
 	fn := "sisimai/smtp/status.Code"
@@ -117,6 +126,10 @@ func TestFind(t *testing.T) {
 
 	cx++; if cv := Find("192.0.2.2: 4.1.2 ", "4"); cv == "" { t.Errorf("%s(..., 1) returns empty", fn) }
 
+	for _, e := range p5issue574 {
+		// https://github.com/sisimai/p5-sisimai/issues/574
+		cx++; if cv := Find(e, "");  cv != "" { t.Errorf("%s(%s) returns invalid status code: %s", fn, e, cv) }
+	}
 
 	t.Logf("The number of tests = %d", cx)
 }
