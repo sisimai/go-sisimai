@@ -17,6 +17,7 @@ var ReturnedBy = map[string]func(*sis.Fact) string {}
 var RhostClass = map[string][]string{
 	"Aol":         []string{".mail.aol.com", ".mx.aol.com"},
 	"Apple":       []string{".mail.icloud.com", ".apple.com", ".me.com"},
+	"Cloudflare":  []string{".mx.cloudflare.net"},
 	"Cox":         []string{"cox.net"},
 	"Facebook":    []string{".facebook.com"},
 	"FrancePTT":   []string{".laposte.net", ".orange.fr", ".wanadoo.fr"},
