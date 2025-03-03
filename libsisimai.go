@@ -23,7 +23,7 @@ import sisifact "libsisimai.org/sisimai/fact"
 import sisimoji "libsisimai.org/sisimai/string"
 
 const libname string = "sisimai"
-const version string = "5.2.0"
+const version string = "5.2.0p1"
 const patchlv uint8  = 0
 type  CallbackArg0 = sis.CallbackArg0
 type  CallbackArg1 = sis.CallbackArg1
