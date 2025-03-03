@@ -20,6 +20,7 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
+			"blocked":     []string{"found on one or more DNSBLs"},
 			"systemerror": []string{"Upstream error"},
 		}
 
