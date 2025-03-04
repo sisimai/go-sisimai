@@ -12,12 +12,12 @@ package command
 import "strings"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var Availables = []string{
+var availables = []string{
 	"HELO", "EHLO", "MAIL", "RCPT", "DATA", "QUIT", "RSET", "NOOP", "VRFY", "ETRN",
 	"EXPN", "HELP", "AUTH", "STARTTLS", "XFORWARD",
 	"CONN", // CONN is a pseudo SMTP command used only in Sisimai
 }
-var Detectable = []string{
+var detectable = []string{
 	"HELO", "EHLO", "STARTTLS", "AUTH PLAIN", "AUTH LOGIN", "AUTH CRAM-", "AUTH DIGEST-",
 	"MAIL F", "RCPT", "RCPT T", "DATA", "QUIT", "XFORWARD",
 }
@@ -29,7 +29,7 @@ func Test(argv0 string) bool {
 	//                         true:  Is a valid SMTP command
 	// @since v5.2.0
 	if len(argv0) < 4                          { return false }
-	if sisimoji.ContainsAny(argv0, Availables) { return true  }
+	if sisimoji.ContainsAny(argv0, availables) { return true  }
 	return false
 }
 
@@ -42,7 +42,7 @@ func Find(argv0 string) string {
 	commandmap := map[string]string{"STAR": "STARTTLS", "XFOR": "XFORWARD"}
 	issuedcode := " " + argv0 + " "
 
-	for _, e := range Detectable {
+	for _, e := range detectable {
 		// Find an SMTP command from the given string
 		p0 := strings.Index(argv0, e); if p0 < 0 { continue }
 		if strings.IndexByte(e, ' ') < 0 {
