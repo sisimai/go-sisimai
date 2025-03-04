@@ -13,8 +13,10 @@ import "libsisimai.org/sisimai/sis"
 // Keep each function (pointer) defined in sisimai/reason/*.go to check/detect the bounce reason
 var IncludedIn = map[string]func(string) bool {}
 var ProbesInto = map[string]func(*sis.Fact) bool {}
-
-var GetRetried = Retry()
+var GetRetried = map[string]bool{
+	"undefined": true, "onhold": true,  "systemerror": true, "securityerror": true,
+	"expired": true, "networkerror": true, "hostunknown": true, "userunknown": true,
+}
 var ClassOrder = [][]string{
 	[]string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "HasMoved", "NoRelaying", "AuthFailure",
@@ -33,14 +35,6 @@ var ClassOrder = [][]string{
 		"ContentError", "HasMoved", "SystemFull", "NotAccept", "MailerError", "NoRelaying", "Suppressed",
 		"SyntaxError", "OnHold",
 	},
-}
-
-// Retry() returns the table of reason list which should be checked again
-func Retry() map[string]bool {
-	return map[string]bool{
-		"undefined": true, "onhold": true,  "systemerror": true, "securityerror": true,
-		"expired": true, "networkerror": true, "hostunknown": true, "userunknown": true,
-	}
 }
 
 // IsExplicit() returns false when the argument is empty or is "undefined" or is "onhold"
