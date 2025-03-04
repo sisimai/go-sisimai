@@ -41,8 +41,8 @@ var startafter = []string{
 var existuntil = []string{
 	" did not like our ",  // (Dragonfly) mail-inbound.libsisimai.net [192.0.2.25] did not like our DATA: ...
 }
-var Prefix0x32 = []string{"(", "[", "<"}
-var Suffix0x32 = []string{")", "]", ">", ":", ";"}
+var prefix0x32 = []string{"(", "[", "<"}
+var suffix0x32 = []string{")", "]", ">", ":", ";"}
 
 // IsInternetHost() returns "true" when the given string is a valid Internet hostname
 func IsInternetHost(argv1 string) bool {
@@ -111,8 +111,8 @@ func Find(argv1 string) string {
 	// - mx.example.net[192.0.2.1] => mx.example.net [192.0.2.1]
 	// - mx.example.jp:[192.0.2.1] => mx.example.jp :[192.0.2.1]
 	sourcetext := strings.ToLower(argv1)
-	for _, e := range Prefix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, " " + e) }
-	for _, e := range Suffix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, e + " ") }
+	for _, e := range prefix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, " " + e) }
+	for _, e := range suffix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, e + " ") }
 
 	sourcelist := []string{}
 	foundtoken := []string{}
@@ -157,8 +157,8 @@ func Find(argv1 string) string {
 	for _, e := range sourcelist {
 		// Pick some strings which have 4 or more length, is including "." character
 		e = strings.TrimRight(e, ".") // Remove "." at the end of the string
-		for _, f := range Prefix0x32 { e = strings.ReplaceAll(e, f, "") }
-		for _, f := range Suffix0x32 { e = strings.ReplaceAll(e, f, "") }
+		for _, f := range prefix0x32 { e = strings.ReplaceAll(e, f, "") }
+		for _, f := range suffix0x32 { e = strings.ReplaceAll(e, f, "") }
 
 		if len(e) < 4 || strings.IndexByte(e, '.') < 0 || IsInternetHost(e) == false { continue }
 		foundtoken = append(foundtoken, e)
