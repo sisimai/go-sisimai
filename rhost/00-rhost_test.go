@@ -121,8 +121,15 @@ func TestFind(t *testing.T) {
 			DiagnosticCode: "nekochan-nyaan",
 			DeliveryStatus: "5.0.0",
 			ReplyCode: "550",
+			Command: "DATA",
 			Reason: "",
 		}
+		cx++; if cv = Find(ae); cv != "" { t.Errorf("%s(%s) returns %s", fn, e.destination, e.expected)  }
+
+		ae.DeliveryStatus = "4.2.2"
+		cx++; if cv = Find(ae); cv != "" { t.Errorf("%s(%s) returns %s", fn, e.destination, e.expected)  }
+
+		ae.ReplyCode = "421"
 		cx++; if cv = Find(ae); cv != "" { t.Errorf("%s(%s) returns %s", fn, e.destination, e.expected)  }
 
 		ae.DiagnosticCode = ""
