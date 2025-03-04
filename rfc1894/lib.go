@@ -12,12 +12,14 @@ package rfc1894
 import "strings"
 import sisimoji "libsisimai.org/sisimai/string"
 
-func FIELDINDEX() []string {
-	return []string{
-		"Action", "Arrival-Date", "Diagnostic-Code", "Final-Recipient", "Last-Attempt-Date",
-		"Original-Recipient", "Received-From-MTA", "Remote-MTA", "Reporting-MTA", "Status",
-		"X-Actual-Recipient", "X-Original-Message-ID",
-	}
+var FieldIndex = []string{
+	"Action", "Arrival-Date", "Diagnostic-Code", "Final-Recipient", "Last-Attempt-Date",
+	"Original-Recipient", "Received-From-MTA", "Remote-MTA", "Reporting-MTA", "Status",
+	"X-Actual-Recipient", "X-Original-Message-ID",
+}
+
+var ActionList = map[string]bool{
+	"delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true,
 }
 
 // FIELDTABLE() return pairs that a field name and key name defined in sisimai/lhost package

@@ -9,15 +9,15 @@ package rfc5322
 //   |_|\___||___/\__/_/  |_| \_\_|   \____|____/____/_____|_____|
 import "testing"
 
-func TestFIELDINDEX(t *testing.T) {
-	fn := "sisimai/rfc5322.FIELDINDEX"
+func TestFieldIndex(t *testing.T) {
+	fn := "rfc5322.FieldIndex"
 	cx := 0
-	cv := FIELDINDEX()
+	cv := FieldIndex
 
-	cx++; if len(cv) ==  0 { t.Errorf("%s() returns empty", fn) }
-	cx++; if len(cv) != 15 { t.Errorf("%s() returns empty", fn) }
+	cx++; if len(cv) ==  0 { t.Errorf("%s is empty", fn) }
+	cx++; if len(cv) != 15 { t.Errorf("%s includes %d elements", fn, len(cv)) }
 	for _, e := range cv {
-		cx++; if e == "" { t.Errorf("%s() includes an empty string", fn) }
+		cx++; if e == "" { t.Errorf("%s includes an empty string", fn) }
 	}
 
 	t.Logf("The number of tests = %d", cx)

@@ -9,6 +9,7 @@
 package message
 import "fmt"
 import "strings"
+import "libsisimai.org/sisimai/rfc1894"
 
 // tidy() tidies up each field name and format
 func tidy(argv0 *string) *string {
@@ -32,7 +33,7 @@ func tidy(argv0 *string) *string {
 			// Such as Diagnostic-Code, Remote-MTA, and so on
 			// - Before: Diagnostic-Code: SMTP;550 User unknown
 			// - After:  Diagnostic-Code: smtp; 550 User unknown
-			match := false; for _, f := range Fields1894 {
+			match := false; for _, f := range rfc1894.FieldIndex {
 				// The field name is not listed in RFC1894
 				if fn == f || fn == "Content-Type" { match = true; break }
 			}

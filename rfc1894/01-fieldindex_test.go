@@ -9,15 +9,15 @@ package rfc1894
 //   |_|\___||___/\__/_/  |_| \_\_|   \____|_|\___/  /_/   |_|  
 import "testing"
 
-func TestFIELDINDEX(t *testing.T) {
-	fn := "sisimai/rfc1894.FIELDINDEX"
+func TestFieldIndex(t *testing.T) {
+	fn := "rfc1894.FieldIndex"
 	cx := 0
-	cv := FIELDINDEX()
+	cv := FieldIndex
 
-	cx++; if len(cv) ==  0 { t.Errorf("%s() returns empty", fn) }
-	cx++; if len(cv) != 12 { t.Errorf("%s() returns %d elements", fn, len(cv)) }
+	cx++; if len(cv) ==  0 { t.Errorf("%s is empty", fn) }
+	cx++; if len(cv) != 12 { t.Errorf("%s includes %d elements", fn, len(cv)) }
 	for _, e := range cv {
-		cx++; if e == "" { t.Errorf("%s() includes an empty string", fn) }
+		cx++; if e == "" { t.Errorf("%s includes an empty string", fn) }
 	}
 
 	t.Logf("The number of tests = %d", cx)

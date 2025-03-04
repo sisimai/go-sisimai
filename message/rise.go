@@ -21,10 +21,7 @@ import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/rfc5965"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var Fields1894 = rfc1894.FIELDINDEX()
-var Fields5322 = rfc5322.FIELDINDEX()
-var Fields5965 = rfc5965.FIELDINDEX()
-var FieldTable = makefield(Fields1894, Fields5322, Fields5965)
+var FieldTable = makefield(rfc1894.FieldIndex, rfc5322.FieldIndex, rfc5965.FieldIndex)
 var TryOnFirst = []string{}
 var DefaultSet = lhost.AnotherOrder()
 var Boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
