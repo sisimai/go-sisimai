@@ -14,6 +14,12 @@ import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/rfc5965"
 
 var fieldtable = makefield(rfc1894.FieldIndex, rfc5322.FieldIndex, rfc5965.FieldIndex)
+var replacesas = map[string][][]string{
+    "Content-Type": [][]string{
+		{"message/xdelivery-status",         "message/delivery-status"},
+		{"message/disposition-notification", "message/delivery-status"},
+	},
+}
 
 // makefield() generates a map including each field name defined in RFC1894, RFC5322, and RFC5965
 func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string {
@@ -98,9 +104,9 @@ func tidy(argv0 *string) *string {
 		}
 
 		// 3. Tidy up a value, and a parameter of Content-Type: field 
-		if len(ReplacesAs[fn]) > 0 {
+		if len(replacesas[fn]) > 0 {
 			// Replace the value of "Content-Type" field
-			for _, f := range ReplacesAs[fn] {
+			for _, f := range replacesas[fn] {
 				// - Before: Content-Type: message/xdelivery-status; ...
 				// - After:  Content-Type: message/delivery-status; ...
 				p1 = strings.Index(bf, f[0]); if p1 < 0 { continue }

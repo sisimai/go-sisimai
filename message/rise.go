@@ -22,12 +22,6 @@ import sisimoji "libsisimai.org/sisimai/string"
 var tryonfirst = []string{}
 var defaultset = lhost.AnotherOrder()
 var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
-var ReplacesAs = map[string][][]string{
-    "Content-Type": [][]string{
-		{"message/xdelivery-status",         "message/delivery-status"},
-		{"message/disposition-notification", "message/delivery-status"},
-	},
-}
 
 // Rise() works as a constructor of Sisimai::Message
 func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
