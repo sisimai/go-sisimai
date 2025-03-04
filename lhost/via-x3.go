@@ -29,7 +29,6 @@ func init() {
 		startingof := map[string][]string{
 			"message": []string{"      This is an automatically generated Delivery Status Notification."},
 		}
-		fieldtable := rfc1894.FIELDTABLE()
 		permessage := map[string]string{} // Store values of each Per-Message field
 		keystrings := []string{}          // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
@@ -88,7 +87,7 @@ func init() {
 				} else if f := rfc1894.Match(e); f > 0 {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
-					z := fieldtable[o[0]]
+					z := rfc1894.FieldTable[o[0]]
 
 					if o[3] == "addr" {
 						// Final-Recipient: rfc822; kijitora@example.jp

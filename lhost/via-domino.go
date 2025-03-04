@@ -52,7 +52,6 @@ func init() {
 			},
 		}
 
-		fieldtable := rfc1894.FIELDTABLE()
 		permessage := map[string]string{} // Store values of each Per-Message field
 		keystrings := []string{}          // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
@@ -117,9 +116,9 @@ func init() {
 
 				} else {
 					// Other filelds defined in RFC3464
-					f := rfc1894.Match(e); if f      < 1 { continue }
-					o := rfc1894.Field(e); if len(o) < 1 { continue }
-					z := fieldtable[o[0]]; if len(z) < 1 { continue }
+					f := rfc1894.Match(e);         if f      < 1 { continue }
+					o := rfc1894.Field(e);         if len(o) < 1 { continue }
+					z := rfc1894.FieldTable[o[0]]; if len(z) < 1 { continue }
 
 					if o[3] == "code" {
 						// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
