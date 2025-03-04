@@ -17,7 +17,7 @@ var GetRetried = map[string]bool{
 	"undefined": true, "onhold": true,  "systemerror": true, "securityerror": true,
 	"expired": true, "networkerror": true, "hostunknown": true, "userunknown": true,
 }
-var ClassOrder = [][]string{
+var classorder = [][]string{
 	[]string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "HasMoved", "NoRelaying", "AuthFailure",
 		"UserUnknown", "Filtered", "RequirePTR", "NotCompliantRFC", "BadReputation", "ContentError",

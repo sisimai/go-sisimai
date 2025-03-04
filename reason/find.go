@@ -23,7 +23,7 @@ func Find(fo *sis.Fact) string {
 
 	reasontext := ""; if fo.DiagnosticType == "SMTP" || fo.DiagnosticType == "" {
 		// Diagnostic-Code: SMTP; ... or empty value
-		for _, e := range ClassOrder[0] {
+		for _, e := range classorder[0] {
 			// Check the values of Diagnostic-Code: and Status: fields using truth() function of
 			// each child class in Sisimai::Reason
 			if ProbesInto[e](fo) { reasontext = strings.ToLower(e); break }
@@ -65,7 +65,7 @@ func anotherone(fo *sis.Fact) string {
 
 	if trytomatch == true {
 		// The value of the reason is not decided yet by the fo.DeliveryStatus
-		for _, e := range ClassOrder[1] {
+		for _, e := range classorder[1] {
 			// Trying to match with other patterns in sisimai/reason/why-*.go
 			if IncludedIn[e](issuedcode) == true { return strings.ToLower(e) }
 		}
