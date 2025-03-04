@@ -59,8 +59,8 @@ import "strings"
 import "strconv"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var MonthName = []string{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}
-var DayOfWeek = []string{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}
+var monthname = []string{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}
+var dayofweek = []string{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}
 
 // Date() tidies up and converts the date string to the format 
 func Date(argv1 string) string {
@@ -113,8 +113,8 @@ func Date(argv1 string) string {
 
 			} else {
 				upperfirst := strings.ToUpper(e[0:1]) + strings.ToLower(e[1:3])
-				if sisimoji.EqualsAny(upperfirst, MonthName) { p[1] = upperfirst; continue }
-				if sisimoji.EqualsAny(upperfirst, DayOfWeek) { p[3] = upperfirst; continue }
+				if sisimoji.EqualsAny(upperfirst, monthname) { p[1] = upperfirst; continue }
+				if sisimoji.EqualsAny(upperfirst, dayofweek) { p[3] = upperfirst; continue }
 			}
 
 		} else if cw == 4 {
