@@ -17,26 +17,21 @@ var FieldIndex = []string{
 	"Original-Recipient", "Received-From-MTA", "Remote-MTA", "Reporting-MTA", "Status",
 	"X-Actual-Recipient", "X-Original-Message-ID",
 }
-
+var FieldTable = map[string]string{
+	"action":             "action",
+	"arrival-date":       "date",
+	"diagnostic-code":    "diagnosis",
+	"final-recipient":    "recipient",
+	"last-attempt-date":  "date",
+	"original-recipient": "alias",
+	"received-from-mta":  "rhost",
+	"remote-mta":         "rhost",
+	"reporting-mta":      "lhost",
+	"status":             "status",
+	"x-actual-recipient": "alias",
+}
 var ActionList = map[string]bool{
 	"delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true,
-}
-
-// FIELDTABLE() return pairs that a field name and key name defined in sisimai/lhost package
-func FIELDTABLE() map[string]string {
-	return map[string]string {
-		"action":             "action",
-		"arrival-date":       "date",
-		"diagnostic-code":    "diagnosis",
-		"final-recipient":    "recipient",
-		"last-attempt-date":  "date",
-		"original-recipient": "alias",
-		"received-from-mta":  "rhost",
-		"remote-mta":         "rhost",
-		"reporting-mta":      "lhost",
-		"status":             "status",
-		"x-actual-recipient": "alias",
-    }
 }
 
 // Label() returns a lower-cased field name

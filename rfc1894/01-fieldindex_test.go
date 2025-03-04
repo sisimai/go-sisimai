@@ -24,13 +24,13 @@ func TestFieldIndex(t *testing.T) {
 }
 
 func TestFIELDTABLE(t *testing.T) {
-	fn := "sisimai/rfc1894.FIELDTABLE"
+	fn := "rfc1894.FieldTable"
 	cx := 0
-	ae := FIELDTABLE()
+	ae := FieldTable
 
 	for e := range ae {
-		cx++; if e     == "" { t.Errorf("%s() have an empty key", fn) }
-		cx++; if ae[e] == "" { t.Errorf("%s() Key:%s have an empty value", fn, e) }
+		cx++; if e     == "" { t.Errorf("%s have an empty key", fn) }
+		cx++; if ae[e] == "" { t.Errorf("%s Key:%s have an empty value", fn, e) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
