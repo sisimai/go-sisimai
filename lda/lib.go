@@ -13,7 +13,7 @@ import "strings"
 import "libsisimai.org/sisimai/sis"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var LocalAgent = map[string][]string{
+var localagent = map[string][]string{
 	// Each error message should be a lower-cased string
 	// dovecot/src/deliver/deliver.c
 	// 11: #define DEFAULT_MAIL_REJECTION_HUMAN_REASON \
@@ -25,7 +25,7 @@ var LocalAgent = map[string][]string{
 	"vpopmail":   []string{"vdelivermail: "},
 	"vmailmgr":   []string{"vdeliver: "},
 }
-var MessagesOf = map[string]map[string][]string{
+var messagesof = map[string]map[string][]string{
 	// Each error message should be a lower-cased string
 	"dovecot": map[string][]string{
 		"mailboxfull": []string{
@@ -87,16 +87,16 @@ func Find(fo *sis.Fact) string {
 	reasontext := "" // Detected bounce reason
 	issuedcode := strings.ToLower(fo.DiagnosticCode)
 
-	for e := range LocalAgent {
+	for e := range localagent {
 		// Find a local delivery agent name from the lower-cased error message
-		if sisimoji.ContainsAny(issuedcode, LocalAgent[e]) == false { continue }
+		if sisimoji.ContainsAny(issuedcode, localagent[e]) == false { continue }
 		deliversby = e; break
 	}
 	if deliversby == "" { return "" }
 
-	for e := range MessagesOf[deliversby] {
+	for e := range messagesof[deliversby] {
 		// The key nane is a bounce reason name
-		if sisimoji.ContainsAny(issuedcode, MessagesOf[deliversby][e]) == false { continue }
+		if sisimoji.ContainsAny(issuedcode, messagesof[deliversby][e]) == false { continue }
 		reasontext = e; break
 	}
 
