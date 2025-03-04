@@ -27,7 +27,7 @@ func Find(argv1 string) [3]string {
 	// @return   [3]string{}          Email address table: {"address", "name", "comment"}
 	if len(argv1) < 5 { return [3]string{} }
 		argv1 = strings.ReplaceAll(argv1, "\r", "") // Remove CR
-		argv1 = strings.ReplaceAll(argv1, "\n", "") // Remove NL
+		argv1 = strings.ReplaceAll(argv1, "\n", "") // Remove LF
 	if len(argv1) < 5 { return [3]string{} }
 
 	delimiters := `<>(),"`
