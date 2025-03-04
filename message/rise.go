@@ -21,7 +21,7 @@ import sisimoji "libsisimai.org/sisimai/string"
 
 var tryonfirst = []string{}
 var defaultset = lhost.AnotherOrder()
-var Boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
+var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
 var ReplacesAs = map[string][][]string{
     "Content-Type": [][]string{
 		{"message/xdelivery-status",         "message/delivery-status"},
@@ -95,7 +95,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		tryonfirst  = append(tryonfirst, defaultset...)
 		siftstatus := sift(beforefact, hook); if siftstatus == true { break RISE }
 
-		for _, e := range Boundaries {
+		for _, e := range boundaries {
 			// Check the message body contains "message/rfc822" or "message/delivery-status" for
 			// decoding the bounce message in the forwarded email
 			if strings.Contains(beforefact.Payload, e) { break RISE }
@@ -106,7 +106,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		//    part as a entire message body again. rfc3464/1086-a847b090.eml is the email but the
 		//    results decoded by sisimai are unstable.
 		retryagain++
-		cv := rfc5322.Part(&beforefact.Payload, Boundaries, true)[1]; if len(cv) < 128 { break RISE }
+		cv := rfc5322.Part(&beforefact.Payload, boundaries, true)[1]; if len(cv) < 128 { break RISE }
 		mesg = &cv
 	}
 	if beforefact.Void() == true { return &sis.BeforeFact{} }
