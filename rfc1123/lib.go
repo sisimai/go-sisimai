@@ -32,7 +32,7 @@ var sandwiched = [][]string{
 	[]string{"-mta: ", ">"},          // (MailMarshal) Reporting-MTA:      <rr1.example.com>
 	[]string{" : ", "["},             // (SendGrid) cat:000000:<cat@example.jp> : 192.0.2.1 : mx.example.jp:[192.0.2.2]...
 }
-var StartAfter = []string{
+var startafter = []string{
 	"generating server: ",   // (Exchange2007) Generating server: mta4.example.org
 	"serveur de g",          // fr-FR/Serveur de g辿n辿ration
 	"server di generazione", // it-CH
@@ -132,8 +132,8 @@ func Find(argv1 string) string {
 		}
 
 		// Check other patterns which are not sandwiched
-		for _, e := range StartAfter {
-			// StartAfter have some strings, not a slice([]string).
+		for _, e := range startafter {
+			// startafter have some strings, not a slice([]string).
 			if strings.Contains(sourcetext, e) == false { continue }
 			p1 := strings.Index(sourcetext, e)
 
