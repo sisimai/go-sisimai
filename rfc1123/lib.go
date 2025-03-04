@@ -38,7 +38,7 @@ var startafter = []string{
 	"server di generazione", // it-CH
 	"genererande server",    // sv-SE
 }
-var ExistUntil = []string{
+var existuntil = []string{
 	" did not like our ",  // (Dragonfly) mail-inbound.libsisimai.net [192.0.2.25] did not like our DATA: ...
 }
 var Prefix0x32 = []string{"(", "[", "<"}
@@ -141,8 +141,8 @@ func Find(argv1 string) string {
 			break MAKELIST
 		}
 
-		for _, e := range ExistUntil {
-			// ExistUntil have some strings, not a slice([]string).
+		for _, e := range existuntil {
+			// existuntil have some strings, not a slice([]string).
 			if strings.Contains(sourcetext, e) == false { continue }
 			p1 := strings.Index(sourcetext, e)
 
