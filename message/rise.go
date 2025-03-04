@@ -15,13 +15,10 @@ import "strings"
 import "net/mail"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/lhost"
-import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
-import "libsisimai.org/sisimai/rfc5965"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var FieldTable = makefield(rfc1894.FieldIndex, rfc5322.FieldIndex, rfc5965.FieldIndex)
 var tryonfirst = []string{}
 var defaultset = lhost.AnotherOrder()
 var Boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
@@ -30,15 +27,6 @@ var ReplacesAs = map[string][][]string{
 		{"message/xdelivery-status",         "message/delivery-status"},
 		{"message/disposition-notification", "message/delivery-status"},
 	},
-}
-
-// makefield() generates a map including each field name defined in RFC1894, RFC5322, and RFC5965
-func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string {
-	fieldtable := map[string]string{}
-	for _, e := range argv1 { fieldtable[strings.ToLower(e)] = e }
-	for _, e := range argv2 { fieldtable[strings.ToLower(e)] = e }
-	for _, e := range argv3 { fieldtable[strings.ToLower(e)] = e }
-	return fieldtable
 }
 
 // Rise() works as a constructor of Sisimai::Message

@@ -10,6 +10,19 @@ package message
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/rfc5965"
+
+var fieldtable = makefield(rfc1894.FieldIndex, rfc5322.FieldIndex, rfc5965.FieldIndex)
+
+// makefield() generates a map including each field name defined in RFC1894, RFC5322, and RFC5965
+func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string {
+	fieldtable := map[string]string{}
+	for _, e := range argv1 { fieldtable[strings.ToLower(e)] = e }
+	for _, e := range argv2 { fieldtable[strings.ToLower(e)] = e }
+	for _, e := range argv3 { fieldtable[strings.ToLower(e)] = e }
+	return fieldtable
+}
 
 // tidy() tidies up each field name and format
 func tidy(argv0 *string) *string {
@@ -23,7 +36,7 @@ func tidy(argv0 *string) *string {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
 		p0 := strings.IndexByte(e, ':'); if p0 < 0                         { email += e + "\n"; continue }
 		cf := strings.ToLower(e[0:p0]);  if strings.IndexByte(cf, ' ') > 0 { email += e + "\n"; continue }
-		fn := FieldTable[cf];            if fn == ""                       { email += e + "\n"; continue }
+		fn := fieldtable[cf];            if fn == ""                       { email += e + "\n"; continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
 		ab := []string{}
