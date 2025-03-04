@@ -22,7 +22,7 @@ import "libsisimai.org/sisimai/rfc5965"
 import sisimoji "libsisimai.org/sisimai/string"
 
 var FieldTable = makefield(rfc1894.FieldIndex, rfc5322.FieldIndex, rfc5965.FieldIndex)
-var TryOnFirst = []string{}
+var tryonfirst = []string{}
 var DefaultSet = lhost.AnotherOrder()
 var Boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
 var ReplacesAs = map[string][][]string{
@@ -103,8 +103,8 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		}
 
 		// 3. Rewrite message body for detecting the bounce reason
-		TryOnFirst  = lhost.OrderBySubject(beforefact.Headers["subject"][0])
-		TryOnFirst  = append(TryOnFirst, DefaultSet...)
+		tryonfirst  = lhost.OrderBySubject(beforefact.Headers["subject"][0])
+		tryonfirst  = append(tryonfirst, DefaultSet...)
 		siftstatus := sift(beforefact, hook); if siftstatus == true { break RISE }
 
 		for _, e := range Boundaries {
