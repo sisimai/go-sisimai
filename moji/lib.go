@@ -1,14 +1,15 @@
 // Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-//      _        _             
-//  ___| |_ _ __(_)_ __   __ _ 
-// / __| __| '__| | '_ \ / _` |
-// \__ \ |_| |  | | | | | (_| |
-// |___/\__|_|  |_|_| |_|\__, |
-//                       |___/ 
+//                  _ _ 
+//  _ __ ___   ___ (_|_)
+// | '_ ` _ \ / _ \| | |
+// | | | | | | (_) | | |
+// |_| |_| |_|\___// |_|
+//               |__/   
 
-// Package "string" provides functions for dealing strings
-package string
+// Package "moji" provides functions for dealing strings
+// "moji" stands for "character" or "string" in Japanese
+package moji
 import "fmt"
 import "strings"
 import "crypto/sha1"
