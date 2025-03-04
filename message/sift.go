@@ -83,7 +83,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		// 2. sisimai/rfc3464
 		// 3. sisimai/arf
 		// 4. sisimai/rfc3834
-		for _, r := range TryOnFirst {
+		for _, r := range tryonfirst {
 			// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
 			if havecalled[r] || r == "ARF" || strings.HasPrefix(r, "RFC") { continue }
 			localhostr    = lhost.InquireFor[r](bf)

@@ -9,6 +9,26 @@
 package message
 import "fmt"
 import "strings"
+import "libsisimai.org/sisimai/rfc1894"
+import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/rfc5965"
+
+var fieldtable = makefield(rfc1894.FieldIndex, rfc5322.FieldIndex, rfc5965.FieldIndex)
+var replacesas = map[string][][]string{
+    "Content-Type": [][]string{
+		{"message/xdelivery-status",         "message/delivery-status"},
+		{"message/disposition-notification", "message/delivery-status"},
+	},
+}
+
+// makefield() generates a map including each field name defined in RFC1894, RFC5322, and RFC5965
+func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string {
+	fieldtable := map[string]string{}
+	for _, e := range argv1 { fieldtable[strings.ToLower(e)] = e }
+	for _, e := range argv2 { fieldtable[strings.ToLower(e)] = e }
+	for _, e := range argv3 { fieldtable[strings.ToLower(e)] = e }
+	return fieldtable
+}
 
 // tidy() tidies up each field name and format
 func tidy(argv0 *string) *string {
@@ -22,7 +42,7 @@ func tidy(argv0 *string) *string {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
 		p0 := strings.IndexByte(e, ':'); if p0 < 0                         { email += e + "\n"; continue }
 		cf := strings.ToLower(e[0:p0]);  if strings.IndexByte(cf, ' ') > 0 { email += e + "\n"; continue }
-		fn := FieldTable[cf];            if fn == ""                       { email += e + "\n"; continue }
+		fn := fieldtable[cf];            if fn == ""                       { email += e + "\n"; continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
 		ab := []string{}
@@ -32,7 +52,7 @@ func tidy(argv0 *string) *string {
 			// Such as Diagnostic-Code, Remote-MTA, and so on
 			// - Before: Diagnostic-Code: SMTP;550 User unknown
 			// - After:  Diagnostic-Code: smtp; 550 User unknown
-			match := false; for _, f := range Fields1894 {
+			match := false; for _, f := range rfc1894.FieldIndex {
 				// The field name is not listed in RFC1894
 				if fn == f || fn == "Content-Type" { match = true; break }
 			}
@@ -84,9 +104,9 @@ func tidy(argv0 *string) *string {
 		}
 
 		// 3. Tidy up a value, and a parameter of Content-Type: field 
-		if len(ReplacesAs[fn]) > 0 {
+		if len(replacesas[fn]) > 0 {
 			// Replace the value of "Content-Type" field
-			for _, f := range ReplacesAs[fn] {
+			for _, f := range replacesas[fn] {
 				// - Before: Content-Type: message/xdelivery-status; ...
 				// - After:  Content-Type: message/delivery-status; ...
 				p1 = strings.Index(bf, f[0]); if p1 < 0 { continue }

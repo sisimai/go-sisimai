@@ -50,7 +50,6 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		bf.Payload = strings.Replace(bf.Payload, cv, "\n\n" + boundaries[0] + cv, 1)
 		break
 	}
-	fieldtable := rfc1894.FIELDTABLE()
 	permessage := map[string]string{} // Store values of each Per-Message field
 	keystrings := []string{}          // Key list of permessage
 	dscontents := []sis.DeliveryMatter{{}}
@@ -150,7 +149,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		if f := rfc1894.Match(e); f > 0 {
 			// This line matched with any field defined in RFC3464
 			o := rfc1894.Field(e); if len(o) == 0 { continue }
-			z := fieldtable[o[0]]
+			z := rfc1894.FieldTable[o[0]]
 			v  = &(dscontents[len(dscontents) - 1])
 
 			if o[3] == "addr" {
@@ -199,7 +198,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			if strings.HasPrefix(e, "X-") && strings.Contains(e, ": ") {
 				// This line is a MTA-Specific fields begins with "X-"
 				if is3rdparty(e) == false { continue }
-				if cv := xfield(e); len(cv) > 0 && len(fieldtable[strings.ToLower(cv[0])]) == 0 {
+				if cv := xfield(e); len(cv) > 0 && len(rfc1894.FieldTable[strings.ToLower(cv[0])]) == 0 {
 					// Check the first element is a field defined in RFC1894 or not
 					if strings.HasPrefix(cv[4], "reason:") {
 						// cv[4] is a string line "reason:mailboxfull"
@@ -208,7 +207,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				} else {
 					// Set the value picked from "X-*" field to the member of sis.DeliveryMatter
 					// when the current value is empty
-					z := fieldtable[strings.ToLower(cv[0])]; if len(z) < 1 { continue }
+					z := rfc1894.FieldTable[strings.ToLower(cv[0])]; if len(z) < 1 { continue }
 					if v.Select(z) == "" { v.Update(z, cv[2]) }
 				}
 			} else {

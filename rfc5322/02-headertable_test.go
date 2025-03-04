@@ -10,32 +10,18 @@ package rfc5322
 import "testing"
 
 func TestHEADERTABLE(t *testing.T) {
-	fn := "sisimai/rfc5322.HEADERTABLE"
+	fn := "rfc5322.HeaderTable"
 	cx := 0
-	cv := HEADERTABLE()
+	cv := HeaderTable
 
-	cx++; if len(cv) == 0 { t.Errorf("%s() returns empty", fn) }
-	cx++; if len(cv) != 6 { t.Errorf("%s() returns %d elements", fn, len(cv)) }
+	cx++; if len(cv) == 0 { t.Errorf("%s is empty", fn) }
+	cx++; if len(cv) != 6 { t.Errorf("%s includes %d elements", fn, len(cv)) }
 	for e := range cv {
 		cx++; if len(cv[e]) == 0 { t.Errorf("%s[%s] have no element", fn, e) }
 		for _, f := range cv[e] {
 			cx++; if f == "" { t.Errorf("%s[%s] is empty string", fn, e) }
 		}
 	}
-
-	t.Logf("The number of tests = %d", cx)
-}
-
-func TestHEADERFIELDS(t *testing.T) {
-	fn := "sisimai/rfc5322.HEADERFIELDS"
-	cx := 0
-
-	for _, e := range []string{"messageid", "subject", "listid", "date", "addresser", "recipient"} {
-		cv := HEADERFIELDS(e)
-		cx++; if len(cv) == 0 { t.Errorf("%s(%s) returns empty list", fn, e) }
-	}
-	cx++; if cv := HEADERFIELDS("");     len(cv) > 0 { t.Errorf("%s() returns %v", fn, cv) }
-	cx++; if cv := HEADERFIELDS("neko"); len(cv) > 0 { t.Errorf("%s(neko) returns %v", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }

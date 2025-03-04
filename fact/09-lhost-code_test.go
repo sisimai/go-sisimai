@@ -17,6 +17,7 @@ import "path/filepath"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rhost"
 import "libsisimai.org/sisimai/rfc1123"
+import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimbox "libsisimai.org/sisimai/mail"
@@ -204,7 +205,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						cx++; if fs.Reason != "feedback" && fs.Reason != "vacation" {
 							// Action is empty when the bounce mesage is a feedback loop
 							cx++; if fs.Action == "" { t.Errorf("%s Action is empty", ee) }
-							cx++; if ActionList[fs.Action] == false {
+							cx++; if rfc1894.ActionList[fs.Action] == false {
 								t.Errorf("%s Action (%s) is an invalid value", ee, fs.Action)
 							}
 						}

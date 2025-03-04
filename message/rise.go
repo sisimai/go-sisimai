@@ -15,34 +15,13 @@ import "strings"
 import "net/mail"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/lhost"
-import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
-import "libsisimai.org/sisimai/rfc5965"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var Fields1894 = rfc1894.FIELDINDEX()
-var Fields5322 = rfc5322.FIELDINDEX()
-var Fields5965 = rfc5965.FIELDINDEX()
-var FieldTable = makefield(Fields1894, Fields5322, Fields5965)
-var TryOnFirst = []string{}
-var DefaultSet = lhost.AnotherOrder()
-var Boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
-var ReplacesAs = map[string][][]string{
-    "Content-Type": [][]string{
-		{"message/xdelivery-status",         "message/delivery-status"},
-		{"message/disposition-notification", "message/delivery-status"},
-	},
-}
-
-// makefield() generates a map including each field name defined in RFC1894, RFC5322, and RFC5965
-func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string {
-	fieldtable := map[string]string{}
-	for _, e := range argv1 { fieldtable[strings.ToLower(e)] = e }
-	for _, e := range argv2 { fieldtable[strings.ToLower(e)] = e }
-	for _, e := range argv3 { fieldtable[strings.ToLower(e)] = e }
-	return fieldtable
-}
+var tryonfirst = []string{}
+var defaultset = lhost.AnotherOrder()
+var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
 
 // Rise() works as a constructor of Sisimai::Message
 func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
@@ -106,11 +85,11 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		}
 
 		// 3. Rewrite message body for detecting the bounce reason
-		TryOnFirst  = lhost.OrderBySubject(beforefact.Headers["subject"][0])
-		TryOnFirst  = append(TryOnFirst, DefaultSet...)
+		tryonfirst  = lhost.OrderBySubject(beforefact.Headers["subject"][0])
+		tryonfirst  = append(tryonfirst, defaultset...)
 		siftstatus := sift(beforefact, hook); if siftstatus == true { break RISE }
 
-		for _, e := range Boundaries {
+		for _, e := range boundaries {
 			// Check the message body contains "message/rfc822" or "message/delivery-status" for
 			// decoding the bounce message in the forwarded email
 			if strings.Contains(beforefact.Payload, e) { break RISE }
@@ -121,7 +100,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		//    part as a entire message body again. rfc3464/1086-a847b090.eml is the email but the
 		//    results decoded by sisimai are unstable.
 		retryagain++
-		cv := rfc5322.Part(&beforefact.Payload, Boundaries, true)[1]; if len(cv) < 128 { break RISE }
+		cv := rfc5322.Part(&beforefact.Payload, boundaries, true)[1]; if len(cv) < 128 { break RISE }
 		mesg = &cv
 	}
 	if beforefact.Void() == true { return &sis.BeforeFact{} }

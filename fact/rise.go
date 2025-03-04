@@ -28,10 +28,6 @@ import "libsisimai.org/sisimai/smtp/failure"
 import sisiaddr "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var RetryIndex = reason.Retry()
-var RFC822Head = rfc5322.HEADERTABLE()
-var ActionList = map[string]bool{ "delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true }
-
 // sisimai/fact.Rise() returns []sis.Fact when it successfully decoded bounce messages
 func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 	// @param  *string           email    Entire email message
@@ -70,7 +66,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 		ADDRESSER: for {
 			// Detect an email address from message/rfc822 part
-			for _, f := range RFC822Head["addresser"] {
+			for _, f := range rfc5322.HeaderTable["addresser"] {
 				// Check each header in message/rfc822 part
 				if len(rfc822data[f])                         == 0  { continue }
 				j := sisiaddr.Find(rfc822data[f][0]); if j[0] == "" { continue }
@@ -91,7 +87,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			// Convert from the value of "Date" or the date string to time.Time
 			datevalues := []string{}; if e.Date != "" { datevalues = append(datevalues, e.Date) }
 
-			for _, f := range RFC822Head["date"] {
+			for _, f := range rfc5322.HeaderTable["date"] {
 				// Date information did not exist in message/delivery-status part.
 				// Get the value of "Date:" header or other date related headers.
 				if len(rfc822data[f]) > 0 { datevalues = append(datevalues, rfc822data[f][0]) }
@@ -239,9 +235,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			}
 
 			dc := strings.ToLower(piece["diagnosticcode"])
-			p1 := strings.Index(dc, "<html>")
-			p2 := strings.Index(dc, "</html>")
-			if p1 > 0 && p2 > 0 {
+			if p1, p2 := strings.Index(dc, "<html>"), strings.Index(dc, "</html>"); p1 > 0 && p2 > 0 {
 				// Remove strings from <html> to </html>
 				piece["diagnosticcode"] = piece["diagnosticcode"][:p1] + " " + piece["diagnosticcode"][p2 + 7:]
 			}
@@ -325,7 +319,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		}
 		if thing.Alias == thing.Recipient.Address { thing.Alias = "" }
 
-		REASON: for thing.Reason == "" || RetryIndex[thing.Reason] {
+		REASON: for thing.Reason == "" || reason.GetRetried[thing.Reason] {
 			// Decide the reason of the email bounce
 			// The value of thing.Reason is empty or is needed to check with other values again
 			re := thing.Reason;        if re == ""              { re = "undefined"                }
@@ -382,7 +376,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 				}
 			}
 
-			if ActionList[thing.Action] == false {
+			if rfc1894.ActionList[thing.Action] == false {
 				// There is an action value that is not described at RFC1894
 				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 {
 					// Rewrite the value of "Action:" field to the valid value

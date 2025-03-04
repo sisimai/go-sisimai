@@ -13,7 +13,7 @@ import "strings"
 import "libsisimai.org/sisimai/rfc791"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var Sandwiched = [][]string{
+var sandwiched = [][]string{
 	// (Postfix) postfix/src/smtp/smtp_proto.c: "host %s said: %s (in reply to %s)",
 	// - <kijitora@example.com>: host re2.example.com[198.51.100.2] said: 550 ...
 	// - <kijitora@example.org>: host r2.example.org[198.51.100.18] refused to talk to me:
@@ -32,17 +32,17 @@ var Sandwiched = [][]string{
 	[]string{"-mta: ", ">"},          // (MailMarshal) Reporting-MTA:      <rr1.example.com>
 	[]string{" : ", "["},             // (SendGrid) cat:000000:<cat@example.jp> : 192.0.2.1 : mx.example.jp:[192.0.2.2]...
 }
-var StartAfter = []string{
+var startafter = []string{
 	"generating server: ",   // (Exchange2007) Generating server: mta4.example.org
 	"serveur de g",          // fr-FR/Serveur de g辿n辿ration
 	"server di generazione", // it-CH
 	"genererande server",    // sv-SE
 }
-var ExistUntil = []string{
+var existuntil = []string{
 	" did not like our ",  // (Dragonfly) mail-inbound.libsisimai.net [192.0.2.25] did not like our DATA: ...
 }
-var Prefix0x32 = []string{"(", "[", "<"}
-var Suffix0x32 = []string{")", "]", ">", ":", ";"}
+var prefix0x32 = []string{"(", "[", "<"}
+var suffix0x32 = []string{")", "]", ">", ":", ";"}
 
 // IsInternetHost() returns "true" when the given string is a valid Internet hostname
 func IsInternetHost(argv1 string) bool {
@@ -111,8 +111,8 @@ func Find(argv1 string) string {
 	// - mx.example.net[192.0.2.1] => mx.example.net [192.0.2.1]
 	// - mx.example.jp:[192.0.2.1] => mx.example.jp :[192.0.2.1]
 	sourcetext := strings.ToLower(argv1)
-	for _, e := range Prefix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, " " + e) }
-	for _, e := range Suffix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, e + " ") }
+	for _, e := range prefix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, " " + e) }
+	for _, e := range suffix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, e + " ") }
 
 	sourcelist := []string{}
 	foundtoken := []string{}
@@ -120,8 +120,8 @@ func Find(argv1 string) string {
 	hostnameis := ""
 
 	MAKELIST: for {
-		for _, e := range Sandwiched {
-			// Check a hostname exists between the e[0] and e[1] at slice "Sandwiched"
+		for _, e := range sandwiched {
+			// Check a hostname exists between the e[0] and e[1] at slice "sandwiched"
 			// Each slice in Sandwich have 2 elements
 			if sisimoji.Aligned(sourcetext, e) == false { continue }
 			p1 := strings.Index(sourcetext, e[0])
@@ -132,8 +132,8 @@ func Find(argv1 string) string {
 		}
 
 		// Check other patterns which are not sandwiched
-		for _, e := range StartAfter {
-			// StartAfter have some strings, not a slice([]string).
+		for _, e := range startafter {
+			// startafter have some strings, not a slice([]string).
 			if strings.Contains(sourcetext, e) == false { continue }
 			p1 := strings.Index(sourcetext, e)
 
@@ -141,8 +141,8 @@ func Find(argv1 string) string {
 			break MAKELIST
 		}
 
-		for _, e := range ExistUntil {
-			// ExistUntil have some strings, not a slice([]string).
+		for _, e := range existuntil {
+			// existuntil have some strings, not a slice([]string).
 			if strings.Contains(sourcetext, e) == false { continue }
 			p1 := strings.Index(sourcetext, e)
 
@@ -157,8 +157,8 @@ func Find(argv1 string) string {
 	for _, e := range sourcelist {
 		// Pick some strings which have 4 or more length, is including "." character
 		e = strings.TrimRight(e, ".") // Remove "." at the end of the string
-		for _, f := range Prefix0x32 { e = strings.ReplaceAll(e, f, "") }
-		for _, f := range Suffix0x32 { e = strings.ReplaceAll(e, f, "") }
+		for _, f := range prefix0x32 { e = strings.ReplaceAll(e, f, "") }
+		for _, f := range suffix0x32 { e = strings.ReplaceAll(e, f, "") }
 
 		if len(e) < 4 || strings.IndexByte(e, '.') < 0 || IsInternetHost(e) == false { continue }
 		foundtoken = append(foundtoken, e)

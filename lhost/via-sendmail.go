@@ -48,7 +48,6 @@ func init() {
 			"message": []string{"   ----- Transcript of session follows -----"},
 			"error":   []string{"... while talking to "},
 		}
-		fieldtable := rfc1894.FIELDTABLE()
 		permessage := map[string]string{} // Store values of each Per-Message field
 		keystrings := []string{}          // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
@@ -77,7 +76,7 @@ func init() {
 			if f := rfc1894.Match(e); f > 0 {
 				// "e" matched with any field defined in RFC3464
 				o := rfc1894.Field(e); if len(o) == 0 { continue }
-				z := fieldtable[o[0]]
+				z := rfc1894.FieldTable[o[0]]
 				v  = &(dscontents[len(dscontents) - 1])
 
 				if o[3] == "addr" {

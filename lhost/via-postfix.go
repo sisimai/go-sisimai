@@ -99,7 +99,6 @@ func init() {
 			}
 		} else {
 			// The message body is a general bounce mail message of Postfix
-			fieldtable := rfc1894.FIELDTABLE()
 			readcursor := uint8(0)     // Points the current cursor position
 			readslices := []string{""} // Copy each line for later reference
 
@@ -120,7 +119,7 @@ func init() {
 				if f := rfc1894.Match(e); f > 0 {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
-					z := fieldtable[o[0]]
+					z := rfc1894.FieldTable[o[0]]
 					v  = &(dscontents[len(dscontents) - 1])
 
 					if o[3] == "addr" {

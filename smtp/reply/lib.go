@@ -82,13 +82,13 @@ import "strconv"
 import "strings"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var ReplyCode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "354"}
-var ReplyCode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "456", "458", "459"}
-var ReplyCode5 = []string{
+var replycode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "354"}
+var replycode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "456", "458", "459"}
+var replycode5 = []string{
 	"550", "552", "553", "551", "521", "525", "502", "520", "523", "524", "530", "533", "534", "535", "538",
 	"551", "555", "556", "554", "557", "500", "501", "502", "503", "504",
 }
-var CodeOfSMTP = map[string][]string{"2": ReplyCode2, "4": ReplyCode4, "5": ReplyCode5}
+var codeofsmtp = map[string][]string{"2": replycode2, "4": replycode4, "5": replycode5}
 
 // Test() checks whether a reply code is a valid code or not
 func Test(argv0 string) bool {
@@ -130,15 +130,15 @@ func Find(argv1 string, argv2 string) string {
 
 	if statuscode == "2" || statuscode == "4" || statuscode == "5" {
 		// The first character of the 2nd argument is 2 or 4 or 5
-		replycodes = CodeOfSMTP[statuscode]
+		replycodes = codeofsmtp[statuscode]
 
 	} else {
 		// The first character of the 2nd argument is 0 or other values
 		// TODO: use "slices" package and slices.Concat() avaialble from Go 1.22
 		//       https://pkg.go.dev/slices@master
-		replycodes = append(replycodes, CodeOfSMTP["5"]...)
-		replycodes = append(replycodes, CodeOfSMTP["4"]...)
-		replycodes = append(replycodes, CodeOfSMTP["2"]...)
+		replycodes = append(replycodes, codeofsmtp["5"]...)
+		replycodes = append(replycodes, codeofsmtp["4"]...)
+		replycodes = append(replycodes, codeofsmtp["2"]...)
 	}
 
 	esmtperror := " " + argv1 + " "
