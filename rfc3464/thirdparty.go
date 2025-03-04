@@ -11,7 +11,7 @@ package rfc3464
 import "strings"
 
 var ReturnedBy = map[string]func(string) []string {}
-var ThirdParty = map[string][]string{
+var thirdparty = map[string][]string{
 //	"Aol":      []string{"X-Outbound-Mail-Relay-"}, // X-Outbound-Mail-Relay-(Queue-ID|Sender)
 	"PowerMTA": []string{"X-PowerMTA-"},            // X-PowerMTA-(VirtualMTA|BounceCategory)
 //	"Yandex":   []string{"X-Yandex-"},              // X-Yandex-(Queue-ID|Sender)
@@ -32,9 +32,9 @@ func returnedby(argv1 string) string {
 	// @param    string argv1   A line of a bounce mail
 	// @return   string         An MTA name of the 3rd party
 	if argv1 == "" || strings.HasPrefix(argv1, "X-") == false { return "" }
-	for e := range ThirdParty {
+	for e := range thirdparty {
 		// Does the argument include the 3rd party specific field?
-		if strings.HasPrefix(argv1, ThirdParty[e][0]) { return e }
+		if strings.HasPrefix(argv1, thirdparty[e][0]) { return e }
 	}
 	return ""
 }
