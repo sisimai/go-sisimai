@@ -13,7 +13,7 @@ import "strings"
 import "libsisimai.org/sisimai/rfc791"
 import sisimoji "libsisimai.org/sisimai/string"
 
-var Sandwiched = [][]string{
+var sandwiched = [][]string{
 	// (Postfix) postfix/src/smtp/smtp_proto.c: "host %s said: %s (in reply to %s)",
 	// - <kijitora@example.com>: host re2.example.com[198.51.100.2] said: 550 ...
 	// - <kijitora@example.org>: host r2.example.org[198.51.100.18] refused to talk to me:
@@ -120,8 +120,8 @@ func Find(argv1 string) string {
 	hostnameis := ""
 
 	MAKELIST: for {
-		for _, e := range Sandwiched {
-			// Check a hostname exists between the e[0] and e[1] at slice "Sandwiched"
+		for _, e := range sandwiched {
+			// Check a hostname exists between the e[0] and e[1] at slice "sandwiched"
 			// Each slice in Sandwich have 2 elements
 			if sisimoji.Aligned(sourcetext, e) == false { continue }
 			p1 := strings.Index(sourcetext, e[0])
