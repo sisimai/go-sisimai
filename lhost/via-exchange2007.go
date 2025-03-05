@@ -10,11 +10,11 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
-import sisiaddr "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
@@ -112,7 +112,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e)
+				v.Recipient = address.S3S4(e)
 				recipients += 1
 
 			} else {
@@ -148,7 +148,7 @@ func init() {
 			p1 := strings.Index(emailparts[0], "Original Message Details"); if p1 < 0 { break }
 			p2 := strings.Index(emailparts[0], "\nRecipient Address: ");    if p2 < 0 { break }
 			p3 := sisimoji.IndexOnTheWay(emailparts[0], "\n", p2 + 20);     if p3 < 0 { break }
-			cv := sisiaddr.S3S4(emailparts[0][p2 + 20:p3])
+			cv := address.S3S4(emailparts[0][p2 + 20:p3])
 			if rfc5322.IsEmailAddress(cv) { dscontents[0].Recipient = cv; recipients++ }
 		}
 		if recipients == 0  { return sis.RisingUnderway{} }

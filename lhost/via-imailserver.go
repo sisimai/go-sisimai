@@ -10,10 +10,10 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Progress iMail Server: https://community.progress.com/s/products/imailserver
@@ -56,7 +56,7 @@ func init() {
 					v = &(dscontents[len(dscontents) - 1])
 				}
 				v.Diagnosis = e
-				v.Recipient = sisiaddr.Find(e)[0]
+				v.Recipient = address.Find(e)[0]
 				recipients += 1
 
 			} else {

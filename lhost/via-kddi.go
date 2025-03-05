@@ -9,10 +9,10 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from au by KDDI: https://www.au.kddi.com
@@ -73,7 +73,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				cv := sisiaddr.S3S4(e[strings.IndexByte(e, '<'):])
+				cv := address.S3S4(e[strings.IndexByte(e, '<'):])
 				if rfc5322.IsEmailAddress(cv) { v.Recipient = cv; recipients++ }
 
 			} else if strings.Contains(e, "Your mail sent on: ") {

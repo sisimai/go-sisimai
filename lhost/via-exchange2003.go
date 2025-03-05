@@ -11,10 +11,10 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/status"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Microsoft Exchange Server 2003: https://www.microsoft.com/microsoft-365/exchange/email
@@ -135,7 +135,7 @@ func init() {
 					p1 := strings.Index(strings.ToLower(e), "smtp="); if p1 < 0 { p1 = 0 } else { p1 += 5 }
 					p2 := strings.Index(e, " on ")
 
-					v.Recipient = sisiaddr.S3S4(e[p1:p2])
+					v.Recipient = address.S3S4(e[p1:p2])
 					recipients += 1
 					msexchange[rightindex] = false
 

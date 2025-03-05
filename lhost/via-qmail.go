@@ -10,10 +10,10 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from qmail: https://cr.yp.to/qmail.html
@@ -192,7 +192,7 @@ func init() {
 					rightindex++
 					v = &(dscontents[rightindex])
 				}
-				v.Recipient = sisiaddr.S3S4(e[1:strings.Index(e, ">:")])
+				v.Recipient = address.S3S4(e[1:strings.Index(e, ">:")])
 				recipients += 1
 
 			} else if len(dscontents) == int(recipients) {

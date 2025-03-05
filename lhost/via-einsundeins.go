@@ -9,11 +9,11 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from 1&1: https://www.1und1.de/
@@ -61,7 +61,7 @@ func init() {
 			   (strings.HasSuffix(e, ":") || strings.IndexByte(e, ' ') < 0 ) {
 				// general@example.eu OR
 				// the line begin with 4 space characters, end with ":" like "    neko@example.eu:"
-				ce := sisiaddr.S3S4(strings.Trim(e, ":")); if rfc5322.IsEmailAddress(ce) == false { continue }
+				ce := address.S3S4(strings.Trim(e, ":")); if rfc5322.IsEmailAddress(ce) == false { continue }
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})

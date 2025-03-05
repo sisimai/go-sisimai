@@ -10,13 +10,13 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// V8Sendmail: /usr/sbin/sendmail
@@ -89,7 +89,7 @@ func init() {
 							dscontents = append(dscontents, sis.DeliveryMatter{})
 							v = &(dscontents[len(dscontents) - 1])
 						}
-						v.Recipient = sisiaddr.Final(o[2])
+						v.Recipient = address.Final(o[2])
 						recipients += 1
 
 					} else {
@@ -144,7 +144,7 @@ func init() {
 
 						if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"@", ">.", " "}) {
 							// <kijitora@example.co.jp>... Deferred: Name server: example.co.jp.: host name lookup failure
-							anotherset["recipient"] = sisiaddr.S3S4(e[0:strings.IndexByte(e, '>')])
+							anotherset["recipient"] = address.S3S4(e[0:strings.IndexByte(e, '>')])
 							anotherset["diagnosis"] = e[strings.IndexByte(e, ' ') + 1:]
 
 						} else {
@@ -215,7 +215,7 @@ func init() {
 			if strings.HasPrefix(e.Recipient, "@") {
 				// There is no local part in the recipient address such as "@mail.example.org"
 				// Get the email address from the value of Diagnostic-Code field
-				if cv := sisiaddr.Find(e.Diagnosis); cv[0] != "" { e.Recipient = cv[0] }
+				if cv := address.Find(e.Diagnosis); cv[0] != "" { e.Recipient = cv[0] }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

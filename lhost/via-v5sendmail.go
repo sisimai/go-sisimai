@@ -9,12 +9,12 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Sendmail version 5
@@ -76,7 +76,7 @@ func init() {
 				// 550 <kijitora@example.org>... User unknown
 				// >>> RCPT To:<kijitora@example.org>
 				ce := sisimoji.Select(e, " <", ">...", 0); if ce == "" { ce = sisimoji.Select(e, ":<", ">", 0) }
-				cv := sisiaddr.S3S4(ce)
+				cv := address.S3S4(ce)
 
 				// Keep error messages before "While talking to ..." line
 				if remotehost == "" { anotherone[recipients] += " " + e; continue }
@@ -132,7 +132,7 @@ func init() {
 			// There is no recipient address in the error message
 			for e := range anotherone {
 				// Try to pick an recipient address, a reply code, and error messages
-				cv := sisiaddr.S3S4(anotherone[e]); if cv == "" { continue }
+				cv := address.S3S4(anotherone[e]); if cv == "" { continue }
 				cr := reply.Find(anotherone[e], "")
 				dscontents[e].Recipient = cv
 				dscontents[e].ReplyCode = cr
@@ -165,7 +165,7 @@ func init() {
 			if rfc5322.IsEmailAddress(e.Recipient) == true       { continue }
 			p1 := strings.IndexByte(e.Diagnosis, '<'); if p1 < 0 { continue }
 			p2 := strings.IndexByte(e.Diagnosis, '>'); if p2 < 0 { continue }
-			e.Recipient = sisiaddr.S3S4(e.Diagnosis[p1:p2 + 1])
+			e.Recipient = address.S3S4(e.Diagnosis[p1:p2 + 1])
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

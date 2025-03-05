@@ -12,10 +12,10 @@ import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/lhost"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 // isARF() returns true if the bounce mail is Abuse Feedback Reporting Format
 func isARF(bf *sis.BeforeFact) bool {
@@ -143,8 +143,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				// Original-Rcpt-To header field is optional and may appear any number of times as appropriate:
 				// Original-Rcpt-To: <kijitora@example.jp>
 				// Removal-Recipient: user@example.com
-				cv := sisiaddr.S3S4(e[strings.IndexByte(e, ' ') + 1:]); if rfc5322.IsEmailAddress(cv) == false        { continue }
-				cw := len(dscontents);                                  if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
+				cv := address.S3S4(e[strings.IndexByte(e, ' ') + 1:]); if rfc5322.IsEmailAddress(cv) == false        { continue }
+				cw := len(dscontents);                                 if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
 
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -214,11 +214,11 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 		} else {
 			// Pick it from the original message part
-			cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo:", "\n", 0))
+			cv := address.S3S4(sisimoji.Select(emailparts[1], "\nTo:", "\n", 0))
 
 			// There is no valid email address in the To: header of the original message such as
 			// To: <Undisclosed Recipients>
-			if cv == "" { cv = sisiaddr.Undisclosed(true) }
+			if cv == "" { cv = address.Undisclosed(true) }
 			dscontents[0].Recipient = cv
 		}
 		recipients++

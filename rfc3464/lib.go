@@ -13,6 +13,7 @@ package rfc3464
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/lhost"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
@@ -20,7 +21,6 @@ import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 // Inquire() decodes a bounce message that has fields defined in RFC3464
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
@@ -158,7 +158,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if o[0] == "final-recipient" {
 					// Final-Recipient: rfc822; kijitora@example.jp
 					// Final-Recipient: x400; /PN=...
-					cv := sisiaddr.S3S4(o[2]); if rfc5322.IsEmailAddress(cv) == false    { continue }
+					cv := address.S3S4(o[2]); if rfc5322.IsEmailAddress(cv) == false     { continue }
 					cw := len(dscontents); if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
 
 					if len(v.Recipient) > 0 {

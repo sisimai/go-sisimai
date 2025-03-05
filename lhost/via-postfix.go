@@ -11,6 +11,7 @@ import "fmt"
 import "strings"
 import "strconv"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
@@ -18,7 +19,6 @@ import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import "libsisimai.org/sisimai/smtp/transcript"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Postfix https://www.postfix.org/
@@ -181,13 +181,13 @@ func init() {
 							// <r@example.ne.jp> (expanded from <kijitora@example.org>): user ...
 							// OR
 							// <kijitora@exmaple.jp>: ...
-							anotherset["recipient"] = sisiaddr.S3S4(sisimoji.Select(e, "<", "< ", 0))
-							anotherset["alias"]     = sisiaddr.S3S4(sisimoji.Select(e, "(expanded from ", "):", 0))
+							anotherset["recipient"] = address.S3S4(sisimoji.Select(e, "<", "< ", 0))
+							anotherset["alias"]     = address.S3S4(sisimoji.Select(e, "(expanded from ", "):", 0))
 							if p1 := strings.Index(e, ">): ") + 4; len(e) > p1 { anotherset["diagnosis"] = e[p1:] }
 
 						} else if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"<", "@", ">:"}) {
 							// <kijitora@exmaple.jp>: ...
-							anotherset["recipient"] = sisiaddr.S3S4(e[0:strings.IndexByte(e, '>') + 1])
+							anotherset["recipient"] = address.S3S4(e[0:strings.IndexByte(e, '>') + 1])
 							anotherset["diagnosis"] = e[strings.Index(e, ">:") + 2:]
 
 						} else if strings.Contains(e, "--- Delivery report unavailable ---") {
@@ -222,7 +222,7 @@ func init() {
 			} else if nomessages == true {
 				// Get a recipient address from message/rfc822 part if the delivery report was unavailable:
 				// "--- Delivery report unavailable ---"
-				if cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0)); cv != "" {
+				if cv := address.S3S4(sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0)); cv != "" {
 					// Try to get a recipient address from To: field in the original message at message/rfc822 part
 					dscontents[len(dscontents) - 1].Recipient = cv
 					recipients += 1

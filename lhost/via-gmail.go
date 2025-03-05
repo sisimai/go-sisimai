@@ -9,10 +9,10 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/smtp/status"
-import sisiaddr "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
@@ -201,7 +201,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				cv := sisiaddr.S3S4(strings.Trim(e, " "))
+				cv := address.S3S4(strings.Trim(e, " "))
 				if rfc5322.IsEmailAddress(cv) == true { v.Recipient = cv; recipients++ }
 
 			} else {

@@ -9,9 +9,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Unknown MTA #1
@@ -55,7 +55,7 @@ func init() {
 					v = &(dscontents[len(dscontents) - 1])
 				}
 				p1 := strings.IndexByte(e, ' ')
-				cv := sisiaddr.S3S4(e[:p1]); if rfc5322.IsEmailAddress(cv) == false { continue }
+				cv := address.S3S4(e[:p1]); if rfc5322.IsEmailAddress(cv) == false { continue }
 				v.Recipient  = cv
 				v.Diagnosis += " " + e
 				recipients  += 1

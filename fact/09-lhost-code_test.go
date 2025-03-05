@@ -16,13 +16,13 @@ import "strings"
 import "path/filepath"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rhost"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimbox "libsisimai.org/sisimai/mail"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 type IsExpected struct {
 	Label      string // "01" or "1025"
@@ -221,7 +221,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 							}
 						}
 
-						cx++; if sisiaddr.IsMailerDaemon(fs.Addresser.Address) == false {
+						cx++; if address.IsMailerDaemon(fs.Addresser.Address) == false {
 							cx++; if fs.Addresser.User == "" { t.Errorf("%s Addresser.User is empty", ee) }
 							cx++; if fs.Addresser.Host == "" { t.Errorf("%s Addresser.Host is empty", ee) }
 							cx++; if rfc1123.IsInternetHost(fs.Addresser.Host) == false {

@@ -13,10 +13,10 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rfc791"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Oracle Communications Messaging Server
@@ -74,7 +74,7 @@ func init() {
 			   sisimoji.Aligned(e, []string{"  Original address: ",  "@", "."}) {
 				//   Recipient address: @smtp.example.net:kijitora@server
 				//   Original address: kijitora@example.jp
-				cv := sisiaddr.S3S4(e[strings.Index(e, ": ") + 2:])
+				cv := address.S3S4(e[strings.Index(e, ": ") + 2:])
 				if rfc5322.IsEmailAddress(cv) == false { continue }
 
 				if len(v.Recipient) > 0 && cv != v.Recipient {

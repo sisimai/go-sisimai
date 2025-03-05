@@ -10,10 +10,10 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/status"
-import sisiaddr "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
@@ -97,7 +97,7 @@ func init() {
 			} else if strings.HasPrefix(e, "  ") && strings.IndexByte(e, '@') > 0 && strings.IndexByte(e[3:], ' ') < 0 {
 				// Continued from the line "was not delivered to:"
 				//   kijitora@example.net
-				v.Recipient = sisiaddr.S3S4(e[2:])
+				v.Recipient = address.S3S4(e[2:])
 
 			} else if e == "because:" {
 				// because:
@@ -142,7 +142,7 @@ func init() {
 			// Set default values stored in "permessage" if each value in "dscontents" is empty.
 			e := &(dscontents[j])
 			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
-			e.Recipient = sisiaddr.S3S4(e.Recipient)
+			e.Recipient = address.S3S4(e.Recipient)
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
 				if len(v.Select(z))    > 0 { continue }

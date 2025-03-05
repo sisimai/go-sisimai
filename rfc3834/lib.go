@@ -15,8 +15,8 @@ import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 // Inquire() decodes a bounce message that includes a vacation message
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
@@ -74,7 +74,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	RECIPIENT_ADDRESS: for _, e := range []string{"from", "return-path"} {
 		// Try to get the recipient adddress from some headers
 		if len(bf.Headers[e]) == 0 { continue }
-		cv := sisiaddr.S3S4(bf.Headers[e][0]); if rfc5322.IsEmailAddress(cv) == false { continue }
+		cv := address.S3S4(bf.Headers[e][0]); if rfc5322.IsEmailAddress(cv) == false { continue }
 		v.Recipient = cv
 		recipients += 1
 		break RECIPIENT_ADDRESS

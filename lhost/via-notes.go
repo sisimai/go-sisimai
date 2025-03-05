@@ -9,8 +9,8 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
-import sisiaddr "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
@@ -74,7 +74,7 @@ func init() {
 		if recipients == 0 {
 			// Pick an email address from "To:" header of the original message
 			if cv := sisimoji.Select(emailparts[1], "\nTo:", "\n", 0); cv != "" {
-				dscontents[0].Recipient = sisiaddr.S3S4(cv); recipients++
+				dscontents[0].Recipient = address.S3S4(cv); recipients++
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }

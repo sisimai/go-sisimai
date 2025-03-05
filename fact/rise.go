@@ -21,11 +21,11 @@ import "libsisimai.org/sisimai/rfc791"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import "libsisimai.org/sisimai/smtp/failure"
-import sisiaddr "libsisimai.org/sisimai/address"
 import sisimoji "libsisimai.org/sisimai/string"
 
 // sisimai/fact.Rise() returns []sis.Fact when it successfully decoded bounce messages
@@ -68,15 +68,15 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			// Detect an email address from message/rfc822 part
 			for _, f := range rfc5322.HeaderTable["addresser"] {
 				// Check each header in message/rfc822 part
-				if len(rfc822data[f])                         == 0  { continue }
-				j := sisiaddr.Find(rfc822data[f][0]); if j[0] == "" { continue }
+				if len(rfc822data[f])                        == 0  { continue }
+				j := address.Find(rfc822data[f][0]); if j[0] == "" { continue }
 				addrs["addresser"] = j; break ADDRESSER
 			}
 
 			if len(addrs["addresser"][0]) == 0 && len((*beforefact).Headers["to"]) > 0 {
 				// Fallback: Get the sender address from the header of the bounced email if the address
 				// is not set at the loop above.
-				j := sisiaddr.Find((*beforefact).Headers["to"][0])
+				j := address.Find((*beforefact).Headers["to"][0])
 				if j[0] != "" { addrs["addresser"] = j }
 			}
 			break ADDRESSER
@@ -263,8 +263,8 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		CONSTRUCTOR: for {
 			// - Create email address object as address.EmailAddress struct
 			// - Create decoded bounce mail object as sis.Fact struct
-			as := sisiaddr.Rise(addrs["addresser"]); if as.Void() == true { continue RISEOF }
-			ar := sisiaddr.Rise(addrs["recipient"]); if ar.Void() == true { continue RISEOF }
+			as := address.Rise(addrs["addresser"]); if as.Void() == true { continue RISEOF }
+			ar := address.Rise(addrs["recipient"]); if ar.Void() == true { continue RISEOF }
 
 			thing.Action         = e.Action
 			thing.Addresser      = as

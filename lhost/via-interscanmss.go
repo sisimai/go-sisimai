@@ -9,10 +9,10 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Trend Micro InterScan Messaging Security Suite
@@ -58,7 +58,7 @@ func init() {
 				// Unable to deliver message to <neko@example.jp> (and other recipients in the same domain).
 				p3 := strings.LastIndexByte(e, '<')
 				p4 := strings.LastIndexByte(e, '>')
-				cr := sisiaddr.Find(e[p3:p4 + 1])
+				cr := address.Find(e[p3:p4 + 1])
 				if len(cr) == 0 || rfc5322.IsEmailAddress(cr[0]) == false { continue }
 
 				if len(v.Recipient) > 0 && strings.Contains(cr[0], v.Recipient) == false {
@@ -68,7 +68,7 @@ func init() {
 				}
 				if strings.Contains(e, "Unable to deliver ") { v.Diagnosis = e }
 
-				v.Recipient = sisiaddr.S3S4(cr[0])
+				v.Recipient = address.S3S4(cr[0])
 				recipients  = uint8(len(dscontents))
 			}
 

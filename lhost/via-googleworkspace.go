@@ -10,9 +10,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Google Workspace except a bounce mail returned from Google Workspace
@@ -70,7 +70,7 @@ func init() {
 		if recipients == 0 {
 			// Pick the recipient address from the value of To: header of the original message
 			// after Content-Type: message/rfc822 field
-			if cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo:", "\n", 0)); cv != "" {
+			if cv := address.S3S4(sisimoji.Select(emailparts[1], "\nTo:", "\n", 0)); cv != "" {
 				dscontents[0].Recipient = cv
 				recipients++
 			}
