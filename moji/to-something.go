@@ -20,8 +20,7 @@ func ToLF(argv0 *string) *string {
 
 	crreplaced := *argv0; for _, e := range [2]string{"\r\n", "\r"} {
 		// Convert CRLF and CR to LF
-		if strings.Contains(crreplaced, e) == false { continue }
-		crreplaced = strings.ReplaceAll(crreplaced, e, "\n")
+		if strings.Contains(crreplaced, e) { crreplaced = strings.ReplaceAll(crreplaced, e, "\n") }
 	}
 	return &crreplaced
 }

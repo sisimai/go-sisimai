@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestSelect(t *testing.T) {
-	fn := "sisimai/string.Select"
+	fn := "moji.Select"
 	cx := 0
 	ae := []struct {arg string; b string; u string; s int; exp string}{
 		{"From: <neko@example.jp> Kijitora", "<", ">", 0, "neko@example.jp"},

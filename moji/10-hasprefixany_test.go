@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestHasPrefixAny(t *testing.T) {
-	fn := "sisimai/string.HasPrefixAny"
+	fn := "moji.HasPrefixAny"
 	cx := 0
 	ae := []struct {text string; list []string; expected bool}{
 		{"nekochan", []string{"cats", "kijitora", "nekochan"}, true},

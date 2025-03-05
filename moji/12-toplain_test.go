@@ -12,7 +12,7 @@ import "testing"
 import "strings"
 
 func TestToPlain(t *testing.T) {
-	fn := "sisimai/string.ToPlain"
+	fn := "moji.ToPlain"
 	cx := 0
 	cw := `<html>
         <head><style>h1 { color: red; } </style></head>

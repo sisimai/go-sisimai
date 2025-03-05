@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestToUTF8(t *testing.T) {
-	fn := "sisimai/string.ToUTF8"
+	fn := "moji.ToUTF8"
 	cx := 0
 	cw := ""
 

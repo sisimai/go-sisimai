@@ -12,7 +12,7 @@ import "testing"
 import "strings"
 
 func TestToLF(t *testing.T) {
-	fn := "sisimai/string.ToLF"
+	fn := "moji.ToLF"
 	cx := 0
 	cw := []string{
 		"nekochan\r\ncat\r\nkijitora",

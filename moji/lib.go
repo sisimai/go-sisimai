@@ -107,7 +107,7 @@ func IndexOnTheWay(argv0, argv1 string, start int) int {
 	// @param    string argv1  The substring to search for
 	// @param    int    start  The index from which to start the search
 	// @return   string        The index of argv1
-	if start < 0 || start >= len(argv0) { return -1 }
+	if start < 0 || start >= len(argv0)                    { return -1 }
 	fi := strings.Index(argv0[start:], argv1); if fi == -1 { return -1 }
 	return fi + start
 }
