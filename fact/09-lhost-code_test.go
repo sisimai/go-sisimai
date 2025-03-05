@@ -15,6 +15,7 @@ import "errors"
 import "strings"
 import "path/filepath"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rhost"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1123"
@@ -22,7 +23,6 @@ import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
 import sisimbox "libsisimai.org/sisimai/mail"
-import sisimoji "libsisimai.org/sisimai/string"
 
 type IsExpected struct {
 	Label      string // "01" or "1025"
@@ -130,7 +130,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						// Read and decode each email file as a string
 						cx++; if emailthing.Size == 0 { t.Errorf("%s %s is empty", ee, ef); continue }
 
-						mesg = sisimoji.ToLF(mesg)
+						mesg = moji.ToLF(mesg)
 						fact, nyaan := Rise(mesg, emailthing.Path, ArgForRise)
 						cx++; if nyaan != nil { t.Logf("%s %s", ee, nyaan[0].Error()) }
 						if len(fact) != 0 { sisi = append(sisi, fact...) }
