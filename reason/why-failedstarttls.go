@@ -9,7 +9,7 @@
 package reason
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -30,9 +30,9 @@ func init() {
 	ProbesInto["FailedSTARTTLS"] = func(fo *sis.Fact) bool {
 		// @param    *sis.Fact fo    Struct to be detected the reason
 		// @return   bool            true: is FailedSTARTTLS, false: is not FailedSTARTTLS
-		if fo == nil                                                       { return false }
-		if fo.Reason == "failedstarttls" || fo.Command == "STARTTLS"       { return true  }
-		if sisimoji.EqualsAny(fo.ReplyCode, []string{"523", "524", "538"}) { return true  }
+		if fo == nil                                                   { return false }
+		if fo.Reason == "failedstarttls" || fo.Command == "STARTTLS"   { return true  }
+		if moji.EqualsAny(fo.ReplyCode, []string{"523", "524", "538"}) { return true  }
 		return IncludedIn["FailedSTARTTLS"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

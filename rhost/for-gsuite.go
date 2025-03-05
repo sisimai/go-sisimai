@@ -9,7 +9,7 @@
 
 package rhost
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service
@@ -30,7 +30,7 @@ func init() {
 
 		for e := range messagesof {
 			// The key is a bounce reason name
-			if sisimoji.ContainsAny(fo.DiagnosticCode, messagesof[e]) == false { continue }
+			if moji.ContainsAny(fo.DiagnosticCode, messagesof[e]) == false     { continue }
 			if e == "networkerror" && (statuscode == "5" || esmtpreply == "5") { continue }
 			if e == "hostunknown"  && (statuscode == "4" || statuscode == "")  { continue }
 			if e == "hostunknown"  && (esmtpreply == "4" || esmtpreply == "")  { continue }

@@ -9,7 +9,7 @@
 package rhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service
@@ -33,7 +33,7 @@ func init() {
 			"10": "filtered",    // Not in the list Mail address management.
 		}
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
-		codenumber := sisimoji.Select(issuedcode, ".i.ua/err/", "/", 0); if codenumber == "" { return "" }
+		codenumber := moji.Select(issuedcode, ".i.ua/err/", "/", 0); if codenumber == "" { return "" }
 		return errorcodes[codenumber]
 	}
 }

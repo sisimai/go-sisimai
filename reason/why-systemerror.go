@@ -10,7 +10,7 @@
 package reason
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -48,7 +48,7 @@ func init() {
 		}
 
 		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		for _, v := range pairs { if sisimoji.Aligned(argv1, v) { return true }}
+		for _, v := range pairs { if moji.Aligned(argv1, v)     { return true }}
 		return false
 	}
 

@@ -9,7 +9,7 @@
 package reason
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -37,7 +37,7 @@ func init() {
 		// @return   bool            true: is virusdetected, false: is not virusdetected
 		if fo        == nil             { return false }
 		if fo.Reason == "virusdetected" { return true  }
-		if sisimoji.EqualsAny(fo.Command, []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}) { return false }
+		if moji.EqualsAny(fo.Command, []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}) { return false }
 		return IncludedIn["VirusDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

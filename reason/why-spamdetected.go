@@ -10,8 +10,8 @@
 package reason
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/smtp/status"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -124,7 +124,7 @@ func init() {
 		}
 
 		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		for _, v := range pairs { if sisimoji.Aligned(argv1, v) { return true }}
+		for _, v := range pairs { if moji.Aligned(argv1, v)     { return true }}
 		return false
 	}
 
@@ -136,7 +136,7 @@ func init() {
 		if fo == nil || fo.DeliveryStatus == ""             { return false }
 		if fo.Reason == "spamdetected"                      { return true  }
 		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true  }
-		if sisimoji.EqualsAny(fo.Command, commandset)       { return false }
+		if moji.EqualsAny(fo.Command, commandset)           { return false }
 		return IncludedIn["SpamDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
