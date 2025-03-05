@@ -9,7 +9,7 @@ package rfc1894
 //   |_|\___||___/\__/_/  |_| \_\_|   \____|_|\___/  /_/   |_|  
 import "testing"
 import "strings"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 var FieldList = []string{
 	"Reporting-MTA: dns; mx.example.jp",
@@ -71,15 +71,15 @@ func TestField(t *testing.T) {
 		cv := Field(e)
 		cx++; if len(cv) == 0 { t.Errorf("%s(%s) returns an empty list", fn, e) }
 		cx++; if len(cv) != 5 { t.Errorf("%s(%s) did not return 5 elements", fn, e) }
-		cx++; if sisimoji.EqualsAny(cv[0], LowerList) == false { t.Errorf("%s(%s)[0] is %s", fn, e, cv[0]) }
+		cx++; if moji.EqualsAny(cv[0], LowerList) == false { t.Errorf("%s(%s)[0] is %s", fn, e, cv[0]) }
 
 		if strings.Contains(e, ";") {
 			cx++; if cv[1] == "" { t.Errorf("%s(%s)[1] is empty", fn, e) }
-			cx++; if sisimoji.ContainsAny(strings.ToLower(cv[1]), []string{"rfc822", "smtp", "dns", "x-unix"}) == false {
+			cx++; if moji.ContainsAny(strings.ToLower(cv[1]), []string{"rfc822", "smtp", "dns", "x-unix"}) == false {
 				t.Errorf("%s(%s)[1] is invalid subtype: %s", fn, e, cv[1])
 			}
 			cx++; if cv[2] == "" { t.Errorf("%s(%s)[2] is empty", fn, e) }
-			cx++; if sisimoji.EqualsAny(cv[3], []string{"addr", "code", "date", "host", "list", "stat", "text"}) == false {
+			cx++; if moji.EqualsAny(cv[3], []string{"addr", "code", "date", "host", "list", "stat", "text"}) == false {
 				t.Errorf("%s(%s)[3] is invalid group: %s", fn, e, cv[3])
 			}
 			cx++; if cv[4] != "" { t.Errorf("%s(%s)[4] is not empty: %s", fn, e, cv[4]) }
