@@ -80,7 +80,7 @@ package reply
 //
 import "strconv"
 import "strings"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 var replycode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "354"}
 var replycode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "456", "458", "459"}
@@ -150,7 +150,7 @@ func Find(argv1 string, argv2 string) string {
 
 		for j := 0; j < appearance; j++ {
 			// Find all the reply codes in the error message
-			replyindex := sisimoji.IndexOnTheWay(esmtperror, e, startingat); if replyindex < 0 { break }
+			replyindex := moji.IndexOnTheWay(esmtperror, e, startingat); if replyindex < 0 { break }
 			formerchar := []byte(esmtperror[replyindex - 1:replyindex])[0]
 			latterchar := []byte(esmtperror[replyindex + 3:replyindex + 4])[0]
 

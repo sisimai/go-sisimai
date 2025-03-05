@@ -10,6 +10,7 @@
 package reason
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -52,8 +53,8 @@ func init() {
 		// @return   bool            true: is norelaying, false: is not norelaying
 		if fo         == nil          { return false }
 		if fo.Reason  == "norelaying" { return true  }
-		if fo.Reason  == "securityerror" || fo.Reason == "systemerror" || fo.Reason == "undefined" { return false }
-		if fo.Command == "CONN"          || fo.Command == "EHLO"       || fo.Command == "HELO"     { return false }
+		if moji.EqualsAny(fo.Reason,  []string{"securityerror", "systemerror", "undefined"}) { return false }
+		if moji.EqualsAny(fo.Command, []string{"CONN", "EHLO", "HELO"})                      { return false }
 		return IncludedIn["NoRelaying"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

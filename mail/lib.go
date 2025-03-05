@@ -183,8 +183,7 @@ func(this *EmailEntity) setNewLine() (bool, error) {
 		}
 
 		the1st1000 := make([]byte, 1000)
-		_, nyaan := bufferedio.Read(the1st1000)
-		if nyaan != nil && nyaan != io.EOF {
+		if _, nyaan := bufferedio.Read(the1st1000); nyaan != nil && nyaan != io.EOF {
 			// Failed to read the 1st 1000 bytes
 			this.newline = 0
 			return false, nyaan
@@ -193,8 +192,7 @@ func(this *EmailEntity) setNewLine() (bool, error) {
 
 	} else {
 		// Memory
-		if len(this.payload) ==  0 { this.newline = 0; return false, nil }
-		if this.payload[0]   == "" { this.newline = 0; return false, nil }
+		if len(this.payload) ==  0 || this.payload[0] == "" { this.newline = 0; return false, nil }
 		readbuffer = this.payload[0][:1000]
 	}
 

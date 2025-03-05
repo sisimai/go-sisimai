@@ -10,9 +10,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Google Workspace except a bounce mail returned from Google Workspace
@@ -21,9 +21,9 @@ func init() {
 		// @param    *sis.BeforeFact bf  Message body of a bounce email
 		// @return   RisingUnderway      RisingUnderway structure
 		// @see https://workspace.google.com/
-		if bf == nil || bf.Empty() == true                            { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Payload, "\nDiagnostic-Code:") == true { return sis.RisingUnderway{} }
-		if strings.Contains(bf.Payload, "\nFinal-Recipient:") == true { return sis.RisingUnderway{} }
+		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
+
+		if moji.ContainsAny(bf.Payload, []string{"\nDiagnostic-Code:", "\nFinal-Recipient:"})  { return sis.RisingUnderway{} }
 		if strings.Contains(bf.Headers["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
 		if strings.Contains(bf.Headers["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
 
@@ -70,7 +70,7 @@ func init() {
 		if recipients == 0 {
 			// Pick the recipient address from the value of To: header of the original message
 			// after Content-Type: message/rfc822 field
-			if cv := sisiaddr.S3S4(sisimoji.Select(emailparts[1], "\nTo:", "\n", 0)); cv != "" {
+			if cv := address.S3S4(moji.Select(emailparts[1], "\nTo:", "\n", 0)); cv != "" {
 				dscontents[0].Recipient = cv
 				recipients++
 			}
@@ -80,14 +80,12 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(strings.ReplaceAll(e.Diagnosis, "\n", " "))
+			e.Diagnosis = moji.Sweep(strings.ReplaceAll(e.Diagnosis, "\n", " "))
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

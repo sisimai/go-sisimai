@@ -10,9 +10,9 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Trustwave Secure Email Gateway: https://www.trustwave.com/en-us/services/email-security/
@@ -93,22 +93,22 @@ func init() {
 					if strings.HasPrefix(e, "Original Sender: ") {
 						// Original Sender:    <originalsender@example.com>
 						// Use this line instead of "From" header of the original message.
-						emailparts[1] += fmt.Sprintf("From: %s\n", sisimoji.Select(e, "<", ">", 0))
+						emailparts[1] += fmt.Sprintf("From: %s\n", moji.Select(e, "<", ">", 0))
 
 					} else if strings.HasPrefix(e, "Sender-MTA: ") {
 						// Sender-MTA:         <10.11.12.13>
-						v.Lhost = sisimoji.Select(e, "<", ">", 0)
+						v.Lhost = moji.Select(e, "<", ">", 0)
 
 					} else if strings.HasPrefix(e, "Reporting-MTA: ") {
 						// Reporting-MTA:      <relay.xxxxxxxxxxxx.com>
-						v.Rhost = sisimoji.Select(e, "<", ">", 0)
+						v.Rhost = moji.Select(e, "<", ">", 0)
 
-					} else if strings.Contains(e, " From:") || strings.Contains(e, " Subject:") {
+					} else if moji.ContainsAny(e, []string{" From:", " Subject:"}) {
 						//    From:    originalsender@example.com
 						//    Subject: ...
 						p1 := strings.Index(e, " From:"); if p1 < 0 { p1 = strings.Index(e, " Subject:") }
 						p2 := strings.IndexByte(e, ':')
-						emailparts[1] += fmt.Sprintf("%s: %s\n", e[p1 + 1:p2], sisimoji.Sweep(e[p2 + 1:]))
+						emailparts[1] += fmt.Sprintf("%s: %s\n", e[p1 + 1:p2], moji.Sweep(e[p2 + 1:]))
 					}
 				}
 			}
@@ -118,7 +118,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

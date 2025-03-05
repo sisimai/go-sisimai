@@ -9,7 +9,7 @@
 package rhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service
@@ -90,7 +90,7 @@ func init() {
 		errorlabel := fo.DiagnosticCode[errorindex - 3:errorindex + 3]
 		for e := range errorcodes {
 			// The key is a bounce reason name
-			if sisimoji.EqualsAny(errorlabel, errorcodes[e]) { return e }
+			if moji.EqualsAny(errorlabel, errorcodes[e]) { return e }
 		}
 		return ""
 	}

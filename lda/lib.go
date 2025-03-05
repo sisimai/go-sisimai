@@ -11,7 +11,7 @@ package lda
 
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 var localagent = map[string][]string{
 	// Each error message should be a lower-cased string
@@ -89,15 +89,13 @@ func Find(fo *sis.Fact) string {
 
 	for e := range localagent {
 		// Find a local delivery agent name from the lower-cased error message
-		if sisimoji.ContainsAny(issuedcode, localagent[e]) == false { continue }
-		deliversby = e; break
+		if moji.ContainsAny(issuedcode, localagent[e]) { deliversby = e; break }
 	}
 	if deliversby == "" { return "" }
 
 	for e := range messagesof[deliversby] {
 		// The key nane is a bounce reason name
-		if sisimoji.ContainsAny(issuedcode, messagesof[deliversby][e]) == false { continue }
-		reasontext = e; break
+		if moji.ContainsAny(issuedcode, messagesof[deliversby][e]) { reasontext = e; break }
 	}
 
 	// procmail: Couldn't create "/var/mail/tmp.nekochan.22"

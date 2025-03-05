@@ -12,15 +12,15 @@
 package rfc3464
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/lhost"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 // Inquire() decodes a bounce message that has fields defined in RFC3464
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
@@ -43,7 +43,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		"Content-", "This is a MIME", "This is a multi", "This is an auto", "This multi-part", "###", "***", "--",
 	}
 
-	for sisimoji.ContainsAny(bf.Payload, boundaries) == false {
+	for moji.ContainsAny(bf.Payload, boundaries) == false {
 		// There is no "Content-Type: message/rfc822" line in the message body
 		// Insert "Content-Type: message/rfc822" before "Return-Path:" of the original message
 		cv := "\n\nReturn-Path:"; if strings.Contains(bf.Payload, cv) == false { break }
@@ -99,7 +99,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		// Insert "rfc822; " just after the field name
 		emailparts[0] = strings.Replace(emailparts[0], cv + "<", cv + "rfc822; ", 1)
 		p0 := strings.Index(emailparts[0], cv)
-		p1 := sisimoji.IndexOnTheWay(emailparts[0], ">\n", p0 + 1)
+		p1 := moji.IndexOnTheWay(emailparts[0], ">\n", p0 + 1)
 		emailparts[0] = emailparts[0][:p1] + emailparts[0][p1 + 1:]
 	}
 
@@ -119,7 +119,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 				// This line is a boundary kept in "multiparts" as a string, when the end of
 				// the boundary appeared, the condition above also returns true.
-				if sisimoji.HasPrefixAny(e, isboundary) { goestonext = false; break }
+				if moji.HasPrefixAny(e, isboundary) { goestonext = false; break }
 				if strings.HasPrefix(e, "Content-Type:") {
 					// Content-Type: field in multipart/*
 					if strings.Contains(e, "multipart/") {
@@ -137,10 +137,10 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 					}
 					break
 				}
-				if sisimoji.HasPrefixAny(e, dontappend)  { break }
+				if moji.HasPrefixAny(e, dontappend)      { break }
 				if strings.Contains(e, "--- The follow") { break } // ----- The following addresses had delivery problems -----
 				if strings.Contains(e, "--- Transcript") { break } // ----- Transcript of session follows -----
-				beforemesg += e + " "; break
+				beforemesg += e + " ";                     break
 			}
 			continue
 		}
@@ -158,7 +158,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if o[0] == "final-recipient" {
 					// Final-Recipient: rfc822; kijitora@example.jp
 					// Final-Recipient: x400; /PN=...
-					cv := sisiaddr.S3S4(o[2]); if rfc5322.IsEmailAddress(cv) == false    { continue }
+					cv := address.S3S4(o[2]); if rfc5322.IsEmailAddress(cv) == false     { continue }
 					cw := len(dscontents); if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
 
 					if len(v.Recipient) > 0 {
@@ -180,18 +180,16 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 			} else {
 				// Other DSN fields defined in RFC3464
-				if o[4] != "" {
-					// There are other error messages as a comment such as the following:
-					// Status: 5.0.0 (permanent failure)
-					// Status: 4.0.0 (cat.example.net: host name lookup failure)
-					v.Diagnosis += " " + o[4] + " "
-				}
+				// There are other error messages as a comment such as the following:
+				// Status: 5.0.0 (permanent failure)
+				// Status: 4.0.0 (cat.example.net: host name lookup failure)
+				if o[4] != "" { v.Diagnosis += " " + o[4] + " " }
 				v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 
 				// Copy the lower-cased member name of sis.DeliveryMatter{} for "permessage" for
 				// the later reference
 				permessage[z] = o[2]
-				if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
+				if moji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 			}
 		} else {
 			// Check that the line is a continued line of the value of Diagnostic-Code: field or not
@@ -216,20 +214,17 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 					// In the case of multiple "message/delivery-status" line
 					if strings.HasPrefix(e, "Content-") { continue } // Content-Disposition, ...
 					if strings.HasPrefix(e, "--")       { continue } // Boundary string
-					beforemesg += e + " "
-					continue
+					beforemesg += e + " ";                continue
 				}
 
 				// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
 				//    has an SPF record with a hard fail
-				if strings.HasPrefix(e, " ") == false { continue }
-				v.Diagnosis += " " + sisimoji.Sweep(e)
+				if strings.HasPrefix(e, " ") { v.Diagnosis += " " + moji.Sweep(e) }
 			}
 		}
 	}
 	for recipients == 0 {
 		// There is no valid recipient address, Try to use the alias addaress as a final recipient
-		if dscontents[0].Alias == ""                            { break }
 		if rfc5322.IsEmailAddress(dscontents[0].Alias) == false { break }
 		dscontents[0].Recipient = dscontents[0].Alias; recipients++
 	}
@@ -237,7 +232,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	if beforemesg != "" {
 		// Pick some values of []sis.DeliveryMatte{} from the string before startingof["message"]
-		beforemesg           = sisimoji.Sweep(beforemesg)
+		beforemesg           = moji.Sweep(beforemesg)
 		alternates.Command   = command.Find(beforemesg)
 		alternates.ReplyCode = reply.Find(beforemesg, dscontents[0].Status)
 		alternates.Status    = status.Find(beforemesg, alternates.ReplyCode)
@@ -248,12 +243,11 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		// Set default values stored in "permessage" if each value in "dscontents" is empty.
 		e := &(dscontents[j]); for _, z := range keystrings {
 			// Do not set an empty string into each member of sis.DeliveryMatter{}
-			if len(v.Select(z))    > 0 { continue }
-			if len(permessage[z]) == 0 { continue }
+			if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 			e.Update(z, permessage[z])
 		}
 
-		e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+		e.Diagnosis = moji.Sweep(e.Diagnosis)
 		if recipients == 1 {
 			// Do not mix the error message of each recipient with "beforemesg" when there is
 			// multiple recipient addresses in the bounce message
@@ -265,7 +259,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			} else {
 				// The value of e.Diagnosis is not contained in "beforemesg"
 				// There may be an important error message in "beforemesg"
-				e.Diagnosis = sisimoji.Sweep(beforemesg + " " + e.Diagnosis)
+				e.Diagnosis = moji.Sweep(beforemesg + " " + e.Diagnosis)
 			}
 		}
 		e.Command   = command.Find(e.Diagnosis);         if e.Command   == "" { e.Command   = alternates.Command   }

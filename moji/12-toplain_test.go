@@ -1,18 +1,18 @@
 // Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package string
+package moji
 
-//  _____         _      __   _        _             
-// |_   _|__  ___| |_   / /__| |_ _ __(_)_ __   __ _ 
-//   | |/ _ \/ __| __| / / __| __| '__| | '_ \ / _` |
-//   | |  __/\__ \ |_ / /\__ \ |_| |  | | | | | (_| |
-//   |_|\___||___/\__/_/ |___/\__|_|  |_|_| |_|\__, |
-//                                             |___/ 
+//  _____         _      __               _ _ 
+// |_   _|__  ___| |_   / / __ ___   ___ (_|_)
+//   | |/ _ \/ __| __| / / '_ ` _ \ / _ \| | |
+//   | |  __/\__ \ |_ / /| | | | | | (_) | | |
+//   |_|\___||___/\__/_/ |_| |_| |_|\___// |_|
+//                                     |__/   
 import "testing"
 import "strings"
 
 func TestToPlain(t *testing.T) {
-	fn := "sisimai/string.ToPlain"
+	fn := "moji.ToPlain"
 	cx := 0
 	cw := `<html>
         <head><style>h1 { color: red; } </style></head>

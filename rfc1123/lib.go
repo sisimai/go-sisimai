@@ -10,8 +10,8 @@
 // https://datatracker.ietf.org/doc/html/rfc1123
 package rfc1123
 import "strings"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc791"
-import sisimoji "libsisimai.org/sisimai/string"
 
 var sandwiched = [][]string{
 	// (Postfix) postfix/src/smtp/smtp_proto.c: "host %s said: %s (in reply to %s)",
@@ -53,11 +53,11 @@ func IsInternetHost(argv1 string) bool {
 	if len(argv1) < 4 || len(argv1) > 255 { return false }
 
 	// Deal "localhost", "localhost6" as a valid hostname
-	if argv1 == "localhost" || argv1 == "localhost6"    { return true  }
-	if strings.IndexByte(argv1, '.') == -1              { return false }
-	if strings.Contains(argv1, "..") == true            { return false }
-	if sisimoji.HasPrefixAny(argv1, []string{".", "-"}) { return false }
-	if strings.HasSuffix(argv1, "-") == true            { return false }
+	if argv1 == "localhost" || argv1 == "localhost6" { return true  }
+	if strings.IndexByte(argv1, '.') == -1           { return false }
+	if strings.Contains(argv1, "..") == true         { return false }
+	if moji.HasPrefixAny(argv1, []string{".", "-"})  { return false }
+	if strings.HasSuffix(argv1, "-") == true         { return false }
 
 	// Allow the hostname starting with A-Label: "xn--" of IDN(Internationalized Domain Name)
 	if strings.Contains(argv1, "--") == true && strings.HasPrefix(argv1, "xn--") == false { return false }
@@ -91,11 +91,11 @@ func IsDomainLiteral(email string) bool {
 
 	if strings.Contains(email, "@[IPv4:") {
 		// neko@[IPv4:192.0.2.25]
-		return rfc791.IsIPv4Address(sisimoji.Select(email, "@[IPv4:", "]", 0))
+		return rfc791.IsIPv4Address(moji.Select(email, "@[IPv4:", "]", 0))
 
 	} else if strings.Contains(email, "@[IPv6:") {
 		// neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]
-		cv := sisimoji.Select(email, "@[IPv6:", "]", 0)
+		cv := moji.Select(email, "@[IPv6:", "]", 0)
 		if len(cv) == 39 && strings.Count(cv, ":") == 7 { return true }
 	}
 	return false
@@ -123,7 +123,7 @@ func Find(argv1 string) string {
 		for _, e := range sandwiched {
 			// Check a hostname exists between the e[0] and e[1] at slice "sandwiched"
 			// Each slice in Sandwich have 2 elements
-			if sisimoji.Aligned(sourcetext, e) == false { continue }
+			if moji.Aligned(sourcetext, e) == false { continue }
 			p1 := strings.Index(sourcetext, e[0])
 			p2 := strings.Index(sourcetext, e[1]); cw := len(e[0]); if p1 + cw >= p2 { continue }
 

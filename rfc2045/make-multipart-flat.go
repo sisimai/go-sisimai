@@ -10,7 +10,7 @@ package rfc2045
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 // haircut() remove unnecessary header fields except Content-Type, Content-Transfer-Encoding from
 // multipart/* block.
@@ -54,7 +54,7 @@ func haircut(block *string, heads bool) []string {
 			if len(headerpart[0]) > 0 {
 				// Append parameters
 				headerpart[0] += " " + e
-				headerpart[0]  = sisimoji.Squeeze(headerpart[0], " ")
+				headerpart[0]  = moji.Squeeze(headerpart[0], " ")
 			}
 		}
 	}
@@ -72,7 +72,7 @@ func haircut(block *string, heads bool) []string {
 		// Do not append Content-Transfer-Encoding: header when the part is the original message:
 		// Content-Type is message/rfc822 or text/rfc822-headers, or message/delivery-status, or
 		// message/feedback-report
-		if sisimoji.ContainsAny(mediatypev, mediatable) || ctencoding == "" { break }
+		if moji.ContainsAny(mediatypev, mediatable) || ctencoding == "" { break }
 		multipart1[2] += fmt.Sprintf("Content-Transfer-Encoding: %s\n", ctencoding)
 		break
 	}
@@ -126,11 +126,11 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 			cw := len(cf)
 			ub := e; if len(cf[cw - 1]) > 0 { ub = cf[cw - 1] }
 
-			if sisimoji.Is8Bit(&ub) {
+			if moji.Is8Bit(&ub) {
 				// Avoid the following errors in DecodeQ()
 				// - quotedprintable: invalid unescaped byte 0x1b in body
 				cz := Parameter(cf[0], "charset")
-				utf8string, nyaan := sisimoji.ToUTF8([]byte(ub), cz); if nyaan != nil {
+				utf8string, nyaan := moji.ToUTF8([]byte(ub), cz); if nyaan != nil {
 					// Failed to convert the string to UTF-8
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
 					notdecoded = append(notdecoded, ce)
@@ -250,11 +250,11 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 			}
 
 			// Try to delete HTML tags inside of text/html part whenever possible
-			if istexthtml { bodystring = *sisimoji.ToPlain(&bodystring) }
+			if istexthtml { bodystring = *moji.ToPlain(&bodystring) }
 			if len(bodystring) == 0 { continue }
 
 			// The new-line code in the converted string is CRLF
-			if strings.Contains(bodystring, "\r\n") { bodystring = *sisimoji.ToLF(&bodystring) }
+			if strings.Contains(bodystring, "\r\n") { bodystring = *moji.ToLF(&bodystring) }
 
 		} else {
 			// There is no Content-Transfer-Encoding header in the part 
@@ -262,7 +262,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 		}
 
 		// There is no Content-Transfer-Encoding header in the part 
-		if sisimoji.ContainsAny(mediatypev, delimiters) {
+		if moji.ContainsAny(mediatypev, delimiters) {
 			// Add Content-Type: header of each part (will be used as a delimiter at Sisimai::Lhost)
 			// into the body inside when the value of Content-Type: is message/delivery-status, or
 			// message/rfc822, or text/rfc822-headers

@@ -10,7 +10,7 @@
 package rhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service
@@ -216,7 +216,7 @@ func init() {
 		}
 
 		issuedcode := fo.DiagnosticCode
-		errorlabel := "IB" + sisimoji.Select(issuedcode, " IB", " ", 0)
+		errorlabel := "IB" + moji.Select(issuedcode, " IB", " ", 0)
 		if errorcodes[errorlabel] != "" {
 			// 192.0.2.22 has sent to too many recipients this hour. IB607 ...
 			return errorcodes[errorlabel]
@@ -226,7 +226,7 @@ func init() {
 			issuedcode = strings.ToLower(issuedcode)
 			for e := range messagesof {
 				// The key is a bounce reason name
-				if sisimoji.ContainsAny(issuedcode, messagesof[e]) { return e }
+				if moji.ContainsAny(issuedcode, messagesof[e]) { return e }
 			}
 		}
 		return ""

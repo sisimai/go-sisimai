@@ -57,7 +57,7 @@ package rfc5322
 import "fmt"
 import "strings"
 import "strconv"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 var monthname = []string{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}
 var dayofweek = []string{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}
@@ -74,7 +74,7 @@ func Date(argv1 string) string {
 	//   rfc5322.Date("Fri, Feb 2 2018 2:2:2")   => Fri, 2 Feb 2018 02:02:02 +0000
 	if argv1 == "" { return "" }
 
-	datestring := sisimoji.Sweep(strings.ReplaceAll(argv1, ",", ", ")) // "Thu,22" -> "Thu, 22"
+	datestring := moji.Sweep(strings.ReplaceAll(argv1, ",", ", ")) // "Thu,22" -> "Thu, 22"
 	year2digit := uint8(0) // 2-digit year such as 22, 97
 	p          := [6]string{
 		"", // [0] Year (2018)
@@ -107,22 +107,21 @@ func Date(argv1 string) string {
 			}
 		} else if cw == 3 || (cw == 4 && strings.HasSuffix(e, ",")) {
 			// 3 characters: "Feb" or "Thu" or "Thu,", or 3-digit date like "029"
-			if sisimoji.ContainsOnlyNumbers(e) && strings.HasPrefix(e, "0") {
+			if moji.ContainsOnlyNumbers(e) && strings.HasPrefix(e, "0") {
 				// Tue, 029 Apr 2019 23:34:45 -0800 (PST)
 				p[2] = e[1:]
 
 			} else {
 				upperfirst := strings.ToUpper(e[0:1]) + strings.ToLower(e[1:3])
-				if sisimoji.EqualsAny(upperfirst, monthname) { p[1] = upperfirst; continue }
-				if sisimoji.EqualsAny(upperfirst, dayofweek) { p[3] = upperfirst; continue }
+				if moji.EqualsAny(upperfirst, monthname) { p[1] = upperfirst; continue }
+				if moji.EqualsAny(upperfirst, dayofweek) { p[3] = upperfirst; continue }
 			}
-
 		} else if cw == 4 {
 			// This piece might be a 4-digit year such as 1997, 2018
 			cv, nyaan := strconv.ParseUint(e, 10, 16); if nyaan != nil { continue }
 			p[0] = fmt.Sprintf("%04d", cv)
 
-		} else if cw == 5 && (strings.HasPrefix(e, "+") || strings.HasPrefix(e, "-")) {
+		} else if cw == 5 && moji.HasPrefixAny(e, []string{"+", "-"}) {
 			// This piece might be a timezone offset such as "+0900", "-0400"
 			cv, nyaan := strconv.ParseUint(e[1:5], 10, 16); if nyaan != nil { continue }
 			p[5] = fmt.Sprintf("%s%04d", e[0:1], cv)

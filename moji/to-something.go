@@ -1,13 +1,13 @@
 // Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All
 // rights reserved. This software is distributed under The BSD 2-Clause License.
-//      _        _             
-//  ___| |_ _ __(_)_ __   __ _ 
-// / __| __| '__| | '_ \ / _` |
-// \__ \ |_| |  | | | | | (_| |
-// |___/\__|_|  |_|_| |_|\__, |
-//                       |___/ 
+//                  _ _ 
+//  _ __ ___   ___ (_|_)
+// | '_ ` _ \ / _ \| | |
+// | | | | | | (_) | | |
+// |_| |_| |_|\___// |_|
+//               |__/   
 
-package string
+package moji
 import "fmt"
 import "strings"
 import "golang.org/x/text/encoding"
@@ -20,8 +20,7 @@ func ToLF(argv0 *string) *string {
 
 	crreplaced := *argv0; for _, e := range [2]string{"\r\n", "\r"} {
 		// Convert CRLF and CR to LF
-		if strings.Contains(crreplaced, e) == false { continue }
-		crreplaced = strings.ReplaceAll(crreplaced, e, "\n")
+		if strings.Contains(crreplaced, e) { crreplaced = strings.ReplaceAll(crreplaced, e, "\n") }
 	}
 	return &crreplaced
 }

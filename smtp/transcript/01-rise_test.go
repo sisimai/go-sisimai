@@ -11,9 +11,9 @@ package transcript
 import "testing"
 import "strings"
 import "os"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func TestRise(t *testing.T) {
 	fn := "sisimai/smtp/transcript.Rise"
@@ -32,7 +32,7 @@ func TestRise(t *testing.T) {
 		if e.Command == "" {
 			cx++; if e.Void() == true { t.Errorf("%s.Void() returns true", fn) }
 		} else {
-			cx++; if cv := e.Command; sisimoji.EqualsAny(cv, cc) == false {
+			cx++; if cv := e.Command; moji.EqualsAny(cv, cc) == false {
 				t.Errorf("%s.Command(%s) is not listed in %v", fn, cv, cc)
 			}
 		}

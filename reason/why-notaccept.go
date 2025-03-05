@@ -10,7 +10,7 @@
 package reason
 import "strings"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -40,8 +40,8 @@ func init() {
 		// @return   bool            true: is notaccept, false: is not notaccept
 		if fo        == nil         { return false }
 		if fo.Reason == "notaccept" { return true  }
-		if sisimoji.EqualsAny(fo.ReplyCode, []string{"521", "554", "556"}) { return true  }
-		if fo.Command != "MAIL"                                            { return false }
+		if moji.EqualsAny(fo.ReplyCode, []string{"521", "554", "556"}) { return true  }
+		if fo.Command != "MAIL"                                        { return false }
 		return IncludedIn["NotAccept"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

@@ -18,9 +18,9 @@ import "fmt"
 import "errors"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import sisimbox "libsisimai.org/sisimai/mail"
 import sisifact "libsisimai.org/sisimai/fact"
-import sisimoji "libsisimai.org/sisimai/string"
 
 const libname string = "sisimai"
 const version string = "5.2.0p1"
@@ -88,7 +88,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 				notdecoded = append(notdecoded, ce)
 				continue
 			}
-			mesg = sisimoji.ToLF(mesg)
+			mesg = moji.ToLF(mesg)
 			fact, nyaan := sisifact.Rise(mesg, emailthing.Path, args)
 			if len(fact)  > 0 { sisidigest = append(sisidigest, fact...)  }
 			if len(nyaan) > 0 { notdecoded = append(notdecoded, nyaan...) }

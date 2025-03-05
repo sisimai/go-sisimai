@@ -9,11 +9,11 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/smtp/status"
-import sisiaddr "libsisimai.org/sisimai/address"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Gmail: https://mail.google.com/
@@ -201,7 +201,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				cv := sisiaddr.S3S4(strings.Trim(e, " "))
+				cv := address.S3S4(strings.Trim(e, " "))
 				if rfc5322.IsEmailAddress(cv) == true { v.Recipient = cv; recipients++ }
 
 			} else {
@@ -214,10 +214,10 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			e.Rhost     = rfc1123.Find(e.Diagnosis)
 
-			if cv := sisimoji.Select(e.Diagnosis, " (state ", ")", 0); len(statetable[cv]) > 0 {
+			if cv := moji.Select(e.Diagnosis, " (state ", ")", 0); len(statetable[cv]) > 0 {
 				// Find "(state 18)" and pick "18" as a key of statetable
 				e.Command = statetable[cv][0]
 				e.Reason  = statetable[cv][1]
@@ -225,12 +225,9 @@ func init() {
 
 			if e.Reason == "" {
 				// There is no state code in the error message
-				FINDREASON: for r := range messagesof {
+				for r := range messagesof {
 					// The key name is a bounce reason name
-					for _, f := range messagesof[r] {
-						// Try to find an error message including lower-cased string listed in messagesof
-						if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-					}
+					if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 				}
 			}
 			if e.Reason == "" { continue }

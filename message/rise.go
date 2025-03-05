@@ -14,10 +14,10 @@ import "fmt"
 import "strings"
 import "net/mail"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/lhost"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 var tryonfirst = []string{}
 var defaultset = lhost.AnotherOrder()
@@ -30,7 +30,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 	// @return  Message                Structured email data
 	if mesg == nil || len(*mesg) < 1 { return &sis.BeforeFact{} }
 
-	mesg        = sisimoji.ToLF(mesg)
+	mesg        = moji.ToLF(mesg)
 	retryagain := 0
 	beforefact := new(sis.BeforeFact)
 
@@ -60,8 +60,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		}
 
 		// 2. Decode and rewrite the "Subject:" header for deciding the order of MTA functions
-		rawsubject := strings.TrimSpace(beforefact.Headers["subject"][0])
-		if len(rawsubject) > 0 {
+		if rawsubject := strings.TrimSpace(beforefact.Headers["subject"][0]); rawsubject != "" {
 			// Decode MIME-Encoded "Subject:" header
 			if rfc2045.IsEncoded(rawsubject) {
 				// The header is mime-encoded
@@ -75,7 +74,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 				// THe header is not mime-encoded
 				beforefact.Headers["subject"][0] = rawsubject
 			}
-			if cv := strings.ToLower(rawsubject); strings.HasPrefix(cv, "fwd:") || strings.HasPrefix(cv, "fw:") {
+			if cv := strings.ToLower(rawsubject); moji.HasPrefixAny(cv, []string{"fwd:", "fw:"}) {
 				// - Remove "Fwd:" string from the "Subject:" header
 				// - Delete quoted strings, quote symbols(>)
 				rawsubject = strings.TrimSpace(rawsubject[strings.IndexByte(cv, ':') + 1:])

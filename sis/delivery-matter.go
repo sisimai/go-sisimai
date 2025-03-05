@@ -9,12 +9,12 @@
 
 package sis
 import "strings"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 type DeliveryMatter struct {
 	Action       string     // The value of Action header
@@ -70,7 +70,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 		default: return false
 		case "action":
 			// Only valid values are accepted
-			if this.Action == argv1 || sisimoji.EqualsAny(argv1, actionlist) == false { return false }
+			if this.Action == argv1 || moji.EqualsAny(argv1, actionlist) == false { return false }
 			this.Action = argv1
 
 		case "agent":
@@ -100,7 +100,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 
 		case "feedbacktype":
 			// Only valid values are accepted
-			if this.FeedbackType == argv1 || sisimoji.EqualsAny(argv1, feedbacklo) == false { return false }
+			if this.FeedbackType == argv1 || moji.EqualsAny(argv1, feedbacklo) == false { return false }
 			this.FeedbackType = argv1
 
 		case "lhost":

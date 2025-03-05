@@ -9,11 +9,11 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Unknown MTA #6
@@ -63,7 +63,7 @@ func init() {
 					v = &(dscontents[len(dscontents) - 1])
 				}
 				if p1 == 0 { p3 = strings.Index(e, ": ") } else { p3 = strings.LastIndex(e, " <") }
-				cv := sisiaddr.S3S4(e[p3:]); if rfc5322.IsEmailAddress(cv) == false { continue }
+				cv := address.S3S4(e[p3:]); if rfc5322.IsEmailAddress(cv) == false { continue }
 
 				v.Recipient  = cv
 				v.Diagnosis += " " + e
@@ -79,7 +79,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			e.Command   = command.Find(e.Diagnosis)
 			e.Rhost     = rfc1123.Find(e.Diagnosis)
 		}

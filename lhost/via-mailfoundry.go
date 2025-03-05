@@ -9,9 +9,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from MailFoundry: https://www.barracuda.com/
@@ -64,7 +64,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e[strings.IndexByte(e, '<'):])
+				v.Recipient = address.S3S4(e[strings.IndexByte(e, '<'):])
 				recipients += 1
 
 			} else {
@@ -79,7 +79,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

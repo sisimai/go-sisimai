@@ -10,8 +10,8 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from penSMTPD: https://www.opensmtpd.org/
@@ -123,7 +123,7 @@ func init() {
 			// kijitora@example.jp: 550 5.2.2 <kijitora@example>... Mailbox Full
 			//
 			//    Below is a copy of the original message:
-			if sisimoji.Aligned(e, []string{"@", " "}) {
+			if moji.Aligned(e, []string{"@", " "}) {
 				// kijitora@example.jp: 550 5.2.2 <kijitora@example.jp>... Mailbox Full
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -140,14 +140,12 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 			}
 		}
 

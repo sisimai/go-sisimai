@@ -19,8 +19,7 @@ func Test(argv1 string) bool {
 
 	token := []int16{} // Each digit like [5,7,26] converted from "5.7.26"
 	for _, e := range strings.Split(argv1, ".") {
-		digit, nyaan := strconv.Atoi(e); if nyaan != nil { break }
-		token = append(token, int16(digit))
+		digit, nyaan := strconv.Atoi(e); if nyaan == nil { token = append(token, int16(digit)) }
 	}
 	if len(token) != 3 { return false } // The number of elements should be 3 like [5,1,1]
 

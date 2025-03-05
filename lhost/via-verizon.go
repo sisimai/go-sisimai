@@ -9,8 +9,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Verizon: https://www.verizon.com/
@@ -20,8 +21,8 @@ func init() {
 		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
 		proceedsto := uint8(0)
-		if strings.Contains(bf.Headers["from"][0], "post_master@vtext.com")              { proceedsto = 1 }
-		if sisimoji.Aligned(bf.Headers["from"][0], []string{"sysadmin@", ".vzwpix.com"}) { proceedsto = 1 }
+		if strings.Contains(bf.Headers["from"][0], "post_master@vtext.com")          { proceedsto = 1 }
+		if moji.Aligned(bf.Headers["from"][0], []string{"sysadmin@", ".vzwpix.com"}) { proceedsto = 1 }
 		if proceedsto == 0 { return sis.RisingUnderway{} }
 
 		indicators := INDICATORS()
@@ -64,21 +65,24 @@ func init() {
 		}
 
 		if nooriginal { emailparts[1] = strings.ReplaceAll(emailparts[1], "\n  ", "\n") }
-		p1 := strings.Index(emailparts[1], "\nTo: "); if p1 < 1 { return sis.RisingUnderway{} }
-		p2 := sisimoji.IndexOnTheWay(emailparts[1], "\n", p1 + 5)
-		dscontents[0].Recipient = emailparts[1][p1 + 5:p2]
+		if cv := moji.Select(emailparts[1], "\nTo: ", "\n", 0); cv != "" {
+			// Picked the recipient email address from the original message
+			dscontents[0].Recipient = address.S3S4(cv)
+
+		} else {
+			// There is no recipient address in the original message
+			return sis.RisingUnderway{}
+		}
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

@@ -10,8 +10,8 @@
 package reason
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/smtp/status"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -111,7 +111,7 @@ func init() {
 				// Except "userunknown"
 				if IncludedIn["Rejected"](issuedcode) == true { return true }
 			}
-		} else if IsExplicit(tempreason) == false || sisimoji.EqualsAny(tempreason, []string{"securityerror", "systemerror"}) {
+		} else if IsExplicit(tempreason) == false || moji.EqualsAny(tempreason, []string{"securityerror", "systemerror"}) {
 			// Try to match with message patterns when the temporary reason is "onhold", "undefined",
 			// "securityerror", or "systemerror"
 			if IncludedIn["Rejected"](issuedcode) == true { return true }

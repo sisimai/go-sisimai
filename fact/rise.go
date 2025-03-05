@@ -14,6 +14,7 @@ import "strings"
 import "net/mail"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/lda"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rhost"
 import "libsisimai.org/sisimai/reason"
 import "libsisimai.org/sisimai/message"
@@ -21,12 +22,11 @@ import "libsisimai.org/sisimai/rfc791"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import "libsisimai.org/sisimai/smtp/failure"
-import sisiaddr "libsisimai.org/sisimai/address"
-import sisimoji "libsisimai.org/sisimai/string"
 
 // sisimai/fact.Rise() returns []sis.Fact when it successfully decoded bounce messages
 func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
@@ -68,20 +68,19 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			// Detect an email address from message/rfc822 part
 			for _, f := range rfc5322.HeaderTable["addresser"] {
 				// Check each header in message/rfc822 part
-				if len(rfc822data[f])                         == 0  { continue }
-				j := sisiaddr.Find(rfc822data[f][0]); if j[0] == "" { continue }
+				if len(rfc822data[f])                        == 0  { continue }
+				j := address.Find(rfc822data[f][0]); if j[0] == "" { continue }
 				addrs["addresser"] = j; break ADDRESSER
 			}
 
-			if len(addrs["addresser"][0]) == 0 && len((*beforefact).Headers["to"]) > 0 {
+			if addrs["addresser"][0] == "" && len((*beforefact).Headers["to"]) > 0 {
 				// Fallback: Get the sender address from the header of the bounced email if the address
 				// is not set at the loop above.
-				j := sisiaddr.Find((*beforefact).Headers["to"][0])
-				if j[0] != "" { addrs["addresser"] = j }
+				if j := address.Find((*beforefact).Headers["to"][0]); j[0] != "" { addrs["addresser"] = j }
 			}
 			break ADDRESSER
 		}
-		if len(addrs["addresser"][0]) == 0 { continue RISEOF }
+		if addrs["addresser"][0] == "" { continue RISEOF }
 
 		TIMESTAMP: for {
 			// Convert from the value of "Date" or the date string to time.Time
@@ -106,7 +105,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 				// try to tidy up it using rfc5322.Date() before calling net/mail.ParseDate()
 				for _, v := range datevalues {
 					// Try to parse the date string tidied by rfc5322.Date()
-					j := rfc5322.Date(v); if j != "" {
+					if j := rfc5322.Date(v); j != "" {
 						// rfc5322.Date() returned a valid date string
 						if times, nyaan := mail.ParseDate(j); nyaan == nil { clock = times; break }
 					}
@@ -129,8 +128,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 					for ri := le - 1; ri > -1; ri-- {
 						// Check the Received: headers backwards and get a remote hostname
 						cv := rfc5322.Received((*beforefact).Headers["received"][ri])
-						if rfc1123.IsInternetHost(cv[0]) == false { continue }
-						e.Rhost = cv[0]; break
+						if rfc1123.IsInternetHost(cv[0]) { e.Rhost = cv[0]; break }
 					}
 				}
 			}
@@ -169,21 +167,18 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			break RECEIVED
 		}
 
-		MESG_ID: for {
+		MESG_ID: for len(rfc822data["message-id"]) > 0 {
 			// https://www.rfc-editor.org/rfc/rfc5322#section-3.6.4
 			// Leave only string inside of angle brackets(<>)
-			if len(rfc822data["message-id"])                                          == 0     { break MESG_ID }
-			if sisimoji.Aligned(rfc822data["message-id"][0], []string{"<", "@", ">"}) == false { break MESG_ID }
-
-			piece["messageid"] = strings.Trim(rfc822data["message-id"][0], "<>"); break MESG_ID
+			if moji.Aligned(rfc822data["message-id"][0], []string{"<", "@", ">"}) == false { break MESG_ID }
+			piece["messageid"] = strings.Trim(rfc822data["message-id"][0], "<>");            break MESG_ID
 		}
 
-		LIST_ID: for {
+		LIST_ID: for len(rfc822data["list-id"]) > 0 {
 			// https://www.rfc-editor.org/rfc/rfc2919
 			// Get the value of List-Id header: "List name <list-id@example.org>"
-			if len(rfc822data["list-id"])                                          == 0     { break LIST_ID }
-			if sisimoji.Aligned(rfc822data["list-id"][0], []string{"<", ".", ">"}) == false { break LIST_ID }
-			piece["listid"] = sisimoji.Select(rfc822data["list-id"][0], "<", ">", 0);         break LIST_ID
+			if moji.Aligned(rfc822data["list-id"][0], []string{"<", ".", ">"}) == false { break LIST_ID }
+			piece["listid"] = moji.Select(rfc822data["list-id"][0], "<", ">", 0);         break LIST_ID
 		}
 
 		DIAGNOSTICCODE: for {
@@ -240,7 +235,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 				piece["diagnosticcode"] = piece["diagnosticcode"][:p1] + " " + piece["diagnosticcode"][p2 + 7:]
 			}
 
-			piece["diagnosticcode"] = sisimoji.Sweep(piece["diagnosticcode"])
+			piece["diagnosticcode"] = moji.Sweep(piece["diagnosticcode"])
 			break DIAGNOSTICCODE
 		}
 
@@ -263,8 +258,8 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		CONSTRUCTOR: for {
 			// - Create email address object as address.EmailAddress struct
 			// - Create decoded bounce mail object as sis.Fact struct
-			as := sisiaddr.Rise(addrs["addresser"]); if as.Void() == true { continue RISEOF }
-			ar := sisiaddr.Rise(addrs["recipient"]); if ar.Void() == true { continue RISEOF }
+			as := address.Rise(addrs["addresser"]); if as.Void() == true { continue RISEOF }
+			ar := address.Rise(addrs["recipient"]); if ar.Void() == true { continue RISEOF }
 
 			thing.Action         = e.Action
 			thing.Addresser      = as
@@ -291,15 +286,14 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			thing.Subject        = piece["subject"]
 			thing.Timestamp      = clock
 			thing.TimezoneOffset = clock.Format("+0900")
-			thing.Token          = sisimoji.Token(as.Address, ar.Address, int(thing.Timestamp.Unix()))
+			thing.Token          = moji.Token(as.Address, ar.Address, int(thing.Timestamp.Unix()))
 
 			break CONSTRUCTOR
 		}
 
-		ALIAS: for {
+		ALIAS: for thing.Recipient.Address == thing.Alias {
 			// Look up the Envelope-To address from the Received: header in the original message
 			// when the recipient address is same with the value of piece["alias"].
-			if thing.Recipient.Address != thing.Alias                { break ALIAS }
 			if thing.Alias == "" || len(rfc822data["received"]) == 0 { break ALIAS }
 
 			recv := rfc822data["received"]
@@ -333,7 +327,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 		HARDBOUNCE: for {
 			// Set the value of "hardbounce", default value of "bouncebounce" is 0
-			if thing.Reason == "delivered" || thing.Reason == "feedback" || thing.Reason == "vacation" {
+			if moji.EqualsAny(thing.Reason, []string{"delivered", "feedback", "vacation"}) {
 				// Delete the value of ReplyCode when the Reason is "feedback" or "vacation"
 				if thing.Reason != "delivered" { thing.ReplyCode = "" }
 
@@ -345,10 +339,8 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			break HARDBOUNCE
 		}
 
-		DELIVERYSTATUS: for {
+		DELIVERYSTATUS: for thing.DeliveryStatus == "" {
 			// Set a pseudo status code
-			if thing.DeliveryStatus != "" { break DELIVERYSTATUS }
-
 			ce := thing.ReplyCode + " " + piece["diagnosticcode"]; if len(ce) < 4 { ce = "" }
 			permanent0 := failure.IsPermanent(ce)
 			temporary0 := failure.IsTemporary(ce)

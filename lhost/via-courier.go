@@ -10,10 +10,10 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Courier MTA: https://www.courier-mta.org/
@@ -67,7 +67,7 @@ func init() {
 
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if sisimoji.ContainsAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
+				if moji.ContainsAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
 			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
@@ -106,7 +106,7 @@ func init() {
 
 					// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 					permessage[z] = o[2]
-					if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
+					if moji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 				}
 			} else {
 				// The line does not begin with a DSN field defined in RFC3464
@@ -137,7 +137,7 @@ func init() {
 					// Continued line of the value of Diagnostic-Code field
 					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false { continue }
 					if strings.HasPrefix(e, " ")                            == false { continue }
-					v.Diagnosis += fmt.Sprintf(" %s", sisimoji.Sweep(e))
+					v.Diagnosis += fmt.Sprintf(" %s", moji.Sweep(e))
 				}
 			}
 		}
@@ -148,20 +148,17 @@ func init() {
 			e := &(dscontents[j])
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
-				if len(v.Select(z))    > 0 { continue }
-				if len(permessage[z]) == 0 { continue }
+				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 				e.Update(z, permessage[z])
 			}
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
+			e.Command   = thecommand
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 			}
-			e.Command = thecommand
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

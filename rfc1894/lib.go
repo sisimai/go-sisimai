@@ -10,7 +10,7 @@
 // Status Notifications https://datatracker.ietf.org/doc/html/rfc1894
 package rfc1894
 import "strings"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 var FieldIndex = []string{
 	"Action", "Arrival-Date", "Diagnostic-Code", "Final-Recipient", "Last-Attempt-Date",
@@ -91,15 +91,13 @@ func Match(argv0 string) uint8 {
 
 	for e := range fieldname0 {
 		// Per message fields
-		if cv != e || strings.Contains(argv0, fieldname0[e]) == false { continue }
-		cx = 1; break
+		if cv == e && strings.Contains(argv0, fieldname0[e]) { cx = 1; break }
 	}
 	if cx > 0 { return cx }
 
 	for e := range fieldname1 {
 		// Per recipient fields
-		if cv != e || strings.Contains(argv0, fieldname1[e]) == false { continue }
-		cx = 2; break
+		if cv == e && strings.Contains(argv0, fieldname1[e]) { cx = 2; break }
 	}
 	return cx
 }
@@ -187,7 +185,7 @@ func Field(argv0 string) []string {
 		// Check that the value is an available value defined in "actionlist" or not.
 		// When the value is invalid, convert to an available value defined in "correction"
 		v := strings.ToLower(parts[1])
-		if sisimoji.EqualsAny(v, actionlist) { table[2] = v }
+		if moji.EqualsAny(v, actionlist) { table[2] = v }
 		if table[2] == "" && len(correction[v]) > 0 { table[2] = correction[v] }
 
 	} else {
@@ -199,10 +197,10 @@ func Field(argv0 string) []string {
 		if group != "date" { table[2] = strings.ToLower(parts[1]) }
 	}
 
-	if sisimoji.Aligned(table[2], []string{" (", ")"}) {
+	if moji.Aligned(table[2], []string{" (", ")"}) {
 		// Extract text enclosed in parentheses as comments
 		// Reporting-MTA: dns; mr21p30im-asmtp004.me.example.com (tcp-daemon)
-		table[4] = sisimoji.Select(table[2], " (", ")", 0)
+		table[4] = moji.Select(table[2], " (", ")", 0)
 		table[2] = table[2][0:strings.Index(table[2], " (")]
 	}
 

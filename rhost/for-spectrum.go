@@ -11,7 +11,7 @@ package rhost
 import "strings"
 import "strconv"
 import "libsisimai.org/sisimai/sis"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 func init() {
 	// Detect the reason of the bounce returned by this email service
@@ -123,8 +123,8 @@ func init() {
 			if e < 48 || e > 57 { codestring = ""; continue }
 			codestring += string(e)
 		}
-		if len(codestring) != 4                              { return "" }
-		if sisimoji.ContainsOnlyNumbers(codestring) == false { return "" }
+		if len(codestring) != 4                          { return "" }
+		if moji.ContainsOnlyNumbers(codestring) == false { return "" }
 
 		codenumber, nyaan := strconv.ParseUint(codestring, 10, 16); if nyaan != nil { return "" }
 		for _, e := range errorcodes {

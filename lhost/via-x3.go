@@ -9,11 +9,11 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Unknown MTA #3
@@ -62,14 +62,14 @@ func init() {
 			//
 			//
 			// ============================================================================
-			if sisimoji.Aligned(e, []string{"  * ", "@", "."}) {
+			if moji.Aligned(e, []string{"  * ", "@", "."}) {
 				//   * kijitora@example.com
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = sisiaddr.S3S4(e[strings.Index(e, "  * ") + 3:])
+				v.Recipient = address.S3S4(e[strings.Index(e, "  * ") + 3:])
 				recipients += 1
 
 			} else {
@@ -118,7 +118,7 @@ func init() {
 
 						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 						permessage[z] = o[2]
-						if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
+						if moji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 					}
 				}
 			}
@@ -130,11 +130,10 @@ func init() {
 			e := &(dscontents[j])
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
-				if len(v.Select(z))    > 0 { continue }
-				if len(permessage[z]) == 0 { continue }
+				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 				e.Update(z, permessage[z])
 			}
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

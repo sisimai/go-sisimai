@@ -65,13 +65,12 @@ func tidy(argv0 *string) *string {
 					f = strings.Trim(f, " ")
 
 					// 2-2. Convert some parameters to the lower-cased string
-					ps := ""; for {
+					ps := ""; for strings.IndexByte(f, ' ') < 1 {
 						// For example,
 						// - Content-Type: Message/delivery-status => message/delivery-status
 						// - Content-Type: Charset=UTF8            => charset=utf8
 						// - Reporting-MTA: DNS; ...               => dns
 						// - Final-Recipient: RFC822; ...          => rfc822
-						if strings.IndexByte(f, ' ') > 0 { break }
 						if p2 := strings.IndexByte(f, '='); p2 > 0 {
 							// charset=, boundary=, and other pairs divided by "="
 							ps = strings.ToLower(f[0:p2])
@@ -83,13 +82,11 @@ func tidy(argv0 *string) *string {
 					ab = append(ab, f)
 				}
 
-				for {
+				for fn == "Diagnostic-Code" && len(ab) == 1 {
 					// Diagnostic-Code: x-unix;
 					//   /var/email/kijitora/Maildir/tmp/1000000000.A000000B00000.neko22:
 					//   Disk quota exceeded
-					if fn != "Diagnostic-Code" || len(ab)   != 1 { break }
-					if strings.IndexByte(lines[i + 1], ' ') != 0 { break }
-
+					if strings.IndexByte(lines[i + 1], ' ') == 0 { break }
 					ab = append(ab, ""); break
 				}
 				bf = strings.Join(ab, "; ")
@@ -109,8 +106,7 @@ func tidy(argv0 *string) *string {
 			for _, f := range replacesas[fn] {
 				// - Before: Content-Type: message/xdelivery-status; ...
 				// - After:  Content-Type: message/delivery-status; ...
-				p1 = strings.Index(bf, f[0]); if p1 < 0 { continue }
-				bf = strings.Replace(bf, f[0], f[1], 1)
+				p1 = strings.Index(bf, f[0]); if p1 > -1 { bf = strings.Replace(bf, f[0], f[1], 1) }
 			}
 		}
 

@@ -12,11 +12,11 @@ import "errors"
 import "strings"
 import "encoding/json"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Amazon SES(Sending): https://aws.amazon.com/ses/
@@ -33,8 +33,7 @@ func init() {
 			// --
 			// If you wish to stop receiving notifications from this topic, please click or visit the link below to unsubscribe:
 			// https://sns.us-west-2.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:us-west-2:1...
-			p1 := strings.Index(bf.Payload, "\n\n--\n")
-			if p1 > 0 { sespayload = bf.Payload[:p1] }
+			if p1 := strings.Index(bf.Payload, "\n\n--\n"); p1 > 0 { sespayload = bf.Payload[:p1] }
 			if strings.Contains(sespayload, "!\n ") { sespayload = strings.ReplaceAll(sespayload, "!\n ", "") }
 			p2 := strings.Index(sespayload, `"Message"`)
 
@@ -46,7 +45,7 @@ func init() {
 				//  "TopicArn" : "arn:aws:sns:us-west-2:123456789012:SES-EJ-B",
 				//  "Message" : "{\"notificationType\"...
 				if strings.Contains(sespayload, "\\") { sespayload = strings.ReplaceAll(sespayload, "\\",   "") }
-				sespayload = "{" + sisimoji.Select(sespayload, "{", "\n", p2 + 9)
+				sespayload = "{" + moji.Select(sespayload, "{", "\n", p2 + 9)
 				sespayload = strings.TrimRight(sespayload, ",")
 				sespayload = strings.TrimRight(sespayload, `"`)
 			}
@@ -275,7 +274,7 @@ func init() {
 					v = &(dscontents[len(dscontents) - 1])
 				}
 				v.Recipient = e.EmailAddress
-				v.Diagnosis = sisimoji.Sweep(e.DiagnosticCode)
+				v.Diagnosis = moji.Sweep(e.DiagnosticCode)
 				v.Command   = command.Find(v.Diagnosis)
 				v.Action    = e.Action
 				v.Status    = status.Find(e.Status, "")

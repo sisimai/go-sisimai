@@ -9,8 +9,8 @@
 package reason
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/smtp/status"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Try to check the argument string includes any of the strings in the error message pattern
@@ -60,8 +60,8 @@ func init() {
 			// The value of "Reason" is not "filtered" when the value of "fo.Command" is an SMTP
 			// command to be sent before the SMTP DATA command because all the MTAs read the headers
 			// and the entire message body after the DATA command.
-			if sisimoji.EqualsAny(fo.Command, []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}) { return false }
-			if IncludedIn["Filtered"](issuedcode) || IncludedIn["UserUnknown"](issuedcode)      { return true  }
+			if moji.EqualsAny(fo.Command, []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}) { return false }
+			if IncludedIn["Filtered"](issuedcode) || IncludedIn["UserUnknown"](issuedcode)  { return true  }
 		}
 		return false
 	}

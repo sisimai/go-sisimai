@@ -10,10 +10,10 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
-import sisiaddr "libsisimai.org/sisimai/address"
 
 func init() {
 	// Decode bounce messages from Progress iMail Server: https://community.progress.com/s/products/imailserver
@@ -47,7 +47,7 @@ func init() {
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
-			if (strings.Index(e, ": ") > 8 && sisimoji.Aligned(e, []string{": ", "@"})) || strings.HasPrefix(e, "undeliverable ") {
+			if (strings.Index(e, ": ") > 8 && moji.Aligned(e, []string{": ", "@"})) || strings.HasPrefix(e, "undeliverable ") {
 				// Unknown user: kijitora@example.com
 				// undeliverable to kijitora@example.com
 				if len(v.Recipient) > 0 {
@@ -56,7 +56,7 @@ func init() {
 					v = &(dscontents[len(dscontents) - 1])
 				}
 				v.Diagnosis = e
-				v.Recipient = sisiaddr.Find(e)[0]
+				v.Recipient = address.Find(e)[0]
 				recipients += 1
 
 			} else {
@@ -77,20 +77,13 @@ func init() {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
 
-			if alternates != "" {
-				// Copy the alternative error message to e.Diagnosis
-				e.Diagnosis = alternates + " " + e.Diagnosis
-				e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
-			}
-			e.Diagnosis = sisimoji.Sweep(strings.ReplaceAll(e.Diagnosis, "\n", " "))
+			e.Diagnosis = moji.Sweep(strings.ReplaceAll(alternates + " " + e.Diagnosis, "\n", " "))
 			e.Command   = command.Find(e.Diagnosis)
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 			}
 		}
 
