@@ -12,12 +12,12 @@ import "strings"
 import "net/mail"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/arf"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/lhost"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc3464"
 import "libsisimai.org/sisimai/rfc3834"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 // sift() sifts a bounce mail with each MTA module
 func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
@@ -34,7 +34,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	if len(bf.Headers["content-type"])              > 0 { mesgformat = strings.ToLower(bf.Headers["content-type"][0])              }
 	if len(bf.Headers["content-transfer-encoding"]) > 0 { ctencoding = strings.ToLower(bf.Headers["content-transfer-encoding"][0]) }
 
-	if strings.HasPrefix(mesgformat, "text/plain") || strings.HasPrefix(mesgformat, "text/html") {
+	if moji.HasPrefixAny(mesgformat, []string{"text/plain", "text/html"}) {
 		// Content-Type: text/plain; charset=UTF-8
 		if ctencoding == "base64" {
 			// Content-Transfer-Encoding: base64
@@ -53,7 +53,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 				bf.Errors = append(bf.Errors, ce)
 			}
 		}
-		if strings.HasPrefix(mesgformat, "text/html") { bf.Payload = *(sisimoji.ToPlain(&bf.Payload)) }
+		if strings.HasPrefix(mesgformat, "text/html") { bf.Payload = *(moji.ToPlain(&bf.Payload)) }
 
 	} else if strings.HasPrefix(mesgformat, "multipart/") {
 		// In case of Content-Type: multipart/*
@@ -61,7 +61,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		if cv != nil                { bf.Payload = *cv                      }
 		if fe != nil && len(fe) > 0 { bf.Errors  = append(bf.Errors, fe...) }
 	}
-	bf.Payload  = *(sisimoji.ToLF(&bf.Payload))
+	bf.Payload  = *(moji.ToLF(&bf.Payload))
 	bf.Payload  = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
 
 	if hook != nil {
