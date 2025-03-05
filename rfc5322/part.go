@@ -24,8 +24,7 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 
 	for _, e := range cutby {
 		// Find a boundary string(2nd argument)] from the 1st argument
-		positionor = strings.Index(*email, e); if positionor == -1 { continue }
-		break
+		positionor = strings.Index(*email, e); if positionor > 0 { break }
 	}
 
 	if positionor > 0 {

@@ -8,8 +8,8 @@
 
 package rfc5322
 import "strings"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc791"
-import sisimoji "libsisimai.org/sisimai/string"
 
 // Received() convert Received headers to a structured data
 func Received(argv1 string) [6]string {
@@ -88,9 +88,9 @@ func Received(argv1 string) [6]string {
 
 	for _, e := range other {
 		// Check alternatives in "other", and then delete uninformative values.
-		if len(e) < 4 || sisimoji.EqualsAny(e, skips) { continue }
-		if strings.IndexByte(e, '.') == -1            { continue }
-		if strings.IndexByte(e, '=')  >  1            { continue }
+		if len(e) < 4 || moji.EqualsAny(e, skips) { continue }
+		if strings.IndexByte(e, '.') == -1        { continue }
+		if strings.IndexByte(e, '=')  >  1        { continue }
 		alter = append(alter, e)
 	}
 
@@ -104,9 +104,8 @@ func Received(argv1 string) [6]string {
 	}
 	_, e := token["from"]; if e == false { token["from"] = "" }
 
-	for {
+	for token["from"] != "localhost" {
 		// Prefer hostnames over IP addresses, except for localhost.localdomain and similar.
-		if token["from"] == "localhost"              { break }
 		if token["from"] == "localhost.localdomain"  { break }
 		if strings.IndexByte(token["from"], '.') < 0 { break } // A hostname without a domain name
 		if ce := token["from"]; len(rfc791.FindIPv4Address(&ce)) > 0 { break }
@@ -116,11 +115,9 @@ func Received(argv1 string) [6]string {
 		break
 	}
 
-	for {
+	for right == false && len(alter) > 0 {
 		// Try to rewrite uninformative hostnames and IP addresses in token["from"]
-		if right == true || len(alter) == 0          { break } // There is no alternative for rewriting
 		if strings.Contains(alter[0], token["from"]) { break }
-
 		if strings.IndexByte(token["from"], '.') == -1 {
 			// A hostname without a domain name such as "mail", "mx", or "mbox"
 			if strings.IndexByte(alter[0], '.') > 0 { token["from"] = alter[0] }
