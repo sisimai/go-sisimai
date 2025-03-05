@@ -10,11 +10,11 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/status"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from HCL Domino
@@ -131,7 +131,7 @@ func init() {
 
 						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 						permessage[z] = o[2]
-						if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
+						if moji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 					}
 				}
 			}
@@ -141,25 +141,20 @@ func init() {
 		for j, _ := range dscontents {
 			// Set default values stored in "permessage" if each value in "dscontents" is empty.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			e.Recipient = address.S3S4(e.Recipient)
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
-				if len(v.Select(z))    > 0 { continue }
-				if len(permessage[z]) == 0 { continue }
+				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 				e.Update(z, permessage[z])
 			}
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) == false { continue }
-					e.Reason = r
-
-					if e.Status == "" { status.Code(r, false) }
-					break FINDREASON
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) == false { continue }
+				if e.Status == "" { status.Code(r, false) }
+				e.Reason = r; break
 			}
 
 			EXCEPTUTF8: for r := range exceptutf8 {
@@ -167,7 +162,7 @@ func init() {
 				if e.Reason != "" { break EXCEPTUTF8 }
 				for _, f := range exceptutf8[r] {
 					// Try to find an error message including lower-cased string listed in messagesof
-					if sisimoji.Aligned(e.Diagnosis, f) { e.Reason = r; break EXCEPTUTF8 }
+					if moji.Aligned(e.Diagnosis, f) { e.Reason = r; break EXCEPTUTF8 }
 				}
 			}
 		}

@@ -10,10 +10,10 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from qmail: https://cr.yp.to/qmail.html
@@ -35,13 +35,13 @@ func init() {
 			"failure notice", // qmail-send.c:Subject: failure notice\n\
 			"Failure Notice", // Yahoo
 		}
-		if sisimoji.EqualsAny(bf.Headers["subject"][0], emailtitle) { proceedsto = true }
+		if moji.EqualsAny(bf.Headers["subject"][0], emailtitle) { proceedsto = true }
 		for _, e := range bf.Headers["received"] {
 			// Received: (qmail 2222 invoked for bounce);29 Apr 2017 23:34:45 +0900
 			// Received: (qmail 2202 invoked from network); 29 Apr 2018 00:00:00 +0900
 			if proceedsto == true { break }
-			if sisimoji.Aligned(e, relayedvia[0]) { proceedsto = true }
-			if sisimoji.Aligned(e, relayedvia[1]) { proceedsto = true }
+			if moji.Aligned(e, relayedvia[0]) { proceedsto = true }
+			if moji.Aligned(e, relayedvia[1]) { proceedsto = true }
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
@@ -174,7 +174,7 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if sisimoji.ContainsAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
+				if moji.ContainsAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
 				continue
 			}
 			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
@@ -183,7 +183,7 @@ func init() {
 			// 192.0.2.153 does not like recipient.
 			// Remote host said: 550 5.1.1 <kijitora@example.jp>... User Unknown
 			// Giving up on 192.0.2.153.
-			if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"<", "@", ">:"}) {
+			if strings.HasPrefix(e, "<") && moji.Aligned(e, []string{"<", "@", ">:"}) {
 				// <kijitora@example.jp>:
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -206,7 +206,7 @@ func init() {
 					// Connected to 192.0.2.112 but my name was rejected.
 					// Giving up on 192.0.2.135.
 					// remote host 203.138.180.112 said:...
-					if cv := sisimoji.Select(e + " ", r, " ", 0); cv != "" { v.Rhost = sisimoji.Sweep(cv); break }
+					if cv := moji.Select(e + " ", r, " ", 0); cv != "" { v.Rhost = moji.Sweep(cv); break }
 				}
 			}
 		}
@@ -215,11 +215,11 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			for r := range commandset {
 				// Get the last SMTP command
-				if sisimoji.ContainsAny(e.Diagnosis, commandset[r]) { e.Command = r; break }
+				if moji.ContainsAny(e.Diagnosis, commandset[r]) { e.Command = r; break }
 			}
 			if e.Command == "" && strings.Contains(e.Diagnosis, "no SMTP connection got far enough") {
 				// Sorry, no SMTP connection got far enough; most progress was RCPT TO response; ...
@@ -232,7 +232,7 @@ func init() {
 
 			} else {
 				// The error message includes any of patterns defined in the variable avobe
-				if sisimoji.Aligned(e.Diagnosis, onholdpair) {
+				if moji.Aligned(e.Diagnosis, onholdpair) {
 					// Need to be matched with error message pattens defined in sisimai/reason/*
 					e.Reason = "onhold"
 
@@ -243,12 +243,12 @@ func init() {
 						if f == ""        { continue }
 						for r := range messagesof {
 							// The key name is a bounce reason name
-							if sisimoji.ContainsAny(f, messagesof[r]) { e.Reason = r; break FINDREASON }
+							if moji.ContainsAny(f, messagesof[r]) { e.Reason = r; break FINDREASON }
 						}
 
 						for r := range failonldap {
 							// The key name is a bounce reason name
-							if sisimoji.ContainsAny(f, failonldap[r]) { e.Reason = r; break FINDREASON }
+							if moji.ContainsAny(f, failonldap[r]) { e.Reason = r; break FINDREASON }
 						}
 						if strings.Contains(f, hasexpired) { e.Reason = "expired" }
 					}

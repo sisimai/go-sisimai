@@ -9,10 +9,10 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from GMX: https://gmx.net/
@@ -61,7 +61,7 @@ func init() {
 			// SMTP error from remote server after RCPT command:
 			// host: mx.example.jp
 			// 5.1.1 <shironeko@example.jp>... User Unknown
-			if (strings.IndexByte(e, '@') > 1 && strings.HasPrefix(e, `"`)) || strings.HasPrefix(e, "<") {
+			if strings.IndexByte(e, '@') > 1 && moji.HasPrefixAny(e, []string{`"`, "<"}) {
 				// "shironeko@example.jp":
 				// ---- OR ----
 				// <kijitora@6jo.example.co.jp>
@@ -94,14 +94,12 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(strings.ReplaceAll(e.Diagnosis, "\n", " "))
+			e.Diagnosis = moji.Sweep(strings.ReplaceAll(e.Diagnosis, "\n", " "))
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

@@ -9,9 +9,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from HCL Notes (Formerly IBM Notes(Formerly Lotus Notes))
@@ -73,7 +73,7 @@ func init() {
 
 		if recipients == 0 {
 			// Pick an email address from "To:" header of the original message
-			if cv := sisimoji.Select(emailparts[1], "\nTo:", "\n", 0); cv != "" {
+			if cv := moji.Select(emailparts[1], "\nTo:", "\n", 0); cv != "" {
 				dscontents[0].Recipient = address.S3S4(cv); recipients++
 			}
 		}
@@ -82,14 +82,12 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1], Errors: notdecoded }

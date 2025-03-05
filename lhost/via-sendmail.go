@@ -10,13 +10,13 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// V8Sendmail: /usr/sbin/sendmail
@@ -107,7 +107,7 @@ func init() {
 
 					// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 					permessage[z] = o[2]
-					if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
+					if moji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 				}
 			} else {
 				// The line does not begin with a DSN field defined in RFC3464
@@ -142,7 +142,7 @@ func init() {
 							continue
 						}
 
-						if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"@", ">.", " "}) {
+						if strings.HasPrefix(e, "<") && moji.Aligned(e, []string{"@", ">.", " "}) {
 							// <kijitora@example.co.jp>... Deferred: Name server: example.co.jp.: host name lookup failure
 							anotherset["recipient"] = address.S3S4(e[0:strings.IndexByte(e, '>')])
 							anotherset["diagnosis"] = e[strings.IndexByte(e, ' ') + 1:]
@@ -151,18 +151,15 @@ func init() {
 							// ----- Transcript of session follows -----
 							// Message could not be delivered for too long
 							// Message will be deleted from queue
-							cr := reply.Find(e, "")
-							cs := status.Find(e, "")
-
-							if len(cr + cs) > 7 {
+							if x, y := reply.Find(e, ""), status.Find(e, ""); len(x + y) > 7 {
 								// 550 5.1.2 <kijitora@example.org>... Message
 								//
 								// DBI connect('dbname=...')
 								// 554 5.3.0 unknown mailer error 255
-								anotherset["status"]     = cs
+								anotherset["status"]     = y
 								anotherset["diagnosis"] += " " + e
 
-							} else if strings.HasPrefix(e, "Message: ") || strings.HasPrefix(e, "Warning: ") {
+							} else if moji.HasPrefixAny(e, []string{"Message: ", "Warning: "}) {
 								// Message could not be delivered for too long
 								// Warning: message still undelivered after 4 hours
 								anotherset["diagnosis"] += " " + e
@@ -173,7 +170,7 @@ func init() {
 					// Get the error message continued from the previous line
 					if strings.HasPrefix(e, " ")                            == false { continue }
 					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false { continue }
-					v.Diagnosis += " " + sisimoji.Sweep(e)
+					v.Diagnosis += " " + moji.Sweep(e)
 				}
 			}
 		}
@@ -184,16 +181,15 @@ func init() {
 			e := &(dscontents[j])
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
-				if len(v.Select(z))    > 0 { continue }
-				if len(permessage[z]) == 0 { continue }
+				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 				e.Update(z, permessage[z])
 			}
 
 			if len(anotherset["diagnosis"]) > 0 {
 				// Copy alternative error message to e.Diagnosis
-				if strings.HasPrefix(e.Diagnosis, " ")       { e.Diagnosis = anotherset["diagnosis"] }
-				if sisimoji.ContainsOnlyNumbers(e.Diagnosis) { e.Diagnosis = anotherset["diagnosis"] } 
-				if len(e.Diagnosis) == 0                     { e.Diagnosis = anotherset["diagnosis"] } 
+				if strings.HasPrefix(e.Diagnosis, " ")   { e.Diagnosis = anotherset["diagnosis"] }
+				if moji.ContainsOnlyNumbers(e.Diagnosis) { e.Diagnosis = anotherset["diagnosis"] } 
+				if len(e.Diagnosis) == 0                 { e.Diagnosis = anotherset["diagnosis"] } 
 			}
 
 			for {
@@ -204,7 +200,7 @@ func init() {
 				e.Diagnosis = fmt.Sprintf("%s %s", strings.Join(esmtpreply, " "), e.Diagnosis)
 				break
 			}
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			if e.Command == "" { e.Command = thecommand }
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 			if e.Command == "" { if len(esmtpreply) > 0 { e.Command = "EHLO" }}

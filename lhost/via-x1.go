@@ -9,9 +9,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Unknown MTA #1
@@ -47,7 +47,7 @@ func init() {
 			// ---The following addresses had delivery errors---
 			//
 			// kijitora@example.co.jp [User unknown]
-			if sisimoji.Aligned(e, []string{"@", " [", "]"}) {
+			if moji.Aligned(e, []string{"@", " [", "]"}) {
 				// kijitora@example.co.jp [User unknown]
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -76,12 +76,12 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Pick the date string from the error message.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			if e.Date == "" {
 				// The original message was received at Thu, 29 Apr 2010 23:34:45 +0900 (JST)
 				// from shironeko@example.jp
-				e.Date = strings.Trim(sisimoji.Select(e.Diagnosis, " at ", "from", 0), " ")
+				e.Date = strings.Trim(moji.Select(e.Diagnosis, " at ", "from", 0), " ")
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

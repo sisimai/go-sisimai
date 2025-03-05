@@ -9,9 +9,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Zoho Mail: https://www.zoho.com/mail/'
@@ -56,7 +56,7 @@ func init() {
 			// A message that you sent could not be delivered to one or more of its recipients. This is a permanent error.
 			//
 			// shironeko@example.org Invalid Address, ERROR_CODE :550, ERROR_CODE :Requested action not taken: mailbox unavailable
-			if sisimoji.Aligned(e, []string{"@", " ", "ERROR_CODE :"}) || strings.HasPrefix(e, "[Status: ") {
+			if moji.Aligned(e, []string{"@", " ", "ERROR_CODE :"}) || strings.HasPrefix(e, "[Status: ") {
 				// kijitora@example.co.jp Invalid Address, ERROR_CODE :550, ERROR_CODE :5.1.=
 				// [Status: Error, Address: <kijitora@6kaku.example.co.jp>, ResponseCode 421, , Host not reachable.]
 				if len(v.Recipient) > 0 {
@@ -70,8 +70,7 @@ func init() {
 
 			} else {
 				// Error message which does not include a recipient email address
-				if strings.HasPrefix(e, "-----") { continue }
-				v.Diagnosis += " " + e
+				if strings.HasPrefix(e, "-----") == false { v.Diagnosis += " " + e }
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
@@ -79,14 +78,12 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

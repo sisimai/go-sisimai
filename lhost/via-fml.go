@@ -9,8 +9,8 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from fml mailing list server/manager: https://www.fml.org
@@ -63,7 +63,7 @@ func init() {
 			// previous line of the beginning of the original message.
 			if e == "" { continue }
 
-			if cv := sisimoji.Select(e, "<", ">", 0); cv != "" {
+			if cv := moji.Select(e, "<", ">", 0); cv != "" {
 				// You are not a member of this mailing list <neko-meeting@example.org>.
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -84,17 +84,18 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			for f := range errortable {
 				// The key is a bounce reason name
-				if sisimoji.ContainsAny(e.Diagnosis, errortable[f]) { e.Reason = f; break }
+				if moji.ContainsAny(e.Diagnosis, errortable[f]) { e.Reason = f; break }
 			}
 			if e.Reason != "" { continue }
 
 			for f := range errortitle {
 				// The key is a bounce reason name
-				if sisimoji.ContainsAny(bf.Headers["subject"][0], errortitle[f]) { e.Reason = f; break }
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(bf.Headers["subject"][0], errortitle[f]) { e.Reason = f; break }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

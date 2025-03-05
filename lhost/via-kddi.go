@@ -9,10 +9,10 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from au by KDDI: https://www.au.kddi.com
@@ -25,9 +25,9 @@ func init() {
 		senderlist := []string{"no-reply@.", ".dion.ne.jp"}
 		replyslist := []string{"no-reply@app.auone-net.jp"}
 		ISKDDI: for {
-			replyto := ""; if len(bf.Headers["reply-to"]) > 0 { replyto = bf.Headers["reply-to"][0] }
-			if sisimoji.ContainsAny(bf.Headers["from"][0], senderlist) { proceedsto = true; break ISKDDI }
-			if sisimoji.ContainsAny(replyto, replyslist)               { proceedsto = true; break ISKDDI }
+			replyto := ""; if len(bf.Headers["reply-to"]) > 0  { replyto = bf.Headers["reply-to"][0] }
+			if moji.ContainsAny(bf.Headers["from"][0], senderlist) { proceedsto = true; break ISKDDI }
+			if moji.ContainsAny(replyto, replyslist)               { proceedsto = true; break ISKDDI }
 
 			for _, e := range bf.Headers["received"] {
 				// Received: from ezweb.ne.jp (nx3oBP05-09.ezweb.ne.jp [59.135.39.233])
@@ -90,7 +90,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			e.Command   = command.Find(e.Diagnosis)
 
 			if len(bf.Headers["x-spasign"]) > 0 && bf.Headers["x-spasign"][0] == "NG" {
@@ -102,12 +102,10 @@ func init() {
 				// There is no X-SPASIGN: header in the bounce message
 				if e.Command == "RCPT" { e.Reason = "userunkonwn"; continue }
 
-				FINDREASON: for r := range messagesof {
+				for r := range messagesof {
 					// The key name is a bounce reason name
-					for _, f := range messagesof[r] {
-						// Try to find an error message including lower-cased string listed in messagesof
-						if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-					}
+					// Try to find an error message including lower-cased string listed in messagesof
+					if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 				}
 			}
 		}

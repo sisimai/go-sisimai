@@ -10,9 +10,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Google Groups: https://groups.google.com
@@ -60,7 +60,7 @@ func init() {
 		recordwide := [3]string{
 			rfc5322.Received(receivedby[0])[1], // rhost
 			"onhold",                           // reason
-			sisimoji.Sweep(issuedcode),         // diagnosis
+			moji.Sweep(issuedcode),             // diagnosis
 		}
 
 		for {

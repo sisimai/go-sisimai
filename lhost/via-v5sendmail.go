@@ -9,12 +9,12 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Sendmail version 5
@@ -72,10 +72,10 @@ func init() {
 			// 550 <kijitora@example.org>... User unknown
 			// 421 example.org (smtp)... Deferred: Connection timed out during user open with example.org
 			if strings.HasPrefix(e, ">>> ") { curcommand = command.Find(e[4:]) }
-			if sisimoji.Aligned(e, []string{" <", "@", ">..."}) || strings.Contains(strings.ToUpper(e), ">>> RCPT TO:") {
+			if moji.Aligned(e, []string{" <", "@", ">..."}) || strings.Contains(strings.ToUpper(e), ">>> RCPT TO:") {
 				// 550 <kijitora@example.org>... User unknown
 				// >>> RCPT To:<kijitora@example.org>
-				ce := sisimoji.Select(e, " <", ">...", 0); if ce == "" { ce = sisimoji.Select(e, ":<", ">", 0) }
+				ce := moji.Select(e, " <", ">...", 0); if ce == "" { ce = moji.Select(e, ":<", ">", 0) }
 				cv := address.S3S4(ce)
 
 				// Keep error messages before "While talking to ..." line
@@ -108,11 +108,11 @@ func init() {
 				// This line does not include a recipient address
 				if strings.Contains(e, startingof["error"][0]) {
 					// While talking to mail.example.co.jp:
-					cv := rfc1123.Find(e); if rfc1123.IsInternetHost(cv) { remotehost = cv }
+					if cv := rfc1123.Find(e); rfc1123.IsInternetHost(cv) { remotehost = cv }
 
 				} else {
 					// Append this line into the error message string
-					if strings.HasPrefix(e, ">>> ") || strings.HasPrefix(e, "<<< ") {
+					if moji.HasPrefixAny(e, []string{">>> ", "<<< "}) {
 						// >>> DATA
 						// <<< 550 Your E-Mail is redundant.  You cannot send E-Mail to yourself (shironeko@example.jp).
 						// >>> QUIT
@@ -142,7 +142,7 @@ func init() {
 
 			if recipients == 0 {
 				// Try to pick an recipient address from the original message
-				if cv := sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0); cv != "" {
+				if cv := moji.Select(emailparts[1], "\nTo: ", "\n", 0); cv != "" {
 					// Get the recipient address from "To:" header at the original message
 					if rfc5322.IsEmailAddress(cv) == false { return sis.RisingUnderway{} }
 					dscontents[0].Recipient = cv; recipients++
@@ -157,15 +157,13 @@ func init() {
 			if e.Diagnosis == "" { e.Diagnosis = anotherone[uint8(j)] }
 			if e.Command   == "" { e.Command   = command.Find(e.Diagnosis) }
 
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			e.ReplyCode = reply.Find(e.Diagnosis, "")
 
 			// There is no local part in the recipient email address like "@example.jp"
 			// Get an email address from the value of Diagnostic-Code: field
-			if rfc5322.IsEmailAddress(e.Recipient) == true       { continue }
-			p1 := strings.IndexByte(e.Diagnosis, '<'); if p1 < 0 { continue }
-			p2 := strings.IndexByte(e.Diagnosis, '>'); if p2 < 0 { continue }
-			e.Recipient = address.S3S4(e.Diagnosis[p1:p2 + 1])
+			if rfc5322.IsEmailAddress(e.Recipient) { continue }
+			e.Recipient = address.S3S4(moji.Select(e.Diagnosis, "<:", ">", 0))
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

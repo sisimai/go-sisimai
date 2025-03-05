@@ -11,6 +11,7 @@ import "fmt"
 import "strings"
 import "strconv"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
@@ -18,7 +19,6 @@ import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import "libsisimai.org/sisimai/smtp/transcript"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Postfix https://www.postfix.org/
@@ -110,7 +110,7 @@ func init() {
 				if readcursor == 0 {
 					// Beginning of the bounce message or message/delivery-status part
 					for _, a := range startingof["message"] {
-						if sisimoji.Aligned(e, a) { readcursor |= indicators["deliverystatus"]; break }
+						if moji.Aligned(e, a) { readcursor |= indicators["deliverystatus"]; break }
 					}
 					continue
 				}
@@ -150,7 +150,7 @@ func init() {
 
 						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 						permessage[z] = o[2]
-						if sisimoji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
+						if moji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
 					}
 				} else {
 					// If you do so, please include this problem report. You can
@@ -162,10 +162,10 @@ func init() {
 					// 5.1.1 <userunknown@example.co.jp>... User Unknown (in reply to RCPT TO command)
 					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") && strings.HasPrefix(e, " ") {
 						// Continued line of the value of Diagnostic-Code field
-						v.Diagnosis += fmt.Sprintf(" %s", sisimoji.Sweep(e))
+						v.Diagnosis += fmt.Sprintf(" %s", moji.Sweep(e))
 						readslices[j + 1] = "Diagnostic-Code: " + e
 
-					} else if sisimoji.Aligned(e, []string{"X-Postfix-Sender:", "rfac822;", "@"}) {
+					} else if moji.Aligned(e, []string{"X-Postfix-Sender:", "rfac822;", "@"}) {
 						// X-Postfix-Sender: rfc822; shironeko@example.org
 						emailparts[1] += fmt.Sprintf("X-Postfix-Sender: %s\n", strings.Trim(strings.SplitN(e, ";", 2)[1], " "))
 
@@ -177,15 +177,15 @@ func init() {
 							if cv := command.Find(e); len(cv) > 0 { commandset = append(commandset, cv) }
 							if len(anotherset["diagnosis"]) > 0   { anotherset["diagnosis"] += " " + e  }
 
-						} else if sisimoji.Aligned(e, []string{"<", "@", ">", "(expanded from <", "):"}) {
+						} else if moji.Aligned(e, []string{"<", "@", ">", "(expanded from <", "):"}) {
 							// <r@example.ne.jp> (expanded from <kijitora@example.org>): user ...
 							// OR
 							// <kijitora@exmaple.jp>: ...
-							anotherset["recipient"] = address.S3S4(sisimoji.Select(e, "<", "< ", 0))
-							anotherset["alias"]     = address.S3S4(sisimoji.Select(e, "(expanded from ", "):", 0))
+							anotherset["recipient"] = address.S3S4(moji.Select(e, "<", "< ", 0))
+							anotherset["alias"]     = address.S3S4(moji.Select(e, "(expanded from ", "):", 0))
 							if p1 := strings.Index(e, ">): ") + 4; len(e) > p1 { anotherset["diagnosis"] = e[p1:] }
 
-						} else if strings.HasPrefix(e, "<") && sisimoji.Aligned(e, []string{"<", "@", ">:"}) {
+						} else if strings.HasPrefix(e, "<") && moji.Aligned(e, []string{"<", "@", ">:"}) {
 							// <kijitora@exmaple.jp>: ...
 							anotherset["recipient"] = address.S3S4(e[0:strings.IndexByte(e, '>') + 1])
 							anotherset["diagnosis"] = e[strings.Index(e, ">:") + 2:]
@@ -222,7 +222,7 @@ func init() {
 			} else if nomessages == true {
 				// Get a recipient address from message/rfc822 part if the delivery report was unavailable:
 				// "--- Delivery report unavailable ---"
-				if cv := address.S3S4(sisimoji.Select(emailparts[1], "\nTo: ", "\n", 0)); cv != "" {
+				if cv := address.S3S4(moji.Select(emailparts[1], "\nTo: ", "\n", 0)); cv != "" {
 					// Try to get a recipient address from To: field in the original message at message/rfc822 part
 					dscontents[len(dscontents) - 1].Recipient = cv
 					recipients += 1
@@ -236,17 +236,16 @@ func init() {
 			e := &(dscontents[j])
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
-				if len(v.Select(z))    > 0 { continue }
-				if len(permessage[z]) == 0 { continue }
+				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 				e.Update(z, permessage[z])
 			}
 
 			if len(anotherset["diagnosis"]) > 0 {
 				// Copy alternative error message to e.Diagnosis
-				anotherset["diagnosis"] = sisimoji.Sweep(anotherset["diagnosis"])
+				anotherset["diagnosis"] = moji.Sweep(anotherset["diagnosis"])
 				if len(e.Diagnosis) == 0 { e.Diagnosis = anotherset["diagnosis"] }
 
-				if sisimoji.ContainsOnlyNumbers(e.Diagnosis) {
+				if moji.ContainsOnlyNumbers(e.Diagnosis) {
 					// Override the value of diagnostic code message when the value of e.Diagnosis
 					// contains only numbers
 					e.Diagnosis = anotherset["diagnosis"]
@@ -256,33 +255,32 @@ func init() {
 					as := "" // The value of SMTP Status Code picked from anotherset["diagnosis"]
 					ar := "" // The value of SMTP  Reply Code picked from anotherset["diagnosis"]
 
-					if len(e.Status) == 0 || strings.HasSuffix(e.Status, ".0.0") {
+					if e.Status == "" || strings.HasSuffix(e.Status, ".0.0") {
 						// Check the value of D.S.N. in "anotherset"
 						// The delivery status code is neither an empty nor *.0.0
 						as = status.Find(anotherset["diagnosis"], "")
-						if len(as) > 0 && strings.HasSuffix(as, ".0.0") == false { e.Status = as }
+						if as != "" && strings.HasSuffix(as, ".0.0") == false { e.Status = as }
 					}
 
-					if len(e.ReplyCode) == 0 || strings.HasSuffix(e.ReplyCode, "00") {
+					if e.ReplyCode == "" || strings.HasSuffix(e.ReplyCode, "00") {
 						// Check the value of the SMTP reply code in anotherset
 						// The SMTP reply code is neither an empty nor *00 
 						ar = reply.Find(anotherset["diagnosis"], "")
-						if len(ar) > 0 && strings.HasSuffix(ar, "00") == false { e.ReplyCode = ar }
+						if ar != "" && strings.HasSuffix(ar, "00") == false { e.ReplyCode = ar }
 					}
 
 					for {
 						// Replace e.Diagnosis with the value of anotherset["diagnosis"] when all
 						// the following conditions have not matched.
-						if len(as) + len(ar) == 0                                  { break }
+						if len(as + ar) == 0                                       { break }
 						if len(anotherset["diagnosis"]) < len(e.Diagnosis)         { break }
 						if strings.Index(anotherset["diagnosis"], e.Diagnosis) < 0 { break }
 
-						e.Diagnosis = anotherset["diagnosis"]
-						break
+						e.Diagnosis = anotherset["diagnosis"]; break
 					}
 				}
 			}
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			if len(commandset) > 0 {
 				// Set an SMTP command name picked from the error message
@@ -297,7 +295,7 @@ func init() {
 				}
 			}
 			if e.Spec != "" { continue }
-			if sisimoji.Aligned(e.Diagnosis, []string{"host ", " said:"}) { e.Spec = "SMTP" }
+			if moji.Aligned(e.Diagnosis, []string{"host ", " said:"}) { e.Spec = "SMTP" }
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

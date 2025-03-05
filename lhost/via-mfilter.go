@@ -9,9 +9,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Digital Arts m-FILTER: https://www.daj.jp/bs/mf/
@@ -102,7 +102,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

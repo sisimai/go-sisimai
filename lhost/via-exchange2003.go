@@ -11,10 +11,10 @@ package lhost
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/status"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Microsoft Exchange Server 2003: https://www.microsoft.com/microsoft-365/exchange/email
@@ -121,7 +121,7 @@ func init() {
 				//     The MTS-ID of the original message is: c=jp;a= ;p=neko
 				// ;l=EXCHANGE000000000000000000
 				//     MSEXCH:IMS:KIJITORA CAT:EXAMPLE:EXCHANGE 0 (000C05A6) Unknown Recipient
-				if sisimoji.Aligned(e, []string{"@", " on "}) {
+				if moji.Aligned(e, []string{"@", " on "}) {
 					// kijitora@example.co.jp on Thu, 29 Apr 2007 16:51:51 -0500
 					//   kijitora@example.com on 4/29/99 9:19:59 AM
 					if len(v.Recipient) > 0 {
@@ -163,19 +163,19 @@ func init() {
 				//  Subject: ...
 				//  Sent:    Thu, 29 Apr 2010 18:14:35 +0000
 				//
-				if strings.HasPrefix(e, "  To:  ") || strings.HasPrefix(e, "      To: ") {
+				if moji.HasPrefixAny(e, []string{"  To:  ", "      To: "}) {
 					//  To:      shironeko@example.jp
 					if connheader[0] != "" { continue }
 					connheader[0] = strings.Trim(e[strings.Index(e, "To: ") + 4:], " ")
 					connvalues++
 
-				} else if strings.HasPrefix(e, "      Subject: ") || strings.HasPrefix(e, "  Subject: ") {
+				} else if moji.HasPrefixAny(e, []string{"      Subject: ", "  Subject: "}) {
 					//  Subject: ...
 					if connheader[1] != "" { continue }
 					connheader[1] = strings.Trim(e[strings.Index(e, "Subject: ") + 9:], " ")
 					connvalues++
 
-				} else if strings.HasPrefix(e, "  Sent: ") || strings.HasPrefix(e, "      Sent: ") {
+				} else if moji.HasPrefixAny(e, []string{"  Sent: ", "      Sent: "}) {
 					//  Sent:    Thu, 29 Apr 2010 18:14:35 +0000
 					//  Sent:    4/29/99 9:19:59 AM
 					if connheader[2] != "" { continue }
@@ -189,11 +189,11 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
-			if sisimoji.Aligned(e.Diagnosis, []string{"MSEXCH:", "(", ")"}) {
+			if moji.Aligned(e.Diagnosis, []string{"MSEXCH:", "(", ")"}) {
 				//     MSEXCH:IMS:KIJITORA CAT:EXAMPLE:EXCHANGE 0 (000C05A6) Unknown Recipient
-				capturedcode := sisimoji.Select(e.Diagnosis, "(", ")", 0)
+				capturedcode := moji.Select(e.Diagnosis, "(", ")", 0)
 				errormessage := e.Diagnosis[strings.IndexByte(e.Diagnosis, ')') + 1:]
 
 				FINDREASON: for r := range errorcodes {
@@ -211,8 +211,7 @@ func init() {
 
 			// Could not detect the reason from the value of "diagnosis", copy alternative error message 
 			if e.Reason != "" || anotherone[j] == "" { continue }
-			e.Diagnosis = anotherone[j] + " " + e.Diagnosis
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(anotherone[j] + " " + e.Diagnosis)
 		}
 
 		if emailparts[1] == "" {

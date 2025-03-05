@@ -9,10 +9,10 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Trend Micro InterScan Messaging Security Suite
@@ -31,7 +31,7 @@ func init() {
 			}
 
 			if strings.HasPrefix(bf.Headers["from"][0], `"InterScan`) { proceedsto = true; break }
-			if sisimoji.ContainsAny(emailtitle, titletable)           { proceedsto = true; break }
+			if moji.ContainsAny(emailtitle, titletable)               { proceedsto = true; break }
 			break
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
@@ -82,8 +82,8 @@ func init() {
 
 			} else if p1 > 0 || p2 > 0 {
 				// Error messages are not written in English
-				if strings.Contains(e, " >>> ") { v.Command = command.Find(e) }
-				if p3 := strings.Index(e, " <<< "); p3 > -1 { v.Diagnosis = e[p3 + 4:] }
+				if strings.Contains(e, " >>> ")             { v.Command = command.Find(e) }
+				if p3 := strings.Index(e, " <<< "); p3 > -1 { v.Diagnosis = e[p3 + 4:]    }
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
@@ -91,7 +91,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up error messages in e.Diagnosis, set the value of e.Reason
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			if strings.Contains(e.Diagnosis, "Unable to deliver") { e.Reason = "userunknown" }
 		}
 

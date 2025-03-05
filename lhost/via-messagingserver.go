@@ -10,13 +10,13 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc791"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from Oracle Communications Messaging Server
@@ -70,8 +70,8 @@ func init() {
 			//   Reason: Remote SMTP server has rejected address
 			//   Diagnostic code: smtp;550 5.1.1 <kijitora@example.jp>... User Unknown
 			//   Remote system: dns;mx.example.jp (TCP|17.111.174.67|47323|192.0.2.225|25) (6jo.example.jp ESMTP SENDMAIL-VM)
-			if sisimoji.Aligned(e, []string{"  Recipient address: ", "@", "."}) ||
-			   sisimoji.Aligned(e, []string{"  Original address: ",  "@", "."}) {
+			if moji.Aligned(e, []string{"  Recipient address: ", "@", "."}) ||
+			   moji.Aligned(e, []string{"  Original address: ",  "@", "."}) {
 				//   Recipient address: @smtp.example.net:kijitora@server
 				//   Original address: kijitora@example.jp
 				cv := address.S3S4(e[strings.Index(e, ": ") + 2:])
@@ -105,9 +105,9 @@ func init() {
 			} else if strings.HasPrefix(e, "  Remote system: ") {
 				//   Remote system: dns;mx.example.jp (TCP|17.111.174.67|47323|192.0.2.225|25)
 				//     (6jo.example.jp ESMTP SENDMAIL-VM)
-				v.Rhost = sisimoji.Select(e, ";", " (", 0); if v.Rhost == "" { continue }
+				v.Rhost = moji.Select(e, ";", " (", 0); if v.Rhost == "" { continue }
 
-				if cv := strings.Split(sisimoji.Select(e, " (", ")", 0), "|"); len(cv) == 5 {
+				if cv := strings.Split(moji.Select(e, " (", ")", 0), "|"); len(cv) == 5 {
 					// (TCP|17.111.174.67|47323|192.0.2.225|25)
 					if cv[0] != "TCP" || strings.IndexByte(v.Rhost, '.') > 0 { continue }
 					if rfc791.IsIPv4Address(cv[1]) { v.Lhost = cv[1] }
@@ -146,14 +146,12 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
-			FINDREASON: for r := range messagesof {
+			for r := range messagesof {
 				// The key name is a bounce reason name
-				for _, f := range messagesof[r] {
-					// Try to find an error message including lower-cased string listed in messagesof
-					if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-				}
+				// Try to find an error message including lower-cased string listed in messagesof
+				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }

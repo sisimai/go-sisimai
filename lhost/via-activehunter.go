@@ -9,9 +9,9 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from QUALITIA Active!hunter
@@ -61,9 +61,8 @@ func init() {
 			} else {
 				//  ----- Transcript of session follows -----
 				// 550 sorry, no mailbox here by that name (#5.1.1 - chkusr)
-				cr := []rune(e[0:1])
-				if cr[0] < 48 || cr[0] > 122 { continue        } // 48 = '0', 122 = 'z'
-				if v.Diagnosis == ""         { v.Diagnosis = e }
+				if cr := []rune(e[0:1]); cr[0] < 48 || cr[0] > 122 { continue } // 48 = '0', 122 = 'z'
+				if v.Diagnosis == "" { v.Diagnosis = e }
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
@@ -71,7 +70,7 @@ func init() {
 		for j, _ := range dscontents { 
 			// Remove leading or/and trailing spaces, redandant spaces from the error messaage
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

@@ -9,11 +9,11 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/address"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/command"
-import sisimoji "libsisimai.org/sisimai/string"
 
 func init() {
 	// Decode bounce messages from au EZweb: https://www.au.com/mobile/
@@ -33,7 +33,7 @@ func init() {
 			for _, e := range bf.Headers["received"] {
 				//   Received: from ezweb.ne.jp (wmflb12na02.ezweb.ne.jp [222.15.69.197])
 				//   Received: from nmomta.auone-net.jp ([aaa.bbb.ccc.ddd]) by ...
-				if strings.Contains(e, "ezweb.ne.jp (EZweb Mail) with") || strings.Contains(e, ".au.com (") {
+				if moji.ContainsAny(e, []string{"ezweb.ne.jp (EZweb Mail) with", ".au.com ("}) {
 					proceedsto++
 					break
 				}
@@ -81,7 +81,7 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if sisimoji.HasPrefixAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
+				if moji.HasPrefixAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
 			}
 			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
 
@@ -96,7 +96,7 @@ func init() {
 			//    Recipient: <******@ezweb.ne.jp>
 			//    >>> RCPT TO:<******@ezweb.ne.jp>
 			//    <<< 550 <******@ezweb.ne.jp>: User unknown
-			if sisimoji.Aligned(e, []string{"<", "@", ">"}) &&
+			if moji.Aligned(e, []string{"<", "@", ">"}) &&
 			   (strings.Index(e, "Recipient: <") > 1 || strings.HasPrefix(e, "<")) {
 				// Recipient: <******@ezweb.ne.jp> OR <***@ezweb.ne.jp>: 550 user unknown ...
 				if len(v.Recipient) > 0 {
@@ -104,7 +104,7 @@ func init() {
 					dscontents = append(dscontents, sis.DeliveryMatter{})
 					v = &(dscontents[len(dscontents) - 1])
 				}
-				v.Recipient = address.S3S4(sisimoji.Select(e, "<", ">", 0))
+				v.Recipient = address.S3S4(moji.Select(e, "<", ">", 0))
 				v.Diagnosis += " " + e
 				recipients += 1
 
@@ -116,7 +116,7 @@ func init() {
 
 				} else {
 					// The line does not begin with a DSN field defined in RFC3464
-					if sisimoji.Is8Bit(&e) == true { continue }
+					if moji.Is8Bit(&e) == true { continue }
 					if strings.Contains(e, " >>> ") {
 						//    >>> RCPT TO:<******@ezweb.ne.jp>
 						v.Command    = command.Find(e)
@@ -144,7 +144,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Check each value of DeliveryMatter{}, try to detect the bounce reason.
 			e := &(dscontents[j])
-			e.Diagnosis = sisimoji.Sweep(e.Diagnosis)
+			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 			if len(bf.Headers["x-spasign"]) > 0 && bf.Headers["x-spasign"][0] == "NG" {
@@ -154,12 +154,10 @@ func init() {
 
 			} else {
 				// There is no X-SPASIGN header or the value of the header is not "NG"
-				FINDREASON: for r := range messagesof {
+				for r := range messagesof {
 					// The key name is a bounce reason name
-					for _, f := range messagesof[r] {
-						// Try to find an error message including lower-cased string listed in messagesof
-						if strings.Contains(e.Diagnosis, f) { e.Reason = r; break FINDREASON }
-					}
+					// Try to find an error message including lower-cased string listed in messagesof
+					if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 				}
 			}
 			if e.Reason != ""                                { continue }
