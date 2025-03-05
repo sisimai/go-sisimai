@@ -3,12 +3,14 @@ RELEASE NOTES for the Go version of Sisimai
 - releases: "https://github.com/sisimai/go-sisimai/releases"
 - document: "https://libsisimai.org/"
 
-v5.2.0p1
+v5.2.0p2
 ---------------------------------------------------------------------------------------------------
 - release: ""
 - version: ""
 - changes:
   - Implement `rhost/for-cloudflare.go` for Cloudflare Email Routing #66
+  - Implement test codes for `rhost/for-*.go` #41 #62
+  - `string` package has been renamed to `moji` #68 #69
 
 v5.2.0 - The first release
 ---------------------------------------------------------------------------------------------------
