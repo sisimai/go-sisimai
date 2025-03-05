@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestEqualsAny(t *testing.T) {
-	fn := "sisimai/string.EqualsAny"
+	fn := "moji.EqualsAny"
 	cx := 0
 	ae := []struct {text string; list []string; expected bool}{
 		{"nekochan", []string{"cats", "kijitora", "nekochan"}, true},

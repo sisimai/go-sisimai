@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestSqueeze(t *testing.T) {
-	fn := "sisimai/string.Squeeze"
+	fn := "moji.Squeeze"
 	cx := 0
 	ae := []struct {text string; char string; expected string}{
 		{"neko		meow	cat", "	", "neko	meow	cat"},

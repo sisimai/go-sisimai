@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestIndexOnTheWay(t *testing.T) {
-	fn := "sisimai/string.IndexOnTheWay"
+	fn := "moji.IndexOnTheWay"
 	cx := 0
 	ae := []struct {text string; find string; index int; expected int}{
 		{"Date: Wed, 27 Apr 2022 15:45:12 +0900 (JST)", ":", 10, 25},

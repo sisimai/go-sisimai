@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestToken(t *testing.T) {
-	fn := "sisimai/string.Token"
+	fn := "moji.Token"
 	es := "envelope-sender@example.jp"
 	er := "envelope-recipient@example.org"
 	to := "239aa35547613b2fa94f40c7f35f4394e99fdd88"

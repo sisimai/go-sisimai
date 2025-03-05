@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestContainsAny(t *testing.T) {
-	fn := "sisimai/string.ContainsAny"
+	fn := "moji.ContainsAny"
 	cx := 0
 	ae := []struct {text string; list []string; expected bool}{
 		{"nekochan", []string{"neko"}, true},

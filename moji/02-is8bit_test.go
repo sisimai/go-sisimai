@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestIs8Bit(t *testing.T) {
-	fn := "sisimai/string.Is8Bit"
+	fn := "moji.Is8Bit"
 	ae := []string{"nekochan", "Suzu", ""}
 	je := []string{"ニャーン", "道綱"}
 	cx := 0

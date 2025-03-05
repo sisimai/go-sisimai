@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestContainsOnlyNumbers(t *testing.T) {
-	fn := "sisimai/string.ContainsOnlyNumbers"
+	fn := "moji.ContainsOnlyNumbers"
 	cx := 0
 	et := []string{"1", "23", "456", "78910"}
 	ef := []string{"A", "B1", "C12", "34D5E"}

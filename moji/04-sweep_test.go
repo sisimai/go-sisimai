@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestSweep(t *testing.T) {
-	fn := "sisimai/string.Sweep"
+	fn := "moji.Sweep"
 	cx := 0
 	ae := []struct {arg string; exp string}{
 		{" neko		meow	cat ", "neko meow cat"},

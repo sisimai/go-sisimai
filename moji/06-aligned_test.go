@@ -11,7 +11,7 @@ package moji
 import "testing"
 
 func TestAligned(t *testing.T) {
-	fn := "sisimai/string.Aligned"
+	fn := "moji.Aligned"
 	cw := "Final-Recipient: rfc822; <neko@example.jp>"
 	cx := 0
 
