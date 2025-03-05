@@ -8,9 +8,9 @@
 
 package address
 import "strings"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc5322"
-import sisimoji "libsisimai.org/sisimai/string"
 
 // S3S4() runs like ruleset 3,4 of sendmail.cf
 func S3S4(argv1 string) string {
@@ -224,12 +224,12 @@ func Find(argv1 string) [3]string {
 		}
 	}
 
-	for sisimoji.Aligned(readbuffer[0], []string{"(", ")"}) {
+	for moji.Aligned(readbuffer[0], []string{"(", ")"}) {
 		// Remove the comment block from the email address
 		// - (cat)nekochan@example.org
 		// - nekochan(cat)cat@example.org
 		// - nekochan(cat)@example.org
-		ce := "(" + sisimoji.Select(readbuffer[0], "(", ")", 0) + ")"
+		ce := "(" + moji.Select(readbuffer[0], "(", ")", 0) + ")"
 		readbuffer[0] = strings.Replace(readbuffer[0], ce, "", 1)
 		if len(readbuffer[2]) == 0 { readbuffer[2] = ce } else { readbuffer[2] += " " + ce }
 	}
@@ -240,20 +240,19 @@ func Find(argv1 string) [3]string {
 		//   an IP address like neko@[192.0.2.222]
 		// - Remove angle brackets, other brackets, and quotations: ()[]<>{}'`;. and `"`
 		if rfc1123.IsDomainLiteral(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], "[]{}()`';.") }
-		readbuffer[0] = strings.Trim(readbuffer[0], "<>")
-		readbuffer[0] = Final(readbuffer[0])
-		if rfc5322.IsQuotedAddress(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], `"`) }
+		                                                     readbuffer[0] = Final(strings.Trim(readbuffer[0], "<>"))
+		if rfc5322.IsQuotedAddress(readbuffer[0]) == false { readbuffer[0] = strings.Trim(readbuffer[0], `"`)          }
 		emailtable[0] = readbuffer[0]
 	}
 
-	if len(readbuffer[1]) > 0 {
+	if readbuffer[1] != "" {
 		// Remove trailing spaces at the display name and the comment block
 		readbuffer[1] = strings.TrimSpace(readbuffer[1])
 
 		for {
 			// Remove redundant spaces from the display name when the value is not a "quoted-string"
 			if strings.HasPrefix(readbuffer[1], `"`) && strings.HasSuffix(readbuffer[1], `"`) { break }
-			readbuffer[1] = sisimoji.Squeeze(readbuffer[1], " ")
+			readbuffer[1] = moji.Squeeze(readbuffer[1], " ")
 			break
 		}
 		if rfc5322.IsQuotedAddress(readbuffer[1]) == false {
