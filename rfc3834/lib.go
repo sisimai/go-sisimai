@@ -13,10 +13,10 @@ package rfc3834
 import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/address"
-import sisimoji "libsisimai.org/sisimai/string"
 
 // Inquire() decodes a bounce message that includes a vacation message
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
@@ -52,8 +52,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 	DETECT_EXCLUSION_MESSAGE: for e := range dontdecode {
 		// Exclude messages from root@
-		if len(lowervalue[e]) == 0 { continue }
-		if sisimoji.ContainsAny(lowervalue[e], dontdecode[e]) == false { continue }
+		if moji.ContainsAny(lowervalue[e], dontdecode[e]) == false { continue }
 		proceedsto = false; break DETECT_EXCLUSION_MESSAGE
 	}
 	if proceedsto == false { return sis.RisingUnderway{} }
@@ -61,8 +60,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	proceedsto = false
 	DETECT_AUTOREPLY_MESSAGE: for e := range autoreply0 {
 		// Check Auto-Submitted field defined in RFC3834 and other headers
-		if len(lowervalue[e]) == 0 { continue }
-		if sisimoji.HasPrefixAny(lowervalue[e], autoreply0[e]) == false { continue }
+		if moji.HasPrefixAny(lowervalue[e], autoreply0[e]) == false { continue }
 		proceedsto = true; break DETECT_AUTOREPLY_MESSAGE
 	}
 	if proceedsto == false { return sis.RisingUnderway{} }
@@ -94,23 +92,20 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	if len(bodyslices) < 5 {
 		// There is vacation message only in the message body
 		bf.Payload  = strings.ReplaceAll(bf.Payload, "\n", " ")
-		v.Diagnosis = sisimoji.Sweep(bf.Payload)
+		v.Diagnosis = moji.Sweep(bf.Payload)
 
 	} else {
 		for _, e := range bodyslices {
 			// Read vacation messages from the head of the email
-			if len(e) == 0 || strings.HasPrefix(e, "--") { continue }
-			v.Diagnosis += e + " "
+			if e != "" && strings.HasPrefix(e, "--") == false { v.Diagnosis += e + " " }
 		}
 	}
 
-	for {
+	if p1 := strings.Index(bf.Headers["subject"][0], ": "); p1 > -1 {
 		// Pick the original Subject: value from the bounce message
-		p1 := strings.Index(bf.Headers["subject"][0], ": "); if p1 < 0 { break }
-		if sisimoji.ContainsAny(lowervalue["subject"], autoreply0["subject"]) == false { break }
-		cv := sisimoji.Sweep(bf.Headers["subject"][0][p1 + 2:])
-		rfc822part += fmt.Sprintf("Subject: %s\n", cv)
-		break
+		if moji.ContainsAny(lowervalue["subject"], autoreply0["subject"]) {
+			rfc822part += fmt.Sprintf("Subject: %sn", moji.Sweep(bf.Headers["subject"][0][p1 + 2:]))
+		}
 	}
 
 	v.Reason    = "vacation"
