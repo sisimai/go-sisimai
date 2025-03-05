@@ -13,6 +13,7 @@ import "mime"
 import "strings"
 import "mime/quotedprintable"
 import "golang.org/x/net/html/charset"
+import "libsisimai.org/sisimai/moji"
 
 // IsEncoded() checks that the argument is MIME encoded string or not.
 func IsEncoded(argv0 string) bool {
@@ -22,10 +23,10 @@ func IsEncoded(argv0 string) bool {
 	argv0  = strings.ToUpper(argv0)
 
 	// =?UTF-8?B?44OL44Oj44O844Oz?=
-	if strings.Contains(argv0, "=?") == false { return false } // Should begin with "=?"
-	if strings.Contains(argv0, "?=") == false { return false } // Should end with "?="
-	if len(argv0) < 8                         { return false } // Should be 8 or more length
-	if strings.Contains(argv0, "?B?") || strings.Contains(argv0, "?Q?") { return true }
+	if strings.Contains(argv0, "=?") == false          { return false } // Should begin with "=?"
+	if strings.Contains(argv0, "?=") == false          { return false } // Should end with "?="
+	if len(argv0) < 8                                  { return false } // Should be 8 or more length
+	if moji.ContainsAny(argv0, []string{"?B?", "?Q?"}) { return true  }
 	return false
 }
 
@@ -98,7 +99,6 @@ func DecodeB(argv0 string, argv1 string) (string, error) {
 	decodingif := new(mime.WordDecoder)
 	base64text := strings.Join(strings.Split(strings.TrimSpace(argv0), "\n"), "")
 	base64text  = fmt.Sprintf("=?%s?B?%s?=", argv1, base64text)
-	plainvalue := ""
 
 	if plain, nyaan := decodingif.Decode(base64text); nyaan != nil {
 		// Failed to decode the base64-encoded text
@@ -106,9 +106,8 @@ func DecodeB(argv0 string, argv1 string) (string, error) {
 
 	} else {
 		// Successfully decoded
-		plainvalue = plain
+		return plain, nil
 	}
-	return plainvalue, nil
 }
 
 // DecodeQ() decodes Quoted-Pritable encdoed text
