@@ -10,7 +10,7 @@
 // Package "smtp/command" provides functions related to SMTP commands
 package command
 import "strings"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 var availables = []string{
 	"HELO", "EHLO", "MAIL", "RCPT", "DATA", "QUIT", "RSET", "NOOP", "VRFY", "ETRN",
@@ -28,8 +28,8 @@ func Test(argv0 string) bool {
 	// @return   bool          false: Is not a valid SMTP command
 	//                         true:  Is a valid SMTP command
 	// @since v5.2.0
-	if len(argv0) < 4                          { return false }
-	if sisimoji.ContainsAny(argv0, availables) { return true  }
+	if len(argv0) < 4                      { return false }
+	if moji.ContainsAny(argv0, availables) { return true  }
 	return false
 }
 
@@ -63,8 +63,8 @@ func Find(argv0 string) string {
 		}
 		smtpc := e[0:4] // The first 4 characters of SMTP command found in the argument
 
-		if sisimoji.HasPrefixAny(smtpc, commandset) { continue }
-		if smtpc == "STAR" || smtpc == "XFOR" { smtpc = commandmap[smtpc] }
+		if moji.HasPrefixAny(smtpc, commandset) { continue }
+		if moji.EqualsAny(smtpc, []string{"STAR", "XFOR"}) { smtpc = commandmap[smtpc] }
 		commandset = append(commandset, smtpc)
 	}
 	if len(commandset) == 0 { return "" }

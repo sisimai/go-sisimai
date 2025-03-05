@@ -11,8 +11,8 @@ package status
 import "fmt"
 import "sort"
 import "strings"
+import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc791"
-import sisimoji "libsisimai.org/sisimai/string"
 
 // Find() returns a delivery status code found from the given string
 func Find(argv1 string, argv2 string) string {
@@ -46,7 +46,7 @@ func Find(argv1 string, argv2 string) string {
 		p1 := 0
 		for p0 > -1 {
 			// Find all of the "5." and "4." string and store its postion
-			p0 = sisimoji.IndexOnTheWay(esmtperror, e, p1); if p0 < 0 { break }
+			p0 = moji.IndexOnTheWay(esmtperror, e, p1); if p0 < 0 { break }
 			p1 = p0 + 5
 			lookingfor[fmt.Sprintf("%04d", p0)] = e
 			indextable = append(indextable, p0)
@@ -62,7 +62,7 @@ func Find(argv1 string, argv2 string) string {
 	for _, e := range indextable {
 		// Try to find an SMTP Status Code from the given string
 		cu := fmt.Sprintf("%04d", e)
-		ci := sisimoji.IndexOnTheWay(esmtperror, lookingfor[cu], e); if ci < 0 { continue }
+		ci := moji.IndexOnTheWay(esmtperror, lookingfor[cu], e); if ci < 0 { continue }
 		cx := [8]byte{0, 0, 0, 0, 0, 0, 0, 0}
 
 		if stringsize > ci     { cx[0] = []byte(esmtperror[ci - 1:ci])[0]     } // [0] The previous character of the status

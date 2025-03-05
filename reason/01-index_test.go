@@ -9,7 +9,7 @@ package reason
 //   |_|\___||___/\__/_/ |_|  \___|\__,_|___/\___/|_| |_|
 import "testing"
 import "strings"
-import sisimoji "libsisimai.org/sisimai/string"
+import "libsisimai.org/sisimai/moji"
 
 var ae = []string{
 	"authfailure", "badreputation", "blocked", "contenterror", "exceedlimit", "expired", "failedstarttls",
@@ -28,7 +28,7 @@ func TestIndex(t *testing.T) {
 	cx++; if len(cv) != 33 { t.Errorf("%s() returns empty", fn) }
 	for _, e := range cv {
 		cx++; if e == "" { t.Errorf("%s() includes an empty string", fn) }
-		cx++; if sisimoji.EqualsAny(strings.ToLower(e), ae) == false {
+		cx++; if moji.EqualsAny(strings.ToLower(e), ae) == false {
 			t.Errorf("%s() returns invalid reason name: %s", fn, e)
 		}
 	}
