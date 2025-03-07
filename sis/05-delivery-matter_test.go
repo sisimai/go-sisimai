@@ -87,7 +87,7 @@ func TestDeliveryMatter(t *testing.T) {
 	for _, e := range ae {
 		// The same value in the 2nd argument is not updated
 		ct = cv.Update(e, cv.Select(e))
-		cx++; if ct == true { t.Errorf("%s(%s, %s) returns true", fn, e, cv.Select(e)) }
+		cx++; if ct == false { t.Errorf("%s(%s, %s) returns false", fn, e, cv.Select(e)) }
 	}
 
 	ct  = cv.Update("action", "delayed")

@@ -10,6 +10,7 @@
 package sis
 import "strings"
 import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/smtp/reply"
@@ -63,80 +64,25 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 	// @return   bool          true if it has successfully updated
 	if argv0 == "" || argv1 == "" { return false }
 
-	actionlist := []string{"delayed", "delivered", "expanded", "failed", "relayed"}
+	//actionlist := []string{"delayed", "delivered", "expanded", "failed", "relayed"}
 	feedbacklo := []string{"abuse", "dkim", "fraud", "miscategorized", "not-spam", "opt-out", "virus", "other"}
 
 	switch argv0 {
 		default: return false
-		case "action":
-			// Only valid values are accepted
-			if this.Action == argv1 || moji.EqualsAny(argv1, actionlist) == false { return false }
-			this.Action = argv1
-
-		case "agent":
-			// Any value is accepted
-			if this.Agent == argv1 { return false }
-			this.Agent = argv1
-
-		case "alias":
-			// Only valid email addresses are accepted
-			if this.Alias == argv1 || rfc5322.IsEmailAddress(argv1) == false { return false }
-			this.Alias = argv1
-
-		case "command":
-			// Only valid values are accepted
-			if this.Command == argv1 || command.Test(argv1) == false { return false }
-			this.Command = argv1
-
-		case "date":
-			// Any value is accepted
-			if this.Date == argv1 { return false }
-			this.Date = argv1
-
-		case "diagnosis":
-			// Any value is accepted
-			if this.Diagnosis == argv1 { return false }
-			this.Diagnosis = argv1
-
-		case "feedbacktype":
-			// Only valid values are accepted
-			if this.FeedbackType == argv1 || moji.EqualsAny(argv1, feedbacklo) == false { return false }
-			this.FeedbackType = argv1
-
-		case "lhost":
-			// Only valid hostnames are accepted
-			if this.Lhost == argv1 || rfc1123.IsInternetHost(argv1) == false { return false }
-			this.Lhost = strings.ToLower(argv1)
-
-		case "reason":
-			// Only valid reason names are accepted
-			if this.Reason == argv1 { return false }
-			this.Reason = strings.ToLower(argv1)
-
-		case "recipient":
-			// Only valid email addresses are accepted
-			if this.Recipient == argv1 || rfc5322.IsEmailAddress(argv1) == false { return false }
-			this.Recipient = argv1
-
-		case "replycode":
-			// Only valid SMTP reply codes are accepted
-			if this.ReplyCode == argv1 || reply.Test(argv1) == false { return false }
-			this.ReplyCode = argv1
-
-		case "rhost":
-			// Only valid hostnames are accepted
-			if this.Rhost == argv1 || rfc1123.IsInternetHost(argv1) == false { return false }
-			this.Rhost = strings.ToLower(argv1)
-
-		case "spec":
-			// Any value is accepted
-			if this.Spec == argv1 { return false }
-			this.Spec = argv1
-
-		case "status":
-			// Only valid SMTP status codes are accepted
-			if this.Status == argv1 || status.Test(argv1) == false { return false }
-			this.Status = argv1
+		case "action":       if rfc1894.ActionList[argv1] { this.Action = argv1 }    // Only valid values are accepted
+		case "agent":        this.Agent = argv1     // Any value is accepted
+		case "alias":        if rfc5322.IsEmailAddress(argv1) { this.Alias = argv1 } // Only valid email addresses are accepted
+		case "command":      if command.Test(argv1) { this.Command = argv1 }         // Only valid values are accepted
+		case "date":         this.Date = argv1      // Any value is accepted
+		case "diagnosis":    this.Diagnosis = argv1 // Any value is accepted
+		case "feedbacktype": if moji.EqualsAny(argv1, feedbacklo) { this.FeedbackType = argv1 }       // Only valid values are accepted
+		case "lhost":        if rfc1123.IsInternetHost(argv1) { this.Lhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
+		case "reason":       this.Reason = strings.ToLower(argv1)
+		case "recipient":    if rfc5322.IsEmailAddress(argv1) { this.Recipient = argv1 } // Only valid email addresses are accepted
+		case "replycode":    if reply.Test(argv1) { this.ReplyCode = argv1 }             // Only valid SMTP reply codes are accepted
+		case "rhost":        if rfc1123.IsInternetHost(argv1) { this.Rhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
+		case "spec":         this.Spec = argv1      // Any value is accepted
+		case "status":       if status.Test(argv1) { this.Status = argv1 } // Only valid SMTP status codes are accepted
 	}
 	return true
 }
