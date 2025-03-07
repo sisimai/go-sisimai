@@ -8,9 +8,6 @@
 SHELL := /bin/sh
 TIME  := $(shell date '+%F')
 NAME  := sisimai
-WGET  := wget -c
-CURL  := curl -L
-CHMOD := chmod
 GO    := go
 CP    := cp
 RM    := rm -f
@@ -18,19 +15,13 @@ RM    := rm -f
 GOROOT := $(shell echo $$GOROOT)
 GOPATH := $(shell echo $$GOPATH)
 
-LIBSISIMAI := libsisimai.org
-SISIMAIDIR := address arf fact lda lhost mail message reason rfc1123 rfc1894 rfc2045 rfc3464 \
-			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/command smtp/failure smtp/reply  \
-			  smtp/status smtp/transcript moji
-BUILDFLAGS := -ldflags="-s -w" -trimpath
-
 .DEFAULT_GOAL = git-status
 REPOS_TARGETS = git-status git-push git-commit-amend git-tag-list git-diff git-reset-soft \
 				git-rm-cached git-branch
 # -------------------------------------------------------------------------------------------------
 .PHONY: clean
 build:
-	CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) lib$(NAME).go
+	$(MAKE) -f Developers.mk $@
 
 test:
 	$(MAKE) -f Developers.mk $@
