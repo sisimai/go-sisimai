@@ -13,7 +13,7 @@ func TestProbesInto(t *testing.T) {
 	fn := "sisimai/reason.ProbesInto"
 	cx := 0
 
-	for _, cr := range Index() {
+	for cr := range Availables {
 		cx++; if ProbesInto[cr](nil) == true { t.Errorf("%s[%s](nil) returns true", fn, cr) }
 	}
 	t.Logf("The number of tests = %d", cx)

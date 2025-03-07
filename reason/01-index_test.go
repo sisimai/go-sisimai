@@ -17,20 +17,24 @@ var ae = []string{
 	"networkerror", "norelaying", "notaccept", "notcompliantrfc", "onhold", "policyviolation",
 	"rejected", "requireptr", "securityerror", "spamdetected", "speeding", "suppressed", "suspend",
 	"syntaxerror", "systemerror", "systemfull", "toomanyconn", "userunknown", "virusdetected",
+	"undefined", "delivered", "vacation",
 }
 
-func TestIndex(t *testing.T) {
-	fn := "sisimai/reason.Index"
+func TestAvailables(t *testing.T) {
+	fn := "sisimai/reason.Availables"
 	cx := 0
-	cv := Index()
+	cv := Availables
 
-	cx++; if len(cv) ==  0 { t.Errorf("%s() returns empty", fn) }
-	cx++; if len(cv) != 33 { t.Errorf("%s() returns empty", fn) }
-	for _, e := range cv {
-		cx++; if e == "" { t.Errorf("%s() includes an empty string", fn) }
+	cx++; if len(cv) ==  0 { t.Errorf("%s is empty", fn) }
+	cx++; if len(cv) != 36 { t.Errorf("%s includes invalid elements: %d", fn, len(cv)) }
+	for e := range cv {
+		cx++; if e == ""     { t.Errorf("%s returned an empty key", fn) }
+		cx++; if cv[e] == "" { t.Errorf("%s[%s] is empty", fn, cv[e]) }
 		cx++; if moji.EqualsAny(strings.ToLower(e), ae) == false {
 			t.Errorf("%s() returns invalid reason name: %s", fn, e)
 		}
+		cx++; if ProbesInto[e](nil) == true { t.Errorf("ProbesInto[%s](nil) returns true", e) }
+		cx++; if IncludedIn[e](" ") == true { t.Errorf("IncludedIn[%s](' ') returns true", e) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
@@ -41,7 +45,7 @@ func TestIsExplicit(t *testing.T) {
 	cx := 0
 
 	for _, e := range ae {
-		if e == "onhold" { continue }
+		if e == "onhold" || e == "undefined" { continue }
 		cx++; if cv := IsExplicit(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
 	cx++; if IsExplicit("")          == true { t.Errorf("%s() returns true", fn) }
