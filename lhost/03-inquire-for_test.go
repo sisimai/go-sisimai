@@ -13,8 +13,15 @@ import "libsisimai.org/sisimai/sis"
 func TestInquireFor(t *testing.T) {
 	fn := "sisimai/lhost.InquireFor"
 	cx := 0
+	ae := []string{
+		"Activehunter", "AmazonSES", "ApacheJames", "Biglobe", "Courier", "Domino", "DragonFly", "EZweb",
+		"EinsUndEins", "Exchange2003", "Exchange2007", "Exim", "FML", "GMX", "GoogleGroups", "Gmail",
+		"GoogleWorkspace", "IMailServer", "InterScanMSS", "KDDI", "MailFoundry", "MailMarshalSMTP",
+		"MessagingServer", "Notes", "OpenSMTPD", "Postfix", "Sendmail", "V5sendmail", "Verizon",
+		"X1", "X2", "X3", "X6", "Zoho", "mFILTER", "qmail",
+	}
 
-	for _, e := range INDEX() {
+	for _, e := range ae {
 		bf := &sis.BeforeFact{
 			Sender:  "MAILER-DAEMON",
 			Headers: map[string][]string{

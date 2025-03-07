@@ -20,15 +20,3 @@ func TestINDICATORS(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
-func TestINDEX(t *testing.T) {
-	fn := "sisimai/lhost.INDEX"
-	cv := INDEX()
-	cx := 0
-
-	cx++; if len(cv) == 0 { t.Fatalf("%s() = empty", fn) }
-	for _, e := range cv {
-		cx++; if InquireFor[e] == nil { t.Errorf("%s(%s) = nil", fn, e) }
-	}
-	t.Logf("The number of tests = %d", cx)
-}
-
