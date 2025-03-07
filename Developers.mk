@@ -8,9 +8,11 @@
 # -------------------------------------------------------------------------------------------------
 SHELL := /bin/sh
 HERE  := $(shell pwd)
+FILE  := $(firstword $(MAKEFILE_LIST))
 NAME  := sisimai
 MKDIR := mkdir -p
 LS    := ls -1
+RM    := rm -f
 CP    := cp
 GO    := go
 
@@ -18,13 +20,20 @@ GOROOT := $(shell echo $$GOROOT)
 GOPATH := $(shell echo $$GOPATH)
 
 LIBSISIMAI := libsisimai.org
-SISIMAIDIR := address arf fact lda lhost mail message reason rfc1123 rfc1894 rfc2045 rfc3464 \
-			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/command smtp/failure smtp/reply  \
-			  smtp/status smtp/transcript moji
+SISIMAIDIR := address arf fact lda lhost mail message moji reason rfc1123 rfc1894 rfc2045 rfc3464 \
+			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/*/
 COVERAGETO := coverage.txt
+EXECUTABLE := bin/sisid
+BUILDFLAGS := -ldflags="-s -w" -trimpath
 
 # -------------------------------------------------------------------------------------------------
 .PHONY: clean
+$(EXECUTABLE):
+	CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o $@ $@.go
+
+build:
+	$(RM) $(EXECUTABLE)
+	$(MAKE) -f $(FILE) $(EXECUTABLE)
 
 test:
 	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
@@ -36,7 +45,7 @@ count-test-cases:
 	@ $(GO) test -v ./ $(addprefix ./, $(SISIMAIDIR)) | grep 'The number of ' | awk '{ cx += $$7 } END { print cx }'
 
 loc:
-	@ find libsisimai.go $(SISIMAIDIR) -type f -name '*.go' -not -name '*_test.go' | \
+	@ find ./*.go $(SISIMAIDIR) -type f -name '*.go' -not -name '*_test.go' | \
 		xargs grep -vE '(^$$|^//|/[*]|[*]/|^ |^--)' | grep -vE "\t+//" | wc -l
 
 coverage:
@@ -49,5 +58,6 @@ update-go-mod:
 	@ $(GO) mod tidy
 
 clean:
+	$(RM) ./$(EXECUTABLE)
 	$(RM) ./$(COVERAGETO)
 
