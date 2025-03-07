@@ -9,6 +9,7 @@ v5.2.0p2
 - version: ""
 - changes:
   - Implement `rhost/for-cloudflare.go` for Cloudflare Email Routing #66
+  - Implement `libsisimai.org/sisimai.Reason()` function #71
   - Implement test codes for `rhost/for-*.go` #41 #62
   - `string` package has been renamed to `moji` #68 #69
 
