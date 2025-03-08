@@ -84,7 +84,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 		TIMESTAMP: for {
 			// Convert from the value of "Date" or the date string to time.Time
-			datevalues := []string{}; if e.Date != "" { datevalues = append(datevalues, e.Date) }
+			datevalues := make([]string, 0, 2); if e.Date != "" { datevalues = append(datevalues, e.Date) }
 
 			for _, f := range rfc5322.HeaderTable["date"] {
 				// Date information did not exist in message/delivery-status part.
