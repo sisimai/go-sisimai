@@ -75,8 +75,8 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 	p2 := strings.Index(argv0, argv2); if p2 < 0 { return []TranscriptLog{} }
 
 	// 2. Remove the head of the argv0 to the first "<<<" or ">>>"
-	sessionlog := []string{}        // Each line of the SMTP transcript log(argv0)
-	transcript := []TranscriptLog{} // The list of TranscriptLog{}
+	sessionlog := make([]string, 0, 32)       // Each line of the SMTP transcript log(argv0)
+	transcript := make([]TranscriptLog, 0, 8) // The list of TranscriptLog{}
 
 	if p2 < p1 {
 		// An SMTP server response starting with "<<<" is the first
