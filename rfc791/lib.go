@@ -37,7 +37,7 @@ func FindIPv4Address(argv1 *string) []string {
 	argv2 := *argv1
 	for _, e := range []string{"(", ")", "[", "]", ","} { argv2 = strings.ReplaceAll(argv2, e, " ") }
 
-	ipv4a := []string{}; for _, e := range strings.Split(argv2, " ") {
+	ipv4a := make([]string, 0, 4); for _, e := range strings.Split(argv2, " ") {
 		// Find a string including an IPv4 address
 		if strings.IndexByte(e, '.') < 0 { continue } // IPv4 address must include "." character
 		if IsIPv4Address(e) == false     { continue } // The string is an IPv4 address or not
