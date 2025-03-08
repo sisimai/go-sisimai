@@ -19,7 +19,7 @@ import "libsisimai.org/sisimai/lhost"
 import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
 
-var tryonfirst = []string{}
+var tryonfirst = make([]string, 0, 36)
 var defaultset = lhost.AnotherOrder()
 var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
 
