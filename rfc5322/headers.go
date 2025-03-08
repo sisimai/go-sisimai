@@ -17,7 +17,6 @@ func Headers(argv0 *mail.Header, argv1 bool) map[string][]string {
 	// @param    bool              argv1 Decode "Subject:" header or not
 	// @return   map[string]string       Structured email header data
 	headermaps := map[string][]string{}
-	receivedby := []string{}
 	isrequired := []string{"from", "received", "message-id", "content-type", "subject"}
 
 	for e, v := range *argv0 {
@@ -29,7 +28,8 @@ func Headers(argv0 *mail.Header, argv1 bool) map[string][]string {
 		headermaps[f] = v
 	}
 
-	if len(headermaps["received"]) > 0 {
+	if cw := len(headermaps["received"]); cw > 0 {
+		receivedby := make([]string, 0, cw)
 		for _, e := range headermaps["received"] {
 			// 1. Exclude the Received header including "(qmail ** invoked from network)".
 			// 2. Convert all consecutive spaces and line breaks into a single space character.
