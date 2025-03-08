@@ -48,17 +48,17 @@ func init() {
 			"message": []string{"   ----- Transcript of session follows -----"},
 			"error":   []string{"... while talking to "},
 		}
-		permessage := map[string]string{} // Store values of each Per-Message field
-		keystrings := []string{}          // Key list of permessage
+		permessage := make(map[string]string, 4) // Store values of each Per-Message field
+		keystrings := make([]string, 0, 4)       // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)            // Points the current cursor position
-		readslices := []string{""}        // Copy each line for later reference
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		thecommand := ""                  // An SMTP command name begins with the string ">>>"
-		esmtpreply := []string{}          // Reply messages from the remote server on an SMTP session
-		sessionerr := false               // Flag, true if it is an SMTP session error
-		anotherset := map[string]string{} // Another error information
+		readcursor := uint8(0)              // Points the current cursor position
+		readslices := make([]string, 0, 64) // Copy each line for later reference
+		recipients := uint8(0)              // The number of 'Final-Recipient' header
+		thecommand := ""                    // An SMTP command name begins with the string ">>>"
+		esmtpreply := make([]string, 0, 4)  // Reply messages from the remote server on an SMTP session
+		sessionerr := false                 // Flag, true if it is an SMTP session error
+		anotherset := make(map[string]string, 4) // Another error information
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for j, e := range(strings.Split(emailparts[0], "\n")) {
