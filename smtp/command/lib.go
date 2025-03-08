@@ -38,7 +38,7 @@ func Find(argv0 string) string {
 	// @return   string        Found SMTP command
 	if Test(argv0) == false { return "" }
 
-	commandset := []string{}
+	commandset := make([]string, 0, 4)
 	commandmap := map[string]string{"STAR": "STARTTLS", "XFOR": "XFORWARD"}
 	issuedcode := " " + argv0 + " "
 
