@@ -86,20 +86,11 @@ func Match(argv0 string) uint8 {
 		"status":                ".",
 		"x-actual-recipient":    ";",
 	}
-	cx := uint8(0)
 	cv := Label(argv0)
 
-	for e := range fieldname0 {
-		// Per message fields
-		if cv == e && strings.Contains(argv0, fieldname0[e]) { cx = 1; break }
-	}
-	if cx > 0 { return cx }
-
-	for e := range fieldname1 {
-		// Per recipient fields
-		if cv == e && strings.Contains(argv0, fieldname1[e]) { cx = 2; break }
-	}
-	return cx
+	for e := range fieldname0 { if cv == e && strings.Contains(argv0, fieldname0[e]) { return 1 } }
+	for e := range fieldname1 { if cv == e && strings.Contains(argv0, fieldname1[e]) { return 2 } }
+	return 0
 }
 
 // Field() checks that the argument is including field defined in RFC3464 or not and return values
