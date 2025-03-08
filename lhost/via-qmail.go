@@ -163,10 +163,10 @@ func init() {
 
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		anotherone := []string{""}        // Keeping another error messages
-		rightindex := uint8(0)            // The last index number of dscontents
-		readcursor := uint8(0)            // Points the current cursor position
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
+		anotherone := make([]string, 1, 2) // Keeping another error messages
+		rightindex := uint8(0)             // The last index number of dscontents
+		readcursor := uint8(0)             // Points the current cursor position
+		recipients := uint8(0)             // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
