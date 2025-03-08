@@ -114,8 +114,8 @@ func Find(argv1 string) string {
 	for _, e := range prefix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, " " + e) }
 	for _, e := range suffix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, e + " ") }
 
-	sourcelist := []string{}
-	foundtoken := []string{}
+	sourcelist := make([]string, 0, 25)
+	foundtoken := make([]string, 0,  2)
 	thelongest := uint8(0)
 	hostnameis := ""
 
