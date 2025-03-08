@@ -11,8 +11,8 @@
 package lhost
 import "libsisimai.org/sisimai/sis"
 
-// Keep each function for decoding a bounce mail
-var InquireFor = map[string]func(*sis.BeforeFact) sis.RisingUnderway {}
+// Keep each function for decoding a bounce mail: % grep '^func init' ./lhost/via-*.go | wc -l
+var InquireFor = make(map[string]func(*sis.BeforeFact) sis.RisingUnderway, 36)
 
 // INDICATORS() returns flags for position variables used at MTA functions in sisimai/lhost.
 func INDICATORS() map[string]uint8 {
