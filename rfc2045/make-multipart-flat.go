@@ -93,7 +93,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 	boundary01 := Boundary(argv0, 0); if boundary01 == "" { return nil, nil }
 	multiparts := strings.Split(*argv1, boundary01 + "\n")
 	partstable := make([][3]string, 0, 4)
-	notdecoded := make([]sis.NotDecoded, 0, 2)
+	notdecoded := []sis.NotDecoded{}
 
 	// Remove empty or useless preamble and epilogue of multipart/* block
 	if len(multiparts[0])                   < 8 { multiparts = multiparts[1:] }

@@ -45,7 +45,7 @@ func tidy(argv0 *string) *string {
 		fn := fieldtable[cf];            if fn == ""                       { email += e + "\n"; continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
-		ab := make([]string, 0, 2)
+		ab := []string{}
 		bf := e[p0 + 1:]
 		p1 := strings.IndexByte(bf, ';')
 		for {
