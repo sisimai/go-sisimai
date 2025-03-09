@@ -74,7 +74,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		bf.Catch = cvv
 	}
 
-	havecalled := map[string]bool{}
+	havecalled := make(map[string]bool, 40)
 	localhostr := sis.RisingUnderway{}
 	modulename := ""
 
