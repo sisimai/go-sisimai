@@ -8,6 +8,9 @@ v5.2.0p2
 - release: ""
 - version: ""
 - changes:
+  - #64 NTT DOCOMO (Major Japanese mobile carrier) no longer returns a bounce mail due to domain
+    rejection or similar email settings, but instead were being delivered to the spam folder after
+    March 13th. #70
   - Implement `rhost/for-cloudflare.go` for Cloudflare Email Routing #66
   - Implement `libsisimai.org/sisimai.Reason()` function #71
   - Implement test codes for `rhost/for-*.go` #41 #62
