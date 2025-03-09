@@ -13,8 +13,8 @@ func TestRhostNTTDOCOMO(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"01",   1, "5.2.0",   "550", "filtered",        false, ""}},
-		{{"02",   1, "5.0.0",   "550", "rejected",        false, ""}},
-		{{"03",   1, "5.0.0",   "550", "rejected",        false, ""}},
+		{{"02",   1, "5.0.0",   "550", "userunknown",      true, ""}},
+		{{"03",   1, "5.0.0",   "550", "userunknown",      true, ""}},
 	}; EngineTest(t, "NTTDOCOMO", publiclist, true)
 
 	secretlist := [][]IsExpected{
