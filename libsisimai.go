@@ -116,7 +116,7 @@ func Dump(path string, args *sis.DecodingArgs) (*string, *[]sis.NotDecoded) {
 	// @param   *sis.DecodingArgs args  Arguments for decoding
 	// @return  *string
 	sisidigest, notdecoded := Rise(path, args); if len(*sisidigest) == 0 { return nil, notdecoded }
-	serialized := []string{}
+	serialized := make([]string, 0, 128)
 
 	for _, e := range *sisidigest {
 		cj, nyaan := e.Dump(); if nyaan != nil {
