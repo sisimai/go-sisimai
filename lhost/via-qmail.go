@@ -45,7 +45,6 @@ func init() {
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{
 			// qmail-send.c:qmail_puts(&qqt,*sender.s ? "--- Below this line is a copy of the message.\n\n" :...
 			"--- Below this line is a copy of the message.",     // qmail-1.03
@@ -174,10 +173,10 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if moji.ContainsAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
+				if moji.ContainsAny(e, startingof["message"]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// <kijitora@example.jp>:
 			// 192.0.2.153 does not like recipient.
