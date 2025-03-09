@@ -33,7 +33,6 @@ func init() {
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][]string{
 			// https://www.courier-mta.org/courierdsn.html
@@ -67,10 +66,10 @@ func init() {
 
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if moji.ContainsAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
+				if moji.ContainsAny(e, startingof["message"]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			f := rfc1894.Match(e); if f > 0 {
 				// "e" matched with any field defined in RFC3464
