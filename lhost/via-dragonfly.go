@@ -35,7 +35,6 @@ func init() {
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Original message follows.", "Message headers follow"}
 		startingof := map[string][]string{
 			// https://github.com/corecode/dma/blob/ffad280aa40c242aa9a2cb9ca5b1b6e8efedd17e/mail.c#L84
@@ -70,10 +69,10 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// This is the DragonFly Mail Agent v0.13 at df.example.jp.
 			//
