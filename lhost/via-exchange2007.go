@@ -80,7 +80,6 @@ func init() {
 		if len(bf.Headers["content-language"]) > 0                { proceedsto++ }
 		if proceedsto < 2 { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
@@ -92,10 +91,10 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if moji.HasPrefixAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
+				if moji.HasPrefixAny(e, startingof["message"]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// Diagnostic information for administrators:
 			//
