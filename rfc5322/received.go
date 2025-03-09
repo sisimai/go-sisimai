@@ -42,9 +42,9 @@ func Received(argv1 string) [6]string {
 	label := [6]string{"from", "by", "via", "with", "id", "for"}
 	skips := []string{"unknown", "localhost", "[127.0.0.1]", "[IPv6:::1]"}
 	chars := []string{"(", ")", ";"} // Removed by strings.ReplaceAll()
-	token := make(map[string]string)
-	other := []string{}
-	alter := []string{}
+	token := make(map[string]string, 6)
+	other := make([]string, 6)
+	alter := make([]string, 6)
 	right := false
 
 	for j, e := range recvd {

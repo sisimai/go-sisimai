@@ -35,7 +35,6 @@ func init() {
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][]string{
 			// savemail.c:1040|if (printheader && !putline("   ----- Transcript of session follows -----\n",
@@ -48,17 +47,17 @@ func init() {
 			"message": []string{"   ----- Transcript of session follows -----"},
 			"error":   []string{"... while talking to "},
 		}
-		permessage := map[string]string{} // Store values of each Per-Message field
-		keystrings := []string{}          // Key list of permessage
+		permessage := map[string]string{}   // Store values of each Per-Message field
+		keystrings := []string{}            // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)            // Points the current cursor position
-		readslices := []string{""}        // Copy each line for later reference
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		thecommand := ""                  // An SMTP command name begins with the string ">>>"
-		esmtpreply := []string{}          // Reply messages from the remote server on an SMTP session
-		sessionerr := false               // Flag, true if it is an SMTP session error
-		anotherset := map[string]string{} // Another error information
+		readcursor := uint8(0)              // Points the current cursor position
+		readslices := make([]string, 1, 32) // Copy each line for later reference
+		recipients := uint8(0)              // The number of 'Final-Recipient' header
+		thecommand := ""                    // An SMTP command name begins with the string ">>>"
+		esmtpreply := []string{}            // Reply messages from the remote server on an SMTP session
+		sessionerr := false                 // Flag, true if it is an SMTP session error
+		anotherset := map[string]string{}   // Another error information
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for j, e := range(strings.Split(emailparts[0], "\n")) {
@@ -68,10 +67,10 @@ func init() {
 
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 { continue }
 
 			if f := rfc1894.Match(e); f > 0 {
 				// "e" matched with any field defined in RFC3464

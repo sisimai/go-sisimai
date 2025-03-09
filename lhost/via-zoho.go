@@ -21,7 +21,6 @@ func init() {
 		if bf == nil || bf.Empty() == true    { return sis.RisingUnderway{} }
 		if len(bf.Headers["x-zohomail"]) == 0 { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"\n\nReceived:"}
 		startingof := map[string][]string{
 			"message": []string{"This message was created automatically by mail delivery"},
@@ -40,10 +39,10 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// This message was created automatically by mail delivery software.
 			// A message that you sent could not be delivered to one or more of its recip=

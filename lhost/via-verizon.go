@@ -25,7 +25,6 @@ func init() {
 		if moji.Aligned(bf.Headers["from"][0], []string{"sysadmin@", ".vzwpix.com"}) { proceedsto = 1 }
 		if proceedsto == 0 { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Original Message:", "Message details:"}
 		nooriginal := false
 		startingof := map[string][]string{"message": []string{"Error: "}}
@@ -57,9 +56,9 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			v.Diagnosis += e
 		}

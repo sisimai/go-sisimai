@@ -40,7 +40,6 @@ func init() {
 		}
 		if proceedsto == 0 { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][][]string{
 			// Postfix manual - bounce(5) - http://www.postfix.org/bounce.5.html
@@ -99,8 +98,8 @@ func init() {
 			}
 		} else {
 			// The message body is a general bounce mail message of Postfix
-			readcursor := uint8(0)     // Points the current cursor position
-			readslices := []string{""} // Copy each line for later reference
+			readcursor := uint8(0)              // Points the current cursor position
+			readslices := make([]string, 1, 32) // Copy each line for later reference
 
 			for j, e := range(strings.Split(emailparts[0], "\n")) {
 				// Read error messages and delivery status lines from the head of the email to the
@@ -110,11 +109,11 @@ func init() {
 				if readcursor == 0 {
 					// Beginning of the bounce message or message/delivery-status part
 					for _, a := range startingof["message"] {
-						if moji.Aligned(e, a) { readcursor |= indicators["deliverystatus"]; break }
+						if moji.Aligned(e, a) { readcursor |= Indicators["deliverystatus"]; break }
 					}
 					continue
 				}
-				if readcursor & indicators["deliverystatus"] == 0 { continue }
+				if readcursor & Indicators["deliverystatus"] == 0 { continue }
 
 				if f := rfc1894.Match(e); f > 0 {
 					// "e" matched with any field defined in RFC3464

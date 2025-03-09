@@ -10,7 +10,7 @@
 package rfc3464
 import "strings"
 
-var ReturnedBy = map[string]func(string) []string {}
+var ReturnedBy = make(map[string]func(string) []string, 1)
 var thirdparty = map[string][]string{
 //	"Aol":      []string{"X-Outbound-Mail-Relay-"}, // X-Outbound-Mail-Relay-(Queue-ID|Sender)
 	"PowerMTA": []string{"X-PowerMTA-"},            // X-PowerMTA-(VirtualMTA|BounceCategory)

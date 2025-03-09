@@ -13,7 +13,7 @@ package rhost
 import "strings"
 import "libsisimai.org/sisimai/sis"
 
-var ReturnedBy = map[string]func(*sis.Fact) string {}
+var ReturnedBy = make(map[string]func(*sis.Fact) string, 19) // grep '^func init' ./rhost/for-*.go | wc -l
 var RhostClass = map[string][]string{
 	"Aol":         []string{".mail.aol.com", ".mx.aol.com"},
 	"Apple":       []string{".mail.icloud.com", ".apple.com", ".me.com"},

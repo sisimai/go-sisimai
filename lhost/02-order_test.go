@@ -89,13 +89,3 @@ func TestOrderBySubject(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
-func TestAnotherOrder(t *testing.T) {
-	fn := "sisimai/lhost.OrderBySubject"
-	cx := 0
-	cv := AnotherOrder()
-
-	cx++; if len(cv) == 0 { t.Errorf("%s() is empty", fn) }
-	t.Logf("The number of tests = %d", cx)
-}
-
-

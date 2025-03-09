@@ -29,7 +29,6 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	// @see      https://tools.ietf.org/html/rfc3464
 	if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
-	indicators := lhost.INDICATORS()
 	boundaries := []string{
 		// When the new value added, the part of the value should be listed in "delimiters" variable
 		// defined at MakeFlat() function in sisimai/rfc2045/make-multipart-flat.go
@@ -50,16 +49,16 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		bf.Payload = strings.Replace(bf.Payload, cv, "\n\n" + boundaries[0] + cv, 1)
 		break
 	}
-	permessage := map[string]string{} // Store values of each Per-Message field
-	keystrings := []string{}          // Key list of permessage
+	permessage := map[string]string{}   // Store values of each Per-Message field
+	keystrings := []string{}            // Key list of permessage
 	dscontents := []sis.DeliveryMatter{{}}
-	alternates := sis.DeliveryMatter{}
+	alternates := new(sis.DeliveryMatter)
 	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-	readcursor := uint8(0)            // Points the current cursor position
-	readslices := []string{""}        // Copy each line for later reference
-	recipients := uint8(0)            // The number of 'Final-Recipient' header
-	beforemesg := ""                  // String before startingof["message"]
-	goestonext := false               // Flag: do not append the line into "beforemesg"
+	readcursor := uint8(0)              // Points the current cursor position
+	readslices := make([]string, 1, 32) // Copy each line for later reference
+	recipients := uint8(0)              // The number of 'Final-Recipient' header
+	beforemesg := ""                    // String before startingof["message"]
+	goestonext := false                 // Flag: do not append the line into "beforemesg"
 	isboundary := []string{rfc2045.Boundary(bf.Headers["content-type"][0], 0)}
 	v          := &(dscontents[len(dscontents) - 1])
 
@@ -110,7 +109,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 
 		if readcursor == 0 {
 			// Beginning of the bounce message or message/delivery-status part
-			if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+			if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= lhost.Indicators["deliverystatus"] }
 
 			for {
 				// Append each string before startingof["message"][0] except the following patterns
@@ -144,7 +143,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			}
 			continue
 		}
-		if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+		if readcursor & lhost.Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 		if f := rfc1894.Match(e); f > 0 {
 			// This line matched with any field defined in RFC3464

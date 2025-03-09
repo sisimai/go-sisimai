@@ -33,7 +33,6 @@ func init() {
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][]string{
 			// https://www.courier-mta.org/courierdsn.html
@@ -50,14 +49,14 @@ func init() {
 			"networkerror": []string{"DNS lookup failed."},
 		}
 
-		permessage := map[string]string{} // Store values of each Per-Message field
-		keystrings := []string{}          // Key list of permessage
+		permessage := map[string]string{}   // Store values of each Per-Message field
+		keystrings := []string{}            // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)            // Points the current cursor position
-		readslices := []string{""}        // Copy each line for later reference
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		thecommand := ""                  // An SMTP command name begins with the string ">>>"
+		readcursor := uint8(0)              // Points the current cursor position
+		readslices := make([]string, 1, 32) // Copy each line for later reference
+		recipients := uint8(0)              // The number of 'Final-Recipient' header
+		thecommand := ""                    // An SMTP command name begins with the string ">>>"
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for j, e := range(strings.Split(emailparts[0], "\n")) {
@@ -67,10 +66,10 @@ func init() {
 
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if moji.ContainsAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
+				if moji.ContainsAny(e, startingof["message"]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			f := rfc1894.Match(e); if f > 0 {
 				// "e" matched with any field defined in RFC3464

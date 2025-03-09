@@ -27,7 +27,6 @@ func init() {
 		if strings.Contains(bf.Headers["from"][0], "<mailer-daemon@googlemail.com>")  == false { return sis.RisingUnderway{} }
 		if strings.Contains(bf.Headers["subject"][0], "Delivery Status Notification") == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][]string{
 			"message": []string{"** "},
@@ -51,12 +50,12 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.HasPrefix(e, startingof["message"][0]) {
 					// ** Message not delivered **
-					readcursor |= indicators["deliverystatus"]
+					readcursor |= Indicators["deliverystatus"]
 					v.Diagnosis = e + " "
 				}
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// ** Message not delivered **
 			// You're sending this from a different address or alias using the 'Send mail as' feature.

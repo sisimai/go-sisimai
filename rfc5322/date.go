@@ -130,18 +130,10 @@ func Date(argv1 string) string {
 			// Time string such as "18:30:22" or other formatted string
 			if strings.Count(e, ":") == 2 {
 				// This piece might be a time such as "18:30:22", "3:1:4"
-				ct := []uint8{}
-				for _, f := range strings.Split(e, ":") {
+				ct := make([]uint8, 0, 3); for _, f := range strings.Split(e, ":") {
 					// Each element(integer) should be greater equal 0 and less equal 60.
-					cv, nyaan := strconv.ParseUint(f, 10, 8); if nyaan != nil || cv > 60 {
-						// This piece does not seem to a time string
-						return ""
-					}
+					cv, nyaan := strconv.ParseUint(f, 10, 8); if nyaan != nil || cv > 60 { return "" }
 					ct = append(ct, uint8(cv))
-				}
-				if len(ct) != 3 {
-					// This piece does not seem to a time string
-					return ""
 				}
 				p[4] = fmt.Sprintf("%02d:%02d:%02d", ct[0], ct[1], ct[2])
 

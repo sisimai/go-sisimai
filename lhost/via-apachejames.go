@@ -35,7 +35,6 @@ func init() {
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{
 			// apache-james-2.3.2/src/java/org/apache/james/transport/mailets/
@@ -58,13 +57,13 @@ func init() {
 				if strings.HasPrefix(e, startingof["message"][0]) {
 					// Message details:
 					//   Subject: Nyaaan
-					readcursor |= indicators["deliverystatus"]
+					readcursor |= Indicators["deliverystatus"]
 					continue
 				}
 				if e != "" { v.Diagnosis += e + " " }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// Message details:
 			//   Subject: Nyaaan

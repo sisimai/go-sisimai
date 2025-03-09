@@ -24,7 +24,6 @@ func init() {
 		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Returned mail: ") == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"   ----- Unsent message follows -----", "  ----- No message was collected -----"}
 		startingof := map[string][]string{
 			// Error text regular expressions which defined in src/savemail.c
@@ -60,10 +59,10 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.Contains(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.Contains(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			//    ----- Transcript of session follows -----
 			// While talking to smtp.example.com:

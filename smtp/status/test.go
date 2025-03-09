@@ -17,7 +17,7 @@ func Test(argv1 string) bool {
 	// @return   bool          false = Invalid status code, true = Valid status code
 	if len(argv1) < 5 || len(argv1) > 7 { return false }
 
-	token := []int16{} // Each digit like [5,7,26] converted from "5.7.26"
+	token := make([]int16, 0, 3) // Each digit like [5,7,26] converted from "5.7.26"
 	for _, e := range strings.Split(argv1, ".") {
 		digit, nyaan := strconv.Atoi(e); if nyaan == nil { token = append(token, int16(digit)) }
 	}

@@ -17,10 +17,8 @@ func ContainsAny(argv1 string, argv2 []string) bool {
 	// @return   bool
 	if argv1 == "" || len(argv2) == 0 { return false }
 
-	for _, e := range argv2 {
-		// It works like `grep { index($e, $_) > -1 } @list` in Perl
-		if strings.Contains(argv1, e) { return true  }
-	}
+	// It works like `grep { index($e, $_) > -1 } @list` in Perl
+	for _, e := range argv2 { if strings.Contains(argv1, e) { return true } }
 	return false
 }
 
@@ -31,10 +29,8 @@ func EqualsAny(argv1 string, argv2 []string) bool {
 	// @return   bool
 	if argv1 == "" || len(argv2) == 0 { return false }
 
-	for _, e := range argv2 {
-		// It works like `grep { $e eq $_ } @list` in Perl
-		if argv1 == e { return true }
-	}
+	// It works like `grep { $e eq $_ } @list` in Perl
+	for _, e := range argv2 { if argv1 == e { return true } }
 	return false
 }
 
@@ -45,10 +41,8 @@ func HasPrefixAny(argv1 string, argv2 []string) bool {
 	// @return   bool
 	if argv1 == "" || len(argv2) == 0 { return false }
 
-	for _, e := range argv2 {
-		// It works like `grep { index($e, $_) == 0 } @list` in Perl
-		if strings.HasPrefix(argv1, e) { return true }
-	}
+	// It works like `grep { index($e, $_) == 0 } @list` in Perl
+	for _, e := range argv2 { if strings.HasPrefix(argv1, e) { return true } }
 	return false
 }
 

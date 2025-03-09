@@ -24,7 +24,6 @@ func init() {
 		if strings.HasPrefix(bf.Headers["from"][0],    "Mail Delivery System")         == false { return sis.RisingUnderway{} }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Delivery status notification") == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{
 			"message": []string{"      This is an automatically generated Delivery Status Notification."},
@@ -42,10 +41,10 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// ============================================================================
 			//      This is an automatically generated Delivery Status Notification.

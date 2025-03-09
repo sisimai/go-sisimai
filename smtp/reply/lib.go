@@ -126,7 +126,7 @@ func Find(argv1 string, argv2 string) string {
 	if len(argv2) == 0 { argv2 = "0" }
 
 	statuscode := argv2[0:1]
-	replycodes := []string{}
+	replycodes := make([]string, 0, 50)
 
 	if statuscode == "2" || statuscode == "4" || statuscode == "5" {
 		// The first character of the 2nd argument is 2 or 4 or 5
