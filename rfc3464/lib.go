@@ -50,13 +50,13 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		bf.Payload = strings.Replace(bf.Payload, cv, "\n\n" + boundaries[0] + cv, 1)
 		break
 	}
-	permessage := make(map[string]string, 4) // Store values of each Per-Message field
-	keystrings := make([]string, 0, 4)       // Key list of permessage
+	permessage := map[string]string{}   // Store values of each Per-Message field
+	keystrings := []string{}            // Key list of permessage
 	dscontents := []sis.DeliveryMatter{{}}
 	alternates := sis.DeliveryMatter{}
 	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 	readcursor := uint8(0)              // Points the current cursor position
-	readslices := make([]string, 1, 64) // Copy each line for later reference
+	readslices := make([]string, 1, 32) // Copy each line for later reference
 	recipients := uint8(0)              // The number of 'Final-Recipient' header
 	beforemesg := ""                    // String before startingof["message"]
 	goestonext := false                 // Flag: do not append the line into "beforemesg"
