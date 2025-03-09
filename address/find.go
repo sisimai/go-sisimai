@@ -12,19 +12,23 @@ import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc1123"
 import "libsisimai.org/sisimai/rfc5322"
 
-// S3S4() runs like ruleset 3,4 of sendmail.cf
+// S3S4 runs like the ruleset 3 and 4 of /etc/sendmail.cf file.
+//   Arguments:
+//     - argv1 (string): String including an email address
+//   Returns:
+//     - (string):       Email address picked from the given string
 func S3S4(argv1 string) string {
-	// @param    string argv1  Text including an email address
-	// @return   string        Email address without comment, brackets
 	if len(argv1)   == 0 { return "" }; list := Find(argv1)
 	if len(list[0]) == 0 { return "" }
 	return list[0]
 }
 
-// Find() is an email address parser with a name and a comment
+// Find is an email address parser with a name and comment.
+//   Arguments:
+//     - argv1 (string): String including an email address
+//   Returns:
+//     - ([3]string):    Email address table such as  [3]string{"address", "name", "comment"}
 func Find(argv1 string) [3]string {
-	// @param    string argv1  String including email address
-	// @return   [3]string{}          Email address table: {"address", "name", "comment"}
 	if len(argv1) < 5 { return [3]string{} }
 		argv1 = strings.ReplaceAll(argv1, "\r", "") // Remove CR
 		argv1 = strings.ReplaceAll(argv1, "\n", "") // Remove LF

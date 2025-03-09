@@ -10,15 +10,16 @@ package address
 import "strings"
 import "libsisimai.org/sisimai/rfc5322"
 
-// ExpandVERP() gets the original recipient address from VERP
+// ExpandVERP gets the original recipient address from a VERP address.
+//   Arguments:
+//     - email (string): VERP address such as "bounce+neko=example.jp@example.org"
+//   Returns:
+//     - (string):       Expanded email address such as "neko@example.jp"
 func ExpandVERP(email string) string {
-	// @param    string email  VERP Address
-	// @return   string        Email address
 	if email                          == ""   { return "" }
 	if strings.IndexByte(email, '@')  == -1   { return "" }
 	if rfc5322.IsQuotedAddress(email) == true { return "" } // Do not expand "neko+cat=example.jp"@example.org
 
-	// bounce+neko=example.org@example.jp => neko@example.jp
 	local := strings.SplitN(email, "@", 2)[0]
 	pluss := strings.IndexByte(local, '+'); if pluss < 1                  { return "" }
 	equal := strings.IndexByte(local, '='); if equal < 1 || pluss > equal { return "" }
@@ -29,15 +30,15 @@ func ExpandVERP(email string) string {
 	return ""
 }
 
-// ExpandAlias() removes string from "+" to "@" at a local part
+// ExpandAlias removes string from "+" to "@" at a local part.
+//   Arguments:
+//     - email (string): Email alias such as "neko+straycat@example.jp"
+//   Returns:
+//     - (string):       Email address "neko@example.jp"
 func ExpandAlias(email string) string {
-	// @param    string email  Email alias string
-	// @return   string        Expanded email address
 	if email == "" || strings.IndexByte(email, '+') < 1 { return "" }
 	if rfc5322.IsEmailAddress(email)  == false          { return "" }
 	if rfc5322.IsQuotedAddress(email) == true           { return "" } // Do not expand "neko+cat"@example.org
-
-	// neko+straycat@example.org => neko@example.org
 	return email[0:strings.IndexByte(email, '+')] + "@" + strings.SplitN(email, "@", 2)[1]
 }
 

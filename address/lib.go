@@ -12,18 +12,22 @@ package address
 import "strings"
 import "libsisimai.org/sisimai/rfc5322"
 
-// Undisclosed() returns a pseudo recipient address or a pseudo sender address
-func Undisclosed(f bool) string {
-	// @param    string f   Address type: true = recipient, false = sender
-	// @return   string     Pseudo recipient address or sender address when the "a" is neither "r" nor "s"
-	p := "recipient"; if f == false { p = "sender" }
+// Undisclosed returns a pseudo recipient or sender address.
+//   Arguments:
+//     - argv0 (bool): Address type; true = recipient, false = sender
+//   Returns:
+//     - (string):     Generated pseudo recipient or sender address
+func Undisclosed(argv0 bool) string {
+	p := "recipient"; if argv0 == false { p = "sender" }
 	return "undisclosed-" + p + "-in-headers@libsisimai.org.invalid"
 }
 
-// Final() returns a string processed by Ruleset 4 in sendmail.cf
+// Final returns a string processed by the ruleset 4 in sendmail.cf file.
+//   Arguments:
+//     - argv0 (string): String including an email address like "<neko@example.jp>"
+//   Returns:
+//     - (string):       Email address without angle brackets such as "neko@example.jp"
 func Final(argv0 string) string {
-	// @param    string argv0  String including an email address like "<neko@example.jp>"
-	// @return   string        String without angle brackets: "neko@example.jp"
 	if strings.Count(argv0, "@") != 1  { return argv0 }
 
 	for strings.HasPrefix(argv0, "<") { argv0 = strings.Trim(argv0, "<") }
@@ -45,11 +49,12 @@ func Final(argv0 string) string {
 	return useris + "@" + hostis
 }
 
-// IsIncluded() returns true if the string include an email address
+// IsIncluded returns true if the string includes an email address.
+//   Arguments:
+//     - argv0 (string): String including an email address like "<neko@example.jp>"
+//   Returns:
+//     - (bool):         true if An email address is included in the given string
 func IsIncluded(argv0 string) bool {
-	// @param    string argv0    String including an email address like "<neko@example.jp>"
-	// @return   bool            true:  is including an email address
-	//                           false: is not including an email address
 	if len(argv0) < 5 || strings.IndexByte(argv0,  '@') < 0 { return false }
 	if strings.HasPrefix(argv0, "<") && strings.HasSuffix(argv0, ">") {
 		// The argument is like "<neko@example.jp>"
@@ -66,12 +71,13 @@ func IsIncluded(argv0 string) bool {
 	return false
 }
 
-// IsMailerDaemon() checks that the argument is mailer-daemon or not
-func IsMailerDaemon(email string) bool {
-	// @param    string email    Email address
-	// @return   bool            true:  is a mailer-daemon
-	//                           false: is not a mailer-daemon
-	value := strings.ToLower(email)
+// IsMailerDaemon checks that the argument is mailer-daemon address or not.
+//   Arguments:
+//     - argv0 (string): Email address
+//   Returns:
+//     - (bool):         true if an email address is a mailer-dameon or postmaster address
+func IsMailerDaemon(argv0 string) bool {
+	value := strings.ToLower(argv0)
 	table := []string{
 		"mailer-daemon@", "(mailer-daemon)", "<mailer-daemon>", "mailer-daemon ",
 		"postmaster@", "(postmaster)", "<postmaster>",
