@@ -21,10 +21,12 @@ var defaultorder = []string{
 	"mFILTER", "Activehunter", "EZweb", "Biglobe", "EinsUndEins", "X1", "X3", "X6",
 }
 
-// OrderBySubject() returns an MTA Order decided by the first word of the "Subject": header.
+// OrderBySubject returns the order list of MTA modules decided by the first two words of the "Subject": header.
+//   Arguments:
+//     - title (string): The value of Subject header
+//   Returns:
+//     - ([]string):     The order list of MTA modules
 func OrderBySubject(title string) []string {
-	// @param   [string] title Subject header string
-	// @return  [[]string]     Order of MTA functions
 	if title == "" { return []string{} }
 
 	table := map[string][]string {
