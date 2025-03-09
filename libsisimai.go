@@ -30,22 +30,23 @@ type  CallbackArg1 = sis.CallbackArg1
 type  CfParameter0 = sis.CfParameter0
 type  CfParameter1 = sis.CfParameter1
 
-// Version() returns the version number of sisimai
+// Version returns the version number of sisimai such as "v5.2.0" or "v5.2.1p22".
 func Version() string {
-	// @param   NONE
-	// @return  string  version number like "v5.2.0p22"
 	v := "v" + version; if patchlv > 0 { v += "p" + string(patchlv) }
 	return v
 }
 
-// Args() returns the pointer to sis.DecodingArgs{} as the 2nd argument of Rise() function
+// Args returns a pointer to sis.DecodingArgs as the 2nd argument of the Rise function.
 func Args() *sis.DecodingArgs { return new(sis.DecodingArgs) }
 
-// sisimai.Rise() is a function for decoding bounce mails in a mailbox or a Maildir/
+// Rise is a function for decoding bounce mails in a mailbox or a Maildir/.
+//   Arguments:
+//     - path (string):            Path to an UNIX mbox, Maildir/, or "STDIN" for standard input.
+//     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages
+//   Returns:
+//     - (*[]sis.Fact):            List of successfully decoded bounce messages
+//     - (*[]sis.NotDecoded):      List of occurred errors
 func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) {
-	// @param   string            path  Path to mbox or Maildir/ or "STDIN"
-	// @param   *sis.DecodingArgs args  Arguments for decoding
-	// @return  []sis.Fact
 	sisidigest := []sis.Fact{}       // Decoded bounce message structures
 	notdecoded := []sis.NotDecoded{} // List of occurred errors and warnings
 
@@ -101,11 +102,14 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 	return &sisidigest, &notdecoded
 }
 
-// sisimai.Dump() returns decoded data as a JSON string
+// Dump returns decoded data as a JSON string.
+//   Arguments:
+//     - path (string):            Path to an mbox, Maildir/, or "STDIN" for standard input.
+//     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages
+//   Returns:
+//     - (*string):                Decoded data as a JSON string array
+//     - (*[]sis.NotDecoded):      List of occurred errors
 func Dump(path string, args *sis.DecodingArgs) (*string, *[]sis.NotDecoded) {
-	// @param   string            path  Path to mbox or Maildir/ or "STDIN"
-	// @param   *sis.DecodingArgs args  Arguments for decoding
-	// @return  *string
 	sisidigest, notdecoded := Rise(path, args); if len(*sisidigest) == 0 { return nil, notdecoded }
 	serialized := []string{}
 
