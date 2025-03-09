@@ -22,11 +22,13 @@ import "libsisimai.org/sisimai/rfc5322"
 var tryonfirst = make([]string, 0, 36)
 var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
 
-// Rise() works as a constructor of Sisimai::Message
+// Rise decode and structure various formats of bounce emails.
+//   Arguments:
+//     - mesg (*string):          Entire email message
+//     - hook (sis.CfParameter0): The first callback function
+//   Returns:
+//     - (*sis.BeforeFact):       Decoded and structured bounce email data
 func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
-	// @param   *string          mesg  Entire email message
-	// @param   sis.CfParameter0 hook  Callback Function
-	// @return  Message                Structured email data
 	if mesg == nil || len(*mesg) < 1 { return new(sis.BeforeFact) }
 
 	mesg        = moji.ToLF(mesg)

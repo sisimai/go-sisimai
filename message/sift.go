@@ -19,12 +19,13 @@ import "libsisimai.org/sisimai/rfc3464"
 import "libsisimai.org/sisimai/rfc3834"
 import "libsisimai.org/sisimai/rfc5322"
 
-// sift() sifts a bounce mail with each MTA module
+// sift is called from the Rise function and decode and structure various formats of bounce emails.
+//   Arguments:
+//     - bf (*sis.BeforeFact):    Message entity in progress
+//     - hook (sis.CfParameter0): The first callback function
+//   Returns:
+//     - (bool): true = successfully decoded and structured the bounce emails, false = failed to decode.
 func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
-	// @param  *sis.BeforeFact  bf     Processing message entity.
-	// @param  sis.CfParameter0 hook   The callback function for the decoded bounce message
-	// @return bool                    true:  Successfully got the results
-	//                                 false: Failed to get the results
 	if bf == nil || bf.Empty() == true { return false }
 
 	bf.Payload = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body

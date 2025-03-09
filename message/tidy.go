@@ -21,7 +21,7 @@ var replacesas = map[string][][]string{
 	},
 }
 
-// makefield() generates a map including each field name defined in RFC1894, RFC5322, and RFC5965
+// makefield generates a map including each field name defined in RFC1894, RFC5322, and RFC5965.
 func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string {
 	fieldtable := map[string]string{}
 	for _, e := range argv1 { fieldtable[strings.ToLower(e)] = e }
@@ -30,10 +30,12 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 	return fieldtable
 }
 
-// tidy() tidies up each field name and format
+// tidy tidies up each field name and format of email headers.
+//   Arguments:
+//     - argv0 (*string): String including fields and values in email headers
+//   Returns:
+//     - (*string): String tidied up
 func tidy(argv0 *string) *string {
-	// @param    *string argv0 String including field and value used at an email
-	// @return   *string       String tidied up
 	email := ""; if len(*argv0) < 1 { return &email }
 	lines := strings.Split(*argv0, "\n")
 
