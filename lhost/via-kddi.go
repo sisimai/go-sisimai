@@ -38,7 +38,6 @@ func init() {
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{
 			"message": []string{"Your mail sent on:", "Your mail attempted to be delivered on:"},
@@ -60,9 +59,9 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			if strings.Contains(e, " Could not be delivered to: <") {
 				// Your mail sent on: Thu, 29 Apr 2010 11:04:47 +0900
