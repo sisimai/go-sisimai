@@ -20,7 +20,6 @@ import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
 
 var tryonfirst = make([]string, 0, 36)
-var defaultset = lhost.AnotherOrder()
 var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
 
 // Rise() works as a constructor of Sisimai::Message
@@ -28,7 +27,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 	// @param   *string          mesg  Entire email message
 	// @param   sis.CfParameter0 hook  Callback Function
 	// @return  Message                Structured email data
-	if mesg == nil || len(*mesg) < 1 { return &sis.BeforeFact{} }
+	if mesg == nil || len(*mesg) < 1 { return new(sis.BeforeFact) }
 
 	mesg        = moji.ToLF(mesg)
 	retryagain := 0
@@ -85,7 +84,6 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 
 		// 3. Rewrite message body for detecting the bounce reason
 		tryonfirst  = lhost.OrderBySubject(beforefact.Headers["subject"][0])
-		tryonfirst  = append(tryonfirst, defaultset...)
 		siftstatus := sift(beforefact, hook); if siftstatus == true { break RISE }
 
 		for _, e := range boundaries {
@@ -102,7 +100,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		cv := rfc5322.Part(&beforefact.Payload, boundaries, true)[1]; if len(cv) < 128 { break RISE }
 		mesg = &cv
 	}
-	if beforefact.Void() == true { return &sis.BeforeFact{} }
+	if beforefact.Void() == true { return new(sis.BeforeFact) }
 	return beforefact
 }
 
