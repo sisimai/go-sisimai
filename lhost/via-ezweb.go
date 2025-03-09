@@ -44,7 +44,6 @@ func init() {
 		}
 		if proceedsto < 2 { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"--------------------------------------------------", "Content-Type: message/rfc822"}
 		startingof := map[string][]string{
 			"message": []string{"The user(s) ", "Your message ", "Each of the following", "<"},
@@ -81,9 +80,9 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if moji.HasPrefixAny(e, startingof["message"]) { readcursor |= indicators["deliverystatus"] }
+				if moji.HasPrefixAny(e, startingof["message"]) { readcursor |= Indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// The user(s) account is disabled.
 			//
