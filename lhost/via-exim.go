@@ -65,7 +65,6 @@ func init() {
 		}
 		if proceedsto < 2 && thirdparty == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{
 			// deliver.c:6423|          if (bounce_return_body) fprintf(f,
 			// deliver.c:6424|"------ This is a copy of the message, including all the headers. ------\n");
@@ -203,7 +202,7 @@ func init() {
 				for _, f := range startingof["message"] {
 					// Check the message defined in startingof["message"], ["frozen"]
 					if strings.Contains(e, f) == false { continue }
-					readcursor |= indicators["deliverystatus"]
+					readcursor |= Indicators["deliverystatus"]
 
 					for _, g := range startingof["frozen"] {
 						// Goes to the next loop if the string does not contain "frozen" message
@@ -211,7 +210,7 @@ func init() {
 					}
 				}
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// This message was created automatically by mail delivery software.
 			//
