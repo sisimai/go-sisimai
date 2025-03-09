@@ -39,16 +39,7 @@ func Version() string {
 }
 
 // Args() returns the pointer to sis.DecodingArgs{} as the 2nd argument of Rise() function
-func Args() *sis.DecodingArgs {
-	// @param   NONE
-	// @return  *sis.DecodingArgs
-	return &sis.DecodingArgs{
-		Delivered: false, // Include sis.Fact{}.Action = "delivered" records in the decoded data
-		Vacation:  false, // Include sis.Fact{}.Reason = "vacation" records in the decoded data
-		Callback0: nil,   // [0] The 1st callback function
-		Callback1: nil,   // [1] The 2nd callback function
-	}
-}
+func Args() *sis.DecodingArgs { return new(sis.DecodingArgs) }
 
 // sisimai.Rise() is a function for decoding bounce mails in a mailbox or a Maildir/
 func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) {
