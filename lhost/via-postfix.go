@@ -53,14 +53,14 @@ func init() {
 			},
 		}
 
-		permessage := make(map[string]string, 4) // Store values of each Per-Message field
-		keystrings := make([]string, 0, 4)       // Key list of permessage
+		permessage := map[string]string{} // Store values of each Per-Message field
+		keystrings := []string{}          // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		recipients := uint8(0)                   // The number of 'Final-Recipient' header
-		nomessages := false                      // Delivery report unavailable
-		anotherset := make(map[string]string, 4) // Another error information
-		commandset := make([]string, 0, 2)       // "in reply to * command" list
+		recipients := uint8(0)            // The number of 'Final-Recipient' header
+		nomessages := false               // Delivery report unavailable
+		anotherset := map[string]string{} // Another error information
+		commandset := []string{}          // "in reply to * command" list
 		v          := &(dscontents[len(dscontents) - 1])
 
 		if proceedsto == 2 {
@@ -100,7 +100,7 @@ func init() {
 		} else {
 			// The message body is a general bounce mail message of Postfix
 			readcursor := uint8(0)              // Points the current cursor position
-			readslices := make([]string, 1, 64) // Copy each line for later reference
+			readslices := make([]string, 1, 32) // Copy each line for later reference
 
 			for j, e := range(strings.Split(emailparts[0], "\n")) {
 				// Read error messages and delivery status lines from the head of the email to the

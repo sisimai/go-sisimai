@@ -52,8 +52,8 @@ func init() {
 			},
 		}
 
-		permessage := make(map[string]string, 4) // Store values of each Per-Message field
-		keystrings := make([]string, 0, 4)       // Key list of permessage
+		permessage := map[string]string{} // Store values of each Per-Message field
+		keystrings := []string{}          // Key list of permessage
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position

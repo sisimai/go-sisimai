@@ -94,8 +94,8 @@ func init() {
 		connvalues := 0                     // Counter, 3 if it has got the all values of connheader
 		connheader := [3]string{"", "", ""} // [To:, Subject:, Date:]
 		rightindex := uint8(0)              // The last index number of dscontents
-		anotherone := make([]string, 1, 2)  // Keeping another error messages
-		msexchange := make([]bool,   1, 2)  // Flag, true if "MSEXCH:" text has been appeared
+		anotherone := []string{""}          // Keeping another error messages
+		msexchange := []bool{false}         // Flag, true if "MSEXCH:" text has been appeared
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {

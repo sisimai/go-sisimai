@@ -185,7 +185,7 @@ func init() {
 		readcursor := uint8(0)              // Points the current cursor position
 		nextcursor := uint8(0)
 		recipients := 0                     // The number of 'Final-Recipient' header
-		anotherone := make([]string, 1, 2)  // Keeping another error messages
+		anotherone := []string{""}          // Keeping another error messages
 		rightindex := uint8(0)              // The last index number of dscontents
 		boundary00 := ""                    // Boundary sting
 		v          := &(dscontents[len(dscontents) - 1])
