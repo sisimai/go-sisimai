@@ -35,7 +35,6 @@ func init() {
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][]string{
 			// savemail.c:1040|if (printheader && !putline("   ----- Transcript of session follows -----\n",
@@ -68,10 +67,10 @@ func init() {
 
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
 				continue
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 { continue }
 
 			if f := rfc1894.Match(e); f > 0 {
 				// "e" matched with any field defined in RFC3464
