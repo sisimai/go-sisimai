@@ -34,7 +34,7 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 //   Arguments:
 //     - argv0 (*string): String including fields and values in email headers
 //   Returns:
-//     - (*string): String tidied up
+//     - (*string):       String tidied up
 func tidy(argv0 *string) *string {
 	email := ""; if len(*argv0) < 1 { return &email }
 	lines := strings.Split(*argv0, "\n")
