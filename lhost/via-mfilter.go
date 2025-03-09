@@ -23,7 +23,6 @@ func init() {
 		if bf.Headers["x-mailer"][0]  != "m-FILTER"       { return sis.RisingUnderway{} }
 		if bf.Headers["subject"][0]   != "failure notice" { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"-------original message", "-------original mail info"}
 		startingof := map[string][]string{
 			"command": []string{"-------SMTP command"},
@@ -43,10 +42,10 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.IndexByte(e, '@') > 1 && strings.IndexByte(e, ' ') < 0 && rfc5322.IsEmailAddress(e) {
 					// This line contains an email address only: "kijitora@example.jp"
-					readcursor |= indicators["deliverystatus"]
+					readcursor |= Indicators["deliverystatus"]
 				}
 			}
-			if readcursor & indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
 
 			// このメールは「m-FILTER」が自動的に生成して送信しています。
 			// メールサーバーとの通信中、下記の理由により
