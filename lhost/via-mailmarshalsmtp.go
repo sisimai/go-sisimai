@@ -22,7 +22,6 @@ func init() {
 		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 		if strings.HasPrefix(bf.Headers["subject"][0], `Undeliverable Mail: "`) == false { return sis.RisingUnderway{} }
 
-		indicators := INDICATORS()
 		boundaries := []string{"'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"}
 		if cv := rfc2045.Boundary(bf.Headers["content-type"][0], 1); cv != "" { boundaries = append(boundaries, cv) }
 
@@ -43,9 +42,9 @@ func init() {
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
 			}
-			if readcursor & indicators["deliverystatus"] == 0 { continue }
+			if readcursor & Indicators["deliverystatus"] == 0 { continue }
 
 			// Your message:
 			//    From:    originalsender@example.com
