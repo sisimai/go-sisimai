@@ -23,7 +23,7 @@ func TestLhostSendGrid(t *testing.T) {
 		{{"1001", 1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"1002", 1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"1003", 1, "5.0.947", "",    "expired",         false, ""}},
-		{{"1004", 1, "5.0.910", "550", "filtered",        false, ""}},
+		{{"1004", 1, "5.0.911", "550", "userunknown",      true, ""}},
 		{{"1005", 1, "5.2.1",   "550", "userunknown",      true, ""}},
 		{{"1006", 1, "5.2.2",   "550", "mailboxfull",     false, ""}},
 		{{"1007", 1, "5.1.1",   "550", "userunknown",      true, ""}},

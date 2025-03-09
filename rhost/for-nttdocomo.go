@@ -20,8 +20,9 @@ func init() {
 
 		messagesof := map[string][]string{
 			"mailboxfull": []string{"552 too much mail data"},
-			"toomanyconn": []string{"552 too many recipients"},
 			"syntaxerror": []string{"503 bad sequence of commands", "504 command parameter not implemented"},
+			"toomanyconn": []string{"552 too many recipients"},
+			"userunknown": []string{"550 unknown user"},
 		}
 		statuscode := fo.DeliveryStatus
 		issuedcode := strings.ToLower(fo.DiagnosticCode)

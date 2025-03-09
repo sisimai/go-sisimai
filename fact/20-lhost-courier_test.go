@@ -20,8 +20,8 @@ func TestLhostCourier(t *testing.T) {
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.0",   "550", "rejected",        false, ""}},
-		{{"1002", 1, "5.0.0",   "550", "rejected",        false, ""}},
+		{{"1001", 1, "5.0.0",   "550", "userunknown",      true, ""}},
+		{{"1002", 1, "5.0.0",   "550", "userunknown",      true, ""}},
 		{{"1003", 1, "5.7.1",   "550", "rejected",        false, ""}},
 		{{"1004", 1, "5.0.0",   "550", "userunknown",      true, ""}},
 		{{"1005", 1, "5.1.1",   "550", "userunknown",      true, ""}},

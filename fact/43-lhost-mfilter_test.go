@@ -26,7 +26,7 @@ func TestLhostmFILTER(t *testing.T) {
 		{{"1004", 1, "5.0.910", "550", "filtered",        false, ""}},
 		{{"1005", 1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"1006", 1, "5.0.910", "550", "filtered",        false, ""}},
-		{{"1007", 1, "5.0.910", "550", "filtered",        false, ""}},
+		{{"1007", 1, "5.0.911", "550", "userunknown",      true, ""}},
 		{{"1008", 1, "5.4.1",   "550", "rejected",        false, ""}},
 		{{"1009", 1, "5.4.1",   "550", "rejected",        false, ""}},
 	}; EngineTest(t, "mFILTER", secretlist, false)
