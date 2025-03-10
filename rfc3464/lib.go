@@ -22,11 +22,14 @@ import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 
-// Inquire() decodes a bounce message that has fields defined in RFC3464
+// Inquire decodes a bounce message that have fields defined in RFC3464.
+//   Arguments:
+//     - bf (*sis.BeforeFact): Message entity in progress
+//   Returns:
+//     - (sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
+//   See:
+//     - https://datatracker.ietf.org/doc/html/rfc3464
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
-	// @param    *sis.BeforeFact bf  Message body of a bounce email
-	// @return   RisingUnderway      RisingUnderway structure
-	// @see      https://tools.ietf.org/html/rfc3464
 	if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
 	boundaries := []string{
