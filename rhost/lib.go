@@ -36,16 +36,18 @@ var RhostClass = map[string][]string{
 	"YahooInc":    []string{".yahoodns.net"},
 }
 
-// Name() returns the rhost class name
+// Name returns the rhost class name.
+//   Arguments:
+//     - fo (*sis.Fact): Decoded data in progress
+//   Returns:
+//     - (string):       Rhost class name
 func Name(fo *sis.Fact) string {
-	// @param    *sis.Fact fo    Decoded data
-	// @return   string          rhost class name or an empty string
-	if fo == nil { return "" }
-
 	// Try to match the hostname patterns with the following order:
 	// 1. destination: The domain part of the recipient address
 	// 2. rhost: remote hostname
 	// 3. lhost: local MTA hostname
+	if fo == nil { return "" }
+
 	clienthost := strings.ToLower(fo.Lhost)
 	remotehost := strings.ToLower(fo.Rhost)
 	domainpart := strings.ToLower(fo.Destination)
@@ -76,11 +78,13 @@ func Name(fo *sis.Fact) string {
 	return ""
 }
 
-// Find() detects the bounce reason from certain remote hosts
+// Find detects the bounce reason from certain remote hosts.
+//   Arguments:
+//     - fo (*sis.Fact): Decoded data in progress
+//   Returns:
+//     - (string):       Bounce reason name
 func Find(fo *sis.Fact) string {
-	// @param    *sis.Fact fo    Decoded data
-	// @return   string          Bounce reason name or an empty string
-	rhostclass := Name(fo); if rhostclass == "" { return "" }
-	return ReturnedBy[rhostclass](fo)
+	rhostclass := Name(fo); if rhostclass != "" { return ReturnedBy[rhostclass](fo) }
+	return ""
 }
 

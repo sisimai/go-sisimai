@@ -14,11 +14,13 @@ import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["Google"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
-		// @see      https://support.google.com/a/answer/3726730?hl=en
+		// - https://support.google.com/a/answer/3726730?hl=en
 		if fo == nil || fo.DiagnosticCode == ""    { return "" }
 		if reply.Test(fo.ReplyCode)       == false { return "" }
 		if status.Test(fo.DeliveryStatus) == false { return "" }

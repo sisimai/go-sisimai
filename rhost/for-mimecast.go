@@ -12,16 +12,18 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/smtp/reply"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["Mimecast"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
+		// https://community.mimecast.com/s/article/Mimecast-SMTP-Error-Codes-842605754
+		// https://community.mimecast.com/s/article/email-security-cloud-gateway-mimecast-smtp-error-codes
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 		if reply.Test(fo.ReplyCode) == false    { return "" }
 
 		messagesof := map[string][][2]string{
-			// https://community.mimecast.com/s/article/Mimecast-SMTP-Error-Codes-842605754
-			// https://community.mimecast.com/s/article/email-security-cloud-gateway-mimecast-smtp-error-codes
 			"authfailure": [][2]string{
 				// - The inbound message has been rejected because the originated IP address isn"t list-
 				//   ed in the published SPF records for the sending domain.

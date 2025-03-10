@@ -11,11 +11,13 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["Outlook"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
-		// @see      https://technet.microsoft.com/en-us/library/bb232118
+		// - https://technet.microsoft.com/en-us/library/bb232118
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{

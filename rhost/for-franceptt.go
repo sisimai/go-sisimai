@@ -12,12 +12,14 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["FrancePTT"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
-		// @see      https://www.postmastery.com/orange-postmaster-smtp-error-codes-ofr/
-		// @see      https://smtpfieldmanual.com/provider/orange
+		// - https://www.postmastery.com/orange-postmaster-smtp-error-codes-ofr/
+		// - https://smtpfieldmanual.com/provider/orange
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := map[string]string{
