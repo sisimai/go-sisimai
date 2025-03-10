@@ -8,7 +8,6 @@
 // https://libsisimai.org/                             |___/            
 
 package sisimai
-import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/reason"
 
 // Reason returns the list of bounce reasons sisimai can detect.
