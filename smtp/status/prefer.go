@@ -10,12 +10,14 @@
 package status
 import "strings"
 
-// Prefer() returns the preferred value selected from the arguments
+// Prefer returns the preferred value selected from the arguments.
+//   Arguments:
+//     - argv0 (string): Value of Status: field
+//     - argv1 (string): SMTP status code value picked from the error message
+//     - argv2 (string): Value of the SMTP reply code
+//   Returns:
+//     - (string):       Preferred value
 func Prefer(argv0, argv1, argv2 string) string {
-	// @param    string argv0  The value of Status: field
-	// @param    string argv1  The delivery status value picked from the error message
-	// @param    string argv2  The value of An SMTP Reply Code
-	// @return   String        The preferred value
 	if argv0 == "" { return argv1 }
 	if argv1 == "" { return argv0 }
 

@@ -14,11 +14,13 @@ import "strings"
 import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc791"
 
-// Find() returns a delivery status code found from the given string
+// Find returns a delivery status code found from the given string.
+//   Arguments:
+//     - argv1 (string): String including DSN; SMTP status code
+//     - argv2 (string): SMTP Reply Code like "550" or the 1st digit of code such as "2", "4", or "5"
+//   Returns:
+//     - (string):       SMTP status code found in the 1st argument
 func Find(argv1 string, argv2 string) string {
-	// @param    string argv1  String including DSN
-	// @param    string argv2  An SMTP Reply Code or 2 or 4 or 5 
-	// @return   string        Found delivery status code or an empty string
 	if len(argv1) < 7 { return ""   }
 	if len(argv2) < 1 { argv2 = " " }
 
