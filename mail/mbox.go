@@ -12,10 +12,11 @@ import "os"
 import "bufio"
 import "strings"
 
-// readMailbox() is a UNIX mbox reader, works as a iterator.
+// readMailbox is a UNIX mbox reader, works like a iterator.
+//   Returns:
+//     - (*string): Contents of each email in the UNIX mbox one by one
+//     - (error):   Occurred error
 func(this *EmailEntity) readMailbox() (*string, error) {
-	// @return   *string  Contents of the mbox
-	// @return   error    It has reached to the end of the mbox
 	if this.offset >= this.Size { return nil, io.EOF } // The method has been completed to read the mbox
 	if this.handle == nil {
 		// Open the UNIX mbox, and read at the offset position
