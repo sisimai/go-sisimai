@@ -8,8 +8,9 @@
 // https://libsisimai.org/                             |___/            
 
 package sisimai
+import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/reason"
 
-// Reason() returns the list of bounce reasons sisimai can detect
+// Reason returns the list of bounce reasons sisimai can detect.
 func Reason() map[string]string { return reason.Availables }
 
