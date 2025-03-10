@@ -13,10 +13,12 @@ import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/smtp/status"
 
 func init() {
-	// Try to check the argument string includes any of the strings in the error message pattern
+	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
+	//   Arguments:
+	//     - argv1 (string): Does the string include any of the strings listed in the pattern?
+	//   Returns:
+	//     - (bool):         true if the argument includes one or more error message pattern
 	IncludedIn["UserUnknown"] = func(argv1 string) bool {
-		// @param    string argv1 Does the string include any of the strings listed in the pattern?
-		// @return   bool         true: Included, false: did not include
 		if argv1 == "" { return false }
 
 		index := []string{
@@ -139,10 +141,12 @@ func init() {
 		return false
 	}
 
-	// The bounce reason is "userunknown" or not
+	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (bool):         true if a reason is the reason defined in this file
 	ProbesInto["UserUnknown"] = func(fo *sis.Fact) bool {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   bool            true: is userunknown, false: is not userunknown
 		if fo        == nil           { return false }
 		if fo.Reason == "userunknown" { return true  }
 
