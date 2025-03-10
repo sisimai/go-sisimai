@@ -60,12 +60,14 @@ type TranscriptLog struct {
 	Response  ResponseTable     // A Response from an SMTP server
 }
 
-// Rise() returns the decoded transcript of the SMTP session and makes the structured data
+// Rise returns the decoded transcript of the SMTP session and makes the structured data.
+//   Arguments:
+//     - argv0 (string):    Transcript text MTA returned
+//     - argv1 (string):    Label string of the SMTP cilent such as ">>>"
+//     - argv2 (string):    Label string of the SMTP server such as "<<<"
+//   Returns:
+//     - ([]TranscriptLog): List of structured transcript logs
 func Rise(argv0, argv1, argv2 string) []TranscriptLog {
-	// @param    string  argv0   A transcript text MTA returned
-	// @param    string  argv1   A label string of a SMTP cilent
-	// @param    string  argv2   A label string of a SMTP server
-	// @return   []TranscriptLog Structured data
 	if argv0 == "" { return []TranscriptLog{} }
 	if argv1 == "" { argv1 = ">>>" } // Label for an SMTP client
 	if argv2 == "" { argv2 = "<<<" } // Label for an SMTP server
@@ -184,7 +186,7 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 	return transcript
 }
 
-// *TranscriptLog.Void() returns true if it does not include any transcript log
+// *TranscriptLog.Void returns true if it does not include any transcript log.
 func(this *TranscriptLog) Void() bool {
 	if this.Command == "" { return true }
 	return false
