@@ -16,6 +16,7 @@ v5.2.0p3
   - Implement test codes for `rhost/for-*.go` #41 #62
   - `string` package has been renamed to `moji` #68 #69
   - Memory assingment improvements #72 #73
+  - Comments for all the functions refactored #74 #75
 
 v5.2.0 - The first release
 ---------------------------------------------------------------------------------------------------
