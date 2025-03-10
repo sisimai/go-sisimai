@@ -236,21 +236,10 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
 					notdecoded = append(notdecoded, ce)
 				}
-			} else if ctencoding == "7bit" {
-				// Content-Transfer-Encoding: 7bit
-				if ctx := Parameter(e[0], "charset"); strings.HasPrefix(ctx, "iso-2022-") {
-					// Content-Type: text/plain; charset=ISO-2022-JP
-					//
-					// TODO: Convert the string to UTF-8
-					//       $bodystring = ${ Sisimai::String->to_utf8(\$bodyinside, $1) };
-					bodystring = bodyinside
-
-				} else {
-					// No "charset" parameter in the value of Content-Type: header
-					bodystring = bodyinside
-				}
 			} else {
-				// Content-Transfer-Encoding: 8bit, binary, and so on
+				// - Content-Transfer-Encoding: 8bit, binary, and so on
+				// - sisimai no longer supports multibyte characters except UTF-8
+				// - https://github.com/sisimai/go-sisimai/issues/42
 				bodystring = bodyinside
 			}
 
