@@ -34,18 +34,26 @@ var ActionList = map[string]bool{
 	"delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true,
 }
 
-// Label() returns a lower-cased field name
+// Label returns a lower-cased field name.
+//   Arguments:
+//     - argv0 (string): A line including field and value defined in RFC3464
+//   Returns:
+//     - (string):       Lower-cased field name as a label
+//   See:
+//     - https://datatracker.ietf.org/doc/html/rfc3464
 func Label(argv0 string) string {
-	// @param    string  argv0 A line including field and value defined in RFC3464
-	// @return   string        Lower-cased field name as a label
 	if argv0 == "" || strings.IndexByte(argv0, ':') < 1 { return "" }
 	return strings.ToLower(strings.SplitN(argv0, ":", 2)[0])
 }
 
-// Match() checks that the argument matches with a field defined in RFC3464 or not
+// Match checks that the argument matches with a field defined in RFC3464 or not.
+//   Arguments:
+//     - argv0 (string): Line inlcuding field and value defined in RFC3464
+//   Returns:
+//     - (uint8):        0 is not matched, 1 is matched with per-message field, 2 is per-recipient.
+//   See:
+//     - https://datatracker.ietf.org/doc/html/rfc3464
 func Match(argv0 string) uint8 {
-	// @param    string argv0 A line inlcuding field and value defined in RFC3464
-	// @return   uint8        0: not matched, 1: matched with per-message field, 2 is per-recipient
 	fieldname0 := map[string]string{
 		// https://tools.ietf.org/html/rfc3464#section-2.2
 		//   Some fields of a DSN apply to all of the delivery attempts described by that DSN. At
@@ -93,10 +101,14 @@ func Match(argv0 string) uint8 {
 	return 0
 }
 
-// Field() checks that the argument is including field defined in RFC3464 or not and return values
+// Field checks that the argument is including field defined in RFC3464 or not and return values.
+//   Arguments:
+//     - argv0 (string): A line including field and value defined in RFC3464
+//   Returns:
+//     - ([]string):     []string{"field-name", "value-type", "value", "field-group", "comment"}
+//   See:
+//     - https://datatracker.ietf.org/doc/html/rfc3464
 func Field(argv0 string) []string {
-	// @param    string   argv0 A line inlcuding field and value defined in RFC3464
-	// @return   []string       []string{"field-name", "value-type", "value", "field-group", "comment"}
 	if len(argv0) < 7 { return []string{} }
 
 	fieldgroup := map[string]string{
