@@ -22,20 +22,23 @@ var detectable = []string{
 	"MAIL F", "RCPT", "RCPT T", "DATA", "QUIT", "XFORWARD",
 }
 
-// Test() checks that an SMTP command in the argument is valid or not
+// Test checks that an SMTP command in the argument is valid or not.
+//   Arguments:
+//     - argv0 (string): An SMTP command
+//   Returns:
+//     - (bool):         true if the argument is a valid SMTP command
 func Test(argv0 string) bool {
-	// @param    string argv0  An SMTP command
-	// @return   bool          false: Is not a valid SMTP command
-	//                         true:  Is a valid SMTP command
-	// @since v5.2.0
 	if len(argv0) < 4                      { return false }
 	if moji.ContainsAny(argv0, availables) { return true  }
 	return false
 }
 
+// Find returns an SMTP command found in the argument.
+//   Arguments:
+//     - argv0 (string): Text including SMTP command
+//   Returns:
+//     - (string):       Found SMTP command
 func Find(argv0 string) string {
-	// @param    string argv0  Text including SMTP command
-	// @return   string        Found SMTP command
 	if Test(argv0) == false { return "" }
 
 	commandset := make([]string, 0, 4)
