@@ -14,13 +14,15 @@ import "fmt"
 import "strings"
 import "crypto/sha1"
 
-// Token() creates the message token from an addresser, and a recipient, and an unix machine time
+// Token creates the message token from an addresser, and a recipient, and an unix machine time.
+//   Arguments:
+//     - argv1 (string): Email address of the sender
+//     - argv2 (string): Email address of the recipient
+//     - epoch (int):    Machine time of the bounce
+//   Returns:
+//     - (string):       Message token(SHA1 hex digest) or empty string
 func Token(argv1 string, argv2 string, epoch int) string {
-	// @param    string addr1  A sender's email address
-	// @param    string addr2  A recipient's email address
-	// @param    int    epoch  Machine time of the email bounce
-	// @return   string        Message token(MD5 hex digest) or empty string if the any argument is missing
-	// @see      http://en.wikipedia.org/wiki/ASCII
+	// - http://en.wikipedia.org/wiki/ASCII
 	if argv1 == "" || len(argv2) == 0 { return "" }
 
 	// Format: STX(0x02) Sender-Address RS(0x1e) Recipient-Address ETX(0x03)
@@ -29,20 +31,23 @@ func Token(argv1 string, argv2 string, epoch int) string {
 	return fmt.Sprintf("%x", crypt.Sum(nil))
 }
 
-// Is8Bit() checks the argument is including an 8-bit character or not
+// Is8Bit checks the argument is including any 8-bit character or not.
+//   Arguments:
+//     - argv1 (*string): Any string to be checked
+//   Returns:
+//     - (bool):          true if the string includes one or more 8-bit character
 func Is8Bit(argv1 *string) bool {
-	// @param    *string argv1  Any string to be checked
-	// @return   bool           false: ASCII Characters only
-	//                          true:  Including an 8-bit character
 	for _, e := range *argv1 { if e > 127 { return true } }
 	return false
 }
 
-// Squeeze() remove redundant characters
+// Squeeze remove redundant characters from the given string
+//   Arguments:
+//     - argv1 (string): String including redundant characters like "neko  chan"
+//     - chars (string): Characters to be squeezed, for example " "
+//   Returns:
+//     - (string):       Squeezed string such as "neko chan"
 func Squeeze(argv1 string, chars string) string {
-	// @param    string argv1  String including redundant characters like "neko  chan"
-	// @param    string chars  Characters to be squeezed 
-	// @return   string        Squeezed string like "neko chan"
 	if argv1      == "" { return ""    }
 	if len(chars) == 0  { return argv1 }
 
@@ -53,10 +58,12 @@ func Squeeze(argv1 string, chars string) string {
 	return argv1
 }
 
-// Sweep() clears the string out
+// Sweep clears the string out.
+//   Arguments:
+//     - argv1 (string): String to be cleaned
+//   Returns:
+//     - (string):       Cleaned out string
 func Sweep(argv1 string) string {
-	// @param    string argv1  String to be cleaned
-	// @return   string        Cleaned out string
 	if argv1 == "" { return "" }
 
 	argv1 = Squeeze(strings.TrimSpace(strings.ReplaceAll(argv1, "\t", " ")), " ")
@@ -68,21 +75,20 @@ func Sweep(argv1 string) string {
 	return argv1
 }
 
-// ContainsOnlyNumbers() returns true when the given string contain numbers only
+// ContainsOnlyNumbers returns true when the given string contain numbers only.
 func ContainsOnlyNumbers(argv1 string) bool {
-	// @param    string argv1  String
-	// @return   bool          true, false
 	if argv1 == "" { return false }
 	for _, e := range argv1 { if e < 48 || e > 57 { return false } }
 	return true
 }
 
-// Aligned() checks if each element of the 2nd argument is aligned in the 1st argument or not
+// Aligned checks if each element of the 2nd argument is aligned in the 1st argument or not.
+//   Arguments:
+//     - argv1 (string):   String to be checked such as "I am a cat. I have, as yet, no name."
+//     - argv2 ([]string): List including the ordered strings such as []string{"cat", "yet"}
+//   Returns:
+//     - (bool):           true if the all strings are ordered in argv1, false otherwise.
 func Aligned(argv1 string, argv2 []string) bool {
-	// @param    string   argv1  String to be checked
-	// @param    []string argv2  List including the ordered strings
-	// @return   bool
-	// @since    v5.2.0
 	if argv1 == "" || len(argv2) == 0 { return false }
 
 	align := -1
@@ -101,24 +107,28 @@ func Aligned(argv1 string, argv2 []string) bool {
 	return false
 }
 
-// IndexOnTheWay() returns the index of the first instance of argv1 after argv2 in argv0
+// IndexOnTheWay returns the index of the first string of argv1 finding after the start position in argv0
+//   Arguments:
+//     - argv0 (string): The string to be searched
+//     - argv1 (string): The substring to search for
+//     - start (int):    The index from which to start the search
+//   Returns:
+//     - (int):          The index of argv1
 func IndexOnTheWay(argv0, argv1 string, start int) int {
-	// @param    string argv0  The string to be searched
-	// @param    string argv1  The substring to search for
-	// @param    int    start  The index from which to start the search
-	// @return   string        The index of argv1
 	if start < 0 || start >= len(argv0)                    { return -1 }
 	fi := strings.Index(argv0[start:], argv1); if fi == -1 { return -1 }
 	return fi + start
 }
 
-// Select() returns a string selected between the 2nd argument and 3rd argument from the 1st argument
+// Select returns a string selected between the 2nd argument and 3rd argument from the 1st argument.
+//   Arguments:
+//     - argv0 (string): The string to be searched for example "From: <neko@example.jp>"
+//     - begin (string): Substring such as "<"
+//     - until (string): Substring such as ">"
+//     - start (int):    The index position for seeking
+//   Returns:
+//     - (string):       Selected string such as "neko@example.jp"
 func Select(argv0, begin, until string, start int) string {
-	// @param    string argv0  The string to be searched for example "From: <neko@example.jp>"
-	// @param    string begin  Substring such as "<"
-	// @param    string until  Substring such as ">"
-	// @param    int    start  The index position for seeking
-	// @return   string        selected string such as "neko@example.jp"
 	if argv0 == "" || begin == "" || until == "" || start < 0 { return "" }
 
 	textlength := [3]int{len(argv0), len(begin), len(until)}

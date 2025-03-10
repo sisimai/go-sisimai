@@ -13,9 +13,11 @@ import "strings"
 import "golang.org/x/text/encoding"
 
 // ToLF replace CR and CR/LF with LF.
+//   Arguments:
+//     - argv0 (*string): Text including CR or CR/LF
+//   Returns:
+//     - (*string):       LF converted text
 func ToLF(argv0 *string) *string {
-	// @param    *string argv0  Text including CR or CR/LF
-	// @return   *string        LF converted text
 	if argv0 == nil || *argv0 == "" { return argv0 }
 
 	for _, e := range [2]string{"\r\n", "\r"} {
@@ -25,10 +27,12 @@ func ToLF(argv0 *string) *string {
 	return argv0
 }
 
-// ToPlain() converts given HTML text to a plain text.
+// ToPlain converts given HTML text to a plain text.
+//   Arguments:
+//     - argv0 (*string): Text including HTML elements
+//   Returns:
+//     - (*string):       Converted plain text
 func ToPlain(argv0 *string) *string {
-	// @param    [*string] argv0  HTML text
-	// @return   [*string]        Plain text
 	if argv0 == nil || *argv0 == "" { return argv0 }
 
 	xhtml := *argv0
@@ -71,11 +75,14 @@ func ToPlain(argv0 *string) *string {
 	return &plain
 }
 
-// ToUTF8() converts an encoded text to UTF8 text
+// ToUTF8 converts an encoded text to UTF8 text.
+//   Arguments:
+//     - argv0 ([]byte): Encoded text
+//     - argv1 (string): Encoding name of argv0
+//   Returns:
+//     - (string):       UTF-8 text
+//     - (error):        Encoding error
 func ToUTF8(argv0 []byte, argv1 string) (string, error) {
-	// @param    []byte argv0     Some encoded text
-	// @param    string argv1     Encoding name of the argv0
-	// @return   string, error    Converted string or an error
 	if len(argv0) == 0  || argv1 == ""         { return "", nil            }
 	if argv1 == "utf-8" || argv1 == "us-ascii" { return string(argv0), nil }
 
