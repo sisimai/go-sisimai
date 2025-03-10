@@ -44,12 +44,14 @@ var existuntil = []string{
 var prefix0x32 = []string{"(", "[", "<"}
 var suffix0x32 = []string{")", "]", ">", ":", ";"}
 
-// IsInternetHost() returns "true" when the given string is a valid Internet hostname
+// IsInternetHost returns true when the given string is a valid Internet hostname.
+//   Arguments:
+//     - argv1 (string): Hostname
+//   Returns:
+//     - (bool):         true if it is a valid Internet hostname, false otherwise.
+//   See:
+//     - https://datatracker.ietf.org/doc/html/rfc1123
 func IsInternetHost(argv1 string) bool {
-	// @param    string argv1  Hostname
-	// @return   bool          true:  is a valid Internet hostname
-	//                         false: is not a valid Internet hostname
-	// @see https://datatracker.ietf.org/doc/html/rfc1123
 	if len(argv1) < 4 || len(argv1) > 255 { return false }
 
 	// Deal "localhost", "localhost6" as a valid hostname
@@ -80,11 +82,12 @@ func IsInternetHost(argv1 string) bool {
 	return hostnameok
 }
 
-// IsDomainLiteral() returns true if the domain part is [IPv4:...] or [IPv6:...]
+// IsDomainLiteral returns true if the domain part is [IPv4:...] or [IPv6:...].
+//   Arguments:
+//     - email (string): Email address
+//   Returns:
+//     - (bool):         true if the domain part is a valid domain-literal, false otherwise.
 func IsDomainLiteral(email string) bool {
-	// @param    string email    Email address string
-	// @return   bool            true:  is an domain-literal
-	//                           false: is not an domain-literal
 	email = strings.Trim(email, "<>")
 	if len(email)                     < 16    { return false } // e@[IPv4:0.0.0.0] is 16 characters
 	if strings.HasSuffix(email, "]") == false { return false }
@@ -102,9 +105,11 @@ func IsDomainLiteral(email string) bool {
 }
 
 // Find() returns a valid internet hostname found from the argument
+//   Arguments:
+//     - argv1 (string): String including hostnames
+//   Returns:
+//     - (string):       Valid internet hostname found in the argument
 func Find(argv1 string) string {
-	// @param    string argv1  String including hostnames
-	// @return   string        A valid internet hostname found in the argument
 	if argv1 == "" { return "" }
 
 	// Replace some string for splitting by " "
