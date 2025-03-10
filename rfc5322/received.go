@@ -11,22 +11,20 @@ import "strings"
 import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/rfc791"
 
-// Received() convert Received headers to a structured data
+// Received convert Received headers to a structured data.
+//   Arguments:
+//     - argv1 (string): Received header
+//   Returns:
+//     - ([]string):     Each item in the Received header order by the following:
+//                       - 0: (from)   "hostname"
+//                       - 1: (by)     "hostname"
+//                       - 2: (via)    "protocol/tcp"
+//                       - 3: (with)   "protocol/smtp"
+//                       - 4: (id)     "queue-id"
+//                       - 5: (for)    "envelope-to address"
+//   See:
+//     - https://datatracker.ietf.org/doc/html/rfc5322#section-3.6.7
 func Received(argv1 string) [6]string {
-	// @param    string    argv1  Received header
-	// @return   []string         Each item in the Received header order by the following:
-	//                            0: (from)   "hostname"
-	//                            1: (by)     "hostname"
-	//                            2: (via)    "protocol/tcp"
-	//                            3: (with)   "protocol/smtp"
-	//                            4: (id)     "queue-id"
-	//                            5: (for)    "envelope-to address"
-	// Received: (qmail 10000 invoked by uid 999); 24 Apr 2013 00:00:00 +0900
-	if strings.IndexByte(argv1, ' ') < 0                { return [6]string{} }
-	if strings.Contains(argv1, " invoked by uid")       { return [6]string{} }
-	if strings.Contains(argv1, " invoked from network") { return [6]string{} }
-
-	// - https://datatracker.ietf.org/doc/html/rfc5322
 	//   received        =   "Received:" *received-token ";" date-time CRLF
 	//   received-token  =   word / angle-addr / addr-spec / domain
 	//
@@ -38,6 +36,12 @@ func Received(argv1 string) [6]string {
 	//       with ESMTP
 	//       id ABC12345
 	//       for <mary@example.net>;  21 Nov 1997 10:05:43 -0600
+
+	// Received: (qmail 10000 invoked by uid 999); 24 Apr 2013 00:00:00 +0900
+	if strings.IndexByte(argv1, ' ') < 0                { return [6]string{} }
+	if strings.Contains(argv1, " invoked by uid")       { return [6]string{} }
+	if strings.Contains(argv1, " invoked from network") { return [6]string{} }
+
 	recvd := strings.Split(argv1, " ")
 	label := [6]string{"from", "by", "via", "with", "id", "for"}
 	skips := []string{"unknown", "localhost", "[127.0.0.1]", "[IPv6:::1]"}

@@ -9,13 +9,16 @@
 package rfc5322
 import "strings"
 
-// Part() splits the entire message body given as the 1st argument into error message lines and the
+// Part splits the entire message body given as the 1st argument into error message lines and the
 // original message part only include email headers.
+//   Arguments:
+//     - email (*string):  Entire message body
+//     - cutby ([]string): String list of the message/rfc822 or the beginning of the original message part
+//     - keeps (bool):     Flag for keeping strings after "\n\n"
+//   Returns:
+//     - ([2]string):      [2]string{"Error message lines", "The original message"}
+
 func Part(email *string, cutby []string, keeps bool) [2]string {
-	// @param    *string  email    Entire message body
-	// @param    []string cutby    String list of the message/rfc822 or the beginning of the original message part
-	// @param    bool     keeps    Flag for keeping strings after "\n\n"
-	// @return   []string          { "Error message lines", "The original message" }
 	if email == nil || *email == "" || len(cutby) == 0 { return [2]string{"", ""} }
 
 	positionor := -1 // A position of the boundary string

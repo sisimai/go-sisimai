@@ -17,9 +17,9 @@ type EmailAddress struct {
 	Comment string // (Comment)
 }
 
-// *EmailAddress.Void() returns true if it does not include a valid email address
+// *EmailAddress.Void returns true if it does not include a valid email address.
 func(this *EmailAddress) Void() bool {
-	if len(this.Address) == 0 { return true }
+	if this.Address == "" { return true }
 	return false
 }
 

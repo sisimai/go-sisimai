@@ -34,10 +34,12 @@ type DeliveryMatter struct {
 	Status       string     // The value of Status header
 }
 
-// Select() returns the current value of the sis.DeliveryMatter{}
+// *DeliveryMatter.Select returns the current value of the sis.DeliveryMatter instance.
+//   Arguments:
+//     - argv0 (string): Lower-cased member name of sis.DeliveryMatter
+//   Returns:
+//     - (string):       The value of the member name specified at argv0
 func(this *DeliveryMatter) Select(argv0 string) string {
-	// @param    string argv0  A lower-cased member of sis.DeliveryMatter{}
-	// @return   string        The value of the member specified at argv0
 	switch argv0 {
 		case "action":       return this.Action
 		case "agent":        return this.Agent
@@ -57,11 +59,13 @@ func(this *DeliveryMatter) Select(argv0 string) string {
 	}
 }
 
-// Update() set the argument into the member of sis.DeliveryMatter
+// *DeliveryMatter.Update set the argument into the member of sis.DeliveryMatter instance.
+//   Arguments:
+//     - argv0 (string): Lower-cased member name of sis.DeliveryMatter
+//     - argv1 (string): New value to be updated
+//   Returns:
+//     - (bool):         true if it has updated successfully
 func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
-	// @param    string argv0  A lower-cased member name of sis.DeliveryMatter{}
-	// @param    string argv1  The value to be updated
-	// @return   bool          true if it has successfully updated
 	if argv0 == "" || argv1 == "" { return false }
 
 	//actionlist := []string{"delayed", "delivered", "expanded", "failed", "relayed"}
@@ -87,25 +91,27 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 	return true
 }
 
-// AsRFC1894() returns a lower-cased member name converted from a field name defined in RFC1894
+// *DeliveryMatter.AsRFC1894 returns a lower-cased member name converted from a field name defined in RFC1894.
+//   Arguments:
+//     - argv1 (string): Field name defined in RFC1894
+//   Returns:
+//     - (string):       Member name of sis.DeliveryMatter struct
 func(this *DeliveryMatter) AsRFC1894(argv1 string) string {
-	// @param    string argv1  A field name defined in RFC1894
-	// @return   string        A member name of sis.DeliveryMatter
+	// Available values are the followings:
+	// - "action":             Action    (list)
+	// - "arrival-date":       Date      (date)
+	// - "diagnostic-code":    Diagnosis (code)
+	// - "final-recipient":    Recipient (addr)
+	// - "last-attempt-date":  Date      (date)
+	// - "original-recipient": Alias     (addr)
+	// - "received-from-mta":  Lhost     (host)
+	// - "remote-mta":         Rhost     (host)
+	// - "reporting-mta":      Lhost     (host)
+	// - "status":             Status    (stat)
+	// - "x-actual-recipient": Alias     (addr)
 	if argv1 == "" { return "" }
 
 	switch argv1 {
-		// Available values are the followings:
-		// - "action":             Action    (list)
-		// - "arrival-date":       Date      (date)
-		// - "diagnostic-code":    Diagnosis (code)
-		// - "final-recipient":    Recipient (addr)
-		// - "last-attempt-date":  Date      (date)
-		// - "original-recipient": Alias     (addr)
-		// - "received-from-mta":  Lhost     (host)
-		// - "remote-mta":         Rhost     (host)
-		// - "reporting-mta":      Lhost     (host)
-		// - "status":             Status    (stat)
-		// - "x-actual-recipient": Alias     (addr)
 		default:                                         return ""
 		case "action", "status":                         return argv1
 		case "arrival-date", "last-attempt-date":        return "date"

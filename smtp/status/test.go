@@ -11,10 +11,12 @@ package status
 import "strings"
 import "strconv"
 
-// Test() checks whether a status code is a valid code or not
+// Test checks whether an SMTP status code is a valid code or not.
+//   Arguments:
+//     - argv1 (string): SMTP status code to be checked
+//   Returns:
+//     - (bool):         true if the argument is a valid SMTP status code
 func Test(argv1 string) bool {
-	// @param    string argv1  Status code(DSN)
-	// @return   bool          false = Invalid status code, true = Valid status code
 	if len(argv1) < 5 || len(argv1) > 7 { return false }
 
 	token := make([]int16, 0, 3) // Each digit like [5,7,26] converted from "5.7.26"

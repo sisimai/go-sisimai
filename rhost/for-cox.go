@@ -12,10 +12,13 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["Cox"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
+		// - Cox: https://www.cox.com/residential/support/cox-postmaster-email-administration.html
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := map[string]string{
@@ -139,17 +142,13 @@ func init() {
 
 		issuedcode := fo.DiagnosticCode + " "
 		codenumber := moji.Select(issuedcode, "AUP#", " ", 0)
-		reasontext := errorcodes[codenumber]
-
-		if reasontext == "" {
-			// There is no error code in the error message
-			issuedcode = strings.ToLower(issuedcode)
-			for e := range messagesof {
-				// Try to find with each error message defined in "messagesof"
-				if moji.ContainsAny(issuedcode, messagesof[e]) { return e }
-			}
+		reasontext := errorcodes[codenumber]; if reasontext != "" { return reasontext }
+		issuedcode  = strings.ToLower(issuedcode)
+		for e := range messagesof {
+			// Try to find with each error message defined in "messagesof"
+			if moji.ContainsAny(issuedcode, messagesof[e]) { return e }
 		}
-		return reasontext
+		return ""
 	}
 }
 

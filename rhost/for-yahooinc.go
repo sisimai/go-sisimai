@@ -12,13 +12,15 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["YahooInc"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
-		// @see      https://senders.yahooinc.com/smtp-error-codes
-		//           https://smtpfieldmanual.com/provider/yahoo
-		//           https://www.postmastery.com/yahoo-postmaster/
+		// - https://senders.yahooinc.com/smtp-error-codes
+		// - https://smtpfieldmanual.com/provider/yahoo
+		// - https://www.postmastery.com/yahoo-postmaster/
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{

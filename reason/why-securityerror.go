@@ -13,10 +13,12 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
 
 func init() {
-	// Try to check the argument string includes any of the strings in the error message pattern
+	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
+	//   Arguments:
+	//     - argv1 (string): Does the string include any of the strings listed in the pattern?
+	//   Returns:
+	//     - (bool):         true if the argument includes one or more error message pattern
 	IncludedIn["SecurityError"] = func(argv1 string) bool {
-		// @param    string argv1 Does the string include any of the strings listed in the pattern?
-		// @return   bool         true: Included, false: did not include
 		if argv1 == "" { return false }
 
 		index := []string{
@@ -46,11 +48,11 @@ func init() {
 		return false
 	}
 
-	// The bounce reason is "securityerror" or not
-	ProbesInto["SecurityError"] = func(fo *sis.Fact) bool {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   bool            true: is securityerror, false: is not securityerror
-		return false
-	}
+	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (bool):         true if a reason is the reason defined in this file
+	ProbesInto["SecurityError"] = func(fo *sis.Fact) bool { return false }
 }
 

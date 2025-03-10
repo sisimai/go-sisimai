@@ -10,9 +10,11 @@
 package mail
 import "io"
 
+// readMemory is an email reader stored in a variable as a string.
+//   Returns:
+//     - (*string): Contents of each email in EmailEntity.payload field.
+//     - (error):   Occurred error
 func (this *EmailEntity) readMemory() (*string, error) {
-	// @return   *string  Contents of the each email in the this.payload[]
-	// @return   error    It has reached to the end of the email
 	if this.Size == 0 || this.offset >= len(this.payload) { return nil, io.EOF }
 
 	emailblock := this.payload[this.offset]

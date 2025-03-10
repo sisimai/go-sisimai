@@ -12,10 +12,11 @@ import "os"
 import "fmt"
 import "path/filepath"
 
-// listMaildir() is a Maildir/ reader, works as a iterator.
+// listMaildir is a Maildir/ reader, works like a iterator.
+//   Returns:
+//     - (int):   The number of email files in the Maildir/
+//     - (error): Occurred error
 func(this *EmailEntity) listMaildir() (int, error) {
-	// @return   int      The number of email files in the Maildir/
-	// @return   error    Errors while reading the Maildir/
 	if this.handle == nil {
 		// Open the Maildir/
 		filehandle, nyaan := os.Open(this.Dir);  if nyaan != nil { return 0, nyaan }
@@ -30,10 +31,11 @@ func(this *EmailEntity) listMaildir() (int, error) {
 	return len(this.payload), nil
 }
 
-// readMaildir() reads each email file in the Maildir/, do not call this from inside of the goroutine.
+// readMaildir is an email reader in the Maildir/, works like a iterator.
+//   Returns:
+//     - (*string): Contents of each email file in the Maildir/ one by one
+//     - (error):   Occurred error
 func(this *EmailEntity) readMaildir() (*string, error) {
-	// @return   *string  Contents of the each file in the Maildir/
-	// @return   error    It has reached to the end of the Maildir/
 	if this.Size == 0           { return nil, fmt.Errorf("there is no email file in %s", this.Dir) }
 	if this.Size <= this.offset { return nil, io.EOF }
 

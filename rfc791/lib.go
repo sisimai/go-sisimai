@@ -12,11 +12,14 @@ package rfc791
 import "strings"
 import "strconv"
 
-// IsIPv4Address() returns "true" when the given string is an IPv4 address
+// IsIPv4Address returns "true" when the given string is an IPv4 address
+//   Arguments:
+//     - argv1 (string): IPv4 address like "192.0.2.25"
+//   Returns:
+//     - (bool):         true if the argument is a valid IPv4 Address
+//    See:
+//     - https://datatracker.ietf.org/doc/html/rfc791
 func IsIPv4Address(argv1 string) bool {
-	// @param    string  argv1 IPv4 address like "192.0.2.25"
-	// @return   bool          true:  is an IPv4 address
-	//                         false: is not an IPv4 address
 	if len(argv1) < 7 || strings.Count(argv1, ".") != 3 { return false }
 
 	for _, e := range strings.Split(argv1, ".") {
@@ -26,11 +29,12 @@ func IsIPv4Address(argv1 string) bool {
 	return true
 }
 
-// FindIPv4Address() finds IPv4 addresses from the given string
+// FindIPv4Address finds IPv4 addresses from the given string.
+//   Arguments:
+//     - argv1 (*string): String including an IPv4 address
+//   Returns:
+//     - ([]string):      List of IPv4 addresses found and picked from the argument
 func FindIPv4Address(argv1 *string) []string {
-	// @param    *string   argv1 String including an IPv4 address
-	// @return   []string        List of IPv4 addresses
-	// @since    v5.2.0
 	if argv1 == nil || len(*argv1) < 7 { return []string{} }
 
 	// Rewrite: "mx.example.jp[192.0.2.1]" => "mx.example.jp 192.0.2.1"

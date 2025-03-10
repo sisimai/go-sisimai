@@ -19,16 +19,14 @@ type BeforeFact struct {
 	Errors  []NotDecoded        // All the errors and warnings
 }
 
-// Empty() returns true when Headers or body is empty
+// *BeforeFact.Empty returns true when Headers or body is empty.
 func(this *BeforeFact) Empty() bool {
 	if len(this.Headers) == 0 || this.Payload == "" { return true }
 	return false
 }
 
-// Void() returns true when Digest or RFC822 is empty
+// *BeforeFact.Void returns true when Digest or RFC822 is empty.
 func(this *BeforeFact) Void() bool {
-	// @param    NONE
-	// @return   bool   Returns true if BeforeFact.Digest or RFC822 is empty
 	if len(this.Digest) == 0 || len(this.RFC822) == 0 { return true }
 	return false
 }

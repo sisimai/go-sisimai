@@ -90,10 +90,12 @@ var replycode5 = []string{
 }
 var codeofsmtp = map[string][]string{"2": replycode2, "4": replycode4, "5": replycode5}
 
-// Test() checks whether a reply code is a valid code or not
+// Test checks whether a reply code is a valid code or not.
+//   Arguments:
+//     - argv0 (string): SMTP reply code
+//   Returns:
+//     - (bool):         true if the argument is a valid SMTP reply code, false otherwise.
 func Test(argv0 string) bool {
-	// @param    string argv1  SMTP Reply Code
-	// @return   Bool          true = Invalid reply code, false = Valid reply code
 	if len(argv0) < 3 { return false }
 
 	reply, nyaan := strconv.Atoi(argv0)
@@ -116,11 +118,13 @@ func Test(argv0 string) bool {
 	return true
 }
 
-// Find() returns an SMTP reply code found from the given string
+// Find returns an SMTP reply code found from the given string.
+//   Arguments:
+//     - argv1 (string): String including SMTP reply code like 550
+//     - argv2 (string): SMTP status code like "5.1.1", or the 1st digit of the code like "2", "4", or "5"
+//   Returns:
+//     - (string):       SMTP reply code found in the 1st argument
 func Find(argv1 string, argv2 string) string {
-	// @param    string argv1  String including SMTP reply code like 550
-	// @param    string argv2  Status code like 5.1.1 or 2 or 4 or 5
-	// @return   string        SMTP reply code or empty if the first argument did not include SMTP Reply Code value
 	if len(argv1) < 3                                     { return "" }
 	if strings.Contains(strings.ToUpper(argv1), "X-UNIX") { return "" }
 	if len(argv2) == 0 { argv2 = "0" }

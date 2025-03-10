@@ -10,11 +10,13 @@
 package moji
 import "strings"
 
-// ContainsAny() checks whether any element in argv2 is included in argv1 or not
+// ContainsAny checks whether any element in argv2 is included in argv1 or not.
+//   Arguments:
+//     - argv1 (string):   String containing any substring listed in argv2
+//     - argv2 ([]string): List of strings to find in argv1
+//   Returns:
+//     - (bool):           true if one or more string in argv2 was found in argv1
 func ContainsAny(argv1 string, argv2 []string) bool {
-	// @param    string   argv1 A string containing any substring listed in argv2
-	// @param    []string argv2 A list of strings to find in argv1
-	// @return   bool
 	if argv1 == "" || len(argv2) == 0 { return false }
 
 	// It works like `grep { index($e, $_) > -1 } @list` in Perl
@@ -22,11 +24,13 @@ func ContainsAny(argv1 string, argv2 []string) bool {
 	return false
 }
 
-// EqualsAny() checks whether any element in argv2 is equal to the argv1 or not
+// EqualsAny checks whether any element in argv2 is equal to the argv1 or not.
+//   Arguments:
+//     - argv1 (string):   String containing any substring listed in argv2
+//     - argv2 ([]string): List of strings to find in argv1
+//   Returns:
+//     - (bool):           true if one or more string in argv2 equalled to the string in argv1
 func EqualsAny(argv1 string, argv2 []string) bool {
-	// @param    string   argv1 A string containing any substring listed in argv2
-	// @param    []string argv2 A list of strings to find in argv1
-	// @return   bool
 	if argv1 == "" || len(argv2) == 0 { return false }
 
 	// It works like `grep { $e eq $_ } @list` in Perl
@@ -34,11 +38,13 @@ func EqualsAny(argv1 string, argv2 []string) bool {
 	return false
 }
 
-// HasPrefixAny() checks whether any alement in argv2 starts with the argv1 or not
+// HasPrefixAny checks whether any alement in argv2 starts with the argv1 or not.
+//   Arguments:
+//     - argv1 (string):   String containing any substring listed in argv2
+//     - argv2 ([]string): List of strings to find in argv1
+//   Returns:
+//     - (bool): true if the string in argv1 starts with any string listed in argv2
 func HasPrefixAny(argv1 string, argv2 []string) bool {
-	// @param    string   argv1 A string containing any substring listed in argv2
-	// @param    []string argv2 A list of strings to find in argv1
-	// @return   bool
 	if argv1 == "" || len(argv2) == 0 { return false }
 
 	// It works like `grep { index($e, $_) == 0 } @list` in Perl

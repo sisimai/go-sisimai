@@ -62,16 +62,18 @@ import "libsisimai.org/sisimai/moji"
 var monthname = []string{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}
 var dayofweek = []string{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}
 
-// Date() tidies up and converts the date string to the format 
+// Date tidies up and converts the date string to the format.
+//   Arguments:
+//     - argv1 (string): Date string
+//   Returns:
+//     - (string):       Tidied date string
+//   See:
+//     - https://datatracker.ietf.org/doc/html/rfc5322#section-3.3
+//     - https://datatracker.ietf.org/doc/html/rfc3339
+//     - https://en.wikipedia.org/wiki/ISO_8601
 func Date(argv1 string) string {
-	// @param    string argv1  Date string
-	// @return   string        Tidied date string
-	// @see      https://www.rfc-editor.org/rfc/rfc5322#section-3.3
-	// @see      https://www.ietf.org/rfc/rfc3339.txt
-	// @see      https://en.wikipedia.org/wiki/ISO_8601
-	// @example  Tidy up the date string and convert to RFC822-formatted date string
-	//   rfc5322.Date("2018-02-02T18:30:22 Fri") => Fri, 2 Feb 2018 18:30:22 +0000
-	//   rfc5322.Date("Fri, Feb 2 2018 2:2:2")   => Fri, 2 Feb 2018 02:02:02 +0000
+	// rfc5322.Date("2018-02-02T18:30:22 Fri") => Fri, 2 Feb 2018 18:30:22 +0000
+	// rfc5322.Date("Fri, Feb 2 2018 2:2:2")   => Fri, 2 Feb 2018 02:02:02 +0000
 	if argv1 == "" { return "" }
 
 	datestring := moji.Sweep(strings.ReplaceAll(argv1, ",", ", ")) // "Thu,22" -> "Thu, 22"

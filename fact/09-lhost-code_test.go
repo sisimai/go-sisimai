@@ -51,12 +51,13 @@ var TestReturn = map[string]interface{}{"neko-dono": []string{"Michitsuna", "Suz
 var CallbackFn = func(arg *sis.CallbackArg0) (map[string]interface{}, error) { return TestReturn, nil }
 var ArgForRise = &sis.DecodingArgs{Delivered: true, Vacation: true, Callback0: CallbackFn}
 
-// EngineTest() is called from lhost/*_test.go, rhost/*_test.go, rfc3464/lib_test.go, arf/lib_test.go.
+// EngineTest is called from lhost/*_test.go, rhost/*_test.go, rfc3464/lib_test.go, arf/lib_test.go.
+//   Arguments:
+//     - t (*testing.T):             Test object
+//     - enginename (string)         MTA module name such as "OpenSMTPD"
+//     - isexpected ([][]IsExpected) The list of results
+//     - publictest (bool)           false if set-of-emails/private
 func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publictest bool) {
-	// @param    *testing.T     t          Test object
-	// @param    string         enginename MTA module name such as "OpenSMTPD"
-	// @param    [][]IsExpected isexpected The list of results
-	// @param    bool           publictest false if set-of-emails/private
 	cx         := 0
 	prefixpath := "../" + SampleRoot
 	hostprefix := ""

@@ -14,14 +14,16 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["Spectrum"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
+		// https://www.spectrumbusiness.net/support/internet/understanding-email-error-codes
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := [][3]string{
-			// https://www.spectrumbusiness.net/support/internet/understanding-email-error-codes
 			//   Error codes are placed in one of two categories: incoming or outgoing.
 			//   1. If you're trying to send an email to a Charter email address from
 			//      a non-Charter email address (such as Gmail, Yahoo, Hotmail, etc.),

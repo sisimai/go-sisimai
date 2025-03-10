@@ -11,16 +11,18 @@
 package rfc2045
 import "strings"
 
-// Parameter() finds a value of specified parameter name from Content-Type header.
+// Parameter finds a value of specified parameter name from Content-Type header.
+//   Arguments:
+//     - argv0 (string): Value of Content-Type: header
+//     - argv1 (string): Lower-cased attribute name of the parameter
+//   Returns:
+//     - (string):       The value of the parameter
+//   See:
+//     - https://datatracker.ietf.org/doc/html/rfc2045
 func Parameter(argv0 string, argv1 string) string {
-	// @param    string argv0  The value of Content-Type: header
-	// @param    string argv1  Lower-cased attribute name of the parameter
-    // @return   string        The value of the parameter
 	if argv0 == "" { return "" }
-	cv := ""
-	ci := 0
 
-	if len(argv1) > 0 {
+	cv := ""; ci := 0; if len(argv1) > 0 {
 		// There is a parameter name in the second argument
 		cv = strings.ToLower(argv1) + "="
 		ci = strings.Index(strings.ToLower(argv0), cv); if ci == -1 { return "" }
@@ -33,10 +35,12 @@ func Parameter(argv0 string, argv1 string) string {
 	return cf
 }
 
-// CharacterSet() returns "ISO-2022-JP" as a character set name from "=?ISO-2022-JP?B?...?="
+// CharacterSet returns "ISO-2022-JP" as a character set name from "=?ISO-2022-JP?B?...?=".
+//   Arguments:
+//     - argv0 (string): Base64 or Quoted-Printable encoded text
+//   Returns:
+//     - (string):       Character set name like "iso-2022-jp"
 func CharacterSet(argv0 string) string {
-	// @param    string argv0  Base64 or Quoted-Printable encoded text
-	// @return   string        A character set name like "iso-2022-jp"
 	if strings.HasPrefix(argv0, "=?") == false || strings.HasSuffix(argv0, "?=") == false { return "" }
 
 	argv1 := strings.ToUpper(argv0)
@@ -46,13 +50,16 @@ func CharacterSet(argv0 string) string {
 	return argv1[2:index]
 }
 
-// Boundary() finds a boundary string from the value of Content-Type header.
+// Boundary finds a boundary string from the value of Content-Type header.
+//   Arguments:
+//     - argv0 (string): Value of Content-Type header
+//     - start (int): 
+//        - -1: boundary string itself
+//        -  0: Start of boundary: "--boundary"
+//        -  1: End of boundary" "--boundary--"
+//   Returns:
+//     - (string): Boundary string
 func Boundary(argv0 string, start int) string {
-	// @param    string  argv0    The value of Content-Type header
-	// @param    int     start    -1: boundary string itself
-	//                             0: Start of boundary: "--boundary"
-	//                             1: End of boundary" "--boundary--"
-	// @return   string            Boundary string
 	if argv0 == "" { return "" }; btext := Parameter(argv0, "boundary")
 	if btext == "" { return "" }
 

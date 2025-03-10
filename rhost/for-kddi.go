@@ -11,10 +11,13 @@ import "strings"
 import "libsisimai.org/sisimai/sis"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["KDDI"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
+		// - https://www.au.com/support/service/internet/trouble/mail/01/
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string]string{

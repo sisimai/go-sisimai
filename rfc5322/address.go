@@ -10,13 +10,12 @@ package rfc5322
 import "strings"
 import "libsisimai.org/sisimai/rfc1123"
 
-// IsEmailAddress() checks that the argument is an email address or not
+// IsEmailAddress checks that the argument is an email address or not.
+//   Arguments:
+//     - email (string): Email address string
+//   Returns:
+//     - (bool):         true if the argument is a valid email address
 func IsEmailAddress(email string) bool {
-	// @param    string email    Email address string
-	// @return   bool            true:  is an email address
-	//                           false: is not an email address
-	if len(email) < 5 { return false } // n@e.e
-
 	// See http://www.ietf.org/rfc/rfc5322.txt
 	//   or http://www.ex-parrot.com/pdw/Mail-RFC822-Address.html ...
 	//   addr-spec       = local-part "@" domain
@@ -28,6 +27,8 @@ func IsEmailAddress(email string) bool {
 	//                     %d33-90 /       ; The rest of the US-ASCII
 	//                     %d94-126        ;  characters not including "[",
 	//                                     ;  "]", or "\"
+	if len(email) < 5 { return false } // n@e.e
+
 	email  = strings.Trim(email, " \t")
 	lasta := strings.LastIndex(email, "@")
 	lastd := strings.LastIndex(email, ".")
@@ -114,20 +115,22 @@ func IsEmailAddress(email string) bool {
 	return match
 }
 
-// IsQuotedAddress() checks that the local part of the argument is quoted
+// IsQuotedAddress checks that the local part of the argument is quoted address or not.
+//   Arguments:
+//     - email (string): Email address string
+//   Returns:
+//     - (bool):         true if the local part is quoted such as "neko kijitora"@example.jp
 func IsQuotedAddress(email string) bool {
-	// @param    string email    Email address string
-	// @return   bool            true:  the local part is quoted
-	//                           false: the local part is not quoted
 	if strings.HasPrefix(email, `"`) == false || strings.Contains(email, `"@`) == false { return false }
 	return true
 }
 
-// IsComment() returns true if the string starts with "(" and ends with ")"
+// IsComment returns true if the string starts with "(" and ends with ")".
+//   Arguments:
+//     - argv0 (string): String including an comment in email address like "(neko, cat)"
+//   Returns:
+//     - (bool):         true if the argument is a comment
 func IsComment(argv0 string) bool {
-	// @param    string argv0    String including an comment in email address like "(neko, cat)"
-	// @return   bool            true:  is a comment
-	//                           false: is not a comment
 	if argv0 == "" || !strings.HasPrefix(argv0, "(") || !strings.HasSuffix(argv0, ")") { return false }
 	return true
 }

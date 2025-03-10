@@ -43,10 +43,13 @@ type EmailEntity struct {
 }
 const maximumSize = 2000 * 1024 * 1024 * 1024
 
-// Rise() is a constructor of EmailEntity struct
+// Rise is a constructor of EmailEntity struct.
+//   Arguments:
+//     - path (string):  Path to an UNIX mbox, Maildir/, or "STDIN" for standard input.
+//   Returns:
+//     - (*EmailEntity): Pointer to mail.EmailEntity struct
+//     - (error):        Occurred error
 func Rise(argv0 string) (*EmailEntity, error) {
-	// @param    string     argv0  Path to mbox or Maildir/
-	// @return   *mail.EmailEntity Pointer to mail.EmailEntity struct
 	ee := EmailEntity{}
 
 	if argv0 == "STDIN" || strings.IndexByte(argv0, '\n') > -1 {
@@ -80,7 +83,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 			payload = argv0
 		}
 
-		if cw := CountUnixMboxFrom(&payload); cw < 2 {
+		if cw := countUnixMboxFrom(&payload); cw < 2 {
 			// There is 1 or 0 "From " line in the payload
 			ee.payload = append(ee.payload, payload)
 			ee.Size = len(payload)
@@ -130,18 +133,22 @@ func Rise(argv0 string) (*EmailEntity, error) {
 	return &ee, nil
 }
 
-// CountUnixMboxFrom() returns the number of "From " line of the Unix mbox
-func CountUnixMboxFrom(argv0 *string) uint {
-	// @param    *string argv0  A pointer to the entire email message
-	// @return    unit          The number of "From " lines
+// countUnixMboxFrom returns the number of "From " line of the UNIX mbox.
+//   Arguments:
+//     - argv0 (*string):  Pointer to the entire email message
+//   Returns:
+//     - (uint): The number of "From " lines
+func countUnixMboxFrom(argv0 *string) uint {
 	if len(*argv0) < 5 || strings.HasPrefix(*argv0, "From ") == false { return 0 }
 	cw := strings.Count(*argv0, "\nFrom ")
 	return uint(cw)
 }
 
-// *EmailEntity.Read() is an email reader, works as an iterator.
+// *EmailEntity.Read is an email reader, works like an iterator.
+//   Returns:
+//     - (*string): Each email message one by one
+//     - (error):        Occurred error
 func(this *EmailEntity) Read() (*string, error) {
-	// @return   *string Contents of mbox/Maildir
 	var email *string // Email contents: headers and entire message body
 	var nyaan  error  // Some errors while reading an email file
 
@@ -154,10 +161,11 @@ func(this *EmailEntity) Read() (*string, error) {
 	return email, nyaan
 }
 
-// *EmailEntity.setNewLine() returns true if the newline code is CRLF or CR or LF
+// *EmailEntity.setNewLine set a new line type(CRLF, CR, LF) to EmailEntity.newline field.
+//   Returns:
+//     - (bool):  true if the newline field has been set successfully
+//     - (error): Occurred error
 func(this *EmailEntity) setNewLine() (bool, error) {
-	// @param    NONE
-	// @return   bool true if the newline code is CRLF or CR or LF
 	if this.Kind == "maildir" { return false, nil }
 	var bufferedio *bufio.Reader
 	var readbuffer string

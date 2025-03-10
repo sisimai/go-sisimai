@@ -13,11 +13,13 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["GoDaddy"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
-		// @see      https://ca.godaddy.com/help/fix-rejected-email-with-a-bounce-error-40685
+		// - https://ca.godaddy.com/help/fix-rejected-email-with-a-bounce-error-40685
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := map[string]string{

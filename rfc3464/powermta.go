@@ -10,11 +10,14 @@ package rfc3464
 import "strings"
 
 func init() {
-	// Returns a []string which is compatible with the value returned from rfc1894.Field()
+	// ReturnedBy["PowerMTA"] returns a []string which is compatible with the value returned from rfc1894.Field().
+	//   Arguments:
+	//     - argv1 (string): Line of the error message
+	//   Returns:
+	//     - ([]string):     []string{"field-name", "value-type", "value", "field-group", "comment"}
+	//   See:
+	//     - https://bird.com/email/power-mta
 	ReturnedBy["PowerMTA"] = func(argv1 string) []string {
-		// @param    string argv1   A line of the error message
-		// @return   []string       []string{"field-name", "value-type", "value", "field-group", "comment"}
-		// @see      https://bird.com/email/power-mta
 		if argv1 == "" || strings.Contains(argv1, ": ") == false { return []string{} }
 
 		fieldgroup := map[string]string{

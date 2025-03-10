@@ -13,11 +13,13 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/smtp/status"
 
 func init() {
-	// Detect the reason of the bounce returned by this email service
+	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
+	//   Arguments:
+	//     - fo (*sis.Fact): Decoded data in progress
+	//   Returns:
+	//     - (string):       Bounce reason name or an empty string
 	ReturnedBy["Microsoft"] = func(fo *sis.Fact) string {
-		// @param    *sis.Fact fo    Struct to be detected the reason
-		// @return   string          Detected bounce reason name
-		// @see      https://technet.microsoft.com/en-us/library/bb232118
+		// - https://technet.microsoft.com/en-us/library/bb232118
 		if fo == nil || fo.DiagnosticCode == ""    { return "" }
 		if status.Test(fo.DeliveryStatus) == false { return "" }
 
@@ -199,10 +201,10 @@ func init() {
 			},
 			"failedstarttls": [][4]string{
 				// Exchange Online ---------------------------------------------------------------------
-				// - MX hosts of <domain> failed MTA-STS validation The destination MX host is not the
+				// - MX hosts of <domain> failed MTA-STS validation The destination MX host is not the
 				//   expected host per the domain's STS policy
-				[4]string{"4.4.8", "", "", " failed mta-sts validation"},
-				[4]string{"5.4.8", "", "", " failed mta-sts validation"},
+				[4]string{"4.4.8", "", "", " failed mta-sts validation"},
+				[4]string{"5.4.8", "", "", " failed mta-sts validation"},
 
 				// - DNSSEC checks have passed, yet upon connection, destination mail server doesn't re-
 				//   spond to the STARTTLS command. The destination server responds to the STARTTLS com-
@@ -213,12 +215,12 @@ func init() {
 				[4]string{"4.4.317", "", "", "starttls is required to send mail"},
 				[4]string{"5.4.317", "", "", "starttls is required to send mail"},
 
-				// - Remote certificate failed MTA-STS validation. Reason: <validityStatus> The destina-
+				// - Remote certificate failed MTA-STS validation. Reason: <validityStatus> The destina-
 				//   tion mail server's certificate must chain to a trusted root Certificate Authority
 				//   and the Common Name or Subject Alternative Name must contain an entry for the host
 				//   name in the STS policy.
-				[4]string{"4.7.5", "", "", "remote certificate failed mta-sts validation"},
-				[4]string{"5.7.5", "", "", "remote certificate failed mta-sts validation"},
+				[4]string{"4.7.5", "", "", "remote certificate failed mta-sts validation"},
+				[4]string{"5.7.5", "", "", "remote certificate failed mta-sts validation"},
 
 				// - DNSSEC checks have passed, yet upon establishing the connection the destination
 				//   mail server provides a certificate that is expired.

@@ -28,12 +28,15 @@ import "libsisimai.org/sisimai/smtp/status"
 import "libsisimai.org/sisimai/smtp/command"
 import "libsisimai.org/sisimai/smtp/failure"
 
-// sisimai/fact.Rise() returns []sis.Fact when it successfully decoded bounce messages
+// Rise() returns []sis.Fact when it successfully decoded bounce messages.
+//   Arguments:
+//     - email (*string):          Entire email message
+//     - origin (string):          Path to the original bounce email file
+//     - args (*sis.DecodingArgs): Arguments for decoding(delivered, vacation, callbacks)
+//   Returns:
+//     - (*[]sis.Fact):            List of successfully decoded bounce messages
+//     - (*[]sis.NotDecoded):      List of occurred errors
 func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
-	// @param  *string           email    Entire email message
-	// @param  string            origin   Path to the original email file
-	// @param  *sis.DecodingArgs args     Arguments for decoding(delivered, vacation, callbacks)
-	// @return []sis.Fact               The list of decoded bounce messages
 	if email == nil || len(*email) < 1 {
 		// The email message is empty
 		ce := *sis.MakeNotDecoded("email file is empty", true); ce.Email(origin)

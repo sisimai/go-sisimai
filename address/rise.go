@@ -10,10 +10,12 @@ package address
 import "strings"
 import "libsisimai.org/sisimai/sis"
 
-// Rise() is a constructor of sis.EmailAddress
+// Rise is a constructor of sis.EmailAddress.
+//   Arguments:
+//     - argvs ([3]string):  [3]string{"email address", "display name", "comment"}
+//   Returns:
+//     - (sis.EmailAddress): EmailAddress struct when the email address is valid
 func Rise(argvs [3]string) sis.EmailAddress {
-	// @param    [3]string argvs  ["Email address", "name", "comment"]
-	// @return   sis.EmailAddress EmailAddress struct when the email address was not valid
 	if argvs[0] == "" { return sis.EmailAddress{} }
 
 	thing := new(sis.EmailAddress)

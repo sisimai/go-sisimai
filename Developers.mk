@@ -25,6 +25,7 @@ SISIMAIDIR := address arf fact lda lhost mail message moji reason rfc1123 rfc189
 COVERAGETO := coverage.txt
 EXECUTABLE := bin/sisid
 BUILDFLAGS := -ldflags="-s -w" -trimpath
+LISTENADDR := 127.0.0.1:5321
 
 # -------------------------------------------------------------------------------------------------
 .PHONY: clean
@@ -56,6 +57,10 @@ init:
 
 update-go-mod:
 	@ $(GO) mod tidy
+
+start-godoc-server:
+	open http://$(LISTENADDR)
+	godoc -http=$(LISTENADDR)
 
 clean:
 	$(RM) ./$(EXECUTABLE)

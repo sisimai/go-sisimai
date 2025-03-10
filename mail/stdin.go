@@ -9,9 +9,11 @@
 package mail
 import "io"
 
+// readSTDIN is an email reader input from the STDIN.
+//   Returns:
+//     - (*string): Contents of each email in the STDIN
+//     - (error):   Occurred error
 func (this *EmailEntity) readSTDIN() (*string, error) {
-	// @return   *string  Contents of the mbox input from STDIN
-	// @return   error    It has reached to the end of the mbox
 	if this.Size == 0 || this.offset >= len(this.payload) { return nil, io.EOF }
 
 	emailblock := this.payload[this.offset]

@@ -483,11 +483,13 @@ package status
 ---------------------------------------------------------------------------------------------------
 */
 
-// Code() returns an internal delivery status code matched with the given reason string
+// Code returns an internal delivery status code matched with the given reason string.
+//   Arguments:
+//     - argv0 (string): Reason name
+//     - argv1 (bool):   false: Permanent error, true: Temporary error
+//   Returns:
+//     - (string):       Internal delivery status code or an empty string
 func Code(argv0 string, argv1 bool) string {
-	// @param    string  argv0 Reason name
-	// @param    bool    argv1 false: Permanent error, true: Temporary error
-	// @return   string        Internal delivery status code or an empty string
 	if len(argv0) < 6 { return "" }
 
 	codetable0 := map[string]string{
@@ -565,10 +567,12 @@ func Code(argv0 string, argv1 bool) string {
 	return codetable0[argv0]
 }
 
-// Name() returns a reason string matched with the given delivery status code
+// Name returns a reason string matched with the given delivery status code.
+//   Arguments:
+//     - argv0 (string): SMTP status code such as "5.2.2"
+//   Returns:
+//     - (string):       Reason name assigned with the argument
 func Name(argv0 string) string {
-	// @param    string argv0 Delivery status code(D.S.N.)
-	// @return   string       Reason name or an empty string
 	if len(argv0) < 5 || Test(argv0) == false { return "" }
 
 	standardcr := map[string]string{

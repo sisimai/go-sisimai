@@ -18,11 +18,14 @@ import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
 import "libsisimai.org/sisimai/address"
 
-// Inquire() decodes a bounce message that includes a vacation message
+// Inquire() decodes a bounce message that includes a vacation message.
+//   Arguments:
+//     - bf (*sis.BeforeFact): Message entity in progress
+//   Returns:
+//     - (sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
+//   See:
+//     - https://datatracker.ietf.org/doc/html/rfc3834
 func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
-	// @param    *sis.BeforeFact bf  Message body of a bounce email
-	// @return   RisingUnderway      RisingUnderway structure
-	// @see      https://tools.ietf.org/html/rfc3834
 	if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
 	boundaries := []string{"__SISIMAI_PSEUDO_BOUNDARY__"}

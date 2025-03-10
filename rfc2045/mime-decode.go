@@ -15,14 +15,15 @@ import "mime/quotedprintable"
 import "golang.org/x/net/html/charset"
 import "libsisimai.org/sisimai/moji"
 
-// IsEncoded() checks that the argument is MIME encoded string or not.
+// IsEncoded checks that the argument is MIME encoded string or not.
+//   Arguments:
+//     - argv0 (string): String to be checked that it is MIME encoded or not
+//   Returns:
+//     - (bool):         true if the argument is a MIME encoded string
 func IsEncoded(argv0 string) bool {
-	// @param    string    argv0   String to be checked that it is MIME encoded or not
-	// @return   bool              true: Not MIME encoded string
-    //                             false: MIME encoded string
+	// For example, the argument is like "=?UTF-8?B?44OL44Oj44O844Oz?="
 	argv0  = strings.ToUpper(argv0)
 
-	// =?UTF-8?B?44OL44Oj44O844Oz?=
 	if strings.Contains(argv0, "=?") == false          { return false } // Should begin with "=?"
 	if strings.Contains(argv0, "?=") == false          { return false } // Should end with "?="
 	if len(argv0) < 8                                  { return false } // Should be 8 or more length
@@ -30,10 +31,12 @@ func IsEncoded(argv0 string) bool {
 	return false
 }
 
-// DecodeH() decodes the value of email header which is a MIME-Encoded string.
+// DecodeH decodes the value of email header which is a MIME-Encoded string.
+//   Arguments:
+//     - argv0 (string): MIME-Encoded text
+//   Returns:
+//     - (string):       Decoded text
 func DecodeH(argv0 string) (string, error) {
-	// @param    string    argvs  MIME-Encoded text
-	// @return   string           MIME-Decoded text
 	if argv0 == "" { return "", nil }
 
 	decodingif := new(mime.WordDecoder); if CharacterSet(argv0) != "UTF-8" {
@@ -88,11 +91,13 @@ func DecodeH(argv0 string) (string, error) {
 	return toreadable, nil
 }
 
-// DecodeB() decodes Base64 encoded text.
+// DecodeB decodes Base64 encoded text.
+//   Arguments:
+//     - argv0 (string): Base64-Encoded text
+//     - argv1 (string): Character set name
+//   Returns:
+//     - (string):       Decoded text
 func DecodeB(argv0 string, argv1 string) (string, error) {
-	// @param    string     argv0  Base64 Encoded text
-	// @param    string     argv1  Character set name
-	// @return   string            MIME-Decoded text
 	if len(argv0)  < 8 { return argv0, nil }
 	if len(argv1) == 0 { argv1 = "utf-8"   }
 
@@ -100,28 +105,23 @@ func DecodeB(argv0 string, argv1 string) (string, error) {
 	base64text := strings.Join(strings.Split(strings.TrimSpace(argv0), "\n"), "")
 	base64text  = fmt.Sprintf("=?%s?B?%s?=", argv1, base64text)
 
-	if plain, nyaan := decodingif.Decode(base64text); nyaan != nil {
-		// Failed to decode the base64-encoded text
-		return "", nyaan
-
-	} else {
-		// Successfully decoded
-		return plain, nil
-	}
+	plain, nyaan := decodingif.Decode(base64text); if nyaan != nil { return "", nyaan }
+	return plain, nil
 }
 
 // DecodeQ() decodes Quoted-Pritable encdoed text
+//   Arguments:
+//     - argv0 (string): Quoted-Printable encoded text
+//   Returns:
+//     - (string):       Decoded text
+//     - (error):        Decoding error
 func DecodeQ(argv0 string) (string, error) {
-	// @param    string     argv0 Quoted-Printable Encoded text
-	// @return   string           MIME-Decoded text
 	readstring := strings.NewReader(argv0)
 	decodingif := quotedprintable.NewReader(readstring)
 	plainvalue := ""
 
-	plain, nyaan := io.ReadAll(decodingif); if nyaan != nil {
-		// Failed to decode the quoted-printable text
-		plainvalue = argv0
-	}
+	// Failed to decode the quoted-printable text
+	plain, nyaan := io.ReadAll(decodingif); if nyaan != nil { plainvalue = argv0 }
 	if len(plain) > 0 { plainvalue = string(plain) }
 
 	return plainvalue, nyaan
