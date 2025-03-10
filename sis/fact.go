@@ -12,7 +12,6 @@ package sis
 import "time"
 import "encoding/json"
 
-// sisimai/fact.Rise() returns []sis.Fact
 type Fact struct {
 	Action          string       `json:"action"`         // The value of "Action:" field
 	Addresser       EmailAddress `json:"addresser"`      // The sender address of the original message
@@ -42,10 +41,8 @@ type Fact struct {
 	Token           string       `json:"token"`          // The Message token(MD5 Hex digest value)
 }
 
-// MarshalJSON() returns serialized JSON string of "Addresser", "Recipient", and "Timestamp"
+// Fact.MarshalJSON returns serialized JSON string of "Addresser", "Recipient", and "Timestamp".
 func(this Fact) MarshalJSON() ([]byte, error) {
-	// @param    NONE
-	// @return   string  A part of sis.Fact{} fields as a JSON string
 	type AnotherOne Fact // To avoid an infinite loop
 	return json.Marshal(&struct {
 		Addresser string `json:"addresser"`
@@ -60,17 +57,9 @@ func(this Fact) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// Dump() returns a serialized sis.Fact{} structure as a JSON string
+// Fact.Dump() returns a serialized sis.Fact{} structure as a JSON string.
 func(this Fact) Dump() (string, error) {
-	// @param    NONE
-	// @return   string  Serialized sis.Fact{} as a JSON string
-	if jsonb, nyaan := json.Marshal(this); nyaan != nil {
-		// Failed to serialize, returns an empty string
-		return "", nyaan
-
-	} else {
-		// Successfully serialized
-		return string(jsonb), nil
-	}
+	jsonb, nyaan := json.Marshal(this); if nyaan != nil { return "", nyaan }
+	return string(jsonb), nil
 }
 
