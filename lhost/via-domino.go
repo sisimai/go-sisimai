@@ -50,7 +50,8 @@ func init() {
 			// Try to match with the order of each elements for non utf-8 encoded error message
 			// such as ISO-8859-1
 			"userunknown": [][]string{
-				[]string{"non r", "pertori", "dans l'annuaire Domino"}, // "non répertorié dans l'annuaire Domino",
+				[]string{"non r", "pertori", "dans l'annuaire Domino"},   // ISO-8859-1:  "non répertorié dans l'annuaire Domino",
+				[]string{"%f!<%6!<", "%G%#%l%/%H%j$K$O8+$D$+$j$^$;$s!#"}, // ISO-2022-JP: "ユーザー", "ディレクトリには見つかりません"
 			},
 		}
 

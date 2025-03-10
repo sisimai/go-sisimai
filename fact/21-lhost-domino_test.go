@@ -13,7 +13,7 @@ func TestLhostDomino(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"01",   1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"02",   1, "5.0.0",   "",    "onhold",          false, ""}}, // #50
+		{{"02",   1, "5.0.0",   "",    "userunknown",      true, ""}}, // #50
 		{{"03",   1, "5.0.0",   "",    "networkerror",    false, ""}},
 	}; EngineTest(t, "Domino", publiclist, true)
 
@@ -25,7 +25,7 @@ func TestLhostDomino(t *testing.T) {
 		{{"1004", 1, "5.0.0",   "",    "onhold",          false, ""}},
 		{{"1005", 1, "5.0.0",   "",    "onhold",          false, ""}},
 		{{"1006", 1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"1007", 1, "5.0.0",   "",    "onhold",          false, ""}},
+		{{"1007", 1, "5.0.0",   "",    "userunknown",      true, ""}},
 		{{"1008", 1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"1009", 1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"1010", 1, "5.0.911", "",    "userunknown",      true, ""}},
