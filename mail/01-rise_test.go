@@ -133,20 +133,20 @@ func TestRead(t *testing.T) {
 }
 
 func TestCountUnixMboxFrom(t *testing.T) {
-	fn := "CountUnixMboxFrom"
+	fn := "countUnixMboxFrom"
 	cx := 0
 
 	for _, e := range []string{"neko", "cat", "", "nekochan"} {
-		cx++; if cv := int(CountUnixMboxFrom(&e)); cv != 0 { t.Errorf("%s(%s) returns %d", fn, e, cv) }
+		cx++; if cv := int(countUnixMboxFrom(&e)); cv != 0 { t.Errorf("%s(%s) returns %d", fn, e, cv) }
 	}
 	if bo, _ := os.ReadFile(Mailtxt); len(bo) != 0 {
 		cf := string(bo)
-		cx++; if cv := int(CountUnixMboxFrom(&cf)); cv != 0 { t.Errorf("%s(%s) returns %d", fn, cf[0:10], cv) }
+		cx++; if cv := int(countUnixMboxFrom(&cf)); cv != 0 { t.Errorf("%s(%s) returns %d", fn, cf[0:10], cv) }
 	}
 
 	if bo, _ := os.ReadFile(Mailbox[0]); len(bo) != 0 {
 		cf := string(bo)
-		cx++; if cv := int(CountUnixMboxFrom(&cf)); cv == 0 { t.Errorf("%s(%s) returns %d", fn, cf[0:10], cv) }
+		cx++; if cv := int(countUnixMboxFrom(&cf)); cv == 0 { t.Errorf("%s(%s) returns %d", fn, cf[0:10], cv) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
