@@ -13,10 +13,12 @@ import "strings"
 import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 
-// IsPermanent() returns true if the given string indicates a permanent error
+// IsPermanent returns true if the given string indicates a permanent error.
+//   Arguments:
+//     - argv1 (string): String including SMTP status code
+//   Returns:
+//     - (bool):         true if it indicates permanent error, false otherwise.
 func IsPermanent(argv1 string) bool {
-	// @param   string argv1  String including SMTP Status code
-	// @return  bool          true(permanet error), false(is not a permanent error)
 	if argv1 == "" { return false }
 
 	statuscode := status.Find(argv1, "");  if statuscode == "" { statuscode = reply.Find(argv1, "") }
@@ -25,10 +27,12 @@ func IsPermanent(argv1 string) bool {
 	return false
 }
 
-// IsTemporary() returns true if the given string indicates a temporary error
+// IsTemporary returns true if the given string indicates a temporary error.
+//   Arguments:
+//     - argv1 (string): String including SMTP status code
+//   Returns:
+//     - (bool):         true if it indicates temporary error, false otherwise.
 func IsTemporary(argv1 string) bool {
-	// @param   string argv1  String including SMTP Status code
-	// @return  bool          true(temporary error), false(is not a temporary error)
 	if argv1 == "" { return false }
 
 	statuscode := status.Find(argv1, ""); if statuscode == "" { statuscode = reply.Find(argv1, "") }
@@ -40,11 +44,13 @@ func IsTemporary(argv1 string) bool {
 	return false
 }
 
-// IsHardBounce() checks the reason sisimai detected is a hard bounce or not
+// IsHardBounce checks the reason sisimai detected is a hard bounce or not.
+//   Arguments:
+//     - argv1 (string): The bounce reason sisimai detected
+//     - argv2 (string): String including SMTP status code
+//   Returns:
+//     - (bool):         true if it indicates hard bounce, false otherwise.
 func IsHardBounce (argv1, argv2 string) bool {
-	// @param   string argv1  The bounce reason sisimai detected
-	// @param   string argv2  String including SMTP Status code
-	// @return  bool          true: is a hard bounce
 	if argv1 == "undefined" || argv1 == "onhold"      || argv1 == ""            { return false }
 	if argv1 == "deliverd"  || argv1 == "feedback"    || argv1 == "vacation"    { return false }
 	if argv1 == "hasmoved"  || argv1 == "userunknown" || argv1 == "hostunknown" { return true  }
@@ -59,11 +65,13 @@ func IsHardBounce (argv1, argv2 string) bool {
 	return false
 }
 
-// IsSoftBounce() checks the reason sisimai detected is a soft bounce or not
+// IsSoftBounce checks the reason sisimai detected is a soft bounce or not.
+//   Arguments:
+//     - argv1 (string): The bounce reason sisimai detected
+//     - argv2 (string): String including SMTP status code
+//   Returns:
+//     - (bool):         true if it indicates soft bounce, false otherwise.
 func IsSoftBounce (argv1, argv2 string) bool {
-	// @param   string argv1  The bounce reason sisimai detected
-	// @param   string argv2  String including SMTP Status code
-	// @return  bool          true: is a soft bounce
 	if argv1 == "deliverd"  || argv1 == "feedback"    || argv1 == "vacation"    { return false }
 	if argv1 == "hasmoved"  || argv1 == "userunknown" || argv1 == "hostunknown" { return false }
 	if argv1 == "undefined" || argv1 == "onhold"                                { return true  }
