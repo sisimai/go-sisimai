@@ -12,17 +12,17 @@ import "fmt"
 import "strings"
 import "golang.org/x/text/encoding"
 
-// ToLF() replace CR and CR/LF to LF.
+// ToLF replace CR and CR/LF with LF.
 func ToLF(argv0 *string) *string {
 	// @param    *string argv0  Text including CR or CR/LF
 	// @return   *string        LF converted text
 	if argv0 == nil || *argv0 == "" { return argv0 }
 
-	crreplaced := *argv0; for _, e := range [2]string{"\r\n", "\r"} {
+	for _, e := range [2]string{"\r\n", "\r"} {
 		// Convert CRLF and CR to LF
-		if strings.Contains(crreplaced, e) { crreplaced = strings.ReplaceAll(crreplaced, e, "\n") }
+		if strings.Contains(*argv0, e) { *argv0 = strings.ReplaceAll(*argv0, e, "\n") }
 	}
-	return &crreplaced
+	return argv0
 }
 
 // ToPlain() converts given HTML text to a plain text.
