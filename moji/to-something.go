@@ -38,6 +38,7 @@ func ToPlain(argv0 *string) *string {
 	xhtml := *argv0
 	lower := strings.ToLower(*argv0); if strings.Contains(lower, "<body") == false { return argv0 }
 	plain := ""
+	table := map[string]string{"lt": "<", "gt": ">", "quot": `"`, "nbsp": " ", "copy": "(C)", "amp": "&"}
 	body0 := -1; for _, e := range []string{">", " ", "\t", "\n"} {
 		// Find the position of <body?, and remove the HTML header part
 		body0  = strings.Index(lower, "<body" + e); if body0 < 0 { continue }
@@ -65,12 +66,7 @@ func ToPlain(argv0 *string) *string {
 	}
 
 	// Remove or replace entity references
-	plain = strings.ReplaceAll(plain, "&lt;",   "<")
-	plain = strings.ReplaceAll(plain, "&gt;",   ">")
-	plain = strings.ReplaceAll(plain, "&quot;", `"`)
-	plain = strings.ReplaceAll(plain, "&nbsp;", " ")
-	plain = strings.ReplaceAll(plain, "&copy;", "(C)")
-	plain = strings.ReplaceAll(plain, "&amp;",  "&")
+	for _, e := range table { plain = strings.ReplaceAll(plain, "&" + e + ";", table[e]) }
 	plain = Sweep(strings.ReplaceAll(plain, "\n", " "))
 	return &plain
 }
