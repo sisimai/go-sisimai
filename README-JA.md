@@ -49,7 +49,7 @@ The key features of Sisimai
     * __発信者情報__: `Addresser`, `SenderDomain`, 
     * __受信者情報__: `Recipient`, `Destination`, `Alias`
     * __配信の情報__: `Action`, `ReplyCode`, `DeliveryStatus`, `Command`
-    * __エラー情報__: `Reason`, `DiagnosticCode`, `DiagnosticType`, `FeedbackType`, `FeedbacID`, `hardbounce`
+    * __エラー情報__: `Reason`, `DiagnosticCode`, `DiagnosticType`, `FeedbackType`, `FeedbacID`, `HardBounce`
     * __メール情報__: `Subject`, `MessageID`, `ListID`,
     * __その他情報__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`
   * __出力可能な形式__
@@ -59,7 +59,7 @@ The key features of Sisimai
   * `$ go get -u libsisimai.org/sisimai@latest`
   * `import "libsisimai.org/sisimai"`
 * __高い解析精度__
-  * [58種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
+  * [59種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
   * Feedback Loop(ARF)にも対応
   * [36種類のバウンス理由](https://libsisimai.org/en/reason/)を検出
 
@@ -79,8 +79,7 @@ System requirements
 をご覧ください。
 
 * [Go 1.17.0 or later](http://go.dev/dl/)
-* [golang.org/x/text/encoding](https://pkg.go.dev/golang.org/x/text/encoding)
-* [golang.org/x/net/html/charset](https://pkg.go.dev/golang.org/x/net/html/charset)
+* v5.2.1で標準モジュールを除く外部モジュール依存は無くなりました
 
 Install
 ---------------------------------------------------------------------------------------------------
@@ -92,8 +91,6 @@ $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
 $ go get -u libsisimai.org/sisimai@latest
-go: added golang.org/x/net v0.35.0
-go: added golang.org/x/text v0.22.0
 go: added libsisimai.org/sisimai v5.2.0
 
 $ cat ./go.mod
@@ -102,8 +99,6 @@ module example.com/sisimaicli
 go 1.20
 
 require (
-	golang.org/x/net v0.35.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
 	libsisimai.org/sisimai v5.2.0 // indirect
 )
 ```
@@ -380,13 +375,13 @@ Features
 | 機能                                    | Go              | Perl              | Ruby  / JRuby   |
 |-----------------------------------------|-----------------|-------------------|-----------------|
 | 動作環境                                | 1.17 -          | 5.26 -            | 2.4 - / 9.2 -   |
-| 依存モジュール数(標準パッケージを除く)  | 2 パッケージ    | 2 モジュール      | 1 gem           |
+| 依存モジュール数(標準パッケージを除く)  | ** 0 **         | 2 モジュール      | 1 gem           |
 | 対応している文字コード                  | **UTF-8のみ**   | UTF-8と他[^2]     | UTF-8と他[^3]   |
-| ソースコードの行数                      | 9,100 行        | 9,900 行          | 9,800 行        |
+| ソースコードの行数                      | 9,000 行        | 9,900 行          | 9,800 行        |
 | テスト件数                              | 144,000 件      | 320,000 件        | 410,000 件      |
-| 1秒間に解析できるバウンスメール数[^4]   | 1200 通         | 450 通            | 340 通          |
+| 1秒間に解析できるバウンスメール数[^4]   | 1200 通         | 450 通            | 360 通          |
 | ライセンス                              | 二条項BSD       | 二条項BSD         | 二条項BSD       |
-| 開発会社による商用サポート              | 準備中          | 提供中            | 提供中          |
+| 開発会社による商用サポート              | 提供中          | 提供中            | 提供中          |
 
 [^2]: `Encode`と`Encode::Guess`に対応している文字コード
 [^3]: `String#encode`メソッドが解釈できる文字コード

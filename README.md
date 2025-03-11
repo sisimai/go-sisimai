@@ -62,7 +62,7 @@ The key features of Sisimai
   * `$ go get -u libsisimai.org/sisimai@latest`
   * `import "libsisimai.org/sisimai"`
 * __High Precision of Analysis__
-  * Support [58 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
+  * Support [59 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
   * Support Feedback Loop Message(ARF)
   * Can detect [36 bounce reasons](https://libsisimai.org/en/reason/)
 
@@ -84,8 +84,7 @@ More details about system requirements are available at
 [Sisimai | Getting Started](https://libsisimai.org/en/start/) page.
 
 * [Go 1.17.0 or later](http://go.dev/dl/)
-* [golang.org/x/text/encoding](https://pkg.go.dev/golang.org/x/text/encoding)
-* [golang.org/x/net/html/charset](https://pkg.go.dev/golang.org/x/net/html/charset)
+* No external dependencies (excluding standard library) since v5.2.1
 
 Install and Build
 ---------------------------------------------------------------------------------------------------
@@ -97,8 +96,6 @@ $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
 $ go get -u libsisimai.org/sisimai@latest
-go: added golang.org/x/net v0.35.0
-go: added golang.org/x/text v0.22.0
 go: added libsisimai.org/sisimai v5.2.0
 
 $ cat ./go.mod
@@ -107,8 +104,6 @@ module example.com/sisimaicli
 go 1.20
 
 require (
-	golang.org/x/net v0.35.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
 	libsisimai.org/sisimai v5.2.0 // indirect
 )
 ```
@@ -391,13 +386,13 @@ Features
 | Features                                     | Go             | Perl            | Ruby  / JRuby |
 |----------------------------------------------|----------------|-----------------|---------------|
 | System requirements                          | 1.17 -         | 5.26 -          | 2.4 - / 9.2 - |
-| Dependencies (Except standard libs)          | 2 packages     | 2 modules       | 1 gem         |
+| Dependencies (Except standard libs)          | **0 packages** | 2 modules       | 1 gem         |
 | Supported character sets                     | **UTF-8 only** | UTF-8,etc. [^2] | UTF-8,etc.[^3]|
-| Source lines of code                         | 9,100 lines    | 9,900 lines     | 9,800 lines   |
+| Source lines of code                         | 9,000 lines    | 9,900 lines     | 9,800 lines   |
 | The number of tests                          | 144,000 tests  | 320,000 tests   | 410,000 tests |
-| The number of bounce emails decoded/sec [^4] | 1200 emails    | 450 emails      | 340 emails    |
+| The number of bounce emails decoded/sec [^4] | 1200 emails    | 450 emails      | 360 emails    |
 | License                                      | 2 Clause BSD   | 2 Caluse BSD    | 2 Clause BSD  |
-| Commercial support                           | Coming soon    | Available       | Available     |
+| Commercial support                           | Available      | Available       | Available     |
 
 [^2]: Character sets supported by `Encode` and `Encode::Guess` modules
 [^3]: Character sets supported by `String#encode` method
