@@ -3,12 +3,12 @@ RELEASE NOTES for the Go version of Sisimai
 - releases: "https://github.com/sisimai/go-sisimai/releases"
 - document: "https://libsisimai.org/"
 
-v5.2.0p3
+v5.2.1
 ---------------------------------------------------------------------------------------------------
-- release: ""
-- version: ""
+- release: "Wed, 12 Mar 2025 06:22:25 +0900 (JST)
+- version: "5.2.1"
 - changes:
-  - #64 NTT DOCOMO (Major Japanese mobile carrier) no longer returns a bounce mail due to domain
+  - #64 NTT DOCOMO (Major Japanese mobile carrier) no longer rejects an email message due to domain
     rejection or similar email settings, but instead were being delivered to the spam folder after
     March 13th. #70
   - Implement `rhost/for-cloudflare.go` for Cloudflare Email Routing #66
@@ -17,6 +17,8 @@ v5.2.0p3
   - `string` package has been renamed to `moji` #68 #69
   - Memory assingment improvements #72 #73
   - Comments for all the functions refactored #74 #75
+  - #42 Refactored to remove all dependencies on third-party modules in golang.org/x/*, except for
+    the Go standard library, resulting in a 22% binary size reduction.
 
 v5.2.0 - The first release
 ---------------------------------------------------------------------------------------------------
