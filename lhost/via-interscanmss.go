@@ -26,15 +26,9 @@ func init() {
 		if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
 
 		proceedsto := false; for {
-			emailtitle := bf.Headers["subject"][0]
-			titletable := []string{
-				"Mail could not be delivered",
-				"メッセージを配信できません。",
-				"メール配信に失敗しました",
-			}
-
-			if strings.HasPrefix(bf.Headers["from"][0], `"InterScan`) { proceedsto = true; break }
-			if moji.ContainsAny(emailtitle, titletable)               { proceedsto = true; break }
+			if strings.HasPrefix(bf.Headers["from"][0], `"InterScan`)       { proceedsto = true; break }
+			if strings.Contains(bf.Headers["content-type"][0], "InterScan") { proceedsto = true; break }
+			if strings.Contains(bf.Payload, " InterScan ")                  { proceedsto = true; break }
 			break
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
