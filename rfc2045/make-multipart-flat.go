@@ -55,7 +55,7 @@ func haircut(block *string, heads bool) []string {
 			if len(headerpart[0]) > 0 {
 				// Append parameters
 				headerpart[0] += " " + e
-				headerpart[0]  = moji.Squeeze(headerpart[0], " ")
+				headerpart[0]  = moji.Squeeze(headerpart[0], ' ')
 			}
 		}
 	}
