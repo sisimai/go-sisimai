@@ -410,7 +410,7 @@ func init() {
 				} else if len(e.Diagnosis) < len(anotherone[j]) {
 					// Override the value of diagnostic code message with the value of alterrors
 					// because the latter includes the former.
-					anotherone[j] = moji.Squeeze(anotherone[j], " ")
+					anotherone[j] = moji.Squeeze(anotherone[j], ' ')
 					if strings.Contains(strings.ToLower(anotherone[j]), strings.ToLower(e.Diagnosis)) {
 						// anotherone[j] contains the same error message stored in e.Diagnosis
 						e.Diagnosis = anotherone[j]
