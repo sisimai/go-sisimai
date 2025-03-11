@@ -128,19 +128,6 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 			// The part is not a multipart/* block
 			cw := len(cf)
 			ub := e; if len(cf[cw - 1]) > 0 { ub = cf[cw - 1] }
-
-			if moji.Is8Bit(&ub) {
-				// Avoid the following errors in DecodeQ()
-				// - quotedprintable: invalid unescaped byte 0x1b in body
-				cz := Parameter(cf[0], "charset")
-				utf8string, nyaan := moji.ToUTF8([]byte(ub), cz); if nyaan != nil {
-					// Failed to convert the string to UTF-8
-					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
-					notdecoded = append(notdecoded, ce)
-				}
-				if utf8string != "" { ub = utf8string }
-			}
-
 			cv := [3]string{cf[0], cf[1], ub}; for len(cf[0]) > 0 {
 				if cf[0] == "" || ub == "" || strings.Contains(ub, "\n\n") == false { break }
 				cv[2] = strings.SplitN(ub, "\n\n", 2)[1]
