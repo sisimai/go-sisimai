@@ -31,16 +31,6 @@ func Token(argv1 string, argv2 string, epoch int) string {
 	return fmt.Sprintf("%x", crypt.Sum(nil))
 }
 
-// Is8Bit checks the argument is including any 8-bit character or not.
-//   Arguments:
-//     - argv1 (*string): Any string to be checked
-//   Returns:
-//     - (bool):          true if the string includes one or more 8-bit character
-func Is8Bit(argv1 *string) bool {
-	for _, e := range *argv1 { if e > 127 { return true } }
-	return false
-}
-
 // Squeeze remove redundant characters from the given string
 //   Arguments:
 //     - argv1 (string): String including redundant characters like "neko  chan"
