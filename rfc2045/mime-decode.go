@@ -8,9 +8,9 @@
 
 package rfc2045
 import "io"
-import "fmt"
-import "mime"
+import "bytes"
 import "strings"
+import "encoding/base64"
 import "mime/quotedprintable"
 
 // DecodeB decodes Base64 encoded text.
@@ -20,15 +20,11 @@ import "mime/quotedprintable"
 //   Returns:
 //     - (string):       Decoded text
 func DecodeB(argv0 string, argv1 string) (string, error) {
-	if len(argv0)  < 8 { return argv0, nil }
-	if len(argv1) == 0 { argv1 = "utf-8"   }
+	if len(argv0) < 8 { return argv0, nil }
 
-	decodingif := new(mime.WordDecoder)
-	base64text := strings.Join(strings.Split(strings.TrimSpace(argv0), "\n"), "")
-	base64text  = fmt.Sprintf("=?%s?B?%s?=", argv1, base64text)
-
-	plain, nyaan := decodingif.Decode(base64text); if nyaan != nil { return "", nyaan }
-	return plain, nil
+	base64text := strings.ReplaceAll(strings.TrimSpace(argv0), "\n", "")
+	cv, nyaan  := base64.StdEncoding.DecodeString(base64text); if nyaan != nil { return "", nyaan }
+	return string(cv), nil
 }
 
 // DecodeQ() decodes Quoted-Pritable encdoed text
@@ -38,14 +34,11 @@ func DecodeB(argv0 string, argv1 string) (string, error) {
 //     - (string):       Decoded text
 //     - (error):        Decoding error
 func DecodeQ(argv0 string) (string, error) {
-	readstring := strings.NewReader(argv0)
-	decodingif := quotedprintable.NewReader(readstring)
-	plainvalue := ""
+	if len(argv0)  < 8 { return argv0, nil }
+	decodingif := quotedprintable.NewReader(bytes.NewReader([]byte(argv0)))
 
-	// Failed to decode the quoted-printable text
-	plain, nyaan := io.ReadAll(decodingif); if nyaan != nil { plainvalue = argv0 }
-	if len(plain) > 0 { plainvalue = string(plain) }
-
-	return plainvalue, nyaan
+	var readbuffer bytes.Buffer
+	_, nyaan := io.Copy(&readbuffer, decodingif); if nyaan != nil { return "", nyaan }
+	return readbuffer.String(), nil
 }
 
