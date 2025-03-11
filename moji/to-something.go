@@ -8,9 +8,7 @@
 //               |__/   
 
 package moji
-import "fmt"
 import "strings"
-import "golang.org/x/text/encoding"
 
 // ToLF replace CR and CR/LF with LF.
 //   Arguments:
@@ -69,27 +67,5 @@ func ToPlain(argv0 *string) *string {
 	for _, e := range table { plain = strings.ReplaceAll(plain, "&" + e + ";", table[e]) }
 	plain = Sweep(strings.ReplaceAll(plain, "\n", " "))
 	return &plain
-}
-
-// ToUTF8 converts an encoded text to UTF8 text.
-//   Arguments:
-//     - argv0 ([]byte): Encoded text
-//     - argv1 (string): Encoding name of argv0
-//   Returns:
-//     - (string):       UTF-8 text
-//     - (error):        Encoding error
-func ToUTF8(argv0 []byte, argv1 string) (string, error) {
-	if len(argv0) == 0  || argv1 == ""         { return "", nil            }
-	if argv1 == "utf-8" || argv1 == "us-ascii" { return string(argv0), nil }
-
-	var encodingif *encoding.Decoder; if encodingif == nil {
-		ce := fmt.Errorf("Unsupported encoding: %s, see https://github.com/sisimai/go-sisimai/issues/42", argv1)
-		return string(argv0), ce
-	}
-
-	utf8string := make([]byte, len(argv0) * 3)
-	rightindex, _, nyaan := encodingif.Transform(utf8string, argv0, false)
-	if nyaan != nil { return string(argv0), nyaan }
-	return string(utf8string[:rightindex]), nil
 }
 
