@@ -256,7 +256,7 @@ func Find(argv1 string) [3]string {
 		for {
 			// Remove redundant spaces from the display name when the value is not a "quoted-string"
 			if strings.HasPrefix(readbuffer[1], `"`) && strings.HasSuffix(readbuffer[1], `"`) { break }
-			readbuffer[1] = moji.Squeeze(readbuffer[1], " ")
+			readbuffer[1] = moji.Squeeze(readbuffer[1], ' ')
 			break
 		}
 		if rfc5322.IsQuotedAddress(readbuffer[1]) == false {
