@@ -49,6 +49,9 @@ loc:
 	@ find ./*.go $(SISIMAIDIR) -type f -name '*.go' -not -name '*_test.go' | \
 		xargs grep -vE '(^$$|^//|/[*]|[*]/|^ |^--)' | grep -vE "\t+//" | wc -l
 
+how-many-engines:
+	@ echo `ls -1 lhost/via-* rhost/for-* | wc -l | tr -d ' '` + 4 | bc
+
 coverage:
 	@ $(GO) test -v ./ $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
 
