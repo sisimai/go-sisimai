@@ -118,7 +118,6 @@ func init() {
 
 				} else {
 					// The line does not begin with a DSN field defined in RFC3464
-					if moji.Is8Bit(&e) == true { continue }
 					if strings.Contains(e, " >>> ") {
 						//    >>> RCPT TO:<******@ezweb.ne.jp>
 						v.Command    = command.Find(e)
