@@ -16,7 +16,6 @@ import "net/mail"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
 import "libsisimai.org/sisimai/lhost"
-import "libsisimai.org/sisimai/rfc2045"
 import "libsisimai.org/sisimai/rfc5322"
 
 var tryonfirst = make([]string, 0, 36)
@@ -60,21 +59,11 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 			beforefact.Payload = string(bodystring)
 		}
 
-		// 2. Decode and rewrite the "Subject:" header for deciding the order of MTA functions
+		// 2. Rewrite the Subject header and the entire message body of the forwarded message
 		if rawsubject := strings.TrimSpace(beforefact.Headers["subject"][0]); rawsubject != "" {
-			// Decode MIME-Encoded "Subject:" header
-			if rfc2045.IsEncoded(rawsubject) {
-				// The header is mime-encoded
-				cv, nyaan := rfc2045.DecodeH(rawsubject); beforefact.Headers["subject"][0] = cv
-				if nyaan != nil {
-					// Something wrong when the function decodes the MIME-Encoded Subejct header
-					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
-					beforefact.Errors = append(beforefact.Errors, ce)
-				}
-			} else {
-				// THe header is not mime-encoded
-				beforefact.Headers["subject"][0] = rawsubject
-			}
+			// There used to be code in this block to decode MIME-encoded Subject headers, but it
+			// was completely removed in v5.2.1.
+			// See https://github.com/sisimai/go-sisimai/issues/42
 			if cv := strings.ToLower(rawsubject); moji.HasPrefixAny(cv, []string{"fwd:", "fw:"}) {
 				// - Remove "Fwd:" string from the "Subject:" header
 				// - Delete quoted strings, quote symbols(>)
@@ -82,6 +71,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 				beforefact.Payload = strings.ReplaceAll(beforefact.Payload, "\n> ", "\n")
 				beforefact.Payload = strings.ReplaceAll(beforefact.Payload, "\n>\n", "\n\n")
 			}
+			beforefact.Headers["subject"][0] = rawsubject
 		}
 
 		// 3. Rewrite message body for detecting the bounce reason
