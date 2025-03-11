@@ -28,7 +28,7 @@ func init() {
 
 		proceedsto := false; for {
 			if strings.HasPrefix(bf.Headers["subject"][0], "DELIVERY FAILURE:") { proceedsto = true }
-			if strings.HasPrefix(bf.Headers["subject"][0], "DELIVERY_FAILURE:") { proceedsto = true }
+			if strings.Contains( bf.Headers["subject"][0], "DELIVERY_FAILURE" ) { proceedsto = true }
 			break
 		}
 		if proceedsto == false { return sis.RisingUnderway{} }
