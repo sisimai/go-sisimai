@@ -13,17 +13,16 @@ import "testing"
 func TestSqueeze(t *testing.T) {
 	fn := "moji.Squeeze"
 	cx := 0
-	ae := []struct {text string; char string; expected string}{
-		{"neko		meow	cat", "	", "neko	meow	cat"},
-		{"neko      meow   cat", " ", "neko meow cat"},
-		{"neko//////meow///cat", "/", "neko/meow/cat"},
-		{"neko::meow:::::::cat", ":", "neko:meow:cat"},
-		{"nekochan", "", "nekochan"},
-		{"nekonekopoint", "neko", "nekopoint"},
-		{"", "?", ""},
+	ae := []struct {text string; char byte; expected string}{
+		{"neko		meow	cat", '	', "neko	meow	cat"},
+		{"neko      meow   cat", ' ', "neko meow cat"},
+		{"neko//////meow///cat", '/', "neko/meow/cat"},
+		{"neko::meow:::::::cat", ':', "neko:meow:cat"},
+		{"nekochan", ' ', "nekochan"},
+		{"", '?', ""},
 	}
 	for _, e := range ae {
-		cx++; if Squeeze(e.text, e.char) != e.expected { t.Errorf("%s(%s, %s) returns %s", fn, e.text, e.char, e.expected) }
+		cx++; if Squeeze(e.text, e.char) != e.expected { t.Errorf("%s(%s, %c) returns %s", fn, e.text, e.char, e.expected) }
 	}
 	t.Logf("The number of tests = %d", cx)
 }
