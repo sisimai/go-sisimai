@@ -55,6 +55,13 @@ how-many-engines:
 coverage:
 	@ $(GO) test -v ./ $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
 
+profile-bin:
+	test -f bin/cpu-prof.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o cpu-sisid ./bin/cpu-prof.go
+	test -f ./cpu-sisid     && ./cpu-sisid ./set-of-emails/maildir/bsd
+
+	test -f bin/mem-prof.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o mem-sisid ./bin/mem-prof.go
+	test -f ./mem-sisid     && ./mem-sisid ./set-of-emails/maildir/bsd
+
 init:
 	test -e ./go.mod || $(GO) mod init $(LIBSISIMAI)/$(NAME)
 
