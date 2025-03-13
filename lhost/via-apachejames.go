@@ -47,9 +47,9 @@ func init() {
 		}
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)                  // Points the current cursor position
-		recipients := uint8(0)                  // The number of 'Final-Recipient' header
-		alternates := [4]string{"", "", "", ""} // [Envelope-From, Header-From, Date, Subject]
+		readcursor := uint8(0)    // Points the current cursor position
+		recipients := uint8(0)    // The number of 'Final-Recipient' header
+		alternates := [4]string{} // [Envelope-From, Header-From, Date, Subject]
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {

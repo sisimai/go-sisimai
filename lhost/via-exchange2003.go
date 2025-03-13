@@ -90,14 +90,14 @@ func init() {
 
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)              // Points the current cursor position
-		recipients := uint8(0)              // The number of 'Final-Recipient' header
-		statuspart := false                 // Flag, true if it has read the delivery status part
-		connvalues := 0                     // Counter, 3 if it has got the all values of connheader
-		connheader := [3]string{"", "", ""} // [To:, Subject:, Date:]
-		rightindex := uint8(0)              // The last index number of dscontents
-		anotherone := []string{""}          // Keeping another error messages
-		msexchange := []bool{false}         // Flag, true if "MSEXCH:" text has been appeared
+		readcursor := uint8(0)      // Points the current cursor position
+		recipients := uint8(0)      // The number of 'Final-Recipient' header
+		statuspart := false         // Flag, true if it has read the delivery status part
+		connvalues := 0             // Counter, 3 if it has got the all values of connheader
+		connheader := [3]string{}   // [To:, Subject:, Date:]
+		rightindex := uint8(0)      // The last index number of dscontents
+		anotherone := []string{""}  // Keeping another error messages
+		msexchange := []bool{false} // Flag, true if "MSEXCH:" text has been appeared
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {

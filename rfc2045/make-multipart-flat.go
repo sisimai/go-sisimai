@@ -26,7 +26,7 @@ func haircut(block *string, heads bool) []string {
 	// There is neither "Content-Type:" nor "Content-Transfer-Encoding:" header
 	if len(upperchunk) == 0 || strings.Contains(upperchunk, "Content-Type:") == false { return []string{"", ""} }
 
-	var headerpart[2] string = [2]string{"", ""} // {"text/plain; charset=iso-2022-jp; ...", "quoted-printable"}
+	var headerpart[2] string = [2]string{} // {"text/plain; charset=iso-2022-jp; ...", "quoted-printable"}
 	for _, e := range strings.Split(upperchunk, "\n") {
 		// Remove fields except Content-Type:, and Content-Transfer-Encoding: in each part of multipart/*
 		// block such as the following:
