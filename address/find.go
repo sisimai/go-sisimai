@@ -30,15 +30,12 @@ func S3S4(argv1 string) string {
 //     - ([3]string):    Email address table such as  [3]string{"address", "name", "comment"}
 func Find(argv1 string) [3]string {
 	if len(argv1) < 5 { return [3]string{} }
-		argv1 = strings.ReplaceAll(argv1, "\r", "") // Remove CR
-		argv1 = strings.ReplaceAll(argv1, "\n", "") // Remove LF
-	if len(argv1) < 5 { return [3]string{} }
 
 	delimiters := `<>(),"`
-	groupindex := uint8(0)              // Group index: 0=undefined, 1=address, 2=name, 3=comment
-	readcursor := uint8(0)              // Points the current cursor position
-	readbuffer := [3]string{"", "", ""} // Read buffer for emailtable
-	emailtable := [3]string{"", "", ""} // [0]Address, [1]Name, [2]Comment
+	groupindex := uint8(0)    // Group index: 0=undefined, 1=address, 2=name, 3=comment
+	readcursor := uint8(0)    // Points the current cursor position
+	readbuffer := [3]string{} // Read buffer for emailtable
+	emailtable := [3]string{} // [0]Address, [1]Name, [2]Comment
 	indicators := map[string]uint8{
 		"email-address": (1 << 0), // <neko@example.org>
 		"quoted-string": (1 << 1), // "Neko, Nyaan"
