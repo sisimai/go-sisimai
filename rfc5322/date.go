@@ -153,6 +153,9 @@ func Date(argv1 string) string {
 
 	// Date: Thu, 22 Feb 2022 22:22:22 +0200
 	if p[0] == "" || p[1] == "" || p[2] == "" || p[4] == "" { return "" }
-	return fmt.Sprintf("%s, %s %s %s %s %s", p[3], p[2], p[1], p[0], p[4], p[5])
+
+	var w strings.Builder; w.Grow(32)
+	w.WriteString(p[3] + ", " + p[2] + " " + p[1] + " " + p[0] + " " + p[4] + " " + p[5])
+	return w.String()
 }
 
