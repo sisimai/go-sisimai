@@ -22,7 +22,8 @@ func TestSqueeze(t *testing.T) {
 		{"", '?', ""},
 	}
 	for _, e := range ae {
-		cx++; if Squeeze(e.text, e.char) != e.expected { t.Errorf("%s(%s, %c) returns %s", fn, e.text, e.char, e.expected) }
+		cv := e.text
+		cx++; if Squeeze(&cv, e.char); cv != e.expected { t.Errorf("%s(%s, %c) returns %s", fn, e.text, e.char, e.expected) }
 	}
 	t.Logf("The number of tests = %d", cx)
 }

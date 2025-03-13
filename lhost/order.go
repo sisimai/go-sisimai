@@ -68,7 +68,7 @@ func OrderBySubject(title string) []string {
 	// The following order is decided by the first 2 words of Subject: header
 	for _, e := range []string{"[", "]", "_"} { title = strings.Replace(title, e, " ", -1) }
 
-	if strings.Contains(title, "  ") { title = moji.Squeeze(title, ' ') }
+	if strings.Contains(title, "  ") { moji.Squeeze(&title, ' ') }
 	words := strings.SplitN(strings.ToLower(title), " ", 3)
 	first := ""
 

@@ -82,8 +82,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	}
 	if recipients == 0 { return sis.RisingUnderway{} }
 
-	// Squeeze continuous "\n" in the message body
-	bf.Payload  = strings.Trim(moji.Squeeze(bf.Payload, '\n'), "\n")
+	moji.Squeeze(&bf.Payload, '\n') // Squeeze continuous "\n" in the message body
+	bf.Payload  = strings.Trim(bf.Payload, "\n")
 	bodyslices := strings.Split(bf.Payload, "\n")
 	rfc822part := ""
 

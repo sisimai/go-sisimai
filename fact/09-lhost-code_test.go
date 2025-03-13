@@ -131,8 +131,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						// Read and decode each email file as a string
 						cx++; if emailthing.Size == 0 { t.Errorf("%s %s is empty", ee, ef); continue }
 
-						mesg = moji.ToLF(mesg)
-						fact, nyaan := Rise(mesg, emailthing.Path, ArgForRise)
+						moji.ToLF(mesg); fact, nyaan := Rise(mesg, emailthing.Path, ArgForRise)
 						cx++; if nyaan != nil { t.Logf("%s %s", ee, nyaan[0].Error()) }
 						if len(fact) != 0 { sisi = append(sisi, fact...) }
 					}
