@@ -69,17 +69,19 @@ func OrderBySubject(title string) []string {
 	for _, e := range []string{"[", "]", "_"} { title = strings.Replace(title, e, " ", -1) }
 
 	if strings.Contains(title, "  ") { moji.Squeeze(&title, ' ') }
+	var buffr strings.Builder; buffr.Grow(len(title))
 	words := strings.SplitN(strings.ToLower(title), " ", 3)
-	first := ""
 
 	if word0 := strings.IndexByte(words[0], ':'); word0 > 0 {
 		// Undeliverable: ..., notify: ...
-		first = strings.ToLower(title[:word0])
+		buffr.WriteString(strings.ToLower(title[:word0]))
 
 	} else {
 		// Postmaster notify, returned mail, ...
-		first = strings.Join(words[0:2], "-")
+		buffr.WriteString(strings.Join(words[0:2], "-"))
 	}
+	first := buffr.String()
+
 	for _, e := range []string{`:`, `,`, `*`, `"`} { first = strings.ReplaceAll(first, e, "") }
 	return append(table[first], defaultorder...)
 }
