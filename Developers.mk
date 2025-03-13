@@ -55,16 +55,16 @@ how-many-engines:
 coverage:
 	@ $(GO) test -v ./ $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
 
-profile-bin:
+profile:
 	test -f bin/cpu-prof.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o cpu-sisid ./bin/cpu-prof.go
 	test -f ./cpu-sisid     && ./cpu-sisid ./set-of-emails/maildir/bsd
-	go tool pprof --top ./mem.pprof > mem-usage-x
+	go tool pprof --top ./mem.pprof > usage-of-mem-x
 
 	test -f bin/mem-prof.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o mem-sisid ./bin/mem-prof.go
 	test -f ./mem-sisid     && ./mem-sisid ./set-of-emails/maildir/bsd
-	go tool pprof --top ./cpu.pprof > cpu-usage-x
+	go tool pprof --top ./cpu.pprof > usage-of-cpu-x
 
-	ls -laF ./cpu.pprof* ./mem.pprof*
+	ls -laF ./usage-of-*
 
 benchmark-bin:
 	test -f bin/benchmark.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o min-sisid ./bin/benchmark.go
