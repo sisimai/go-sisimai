@@ -55,7 +55,7 @@ func haircut(block *string, heads bool) []string {
 			if len(headerpart[0]) > 0 {
 				// Append parameters
 				headerpart[0] += " " + e
-				headerpart[0]  = moji.Squeeze(headerpart[0], ' ')
+				moji.Squeeze(&headerpart[0], ' ')
 			}
 		}
 	}
@@ -235,7 +235,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 			if len(bodystring) == 0 { continue }
 
 			// The new-line code in the converted string is CRLF
-			if strings.Contains(bodystring, "\r\n") { bodystring = *moji.ToLF(&bodystring) }
+			moji.ToLF(&bodystring)
 
 		} else {
 			// There is no Content-Transfer-Encoding header in the part 

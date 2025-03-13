@@ -14,15 +14,28 @@ import "strings"
 //   Arguments:
 //     - argv0 (*string): Text including CR or CR/LF
 //   Returns:
-//     - (*string):       LF converted text
+//     - (error):         Always nil
 func ToLF(argv0 *string) *string {
-	if argv0 == nil || *argv0 == "" { return argv0 }
+	if argv0 == nil || *argv0 == "" || strings.IndexByte(*argv0, '\r') < 0 { return nil }
 
-	for _, e := range [2]string{"\r\n", "\r"} {
-		// Convert CRLF and CR to LF
-		if strings.Contains(*argv0, e) { *argv0 = strings.ReplaceAll(*argv0, e, "\n") }
+	readbuffer := []byte(*argv0)
+	tolinefeed := make([]byte, 0, len(readbuffer))
+	bytelength := len(readbuffer)
+
+	for j := 0; j < bytelength; j++ {
+		// Replace '\r' and '\r\n' with '\n'
+		if readbuffer[j] != '\r' { tolinefeed = append(tolinefeed, readbuffer[j]); continue }
+		if j + 1 < bytelength && readbuffer[j + 1] == '\n' {
+			// The next character is not the last character, and the next character is '\n'
+			tolinefeed = append(tolinefeed, '\n'); j++
+
+		} else {
+			// The next character is the last character, or the next character is not '\n'
+			tolinefeed = append(tolinefeed, '\n')
+		}
 	}
-	return argv0
+	*argv0 = string(tolinefeed)
+	return nil
 }
 
 // ToPlain converts given HTML text to a plain text.

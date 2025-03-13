@@ -19,12 +19,12 @@ func TestToLF(t *testing.T) {
 		"nekochan\rcats\rkijitora\r\r",
 	}
 	for _, e := range cw {
-		cv := ToLF(&e);
-		cx++; if strings.Contains(*cv, "\r\n") == true { t.Errorf("%s(%s) contains CRLF", fn, *cv) }
-		cx++; if strings.Contains(*cv, "\r")   == true { t.Errorf("%s(%s) contains CR",   fn, *cv) }
+		ToLF(&e);
+		cx++; if strings.Contains(e, "\r\n") == true { t.Errorf("%s(%s) contains CRLF", fn, e) }
+		cx++; if strings.Contains(e, "\r")   == true { t.Errorf("%s(%s) contains CR",   fn, e) }
 	}
 	ce := "";
-	cx++; if cv := ToLF(&ce); *cv != "" { t.Errorf("%s() returns %s", fn, *cv) }
+	cx++; if ToLF(&ce); ce != "" { t.Errorf("%s() returns %s", fn, ce) }
 
 	t.Logf("The number of tests = %d", cx)
 }

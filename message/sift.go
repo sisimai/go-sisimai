@@ -62,7 +62,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		if cv != nil                { bf.Payload = *cv                      }
 		if fe != nil && len(fe) > 0 { bf.Errors  = append(bf.Errors, fe...) }
 	}
-	bf.Payload  = *(moji.ToLF(&bf.Payload))
+	moji.ToLF(&bf.Payload)
 	bf.Payload  = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
 
 	if hook != nil {

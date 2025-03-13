@@ -80,8 +80,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 				notdecoded = append(notdecoded, ce)
 				continue
 			}
-			mesg = moji.ToLF(mesg)
-			fact, nyaan := sisifact.Rise(mesg, emailthing.Path, args)
+			moji.ToLF(mesg); fact, nyaan := sisifact.Rise(mesg, emailthing.Path, args)
 			if len(fact)  > 0 { sisidigest = append(sisidigest, fact...)  }
 			if len(nyaan) > 0 { notdecoded = append(notdecoded, nyaan...) }
 
