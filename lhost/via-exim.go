@@ -7,7 +7,6 @@
 // |_|_| |_|\___/|___/\__/_/  |_____/_/\_\_|_| |_| |_|
 
 package lhost
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -512,15 +511,15 @@ func init() {
 			// some time, and this warning may be repeated at intervals if the message
 			// remains undelivered. Eventually the mail delivery software will give up,
 			// and when that happens, the message will be returned to you.
-			emailparts[1] += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
+			emailparts[1] += "To: <" + dscontents[0].Recipient + ">\n"
 
 			if cv := moji.Select(bf.Payload, "The date of the message is: ", "\n", 0); cv != "" {
 				// The date of the message is:    Thu, 22 Apr 2016 23:34:45 +0900
-				emailparts[1] += fmt.Sprintf("Date: %s\n", strings.Trim(cv, " "))
+				emailparts[1] += "Date: " + strings.Trim(cv, " ") + "\n"
 			}
 			if cv := moji.Select(bf.Payload, "The subject of the message is: ", "\n", 0); cv != "" {
 				// The date of the message is:    Thu, 22 Apr 2016 23:34:45 +0900
-				emailparts[1] += fmt.Sprintf("Subject: %s\n", strings.Trim(cv, " "))
+				emailparts[1] += "Subject: " + strings.Trim(cv, " ") + "\n"
 			}
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
