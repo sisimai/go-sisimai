@@ -64,24 +64,25 @@ func haircut(block *string, heads bool) []string {
 	mediatable := []string{"/rfc822", "/delivery-status", "/feedback-report"}
 	mediatypev := strings.ToLower(headerpart[1])
 	ctencoding := headerpart[1]
-	multipart1 := [...]string{headerpart[0], headerpart[1], ""}
+	multipart1 := [3]string{headerpart[0], headerpart[1], ""}
+	multipart2 := strings.Builder{}; multipart2.Grow(len(lowerchunk) / 10 * 15)
 
 	for {
 		// UPPER CHUNK: Make a body part at the 2nd element of multipart1
-		multipart1[2] = fmt.Sprintf("Content-Type: %s\n", headerpart[0])
+		multipart2.WriteString("Content-Type: " + headerpart[0] + "\n")
 
 		// Do not append Content-Transfer-Encoding: header when the part is the original message:
 		// Content-Type is message/rfc822 or text/rfc822-headers, or message/delivery-status, or
 		// message/feedback-report
 		if moji.ContainsAny(mediatypev, mediatable) || ctencoding == "" { break }
-		multipart1[2] += fmt.Sprintf("Content-Transfer-Encoding: %s\n", ctencoding)
+		multipart2.WriteString("Content-Transfer-Encoding: " + ctencoding + "\n")
 		break
 	}
 
 	// LOWER CHUNK: Append LF before the lower chunk into the 2nd element of multipart1
-	if lowerchunk != "" && lowerchunk[0:1] != "\n" { multipart1[2] += "\n" }
+	if lowerchunk != "" && lowerchunk[0:1] != "\n" { multipart2.WriteRune('\n') }
 
-	multipart1[2] += lowerchunk
+	multipart2.WriteString(lowerchunk); multipart1[2] = multipart2.String()
 	return multipart1[:]
 }
 
@@ -107,7 +108,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 		if j > 0 && strings.HasPrefix(e, "Content-") == false {
 			// Add "Content-Type: text/plain" field at the head of the part because there is no
 			// Content-Type: field; see set-of-emails/maildir/bsd/lhost-x1-01.eml
-			e = fmt.Sprintf("Content-Type: text/plain\n\n%s", e)
+			e = "Content-Type: text/plain\n\n" + e
 		}
 
 		if cf := haircut(&e, false); strings.Contains(cf[0], "multipart/") {
@@ -184,7 +185,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 	*argv1 = strings.Replace(*argv1, "message/xdelivery-status", "message/delivery-status", -1)
 
 	multiparts, notdecoded := levelout(argv0, argv1)
-	flattenout := ""
+	flatbuffer := strings.Builder{}; flatbuffer.Grow(len(*argv1) / 2)
 	delimiters := []string{"/delivery-status", "/rfc822", "/feedback-report", "/partial"}
 
 	for _, e := range multiparts {
@@ -247,13 +248,14 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 			// Add Content-Type: header of each part (will be used as a delimiter at Sisimai::Lhost)
 			// into the body inside when the value of Content-Type: is message/delivery-status, or
 			// message/rfc822, or text/rfc822-headers
-			bodystring = fmt.Sprintf("Content-Type: %s\n%s", mediatypev, bodystring)
+			bodystring = "Content-Type: " + mediatypev + "\n" + bodystring
 		}
 
 		// Append "\n" when the last character of $bodystring is not LF
 		if bodystring[len(bodystring) - 2:len(bodystring)] != "\n\n" { bodystring += "\n\n" }
-		flattenout += bodystring
+		flatbuffer.WriteString(bodystring)
 	}
+	flattenout := flatbuffer.String()
 	return &flattenout, notdecoded
 }
 
