@@ -59,6 +59,7 @@ func Find(argv1 string, argv2 string) string {
 	statuscode := make([]string, 0, 2) // List of SMTP Status Code, Keep the order of appearances
 	anotherone := ""                   // Alternative code
 	stringsize := len(esmtperror)
+	readbuffer := strings.Builder{}; readbuffer.Grow(5)
 
 	sort.Slice(indextable, func(a, b int) bool { return indextable[a] < indextable[b] })
 	for _, e := range indextable {
@@ -76,30 +77,34 @@ func Find(argv1 string, argv2 string) string {
 		if cx[1]  < 48 || cx[1]  >  55 { continue } // The value of the subject is not a number(0-7)
 		if cx[2] != 46                 { continue } // It is not a "." character: a separator
 
-		readbuffer := fmt.Sprintf("%s%c.", lookingfor[cu], cx[1])
+		if readbuffer.Len() > 0 { readbuffer.Reset() }
+		readbuffer.WriteString(lookingfor[cu])
+		readbuffer.WriteByte(cx[1])
+		readbuffer.WriteByte('.')
+
 		if stringsize > ci + 5 { cx[3] = []byte(esmtperror[ci + 4:ci + 5])[0] } // [3] The 1st digit of the detail
 		if stringsize > ci + 6 { cx[4] = []byte(esmtperror[ci + 5:ci + 6])[0] } // [4] The 2nd digit of the detail
 		if stringsize > ci + 7 { cx[5] = []byte(esmtperror[ci + 6:ci + 7])[0] } // [5] The 3rd digit of the detail
 		if stringsize > ci + 8 { cx[6] = []byte(esmtperror[ci + 7:ci + 8])[0] } // [6] The next character
 
 		if cx[3] < 48 || cx[3] > 57 { continue } // The 1st digit of the detail is not a number
-		readbuffer += string(cx[3])
+		readbuffer.WriteByte(cx[3])
 
-		if strings.Index(readbuffer, ".0.0") == 1 || readbuffer == "4.4.7" {
+		if cv := readbuffer.String(); strings.Index(cv, ".0.0") == 1 || cv == "4.4.7" {
 			// Find another status code except *.0.0, 4.4.7
-			anotherone = readbuffer; continue
+			anotherone = cv; continue
 		}
 
 		// The 2nd digit of the detail is not a number
-		if cx[4] < 48 || cx[4] > 57 { statuscode = append(statuscode, readbuffer); continue }
-		readbuffer += string(cx[4]) // The 2nd digit of the detail is a number
+		if cx[4] < 48 || cx[4] > 57 { statuscode = append(statuscode, readbuffer.String()); continue }
+		readbuffer.WriteByte(cx[4]) // The 2nd digit of the detail is a number
 
 		// The 3rd digit of the detail is not a number
-		if cx[5] < 48 || cx[5] > 57 { statuscode = append(statuscode, readbuffer); continue }
-		readbuffer += string(cx[5]) // The 3rd digit of the detail is a number
+		if cx[5] < 48 || cx[5] > 57 { statuscode = append(statuscode, readbuffer.String()); continue }
+		readbuffer.WriteByte(cx[5]) // The 3rd digit of the detail is a number
 
 		if cx[6] > 47 && cx[6] < 58 { continue }
-		statuscode = append(statuscode, readbuffer)
+		statuscode = append(statuscode, readbuffer.String())
 	}
 
 	if len(anotherone) > 0 { statuscode = append(statuscode, anotherone) }
