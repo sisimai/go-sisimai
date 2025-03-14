@@ -103,7 +103,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 			// 3. call sisimai/arf
 			// Try to decode the message as a Feedback Loop message
 			localhostr = arf.Inquire(bf)
-			if localhostr.Void() == false { modulename = "ARF"; break DECODER }
+			if localhostr != nil && localhostr.Void() == false { modulename = "ARF"; break DECODER }
 		}
 
 		if havecalled["rfc3834"] == false {
