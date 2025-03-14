@@ -23,6 +23,7 @@ LIBSISIMAI := libsisimai.org
 SISIMAIDIR := address arf fact lda lhost mail message moji reason rfc1123 rfc1894 rfc2045 rfc3464 \
 			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/*/
 COVERAGETO := coverage.txt
+PROFILESET := set-of-emails/maildir/bsd
 EXECUTABLE := bin/sisid
 BUILDFLAGS := -ldflags="-s -w" -trimpath
 LISTENADDR := 127.0.0.1:5321
@@ -57,17 +58,19 @@ coverage:
 
 profile:
 	test -f bin/cpu-prof.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o cpu-sisid ./bin/cpu-prof.go
-	test -f ./cpu-sisid     && ./cpu-sisid ./set-of-emails/maildir/bsd
+	test -f ./cpu-sisid     && ./cpu-sisid ./$(PROFILESET)
 	go tool pprof --top ./mem.pprof > usage-of-mem-x
 
 	test -f bin/mem-prof.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o mem-sisid ./bin/mem-prof.go
-	test -f ./mem-sisid     && ./mem-sisid ./set-of-emails/maildir/bsd
+	test -f ./mem-sisid     && ./mem-sisid ./$(PROFILESET)
 	go tool pprof --top ./cpu.pprof > usage-of-cpu-x
 
 	ls -laF ./usage-of-*
 
-benchmark-bin:
+benchmark:
 	test -f bin/benchmark.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o min-sisid ./bin/benchmark.go
+	uptime
+	while true; do zsh -c 'time ./min-sisid $(PROFILESET)'; sleep 10; done
 
 init:
 	test -e ./go.mod || $(GO) mod init $(LIBSISIMAI)/$(NAME)
