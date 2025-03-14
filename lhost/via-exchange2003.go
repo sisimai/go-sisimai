@@ -8,7 +8,6 @@
 //                                                              |___/                             
 
 package lhost
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -90,14 +89,14 @@ func init() {
 
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)              // Points the current cursor position
-		recipients := uint8(0)              // The number of 'Final-Recipient' header
-		statuspart := false                 // Flag, true if it has read the delivery status part
-		connvalues := 0                     // Counter, 3 if it has got the all values of connheader
-		connheader := [3]string{"", "", ""} // [To:, Subject:, Date:]
-		rightindex := uint8(0)              // The last index number of dscontents
-		anotherone := []string{""}          // Keeping another error messages
-		msexchange := []bool{false}         // Flag, true if "MSEXCH:" text has been appeared
+		readcursor := uint8(0)      // Points the current cursor position
+		recipients := uint8(0)      // The number of 'Final-Recipient' header
+		statuspart := false         // Flag, true if it has read the delivery status part
+		connvalues := 0             // Counter, 3 if it has got the all values of connheader
+		connheader := [3]string{}   // [To:, Subject:, Date:]
+		rightindex := uint8(0)      // The last index number of dscontents
+		anotherone := []string{""}  // Keeping another error messages
+		msexchange := []bool{false} // Flag, true if "MSEXCH:" text has been appeared
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
@@ -218,9 +217,11 @@ func init() {
 
 		if emailparts[1] == "" {
 			// When original message is not included in the bounce message
-			emailparts[1] += fmt.Sprintf("From: %s\n", connheader[0])
-			emailparts[1] += fmt.Sprintf("Subject: %s\n", connheader[2])
-			emailparts[1] += fmt.Sprintf("Date: %s\n", connheader[1])
+			bu := strings.Builder{}; bu.Grow(64)
+			bu.WriteString("From: " + connheader[0] + "\n")
+			bu.WriteString("Subject: " + connheader[2] + "\n")
+			bu.WriteString("Date: " + connheader[1] + "\n")
+			emailparts[1] += bu.String()
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

@@ -7,7 +7,6 @@
 // |_|_| |_|\___/|___/\__/_/ |___/\___|_| |_|\__,_|_| |_| |_|\__,_|_|_|
 
 package lhost
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -201,7 +200,7 @@ func init() {
 				// when the following conditions have matched
 				if len(esmtpreply) == 0 || recipients != 1 { break }
 
-				e.Diagnosis = fmt.Sprintf("%s %s", strings.Join(esmtpreply, " "), e.Diagnosis)
+				e.Diagnosis = strings.Join(esmtpreply, " ") + " " + e.Diagnosis
 				break
 			}
 			e.Diagnosis = moji.Sweep(e.Diagnosis)

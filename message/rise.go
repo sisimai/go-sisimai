@@ -30,7 +30,7 @@ var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rf
 func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 	if mesg == nil || len(*mesg) < 1 { return new(sis.BeforeFact) }
 
-	mesg        = moji.ToLF(mesg)
+	moji.ToLF(mesg)
 	retryagain := 0
 	beforefact := new(sis.BeforeFact)
 

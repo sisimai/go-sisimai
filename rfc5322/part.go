@@ -19,7 +19,7 @@ import "strings"
 //     - ([2]string):      [2]string{"Error message lines", "The original message"}
 
 func Part(email *string, cutby []string, keeps bool) [2]string {
-	if email == nil || *email == "" || len(cutby) == 0 { return [2]string{"", ""} }
+	if email == nil || *email == "" || len(cutby) == 0 { return [2]string{} }
 
 	positionor := -1 // A position of the boundary string
 	formerpart := "" // The error message part

@@ -8,7 +8,6 @@
 //                                 |_|                                                          
 
 package lhost
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -47,9 +46,9 @@ func init() {
 		}
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)                  // Points the current cursor position
-		recipients := uint8(0)                  // The number of 'Final-Recipient' header
-		alternates := [4]string{"", "", "", ""} // [Envelope-From, Header-From, Date, Subject]
+		readcursor := uint8(0)    // Points the current cursor position
+		recipients := uint8(0)    // The number of 'Final-Recipient' header
+		alternates := [4]string{} // [Envelope-From, Header-From, Date, Subject]
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
@@ -109,16 +108,16 @@ func init() {
 
 		if emailparts[1] == "" {
 			// The original message is empty
-			if alternates[1] != "" { emailparts[1] += fmt.Sprintf("From: %s\n", alternates[1]) }
-			if alternates[2] != "" { emailparts[1] += fmt.Sprintf("Date: %s\n", alternates[2]) }
+			if alternates[1] != "" { emailparts[1] += "From: " + alternates[1] + "\n" }
+			if alternates[2] != "" { emailparts[1] += "Date: " + alternates[2] + "\n" }
 		}
 		if strings.Contains(emailparts[1], "Return-Path: ") == false {
 			// Set the envelope from address as a Return-Path: header
-			if alternates[0] != "" { emailparts[1] += fmt.Sprintf("Return-Path: <%s>\n", alternates[0]) }
+			if alternates[0] != "" { emailparts[1] += "Return-Path: <" + alternates[0] + ">\n" }
 		}
 		if strings.Contains(emailparts[1], "\nSubject: ") == false {
 			// There is no Subject field in the original message
-			if alternates[3] != "" { emailparts[1] += fmt.Sprintf("Subject: %s\n", alternates[3]) }
+			if alternates[3] != "" { emailparts[1] += "Subject: " + alternates[3] + "\n" }
 		}
 
 		for j, _ := range dscontents {

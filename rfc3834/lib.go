@@ -10,7 +10,6 @@
 // responded messages formatted according to RFC3834; Recommendations for Automatic Responses to 
 // Electronic Mail https://datatracker.ietf.org/doc/html/rfc3834
 package rfc3834
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -82,8 +81,8 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	}
 	if recipients == 0 { return sis.RisingUnderway{} }
 
-	// Squeeze continuous "\n" in the message body
-	bf.Payload  = strings.Trim(moji.Squeeze(bf.Payload, '\n'), "\n")
+	moji.Squeeze(&bf.Payload, '\n') // Squeeze continuous "\n" in the message body
+	bf.Payload  = strings.Trim(bf.Payload, "\n")
 	bodyslices := strings.Split(bf.Payload, "\n")
 	rfc822part := ""
 
@@ -107,13 +106,13 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	if p1 := strings.Index(bf.Headers["subject"][0], ": "); p1 > -1 {
 		// Pick the original Subject: value from the bounce message
 		if moji.ContainsAny(lowervalue["subject"], autoreply0["subject"]) {
-			rfc822part += fmt.Sprintf("Subject: %sn", moji.Sweep(bf.Headers["subject"][0][p1 + 2:]))
+			rfc822part += "Subject: " + moji.Sweep(bf.Headers["subject"][0][p1 + 2:]) + "\n"
 		}
 	}
 
 	v.Reason    = "vacation"
 	v.Date      = bf.Headers["date"][0]
-	rfc822part += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
+	rfc822part += "To: <" + dscontents[0].Recipient + ">\n"
 	return sis.RisingUnderway{ Digest: dscontents, RFC822: rfc822part }
 }
 

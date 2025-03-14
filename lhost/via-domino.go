@@ -7,7 +7,6 @@
 // |_|_| |_|\___/|___/\__/_/  |____/ \___/|_| |_| |_|_|_| |_|\___/ 
 
 package lhost
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -174,7 +173,7 @@ func init() {
 			// The original message is empty
 			if strings.Contains(emailparts[1], "\nTo:") == false {
 				// Set "To:" header into the original message
-				emailparts[1] += fmt.Sprintf("To: <%s>\n", dscontents[0].Recipient)
+				emailparts[1] += "To: <" + dscontents[0].Recipient + ">\n"
 			}
 			if strings.Contains(emailparts[1], "\nSubject:") == false {
 				// Set "subjecttxt" as a Subject if there is no original message in the bounce mail.

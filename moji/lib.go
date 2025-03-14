@@ -33,14 +33,14 @@ func Token(argv1 string, argv2 string, epoch int) string {
 
 // Squeeze remove redundant characters from the given string
 //   Arguments:
-//     - argv0 (string): String including redundant characters like "neko  chan"
-//     - argv1 (string): Characters to be squeezed, for example " "
+//     - argv0 (*string): String including redundant characters like "neko  chan"
+//     - argv1 (byte):    Characters to be squeezed, for example ' '
 //   Returns:
-//     - (string):       Squeezed string such as "neko chan"
-func Squeeze(argv0 string, argv1 byte) string {
-	if argv0 == "" { return "" }
+//     - (error):         Always nil
+func Squeeze(argv0 *string, argv1 byte) error {
+	if argv0 == nil || *argv0 == "" || strings.IndexByte(*argv0, argv1) < 0 { return nil }
 
-	bytebuffer := []byte(argv0)
+	bytebuffer := []byte(*argv0)
 	textbuffer := make([]byte, 0, len(bytebuffer))
 
 	cb := byte(0); for _, by := range bytebuffer {
@@ -49,7 +49,7 @@ func Squeeze(argv0 string, argv1 byte) string {
 		textbuffer = append(textbuffer, by)
 		cb = by
 	}
-	return string(textbuffer)
+	*argv0 = string(textbuffer); return nil
 }
 
 // Sweep clears the string out.
@@ -60,7 +60,7 @@ func Squeeze(argv0 string, argv1 byte) string {
 func Sweep(argv1 string) string {
 	if argv1 == "" { return "" }
 
-	argv1 = Squeeze(strings.TrimSpace(strings.ReplaceAll(argv1, "\t", " ")), ' ')
+	argv1 = strings.TrimSpace(strings.ReplaceAll(argv1, "\t", " ")); Squeeze(&argv1, ' ')
 	for strings.Contains(argv1, " --") {
 		// Delete all the string after a boundary string like " --neko-chan"
 		if strings.Contains(argv1, "-- ")  { break }

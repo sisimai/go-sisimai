@@ -7,7 +7,6 @@
 // |_|_| |_|\___/|___/\__/_/  |___|_|  |_|\__,_|_|_|____/ \___|_|    \_/ \___|_|   
 
 package lhost
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -43,8 +42,8 @@ func init() {
 		}
 		dscontents := []sis.DeliveryMatter{{}}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		alternates := ""                  // Other error message strings
+		recipients := uint8(0)
+		mesgbuffer := strings.Builder{}; mesgbuffer.Grow(len(emailparts[0]) / 2)
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
@@ -66,17 +65,17 @@ func init() {
 				// Other error messages
 				if strings.Contains(e, startingof["error"][0]) {
 					// Body of message generated response:
-					alternates = e
+					mesgbuffer.WriteString(e)
 
 				} else {
 					// Error message after "Body of message generated response:" line
-					if alternates != "" { alternates += " " + e }
+					if mesgbuffer.Len() > 0 { mesgbuffer.WriteString(" " + e) }
 				}
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
 
-		for j, _ := range dscontents {
+		alternates := mesgbuffer.String(); for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &(dscontents[j])
 
@@ -92,11 +91,11 @@ func init() {
 
 		if strings.Contains(emailparts[1], "\nFrom: ") == false {
 			// Set pseudo From: header into the original message
-			emailparts[1] = fmt.Sprintf("From: %s\n%s\n", bf.Headers["to"][0], emailparts[1])
+			emailparts[1] = "From: " + bf.Headers["to"][0] + "\n" + emailparts[1] + "\n"
 		}
 		if strings.Contains(emailparts[1], "\nTo: ") == false {
 			// Set pseudo To: header into the original message
-			emailparts[1] = fmt.Sprintf("To: %s\n%s\n", dscontents[0].Recipient, emailparts[1])
+			emailparts[1] = "To: " + dscontents[0].Recipient + "\n" + emailparts[1] + "\n"
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}

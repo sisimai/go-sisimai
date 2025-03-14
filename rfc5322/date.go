@@ -76,16 +76,9 @@ func Date(argv1 string) string {
 	// rfc5322.Date("Fri, Feb 2 2018 2:2:2")   => Fri, 2 Feb 2018 02:02:02 +0000
 	if argv1 == "" { return "" }
 
-	datestring := moji.Sweep(strings.ReplaceAll(argv1, ",", ", ")) // "Thu,22" -> "Thu, 22"
-	year2digit := uint8(0) // 2-digit year such as 22, 97
-	p          := [6]string{
-		"", // [0] Year (2018)
-		"", // [1] Month (Feb)
-		"", // [2] Day (2)
-		"", // [3] Day of week (Fri)
-		"", // [4] Time (18:30:22)
-		"", // [5] Timezone Offset (0)
-	}
+	datestring := strings.ReplaceAll(argv1, ",", ", "); moji.Squeeze(&datestring, ' ') // "Thu,22" -> "Thu, 22"
+	year2digit := uint8(0)    // 2-digit year such as 22, 97
+	p          := [6]string{} // [0] 2018, [1] Feb, [2] 2(Day), [3] Fri, [4] 18:30:22, [5] Timezone Offset(0)
 
 	for _, e := range strings.Split(datestring, " ") {
 		// Check, convert each piece and store it to p[*]
@@ -160,6 +153,9 @@ func Date(argv1 string) string {
 
 	// Date: Thu, 22 Feb 2022 22:22:22 +0200
 	if p[0] == "" || p[1] == "" || p[2] == "" || p[4] == "" { return "" }
-	return fmt.Sprintf("%s, %s %s %s %s %s", p[3], p[2], p[1], p[0], p[4], p[5])
+
+	var w strings.Builder; w.Grow(32)
+	w.WriteString(p[3] + ", " + p[2] + " " + p[1] + " " + p[0] + " " + p[4] + " " + p[5])
+	return w.String()
 }
 

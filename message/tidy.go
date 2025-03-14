@@ -7,7 +7,6 @@
 //                                |___/      
 
 package message
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/rfc1894"
 import "libsisimai.org/sisimai/rfc5322"
@@ -36,15 +35,17 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 //   Returns:
 //     - (*string):       String tidied up
 func tidy(argv0 *string) *string {
-	email := ""; if len(*argv0) < 1 { return &email }
+	if argv0 == nil || *argv0 == "" { return nil }
+
 	lines := strings.Split(*argv0, "\n")
+	email := ""; bu := strings.Builder{}; bu.Grow(1024)
 
 	// Find and tidy up fields defined in RFC5322, RFC1894, and RFC5965
 	for i, e := range lines {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
-		p0 := strings.IndexByte(e, ':'); if p0 < 0                         { email += e + "\n"; continue }
-		cf := strings.ToLower(e[0:p0]);  if strings.IndexByte(cf, ' ') > 0 { email += e + "\n"; continue }
-		fn := fieldtable[cf];            if fn == ""                       { email += e + "\n"; continue }
+		p0 := strings.IndexByte(e, ':'); if p0 < 0                         { bu.WriteString(e + "\n"); continue }
+		cf := strings.ToLower(e[0:p0]);  if strings.IndexByte(cf, ' ') > 0 { bu.WriteString(e + "\n"); continue }
+		fn := fieldtable[cf];            if fn == ""                       { bu.WriteString(e + "\n"); continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
 		ab := []string{}
@@ -117,9 +118,10 @@ func tidy(argv0 *string) *string {
 			// Remove redundant space characters
 			if f != "" { ab = append(ab, f) }
 		}
-		email += fmt.Sprintf("%s: %s\n", fn, strings.Join(ab, " "))
+		bu.WriteString(fn + ": " + strings.Join(ab, " ") + "\n")
 	}
 
+	email = bu.String();
 	if email[len(email) - 2:len(email)] != "\n\n" { email += "\n\n" }
 	return &email
 }

@@ -60,10 +60,12 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	readcursor := uint8(0)              // Points the current cursor position
 	readslices := make([]string, 1, 32) // Copy each line for later reference
 	recipients := uint8(0)              // The number of 'Final-Recipient' header
-	beforemesg := ""                    // String before startingof["message"]
-	goestonext := false                 // Flag: do not append the line into "beforemesg"
+	goestonext := false                 // Flag: do not append the line into "leadinbuff"
+	leadinbuff := strings.Builder{}; leadinbuff.Grow(len(emailparts[0]) / 2)
+	eachbuffer := []strings.Builder{{}};
 	isboundary := []string{rfc2045.Boundary(bf.Headers["content-type"][0], 0)}
-	v          := &(dscontents[len(dscontents) - 1])
+	v          := &(dscontents[0])
+	b          := &(eachbuffer[0]); b.Grow(128)
 
 	for strings.IndexByte(emailparts[0], '@') == -1 {
 		// There is no email address in the first element of emailparts
@@ -142,7 +144,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				if moji.HasPrefixAny(e, dontappend)      { break }
 				if strings.Contains(e, "--- The follow") { break } // ----- The following addresses had delivery problems -----
 				if strings.Contains(e, "--- Transcript") { break } // ----- Transcript of session follows -----
-				beforemesg += e + " ";                     break
+				leadinbuff.WriteString(e + " ");           break
 			}
 			continue
 		}
@@ -153,6 +155,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			o := rfc1894.Field(e); if len(o) == 0 { continue }
 			z := rfc1894.FieldTable[o[0]]
 			v  = &(dscontents[len(dscontents) - 1])
+			b  = &(eachbuffer[len(eachbuffer) - 1]); b.Grow(128)
 
 			if o[3] == "addr" {
 				// Final-Recipient: rfc822; kijitora@example.jp
@@ -166,7 +169,9 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 					if len(v.Recipient) > 0 {
 						// There are multiple recipient addresses in the message body.
 						dscontents = append(dscontents, sis.DeliveryMatter{})
+						eachbuffer = append(eachbuffer, strings.Builder{})
 						v = &(dscontents[len(dscontents) - 1])
+						b = &(eachbuffer[len(eachbuffer) - 1]); b.Grow(128)
 					}
 					v.Recipient = cv
 					recipients += 1
@@ -177,15 +182,15 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 				}
 			} else if o[3] == "code" {
 				// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
-				v.Spec       = o[1]
-				v.Diagnosis += o[2] + " "
+				v.Spec = o[1]
+				b.WriteString(o[2] + " ")
 
 			} else {
 				// Other DSN fields defined in RFC3464
 				// There are other error messages as a comment such as the following:
 				// Status: 5.0.0 (permanent failure)
 				// Status: 4.0.0 (cat.example.net: host name lookup failure)
-				if o[4] != "" { v.Diagnosis += " " + o[4] + " " }
+				if o[4] != "" { b.WriteString(" " + o[4] + " ") }
 				v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 
 				// Copy the lower-cased member name of sis.DeliveryMatter{} for "permessage" for
@@ -216,12 +221,12 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 					// In the case of multiple "message/delivery-status" line
 					if strings.HasPrefix(e, "Content-") { continue } // Content-Disposition, ...
 					if strings.HasPrefix(e, "--")       { continue } // Boundary string
-					beforemesg += e + " ";                continue
+					leadinbuff.WriteString(e + " ");      continue
 				}
 
 				// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
 				//    has an SPF record with a hard fail
-				if strings.HasPrefix(e, " ") { v.Diagnosis += " " + moji.Sweep(e) }
+				if strings.HasPrefix(e, " ") { b.WriteString(" " + moji.Sweep(e)) }
 			}
 		}
 	}
@@ -232,9 +237,9 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	}
 	if recipients == 0 { return sis.RisingUnderway{} }
 
-	if beforemesg != "" {
+	beforemesg := ""; if leadinbuff.Len() > 0 {
 		// Pick some values of []sis.DeliveryMatte{} from the string before startingof["message"]
-		beforemesg           = moji.Sweep(beforemesg)
+		beforemesg           = moji.Sweep(leadinbuff.String())
 		alternates.Command   = command.Find(beforemesg)
 		alternates.ReplyCode = reply.Find(beforemesg, dscontents[0].Status)
 		alternates.Status    = status.Find(beforemesg, alternates.ReplyCode)
@@ -249,7 +254,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			e.Update(z, permessage[z])
 		}
 
-		e.Diagnosis = moji.Sweep(e.Diagnosis)
+		e.Diagnosis = moji.Sweep(eachbuffer[j].String())
 		if recipients == 1 {
 			// Do not mix the error message of each recipient with "beforemesg" when there is
 			// multiple recipient addresses in the bounce message

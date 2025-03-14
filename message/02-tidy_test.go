@@ -103,7 +103,7 @@ Nyaaan
 	}
 
 	cw := ""
-	cx += 1; if cv := tidy(&cw); *cv != "" { t.Errorf("%s() returns %s", fn, *cv) }
+	cx += 1; if cv := tidy(&cw); cv != nil { t.Errorf("%s() returns %s", fn, *cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }

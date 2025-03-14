@@ -7,7 +7,6 @@
 // |_|_| |_|\___/|___/\__/_/  |_|  |_|\__,_|_|_|_|  |_|\__,_|_|  |___/_| |_|\__,_|_|____/|_|  |_| |_| |_|    
 
 package lhost
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -95,7 +94,7 @@ func init() {
 					if strings.HasPrefix(e, "Original Sender: ") {
 						// Original Sender:    <originalsender@example.com>
 						// Use this line instead of "From" header of the original message.
-						emailparts[1] += fmt.Sprintf("From: %s\n", moji.Select(e, "<", ">", 0))
+						emailparts[1] += "From: " + moji.Select(e, "<", ">", 0) + "\n"
 
 					} else if strings.HasPrefix(e, "Sender-MTA: ") {
 						// Sender-MTA:         <10.11.12.13>
@@ -110,7 +109,7 @@ func init() {
 						//    Subject: ...
 						p1 := strings.Index(e, " From:"); if p1 < 0 { p1 = strings.Index(e, " Subject:") }
 						p2 := strings.IndexByte(e, ':')
-						emailparts[1] += fmt.Sprintf("%s: %s\n", e[p1 + 1:p2], moji.Sweep(e[p2 + 1:]))
+						emailparts[1] += e[p1 + 1:p2] + ": " + moji.Sweep(e[p2 + 1:]) + "\n"
 					}
 				}
 			}

@@ -354,7 +354,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 		REPLYCODE: for {
 			// Check both of the first digit of "DeliveryStatus" and "ReplyCode"
-			cx := [2]string{"", ""}
+			cx := [2]string{}
 			if thing.DeliveryStatus != "" { cx[0] = string(thing.DeliveryStatus[0]) }
 			if thing.ReplyCode      != "" { cx[1] = string(thing.ReplyCode[0])      }
 

@@ -62,8 +62,8 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		if cv != nil                { bf.Payload = *cv                      }
 		if fe != nil && len(fe) > 0 { bf.Errors  = append(bf.Errors, fe...) }
 	}
-	bf.Payload  = *(moji.ToLF(&bf.Payload))
-	bf.Payload  = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
+	moji.ToLF(&bf.Payload)
+	bf.Payload = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
 
 	if hook != nil {
 		// Execute the first callback function
@@ -126,26 +126,27 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	if strings.Contains(localhostr.RFC822, "\nFrom:") == false && len(bf.Headers["to"]) > 0 {
 		// There is no "From:" header, pick the email address from the "To:" header of the
 		// bounce message
-		localhostr.RFC822 = fmt.Sprintf("From: %s\n%s", bf.Headers["to"][0], localhostr.RFC822)
+		localhostr.RFC822 = "From: " + bf.Headers["to"][0] + "\n" + localhostr.RFC822
 	}
 	di := &(localhostr.Digest[0])
 	if strings.Contains(localhostr.RFC822, "\nTo:") == false && di.Recipient != "" {
 		// The original message block is empty, insert some values picked from localhostr.Digest as
 		// a pseudo header such as "To:", "Date:".
-		localhostr.RFC822 = fmt.Sprintf("To: <%s>\n%s", di.Recipient, localhostr.RFC822)
+		localhostr.RFC822 = "To: <" + di.Recipient + ">\n" + localhostr.RFC822
 	}
 
 	// Convert headers of the original message to data structure/map[string][]string
-	rfc822text := ""; for _, e := range strings.Split(localhostr.RFC822, "\n") {
-		// Append each line of localhostr.RFC822 to rfc822text except malformed headers
-		if e == "" && rfc822text != ""  { break } // The blank line between the header and the body
-		if strings.IndexByte(e, ':') < 1 {        // The line does not contain ":" or begins with ":"
+	rfc822buff := strings.Builder{}; rfc822buff.Grow(len(localhostr.RFC822))
+	for _, e := range strings.Split(localhostr.RFC822, "\n") {
+		// Append each line of localhostr.RFC822 to rfc822buff except malformed headers
+		if e == "" && rfc822buff.Len() > 0 { break } // The blank line between the header and the body
+		if strings.IndexByte(e, ':') < 1 {           // The line does not contain ":" or begins with ":"
 			// The line is not a line continued from the previous line of a long header
 			if strings.HasPrefix(e, " ") == false || strings.HasPrefix(e, "\t") == false { continue }
 		}
-		rfc822text += e + "\n"
+		rfc822buff.WriteString(e + "\n")
 	}
-	if rfc822text != "" { localhostr.RFC822 = rfc822text + "\n" }
+	if rfc822buff.Len() > 0 { localhostr.RFC822 = rfc822buff.String() + "\n" }
 
 	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(localhostr.RFC822))
 	if nyaan != nil {
