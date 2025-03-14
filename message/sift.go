@@ -76,7 +76,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	}
 
 	havecalled := make(map[string]bool, 40)
-	localhostr := sis.RisingUnderway{}
+	localhostr := &sis.RisingUnderway{}
 	modulename := ""
 
 	DECODER: for bf.Empty() == false {
@@ -96,8 +96,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 			// 2. sisimai/rfc3464
 			// When the all of sisimai/lhost/*.go modules did not return the decoded data
 			localhostr = rfc3464.Inquire(bf)
-			havecalled["rfc3464"] = true
-			if localhostr.Void() == false { modulename = "RFC3464"; break DECODER }
+			if localhostr != nil && localhostr.Void() == false { modulename = "RFC3464"; break DECODER }
 		}
 
 		if havecalled["arf"] == false {

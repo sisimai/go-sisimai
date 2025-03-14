@@ -24,13 +24,13 @@ import "libsisimai.org/sisimai/smtp/command"
 
 // Inquire decodes a bounce message that have fields defined in RFC3464.
 //   Arguments:
-//     - bf (*sis.BeforeFact): Message entity in progress
+//     - bf (*sis.BeforeFact):  Message entity in progress
 //   Returns:
-//     - (sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
+//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
-func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
-	if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
+func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
+	if bf == nil || bf.Empty() == true { return nil }
 
 	boundaries := []string{
 		// When the new value added, the part of the value should be listed in "delimiters" variable
@@ -235,7 +235,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		if rfc5322.IsEmailAddress(dscontents[0].Alias) == false { break }
 		dscontents[0].Recipient = dscontents[0].Alias; recipients++
 	}
-	if recipients == 0 { return sis.RisingUnderway{} }
+	if recipients == 0 { return nil }
 
 	beforemesg := ""; if leadinbuff.Len() > 0 {
 		// Pick some values of []sis.DeliveryMatte{} from the string before startingof["message"]
@@ -275,6 +275,6 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		if e.Status == "" { e.Status = status.Find(e.Diagnosis, e.ReplyCode) }
 		if e.Status == "" { e.Status = alternates.Status                     }
 	}
-	return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
+	return &sis.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 }
 
