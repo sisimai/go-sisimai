@@ -7,7 +7,6 @@
 // |_|_| |_|\___/|___/\__/_/  |_|   \___/|___/\__|_| |_/_/\_\
 
 package lhost
-import "fmt"
 import "strings"
 import "strconv"
 import "libsisimai.org/sisimai/sis"
@@ -80,7 +79,7 @@ func init() {
 
 				} else if e.Command == "MAIL" {
 					// Set the argument of "MAIL" command to pseudo To: header of the original message
-					if len(emailparts[1]) == 0 { emailparts[1] += fmt.Sprintf("To: %s\n", e.Argument) }
+					if len(emailparts[1]) == 0 { emailparts[1] += "To: " + e.Argument + "\n" }
 
 				} else if e.Command == "RCPT" {
 					// RCPT TO: <...>
@@ -164,12 +163,12 @@ func init() {
 					// 5.1.1 <userunknown@example.co.jp>... User Unknown (in reply to RCPT TO command)
 					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") && strings.HasPrefix(e, " ") {
 						// Continued line of the value of Diagnostic-Code field
-						v.Diagnosis += fmt.Sprintf(" %s", moji.Sweep(e))
+						v.Diagnosis += " " + moji.Sweep(e)
 						readslices[j + 1] = "Diagnostic-Code: " + e
 
 					} else if moji.Aligned(e, []string{"X-Postfix-Sender:", "rfac822;", "@"}) {
 						// X-Postfix-Sender: rfc822; shironeko@example.org
-						emailparts[1] += fmt.Sprintf("X-Postfix-Sender: %s\n", strings.Trim(strings.SplitN(e, ";", 2)[1], " "))
+						emailparts[1] += "X-Postfix-Sender: " + strings.Trim(strings.SplitN(e, ";", 2)[1], " ") + "\n"
 
 					} else {
 						// Alternative error messages and recipients
