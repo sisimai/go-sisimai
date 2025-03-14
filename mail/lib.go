@@ -93,7 +93,7 @@ func Rise(argv0 string) (*EmailEntity, error) {
 			for _, uf := range strings.Split(payload, "\nFrom ") {
 				// Split by "From "
 				if uf == "" { continue }
-				cv := fmt.Sprintf("From %s\n", uf)
+				cv := "From " + uf + "\n"
 				ee.payload = append(ee.payload, cv)
 				ee.Size   += len(cv)
 			}
