@@ -38,7 +38,7 @@ func init() {
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		alternates := ""                  // Alternative error message
+		stringbuff := strings.Builder{}; stringbuff.Grow(len(emailparts[0]) / 2)
 		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
@@ -82,7 +82,7 @@ func init() {
 				// OR the following format:
 				//   neko@example.fr:
 				//   SMTP error from remote server for TEXT command, host: ...
-				alternates += " " + e
+				stringbuff.WriteString(" " + e)
 			}
 		}
 		if recipients == 0 { return sis.RisingUnderway{} }
@@ -91,7 +91,7 @@ func init() {
 			// Get and set other values into sis.DeliveryMatter{}, Try to detect the bounce reason
 			e := &(dscontents[j])
 
-			if e.Diagnosis == "" { e.Diagnosis = alternates }
+			if e.Diagnosis == "" { e.Diagnosis = stringbuff.String() }
 			e.Command = command.Find(e.Diagnosis)
 
 			if moji.Aligned(e.Diagnosis, []string{"host: ", " reason:"}) {
