@@ -7,7 +7,6 @@
 // |_|_| |_|\___/|___/\__/_/  \____\___/ \__,_|_|  |_|\___|_|   
 
 package lhost
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -139,7 +138,7 @@ func init() {
 					// Continued line of the value of Diagnostic-Code field
 					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false { continue }
 					if strings.HasPrefix(e, " ")                            == false { continue }
-					v.Diagnosis += fmt.Sprintf(" %s", moji.Sweep(e))
+					v.Diagnosis += " " + moji.Sweep(e)
 				}
 			}
 		}
