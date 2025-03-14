@@ -8,7 +8,6 @@
 //                                                              |___/                             
 
 package lhost
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -218,9 +217,11 @@ func init() {
 
 		if emailparts[1] == "" {
 			// When original message is not included in the bounce message
-			emailparts[1] += fmt.Sprintf("From: %s\n", connheader[0])
-			emailparts[1] += fmt.Sprintf("Subject: %s\n", connheader[2])
-			emailparts[1] += fmt.Sprintf("Date: %s\n", connheader[1])
+			bu := strings.Builder{}; bu.Grow(64)
+			bu.WriteString("From: " + connheader[0] + "\n")
+			bu.WriteString("Subject: " + connheader[2] + "\n")
+			bu.WriteString("Date: " + connheader[1] + "\n")
+			emailparts[1] += bu.String()
 		}
 		return sis.RisingUnderway{ Digest: dscontents, RFC822: emailparts[1] }
 	}
