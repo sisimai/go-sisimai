@@ -19,13 +19,13 @@ import "libsisimai.org/sisimai/address"
 
 // Inquire() decodes a bounce message that includes a vacation message.
 //   Arguments:
-//     - bf (*sis.BeforeFact): Message entity in progress
+//     - bf (*sis.BeforeFact):  Message entity in progress
 //   Returns:
-//     - (sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
+//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3834
-func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
-	if bf == nil || bf.Empty() == true { return sis.RisingUnderway{} }
+func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
+	if bf == nil || bf.Empty() == true { return nil }
 
 	boundaries := []string{"__SISIMAI_PSEUDO_BOUNDARY__"}
 	lowerlabel := []string{"from", "to", "subject", "auto-submitted", "precedence", "x-apple-action"}
@@ -57,7 +57,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		if moji.ContainsAny(lowervalue[e], dontdecode[e]) == false { continue }
 		proceedsto = false; break DETECT_EXCLUSION_MESSAGE
 	}
-	if proceedsto == false { return sis.RisingUnderway{} }
+	if proceedsto == false { return nil }
 
 	proceedsto = false
 	DETECT_AUTOREPLY_MESSAGE: for e := range autoreply0 {
@@ -65,7 +65,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		if moji.HasPrefixAny(lowervalue[e], autoreply0[e]) == false { continue }
 		proceedsto = true; break DETECT_AUTOREPLY_MESSAGE
 	}
-	if proceedsto == false { return sis.RisingUnderway{} }
+	if proceedsto == false { return nil }
 
 	dscontents := []sis.DeliveryMatter{{}}
 	recipients := uint8(0)            // The number of recipients
@@ -79,7 +79,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 		recipients += 1
 		break RECIPIENT_ADDRESS
 	}
-	if recipients == 0 { return sis.RisingUnderway{} }
+	if recipients == 0 { return nil }
 
 	moji.Squeeze(&bf.Payload, '\n') // Squeeze continuous "\n" in the message body
 	bf.Payload  = strings.Trim(bf.Payload, "\n")
@@ -113,6 +113,6 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 	v.Reason    = "vacation"
 	v.Date      = bf.Headers["date"][0]
 	rfc822part += "To: <" + dscontents[0].Recipient + ">\n"
-	return sis.RisingUnderway{ Digest: dscontents, RFC822: rfc822part }
+	return &sis.RisingUnderway{Digest: dscontents, RFC822: rfc822part}
 }
 

@@ -110,7 +110,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 			// 4. call sisimai/rfc3834
 			// Try to sift the message as auto reply message defined in RFC3834
 			localhostr = rfc3834.Inquire(bf)
-			if localhostr.Void() == false { modulename = "RFC3834"; break DECODER }
+			if localhostr != nil && localhostr.Void() == false { modulename = "RFC3834"; break DECODER }
 		}
 		break // as of now, we have no sample email for coding this block
 
