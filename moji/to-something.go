@@ -48,6 +48,7 @@ func ToPlain(argv0 *string) *string {
 
 	xhtml := *argv0
 	lower := strings.ToLower(*argv0); if strings.Contains(lower, "<body") == false { return argv0 }
+	buffr := strings.Builder{}; buffr.Grow(len(xhtml) / 4)
 	plain := ""
 	table := map[string]string{"lt": "<", "gt": ">", "quot": `"`, "nbsp": " ", "copy": "(C)", "amp": "&"}
 	body0 := -1; for _, e := range []string{">", " ", "\t", "\n"} {
@@ -70,14 +71,14 @@ func ToPlain(argv0 *string) *string {
 		p0 := strings.IndexByte(xhtml, '<');     if p0 < 0 { break }
 		p1 := IndexOnTheWay(xhtml, ">", p0 + 2); if p1 < 0 { break }
 
-		if p0 >  0 { plain += xhtml[0:p0] + " "      }
-		if p0 > p1 { plain += xhtml[p1 + 1:p0] + " " }
+		if p0 >  0 { buffr.WriteString(xhtml[0:p0] + " ")      }
+		if p0 > p1 { buffr.WriteString(xhtml[p1 + 1:p0] + " ") }
 
 		xhtml = xhtml[p1 + 1:]
 	}
 
 	// Remove or replace entity references
-	for _, e := range table { plain = strings.ReplaceAll(plain, "&" + e + ";", table[e]) }
+	for _, e := range table { plain = strings.ReplaceAll(buffr.String(), "&" + e + ";", table[e]) }
 	plain = Sweep(strings.ReplaceAll(plain, "\n", " "))
 	return &plain
 }
