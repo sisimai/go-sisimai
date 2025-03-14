@@ -40,7 +40,7 @@ func(this *NotDecoded) Error() string {
 	if this.BecauseOf == "" { return "" }
 
 	timestring:= this.Timestamp.Format("2006/01/02 15:04:05")
-	return fmt.Sprintf("%s %s %s", timestring, this.EmailFile, this.BecauseOf)
+	return timestring + " " + this.EmailFile + " " + this.BecauseOf
 }
 
 // *NotDecoded.Label returns a label string for printing error message.
