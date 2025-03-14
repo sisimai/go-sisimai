@@ -8,7 +8,6 @@
 
 // Package "arf" provides ARF: Abuse Report Format related functions
 package arf
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
@@ -208,7 +207,7 @@ func Inquire(bf *sis.BeforeFact) sis.RisingUnderway {
 			dscontents[0].FeedbackType = "opt-out"
 
 			// Addpend To: field as a pseudo header
-			if emailparts[1] == "" { emailparts[1] = fmt.Sprintf("To: <%s>\n", bf.Headers["from"][0]) }
+			if emailparts[1] == "" { emailparts[1] = "To: <" + bf.Headers["from"][0] + ">\n" }
 
 		} else {
 			// Pick it from the original message part
