@@ -259,7 +259,7 @@ func init() {
 			// Failed to loadl/decode JSON
 			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", jsonerrors), true); ce.DecodedBy = "AmazonSES"
 			notdecoded = append(notdecoded, ce)
-			return sis.RisingUnderway{Errors: notdecoded}
+			return &sis.RisingUnderway{Errors: notdecoded}
 		}
 
 		dscontents := []sis.DeliveryMatter{{}}
