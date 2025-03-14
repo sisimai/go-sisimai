@@ -36,7 +36,8 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 //   Returns:
 //     - (*string):       String tidied up
 func tidy(argv0 *string) *string {
-	email := ""; if len(*argv0) < 1 { return &email }
+	if argv0 == nil || *argv0 == "" { return nil }
+	email := ""
 	lines := strings.Split(*argv0, "\n")
 
 	// Find and tidy up fields defined in RFC5322, RFC1894, and RFC5965
