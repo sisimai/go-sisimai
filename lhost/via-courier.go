@@ -22,7 +22,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Courier"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Courier MTA: https://www.courier-mta.org/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := true; for {
 			// Subject: NOTICE: mail delivery status.
