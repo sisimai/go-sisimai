@@ -27,7 +27,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Postfix"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Postfix https://www.postfix.org/
-		if bf == nil || bf.Empty() == true || len(bf.Headers["x-aol-ip"]) > 0 { return nil } // X-AOL-IP: 192.0.2.1
+		if bf == nil || bf.IsEmpty() || len(bf.Headers["x-aol-ip"]) > 0 { return nil } // X-AOL-IP: 192.0.2.1
 
 		proceedsto := uint8(0)
 		if strings.Index(bf.Headers["subject"][0], "SMTP server: errors from ") > 0 {
