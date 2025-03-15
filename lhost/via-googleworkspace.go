@@ -24,7 +24,7 @@ func init() {
 		// - Google Workspace: https://workspace.google.com/
 		// - Decode bounce messages from Google Workspace except a bounce mail returned from Google
 		// - Workspace due to the remote error (the error message include fields defined in RFC3464)
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		if moji.ContainsAny(bf.Payload, []string{"\nDiagnostic-Code:", "\nFinal-Recipient:"})  { return nil }
 		if strings.Contains(bf.Headers["from"][0], "<mailer-daemon@googlemail.com>")  == false { return nil }

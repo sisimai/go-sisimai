@@ -22,7 +22,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["GoogleGroups"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Google Groups: https://groups.google.com
-		if bf == nil || bf.Empty() == true                        { return nil }
+		if bf == nil || bf.IsEmpty() == true                      { return nil }
 		if strings.Contains(bf.Payload, "Google Groups") == false { return nil }
 		if len(bf.Headers["x-failed-recipients"])        == 0     { return nil }
 		if len(bf.Headers["x-google-smtp-source"])       == 0     { return nil }

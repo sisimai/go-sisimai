@@ -22,7 +22,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["GMX"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// GMX: https://gmx.net/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		// Envelope-To: <kijitora@mail.example.com>
 		// X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;

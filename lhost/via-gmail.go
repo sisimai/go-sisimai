@@ -23,7 +23,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Gmail"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Gmail: https://mail.google.com/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		// Google Mail
 		// From: Mail Delivery Subsystem <mailer-daemon@googlemail.com>
