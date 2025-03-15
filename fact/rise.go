@@ -47,11 +47,11 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 		// There is some errors while reading the email, decoding the bounce message.
 		// Set the email path to sis.NotDecoded.EmailFile
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
-		if (*beforefact).Void() == true { return nil, &beforefact.Errors }
+		if (*beforefact).HasDone() == false { return nil, &beforefact.Errors }
 
 	} else {
 		// There is neither decoded result nor error
-		if (*beforefact).Void() == true { return nil, nil }
+		if (*beforefact).HasDone() == false { return nil, nil }
 	}
 
 	rfc822data := (*beforefact).RFC822

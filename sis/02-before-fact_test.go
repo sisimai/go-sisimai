@@ -37,24 +37,24 @@ func TestBeforeFact(t *testing.T) {
 	cx++; if len(cv.Digest[0].Action)   == 0   { t.Errorf("%s.Digest.Action is empty", fn) }
 	cx++; if cv.Catch                   != nil { t.Errorf("%s.Catch is not nil", fn) }
 	cx++; if len(cv.Errors)             != 1   { t.Errorf("%s.Errors have not 1 element", fn) }
-	cx++; if cv.Void()  == true                { t.Errorf("%s.Void() returns true", fn) }
-	cx++; if cv.IsEmpty() == true              { t.Errorf("%s.IsEmpty() returns true", fn) }
+	cx++; if cv.HasDone() == false { t.Errorf("%s.HasDone() returns false", fn) }
+	cx++; if cv.IsEmpty() == true  { t.Errorf("%s.IsEmpty() returns true", fn) }
 
 	cv.Headers = nil
 	cx++; if cv.IsEmpty() == false { t.Errorf("%s.IsEmpty() returns false", fn) }
-	cx++; if cv.Void()  == true    { t.Errorf("%s.Void() returns true", fn) }
+	cx++; if cv.HasDone() == false { t.Errorf("%s.HasDone() returns false", fn) }
 
 	cv.Payload = ""
 	cx++; if cv.IsEmpty() == false { t.Errorf("%s.IsEmpty() returns false", fn) }
-	cx++; if cv.Void()  == true    { t.Errorf("%s.Void() returns true", fn) }
+	cx++; if cv.HasDone() == false { t.Errorf("%s.HasDone() returns false", fn) }
 
 	cv.Digest = nil
 	cx++; if cv.IsEmpty() == false { t.Errorf("%s.IsEmpty() returns false", fn) }
-	cx++; if cv.Void()  == false   { t.Errorf("%s.Void() returns false", fn) }
+	cx++; if cv.HasDone() == true  { t.Errorf("%s.HasDone() returns true", fn) }
 
 	cv.RFC822 = nil
 	cx++; if cv.IsEmpty() == false { t.Errorf("%s.IsEmpty() returns false", fn) }
-	cx++; if cv.Void()  == false   { t.Errorf("%s.Void() returns false", fn) }
+	cx++; if cv.HasDone() == true  { t.Errorf("%s.HasDone() returns false", fn) }
 
 	t.Logf("The number of tests = %d", cx)
 }

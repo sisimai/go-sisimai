@@ -25,9 +25,9 @@ func(this *BeforeFact) IsEmpty() bool {
 	return false
 }
 
-// *BeforeFact.Void returns true when Digest or RFC822 is empty.
-func(this *BeforeFact) Void() bool {
-	if len(this.Digest) == 0 || len(this.RFC822) == 0 { return true }
-	return false
+// *BeforeFact.HasDone returns false when Digest or RFC822 is empty.
+func(this *BeforeFact) HasDone() bool {
+	if len(this.Digest) == 0 || len(this.RFC822) == 0 { return false }
+	return true
 }
 
