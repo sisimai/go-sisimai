@@ -25,7 +25,7 @@ import "libsisimai.org/sisimai/address"
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3834
 func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
-	if bf == nil || bf.Empty() == true { return nil }
+	if bf == nil || bf.IsEmpty() == true { return nil }
 
 	boundaries := []string{"__SISIMAI_PSEUDO_BOUNDARY__"}
 	lowerlabel := []string{"from", "to", "subject", "auto-submitted", "precedence", "x-apple-action"}
