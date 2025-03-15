@@ -23,7 +23,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["DragonFly"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - DragonFly: https://www.dragonflybsd.org/handbook/mta/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		// From: MAILER-DAEMON <>
 		// To: kijitora@df.example.jp

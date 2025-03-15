@@ -23,7 +23,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Domino"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - HCL Domino: https://www.hcl-software.com/domino
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := false; for {
 			if strings.HasPrefix(bf.Headers["subject"][0], "DELIVERY FAILURE:") { proceedsto = true }
