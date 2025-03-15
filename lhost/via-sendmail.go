@@ -27,7 +27,7 @@ func init() {
 		// - V8Sendmail: /usr/sbin/sendmail
 		// - Sendmail Sentrion Open Source
 		// - https://www.proofpoint.com/us/products/email-protection/open-source-email-solution
-		if bf == nil || bf.Empty() == true || len(bf.Headers["x-aol-ip"]) > 0 { return nil } // X-AOL-IP is a header defined in AOL
+		if bf == nil || bf.IsEmpty() || len(bf.Headers["x-aol-ip"]) > 0 { return nil } // X-AOL-IP is a header defined in AOL
 
 		proceedsto := false
 		if strings.HasPrefix(bf.Headers["subject"][0], "Warning: ") ||
