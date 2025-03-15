@@ -30,7 +30,7 @@ import "libsisimai.org/sisimai/smtp/command"
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
 func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
-	if bf == nil || bf.Empty() == true { return nil }
+	if bf == nil || bf.IsEmpty() == true { return nil }
 
 	boundaries := []string{
 		// When the new value added, the part of the value should be listed in "delimiters" variable
