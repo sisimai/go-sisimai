@@ -19,8 +19,8 @@ type BeforeFact struct {
 	Errors  []NotDecoded        // All the errors and warnings
 }
 
-// *BeforeFact.Empty returns true when Headers or body is empty.
-func(this *BeforeFact) Empty() bool {
+// *BeforeFact.IsEmpty returns true when Headers or body is empty.
+func(this *BeforeFact) IsEmpty() bool {
 	if len(this.Headers) == 0 || this.Payload == "" { return true }
 	return false
 }
