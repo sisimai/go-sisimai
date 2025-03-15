@@ -26,7 +26,7 @@ func TestInquire(t *testing.T) {
 	}
 	cx := 0
 	cv := Inquire(nil) 
-	cx++; if cv.Void() == false { t.Errorf("%s(nil).Void() returns false", fn) }
+	cx++; if cv != nil { t.Errorf("%s(nil) did not return nil", fn) }
 
 	for _, e := range ae {
 		ef := "../set-of-emails/maildir/bsd/" + e + ".eml"; eb, _ := os.ReadFile(ef); ee := string(eb)
