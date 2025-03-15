@@ -87,9 +87,9 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		for _, r := range tryonfirst {
 			// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
 			if havecalled[r] || r == "ARF" || strings.HasPrefix(r, "RFC") { continue }
-			localhostr    = lhost.InquireFor[r](bf)
 			havecalled[r] = true
-			if localhostr.Void() == false { modulename = r; break DECODER }
+			localhostr    = lhost.InquireFor[r](bf)
+			if localhostr != nil && localhostr.Void() == false { modulename = r; break DECODER }
 		}
 
 		if havecalled["rfc3464"] == false {
@@ -115,7 +115,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		break // as of now, we have no sample email for coding this block
 
 	} // End of for(DECODER)
-	if localhostr.Void() == true { return false }
+	if localhostr == nil || localhostr.Void() == true { return false }
 
 	for j, _ := range localhostr.Digest {
 		// Set the value of "Agent" such as "Postfix", "Sendmail", or "OpenSMTPD"
