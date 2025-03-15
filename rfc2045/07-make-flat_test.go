@@ -64,9 +64,9 @@ Received: ...
 --NekoNyaan--------2--
 `
 	cv, ce := MakeFlat(ct, &ae)
-	cx++; if len(*cv) == 0      { t.Errorf("%s(%s, %s) returns empty", fn, ct, ae[:20]) }
-	cx++; if len(ce)  != 0      { t.Errorf("%s(%s, %s) returns error: %v", fn, ct, ae[:20], ce) }
-	cx++; if len(*cv) > len(ae) { t.Errorf("%s(%s, %s) returns too short", fn, ct, ae[:20]) }
+	cx++; if len(*cv) == 0              { t.Errorf("%s(%s, %s) returns empty", fn, ct, ae[:20]) }
+	cx++; if ce != nil && len(*ce) != 0 { t.Errorf("%s(%s, %s) returns error: %v", fn, ct, ae[:20], *ce) }
+	cx++; if len(*cv) > len(ae)         { t.Errorf("%s(%s, %s) returns too short", fn, ct, ae[:20]) }
 	cx++; if strings.Contains(*cv, "sironeko")  == false { t.Errorf("%s(%s, %s) does not contain sironeko", fn, ct, ae[:20]) }
 	cx++; if strings.Contains(*cv, "<html>")    == true  { t.Errorf("%s(%s, %s) contains <html>", fn, ct, ae[:20]) }
 	cx++; if strings.Contains(*cv, "4AAQSkZJR") == true  { t.Errorf("%s(%s, %s) contains 4AAQSkZJ", fn, ct, ae[:20]) }

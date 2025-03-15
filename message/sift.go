@@ -59,8 +59,8 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	} else if strings.HasPrefix(mesgformat, "multipart/") {
 		// In case of Content-Type: multipart/*
 		cv, fe := rfc2045.MakeFlat(bf.Headers["content-type"][0], &bf.Payload)
-		if cv != nil                { bf.Payload = *cv                      }
-		if fe != nil && len(fe) > 0 { bf.Errors  = append(bf.Errors, fe...) }
+		if cv != nil                 { bf.Payload = *cv                      }
+		if fe != nil && len(*fe) > 0 { bf.Errors  = append(bf.Errors, *fe...) }
 	}
 	moji.ToLF(&bf.Payload)
 	bf.Payload = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "

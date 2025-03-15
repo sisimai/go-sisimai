@@ -88,11 +88,12 @@ func haircut(block *string, heads bool) []string {
 
 // levelout splits the second argument: multipart/* blocks by a boundary string in the first argument.
 //   Arguments:
-//     - arvg0 (string):  value of Content-Type header
-//     - arvg1 (*string): Pointer to multipart/* message blocks
+//     - arvg0 (string):      value of Content-Type header
+//     - arvg1 (*string):     Pointer to multipart/* message blocks
 //   Returns:
-//     - ([][3]string):   List of each part of multipart/*
-func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
+//     - ([][3]string):       List of each part of multipart/*
+//     - (*[]sis.NotDecoded): Pointer to an occurred error list
+func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 	if argv0 == "" || argv1 == nil || *argv1 == ""        { return nil, nil }
 	boundary01 := Boundary(argv0, 0); if boundary01 == "" { return nil, nil }
 	multiparts := strings.Split(*argv1, boundary01 + "\n")
@@ -118,9 +119,9 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 			if len(bodyinside) < 8 || strings.Contains(bodyinside, boundary02) == false { continue }
 
 			cv, ce := levelout(cf[0], &bodyinside)
-			if ce != nil && len(ce) > 0 {
+			if ce != nil && len(*ce) > 0 {
 				// There is any errors
-				notdecoded = append(notdecoded, ce...)
+				notdecoded = append(notdecoded, *ce...)
 				if cv == nil { continue }
 			}
 			for _, w := range cv { partstable = append(partstable, [3]string{w[0], w[1], w[2]}) }
@@ -137,7 +138,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 			partstable = append(partstable, cv)
 		}
 	}
-	if len(partstable) == 0 { return nil, notdecoded }
+	if len(partstable) == 0 { return nil, &notdecoded }
 
 	// Remove `boundary01 + '--'` and strings from the boundary to the end of the body part.
 	boundary01 = strings.Replace(boundary01, "\n", "", -1)
@@ -146,7 +147,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 	p1 := strings.Index(bo, boundary01 + "--")
 	if p1 > -1 { partstable[cw - 1][2] = strings.SplitN(bo, boundary01 + "--", 2)[0] }
 
-	return partstable, notdecoded
+	return partstable, &notdecoded
 }
 
 // Makeflat makes multipart/* part blocks flat and decode each part.
@@ -156,7 +157,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 //   Returns:
 //     - (*string):           Message body
 //     - (*[]sis.NotDecoded): Occurred errors
-func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
+func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
 	lhead := strings.ToLower(argv0)
 	if moji.ContainsAny(lhead, []string{"multipart/", "boundary="}) == false { return nil, nil }
 
@@ -214,7 +215,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 				if nyaan != nil {
 					// Something wrong when the function decodes the BASE64 encoded string
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
-					notdecoded = append(notdecoded, ce)
+					*notdecoded = append(*notdecoded, ce)
 				}
 			} else if ctencoding == "quoted-printable" {
 				// Content-Transfer-Encoding: quoted-printable
@@ -222,7 +223,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 				if nyaan != nil {
 					// Something wrong when the function decodes the Quoted-Printable encoded string
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
-					notdecoded = append(notdecoded, ce)
+					*notdecoded = append(*notdecoded, ce)
 				}
 			} else {
 				// - Content-Transfer-Encoding: 8bit, binary, and so on
