@@ -22,7 +22,7 @@ func init() {
 	InquireFor["Notes"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - HCL Notes (Formerly IBM Notes(Formerly Lotus Notes))
 		// - https://www.hcl-software.com/notes
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Undeliverable message") == false { return nil }
 
 		boundaries := []string{"------- Returned Message --------"}
