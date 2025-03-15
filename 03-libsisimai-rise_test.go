@@ -46,12 +46,12 @@ func TestRise(t *testing.T) {
 		}
 
 		for j, e := range *cv {
-			cx++; if e.Addresser.Void() == true { t.Errorf("[%04d] Addresser.Void() is true", j) }
-			cx++; if e.Recipient.Void() == true { t.Errorf("[%04d] Recipient.Void() is true", j) }
-			cx++; if e.Catch            != nil  { t.Errorf("[%04d] Catch inlcude data: %v", j, e.Catch) }
-			cx++; if e.DecodedBy        == ""   { t.Errorf("[%04d] DecodedBy is empty", j) }
-			cx++; if e.Reason           == ""   { t.Errorf("[%04d] Reason is empty", j) }
-			cx++; if e.Token            == ""   { t.Errorf("[%04d] Token is empty", j) }
+			cx++; if e.Addresser.Address == "" { t.Errorf("[%04d] Addresser is nil", j) }
+			cx++; if e.Recipient.Address == "" { t.Errorf("[%04d] Recipient is nil", j) }
+			cx++; if e.Catch            != nil { t.Errorf("[%04d] Catch inlcude data: %v", j, e.Catch) }
+			cx++; if e.DecodedBy        == ""  { t.Errorf("[%04d] DecodedBy is empty", j) }
+			cx++; if e.Reason           == ""  { t.Errorf("[%04d] Reason is empty", j) }
+			cx++; if e.Token            == ""  { t.Errorf("[%04d] Token is empty", j) }
 
 			cx++; if e.SenderDomain != e.Addresser.Host    { t.Errorf("[%04d] Invalid SenderDomain: %s", j, e.SenderDomain) }
 			cx++; if e.Destination  != e.Recipient.Host    { t.Errorf("[%04d] Invalid Destination: %s", j, e.Destination) }

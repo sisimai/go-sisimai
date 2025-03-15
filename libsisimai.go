@@ -80,14 +80,14 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 				notdecoded = append(notdecoded, ce)
 				continue
 			}
-			moji.ToLF(mesg); fact, nyaan := sisifact.Rise(mesg, emailthing.Path, args)
-			if len(fact)  > 0 { sisidigest = append(sisidigest, fact...)  }
-			if len(nyaan) > 0 { notdecoded = append(notdecoded, nyaan...) }
+			moji.ToLF(mesg); facts, nyaan := sisifact.Rise(mesg, emailthing.Path, args)
+			if facts != nil && len(*facts) > 0 { sisidigest = append(sisidigest, *facts...) }
+			if nyaan != nil && len(*nyaan) > 0 { notdecoded = append(notdecoded, *nyaan...) }
 
 			if args.Callback1 != nil {
 				// Run the callback function stored in sis.DecodingArgs.Callback1 specified with the
 				// 2nd argument of Sisimai.Rise() after reading each email file every time
-				carg := &sis.CallbackArg1{Path: emailthing.Path, Kind: emailthing.Kind, Mail: mesg, Fact: &fact}
+				carg := &sis.CallbackArg1{Path: emailthing.Path, Kind: emailthing.Kind, Mail: mesg, Fact: facts}
 				if _, nyaan := args.Callback1(carg); nyaan != nil {
 					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true); ce.Email(emailthing.Path)
 					notdecoded = append(notdecoded, ce)
