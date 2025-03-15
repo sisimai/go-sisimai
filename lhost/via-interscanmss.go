@@ -23,7 +23,7 @@ func init() {
 	InquireFor["InterScanMSS"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Trend Micro InterScan Messaging Security Suite
 		// - https://www.trendmicro.com/en_us/business/products/user-protection/sps/email-and-collaboration/interscan-messaging.html
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := false; for {
 			if strings.HasPrefix(bf.Headers["from"][0], `"InterScan`)       { proceedsto = true; break }

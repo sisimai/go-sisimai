@@ -23,7 +23,7 @@ func init() {
 	InquireFor["IMailServer"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Progress iMail Server: https://community.progress.com/s/products/imailserver
 		// - X-Mailer: <SMTP32 v8.22>
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := false
 		if strings.HasPrefix(bf.Headers["subject"][0], "Undeliverable Mail ") { proceedsto = true }
