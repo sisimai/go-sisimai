@@ -31,16 +31,12 @@ func TestEmailAddress(t *testing.T) {
 	cx++; if cv.Alias   == "" { t.Errorf("%s.Alias is empty", cc) }
 	cx++; if cv.Name    == "" { t.Errorf("%s.Name is empty", cc) }
 	cx++; if cv.Comment == "" { t.Errorf("%s.Comment is empty", cc) }
-	cx++; if cv.Void()  == true { t.Errorf("%s.Void() returns true", cc) }
 
 	cx++; if strings.Contains(cv.Address, "@") == false { t.Errorf("%s.Address does not include @: %s", cc, cv.Address) }
 	cx++; if strings.Contains(cv.User, "@")    == true  { t.Errorf("%s.User includes @: %s", cc, cv.User) }
 	cx++; if strings.Contains(cv.Host, "@")    == true  { t.Errorf("%s.Host includes @: %s", cc, cv.Host) }
 	cx++; if strings.Contains(cv.Verp, "@")    == false { t.Errorf("%s.Verp does not include @: %s", cc, cv.Verp) }
 	cx++; if strings.Contains(cv.Alias, "@")   == false { t.Errorf("%s.Alias does not include @: %s", cc, cv.Alias) }
-
-	cv  = &EmailAddress{}
-	cx++; if cv.Void() == false { t.Errorf("%s.Void() returns false", cc) }
 
 	t.Logf("The number of tests = %d", cx)
 }
