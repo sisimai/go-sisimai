@@ -21,7 +21,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Verizon"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Verizon: https://www.verizon.com/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := uint8(0)
 		if strings.Contains(bf.Headers["from"][0], "post_master@vtext.com")          { proceedsto = 1 }

@@ -24,7 +24,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["V5sendmail"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Sendmail version 5
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Returned mail: ") == false { return nil }
 
 		boundaries := []string{"   ----- Unsent message follows -----", "  ----- No message was collected -----"}
