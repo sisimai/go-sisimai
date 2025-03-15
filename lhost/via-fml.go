@@ -20,9 +20,9 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["FML"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - fml mailing list server/manager: https://www.fml.org
-		if bf == nil || bf.Empty() == true || len(bf.Headers["x-mlserver"]) == 0 { return nil }
-		if strings.Index(bf.Headers["from"][0], "-admin@")                   < 1 { return nil }
-		if strings.Index(bf.Headers["message-id"][0], ".FML")                < 2 { return nil }
+		if bf == nil || bf.IsEmpty() || len(bf.Headers["x-mlserver"]) == 0 { return nil }
+		if strings.Index(bf.Headers["from"][0], "-admin@")             < 1 { return nil }
+		if strings.Index(bf.Headers["message-id"][0], ".FML")          < 2 { return nil }
 
 		boundaries := []string{"Original mail as follows:"}
 		errortitle := map[string][]string{
