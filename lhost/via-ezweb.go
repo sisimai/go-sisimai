@@ -23,7 +23,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["EZweb"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - au EZweb: https://www.au.com/mobile/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := 0; for {
 			// Pre-process email headers of NON-STANDARD bounce message au by EZweb, as known as ezweb.ne.jp.

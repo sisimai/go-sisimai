@@ -27,7 +27,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Exim"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Exim Internet Mailer: https://www.exim.org/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		// X-Failed-Recipients: kijitora@example.ed.jp
 		thirdparty := false

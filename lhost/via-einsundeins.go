@@ -23,7 +23,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["EinsUndEins"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - 1&1: https://www.1und1.de/
-		if bf == nil || bf.Empty() == true                                                 { return nil }
+		if bf == nil || bf.IsEmpty() == true                                               { return nil }
 		if strings.HasPrefix(bf.Headers["from"][0], `"Mail Delivery System"`) == false     { return nil }
 		if bf.Headers["subject"][0] != "Mail delivery failed: returning message to sender" { return nil }
 

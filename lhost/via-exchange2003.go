@@ -23,7 +23,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Exchange2003"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Microsoft Exchange Server 2003: https://www.microsoft.com/microsoft-365/exchange/email
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		// X-MS-TNEF-Correlator: <00000000000000000000000000000000000000@example.com>
 		// X-Mailer: Internet Mail Service (5.5.1960.3)
