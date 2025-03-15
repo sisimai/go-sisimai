@@ -62,19 +62,19 @@ type TranscriptLog struct {
 
 // Rise returns the decoded transcript of the SMTP session and makes the structured data.
 //   Arguments:
-//     - argv0 (string):    Transcript text MTA returned
-//     - argv1 (string):    Label string of the SMTP cilent such as ">>>"
-//     - argv2 (string):    Label string of the SMTP server such as "<<<"
+//     - argv0 (string):     Transcript text MTA returned
+//     - argv1 (string):     Label string of the SMTP cilent such as ">>>"
+//     - argv2 (string):     Label string of the SMTP server such as "<<<"
 //   Returns:
-//     - ([]TranscriptLog): List of structured transcript logs
-func Rise(argv0, argv1, argv2 string) []TranscriptLog {
-	if argv0 == "" { return []TranscriptLog{} }
+//     - (*[]TranscriptLog): List of structured transcript logs
+func Rise(argv0, argv1, argv2 string) *[]TranscriptLog {
+	if argv0 == "" { return nil    }
 	if argv1 == "" { argv1 = ">>>" } // Label for an SMTP client
 	if argv2 == "" { argv2 = "<<<" } // Label for an SMTP server
 
 	// 1. Get the position of ">>>" and "<<<"
-	p1 := strings.Index(argv0, argv1); if p1 < 0 { return []TranscriptLog{} }
-	p2 := strings.Index(argv0, argv2); if p2 < 0 { return []TranscriptLog{} }
+	p1 := strings.Index(argv0, argv1); if p1 < 0 { return nil }
+	p2 := strings.Index(argv0, argv2); if p2 < 0 { return nil }
 
 	// 2. Remove the head of the argv0 to the first "<<<" or ">>>"
 	sessionlog := make([]string, 0, 32)       // Each line of the SMTP transcript log(argv0)
@@ -119,7 +119,7 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 			sessionlog[ll - 1] += " " + strings.TrimLeft(e, " ")
 		}
 	}
-	if len(sessionlog) == 0 { return transcript }
+	if len(sessionlog) == 0 { return &transcript }
 
 	// 5. Read each SMTP command and server response
 	var cursession *TranscriptLog
@@ -183,7 +183,7 @@ func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 			cursession.Response.Text   = append(cursession.Response.Text, e[4:])
 		}
 	}
-	return transcript
+	return &transcript
 }
 
 // *TranscriptLog.Void returns true if it does not include any transcript log.
