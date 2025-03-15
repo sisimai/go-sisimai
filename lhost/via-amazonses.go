@@ -27,7 +27,7 @@ func init() {
 	InquireFor["AmazonSES"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Amazon SES(Sending): https://aws.amazon.com/ses/
 		// - https://docs.aws.amazon.com/ses/latest/dg/notification-contents.html
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := false
 		sespayload := bf.Payload

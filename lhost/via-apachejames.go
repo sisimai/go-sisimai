@@ -21,7 +21,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["ApacheJames"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Apache James: https://james.apache.org/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := false; ISJAMES: for {
 			// Subject:     [BOUNCE]

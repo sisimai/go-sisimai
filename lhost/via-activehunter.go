@@ -21,7 +21,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Activehunter"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - QUALITIA Active!hunter: https://www.qualitia.com/jp/product/ah/
-		if bf == nil || bf.Empty() == true || len(bf.Headers["x-ahmailid"]) == 0 { return nil }
+		if bf == nil || bf.IsEmpty() == true || len(bf.Headers["x-ahmailid"]) == 0 { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{
