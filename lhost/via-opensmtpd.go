@@ -21,7 +21,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["OpenSMTPD"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - OpenSMTPD: https://www.opensmtpd.org/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := uint8(0)
 		ISOPENSMTPD: for {
