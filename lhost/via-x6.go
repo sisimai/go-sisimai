@@ -24,7 +24,7 @@ func init() {
 	InquireFor["X6"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Unknown MTA #6
 		// - Can anyone identify the MTA that produced the set-of-emails/maildir/bsd/lhost-x6-*.eml files?
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], "There was an error sending your mail") == false { return nil }
 
 		boundaries := []string{"The attachment contains the original mail headers"}

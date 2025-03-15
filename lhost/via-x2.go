@@ -22,7 +22,7 @@ func init() {
 	InquireFor["X2"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Unknown MTA #2
 		// - Can anyone identify the MTA that produced the set-of-emails/maildir/bsd/lhost-x2-*.eml files?
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := false
 		emailtitle := []string{"Delivery failure", "failure delivery", "failed delivery"}

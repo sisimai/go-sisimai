@@ -24,7 +24,7 @@ func init() {
 	InquireFor["X3"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Unknown MTA #3
 		// - Can anyone identify the MTA that produced the set-of-emails/maildir/bsd/lhost-x3-*.eml files?
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty()                                                   == true  { return nil }
 		if strings.HasPrefix(bf.Headers["from"][0],    "Mail Delivery System")         == false { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Delivery status notification") == false { return nil }
 
