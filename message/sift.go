@@ -26,7 +26,7 @@ import "libsisimai.org/sisimai/rfc5322"
 //   Returns:
 //     - (bool): true = successfully decoded and structured the bounce emails, false = failed to decode.
 func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
-	if bf == nil || bf.Empty() == true { return false }
+	if bf == nil || bf.IsEmpty() == true { return false }
 
 	bf.Payload = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
 	mesgformat := ""
@@ -79,7 +79,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	localhostr := &sis.RisingUnderway{}
 	modulename := ""
 
-	DECODER: for bf.Empty() == false {
+	DECODER: for bf.IsEmpty() == false {
 		// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
 		// 2. sisimai/rfc3464
 		// 3. sisimai/arf
@@ -89,33 +89,33 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 			if havecalled[r] || r == "ARF" || strings.HasPrefix(r, "RFC") { continue }
 			havecalled[r] = true
 			localhostr    = lhost.InquireFor[r](bf)
-			if localhostr != nil && localhostr.Void() == false { modulename = r; break DECODER }
+			if localhostr != nil { modulename = r; break DECODER }
 		}
 
 		if havecalled["rfc3464"] == false {
 			// 2. sisimai/rfc3464
 			// When the all of sisimai/lhost/*.go modules did not return the decoded data
 			localhostr = rfc3464.Inquire(bf)
-			if localhostr != nil && localhostr.Void() == false { modulename = "RFC3464"; break DECODER }
+			if localhostr != nil { modulename = "RFC3464"; break DECODER }
 		}
 
 		if havecalled["arf"] == false {
 			// 3. call sisimai/arf
 			// Try to decode the message as a Feedback Loop message
 			localhostr = arf.Inquire(bf)
-			if localhostr != nil && localhostr.Void() == false { modulename = "ARF"; break DECODER }
+			if localhostr != nil { modulename = "ARF"; break DECODER }
 		}
 
 		if havecalled["rfc3834"] == false {
 			// 4. call sisimai/rfc3834
 			// Try to sift the message as auto reply message defined in RFC3834
 			localhostr = rfc3834.Inquire(bf)
-			if localhostr != nil && localhostr.Void() == false { modulename = "RFC3834"; break DECODER }
+			if localhostr != nil { modulename = "RFC3834"; break DECODER }
 		}
 		break // as of now, we have no sample email for coding this block
 
 	} // End of for(DECODER)
-	if localhostr == nil || localhostr.Void() == true { return false }
+	if localhostr == nil { return false }
 
 	for j, _ := range localhostr.Digest {
 		// Set the value of "Agent" such as "Postfix", "Sendmail", or "OpenSMTPD"
