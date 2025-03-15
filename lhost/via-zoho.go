@@ -21,7 +21,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Zoho"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Zoho Mail: https://www.zoho.com/mail/
-		if bf == nil || bf.Empty() == true || len(bf.Headers["x-zohomail"]) == 0 { return nil }
+		if bf == nil || bf.IsEmpty() || len(bf.Headers["x-zohomail"]) == 0 { return nil }
 
 		boundaries := []string{"\n\nReceived:"}
 		startingof := map[string][]string{
