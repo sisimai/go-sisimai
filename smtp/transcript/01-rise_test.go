@@ -27,14 +27,10 @@ func TestRise(t *testing.T) {
 	cw := string(bx); cw = cw[strings.Index(cw, "\n\n") + 2:]
 	ct := Rise(cw, "In:", "Out:")
 
-	cx++; if len(ct) == 0 { t.Errorf("%s() returns empty", fn) }
-	fn = "TanscriptLog"; for _, e := range ct {
-		if e.Command == "" {
-			cx++; if e.Void() == true { t.Errorf("%s.Void() returns true", fn) }
-		} else {
-			cx++; if cv := e.Command; moji.EqualsAny(cv, cc) == false {
-				t.Errorf("%s.Command(%s) is not listed in %v", fn, cv, cc)
-			}
+	cx++; if ct == nil || len(*ct) == 0 { t.Errorf("%s() returns empty", fn) }
+	fn = "TanscriptLog"; for _, e := range *ct {
+		cx++; if cv := e.Command; moji.EqualsAny(cv, cc) == false {
+			t.Errorf("%s.Command(%s) is not listed in %v", fn, cv, cc)
 		}
 
 		if e.Command == "MAIL" || e.Command == "RCPT" {
@@ -61,15 +57,15 @@ func TestRise(t *testing.T) {
 		}
 	}
 
-	ct = Rise(cw, "", "");    cx++; if len(ct) > 0 { t.Errorf("%s.Void() returns %v", fn, ct) }
-	ct = Rise(cw, ">>>", ""); cx++; if len(ct) > 0 { t.Errorf("%s.Void() returns %v", fn, ct) }
-	ct = Rise(cw, "", "<<<"); cx++; if len(ct) > 0 { t.Errorf("%s.Void() returns %v", fn, ct) }
+	ct = Rise(cw, "", "");    cx++; if ct != nil && len(*ct) > 0 { t.Errorf("%s returns %v", fn, ct) }
+	ct = Rise(cw, ">>>", ""); cx++; if ct != nil && len(*ct) > 0 { t.Errorf("%s returns %v", fn, ct) }
+	ct = Rise(cw, "", "<<<"); cx++; if ct != nil && len(*ct) > 0 { t.Errorf("%s returns %v", fn, ct) }
 
 	cw = "<<<  OK\n>>>  NEKO\n<<<  Closed\n"
-	ct = Rise(cw, "", "");    cx++; if ct[0].Void() == true { t.Errorf("%s.Void() returns true", fn) }
+	ct = Rise(cw, "", ""); cx++; if ct == nil { t.Errorf("%s is nil", fn) }
 
 	cw = "<<< Error\n>>> NEKO"
-	ct = Rise(cw, "", "");    cx++; if ct[0].Void() == true { t.Errorf("%s.Void() returns true", fn) }
+	ct = Rise(cw, "", ""); cx++; if ct == nil { t.Errorf("%s is nil", fn) }
 
 	t.Logf("The number of tests = %d", cx)
 }

@@ -36,19 +36,23 @@ import "libsisimai.org/sisimai/smtp/failure"
 //   Returns:
 //     - (*[]sis.Fact):            List of successfully decoded bounce messages
 //     - (*[]sis.NotDecoded):      List of occurred errors
-func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
+func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) {
 	if email == nil || len(*email) < 1 {
 		// The email message is empty
 		ce := *sis.MakeNotDecoded("email file is empty", true); ce.Email(origin)
-		return []sis.Fact{}, []sis.NotDecoded{ce}
+		return nil, &[]sis.NotDecoded{ce}
 	}
 
 	beforefact := message.Rise(email, args.Callback0); if len((*beforefact).Errors) > 0 {
 		// There is some errors while reading the email, decoding the bounce message.
 		// Set the email path to sis.NotDecoded.EmailFile
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
+		if (*beforefact).HasDone() == false { return nil, &beforefact.Errors }
+
+	} else {
+		// There is neither decoded result nor error
+		if (*beforefact).HasDone() == false { return nil, nil }
 	}
-	if (*beforefact).Void() == true { return []sis.Fact{}, (*beforefact).Errors }
 
 	rfc822data := (*beforefact).RFC822
 	listoffact := []sis.Fact{}
@@ -261,11 +265,11 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		CONSTRUCTOR: for {
 			// - Create email address object as address.EmailAddress struct
 			// - Create decoded bounce mail object as sis.Fact struct
-			as := address.Rise(addrs["addresser"]); if as.Void() == true { continue RISEOF }
-			ar := address.Rise(addrs["recipient"]); if ar.Void() == true { continue RISEOF }
+			as := address.Rise(addrs["addresser"]); if as == nil { continue RISEOF }
+			ar := address.Rise(addrs["recipient"]); if ar == nil { continue RISEOF }
 
 			thing.Action         = e.Action
-			thing.Addresser      = as
+			thing.Addresser      = *as
 			thing.Alias          = e.Alias; if thing.Alias == "" { thing.Alias = ar.Alias }
 			thing.Catch          = (*beforefact).Catch
 			thing.DeliveryStatus = piece["deliverystatus"]
@@ -281,7 +285,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			thing.Origin         = origin
 			thing.Reason         = piece["reason"]
 			thing.Rhost          = e.Rhost
-			thing.Recipient      = ar
+			thing.Recipient      = *ar
 			thing.ReplyCode      = piece["replycode"]; if thing.ReplyCode == "" { reply.Find(piece["diagnosticcode"], "") }
 			thing.DecodedBy      = e.Agent
 			thing.Command        = piece["command"]
@@ -400,6 +404,6 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		// Set the email path to sis.NotDecoded.EmailFile if it is empty
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
 	}
-	return listoffact, beforefact.Errors
+	return &listoffact, &beforefact.Errors
 }
 

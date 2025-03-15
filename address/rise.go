@@ -12,11 +12,11 @@ import "libsisimai.org/sisimai/sis"
 
 // Rise is a constructor of sis.EmailAddress.
 //   Arguments:
-//     - argvs ([3]string):  [3]string{"email address", "display name", "comment"}
+//     - argvs ([3]string):   [3]string{"email address", "display name", "comment"}
 //   Returns:
-//     - (sis.EmailAddress): EmailAddress struct when the email address is valid
-func Rise(argvs [3]string) sis.EmailAddress {
-	if argvs[0] == "" { return sis.EmailAddress{} }
+//     - (*sis.EmailAddress): EmailAddress struct when the email address is valid
+func Rise(argvs [3]string) *sis.EmailAddress {
+	if argvs[0] == "" { return nil }
 
 	thing := new(sis.EmailAddress)
 	email := Final(argvs[0])
@@ -42,8 +42,7 @@ func Rise(argvs [3]string) sis.EmailAddress {
 
 	} else {
 		// The argument does not include "@"
-		if IsMailerDaemon(argvs[0]) == false     { return sis.EmailAddress{} }
-		if strings.IndexByte(argvs[0], ' ') > -1 { return sis.EmailAddress{} }
+		if IsMailerDaemon(argvs[0]) == false || strings.IndexByte(argvs[0], ' ') > -1 { return nil }
 
 		// The argument does not include " "
 		thing.User    = argvs[0]
@@ -52,6 +51,6 @@ func Rise(argvs [3]string) sis.EmailAddress {
 
 	thing.Name    = argvs[1]
 	thing.Comment = argvs[2]
-	return *thing
+	return thing
 }
 

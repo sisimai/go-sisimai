@@ -27,6 +27,7 @@ PROFILESET := set-of-emails/maildir/bsd
 EXECUTABLE := bin/sisid
 BUILDFLAGS := -ldflags="-s -w" -trimpath
 LISTENADDR := 127.0.0.1:5321
+K          := neko
 
 # -------------------------------------------------------------------------------------------------
 .PHONY: clean
@@ -71,6 +72,10 @@ benchmark:
 	test -f bin/benchmark.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o min-sisid ./bin/benchmark.go
 	uptime
 	while true; do zsh -c 'time ./min-sisid $(PROFILESET)'; sleep 10; done
+
+find:
+	find . -type f -name '*.go' -not -name '*_test.go' -not -path '*/bin/*' -not -path '*/sbin/*' \
+		-not -path '*/stash/*' -not -path '*/tmp/*' -exec grep '$(K)' {} +
 
 init:
 	test -e ./go.mod || $(GO) mod init $(LIBSISIMAI)/$(NAME)

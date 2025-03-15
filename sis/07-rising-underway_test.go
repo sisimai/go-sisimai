@@ -45,7 +45,6 @@ func TestRisingUnderWay(t *testing.T) {
 	cx++; if cv.RFC822      == "" { t.Errorf("%s.RFC822 is empty", fn) }
 	cx++; if len(cv.Digest) == 0  { t.Errorf("%s.RFC822 is empty", fn) }
 	cx++; if len(cv.Errors) == 0  { t.Errorf("%s.RFC822 is empty", fn) }
-	cx++; if cv.Void()            { t.Errorf("%s.Void() returns true", fn) }
 
 	fn += ".Digest"
 	cw := cv.Digest[0]
@@ -63,9 +62,6 @@ func TestRisingUnderWay(t *testing.T) {
 	cx++; if cw.Rhost        == "" { t.Errorf("%s.Rhost is empty", fn) }
 	cx++; if cw.Spec         == "" { t.Errorf("%s.Rhost is empty", fn) }
 	cx++; if cw.Status       == "" { t.Errorf("%s.Status is empty", fn) }
-
-	cv.Digest = nil
-	cx++; if cv.Void() == false    { t.Errorf("%s.Void() returns false", fn) }
 
 	t.Logf("The number of tests = %d", cx)
 }

@@ -75,17 +75,7 @@ func TestRise(t *testing.T) {
 			cw := Find(e.argument)
 			cv := Rise(cw)
 
-			if cv.Void() == true {
-				// EmailAddress{} is empty
-				if cv.Address != "" { t.Errorf("[%6d]: %s.Address is (%s) not empty", cx, on, cv.Address) }; cx++
-				if cv.User    != "" { t.Errorf("[%6d]: %s.User is (%s) not empty", cx, on, cv.User)       }; cx++
-				if cv.Host    != "" { t.Errorf("[%6d]: %s.Host is (%s) not empty", cx, on, cv.Host)       }; cx++
-				if cv.Verp    != "" { t.Errorf("[%6d]: %s.Verp is (%s) not empty", cx, on, cv.Verp)       }; cx++
-				if cv.Alias   != "" { t.Errorf("[%6d]: %s.Alias is (%s) not empty", cx, on, cv.Alias)     }; cx++
-				if cv.Name    != "" { t.Errorf("[%6d]: %s.Name is (%s) not empty", cx, on, cv.Name)       }; cx++
-				if cv.Comment != "" { t.Errorf("[%6d]: %s.Comment is (%s) not empty", cx, on, cv.Comment) }; cx++
-
-			} else {
+			if cv != nil {
 				// EmailAddress{} is not empty
 				if cv.Address != e.expected && cv.Alias == "" && cv.Verp == "" {
 					t.Errorf("[%6d]: %s.Address is (%s) not (%s)", cx, on, cv.Address, e.expected); cx++
@@ -118,14 +108,14 @@ func TestRise(t *testing.T) {
 	for _, e := range TestPostmaster {
 		t.Run("", func(t *testing.T) {
 			cv := Rise([3]string{e, "", ""})
-			if cv.Void() == true { t.Errorf("[%6d]: %s.Void is true not false (%s)", cx, on, e) }; cx++
+			if cv == nil { t.Errorf("[%6d]: %s is nil (%s)", cx, on, e) }; cx++
 		})
 	}
 
 	for _, e := range TestNotAnEmail {
 		t.Run("", func(t *testing.T) {
 			cv := Rise([3]string{e, "", ""})
-			if cv.Void() == false { t.Errorf("[%6d]: %s.Void is false not true (%s)", cx, on, e) }; cx++
+			if cv != nil { t.Errorf("[%6d]: %s is not nil (%s)", cx, on, e) }; cx++
 		})
 	}
 	t.Logf("The number of tests = %d", cx)

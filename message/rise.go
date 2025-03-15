@@ -92,7 +92,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		cv := rfc5322.Part(&beforefact.Payload, boundaries, true)[1]; if len(cv) < 128 { break RISE }
 		mesg = &cv
 	}
-	if beforefact.Void() == true { return new(sis.BeforeFact) }
+	if beforefact.HasDone() == false { return new(sis.BeforeFact) }
 	return beforefact
 }
 
