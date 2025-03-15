@@ -186,9 +186,3 @@ func Rise(argv0, argv1, argv2 string) *[]TranscriptLog {
 	return &transcript
 }
 
-// *TranscriptLog.Void returns true if it does not include any transcript log.
-func(this *TranscriptLog) Void() bool {
-	if this.Command == "" { return true }
-	return false
-}
-
