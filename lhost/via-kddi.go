@@ -22,7 +22,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["KDDI"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - au by KDDI: https://www.au.kddi.com
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := false
 		senderlist := []string{"no-reply@.", ".dion.ne.jp"}
