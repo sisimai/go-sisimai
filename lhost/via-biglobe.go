@@ -21,7 +21,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["Biglobe"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - BIGLOBE: https://www.biglobe.ne.jp
-		if bf == nil || bf.Empty() == true                                 { return nil }
+		if bf == nil || bf.IsEmpty() == true                               { return nil }
 		if strings.Contains(bf.Headers["from"][0], "postmaster@") == false { return nil }
 		if strings.Index(bf.Headers["subject"][0], "Returned mail:") != 0  { return nil }
 
