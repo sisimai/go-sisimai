@@ -21,8 +21,8 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["mFILTER"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Digital Arts m-FILTER: https://www.daj.jp/bs/mf/
-		if bf == nil || bf.Empty() == true || bf.Headers["subject"][0]  != "failure notice" { return nil }
-		if len(bf.Headers["x-mailer"]) < 1 || bf.Headers["x-mailer"][0] != "m-FILTER"       { return nil }
+		if bf == nil || bf.IsEmpty() || bf.Headers["subject"][0]  != "failure notice" { return nil }
+		if len(bf.Headers["x-mailer"]) < 1 || bf.Headers["x-mailer"][0] != "m-FILTER" { return nil }
 
 		boundaries := []string{"-------original message", "-------original mail info"}
 		startingof := map[string][]string{

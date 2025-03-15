@@ -26,7 +26,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["MessagingServer"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - https://docs.oracle.com/en/industries/communications/messaging-server/index.html
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := false
 		if strings.Contains(bf.Headers["content-type"][0], "Boundary_(ID_")       { proceedsto = true }

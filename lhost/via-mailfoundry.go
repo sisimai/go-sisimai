@@ -21,7 +21,7 @@ func init() {
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
 	InquireFor["MailFoundry"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - MailFoundry: https://www.barracuda.com/
-		if bf == nil || bf.Empty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		proceedsto := false; for {
 			// Subject: Message delivery has failed
