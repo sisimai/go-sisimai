@@ -261,11 +261,11 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		CONSTRUCTOR: for {
 			// - Create email address object as address.EmailAddress struct
 			// - Create decoded bounce mail object as sis.Fact struct
-			as := address.Rise(addrs["addresser"]); if as.Void() == true { continue RISEOF }
-			ar := address.Rise(addrs["recipient"]); if ar.Void() == true { continue RISEOF }
+			as := address.Rise(addrs["addresser"]); if as == nil { continue RISEOF }
+			ar := address.Rise(addrs["recipient"]); if ar == nil { continue RISEOF }
 
 			thing.Action         = e.Action
-			thing.Addresser      = as
+			thing.Addresser      = *as
 			thing.Alias          = e.Alias; if thing.Alias == "" { thing.Alias = ar.Alias }
 			thing.Catch          = (*beforefact).Catch
 			thing.DeliveryStatus = piece["deliverystatus"]
@@ -281,7 +281,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 			thing.Origin         = origin
 			thing.Reason         = piece["reason"]
 			thing.Rhost          = e.Rhost
-			thing.Recipient      = ar
+			thing.Recipient      = *ar
 			thing.ReplyCode      = piece["replycode"]; if thing.ReplyCode == "" { reply.Find(piece["diagnosticcode"], "") }
 			thing.DecodedBy      = e.Agent
 			thing.Command        = piece["command"]
