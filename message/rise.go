@@ -15,10 +15,9 @@ import "strings"
 import "net/mail"
 import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/lhost"
 import "libsisimai.org/sisimai/rfc5322"
 
-var tryonfirst = make([]string, 0, 36)
+var pseudofrom = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
 
 // Rise decode and structure various formats of bounce emails.
@@ -30,12 +29,12 @@ var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rf
 func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 	if mesg == nil || len(*mesg) < 1 { return new(sis.BeforeFact) }
 
-	moji.ToLF(mesg)
 	retryagain := 0
 	beforefact := new(sis.BeforeFact)
 
 	RISE: for retryagain < 2 {
 		// 1. Split email data to headers and a body part.
+		moji.ToLF(mesg)
 		if email, nyaan := mail.ReadMessage(strings.NewReader(*mesg)); nyaan != nil {
 			// Failed to read the message as an email
 			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true)
@@ -50,7 +49,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 
 			} else {
 				// Set pseudo UNIX From line
-				beforefact.Sender = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
+				beforefact.Sender = pseudofrom
 			}
 
 			// Build "Head", "Body" members of BeforeFact
@@ -75,9 +74,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		}
 
 		// 3. Rewrite message body for detecting the bounce reason
-		tryonfirst  = lhost.OrderBySubject(beforefact.Headers["subject"][0])
-		siftstatus := sift(beforefact, hook); if siftstatus == true { break RISE }
-
+		if siftstatus := sift(beforefact, hook); siftstatus == true { break RISE }
 		for _, e := range boundaries {
 			// Check the message body contains "message/rfc822" or "message/delivery-status" for
 			// decoding the bounce message in the forwarded email
