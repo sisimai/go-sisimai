@@ -75,43 +75,36 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		bf.Catch = cvv
 	}
 
+	tryonfirst := lhost.OrderBySubject(bf.Headers["subject"][0])
 	havecalled := make(map[string]bool, 40)
 	localhostr := &sis.RisingUnderway{}
 	modulename := ""
 
 	DECODER: for bf.IsEmpty() == false {
-		// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
-		// 2. sisimai/rfc3464
-		// 3. sisimai/arf
-		// 4. sisimai/rfc3834
+		// 1. MTA Module Candidates to be tried on first, and other lhost.InquireFor[*]
+		// 2. rfc3464.Inquire()
+		// 3. arf.Inquire()
+		// 4. rfc3834.Inqquire()
 		for _, r := range tryonfirst {
-			// 1. MTA Module Candidates to be tried on first, and other sisimai/lhost/*.go
+			// 1. MTA Module candidates to be tried on first, and other lhost.InquireFor[*]
 			if havecalled[r] || r == "ARF" || strings.HasPrefix(r, "RFC") { continue }
 			havecalled[r] = true
 			localhostr    = lhost.InquireFor[r](bf)
 			if localhostr != nil { modulename = r; break DECODER }
 		}
 
-		if havecalled["rfc3464"] == false {
-			// 2. sisimai/rfc3464
-			// When the all of sisimai/lhost/*.go modules did not return the decoded data
-			localhostr = rfc3464.Inquire(bf)
-			if localhostr != nil { modulename = "RFC3464"; break DECODER }
-		}
+		// 2. rfc3464.Inquire()
+		// When the all of lhost/for-*.go modules did not return the decoded data
+		if localhostr = rfc3464.Inquire(bf); localhostr != nil { modulename = "RFC3464"; break DECODER }
 
-		if havecalled["arf"] == false {
-			// 3. call sisimai/arf
-			// Try to decode the message as a Feedback Loop message
-			localhostr = arf.Inquire(bf)
-			if localhostr != nil { modulename = "ARF"; break DECODER }
-		}
+		// 3. arf.Inquire()
+		// Try to decode the message as a Feedback Loop message
+		if localhostr = arf.Inquire(bf);     localhostr != nil { modulename = "ARF"; break DECODER }
 
-		if havecalled["rfc3834"] == false {
-			// 4. call sisimai/rfc3834
-			// Try to sift the message as auto reply message defined in RFC3834
-			localhostr = rfc3834.Inquire(bf)
-			if localhostr != nil { modulename = "RFC3834"; break DECODER }
-		}
+		// 4. rfc3834.Inquire()
+		// Try to sift the message as auto reply message defined in RFC3834
+		if localhostr = rfc3834.Inquire(bf); localhostr != nil { modulename = "RFC3834"; break DECODER }
+
 		break // as of now, we have no sample email for coding this block
 
 	} // End of for(DECODER)
