@@ -75,62 +75,61 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		bf.Catch = cvv
 	}
 
-	tryonfirst := lhost.OrderBySubject(bf.Headers["subject"][0])
-	havecalled := make(map[string]bool, 40)
-	localhostr := &sis.RisingUnderway{}
-	modulename := ""
+	orders := lhost.OrderBySubject(bf.Headers["subject"][0])
+	called := make(map[string]bool, 40)
+	rising := &sis.RisingUnderway{}
+	module := ""
 
 	DECODER: for bf.IsEmpty() == false {
 		// 1. MTA Module Candidates to be tried on first, and other lhost.InquireFor[*]
 		// 2. rfc3464.Inquire()
 		// 3. arf.Inquire()
 		// 4. rfc3834.Inqquire()
-		for _, r := range tryonfirst {
+		for _, r := range orders {
 			// 1. MTA Module candidates to be tried on first, and other lhost.InquireFor[*]
-			if havecalled[r] || r == "ARF" || strings.HasPrefix(r, "RFC") { continue }
-			havecalled[r] = true
-			localhostr    = lhost.InquireFor[r](bf)
-			if localhostr != nil { modulename = r; break DECODER }
+			if called[r] || r == "ARF" || r == "RFC3834" { continue }
+			called[r] = true
+			if rising = lhost.InquireFor[r](bf); rising != nil { module = r; break DECODER }
 		}
 
 		// 2. rfc3464.Inquire()
 		// When the all of lhost/for-*.go modules did not return the decoded data
-		if localhostr = rfc3464.Inquire(bf); localhostr != nil { modulename = "RFC3464"; break DECODER }
+		if rising = rfc3464.Inquire(bf); rising != nil { module = "RFC3464"; break DECODER }
 
 		// 3. arf.Inquire()
 		// Try to decode the message as a Feedback Loop message
-		if localhostr = arf.Inquire(bf);     localhostr != nil { modulename = "ARF"; break DECODER }
+		if rising = arf.Inquire(bf);     rising != nil { module = "ARF"; break DECODER }
 
 		// 4. rfc3834.Inquire()
 		// Try to sift the message as auto reply message defined in RFC3834
-		if localhostr = rfc3834.Inquire(bf); localhostr != nil { modulename = "RFC3834"; break DECODER }
+		if rising = rfc3834.Inquire(bf); rising != nil { module = "RFC3834"; break DECODER }
 
 		break // as of now, we have no sample email for coding this block
 
 	} // End of for(DECODER)
-	if localhostr == nil { return false }
+	if rising == nil { return false }
 
-	for j, _ := range localhostr.Digest {
+	for j, _ := range rising.Digest {
 		// Set the value of "Agent" such as "Postfix", "Sendmail", or "OpenSMTPD"
-		if localhostr.Digest[j].Agent == "" { localhostr.Digest[j].Agent = modulename }
+		if rising.Digest[j].Agent == "" { rising.Digest[j].Agent = module }
 	}
 
-	if strings.Contains(localhostr.RFC822, "\nFrom:") == false && len(bf.Headers["to"]) > 0 {
+	if strings.Contains(rising.RFC822, "\nFrom:") == false && len(bf.Headers["to"]) > 0 {
 		// There is no "From:" header, pick the email address from the "To:" header of the
 		// bounce message
-		localhostr.RFC822 = "From: " + bf.Headers["to"][0] + "\n" + localhostr.RFC822
+		rising.RFC822 = "From: " + bf.Headers["to"][0] + "\n" + rising.RFC822
 	}
-	di := &(localhostr.Digest[0])
-	if strings.Contains(localhostr.RFC822, "\nTo:") == false && di.Recipient != "" {
-		// The original message block is empty, insert some values picked from localhostr.Digest as
+	di := &(rising.Digest[0])
+	if strings.Contains(rising.RFC822, "\nTo:") == false && di.Recipient != "" {
+		// The original message block is empty, insert some values picked from rising.Digest as
 		// a pseudo header such as "To:", "Date:".
-		localhostr.RFC822 = "To: <" + di.Recipient + ">\n" + localhostr.RFC822
+		rising.RFC822 = "To: <" + di.Recipient + ">\n" + rising.RFC822
 	}
 
 	// Convert headers of the original message to data structure/map[string][]string
-	rfc822buff := strings.Builder{}; rfc822buff.Grow(len(localhostr.RFC822))
-	for _, e := range strings.Split(localhostr.RFC822, "\n") {
-		// Append each line of localhostr.RFC822 to rfc822buff except malformed headers
+	rfc822buff := strings.Builder{}; rfc822buff.Grow(len(rising.RFC822))
+	for _, e := range strings.Split(rising.RFC822, "\n") {
+		// Append each line of rising.RFC822 to rfc822buff except malformed headers
 		if e == "" && rfc822buff.Len() > 0 { break } // The blank line between the header and the body
 		if strings.IndexByte(e, ':') < 1 {           // The line does not contain ":" or begins with ":"
 			// The line is not a line continued from the previous line of a long header
@@ -138,9 +137,9 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		}
 		rfc822buff.WriteString(e + "\n")
 	}
-	if rfc822buff.Len() > 0 { localhostr.RFC822 = rfc822buff.String() + "\n" }
+	if rfc822buff.Len() > 0 { rising.RFC822 = rfc822buff.String() + "\n" }
 
-	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(localhostr.RFC822))
+	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(rising.RFC822))
 	if nyaan != nil {
 		// Failed to read the original message part
 		ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
@@ -148,7 +147,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		return false
 	}
 	bf.RFC822 = rfc5322.Headers(&rfc822part.Header, false)
-	bf.Digest = localhostr.Digest
+	bf.Digest = rising.Digest
 
 	return true
 }
