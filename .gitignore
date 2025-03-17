@@ -1,6 +1,7 @@
 coverage.*
 usage-of-*
 *pprof*
+*sisid*
 sbin/
 stash/
 set-of-emails/private
