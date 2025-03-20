@@ -3,6 +3,20 @@ RELEASE NOTES for the Go version of Sisimai
 - releases: "https://github.com/sisimai/go-sisimai/releases"
 - document: "https://libsisimai.org/"
 
+v5.2.1p1
+---------------------------------------------------------------------------------------------------
+- release: ""
+- version: ""
+- changes:
+  - Performance has improved by approximately 1.7x compared to v5.2.1.
+    - Reduce struct and string copies, and the return types of several functions have been modified
+      to return pointers to strings and structs #76 #80 #83 #84 #85 #86 #87 
+    - #78 `fmt.Sprintf()` usage has been decreased to improve performance.
+    - #88 #89 Optimize the order of MTA modules.
+  - #75 Refactor comments for all the functions, follow the godoc as possible.
+  - #79 Fix bug at the argument of `fmt.Sprintf()` in `rfc3834/lib.go`
+  - #82 `sis.Beforefact.Empty()` has been renamed to `IsEmpty()`
+
 v5.2.1
 ---------------------------------------------------------------------------------------------------
 - release: "Wed, 12 Mar 2025 06:22:25 +0900 (JST)
