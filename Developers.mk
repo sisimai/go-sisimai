@@ -60,11 +60,11 @@ coverage:
 profile:
 	test -f bin/cpu-prof.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o cpu-sisid ./bin/cpu-prof.go
 	test -f ./cpu-sisid     && ./cpu-sisid ./$(PROFILESET)
-	go tool pprof --top ./mem.pprof > usage-of-mem-x
+	go tool pprof --top ./cpu.pprof > usage-of-cpu-x
 
 	test -f bin/mem-prof.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o mem-sisid ./bin/mem-prof.go
 	test -f ./mem-sisid     && ./mem-sisid ./$(PROFILESET)
-	go tool pprof --top ./cpu.pprof > usage-of-cpu-x
+	go tool pprof --top ./mem.pprof > usage-of-mem-x
 
 	ls -laF ./usage-of-*
 
