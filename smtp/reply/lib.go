@@ -32,10 +32,14 @@ package reply
 //      non-standard command; this reply is useful only to the human user)
 // 220  <domain> Service ready
 // 221  <domain> Service closing transmission channel
+// 235  This response to the AUTH command indicates that the authentication was successful (RFC4954)
 // 250  Requested mail action okay, completed
 // 251  User not local; will forward to <forward-path> (See Section 3.4)
 // 252  Cannot VRFY user, but will accept message and attempt delivery (See Section 3.5.3)
 // 253  OK, <n> pending messages for node <domain> started (See RFC1985)
+// 334  A server challenge is sent as a 334 reply with the text part containing the [BASE64] encoded
+//      string supplied by the SASL mechanism.  This challenge MUST NOT contain any text other
+//      than the BASE64 encoded challenge. (RFC4954)
 // 354  Start mail input; end with <CRLF>.<CRLF>
 // 421   <domain> Service not available, closing transmission channel (This may be a reply to
 //       any command if the service knows it must shut down)
@@ -49,8 +53,6 @@ package reply
 // 453   You have no mail (See RFC2645)
 // 454   Temporary authentication failure (See RFC4954)
 // 455   Server unable to accommodate parameters
-// 456   please retry immediately the message over IPv4 because it fails SPF and DKIM (See
-//       https://datatracker.ietf.org/doc/html/draft-martin-smtp-ipv6-to-ipv4-fallback-00
 // 458   Unable to queue messages for node <domain> (See RFC1985)
 // 459   Node <domain> not allowed: <reason> (See RFC51985)
 // 500   Syntax error, command unrecognized (This may include errors such as command line too long)
@@ -58,7 +60,6 @@ package reply
 // 502   Command not implemented (see Section 4.2.4)
 // 503   Bad sequence of commands
 // 504   Command parameter not implemented
-// 520   Please use the correct QHLO ID (See https://datatracker.ietf.org/doc/id/draft-fanf-smtp-quickstart-01.txt)
 // 521   Host does not accept mail (See RFC7504)
 // 523   Encryption Needed (See RFC5248)
 // 524   (See RFC5248)
@@ -76,17 +77,16 @@ package reply
 // 554   Transaction failed (Or, in the case of a connection-opening response, "No SMTP service here")
 // 555   MAIL FROM/RCPT TO parameters not recognized or not implemented
 // 556   Domain does not accept mail (See RFC7504)
-// 557   draft-moore-email-addrquery-01
 //
 import "strconv"
 import "strings"
 import "libsisimai.org/sisimai/moji"
 
-var replycode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "354"}
-var replycode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "456", "458", "459"}
+var replycode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "334", "354"}
+var replycode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "458", "459"}
 var replycode5 = []string{
-	"550", "552", "553", "551", "521", "525", "502", "520", "523", "524", "530", "533", "534", "535", "538",
-	"551", "555", "556", "554", "557", "500", "501", "502", "503", "504",
+	"550", "552", "553", "551", "521", "525", "502", "523", "524", "530", "533", "534", "535", "538",
+	"555", "556", "554", "500", "501", "502", "503", "504",
 }
 var codeofsmtp = map[string][]string{"2": replycode2, "4": replycode4, "5": replycode5}
 
@@ -101,7 +101,7 @@ func Test(argv0 string) bool {
 	reply, nyaan := strconv.Atoi(argv0)
 	if nyaan != nil     { return false } // Failed to convert from a string to an integer
 	if reply <  211     { return false } // The minimum SMTP Reply code is 211
-	if reply >  557     { return false } // The maximum SMTP Reply code is 557
+	if reply >  556     { return false } // The maximum SMTP Reply code is 556 (RFC7504)
 	if reply % 100 > 59 { return false } // For example, 499 is not an SMTP Reply code
 
 	if first := reply / 100; first == 2 {
@@ -112,8 +112,8 @@ func Test(argv0 string) bool {
 		return true
 
 	} else {
-		// 3yz is 354 only
-		if first == 3 && reply != 354 { return false }
+		// 3yz is 334 or 354 only
+		if first == 3 && reply != 334 && reply != 354 { return false }
 	}
 	return true
 }
