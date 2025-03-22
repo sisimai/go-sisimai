@@ -129,7 +129,7 @@ func TestTest(t *testing.T) {
 	}
 	for j := 350; j < 370; j++ {
 		cv := strconv.Itoa(j); if cv != "" {
-			if j == 354 {
+			if j == 354 || j == 334 {
 				cx++; if Test(cv) == false { t.Errorf("%s(%d) returns false", fn, j) }
 			} else {
 				cx++; if Test(cv) == true  { t.Errorf("%s(%d) returns true", fn, j) }
@@ -147,7 +147,7 @@ func TestTest(t *testing.T) {
 	}
 	for j := 500; j < 600; j++ {
 		cv := strconv.Itoa(j); if cv != "" {
-			if j % 100 > 59 || j > 557 {
+			if j % 100 > 59 || j > 556 {
 				cx++; if Test(cv) == true  { t.Errorf("%s(%d) returns true", fn, j) }
 			} else {
 				cx++; if Test(cv) == false { t.Errorf("%s(%d) returns false", fn, j) }
