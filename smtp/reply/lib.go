@@ -10,7 +10,18 @@
 // Package "smtp/reply" provides funtions related to SMTP reply codes such as 421, 550.
 package reply
 
-// http://www.ietf.org/rfc/rfc5321.txt
+// RFC 1870: SMTP Service Extension for Message Size Declaration (SIZE)
+// RFC 1985: SMTP Service Extension for Remote Message Queue Starting (ETRN)
+// RFC 2645: Authenticated TURN for On-Demand Mail Relay (ATRN)
+// RFC 3207: SMTP Service Extension for Secure SMTP over Transport Layer Security (STARTTLS) 1
+// RFC 3030: SMTP Service Extension for Command Pipelining (CHUNKING)
+// RFC 3461: Delivery Status Notifications (DSN)
+// RFC 4954: SMTP Service Extension for Authentication (AUTH)
+// RFC 5321: Simple Mail Transfer Protocol
+// RFC 5336: SMTP Extension for Internationalized Email (UTF8SMTP)
+// RFC 6531: SMTP Extension for Internationalized Email (SMTPUTF8)
+// RFC 7504: SMTP 521 and 556 Reply Codes 
+// RFC 9422: The LIMITS SMTP Service Extension
 //-------------------------------------------------------------------------------------------------
 // 4.2.1.  Reply Code Severities and Theory
 //   2yz  Positive Completion reply
@@ -26,7 +37,7 @@ package reply
 //   x4z  Unspecified.
 //   x5z  Mail system: These replies indicate the status of the receiver mail system vis-a-vis the
 //        requested transfer or other mail system action.
-
+//
 // 211  System status, or system help reply
 // 214  Help message (Information on how to use the receiver or the meaning of a particular
 //      non-standard command; this reply is useful only to the human user)
@@ -41,42 +52,42 @@ package reply
 //      string supplied by the SASL mechanism.  This challenge MUST NOT contain any text other
 //      than the BASE64 encoded challenge. (RFC4954)
 // 354  Start mail input; end with <CRLF>.<CRLF>
-// 421   <domain> Service not available, closing transmission channel (This may be a reply to
-//       any command if the service knows it must shut down)
-// 422   (See RFC5248)
-// 430   (See RFC5248)
-// 432   A password transition is needed (See RFC4954)
-// 450   Requested mail action not taken: mailbox unavailable (e.g., mailbox busy or temporarily
-//       blocked for policy reasons)
-// 451   Requested action aborted: local error in processing
-// 452   Requested action not taken: insufficient system storage
-// 453   You have no mail (See RFC2645)
-// 454   Temporary authentication failure (See RFC4954)
-// 455   Server unable to accommodate parameters
-// 458   Unable to queue messages for node <domain> (See RFC1985)
-// 459   Node <domain> not allowed: <reason> (See RFC51985)
-// 500   Syntax error, command unrecognized (This may include errors such as command line too long)
-// 501   Syntax error in parameters or arguments
-// 502   Command not implemented (see Section 4.2.4)
-// 503   Bad sequence of commands
-// 504   Command parameter not implemented
-// 521   Host does not accept mail (See RFC7504)
-// 523   Encryption Needed (See RFC5248)
-// 524   (See RFC5248)
-// 525   User Account Disabled (See RFC5248)
-// 530   Authentication required (See RFC4954)
-// 533   (See RFC5248)
-// 534   Authentication mechanism is too weak (See RFC4954)
-// 535   Authentication credentials invalid (See RFC4954)
-// 538   Encryption required for requested authentication mechanism (See RFC4954)
-// 550   Requested action not taken: mailbox unavailable (e.g., mailbox not found, no access, or
-//       command rejected for policy reasons)
-// 551   User not local; please try <forward-path> (See Section 3.4)
-// 552   Requested mail action aborted: exceeded storage allocation
-// 553   Requested action not taken: mailbox name not allowed (e.g., mailbox syntax incorrect)
-// 554   Transaction failed (Or, in the case of a connection-opening response, "No SMTP service here")
-// 555   MAIL FROM/RCPT TO parameters not recognized or not implemented
-// 556   Domain does not accept mail (See RFC7504)
+// 421  <domain> Service not available, closing transmission channel (This may be a reply to
+//      any command if the service knows it must shut down)
+// 422  (See RFC5248)
+// 430  (See RFC5248)
+// 432  A password transition is needed (See RFC4954)
+// 450  Requested mail action not taken: mailbox unavailable (e.g., mailbox busy or temporarily
+//      blocked for policy reasons)
+// 451  Requested action aborted: local error in processing
+// 452  Requested action not taken: insufficient system storage
+// 453  You have no mail (See RFC2645)
+// 454  Temporary authentication failure (See RFC4954)
+// 455  Server unable to accommodate parameters
+// 458  Unable to queue messages for node <domain> (See RFC1985)
+// 459  Node <domain> not allowed: <reason> (See RFC51985)
+// 500  Syntax error, command unrecognized (This may include errors such as command line too long)
+// 501  Syntax error in parameters or arguments
+// 502  Command not implemented (see Section 4.2.4)
+// 503  Bad sequence of commands
+// 504  Command parameter not implemented
+// 521  Host does not accept mail (See RFC7504)
+// 523  Encryption Needed (See RFC5248)
+// 524  (See RFC5248)
+// 525  User Account Disabled (See RFC5248)
+// 530  Authentication required (See RFC4954)
+// 533  (See RFC5248)
+// 534  Authentication mechanism is too weak (See RFC4954)
+// 535  Authentication credentials invalid (See RFC4954)
+// 538  Encryption required for requested authentication mechanism (See RFC4954)
+// 550  Requested action not taken: mailbox unavailable (e.g., mailbox not found, no access, or
+//      command rejected for policy reasons)
+// 551  User not local; please try <forward-path> (See Section 3.4)
+// 552  Requested mail action aborted: exceeded storage allocation
+// 553  Requested action not taken: mailbox name not allowed (e.g., mailbox syntax incorrect)
+// 554  Transaction failed (Or, in the case of a connection-opening response, "No SMTP service here")
+// 555  MAIL FROM/RCPT TO parameters not recognized or not implemented
+// 556  Domain does not accept mail (See RFC7504)
 //
 import "strconv"
 import "strings"
