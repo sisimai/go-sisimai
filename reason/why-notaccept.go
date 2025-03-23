@@ -42,10 +42,9 @@ func init() {
 	//   Returns:
 	//     - (bool):         true if a reason is the reason defined in this file
 	ProbesInto["NotAccept"] = func(fo *sis.Fact) bool {
-		if fo        == nil         { return false }
-		if fo.Reason == "notaccept" { return true  }
-		if moji.EqualsAny(fo.ReplyCode, []string{"521", "554", "556"}) { return true  }
-		if fo.Command != "MAIL"                                        { return false }
+		if fo        == nil                                     { return false }
+		if fo.Reason == "notaccept"                             { return true  }
+		if moji.EqualsAny(fo.ReplyCode, []string{"521", "556"}) { return true  }
 		return IncludedIn["NotAccept"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
