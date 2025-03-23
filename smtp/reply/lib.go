@@ -96,10 +96,36 @@ import "libsisimai.org/sisimai/moji"
 var replycode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "334", "354"}
 var replycode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "458", "459"}
 var replycode5 = []string{
-	"550", "552", "553", "551", "521", "525", "502", "523", "524", "530", "533", "534", "535", "538",
-	"555", "556", "554", "500", "501", "502", "503", "504",
+	"550", "552", "553", "551", "521", "525", "523", "524", "530", "533", "534", "535", "538", "555",
+	"556", "554", "500", "501", "502", "503", "504",
 }
 var codeofsmtp = map[string][]string{"2": replycode2, "4": replycode4, "5": replycode5}
+var associated = map[string][]string{
+	"422": []string{"AUTH",     "4.7.12",  "securityerror"}, // RFC5238
+	"432": []string{"AUTH",     "4.7.12",  "securityerror"}, // RFC4954, RFC5321
+	"500": []string{"",         "",        "syntaxerror"},   // RFC5321
+	"501": []string{"",         "",        "syntaxerror"},   // RFC5321
+	"502": []string{"",         "",        "syntaxerror"},   // RFC5321
+	"503": []string{"",         "",        "syntaxerror"},   // RFC5321
+	"504": []string{"",         "",        "syntaxerror"},   // RFC5321
+	"521": []string{"CONN",     "",        "notaccept"},     // RFC7504
+	"523": []string{"AUTH",     "",        "securityerror"}, // RFC5248
+	"524": []string{"AUTH",     "",        "securityerror"}, // RFC5248
+	"525": []string{"AUTH",     "",        "securityerror"}, // RFC5248
+	"534": []string{"AUTH",     "5.7.9",   "securityerror"}, // RFC4954, RFC5248
+	"535": []string{"AUTH",     "5.7.8",   "securityerror"}, // RFC4954, RFC5248
+	"538": []string{"AUTH",     "5.7.11",  "securityerror"}, // RFC4954, RFC5248
+	"556": []string{"RCPT",     "",        "notaccept"},     // RFC7504
+}
+
+// AssociatedWith returns a slice associated with the SMTP reply code of the argument
+//   Arguments:
+//     - reply (string): SMTP reply code
+//   Returns:
+//     - ([]string):     ["SMTP Command", "DSN", "Reason"]
+//   Since:
+//     - 5.2.2
+func AssociatedWith(reply string) []string { return associated[reply] }
 
 // Test checks whether a reply code is a valid code or not.
 //   Arguments:
@@ -107,7 +133,7 @@ var codeofsmtp = map[string][]string{"2": replycode2, "4": replycode4, "5": repl
 //   Returns:
 //     - (bool):         true if the argument is a valid SMTP reply code, false otherwise.
 func Test(argv0 string) bool {
-	if len(argv0) < 3 { return false }
+	if len(argv0)  <  3 { return false }
 
 	reply, nyaan := strconv.Atoi(argv0)
 	if nyaan != nil     { return false } // Failed to convert from a string to an integer
