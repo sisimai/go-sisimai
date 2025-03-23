@@ -16,6 +16,10 @@ v5.2.1p1
   - #75 Refactor comments for all the functions, follow the godoc as possible.
   - #79 Fix bug at the argument of `fmt.Sprintf()` in `rfc3834/lib.go`
   - #82 `sis.Beforefact.Empty()` has been renamed to `IsEmpty()`
+  - #90 #92 SMTP reply code improvements
+    - Update the list of SMTP status codes in `smtp/reply/lib.go`
+    - Implement `smtp/reply.AssosiatedWith()`
+    - Implement `smtp/status.IsExplicit()`
 
 v5.2.1
 ---------------------------------------------------------------------------------------------------
