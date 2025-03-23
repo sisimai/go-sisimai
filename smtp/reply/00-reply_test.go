@@ -11,6 +11,7 @@ package reply
 import "testing"
 import "strconv"
 import "libsisimai.org/sisimai/smtp/status"
+import "libsisimai.org/sisimai/smtp/command"
 
 var SMTPErrors = []string{
 	"smtp; 250 2.1.5 Ok",
@@ -129,7 +130,7 @@ func TestTest(t *testing.T) {
 	}
 	for j := 350; j < 370; j++ {
 		cv := strconv.Itoa(j); if cv != "" {
-			if j == 354 {
+			if j == 354 || j == 334 {
 				cx++; if Test(cv) == false { t.Errorf("%s(%d) returns false", fn, j) }
 			} else {
 				cx++; if Test(cv) == true  { t.Errorf("%s(%d) returns true", fn, j) }
@@ -147,7 +148,7 @@ func TestTest(t *testing.T) {
 	}
 	for j := 500; j < 600; j++ {
 		cv := strconv.Itoa(j); if cv != "" {
-			if j % 100 > 59 || j > 557 {
+			if j % 100 > 59 || j > 556 {
 				cx++; if Test(cv) == true  { t.Errorf("%s(%d) returns true", fn, j) }
 			} else {
 				cx++; if Test(cv) == false { t.Errorf("%s(%d) returns false", fn, j) }
@@ -162,4 +163,29 @@ func TestTest(t *testing.T) {
 
 	t.Logf("The number of tests = %d", cx)
 }
+
+func TestAssociatedWith(t *testing.T) {
+	fn := "smtp/reply.AssociatedWith"
+	cx := 0
+	ae := []string{
+		"422", "432", "500", "501", "502", "503", "504", "521", "523", "524", "525", "534",
+		"535", "538", "556",
+	}
+	for _, e := range ae {
+		cv := AssociatedWith(e);
+		cx++; if len(cv) < 1 { t.Errorf("%s(%s) returns empty list", fn, e)   }
+		cx++; if cv[0] != "" && command.Test(cv[0]) == false { t.Errorf("%s(%s) returns invalid command", fn, e) }
+		cx++; if cv[1] != "" && status.Test(cv[1])  == false { t.Errorf("%s(%s) returns invalid status code", fn, e) }
+		cx++; if cv[2] == "" { t.Errorf("%s(%s) returns empty reason", fn, e) }
+	}
+
+	for _, e := range []string{"211", "421", "334", "550"} {
+		cv := AssociatedWith(e);
+		cx++; if len(cv) > 0 { t.Errorf("%s(%s) did not return an empty list: %v", fn, e, cv)   }
+	}
+
+	t.Logf("The number of tests = %d", cx)
+}
+
+
 

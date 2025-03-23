@@ -8,7 +8,6 @@
 
 // Package "fact" provide a function for generating structs keeping decoded bounce mail data
 package fact
-
 import "time"
 import "strings"
 import "net/mail"
@@ -391,6 +390,15 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed"    }
 
 			break REPLYCODE
+		}
+
+		if thing.ReplyCode != "" {
+			// Fill empty values: ["SMTP Command", "DSN", "Reason"]
+			if cv := reply.AssociatedWith(thing.ReplyCode); len(cv) > 0 {
+				if cv[0] != "" && thing.Command == ""                       { thing.Command = cv[0]        }
+				if cv[1] != "" && ! status.IsExplicit(thing.DeliveryStatus) { thing.DeliveryStatus = cv[1] }
+				if cv[2] != "" && ! reason.IsExplicit(thing.Reason)         { thing.Reason  = cv[2]        }
+			}
 		}
 
 		// Feedback-ID: 1.us-west-2.QHuyeCQrGtIIMGKQfVdUhP9hCQR2LglVOrRamBc+Prk=:AmazonSES
