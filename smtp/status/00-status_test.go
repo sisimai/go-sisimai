@@ -159,3 +159,17 @@ func TestPrefer(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestIsExplicit(t *testing.T) {
+	fn := "smtp/status/IsExplicit"
+	cx := 0
+
+	for _, e := range StatusList {
+		cx++; if cv := IsExplicit(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
+	}
+	for _, e := range []string{"", "4.0.900", "5.0.900"} {
+		cx++; if cv := IsExplicit(e); cv == true  { t.Errorf("%s(%s) returns true", fn, e)  }
+	}
+
+	t.Logf("The number of tests = %d", cx)
+}
+

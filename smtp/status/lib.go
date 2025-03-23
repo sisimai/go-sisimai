@@ -10,6 +10,7 @@
 // Package "smtp/status" provides functions related to SMTP Status codes such as 4.2.2, 5.1.1
 // http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
 package status
+import "strings"
 
 /* http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
 ---------------------------------------------------------------------------------------------------
@@ -689,5 +690,17 @@ func Name(argv0 string) string {
 		"5.7.30": "failedstarttls",		// REQUIRETLS support required
 	}
 	return standardcr[argv0]
+}
+
+// IsExplicit returns true if the status code is not empty and is not an internal delivery status code
+//   Arguments:
+//     - argv0 (string): Delivery status code
+//   Returns:
+//     - (bool):         true if the code is an explicit, false otherwise
+//   Since:
+//     - 5.2.2
+func IsExplicit(argv1 string) bool {
+	if argv1 == "" || len(argv1) == 7 && strings.Index(argv1, ".0.9") == 1 { return false }
+	return true
 }
 
