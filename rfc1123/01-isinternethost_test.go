@@ -10,7 +10,7 @@ package rfc1123
 import "testing"
 
 func TestIsInternetHost(t *testing.T) {
-	fn := "sisimai/rfc1123.IsInternetHost"
+	fn := "rfc1123.IsInternetHost"
 	cx := 0
 
 	hostnames0 := []string{

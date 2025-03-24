@@ -10,7 +10,7 @@ package rfc1123
 import "testing"
 
 func TestFind(t *testing.T) {
-	fn := "sisimai/rfc1123.Find"
+	fn := "rfc1123.Find"
 	cx := 0
 	ae := []string{
 		"<neko@example.jp>: host neko.example.jp[192.0.2.2] said: 550 5.7.1 This message was not accepted due to domain (libsisimai.org) owner DMARC policy",

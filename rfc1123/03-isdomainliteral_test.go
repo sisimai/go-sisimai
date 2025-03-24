@@ -10,7 +10,7 @@ package rfc1123
 import "testing"
 
 func TestIsDomainLiteral(t *testing.T) {
-	fn := "sisimai/rfc1123.IsDomainLiteral"
+	fn := "rfc1123.IsDomainLiteral"
 	cx := 0
 	ae := []struct {testname string; argument string; expected bool}{
 		{"", "", false},
