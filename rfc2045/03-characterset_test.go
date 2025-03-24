@@ -10,7 +10,7 @@ package rfc2045
 import "testing"
 
 func TestCharacterSet(t *testing.T) {
-	fn := "sisimai/rfc2045.CharacterSet"
+	fn := "rfc2045.CharacterSet"
 	cx := 0
 	ae := []struct {head string; char string}{
 		{"=?UTF-8?B?6YGT57ax44OL44Oj44O8?=", "UTF-8"},

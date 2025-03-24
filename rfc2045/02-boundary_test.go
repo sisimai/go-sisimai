@@ -11,7 +11,7 @@ import "testing"
 import "strings"
 
 func TestBoundary(t *testing.T) {
-	fn := "sisimai/rfc2045.Boundary"
+	fn := "rfc2045.Boundary"
 	cx := 0
 	ae := []string{
 		`multipart/report; boundary="000000000000288e03056cdb87e8"; report-type=delivery-status`,
