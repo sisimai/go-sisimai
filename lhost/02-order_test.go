@@ -10,7 +10,7 @@ package lhost
 import "testing"
 
 func TestOrderBySubject(t *testing.T) {
-	fn := "sisimai/lhost.OrderBySubject"
+	fn := "lhost.OrderBySubject"
 	cx := 0
 	ae := []string{
 		"Undeliverable Mail",

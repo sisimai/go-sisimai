@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire65(t *testing.T) {
 	en := "Zoho"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-zoho-01", "lhost-zoho-02", "lhost-zoho-03", "lhost-zoho-04", "lhost-zoho-05", 
 	}

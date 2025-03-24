@@ -235,7 +235,7 @@ func init() {
 			} else {
 				// The error message includes any of patterns defined in the variable avobe
 				if moji.Aligned(e.Diagnosis, onholdpair) {
-					// Need to be matched with error message pattens defined in sisimai/reason/*
+					// Need to be matched with error message pattens defined in reason/*
 					e.Reason = "onhold"
 
 				} else {

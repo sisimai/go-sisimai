@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire20(t *testing.T) {
 	en := "Courier"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-courier-01", "lhost-courier-02", "lhost-courier-03", "lhost-courier-04", 
 	}

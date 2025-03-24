@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire43(t *testing.T) {
 	en := "mFILTER"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-mfilter-01", "lhost-mfilter-02", "lhost-mfilter-03",
 	}

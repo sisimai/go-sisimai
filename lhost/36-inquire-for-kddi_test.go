@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire36(t *testing.T) {
 	en := "KDDI"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-kddi-01", "lhost-kddi-02", "lhost-kddi-03", 
 	}

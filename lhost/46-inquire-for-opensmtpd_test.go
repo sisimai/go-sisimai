@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire46(t *testing.T) {
 	en := "OpenSMTPD"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-opensmtpd-01", "lhost-opensmtpd-02", "lhost-opensmtpd-03", "lhost-opensmtpd-04",
 		"lhost-opensmtpd-05", "lhost-opensmtpd-06", "lhost-opensmtpd-10", "lhost-opensmtpd-11",

@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire25(t *testing.T) {
 	en := "Exchange2007"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-exchange2007-01", "lhost-exchange2007-02", "lhost-exchange2007-03",
 		"lhost-exchange2007-04", "lhost-exchange2007-05", "lhost-exchange2007-06",

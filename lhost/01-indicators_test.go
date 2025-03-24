@@ -10,7 +10,7 @@ package lhost
 import "testing"
 
 func TestIndicators(t *testing.T) {
-	fn := "sisimai/lhost.Indicators"
+	fn := "lhost.Indicators"
 	cv := Indicators
 	cx := 0
 
