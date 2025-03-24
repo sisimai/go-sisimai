@@ -12,7 +12,7 @@ import "strings"
 import "net/mail"
 
 func TestDate(t *testing.T) {
-	fn := "sisimai/rfc5322.Date"
+	fn := "rfc5322.Date"
 	cx := 0
 	ae := []string{
 		"Sun, 24 Jun 2018 06:28:11 +0200 (CEST)",

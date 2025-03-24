@@ -11,7 +11,7 @@ import "testing"
 import "strings"
 
 func TestPart(t *testing.T) {
-	fn := "sisimai/rfc5322.Part"
+	fn := "rfc5322.Part"
 	cx := 0
 	ae := `
 This is a MIME-encapsulated message

@@ -10,7 +10,7 @@ package rfc5322
 import "testing"
 
 func TestReceived(t *testing.T) {
-	fn := "sisimai/rfc5322.Received"
+	fn := "rfc5322.Received"
 	cx := 0
 	ae := []string{
 		"from mx.example.org (c182128.example.net [192.0.2.128]) by mx.example.jp (8.14.4/8.14.4) with ESMTP id oBB3JxRJ022484 for <shironeko@example.jp>; Sat, 11 Dec 2010 12:20:00 +0900 (JST)",
