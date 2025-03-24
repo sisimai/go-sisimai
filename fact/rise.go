@@ -256,7 +256,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 			break DIAGNOSTICTYPE
 		}
 
-		// Set other values returned from sisimai/message.Rise()
+		// Set other values returned from message.Rise()
 		addrs["recipient"] = [3]string{e.Recipient, "", ""}
 		piece["subject"]   = strings.ReplaceAll(rfc822data["subject"][0], "\r", "")
 		if command.Test(e.Command) { piece["command"] = e.Command }

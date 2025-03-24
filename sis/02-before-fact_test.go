@@ -13,7 +13,7 @@ import "testing"
 // Headers map[string][]string // Email headers
 // Payload string              // Email body
 // RFC822  map[string][]string // Email headers of the original message
-// Digest  []DeliveryMatter    // Decoded results returned from sisimai/lhost/*
+// Digest  []DeliveryMatter    // Decoded results returned from lhost/*
 // Catch   interface{}         // Any data structure returned by the callback function
 // Errors  []NotDecoded        // All the errors and warnings
 func TestBeforeFact(t *testing.T) {

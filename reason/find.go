@@ -69,7 +69,7 @@ func anotherone(fo *sis.Fact) string {
 	if trytomatch == true {
 		// The value of the reason is not decided yet by the fo.DeliveryStatus
 		for _, e := range classorder[1] {
-			// Trying to match with other patterns in sisimai/reason/why-*.go
+			// Trying to match with other patterns in reason/why-*.go
 			if IncludedIn[e](issuedcode) == true { return strings.ToLower(e) }
 		}
 		if reasontext != "" { return reasontext }

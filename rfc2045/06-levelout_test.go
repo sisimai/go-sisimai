@@ -10,7 +10,7 @@ package rfc2045
 import "testing"
 
 func TestLevelOut(t *testing.T) {
-	fn := "sisimai/rfc2045.levelout"
+	fn := "rfc2045.levelout"
 	cx := 0
 	ct := `multipart/mixed; boundary="b0Nvs+XKfKLLRaP/Qo8jZhQPoiqeWi3KWPXMgw=="`
 	ae := `--b0Nvs+XKfKLLRaP/Qo8jZhQPoiqeWi3KWPXMgw==

@@ -10,7 +10,7 @@ package reason
 import "testing"
 
 func TestProbesInto(t *testing.T) {
-	fn := "sisimai/reason.ProbesInto"
+	fn := "reason.ProbesInto"
 	cx := 0
 
 	for cr := range Availables {

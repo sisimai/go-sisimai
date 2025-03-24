@@ -10,7 +10,7 @@ package reason
 import "testing"
 
 func TestFind(t *testing.T) {
-	fn := "sisimai/reason.Find"
+	fn := "reason.Find"
 	cx := 0
 	cv := Find(nil)
 
@@ -19,7 +19,7 @@ func TestFind(t *testing.T) {
 }
 
 func TestAnotherOne(t *testing.T) {
-	fn := "sisimai/reason.anotherone"
+	fn := "reason.anotherone"
 	cx := 0
 	cv := anotherone(nil)
 

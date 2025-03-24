@@ -12,7 +12,7 @@ import "testing"
 import "strings"
 
 func TestTidy(t *testing.T) {
-	fn := "sisimai/message.tidy"
+	fn := "message.tidy"
 	cx := 0
 	ae := `This is a MIME-encapsulated message
 

@@ -11,7 +11,7 @@ import "testing"
 import "strings"
 
 func TestHairCut(t *testing.T) {
-	fn := "sisimai/rfc2045.haircut"
+	fn := "rfc2045.haircut"
 	cx := 0
 	ae := `Content-Description: "error-message"
 Content-Type: text/plain; charset="UTF-8"

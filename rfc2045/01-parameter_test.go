@@ -10,7 +10,7 @@ package rfc2045
 import "testing"
 
 func TestParameter(t *testing.T) {
-	fn := "sisimai/rfc2045.Parameter"
+	fn := "rfc2045.Parameter"
 	cx := 0
 	ae := []struct {head string; attr string; value string}{
 		{"text/plain charset=iso-2022-jp", "charset", "iso-2022-jp"},

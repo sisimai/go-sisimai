@@ -16,7 +16,7 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire(t *testing.T) {
-	fn := "sisimai/rfc3464.Inquire"
+	fn := "rfc3464.Inquire"
 	ae := []string{
 		"rfc3464-01", "rfc3464-03", "rfc3464-04", "rfc3464-06", "rfc3464-07", "rfc3464-08", "rfc3464-09",
 		"rfc3464-10", "rfc3464-26", "rfc3464-28", "rfc3464-29", "rfc3464-34", "rfc3464-40", "rfc3464-43",

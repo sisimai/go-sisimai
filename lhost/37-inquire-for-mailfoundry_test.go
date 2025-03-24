@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire37(t *testing.T) {
 	en := "MailFoundry"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-mailfoundry-01", "lhost-mailfoundry-02", 
 	}

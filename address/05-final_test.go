@@ -10,7 +10,7 @@ package address
 import "testing"
 
 func TestFinal(t *testing.T) {
-	fn := "sisimai/address.Final()"
+	fn := "address.Final()"
 	cx := 0
 	ae := []struct{testname string; argument string; expected string}{
 		{"", "", ""},

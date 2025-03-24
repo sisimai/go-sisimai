@@ -57,7 +57,7 @@ var p5issue574 = []string{
 }
 
 func TestCode(t *testing.T) {
-	fn := "sisimai/smtp/status.Code"
+	fn := "smtp/status.Code"
 	cx := 0
 
 	for _, e := range ReasonList {
@@ -82,7 +82,7 @@ func TestCode(t *testing.T) {
 }
 
 func TestName(t *testing.T) {
-	fn := "sisimai/smtp/status.Name"
+	fn := "smtp/status.Name"
 	cx := 0
 
 	for _, e := range StatusList {
@@ -94,7 +94,7 @@ func TestName(t *testing.T) {
 }
 
 func TestTest(t *testing.T) {
-	fn := "sisimai/smtp/status.Test"
+	fn := "smtp/status.Test"
 	cx := 0
 	ae := []string{
 		"3.14", "9.99", "5.0.3.2", "1.0.0", "3.1.4", "6.7.8", "5.-1.0", "5.12.0", "5.2.-2",
@@ -112,7 +112,7 @@ func TestTest(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
-	fn := "sisimai/smtp/status.Find"
+	fn := "smtp/status.Find"
 	cx := 0
 
 	for _, e := range SMTPErrors {
@@ -135,7 +135,7 @@ func TestFind(t *testing.T) {
 }
 
 func TestPrefer(t *testing.T) {
-	fn := "sisimai/smtp/status.Prefer"
+	fn := "smtp/status.Prefer"
 	ae := []struct {lhs string; rhs string; rep string; exp string}{
 		{"", "", "", ""},
 		{"5.2.2", "", "", "5.2.2"},

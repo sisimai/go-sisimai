@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire32(t *testing.T) {
 	en := "GoogleGroups"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-googlegroups-01", "lhost-googlegroups-02", "lhost-googlegroups-03", "lhost-googlegroups-04",
 		"lhost-googlegroups-05", "lhost-googlegroups-06", "lhost-googlegroups-07", "lhost-googlegroups-08",

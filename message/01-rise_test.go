@@ -22,7 +22,7 @@ import "libsisimai.org/sisimai/smtp/command"
 import sisimbox "libsisimai.org/sisimai/mail"
 
 func TestRise(t *testing.T) {
-	fn := "sisimai/message.Rise"
+	fn := "message.Rise"
 	fs := "BeforeFact"
 	cx := 0
 	en := 0
@@ -48,7 +48,7 @@ func TestRise(t *testing.T) {
 	}
 
 	eo, _ := sisimbox.Rise(ae)
-	cx++; if eo.Size == 0 { t.Errorf("sisimai/mail.Rise(%s) returns empty string", ae) }
+	cx++; if eo.Size == 0 { t.Errorf("mail.Rise(%s) returns empty string", ae) }
 
 	for {
 		if ef, ee := eo.Read(); ef != nil || ee == nil {

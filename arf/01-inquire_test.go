@@ -21,7 +21,7 @@ var testfiles = []string{
 }
 
 func TestIsARF(t *testing.T) {
-	fn := "sisimai/arf.isARF"
+	fn := "arf.isARF"
 	cx := 0
 	cx++; if isARF(nil) == true { t.Errorf("%s(nil) returns true", fn) }
 
@@ -41,7 +41,7 @@ func TestIsARF(t *testing.T) {
 }
 
 func TestInquire(t *testing.T) {
-	fn := "sisimai/arf.Inquire"
+	fn := "arf.Inquire"
 	cx := 0
 
 	cv := Inquire(nil) 

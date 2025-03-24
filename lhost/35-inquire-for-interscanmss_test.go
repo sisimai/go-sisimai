@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire35(t *testing.T) {
 	en := "InterScanMSS"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-interscanmss-01", "lhost-interscanmss-02", "lhost-interscanmss-03", 
 	}

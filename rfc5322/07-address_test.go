@@ -58,7 +58,7 @@ var TestEmailAddrs = []struct {testname string; argument string; expected string
 }
 
 func TestIsEmailAddress(t *testing.T) {
-	fn := "sisimai/rfc5322.IsEmailAddress"
+	fn := "rfc5322.IsEmailAddress"
 	cx := 0
 
 	for _, e := range TestEmailAddrs {
@@ -91,7 +91,7 @@ func TestIsEmailAddress(t *testing.T) {
 }
 
 func TestIsQuotedAddress(t *testing.T) {
-	fn := "sisimai/rfc5322.IsQuotedAddress"
+	fn := "rfc5322.IsQuotedAddress"
 	cx := 0
 	ae := []struct {testname string; argument string; expected bool}{
 		{"", `"neko@example@jp"@example.org`, true},
@@ -110,7 +110,7 @@ func TestIsQuotedAddress(t *testing.T) {
 }
 
 func TestIsComment(t *testing.T) {
-	fn := "sisimai/rfc5322.IsComment"
+	fn := "rfc5322.IsComment"
 	cx := 0
 	ae := []struct {testname string; argument string; expected bool}{
 		{"", "", false},

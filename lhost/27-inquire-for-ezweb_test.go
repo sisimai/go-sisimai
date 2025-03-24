@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire27(t *testing.T) {
 	en := "EZweb"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-ezweb-01", "lhost-ezweb-02", "lhost-ezweb-03", "lhost-ezweb-04", "lhost-ezweb-05",
 		"lhost-ezweb-07", "lhost-ezweb-08", 

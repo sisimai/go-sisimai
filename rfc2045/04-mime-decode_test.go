@@ -11,7 +11,7 @@ import "testing"
 import "strings"
 
 func TestDecodeB(t *testing.T) {
-	fn := "sisimai/rfc2045.DecodeB"
+	fn := "rfc2045.DecodeB"
 	cx := 0
 	be := []string{"44OL44Oj44O844Oz", "6YGT57ax"}
 	jp := []string{"ニャーン", "道綱"}
@@ -29,7 +29,7 @@ func TestDecodeB(t *testing.T) {
 }
 
 func TestDecodeQ(t *testing.T) {
-	fn := "sisimai/rfc2045.DecodeQ"
+	fn := "rfc2045.DecodeQ"
 	cx := 0
 	be := []string{"=E3=83=8B=E3=83=A3=E3=83=BC=E3=83=B3", "=E9=81=93=E7=B6=B1"}
 	jp := []string{"ニャーン", "道綱"}

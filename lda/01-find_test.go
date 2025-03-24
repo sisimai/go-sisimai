@@ -11,7 +11,7 @@ import "testing"
 import "libsisimai.org/sisimai/sis"
 
 func TestFind(t *testing.T) {
-	fn := "sisimai/lda.Find"
+	fn := "lda.Find"
 	cx := 0
 	ae := [][]string{
 		[]string{`x-unix; procmail: Couldn't create "/var/spool/mail/neko" id:`, "DATA"},

@@ -21,7 +21,7 @@ var ae = []string{
 }
 
 func TestAvailables(t *testing.T) {
-	fn := "sisimai/reason.Availables"
+	fn := "reason.Availables"
 	cx := 0
 	cv := Availables
 
@@ -41,7 +41,7 @@ func TestAvailables(t *testing.T) {
 }
 
 func TestIsExplicit(t *testing.T) {
-	fn := "sisimai/reason.IsExplicit"
+	fn := "reason.IsExplicit"
 	cx := 0
 
 	for _, e := range ae {

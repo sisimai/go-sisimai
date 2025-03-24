@@ -11,7 +11,7 @@ import "testing"
 import "libsisimai.org/sisimai/sis"
 
 func TestInquireFor(t *testing.T) {
-	fn := "sisimai/lhost.InquireFor"
+	fn := "lhost.InquireFor"
 	cx := 0
 	ae := []string{
 		"Activehunter", "AmazonSES", "ApacheJames", "Biglobe", "Courier", "Domino", "DragonFly", "EZweb",

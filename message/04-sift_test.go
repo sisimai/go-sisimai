@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/sis"
 import "libsisimai.org/sisimai/rfc5322"
 
 func TestSift(t *testing.T) {
-	fn := "sisimai/message.sift"
+	fn := "message.sift"
 	fs := "sis.BeforeFact"
 	ae := "../set-of-emails/maildir/bsd/lhost-postfix-55.eml"
 	cx := 0

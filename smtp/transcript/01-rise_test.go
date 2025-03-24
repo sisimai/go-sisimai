@@ -16,7 +16,7 @@ import "libsisimai.org/sisimai/smtp/reply"
 import "libsisimai.org/sisimai/smtp/status"
 
 func TestRise(t *testing.T) {
-	fn := "sisimai/smtp/transcript.Rise"
+	fn := "smtp/transcript.Rise"
 	ef := "../../set-of-emails/maildir/bsd/lhost-postfix-75.eml"
 	cc := []string{"CONN", "HELO", "EHLO", "AUTH", "MAIL", "RCPT", "DATA", "QUIT", "RSET", "XFORWARD"}
 	cx := 0

@@ -8,7 +8,7 @@
 
 package sis
 
-// sisimai/message.Rise() returns BeforeFact{}
+// message.Rise() returns BeforeFact{}
 type BeforeFact struct {
 	Sender  string              // Unix FROM line ("From ")
 	Headers map[string][]string // Email headers of the bounce mail

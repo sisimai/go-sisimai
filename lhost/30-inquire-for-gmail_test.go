@@ -17,7 +17,7 @@ import "libsisimai.org/sisimai/rfc5322"
 
 func TestInquire30(t *testing.T) {
 	en := "Gmail"
-	fn := "sisimai/lhost.InquireFor[" + en + "]"
+	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
 		"lhost-gmail-01", "lhost-gmail-03", "lhost-gmail-04", "lhost-gmail-05", "lhost-gmail-06",
 		"lhost-gmail-07", "lhost-gmail-08", "lhost-gmail-09", "lhost-gmail-10", "lhost-gmail-11",

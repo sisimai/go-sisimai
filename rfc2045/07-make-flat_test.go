@@ -11,7 +11,7 @@ import "testing"
 import "strings"
 
 func TestMakeFlat(t *testing.T) {
-	fn := "sisimai/rfc2045.MakeFlat"
+	fn := "rfc2045.MakeFlat"
 	cx := 0
 	ct := `multipart/report; report-type=delivery-status; boundary="NekoNyaan--------1"` 
 	ae := `--NekoNyaan--------1

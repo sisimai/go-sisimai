@@ -40,7 +40,7 @@ var PermErrors = []string{
 };
 
 func TestIsPermanent(t *testing.T) {
-	fn := "sisimai/smtp/failure.IsPermanent"
+	fn := "smtp/failure.IsPermanent"
 	cx := 0
 
 	for _, e := range PermErrors {
@@ -55,7 +55,7 @@ func TestIsPermanent(t *testing.T) {
 }
 
 func TestIsTemporary(t *testing.T) {
-	fn := "sisimai/smtp/failure.IsTemporary"
+	fn := "smtp/failure.IsTemporary"
 	cx := 0
 
 	for _, e := range TempErrors {
@@ -70,7 +70,7 @@ func TestIsTemporary(t *testing.T) {
 }
 
 func TestIsHardBounce(t *testing.T) {
-	fn := "sisimai/smtp/failure.IsHardBounce"
+	fn := "smtp/failure.IsHardBounce"
 	cx := 0
 
 	for _, e := range HardBounce {
@@ -82,7 +82,7 @@ func TestIsHardBounce(t *testing.T) {
 }
 
 func TestIsSoftBounce(t *testing.T) {
-	fn := "sisimai/smtp/failure.IsSoftBounce"
+	fn := "smtp/failure.IsSoftBounce"
 	cx := 0
 
 	for _, e := range SoftBounce {

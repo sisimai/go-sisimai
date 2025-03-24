@@ -52,7 +52,7 @@ var IsntErrors = []string{
 }
 
 func TestTest(t *testing.T) {
-	fn := "sisimai/smtp/command.Test"
+	fn := "smtp/command.Test"
 	cx := 0
 
 	for e := range SMTPErrors {
@@ -67,7 +67,7 @@ func TestTest(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
-	fn := "sisimai/smtp/command.Find"
+	fn := "smtp/command.Find"
 	cx := 0
 
 	for e := range SMTPErrors {

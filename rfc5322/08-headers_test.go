@@ -14,7 +14,7 @@ import "net/mail"
 import "os"
 
 func TestHeaders(t *testing.T) {
-	fn := "sisimai/rfc5322.Headers"
+	fn := "rfc5322.Headers"
 	cx := 0
 	ae := []string{
 		"../set-of-emails/maildir/bsd/lhost-opensmtpd-17.eml",
