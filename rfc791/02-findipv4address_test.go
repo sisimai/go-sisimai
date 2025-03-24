@@ -10,7 +10,7 @@ package rfc791
 import "testing"
 
 func TestFindIPv4Address(t *testing.T) {
-	fn := "sisimai/rfc791.FindIPv4Address"
+	fn := "rfc791.FindIPv4Address"
 	cx := 0
 	ae := []struct {text string; expected string}{
 		{"host smtp.example.jp 127.0.0.4 SMTP error from remote mail server", "127.0.0.4"},

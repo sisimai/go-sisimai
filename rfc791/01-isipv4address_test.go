@@ -10,7 +10,7 @@ package rfc791
 import "testing"
 
 func TestIsIPv4Address(t *testing.T) {
-	fn := "sisimai/rfc791.IsIPv4Address"
+	fn := "rfc791.IsIPv4Address"
 	cx := 0
 	ae := []struct {text string; expected bool}{
 		{"0.0.0.0", true},
