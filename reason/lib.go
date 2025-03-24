@@ -10,7 +10,7 @@
 package reason
 import "libsisimai.org/sisimai/sis"
 
-// Keep each function (pointer) defined in sisimai/reason/*.go to check/detect the bounce reason.
+// Keep each function (pointer) defined in reason/*.go to check/detect the bounce reason.
 // % grep '^func init' ./reason/why-*.go | wc -l
 var IncludedIn = make(map[string]func(string) bool, 36)
 var ProbesInto = make(map[string]func(*sis.Fact) bool, 36)

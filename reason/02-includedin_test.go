@@ -11,7 +11,7 @@ import "testing"
 import "strings"
 
 func TestIncludedIn(t *testing.T) {
-	fn := "sisimai/reason.IncludedIn"
+	fn := "reason.IncludedIn"
 	ae := map[string][]string{
 		"AuthFailure":    []string{
 			`550 5.1.0 192.0.2.222 is not allowed to send from <example.net> per it's SPF Record`,
