@@ -11,7 +11,7 @@ package address
 import "testing"
 
 func TestExpandVERP(t *testing.T) {
-	fn := "sisimai/address.ExpandVERP()"
+	fn := "address.ExpandVERP()"
 	cx := 0
 	ae := []struct {testname string; argument string; expected string}{
 		{"", "cat+neko=example.jp@example.org", "neko@example.jp"},
@@ -37,7 +37,7 @@ func TestExpandVERP(t *testing.T) {
 }
 
 func TestExpandAlias(t *testing.T) {
-	fn := "sisimai/addres.ExpandAlias()"
+	fn := "addres.ExpandAlias()"
 	cx := 0
 	ae := []struct{testname string; argument string; expected string}{
 		{"", "", ""},

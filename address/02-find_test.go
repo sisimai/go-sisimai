@@ -10,7 +10,7 @@ package address
 import "testing"
 
 func TestFind(t *testing.T) {
-	fn := "sisimai/address.Find()"
+	fn := "address.Find()"
 	cx := 0
 
 	for _, e := range TestEmailAddrs {
@@ -42,7 +42,7 @@ func TestFind(t *testing.T) {
 }
 
 func TestS3S4(t *testing.T) {
-	fn := "sisimai/address.S3S4()"
+	fn := "address.S3S4()"
 	cx := 0
 
 	for _, e := range TestEmailAddrs {
@@ -67,3 +67,4 @@ func TestS3S4(t *testing.T) {
 	}
 	t.Logf("The number of tests = %d", cx)
 }
+

@@ -10,7 +10,7 @@ package address
 import "testing"
 
 func TestUndisclosed(t *testing.T) {
-	fn := "sisimai/address.Undisclosed()"
+	fn := "address.Undisclosed()"
 	cx := 0
 	ae := []struct {testname string; argument bool; expected string}{
 		{"",  true, "undisclosed-recipient-in-headers@libsisimai.org.invalid"},

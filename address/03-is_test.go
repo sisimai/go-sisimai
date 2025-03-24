@@ -10,7 +10,7 @@ package address
 import "testing"
 
 func TestIsIncluded(t *testing.T) {
-	fn := "sisimai/address.IsIncluded"
+	fn := "address.IsIncluded"
 	cx := 0
 	ae := []struct {testname string; argument string; expected bool}{
 		{"", "<neko@example.jp>", true},
@@ -33,7 +33,7 @@ func TestIsIncluded(t *testing.T) {
 }
 
 func TestIsMailerDaemon(t *testing.T) {
-	fn := "sisimai/address.IsMailerDaemon"
+	fn := "address.IsMailerDaemon"
 	cx := 0
 
 	for _, e := range TestPostmaster {
