@@ -39,7 +39,7 @@ var LowerList = []string{
 }
 
 func TestLabel(t *testing.T) {
-	fn := "sisimai/rfc1894.Label"
+	fn := "rfc1894.Label"
 	cx := 0
 
 	for j, e := range FieldList {
@@ -50,7 +50,7 @@ func TestLabel(t *testing.T) {
 }
 
 func TestMatch(t *testing.T) {
-	fn := "sisimai/rfc1894.Match"
+	fn := "rfc1894.Match"
 	cx := 0
 
 	for _, e := range FieldList {
@@ -64,7 +64,7 @@ func TestMatch(t *testing.T) {
 }
 
 func TestField(t *testing.T) {
-	fn := "sisimai/rfc1894.Field"
+	fn := "rfc1894.Field"
 	cx := 0
 
 	for _, e := range FieldList {
