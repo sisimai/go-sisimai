@@ -110,7 +110,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 			emailthing, nyaan := sisimbox.Rise(ef)
 			cx++; if nyaan != nil {
-				// No sample email specified in sisimai/fact/*-test.go
+				// No sample email specified in fact/*-test.go
 				t.Errorf("%s failed to load the sample email: %s", ee, nyaan)
 
 			} else {
@@ -176,7 +176,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 							// DecodedBy
 							altdecoder := enginename
 							if len(Alternates[fs.DecodedBy]) > 0 {
-								// The MTA module in sisimai/lhost is a removed module
+								// The MTA module in lhost/ is a removed module
 								// https://github.com/sisimai/go-sisimai/issues/7
 								for _, as := range Alternates[fs.DecodedBy] {
 									if as == enginename { altdecoder = fs.DecodedBy; break }

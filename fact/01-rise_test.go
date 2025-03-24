@@ -10,7 +10,7 @@ package fact
 import "testing"
 
 func TestRise(t *testing.T) {
-	fn := "sisimai/fact.Rise"
+	fn := "fact.Rise"
 	fs := "sis.NotDecoded"
 	cx := 0
 
