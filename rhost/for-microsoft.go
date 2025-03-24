@@ -332,7 +332,7 @@ func init() {
 				[4]string{"5.4.6",  "", "", "routing loop detected"},
 				[4]string{"5.4.14", "", "", "routing loop detected"},
 
-				// Imported from sisimai/lhost/office365
+				// Imported from lhost/office365
 				[4]string{"4.4.312", "", "", "dns query failed"},  // [Message=InfoNoRecords]
 				[4]string{"5.4.312", "", "", "dns query failed"},  // [Message=InfoNoRecords]
 			},
@@ -753,7 +753,7 @@ func init() {
 				// Previous versions of Exchange Server ------------------------------------------------
 				[4]string{"5.1.2", "", "", "invalid x.400 address"},
 
-				// Imported from sisimai/lhost/office365
+				// Imported from lhost/office365
 				[4]string{"5.1.351", "", "", "remote server returned unknown recipient or mailbox unavailable"},
 			},
 		}

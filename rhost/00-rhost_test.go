@@ -90,7 +90,7 @@ var TestRhosts = []struct {lhost string; rhost string; destination string; expec
 }
 
 func TestName(t *testing.T) {
-	fn := "sisimai/rhost.Name"
+	fn := "rhost.Name"
 	cv := Name(nil)
 	cx := 0
 
@@ -108,7 +108,7 @@ func TestName(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
-	fn := "sisimai/rhost.Find"
+	fn := "rhost.Find"
 	cv := Name(nil)
 	cx := 0
 
