@@ -18,7 +18,7 @@ var FieldIndex = []string{
 
 	// Optional Fields Appearing Once
 	// The following header fields are optional and MUST NOT appear more than once:
-	// - "Reporting-MTA" is defined in sisimai/rfc1894/lib.go FIELDINDEX()
+	// - "Reporting-MTA" is defined in rfc1894/lib.go FIELDINDEX()
 	"Original-Envelope-Id", "Original-Mail-From", "Arrival-Date", "Source-IP", "Incidents",
 
 	// Optional Fields Appearing Multiple Times
