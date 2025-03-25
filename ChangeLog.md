@@ -8,6 +8,7 @@ v5.2.1p1
 - release: ""
 - version: ""
 - changes:
+  - sisimai can be built with Go 1.24
   - Performance has improved by approximately 1.7x compared to v5.2.1.
     - Reduce struct and string copies, and the return types of several functions have been modified
       to return pointers to strings and structs #76 #80 #83 #84 #85 #86 #87 
