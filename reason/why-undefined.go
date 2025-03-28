@@ -7,7 +7,7 @@
 //  \___/|_| |_|\__,_|\___|_| |_|_| |_|\___|\__,_|
 
 package reason
-import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/v5/sis"
 
 func init() {
 	IncludedIn["Undefined"] = func(argv1 string) bool { return false }

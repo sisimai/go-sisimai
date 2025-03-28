@@ -8,7 +8,7 @@ package rhost
 //   | |  __/\__ \ |_ / /| |  | | | | (_) \__ \ |_ 
 //   |_|\___||___/\__/_/ |_|  |_| |_|\___/|___/\__|
 import "testing"
-import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/v5/sis"
 
 var TestRhosts = []struct {lhost string; rhost string; destination string; expected string}{
 	{"mx.example.com", "mx2.mail.aol.com", "aol.com", "Aol"},

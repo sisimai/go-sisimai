@@ -8,7 +8,7 @@
 // Package "reason" provides functions for detecting the bounce reason by matching many error message
 // patterns defined in why-*.go files
 package reason
-import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/v5/sis"
 
 // Keep each function (pointer) defined in reason/*.go to check/detect the bounce reason.
 // % grep '^func init' ./reason/why-*.go | wc -l

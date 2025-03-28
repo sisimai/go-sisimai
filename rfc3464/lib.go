@@ -11,16 +11,16 @@
 // https://datatracker.ietf.org/doc/html/rfc3464
 package rfc3464
 import "strings"
-import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/lhost"
-import "libsisimai.org/sisimai/address"
-import "libsisimai.org/sisimai/rfc1894"
-import "libsisimai.org/sisimai/rfc2045"
-import "libsisimai.org/sisimai/rfc5322"
-import "libsisimai.org/sisimai/smtp/reply"
-import "libsisimai.org/sisimai/smtp/status"
-import "libsisimai.org/sisimai/smtp/command"
+import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/lhost"
+import "libsisimai.org/sisimai/v5/address"
+import "libsisimai.org/sisimai/v5/rfc1894"
+import "libsisimai.org/sisimai/v5/rfc2045"
+import "libsisimai.org/sisimai/v5/rfc5322"
+import "libsisimai.org/sisimai/v5/smtp/reply"
+import "libsisimai.org/sisimai/v5/smtp/status"
+import "libsisimai.org/sisimai/v5/smtp/command"
 
 // Inquire decodes a bounce message that have fields defined in RFC3464.
 //   Arguments:

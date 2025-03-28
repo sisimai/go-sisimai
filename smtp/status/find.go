@@ -11,8 +11,8 @@ package status
 import "fmt"
 import "sort"
 import "strings"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/rfc791"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/rfc791"
 
 // Find returns a delivery status code found from the given string.
 //   Arguments:

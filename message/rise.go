@@ -13,9 +13,9 @@ import "io"
 import "fmt"
 import "strings"
 import "net/mail"
-import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/rfc5322"
 
 var pseudofrom = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};

@@ -7,7 +7,7 @@
 // |_|  \___|\___|\__,_|_.__/ \__,_|\___|_|\_\
 
 package reason
-import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/v5/sis"
 
 func init() {
 	IncludedIn["Feedback"] = func(argv1 string) bool { return false }

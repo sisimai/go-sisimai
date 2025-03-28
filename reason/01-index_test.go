@@ -9,7 +9,7 @@ package reason
 //   |_|\___||___/\__/_/ |_|  \___|\__,_|___/\___/|_| |_|
 import "testing"
 import "strings"
-import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/v5/moji"
 
 var ae = []string{
 	"authfailure", "badreputation", "blocked", "contenterror", "exceedlimit", "expired", "failedstarttls",

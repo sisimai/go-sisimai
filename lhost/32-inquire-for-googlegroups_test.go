@@ -12,8 +12,8 @@ import "os"
 import "io"
 import "strings"
 import "net/mail"
-import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/rfc5322"
 
 func TestInquire32(t *testing.T) {
 	en := "GoogleGroups"

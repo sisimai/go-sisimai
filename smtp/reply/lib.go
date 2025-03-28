@@ -91,7 +91,7 @@ package reply
 //
 import "strconv"
 import "strings"
-import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/v5/moji"
 
 var replycode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "334", "354"}
 var replycode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "458", "459"}

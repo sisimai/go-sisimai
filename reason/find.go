@@ -7,8 +7,8 @@
 
 package reason
 import "strings"
-import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/smtp/status"
+import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/smtp/status"
 
 // Find detects and returns the bounce reason.
 //   Arguments:

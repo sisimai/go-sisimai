@@ -8,8 +8,8 @@
 
 package rfc5322
 import "strings"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/rfc791"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/rfc791"
 
 // Received convert Received headers to a structured data.
 //   Arguments:

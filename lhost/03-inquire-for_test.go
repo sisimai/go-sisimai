@@ -8,7 +8,7 @@ package lhost
 //   | |  __/\__ \ |_ / / | | | | | (_) \__ \ |_ 
 //   |_|\___||___/\__/_/  |_|_| |_|\___/|___/\__|
 import "testing"
-import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/v5/sis"
 
 func TestInquireFor(t *testing.T) {
 	fn := "lhost.InquireFor"

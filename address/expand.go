@@ -8,7 +8,7 @@
 
 package address
 import "strings"
-import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/v5/rfc5322"
 
 // ExpandVERP gets the original recipient address from a VERP address.
 //   Arguments:

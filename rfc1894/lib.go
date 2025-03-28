@@ -10,7 +10,7 @@
 // Status Notifications https://datatracker.ietf.org/doc/html/rfc1894
 package rfc1894
 import "strings"
-import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/v5/moji"
 
 var FieldIndex = []string{
 	"Action", "Arrival-Date", "Diagnostic-Code", "Final-Recipient", "Last-Attempt-Date",

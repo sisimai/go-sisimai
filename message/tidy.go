@@ -8,9 +8,9 @@
 
 package message
 import "strings"
-import "libsisimai.org/sisimai/rfc1894"
-import "libsisimai.org/sisimai/rfc5322"
-import "libsisimai.org/sisimai/rfc5965"
+import "libsisimai.org/sisimai/v5/rfc1894"
+import "libsisimai.org/sisimai/v5/rfc5322"
+import "libsisimai.org/sisimai/v5/rfc5965"
 
 var fieldtable = makefield(rfc1894.FieldIndex, rfc5322.FieldIndex, rfc5965.FieldIndex)
 var replacesas = map[string][][]string{

@@ -10,8 +10,8 @@
 // Package "smtp/failure" provides functions related to SMTP errors
 package failure
 import "strings"
-import "libsisimai.org/sisimai/smtp/reply"
-import "libsisimai.org/sisimai/smtp/status"
+import "libsisimai.org/sisimai/v5/smtp/reply"
+import "libsisimai.org/sisimai/v5/smtp/status"
 
 // IsPermanent returns true if the given string indicates a permanent error.
 //   Arguments:

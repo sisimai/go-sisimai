@@ -12,8 +12,8 @@ import "os"
 import "io"
 import "strings"
 import "net/mail"
-import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/rfc5322"
 
 var testfiles = []string{
 	"arf-01", "arf-02", "arf-11", "arf-12", "arf-14", "arf-15", "arf-16", "arf-17", "arf-18",
