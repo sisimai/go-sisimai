@@ -3,10 +3,10 @@ RELEASE NOTES for the Go version of Sisimai
 - releases: "https://github.com/sisimai/go-sisimai/releases"
 - document: "https://libsisimai.org/"
 
-v5.2.1p1
+v5.3.0
 ---------------------------------------------------------------------------------------------------
-- release: ""
-- version: ""
+- release: "Sat, 29 Mar 2025 05:13:32 +0900 (JST)"
+- version: "5.3.0"
 - changes:
   - **Corrected the completely and utterly broken module path.** The module path has been replaced
     with `libsisimai.org/sisimai/v5`. Thanks to @inboxsphere #96 #98
