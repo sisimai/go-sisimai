@@ -8,9 +8,9 @@
 
 package address
 import "strings"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/rfc1123"
-import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/rfc1123"
+import "libsisimai.org/sisimai/v5/rfc5322"
 
 // S3S4 runs like the ruleset 3 and 4 of /etc/sendmail.cf file.
 //   Arguments:

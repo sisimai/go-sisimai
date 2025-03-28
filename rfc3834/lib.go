@@ -11,11 +11,11 @@
 // Electronic Mail https://datatracker.ietf.org/doc/html/rfc3834
 package rfc3834
 import "strings"
-import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/rfc2045"
-import "libsisimai.org/sisimai/rfc5322"
-import "libsisimai.org/sisimai/address"
+import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/rfc2045"
+import "libsisimai.org/sisimai/v5/rfc5322"
+import "libsisimai.org/sisimai/v5/address"
 
 // Inquire() decodes a bounce message that includes a vacation message.
 //   Arguments:

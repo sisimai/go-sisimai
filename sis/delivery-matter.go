@@ -9,13 +9,13 @@
 
 package sis
 import "strings"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/rfc1894"
-import "libsisimai.org/sisimai/rfc1123"
-import "libsisimai.org/sisimai/rfc5322"
-import "libsisimai.org/sisimai/smtp/reply"
-import "libsisimai.org/sisimai/smtp/status"
-import "libsisimai.org/sisimai/smtp/command"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/rfc1894"
+import "libsisimai.org/sisimai/v5/rfc1123"
+import "libsisimai.org/sisimai/v5/rfc5322"
+import "libsisimai.org/sisimai/v5/smtp/reply"
+import "libsisimai.org/sisimai/v5/smtp/status"
+import "libsisimai.org/sisimai/v5/smtp/command"
 
 type DeliveryMatter struct {
 	Action       string     // The value of Action header

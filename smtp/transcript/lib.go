@@ -10,9 +10,9 @@
 // Package "smtp/transcript" provides functions related to SMTP transcript logs
 package transcript
 import "strings"
-import "libsisimai.org/sisimai/smtp/reply"
-import "libsisimai.org/sisimai/smtp/status"
-import "libsisimai.org/sisimai/smtp/command"
+import "libsisimai.org/sisimai/v5/smtp/reply"
+import "libsisimai.org/sisimai/v5/smtp/status"
+import "libsisimai.org/sisimai/v5/smtp/command"
 
 /* SMTP Transcript log is like the following ------------------------------------------------------
  Out: 220 mx22.example.com ESMTP MAIL SYSTEM

@@ -8,7 +8,7 @@ package lda
 //   | |  __/\__ \ |_ / / | |___| |_| / ___ \ 
 //   |_|\___||___/\__/_/  |_____|____/_/   \_\
 import "testing"
-import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/v5/sis"
 
 func TestFind(t *testing.T) {
 	fn := "lda.Find"

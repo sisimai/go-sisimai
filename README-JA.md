@@ -56,8 +56,8 @@ The key features of Sisimai
     * struct ([sisimai/sis.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go)
     * JSON ([`encoding/json`](https://pkg.go.dev/encoding/json)を使用)
 * __インストールも使用も簡単__
-  * `$ go get -u libsisimai.org/sisimai@latest`
-  * `import "libsisimai.org/sisimai"`
+  * `$ go get -u libsisimai.org/sisimai/v5@latest`
+  * `import "libsisimai.org/sisimai/v5"`
 * __高い解析精度__
   * [59種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
   * Feedback Loop(ARF)にも対応
@@ -90,8 +90,8 @@ $ cd ./sisimai
 $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
-$ go get -u libsisimai.org/sisimai@latest
-go: added libsisimai.org/sisimai v5.2.0
+$ go get -u libsisimai.org/sisimai/v5@latest
+go: added libsisimai.org/sisimai/v5 v5.2.0
 
 $ cat ./go.mod
 module example.com/sisimaicli
@@ -99,7 +99,7 @@ module example.com/sisimaicli
 go 1.20
 
 require (
-	libsisimai.org/sisimai v5.2.0 // indirect
+	libsisimai.org/sisimai/v5 v5.2.0 // indirect
 )
 ```
 
@@ -116,7 +116,7 @@ $ vi ./sisid.go
 package main
 import "os"
 import "fmt"
-import "libsisimai.org/sisimai"
+import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]
@@ -181,7 +181,7 @@ Basic usage
 ```go
 import "os"
 import "fmt"
-import "libsisimai.org/sisimai"
+import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
@@ -221,7 +221,7 @@ Convert to JSON
 package main
 import "os"
 import "fmt"
-import "libsisimai.org/sisimai"
+import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]
@@ -251,7 +251,7 @@ package main
 import "os"
 import "fmt"
 import "strings"
-import "libsisimai.org/sisimai"
+import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
@@ -300,7 +300,7 @@ func main() {
 package main
 import "os"
 import "io/ioutil"
-import "libsisimai.org/sisimai"
+import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/

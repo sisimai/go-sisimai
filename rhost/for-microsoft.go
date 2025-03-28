@@ -9,8 +9,8 @@
 package rhost
 import "strings"
 import "strconv"
-import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/smtp/status"
+import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/smtp/status"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.

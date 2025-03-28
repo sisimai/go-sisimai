@@ -9,12 +9,12 @@
 // Package "arf" provides ARF: Abuse Report Format related functions
 package arf
 import "strings"
-import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/lhost"
-import "libsisimai.org/sisimai/address"
-import "libsisimai.org/sisimai/rfc1894"
-import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/lhost"
+import "libsisimai.org/sisimai/v5/address"
+import "libsisimai.org/sisimai/v5/rfc1894"
+import "libsisimai.org/sisimai/v5/rfc5322"
 
 // isARF returns true if the bounce mail is Abuse Feedback Reporting Format.
 //   Arguments:

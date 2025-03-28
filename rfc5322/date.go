@@ -57,7 +57,7 @@ package rfc5322
 import "fmt"
 import "strings"
 import "strconv"
-import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/v5/moji"
 
 var monthname = []string{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}
 var dayofweek = []string{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}

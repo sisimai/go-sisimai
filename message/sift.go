@@ -10,14 +10,14 @@ package message
 import "fmt"
 import "strings"
 import "net/mail"
-import "libsisimai.org/sisimai/sis"
-import "libsisimai.org/sisimai/arf"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/lhost"
-import "libsisimai.org/sisimai/rfc2045"
-import "libsisimai.org/sisimai/rfc3464"
-import "libsisimai.org/sisimai/rfc3834"
-import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/arf"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/lhost"
+import "libsisimai.org/sisimai/v5/rfc2045"
+import "libsisimai.org/sisimai/v5/rfc3464"
+import "libsisimai.org/sisimai/v5/rfc3834"
+import "libsisimai.org/sisimai/v5/rfc5322"
 
 // sift is called from the Rise function and decode and structure various formats of bounce emails.
 //   Arguments:

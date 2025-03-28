@@ -8,7 +8,7 @@
 
 package rfc5322
 import "strings"
-import "libsisimai.org/sisimai/rfc1123"
+import "libsisimai.org/sisimai/v5/rfc1123"
 
 // IsEmailAddress checks that the argument is an email address or not.
 //   Arguments:

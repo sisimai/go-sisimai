@@ -8,7 +8,7 @@
 
 package address
 import "strings"
-import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/v5/sis"
 
 // Rise is a constructor of sis.EmailAddress.
 //   Arguments:

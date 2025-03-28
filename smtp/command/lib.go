@@ -10,7 +10,7 @@
 // Package "smtp/command" provides functions related to SMTP commands
 package command
 import "strings"
-import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/v5/moji"
 
 var availables = []string{
 	"HELO", "EHLO", "MAIL", "RCPT", "DATA", "QUIT", "RSET", "NOOP", "VRFY", "ETRN",

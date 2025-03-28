@@ -9,7 +9,7 @@
 package rfc5322
 import "strings"
 import "net/mail"
-import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/v5/moji"
 
 // Headers converts a mail.Header struct to a map[string][]string.
 //   Arguments:

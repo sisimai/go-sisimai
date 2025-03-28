@@ -11,7 +11,7 @@
 package rhost
 
 import "strings"
-import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/v5/sis"
 
 var ReturnedBy = make(map[string]func(*sis.Fact) string, 19) // grep '^func init' ./rhost/for-*.go | wc -l
 var RhostClass = map[string][]string{

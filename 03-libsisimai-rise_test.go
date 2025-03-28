@@ -12,7 +12,7 @@ import "fmt"
 import "os"
 import "os/exec"
 import "strings"
-import "libsisimai.org/sisimai/moji"
+import "libsisimai.org/sisimai/v5/moji"
 
 func TestRise(t *testing.T) {
 	fn := "sisimai.Rise"

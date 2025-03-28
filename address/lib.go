@@ -10,7 +10,7 @@
 package address
 
 import "strings"
-import "libsisimai.org/sisimai/rfc5322"
+import "libsisimai.org/sisimai/v5/rfc5322"
 
 // Undisclosed returns a pseudo recipient or sender address.
 //   Arguments:

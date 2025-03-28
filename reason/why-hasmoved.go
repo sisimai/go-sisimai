@@ -8,7 +8,7 @@
 
 package reason
 import "strings"
-import "libsisimai.org/sisimai/sis"
+import "libsisimai.org/sisimai/v5/sis"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.

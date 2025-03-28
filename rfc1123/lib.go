@@ -10,8 +10,8 @@
 // https://datatracker.ietf.org/doc/html/rfc1123
 package rfc1123
 import "strings"
-import "libsisimai.org/sisimai/moji"
-import "libsisimai.org/sisimai/rfc791"
+import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/rfc791"
 
 var sandwiched = [][]string{
 	// (Postfix) postfix/src/smtp/smtp_proto.c: "host %s said: %s (in reply to %s)",

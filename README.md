@@ -59,8 +59,8 @@ The key features of Sisimai
     * struct ([sisimai/sis.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go))
     * JSON (by using [`encoding/json`](https://pkg.go.dev/encoding/json))
 * __Easy to Install, Use.__
-  * `$ go get -u libsisimai.org/sisimai@latest`
-  * `import "libsisimai.org/sisimai"`
+  * `$ go get -u libsisimai.org/sisimai/v5@latest`
+  * `import "libsisimai.org/sisimai/v5"`
 * __High Precision of Analysis__
   * Support [59 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
   * Support Feedback Loop Message(ARF)
@@ -95,8 +95,8 @@ $ cd ./sisimai
 $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
-$ go get -u libsisimai.org/sisimai@latest
-go: added libsisimai.org/sisimai v5.2.0
+$ go get -u libsisimai.org/sisimai/v5@latest
+go: added libsisimai.org/sisimai/v5 v5.3.0
 
 $ cat ./go.mod
 module example.com/sisimaicli
@@ -104,7 +104,7 @@ module example.com/sisimaicli
 go 1.20
 
 require (
-	libsisimai.org/sisimai v5.2.0 // indirect
+	libsisimai.org/sisimai/v5 v5.3.0 // indirect
 )
 ```
 
@@ -121,7 +121,7 @@ $ vi ./sisid.go
 package main
 import "os"
 import "fmt"
-import "libsisimai.org/sisimai"
+import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]
@@ -188,7 +188,7 @@ from bounced email messages as the following.
 package main
 import "os"
 import "fmt"
-import "libsisimai.org/sisimai"
+import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
@@ -230,7 +230,7 @@ obtain decoded bounce email data in JSON array format.
 package main
 import "os"
 import "fmt"
-import "libsisimai.org/sisimai"
+import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]
@@ -260,7 +260,7 @@ package main
 import "os"
 import "fmt"
 import "strings"
-import "libsisimai.org/sisimai"
+import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
