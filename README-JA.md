@@ -1,6 +1,7 @@
 ![](https://libsisimai.org/static/images/logo/sisimai-x01.png)
 [![License](https://img.shields.io/badge/license-BSD%202--Clause-orange.svg)](https://github.com/sisimai/go-sisimai/blob/5-stable/LICENSE)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/sisimai/go-sisimai)
+[![Go Reference](https://pkg.go.dev/badge/libsisimai.org/sisimai/v5.svg)](https://pkg.go.dev/libsisimai.org/sisimai/v5)
 ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/sisimai/go-sisimai)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/sisimai/go-sisimai/make-test.yml)
 ![Codecov](https://img.shields.io/codecov/c/github/sisimai/go-sisimai)

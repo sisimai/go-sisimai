@@ -2,6 +2,7 @@ RELEASE NOTES for the Go version of Sisimai
 ===================================================================================================
 - releases: "https://github.com/sisimai/go-sisimai/releases"
 - document: "https://libsisimai.org/"
+- packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
 v5.3.0
 ---------------------------------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 ![](https://libsisimai.org/static/images/logo/sisimai-x01.png)
 [![License](https://img.shields.io/badge/license-BSD%202--Clause-orange.svg)](https://github.com/sisimai/go-sisimai/blob/5-stable/LICENSE)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/sisimai/go-sisimai)
+[![Go Reference](https://pkg.go.dev/badge/libsisimai.org/sisimai/v5.svg)](https://pkg.go.dev/libsisimai.org/sisimai/v5)
 ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/sisimai/go-sisimai)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/sisimai/go-sisimai/make-test.yml)
 ![Codecov](https://img.shields.io/codecov/c/github/sisimai/go-sisimai)
@@ -12,7 +13,7 @@
 > results in any environment as long as it is a language that can read JSON, such as PHP, Java,
 > Python, and Rust.
 
-- [**README-JA(日本語)**](README-JA.md)
+- [**README-JA(日本�**](README-JA.md)
 - [What is Sisimai](#what-is-sisimai)
     - [The key features of Sisimai](#the-key-features-of-sisimai)
     - [Command line demo](#command-line-demo)
@@ -427,7 +428,7 @@ Related sites
 
 See also
 ---------------------------------------------------------------------------------------------------
-* [README-JA.md - README.md in Japanese(日本語)](https://github.com/sisimai/go-sisimai/blob/5-stable/README-JA.md)
+* [README-JA.md - README.md in Japanese(日本�](https://github.com/sisimai/go-sisimai/blob/5-stable/README-JA.md)
 * [RFC3463 - Enhanced Mail System Status Codes](https://tools.ietf.org/html/rfc3463)
 * [RFC3464 - An Extensible Message Format for Delivery Status Notifications](https://tools.ietf.org/html/rfc3464)
 * [RFC3834 - Recommendations for Automatic Responses to Electronic Mail](https://tools.ietf.org/html/rfc3834)
