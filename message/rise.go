@@ -10,7 +10,6 @@
 package message
 
 import "io"
-import "fmt"
 import "strings"
 import "net/mail"
 import "libsisimai.org/sisimai/v5/sis"
@@ -37,7 +36,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		moji.ToLF(mesg)
 		if email, nyaan := mail.ReadMessage(strings.NewReader(*mesg)); nyaan != nil {
 			// Failed to read the message as an email
-			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true)
+			ce := *sis.MakeNotDecoded(nyaan.Error(), true)
 			beforefact.Errors = append(beforefact.Errors, ce)
 			return beforefact
 

@@ -7,7 +7,6 @@
 //                                |___/      
 
 package message
-import "fmt"
 import "strings"
 import "net/mail"
 import "libsisimai.org/sisimai/v5/sis"
@@ -42,7 +41,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 			cv, nyaan := rfc2045.DecodeB(bf.Payload, ""); bf.Payload = cv
 			if nyaan != nil {
 				// Something wrong when the function decodes the BASE64 encoded string
-				ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+				ce := *sis.MakeNotDecoded(nyaan.Error(), false)
 				bf.Errors = append(bf.Errors, ce)
 			}
 		} else if ctencoding == "quoted-printable" {
@@ -50,7 +49,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 			cv, nyaan := rfc2045.DecodeQ(bf.Payload); bf.Payload = cv
 			if nyaan != nil {
 				// Something wrong when the function decodes the Quoted-Printable encoded string
-				ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+				ce := *sis.MakeNotDecoded(nyaan.Error(), false)
 				bf.Errors = append(bf.Errors, ce)
 			}
 		}
@@ -69,7 +68,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		// Execute the first callback function
 		cvv, nyaan := hook(&sis.CallbackArg0{Headers: bf.Headers, Payload: &bf.Payload}); if nyaan != nil {
 			// Something wrong when the 1st callback function executed
-			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+			ce := *sis.MakeNotDecoded(nyaan.Error(), false)
 			bf.Errors = append(bf.Errors, ce)
 		}
 		bf.Catch = cvv
@@ -142,7 +141,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(rising.RFC822))
 	if nyaan != nil {
 		// Failed to read the original message part
-		ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+		ce := *sis.MakeNotDecoded(nyaan.Error(), false)
 		bf.Errors = append(bf.Errors, ce)
 		return false
 	}
