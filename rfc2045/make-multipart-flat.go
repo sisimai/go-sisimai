@@ -7,7 +7,6 @@
 // |_| \_\_|   \____|_____|\___/   |_||____/ 
 
 package rfc2045
-import "fmt"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
@@ -214,7 +213,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
 				cv, nyaan := DecodeB(bodyinside, ""); bodystring = cv
 				if nyaan != nil {
 					// Something wrong when the function decodes the BASE64 encoded string
-					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+					ce := *sis.MakeNotDecoded(nyaan.Error(), false)
 					*notdecoded = append(*notdecoded, ce)
 				}
 			} else if ctencoding == "quoted-printable" {
@@ -222,7 +221,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
 				cv, nyaan := DecodeQ(bodyinside); bodystring = cv
 				if nyaan != nil {
 					// Something wrong when the function decodes the Quoted-Printable encoded string
-					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false)
+					ce := *sis.MakeNotDecoded(nyaan.Error(), false)
 					*notdecoded = append(*notdecoded, ce)
 				}
 			} else {
