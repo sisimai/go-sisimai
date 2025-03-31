@@ -14,7 +14,6 @@
 package sisimai
 
 import "io"
-import "fmt"
 import "errors"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
@@ -53,7 +52,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 	emailthing, nyaan := sisimbox.Rise(path); if nyaan != nil {
 		// The file does not exist, or is not a regular file.
 		ef := "<STDIN>"; if emailthing != nil { ef = emailthing.Path }
-		ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true); ce.Email(ef)
+		ce := *sis.MakeNotDecoded(nyaan.Error(), true); ce.Email(ef)
 		notdecoded = append(notdecoded, ce)
 		return &sisidigest, &notdecoded
 	}
@@ -68,7 +67,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 
 			} else {
 				// Something wrong, sisimai failed to read the email as a text
-				ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true); ce.Email(emailthing.Path)
+				ce := *sis.MakeNotDecoded(nyaan.Error(), true); ce.Email(emailthing.Path)
 				notdecoded = append(notdecoded, ce)
 				continue
 			}
@@ -89,7 +88,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 				// 2nd argument of Sisimai.Rise() after reading each email file every time
 				carg := &sis.CallbackArg1{Path: emailthing.Path, Kind: emailthing.Kind, Mail: mesg, Fact: facts}
 				if _, nyaan := args.Callback1(carg); nyaan != nil {
-					ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), true); ce.Email(emailthing.Path)
+					ce := *sis.MakeNotDecoded(nyaan.Error(), true); ce.Email(emailthing.Path)
 					notdecoded = append(notdecoded, ce)
 				}
 			}
@@ -114,7 +113,7 @@ func Dump(path string, args *sis.DecodingArgs) (*string, *[]sis.NotDecoded) {
 
 	for _, e := range *sisidigest {
 		cj, nyaan := e.Dump(); if nyaan != nil {
-			*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(fmt.Sprintf("%s", nyaan), false))
+			*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false))
 		}
 		if cj != "" { serialized = append(serialized, cj) }
 	}
