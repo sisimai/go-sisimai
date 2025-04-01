@@ -257,7 +257,7 @@ func init() {
 		}
 		if whatnotify == "" {
 			// Failed to loadl/decode JSON
-			ce := *sis.MakeNotDecoded(fmt.Sprintf("%s", jsonerrors), true); ce.DecodedBy = "AmazonSES"
+			ce := *sis.MakeNotDecoded(jsonerrors.Error(), true); ce.DecodedBy = "AmazonSES"
 			notdecoded = append(notdecoded, ce)
 			return &sis.RisingUnderway{Errors: notdecoded}
 		}
