@@ -10,6 +10,7 @@
 package address
 
 import "strings"
+import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
 // Undisclosed returns a pseudo recipient or sender address.
@@ -28,9 +29,9 @@ func Undisclosed(argv0 bool) string {
 //   Returns:
 //     - (string):       Email address without angle brackets such as "neko@example.jp"
 func Final(argv0 string) string {
-	if strings.Count(argv0, "@") != 1  { return argv0 }
-	for strings.HasPrefix(argv0, "<") { argv0 = strings.Trim(argv0, "<") }
-	for strings.HasSuffix(argv0, ">") { argv0 = strings.Trim(argv0, ">") }
+	if  strings.Count(argv0, "@") != 1 { return argv0 }
+	for strings.HasPrefix(argv0, "<")  { argv0 = strings.Trim(argv0, "<") }
+	for strings.HasSuffix(argv0, ">")  { argv0 = strings.Trim(argv0, ">") }
 	return argv0
 }
 
@@ -67,8 +68,7 @@ func IsMailerDaemon(argv0 string) bool {
 		"mailer-daemon@", "(mailer-daemon)", "<mailer-daemon>", "mailer-daemon ",
 		"postmaster@", "(postmaster)", "<postmaster>",
 	}
-	for _, e := range table {
-		if strings.Contains(value, e) || value == "mailer-daemon" || value == "postmaster" { return true }
-	}
+	if moji.ContainsAny(value, table) || value == "mailer-daemon" || value == "postmaster" { return true }
 	return false
 }
+
