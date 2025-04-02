@@ -8,6 +8,7 @@
 
 package message
 import "strings"
+import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc1894"
 import "libsisimai.org/sisimai/v5/rfc5322"
 import "libsisimai.org/sisimai/v5/rfc5965"
@@ -41,14 +42,14 @@ func tidy(argv0 *string) *string {
 	email := ""; bu := strings.Builder{}; bu.Grow(1024)
 
 	// Find and tidy up fields defined in RFC5322, RFC1894, and RFC5965
-	for i, e := range lines {
+	for j, e := range lines {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
 		p0 := strings.IndexByte(e, ':'); if p0 < 0                         { bu.WriteString(e + "\n"); continue }
 		cf := strings.ToLower(e[0:p0]);  if strings.IndexByte(cf, ' ') > 0 { bu.WriteString(e + "\n"); continue }
 		fn := fieldtable[cf];            if fn == ""                       { bu.WriteString(e + "\n"); continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
-		ab := []string{}
+		ab := make([]string, 0, 2)
 		bf := e[p0 + 1:]
 		p1 := strings.IndexByte(bf, ';')
 		for {
@@ -85,20 +86,18 @@ func tidy(argv0 *string) *string {
 					ab = append(ab, f)
 				}
 
-				for fn == "Diagnostic-Code" && len(ab) == 1 {
+				if fn == "Diagnostic-Code" && len(ab) == 1 && strings.IndexByte(lines[j + 1], ' ') != 0 {
 					// Diagnostic-Code: x-unix;
 					//   /var/email/kijitora/Maildir/tmp/1000000000.A000000B00000.neko22:
 					//   Disk quota exceeded
-					if strings.IndexByte(lines[i + 1], ' ') == 0 { break }
-					ab = append(ab, ""); break
+					ab = append(ab, "")
 				}
 				bf = strings.Join(ab, "; ")
-				ab = []string{}
+				ab = make([]string, 0, 2)
 
 			} else {
 				// There is no ";" in the field
-				if strings.Index(fn, "-Date") > 0 || strings.Index(fn, "-Message-ID") > 0 { break }
-				bf = strings.ToLower(bf)
+				if moji.ContainsAny(fn, []string{"-Date", "-Message-ID"}) == false { bf = strings.ToLower(bf) }
 			}
 			break
 		}
