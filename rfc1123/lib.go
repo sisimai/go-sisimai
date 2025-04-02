@@ -173,9 +173,7 @@ func Find(argv1 string) string {
 
 	for _, e := range foundtoken {
 		// Returns the longest hostname
-		cw := uint8(len(e)); if thelongest >= cw { continue }
-		hostnameis = e
-		thelongest = cw
+		if cw := uint8(len(e)); thelongest < cw { hostnameis = e; thelongest = cw }
 	}
 	return hostnameis
 }
