@@ -357,21 +357,18 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 					thing.ReplyCode = cx[1]
 
 				} else {
-					// Remove the value of ReplyCode when the 1st digit of the both values are difer
+					// Remove the value of ReplyCode when the 1st digit of the both values are differ
 					thing.ReplyCode = ""
 				}
 			}
 
 			if rfc1894.ActionList[thing.Action] == false {
-				// There is an action value that is not described at RFC1894
-				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 {
-					// Rewrite the value of "Action:" field to the valid value
-					//
-					// The syntax for the action-field is:
-					//   action-field = "Action" ":" action-value
-					//   action-value = "failed" / "delayed" / "delivered" / "relayed" / "expanded"
-					thing.Action = ox[2]
-				}
+				// - There is an action value that is not described at RFC1894
+				// - Rewrite the value of "Action:" field to the valid value
+				// - The syntax for the action-field is:
+				//     action-field = "Action" ":" action-value
+				//     action-value = "failed" / "delayed" / "delivered" / "relayed" / "expanded"
+				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 { thing.Action = ox[2] }
 			}
 			if thing.Reason == "delivered"                          { thing.Action = "delivered" }
 			if thing.Reason == "expired"                            { thing.Action = "delayed"   }
