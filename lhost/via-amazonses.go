@@ -261,8 +261,8 @@ func init() {
 			return &sis.RisingUnderway{Errors: notdecoded}
 		}
 
-		dscontents := []sis.DeliveryMatter{{}}
 		recipients := uint8(0)
+		dscontents := make([]sis.DeliveryMatter, 1)
 		v          := &(dscontents[len(dscontents) - 1])
 
 		if whatnotify == "B" {

@@ -40,7 +40,7 @@ func init() {
 			"spamdetected":  []string{"Blacklisted URL in message"},
 			"expired":       []string{"Delivery failed "},
 		}
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)
 		mesgbuffer := strings.Builder{}; mesgbuffer.Grow(len(emailparts[0]) / 2)

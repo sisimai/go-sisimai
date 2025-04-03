@@ -163,7 +163,7 @@ func init() {
 			"userunknown": []string{"no mailbox here by that name"},
 		}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		anotherone := []string{""}        // Keeping another error messages
 		rightindex := uint8(0)            // The last index number of dscontents

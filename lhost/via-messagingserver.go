@@ -37,7 +37,7 @@ func init() {
 		startingof := map[string][]string{"message": []string{"This report relates to a message you sent with the following header fields:"}}
 		messagesof := map[string][]string{"hostunknown": []string{"Illegal host/domain name found"}}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header

@@ -181,7 +181,7 @@ func init() {
 			bf.Payload = strings.Replace(bf.Payload, "\n----- This ", "\n------ This ", 1)
 		}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
 		nextcursor := uint8(0)

@@ -29,7 +29,7 @@ func init() {
 			"command": []string{"-------SMTP command"},
 			"error":   []string{"-------server message"},
 		}
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
 		recipients := 0                     // The number of 'Final-Recipient' header

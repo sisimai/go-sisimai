@@ -49,7 +49,7 @@ func init() {
 			bf.Payload = strings.Replace(bf.Payload, "RCPT TO: ",   "To: ", 1)
 		}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		v          := &(dscontents[len(dscontents) - 1])

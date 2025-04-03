@@ -27,7 +27,7 @@ func init() {
 		startingof := map[string][]string{
 			"message": []string{"  ----- The following addresses had permanent fatal errors -----"},
 		}
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)     // The number of 'Final-Recipient' header
 		readcursor := uint8(0)     // Points the current cursor position

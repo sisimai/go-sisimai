@@ -48,7 +48,7 @@ func init() {
 			"error":   []string{"While talking to "},
 			"message": []string{"----- Transcript of session follows -----"},
 		}
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[1] == "" { return nil }
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header

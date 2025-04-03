@@ -52,7 +52,7 @@ func init() {
 		//
 		// Google Groups
 		boundaries := []string{"----- Original message -----", "Content-Type: message/rfc822"}
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		v          := &(dscontents[len(dscontents) - 1])

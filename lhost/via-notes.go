@@ -34,7 +34,7 @@ func init() {
 				"ディレクトリのリストにありません",
 			},
 		}
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		notdecoded := []sis.NotDecoded{}
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position

@@ -29,7 +29,7 @@ func init() {
 		boundaries := []string{"Received: from "}
 		startingof := map[string][]string{"message": []string{"The original message was received at "}}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header

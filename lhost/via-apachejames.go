@@ -44,7 +44,7 @@ func init() {
 			//   AbstractNotify.java|128:  out.println("Message details:");
 			"message": []string{"Message details:"},
 		}
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1)
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)    // Points the current cursor position
 		recipients := uint8(0)    // The number of 'Final-Recipient' header
