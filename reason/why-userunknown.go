@@ -158,12 +158,11 @@ func init() {
 			//   Status: 5.1.1
 			//   Diagnostic-Code: SMTP; 550 5.1.1 <***@example.jp>:
 			//     Recipient address rejected: User unknown in local recipient table
-			matchother := false
 			for _, e := range []string{"NoRelaying", "Blocked", "MailboxFull", "HasMoved", "Rejected", "NotAccept"} {
 				// Check the value of "Diagnostic-Code" with other error patterns.
-				if IncludedIn[e](issuedcode) { matchother = true; break }
+				if IncludedIn[e](issuedcode) { return false }
 			}
-			if matchother == false { return true } // Did not match with other message patterns
+			return true
 
 		} else {
 			// The reason name found by fo.DeliveryStatus is not "userunknown", or is empty
