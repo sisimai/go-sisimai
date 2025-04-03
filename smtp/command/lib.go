@@ -21,6 +21,7 @@ var detectable = []string{
 	"HELO", "EHLO", "STARTTLS", "AUTH PLAIN", "AUTH LOGIN", "AUTH CRAM-", "AUTH DIGEST-",
 	"MAIL F", "RCPT", "RCPT T", "DATA", "QUIT", "XFORWARD",
 }
+var ExceptDATA = []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}
 
 // Test checks that an SMTP command in the argument is valid or not.
 //   Arguments:

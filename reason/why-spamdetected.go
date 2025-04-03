@@ -12,6 +12,7 @@ import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
+import "libsisimai.org/sisimai/v5/smtp/command"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -136,11 +137,10 @@ func init() {
 	//   Returns:
 	//     - (bool):         true if a reason is the reason defined in this file
 	ProbesInto["SpamDetected"] = func(fo *sis.Fact) bool {
-		commandset := []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}
 		if fo == nil || fo.DeliveryStatus == ""             { return false }
 		if fo.Reason == "spamdetected"                      { return true  }
 		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true  }
-		if moji.EqualsAny(fo.Command, commandset)           { return false }
+		if moji.EqualsAny(fo.Command, command.ExceptDATA)   { return false }
 		return IncludedIn["SpamDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
