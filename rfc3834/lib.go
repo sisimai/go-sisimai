@@ -67,8 +67,8 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	}
 	if proceedsto == false { return nil }
 
-	dscontents := []sis.DeliveryMatter{{}}
 	recipients := uint8(0)            // The number of recipients
+	dscontents := make([]sis.DeliveryMatter, 1)
 	v          := &(dscontents[len(dscontents) - 1])
 
 	RECIPIENT_ADDRESS: for _, e := range []string{"from", "return-path"} {
