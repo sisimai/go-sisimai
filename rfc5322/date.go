@@ -85,20 +85,15 @@ func Date(argv1 string) string {
 		cw := len(e); if cw == 0 { continue }
 		if cw < 3 {
 			// This piece might be a day such as 1, or 02, or 31
-			cv, nyaan := strconv.ParseUint(e, 10, 8); if nyaan != nil {
-				// Failed to parse as a integer
-				return ""
+			cv, nyaan := strconv.ParseUint(e, 10, 8); if nyaan != nil { return "" }
+
+			if cv > 31 || cv == 0 {
+				// 2-digit year ?
+				year2digit = uint8(cv)
 
 			} else {
-				// Successfully parsed and convertd to an interger
-				if cv > 31 || cv == 0 {
-					// 2-digit year ?
-					year2digit = uint8(cv)
-
-				} else {
-					// Deal as a day of month
-					p[2] = fmt.Sprintf("%02d", cv)
-				}
+				// Deal as a day of month
+				p[2] = fmt.Sprintf("%02d", cv)
 			}
 		} else if cw == 3 || (cw == 4 && strings.HasSuffix(e, ",")) {
 			// 3 characters: "Feb" or "Thu" or "Thu,", or 3-digit date like "029"
@@ -113,13 +108,11 @@ func Date(argv1 string) string {
 			}
 		} else if cw == 4 {
 			// This piece might be a 4-digit year such as 1997, 2018
-			cv, nyaan := strconv.ParseUint(e, 10, 16); if nyaan != nil { continue }
-			p[0] = fmt.Sprintf("%04d", cv)
+			if cv, nyaan := strconv.ParseUint(e, 10, 16); nyaan == nil { p[0] = fmt.Sprintf("%04d", cv) }
 
 		} else if cw == 5 && moji.HasPrefixAny(e, []string{"+", "-"}) {
 			// This piece might be a timezone offset such as "+0900", "-0400"
-			cv, nyaan := strconv.ParseUint(e[1:5], 10, 16); if nyaan != nil { continue }
-			p[5] = fmt.Sprintf("%s%04d", e[0:1], cv)
+			if cv, nyaan := strconv.ParseUint(e[1:5], 10, 16); nyaan == nil { p[5] = fmt.Sprintf("%s%04d", e[0:1], cv) }
 
 		} else if cw > 5 {
 			// Time string such as "18:30:22" or other formatted string
