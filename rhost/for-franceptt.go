@@ -130,7 +130,6 @@ func init() {
 			//   later. OFR_999 [999]
 			"999": "blocked",
 		}
-		codelabels := []string{"lpn", "lpnaaa", "ofr", "ouk"}
 		messagesof := map[string][]string{
 			"authfailure": []string{
 				// - 421 smtp.orange.fr [192.0.2.1] Emetteur invalide, Veuillez verifier la configuration
@@ -143,7 +142,7 @@ func init() {
 		labelindex := -1
 		errorlabel := ""
 
-		for _, e := range codelabels {
+		for _, e := range []string{"lpn", "lpnaaa", "ofr", "ouk"} {
 			// Try to find an error code prefix like "LPN"
 			labelindex = strings.LastIndex(issuedcode, e);  if labelindex < 0 { continue }
 			errorlabel = e; if strings.Contains(issuedcode, e + "-") { errorlabel += "-" }

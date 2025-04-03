@@ -48,32 +48,20 @@ func Name(fo *sis.Fact) string {
 	// 3. lhost: local MTA hostname
 	if fo == nil { return "" }
 
-	clienthost := strings.ToLower(fo.Lhost)
-	remotehost := strings.ToLower(fo.Rhost)
-	domainpart := strings.ToLower(fo.Destination)
-	for e := range RhostClass {
+	domainpart := strings.ToLower(fo.Destination); for e := range RhostClass {
 		// Try to match the domain part of the recipient address with each value of RhostClass
-		for _, r := range RhostClass[e] {
-			// - Whether "r" includes the domain part of the recipient address or not
-			if strings.HasSuffix(r, domainpart) { return e }
-		}
+		for _, r := range RhostClass[e] { if strings.HasSuffix(r, domainpart) { return e } }
 	}
 
-	for e := range RhostClass {
+	remotehost := strings.ToLower(fo.Rhost); for e := range RhostClass {
 		// Try to match the remote host with each value of RhostClass
-		for _, r := range RhostClass[e] {
-			// - Whether the remote host (fo.Rhost) includes "r" or not
-			if strings.HasSuffix(remotehost, r) { return e }
-		}
+		for _, r := range RhostClass[e] { if strings.HasSuffix(remotehost, r) { return e } }
 	}
 
 	// Neither the remote host nor the destination did not matched with any value of RhostClass
-	for e := range RhostClass {
+	clienthost := strings.ToLower(fo.Lhost); for e := range RhostClass {
 		// Try to match the client host with each value of RhostClass
-		for _, r := range RhostClass[e] {
-			// - Whether the local MTA host (fo.Lhost) includes "r" or not
-			if strings.HasSuffix(clienthost, r) { return e }
-		}
+		for _, r := range RhostClass[e] { if strings.HasSuffix(clienthost, r) { return e } }
 	}
 	return ""
 }

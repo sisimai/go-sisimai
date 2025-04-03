@@ -219,17 +219,12 @@ func init() {
 
 		issuedcode := fo.DiagnosticCode
 		errorlabel := "IB" + moji.Select(issuedcode, " IB", " ", 0)
-		if errorcodes[errorlabel] != "" {
-			// 192.0.2.22 has sent to too many recipients this hour. IB607 ...
-			return errorcodes[errorlabel]
+		if errorcodes[errorlabel] != "" { return errorcodes[errorlabel] }
 
-		} else {
-			// There is no " IB***" error code in the error message
-			issuedcode = strings.ToLower(issuedcode)
-			for e := range messagesof {
-				// The key is a bounce reason name
-				if moji.ContainsAny(issuedcode, messagesof[e]) { return e }
-			}
+		issuedcode = strings.ToLower(issuedcode); for e := range messagesof {
+			// - The key is a bounce reason name
+			// - There is no " IB***" error code in the error message
+			if moji.ContainsAny(issuedcode, messagesof[e]) { return e }
 		}
 		return ""
 	}
