@@ -23,7 +23,7 @@ var replacesas = map[string][][]string{
 
 // makefield generates a map including each field name defined in RFC1894, RFC5322, and RFC5965.
 func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string {
-	fieldtable := map[string]string{}
+	fieldtable := make(map[string]string, 40)
 	for _, e := range argv1 { fieldtable[strings.ToLower(e)] = e }
 	for _, e := range argv2 { fieldtable[strings.ToLower(e)] = e }
 	for _, e := range argv3 { fieldtable[strings.ToLower(e)] = e }
@@ -38,11 +38,9 @@ func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string
 func tidy(argv0 *string) *string {
 	if argv0 == nil || *argv0 == "" { return nil }
 
-	lines := strings.Split(*argv0, "\n")
-	email := ""; bu := strings.Builder{}; bu.Grow(1024)
-
 	// Find and tidy up fields defined in RFC5322, RFC1894, and RFC5965
-	for j, e := range lines {
+	bu := strings.Builder{}; bu.Grow(1024)
+	el := strings.Split(*argv0, "\n"); for j, e := range el {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
 		p0 := strings.IndexByte(e, ':'); if p0 < 0                         { bu.WriteString(e + "\n"); continue }
 		cf := strings.ToLower(e[0:p0]);  if strings.IndexByte(cf, ' ') > 0 { bu.WriteString(e + "\n"); continue }
@@ -56,37 +54,36 @@ func tidy(argv0 *string) *string {
 			// Such as Diagnostic-Code, Remote-MTA, and so on
 			// - Before: Diagnostic-Code: SMTP;550 User unknown
 			// - After:  Diagnostic-Code: smtp; 550 User unknown
-			match := false; for _, f := range rfc1894.FieldIndex {
+			match := false; for _, ef := range rfc1894.FieldIndex {
 				// The field name is not listed in RFC1894
-				if fn == f || fn == "Content-Type" { match = true; break }
+				if fn == ef || fn == "Content-Type" { match = true; break }
 			}
 			if match == false { break }
 
 			if p1 > 0 {
 				// The field including one or more ";"
-				for _, f := range strings.Split(bf, ";") {
+				for _, ef := range strings.Split(bf, ";") {
 					// 2-1. Trim leading and trailing space characters from the current buffer
-					f = strings.Trim(f, " ")
+					ef = strings.Trim(ef, " ")
 
 					// 2-2. Convert some parameters to the lower-cased string
-					ps := ""; for strings.IndexByte(f, ' ') < 1 {
+					if ps := ""; strings.IndexByte(ef, ' ') < 1 {
 						// For example,
 						// - Content-Type: Message/delivery-status => message/delivery-status
 						// - Content-Type: Charset=UTF8            => charset=utf8
 						// - Reporting-MTA: DNS; ...               => dns
 						// - Final-Recipient: RFC822; ...          => rfc822
-						if p2 := strings.IndexByte(f, '='); p2 > 0 {
+						if p2 := strings.IndexByte(ef, '='); p2 > 0 {
 							// charset=, boundary=, and other pairs divided by "="
-							ps = strings.ToLower(f[0:p2])
-							f  = strings.Replace(f, f[0:p2], ps, 1)
+							ps = strings.ToLower(ef[0:p2])
+							ef = strings.Replace(ef, ef[0:p2], ps, 1)
 						}
-						if ps != "boundary" { f = strings.ToLower(f) }
-						break
+						if ps != "boundary" { ef = strings.ToLower(ef) }
 					}
-					ab = append(ab, f)
+					ab = append(ab, ef)
 				}
 
-				if fn == "Diagnostic-Code" && len(ab) == 1 && strings.IndexByte(lines[j + 1], ' ') != 0 {
+				if fn == "Diagnostic-Code" && len(ab) == 1 && strings.IndexByte(el[j + 1], ' ') != 0 {
 					// Diagnostic-Code: x-unix;
 					//   /var/email/kijitora/Maildir/tmp/1000000000.A000000B00000.neko22:
 					//   Disk quota exceeded
@@ -105,22 +102,22 @@ func tidy(argv0 *string) *string {
 		// 3. Tidy up a value, and a parameter of Content-Type: field 
 		if len(replacesas[fn]) > 0 {
 			// Replace the value of "Content-Type" field
-			for _, f := range replacesas[fn] {
+			for _, ef := range replacesas[fn] {
 				// - Before: Content-Type: message/xdelivery-status; ...
 				// - After:  Content-Type: message/delivery-status; ...
-				p1 = strings.Index(bf, f[0]); if p1 > -1 { bf = strings.Replace(bf, f[0], f[1], 1) }
+				p1 = strings.Index(bf, ef[0]); if p1 > -1 { bf = strings.Replace(bf, ef[0], ef[1], 1) }
 			}
 		}
 
 		// 4. Concatenate the field name and the field value
-		for _, f := range strings.Split(bf, " ") {
+		for _, ef := range strings.Split(bf, " ") {
 			// Remove redundant space characters
-			if f != "" { ab = append(ab, f) }
+			if ef != "" { ab = append(ab, ef) }
 		}
 		bu.WriteString(fn + ": " + strings.Join(ab, " ") + "\n")
 	}
 
-	email = bu.String();
+	email := bu.String();
 	if email[len(email) - 2:len(email)] != "\n\n" { email += "\n\n" }
 	return &email
 }
