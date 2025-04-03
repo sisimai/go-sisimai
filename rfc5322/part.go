@@ -17,13 +17,12 @@ import "strings"
 //     - keeps (bool):     Flag for keeping strings after "\n\n"
 //   Returns:
 //     - ([2]string):      [2]string{"Error message lines", "The original message"}
-
 func Part(email *string, cutby []string, keeps bool) [2]string {
 	if email == nil || *email == "" || len(cutby) == 0 { return [2]string{} }
 
 	positionor := -1 // A position of the boundary string
-	formerpart := "" // The error message part
-	latterpart := "" // The original message part
+	formerbuff := strings.Builder{}; formerbuff.Grow(len(*email) / 2) // The error message part
+	latterbuff := strings.Builder{}; latterbuff.Grow(len(*email) / 2) // The original message part
 
 	for _, e := range cutby {
 		// Find a boundary string(2nd argument)] from the 1st argument
@@ -32,25 +31,24 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 
 	if positionor > 0 {
 		// There is the boundary string in the message body
-		formerpart  = (*email)[:positionor]
+		formerbuff.WriteString((*email)[:positionor])
 		rfc822part := strings.Split((*email)[positionor:], "\n\n")
 
 		for _, e := range rfc822part {
 			// Find a part including "Received:", "From:" header
 			if strings.Contains(e, "Received: ") == false { continue }
 			if strings.Contains(e, "From: ")     == false { continue }
-			latterpart = e; break
+			latterbuff.WriteString(e); break
 		}
-		if latterpart == "" { latterpart = (*email)[positionor:] }
+		if latterbuff.Len() == 0 { latterbuff.WriteString((*email)[positionor:]) }
 
 	} else {
 		// Substitute the entire message to the former part when the boundary string is not included
 		// in the 1st argument
-		formerpart = *email
-		latterpart = ""
+		formerbuff.WriteString(*email)
 	}
 
-	if latterpart != "" {
+	latterpart := latterbuff.String(); if latterpart != "" {
 		// Remove blank lines, the message body of the original message, and append "\n" at the end
 		// of the original message headers
 		// 1. Remove leading blank lines
@@ -73,6 +71,6 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 		// Append "\n" at the end of the original message
 		if strings.HasSuffix(latterpart, "\n") == false { latterpart += "\n" }
 	}
-	return [2]string{formerpart, latterpart}
+	return [2]string{formerbuff.String(), latterpart}
 }
 
