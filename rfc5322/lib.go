@@ -27,8 +27,7 @@ var HeaderTable = map[string][]string{
 		"envelope-from", "x-envelope-from",
 	},
 	"recipient": []string{
-		"to", "delivered-to", "forward-path", "envelope-to", "x-envelope-to", "resent-to",
-		"apparently-to",
+		"to", "delivered-to", "forward-path", "envelope-to", "x-envelope-to", "resent-to", "x-apparently-to",
 	},
 }
 
