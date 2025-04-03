@@ -40,10 +40,8 @@ func Token(argv1 string, argv2 string, epoch int) string {
 func Squeeze(argv0 *string, argv1 byte) error {
 	if argv0 == nil || *argv0 == "" || strings.IndexByte(*argv0, argv1) < 0 { return nil }
 
-	bytebuffer := []byte(*argv0)
-	textbuffer := make([]byte, 0, len(bytebuffer))
-
-	cb := byte(0); for _, by := range bytebuffer {
+	textbuffer := make([]byte, 0, len(*argv0))
+	cb := byte(0); for _, by := range []byte(*argv0) {
 		// Remove a character that is the same character of the previous character
 		if by == argv1 && by == cb { continue }
 		textbuffer = append(textbuffer, by)
@@ -61,9 +59,8 @@ func Sweep(argv1 string) string {
 	if argv1 == "" { return "" }
 
 	argv1 = strings.TrimSpace(strings.ReplaceAll(argv1, "\t", " ")); Squeeze(&argv1, ' ')
-	for strings.Contains(argv1, " --") {
+	if strings.Contains(argv1, " --") && strings.Contains(argv1, "-- ") == false {
 		// Delete all the string after a boundary string like " --neko-chan"
-		if strings.Contains(argv1, "-- ")  { break }
 		argv1 = argv1[0:strings.Index(argv1, " --")]
 	}
 	return argv1
