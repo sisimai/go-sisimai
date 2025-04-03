@@ -36,11 +36,7 @@ func Received(argv1 string) [6]string {
 	//       with ESMTP
 	//       id ABC12345
 	//       for <mary@example.net>;  21 Nov 1997 10:05:43 -0600
-
-	// Received: (qmail 10000 invoked by uid 999); 24 Apr 2013 00:00:00 +0900
-	if strings.IndexByte(argv1, ' ') < 0                { return [6]string{} }
-	if strings.Contains(argv1, " invoked by uid")       { return [6]string{} }
-	if strings.Contains(argv1, " invoked from network") { return [6]string{} }
+	if strings.IndexByte(argv1, ' ') < 0 || moji.ContainsAny(argv1, woReceived) { return [6]string{} }
 
 	recvd := strings.Split(argv1, " ")
 	label := [6]string{"from", "by", "via", "with", "id", "for"}
