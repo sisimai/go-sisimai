@@ -90,20 +90,11 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 			called[r] = true
 			if rising = lhost.InquireFor[r](bf); rising != nil { module = r; break DECODER }
 		}
-
-		// 2. rfc3464.Inquire()
-		// When the all of lhost/for-*.go modules did not return the decoded data
 		if rising = rfc3464.Inquire(bf); rising != nil { module = "RFC3464"; break DECODER }
-
-		// 3. arf.Inquire()
-		// Try to decode the message as a Feedback Loop message
-		if rising = arf.Inquire(bf);     rising != nil { module = "ARF"; break DECODER }
-
-		// 4. rfc3834.Inquire()
-		// Try to sift the message as auto reply message defined in RFC3834
+		if rising = arf.Inquire(bf);     rising != nil { module = "ARF";     break DECODER }
 		if rising = rfc3834.Inquire(bf); rising != nil { module = "RFC3834"; break DECODER }
 
-		break // as of now, we have no sample email for coding this block
+		break DECODER // as of now, we have no sample email for coding this block
 
 	} // End of for(DECODER)
 	if rising == nil { return false }
@@ -118,8 +109,8 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		// bounce message
 		rising.RFC822 = "From: " + bf.Headers["to"][0] + "\n" + rising.RFC822
 	}
-	di := &(rising.Digest[0])
-	if strings.Contains(rising.RFC822, "\nTo:") == false && di.Recipient != "" {
+
+	if di := &(rising.Digest[0]); strings.Contains(rising.RFC822, "\nTo:") == false && di.Recipient != "" {
 		// The original message block is empty, insert some values picked from rising.Digest as
 		// a pseudo header such as "To:", "Date:".
 		rising.RFC822 = "To: <" + di.Recipient + ">\n" + rising.RFC822

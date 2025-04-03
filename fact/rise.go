@@ -88,10 +88,8 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 		}
 		if addrs["addresser"][0] == "" { continue RISEOF }
 
-		TIMESTAMP: for {
-			// Convert from the value of "Date" or the date string to time.Time
+		{	// TIMESTAMP: Convert from the value of "Date" or the date string to time.Time
 			datevalues := make([]string, 0, 2); if e.Date != "" { datevalues = append(datevalues, e.Date) }
-
 			for _, f := range rfc5322.HeaderTable["date"] {
 				// Date information did not exist in message/delivery-status part.
 				// Get the value of "Date:" header or other date related headers.
@@ -118,11 +116,9 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 				}
 			}
 			if clock.IsZero() { continue RISEOF }
-			break TIMESTAMP
 		}
 
-		RECEIVED: for {
-			// Try to pick a remote hostname from the error message
+		{	// RECEIVED: Try to pick a remote hostname from the error message
 			// Scan "Received:" header of the bounce message
 			le := len((*beforefact).Headers["received"])
 			if e.Rhost == "" {
@@ -170,7 +166,6 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 				}
 				if strings.HasSuffix(*v, ".") { *v = strings.TrimRight(*v, ".") } // Remove "." at the end of the value
 			}
-			break RECEIVED
 		}
 
 		MESG_ID: for len(rfc822data["message-id"]) > 0 {
@@ -261,8 +256,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 		piece["subject"]   = strings.ReplaceAll(rfc822data["subject"][0], "\r", "")
 		if command.Test(e.Command) { piece["command"] = e.Command }
 
-		CONSTRUCTOR: for {
-			// - Create email address object as address.EmailAddress struct
+		{	// - Create email address object as address.EmailAddress struct
 			// - Create decoded bounce mail object as sis.Fact struct
 			as := address.Rise(addrs["addresser"]); if as == nil { continue RISEOF }
 			ar := address.Rise(addrs["recipient"]); if ar == nil { continue RISEOF }
@@ -293,8 +287,6 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 			thing.Timestamp      = clock
 			thing.TimezoneOffset = clock.Format("+0900")
 			thing.Token          = moji.Token(as.Address, ar.Address, int(thing.Timestamp.Unix()))
-
-			break CONSTRUCTOR
 		}
 
 		ALIAS: for thing.Recipient.Address == thing.Alias {
@@ -331,8 +323,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 			thing.Reason = re; break REASON
 		}
 
-		HARDBOUNCE: for {
-			// Set the value of "hardbounce", default value of "bouncebounce" is 0
+		{	// HARDBOUNCE: Set the value of "hardbounce", default value of "bouncebounce" is 0
 			if moji.EqualsAny(thing.Reason, []string{"delivered", "feedback", "vacation"}) {
 				// Delete the value of ReplyCode when the Reason is "feedback" or "vacation"
 				if thing.Reason != "delivered" { thing.ReplyCode = "" }
@@ -342,21 +333,18 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 				cv := piece["deliverystatus"] + " " + piece["diagnosticcode"]; if len(cv) < 4 { cv = "" }
 				thing.HardBounce = failure.IsHardBounce(thing.Reason, cv)
 			}
-			break HARDBOUNCE
 		}
 
-		DELIVERYSTATUS: for thing.DeliveryStatus == "" {
+		if thing.DeliveryStatus == "" {
 			// Set a pseudo status code
 			ce := thing.ReplyCode + " " + piece["diagnosticcode"]; if len(ce) < 4 { ce = "" }
 			permanent0 := failure.IsPermanent(ce)
 			temporary0 := failure.IsTemporary(ce)
 			temporary1 := temporary0; if !permanent0 && !temporary0 { temporary1 = false }
 			thing.DeliveryStatus = status.Code(thing.Reason, temporary1)
-			break DELIVERYSTATUS
 		}
 
-		REPLYCODE: for {
-			// Check both of the first digit of "DeliveryStatus" and "ReplyCode"
+		{	// REPLYCODE: Check both of the first digit of "DeliveryStatus" and "ReplyCode"
 			cx := [2]string{}
 			if thing.DeliveryStatus != "" { cx[0] = string(thing.DeliveryStatus[0]) }
 			if thing.ReplyCode      != "" { cx[1] = string(thing.ReplyCode[0])      }
@@ -369,27 +357,22 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 					thing.ReplyCode = cx[1]
 
 				} else {
-					// Remove the value of ReplyCode when the 1st digit of the both values are difer
+					// Remove the value of ReplyCode when the 1st digit of the both values are differ
 					thing.ReplyCode = ""
 				}
 			}
 
 			if rfc1894.ActionList[thing.Action] == false {
-				// There is an action value that is not described at RFC1894
-				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 {
-					// Rewrite the value of "Action:" field to the valid value
-					//
-					// The syntax for the action-field is:
-					//   action-field = "Action" ":" action-value
-					//   action-value = "failed" / "delayed" / "delivered" / "relayed" / "expanded"
-					thing.Action = ox[2]
-				}
+				// - There is an action value that is not described at RFC1894
+				// - Rewrite the value of "Action:" field to the valid value
+				// - The syntax for the action-field is:
+				//     action-field = "Action" ":" action-value
+				//     action-value = "failed" / "delayed" / "delivered" / "relayed" / "expanded"
+				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 { thing.Action = ox[2] }
 			}
 			if thing.Reason == "delivered"                          { thing.Action = "delivered" }
 			if thing.Reason == "expired"                            { thing.Action = "delayed"   }
 			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed"    }
-
-			break REPLYCODE
 		}
 
 		if thing.ReplyCode != "" {

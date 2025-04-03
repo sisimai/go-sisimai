@@ -73,11 +73,8 @@ func Find(argv1 string) [3]string {
 						// Append "e" to "address" readbuffer[0] or "comment" readbuffer[2]
 						readbuffer[groupindex - 1].WriteRune(e)
 					}
-				}
-				continue
-			}   // End of if(",")
-
-			if e == '<' {
+				} // End of if(",")
+			} else if e == '<' {
 				// "<": The beginning of an email address or a character in the display name or the comment
 				if readbuffer[0].Len() == 0 {
 					// The 1st character of the email address: <neko@cat.example.jp>
@@ -85,24 +82,19 @@ func Find(argv1 string) [3]string {
 					readbuffer[0].Reset(); readbuffer[0].WriteRune(e)
 					groupindex = 1
 
-				} else {
+				} else if IsIncluded(readbuffer[0].String()) {
 					// Check that readbuffer[0] already has a valid email address or not
-					if IsIncluded(readbuffer[0].String()) {
-						// The value of readbuffer[0] is a valid email address
-						if rfc5322.IsComment(readbuffer[2].String()) {
-							// "e" is a part of the comment
-							readbuffer[2].WriteRune(e)
+					// The value of readbuffer[0] is a valid email address
+					if rfc5322.IsComment(readbuffer[2].String()) {
+						// "e" is a part of the comment
+						readbuffer[2].WriteRune(e)
 
-						} else {
-							// "e" is a part of the display name
-							readbuffer[1].WriteRune(e)
-						}
+					} else {
+						// "e" is a part of the display name
+						readbuffer[1].WriteRune(e)
 					}
-				}
-				continue
-			}   // End of if("<")
-
-			if e == '>' {
+				} // End of if("<")
+			} else if e == '>' {
 				// ">": The end of an email address or a character in the display name or the comment
 				if readcursor & indicators["email-address"] > 0 {
 					// The email address in readbuffer[0] has been successfully constructed
@@ -120,11 +112,8 @@ func Find(argv1 string) [3]string {
 						// "e" is a part of the display name
 						readbuffer[1].WriteRune(e)
 					}
-				}
-				continue
-			}   // End of if(">")
-
-			if e == '(' {
+				} // End of if(">")
+			} else if e == '(' {
 				// "(": The beginning of a comment block or a character in the display name or the comment
 				if readcursor & indicators["email-address"] > 0 {
 					// An email address including a comment like the followings:
@@ -155,11 +144,8 @@ func Find(argv1 string) [3]string {
 					if strings.HasSuffix(readbuffer[2].String(), ")") { readbuffer[2].WriteRune(' ') }
 					readbuffer[2].WriteRune(e)
 					groupindex = 3
-				}
-				continue
-			}   // End of if("(")
-
-			if e == ')' {
+				} // End of if("(")
+			} else if e == ')' {
 				// "(": The end of a comment block or a character in the display name or the comment
 				if readcursor & indicators["email-address"] > 0 {
 					// An email address including a comment like the followings:
@@ -185,10 +171,8 @@ func Find(argv1 string) [3]string {
 					readbuffer[1].WriteRune(e)
 					groupindex = 0
 				}
-				continue
-			}   // End of if(")")
-
-			if e == '"' {
+				// End of if(")")
+			} else if e == '"' {
 				// The beginning or the end of a quoted-string
 				if groupindex > 0 {
 					// A part of the email address or the comment block
@@ -201,9 +185,8 @@ func Find(argv1 string) [3]string {
 					if strings.HasSuffix(readbuffer[1].String(), `\"`) { continue } // "Neko, Nyaan \"...
 					readcursor &= ^indicators["quoted-string"]
 					groupindex = 0
-				}
-				continue
-			}   // End of if(`"`)
+				} 
+			} // End of if(`"`)
 		} else {
 			// The character is not a delimiter
 			if groupindex == 0 || groupindex == 2 {
@@ -214,7 +197,6 @@ func Find(argv1 string) [3]string {
 				// Append "e" to "address" readbuffer[0] or "comment" readbuffer[2]
 				readbuffer[groupindex - 1].WriteRune(e)
 			}
-			continue
 		}
 	} // End of the loop(for)
 	//tempbuffer

@@ -200,8 +200,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
 		if mediatypev == "text/html" {
 			// Skip text/html part when the value of Content-Type: header in an internal part of
 			// multipart/* includes multipart/alternative;
-			if strings.Contains(lhead, "multipart/alternative") { continue }
-			istexthtml = true
+			if strings.Contains(lhead, "multipart/alternative") == false { istexthtml = true }
 		}
 		bodyinside := e[2] // Message body of the part
 		bodystring := ""

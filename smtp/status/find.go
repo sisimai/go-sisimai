@@ -24,14 +24,12 @@ func Find(argv1 string, argv2 string) string {
 	if len(argv1) < 7 { return ""   }
 	if len(argv2) < 1 { argv2 = " " }
 
-	givenclass := argv2[0:1]
 	eestatuses := make([]string, 0, 3)
 	esmtperror := " " + argv1 + "   " // Why 3 space characters? see https://github.com/sisimai/p5-sisimai/issues/574
 	lookingfor := make(map[string]string, 10)
 	indextable := make([]int, 0, 10)
-	ip4address := rfc791.FindIPv4Address(&esmtperror)
 
-	if givenclass == "2" || givenclass == "4" || givenclass == "5" {
+	if givenclass := argv2[0:1]; givenclass == "2" || givenclass == "4" || givenclass == "5" {
 		// The second argument is a valid value
 		eestatuses = append(eestatuses, givenclass + ".")
 
@@ -41,6 +39,7 @@ func Find(argv1 string, argv2 string) string {
 	}
 
 	// Rewrite an IPv4 address in the given string(argv1) with '***.***.***.***'
+	ip4address := rfc791.FindIPv4Address(&esmtperror)
 	for _, e := range ip4address { esmtperror = strings.ReplaceAll(esmtperror, e, "***.***.***.***") }
 	for _, e := range eestatuses {
 		// Count the number of "5.", "4.", and "2." in the error message

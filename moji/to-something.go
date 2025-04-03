@@ -46,11 +46,9 @@ func ToLF(argv0 *string) *string {
 func ToPlain(argv0 *string) *string {
 	if argv0 == nil || *argv0 == "" { return argv0 }
 
-	xhtml := *argv0
 	lower := strings.ToLower(*argv0); if strings.Contains(lower, "<body") == false { return argv0 }
+	xhtml := *argv0
 	buffr := strings.Builder{}; buffr.Grow(len(xhtml) / 4)
-	plain := ""
-	table := map[string]string{"lt": "<", "gt": ">", "quot": `"`, "nbsp": " ", "copy": "(C)", "amp": "&"}
 	body0 := -1; for _, e := range []string{">", " ", "\t", "\n"} {
 		// Find the position of <body?, and remove the HTML header part
 		body0  = strings.Index(lower, "<body" + e); if body0 < 0 { continue }
@@ -78,6 +76,8 @@ func ToPlain(argv0 *string) *string {
 	}
 
 	// Remove or replace entity references
+	table := map[string]string{"lt": "<", "gt": ">", "quot": `"`, "nbsp": " ", "copy": "(C)", "amp": "&"}
+	plain := ""
 	for _, e := range table { plain = strings.ReplaceAll(buffr.String(), "&" + e + ";", table[e]) }
 	plain = Sweep(strings.ReplaceAll(plain, "\n", " "))
 	return &plain

@@ -100,21 +100,18 @@ func init() {
 		if fo.Reason == "rejected" { return true  }
 
 		tempreason := status.Name(fo.DeliveryStatus)
-		if tempreason == ""         { tempreason = "undefined" }
 		if tempreason == "rejected" { return true } // Delivery status code points "rejected"
+		if tempreason == ""         { tempreason = "undefined" }
 
 		// Check the value of Diagnosic-Code: field with patterns
-		issuedcode := strings.ToLower(fo.DiagnosticCode)
-		if fo.Command == "MAIL" {
+		if issuedcode := strings.ToLower(fo.DiagnosticCode); fo.Command == "MAIL" {
 			// The session was rejected at 'MAIL FROM' command
 			if IncludedIn["Rejected"](issuedcode) == true { return true }
 
-		} else if fo.Command == "DATA" {
-			// The session was rejected at 'DATA' command
-			if tempreason != "userunknown" {
-				// Except "userunknown"
-				if IncludedIn["Rejected"](issuedcode) == true { return true }
-			}
+		} else if fo.Command == "DATA" && tempreason != "userunknown" {
+			// The session was rejected at 'DATA' command except "userunknown"
+			if IncludedIn["Rejected"](issuedcode) == true { return true }
+
 		} else if IsExplicit(tempreason) == false || moji.EqualsAny(tempreason, []string{"securityerror", "systemerror"}) {
 			// Try to match with message patterns when the temporary reason is "onhold", "undefined",
 			// "securityerror", or "systemerror"

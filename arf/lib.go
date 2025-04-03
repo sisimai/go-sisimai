@@ -48,7 +48,6 @@ func isARF(bf *sis.BeforeFact) bool {
 		if bf.Headers["x-apple-unsubscribe"][0]   == "true" { return true }
 		break APPLE
 	}
-
 	return false
 }
 

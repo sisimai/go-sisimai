@@ -24,13 +24,12 @@ func Prefer(argv0, argv1, argv2 string) string {
 	statuscode := argv0; if len(statuscode) < 5 { return argv1     }
 	codeinmesg := argv1; if len(codeinmesg) < 5 { return argv0     }
 	esmtpreply := argv2; if len(esmtpreply) < 1 { esmtpreply = "0" }
-	the1stchar := [3]byte{
+
+	if the1stchar := [3]byte{
 		[]byte(statuscode[0:1])[0], // argv0: The "Status:" field
 		[]byte(codeinmesg[0:1])[0], // argv1: The delivery status value in the error message
 		[]byte(esmtpreply[0:1])[0], // argv2: SMTP Reply code
-	}
-
-	if the1stchar[2] > 0 && the1stchar[0] != the1stchar[1] {
+	}; the1stchar[2] > 0 && the1stchar[0] != the1stchar[1] {
 		// There is the 3rd argument (an SMTP Reply Code)
 		// Returns the value of argv0 or argv1 which begins with the 1st character of argv2
 		if the1stchar[2] == the1stchar[0] { return statuscode }
@@ -47,12 +46,7 @@ func Prefer(argv0, argv1, argv2 string) string {
 		if zeroindex2[1] < 0 { return codeinmesg }
 		return statuscode
 	}
-
-	if zeroindex1[0] > 0 {
-		// The "Status:" field is "X.Y.0" or "X.0.Z"
-		if zeroindex1[1] < 0 { return codeinmesg }
-	}
-
+	if zeroindex1[0] > 0 && zeroindex1[1] < 0 { return codeinmesg } // The "Status:" field is "X.Y.0" or "X.0.Z"
 	if zeroindex2[1] > 0                      { return statuscode } // The SMTP status code is "X.0.0"
 	if statuscode == "4.4.7"                  { return codeinmesg } // "4.4.7" is an ambigous code
 	if statuscode == "4.7.0"                  { return codeinmesg } // "4.7.0" indicates "too many errors"

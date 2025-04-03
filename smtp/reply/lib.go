@@ -166,10 +166,9 @@ func Find(argv1 string, argv2 string) string {
 	if strings.Contains(strings.ToUpper(argv1), "X-UNIX") { return "" }
 	if len(argv2) == 0 { argv2 = "0" }
 
-	statuscode := argv2[0:1]
+	esmtperror := " " + argv1 + " "
 	replycodes := make([]string, 0, 50)
-
-	if statuscode == "2" || statuscode == "4" || statuscode == "5" {
+	if statuscode := argv2[0:1]; statuscode == "2" || statuscode == "4" || statuscode == "5" {
 		// The first character of the 2nd argument is 2 or 4 or 5
 		replycodes = codeofsmtp[statuscode]
 
@@ -182,8 +181,6 @@ func Find(argv1 string, argv2 string) string {
 		replycodes = append(replycodes, codeofsmtp["2"]...)
 	}
 
-	esmtperror := " " + argv1 + " "
-	esmtpreply := ""
 	for _, e := range replycodes {
 		// Try to find an SMTP Reply Code from the given string
 		appearance := strings.Count(esmtperror, e); if appearance == 0 { continue }
@@ -197,11 +194,9 @@ func Find(argv1 string, argv2 string) string {
 
 			if formerchar > 45 && formerchar < 58 { startingat += replyindex + 3; continue } // '.' => '9'
 			if latterchar > 45 && latterchar < 58 { startingat += replyindex + 3; continue } // '.' => '9'
-			esmtpreply = e
-			break
+			return e
 		}
-		if esmtpreply != "" { break }
 	}
-	return esmtpreply
+	return ""
 }
 

@@ -49,8 +49,7 @@ func init() {
 				//  "Message" : "{\"notificationType\"...
 				if strings.Contains(sespayload, "\\") { sespayload = strings.ReplaceAll(sespayload, "\\",   "") }
 				sespayload = "{" + moji.Select(sespayload, "{", "\n", p2 + 9)
-				sespayload = strings.TrimRight(sespayload, ",")
-				sespayload = strings.TrimRight(sespayload, `"`)
+				sespayload = strings.TrimRight(sespayload, `,"`)
 			}
 
 			if strings.Contains(sespayload, "notificationType") == false { break }
@@ -268,8 +267,7 @@ func init() {
 
 		if whatnotify == "B" {
 			// "notificationType":"Bounce"
-			o := &notifiedto.returnedto.Bounce
-			for _, e := range (*o).BouncedRecipients {
+			o := &notifiedto.returnedto.Bounce; for _, e := range (*o).BouncedRecipients {
 				// {"emailAddress":"neko@example.jp", "action":"failed", "status":"5.1.1", "diagnosticCode": "..."}
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -293,8 +291,7 @@ func init() {
 			}
 		} else if whatnotify == "C" {
 			// "notificationType":"Complaint"
-			o := &notifiedto.complained.Complaint
-			for _, e := range (*o).ComplainedRecipients {
+			o := &notifiedto.complained.Complaint; for _, e := range (*o).ComplainedRecipients {
 				// {"emailAddress":"neko@example.jp"}
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.
@@ -310,8 +307,7 @@ func init() {
 			}
 		} else if whatnotify == "D" {
 			// "notificationType":"Delivery"
-			o := &notifiedto.deliveries.Delivery
-			for _, e := range (*o).Recipients {
+			o := &notifiedto.deliveries.Delivery; for _, e := range (*o).Recipients {
 				// {"recipients":["neko@example.jp"]}
 				if len(v.Recipient) > 0 {
 					// There are multiple recipient addresses in the message body.

@@ -74,18 +74,18 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 	switch argv0 {
 		default: return false
 		case "action":       if rfc1894.ActionList[argv1] { this.Action = argv1 }    // Only valid values are accepted
-		case "agent":        this.Agent = argv1     // Any value is accepted
+		case "agent":        this.Agent = argv1                                      // Any value is accepted
 		case "alias":        if rfc5322.IsEmailAddress(argv1) { this.Alias = argv1 } // Only valid email addresses are accepted
 		case "command":      if command.Test(argv1) { this.Command = argv1 }         // Only valid values are accepted
-		case "date":         this.Date = argv1      // Any value is accepted
-		case "diagnosis":    this.Diagnosis = argv1 // Any value is accepted
+		case "date":         this.Date = argv1                                       // Any value is accepted
+		case "diagnosis":    this.Diagnosis = argv1                                  // Any value is accepted
 		case "feedbacktype": if moji.EqualsAny(argv1, feedbacklo) { this.FeedbackType = argv1 }       // Only valid values are accepted
 		case "lhost":        if rfc1123.IsInternetHost(argv1) { this.Lhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
 		case "reason":       this.Reason = strings.ToLower(argv1)
 		case "recipient":    if rfc5322.IsEmailAddress(argv1) { this.Recipient = argv1 } // Only valid email addresses are accepted
 		case "replycode":    if reply.Test(argv1) { this.ReplyCode = argv1 }             // Only valid SMTP reply codes are accepted
 		case "rhost":        if rfc1123.IsInternetHost(argv1) { this.Rhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
-		case "spec":         this.Spec = argv1      // Any value is accepted
+		case "spec":         this.Spec = argv1                             // Any value is accepted
 		case "status":       if status.Test(argv1) { this.Status = argv1 } // Only valid SMTP status codes are accepted
 	}
 	return true
