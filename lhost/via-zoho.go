@@ -30,11 +30,10 @@ func init() {
 		messagesof := map[string][]string{
 			"expired": []string{"Host not reachable"},
 		}
-		dscontents := make([]sis.DeliveryMatter, 1)
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, true)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -60,11 +59,7 @@ func init() {
 			if moji.Aligned(e, []string{"@", " ", "ERROR_CODE :"}) || strings.HasPrefix(e, "[Status: ") {
 				// kijitora@example.co.jp Invalid Address, ERROR_CODE :550, ERROR_CODE :5.1.=
 				// [Status: Error, Address: <kijitora@6kaku.example.co.jp>, ResponseCode 421, , Host not reachable.]
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Recipient  = address.S3S4(e)
 				v.Diagnosis += " " + e
 				recipients  += 1
@@ -78,7 +73,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			for r := range messagesof {

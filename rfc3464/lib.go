@@ -54,7 +54,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	}
 	permessage := map[string]string{}   // Store values of each Per-Message field
 	keystrings := []string{}            // Key list of permessage
-	dscontents := make([]sis.DeliveryMatter, 1)
+	dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 	alternates := new(sis.DeliveryMatter)
 	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 	readcursor := uint8(0)              // Points the current cursor position
@@ -62,10 +62,8 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	recipients := uint8(0)              // The number of 'Final-Recipient' header
 	goestonext := false                 // Flag: do not append the line into "leadinbuff"
 	leadinbuff := strings.Builder{}; leadinbuff.Grow(len(emailparts[0]) / 2)
-	eachbuffer := []strings.Builder{{}};
+	eachbuffer := []strings.Builder{{}}; b := &eachbuffer[0]; b.Grow(128)
 	isboundary := []string{rfc2045.Boundary(bf.Headers["content-type"][0], 0)}
-	v          := &(dscontents[0])
-	b          := &(eachbuffer[0]); b.Grow(128)
 
 	for strings.IndexByte(emailparts[0], '@') == -1 {
 		// There is no email address in the first element of emailparts
@@ -154,7 +152,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 			// This line matched with any field defined in RFC3464
 			o := rfc1894.Field(e); if len(o) == 0 { continue }
 			z := rfc1894.FieldTable[o[0]]
-			v  = &(dscontents[len(dscontents) - 1])
+			v  = sis.TailDeliveryMatter(&dscontents)
 			b  = &(eachbuffer[len(eachbuffer) - 1]); b.Grow(128)
 
 			if o[3] == "addr" {
@@ -168,9 +166,8 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 
 					if len(v.Recipient) > 0 {
 						// There are multiple recipient addresses in the message body.
-						dscontents = append(dscontents, sis.DeliveryMatter{})
+						v = sis.NextDeliveryMatter(&dscontents)
 						eachbuffer = append(eachbuffer, strings.Builder{})
-						v = &(dscontents[len(dscontents) - 1])
 						b = &(eachbuffer[len(eachbuffer) - 1]); b.Grow(128)
 					}
 					v.Recipient = cv
@@ -248,7 +245,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 
 	for j, _ := range dscontents {
 		// Set default values stored in "permessage" if each value in "dscontents" is empty.
-		e := &(dscontents[j]); for _, z := range keystrings {
+		e := &dscontents[j]; for _, z := range keystrings {
 			// Do not set an empty string into each member of sis.DeliveryMatter{}
 			if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 			e.Update(z, permessage[z])

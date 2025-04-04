@@ -40,11 +40,10 @@ func init() {
 			"notaccept":    []string{"Null MX"},
 			"userunknown":  []string{"because the address couldn't be found. Check for typos or unnecessary spaces and try again."},
 		}
-		dscontents := make([]sis.DeliveryMatter, 1)
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -81,7 +80,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(strings.ReplaceAll(e.Diagnosis, "\n", " "))
 
 			for r := range messagesof {

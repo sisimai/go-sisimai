@@ -27,11 +27,10 @@ func init() {
 		startingof := map[string][]string{
 			"message": []string{"  ----- The following addresses had permanent fatal errors -----"},
 		}
-		dscontents := make([]sis.DeliveryMatter, 1)
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)     // The number of 'Final-Recipient' header
 		readcursor := uint8(0)     // Points the current cursor position
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -51,11 +50,8 @@ func init() {
 			// 550 sorry, no mailbox here by that name (#5.1.1 - chkusr)
 			if strings.HasPrefix(e, ">>> ") && strings.IndexByte(e, '@') > 0 {
 				// >>> kijitora@example.org <kijitora@example.org>
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
+
 				v.Recipient = address.S3S4(e[5:])
 				recipients += 1
 
@@ -70,7 +66,7 @@ func init() {
 
 		for j, _ := range dscontents { 
 			// Remove leading or/and trailing spaces, redandant spaces from the error messaage
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return &sis.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}

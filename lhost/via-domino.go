@@ -56,12 +56,11 @@ func init() {
 
 		permessage := map[string]string{} // Store values of each Per-Message field
 		keystrings := []string{}          // Key list of permessage
-		dscontents := make([]sis.DeliveryMatter, 1)
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		subjecttxt := ""                  // The value of "Subject:"
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -88,11 +87,7 @@ func init() {
 			if e == "was not delivered to:" {
 				// was not delivered to:
 				//   kijitora@example.net
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Recipient = e
 				recipients += 1
 

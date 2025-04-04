@@ -30,11 +30,10 @@ func init() {
 		boundaries := []string{"The attachment contains the original mail headers"}
 		startingof := map[string][]string{"message": []string{"We had trouble delivering your message. Full details follow:"}}
 
-		dscontents := make([]sis.DeliveryMatter, 1)
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -60,14 +59,10 @@ func init() {
 			if p1 == 0 || p2 == 0 {
 				// SMTP Server <mta2.example.jp> rejected recipient <kijitora@example.jp>
 				// The following recipients returned permanent errors: neko@example.jp.
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
 				if p1 == 0 { p3 = strings.Index(e, ": ") } else { p3 = strings.LastIndex(e, " <") }
 				cv := address.S3S4(e[p3:]); if rfc5322.IsEmailAddress(cv) == false { continue }
 
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Recipient  = cv
 				v.Diagnosis += " " + e
 				recipients  += 1
@@ -81,7 +76,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			e.Command   = command.Find(e.Diagnosis)
 			e.Rhost     = rfc1123.Find(e.Diagnosis)

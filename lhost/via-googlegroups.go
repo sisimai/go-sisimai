@@ -52,10 +52,9 @@ func init() {
 		//
 		// Google Groups
 		boundaries := []string{"----- Original message -----", "Content-Type: message/rfc822"}
-		dscontents := make([]sis.DeliveryMatter, 1)
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		v          := &(dscontents[len(dscontents) - 1])
 
 		entiremesg := strings.SplitN(emailparts[0], "\n\n", 5); entiremesg[len(entiremesg) - 1] = ""
 		issuedcode := strings.ReplaceAll(strings.Join(entiremesg, " "), "\n", " ")
@@ -79,11 +78,7 @@ func init() {
 		for _, e := range strings.Split(bf.Headers["x-failed-recipients"][0], ",") {
 			// X-Failed-Recipients: neko@example.jp, cat@example.org, ...
 			if rfc5322.IsEmailAddress(e) == false { continue }
-			if len(v.Recipient) > 0 {
-				// There are multiple recipient addresses in the message body.
-				dscontents = append(dscontents, sis.DeliveryMatter{})
-				v = &(dscontents[len(dscontents) - 1])
-			}
+			if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 			v.Recipient = address.S3S4(e)
 			recipients += 1
 			v.Rhost     = recordwide[0]

@@ -40,11 +40,10 @@ func init() {
 			"spamdetected":  []string{"Blacklisted URL in message"},
 			"expired":       []string{"Delivery failed "},
 		}
-		dscontents := make([]sis.DeliveryMatter, 1)
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)
 		mesgbuffer := strings.Builder{}; mesgbuffer.Grow(len(emailparts[0]) / 2)
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -52,11 +51,7 @@ func init() {
 			if (strings.Index(e, ": ") > 8 && moji.Aligned(e, []string{": ", "@"})) || strings.HasPrefix(e, "undeliverable ") {
 				// Unknown user: kijitora@example.com
 				// undeliverable to kijitora@example.com
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Diagnosis = e
 				v.Recipient = address.Find(e)[0]
 				recipients += 1
@@ -77,7 +72,7 @@ func init() {
 
 		alternates := mesgbuffer.String(); for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 
 			e.Diagnosis = moji.Sweep(strings.ReplaceAll(alternates + " " + e.Diagnosis, "\n", " "))
 			e.Command   = command.Find(e.Diagnosis)
