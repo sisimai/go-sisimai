@@ -25,6 +25,34 @@ import "strings"
 // Rhost        string     // The value of Remote-MTA header
 // Spec         string     // Protocl specification
 // Status       string     // The value of Status header
+func TestTailDeliveryMatter(t *testing.T) {
+	fn := "TailDeliveryMatter"
+	ae := make([]DeliveryMatter, 1)
+	cx := 0
+
+	cv := TailDeliveryMatter(&ae)
+	cx++; if cv == nil    { t.Errorf("%s(nil) returns nil", fn) }
+	cx++; if len(ae) != 1 { t.Errorf("%s(ae) have invalid elements: %d", fn, len(ae)) }
+
+	cv  = nil
+	cx++; if cv != nil    { t.Errorf("%s(nil) returns %v", fn, cv) }
+	t.Logf("The number of tests = %d", cx)
+}
+
+func NextTailDeliveryMatter(t *testing.T) {
+	fn := "NextDeliveryMatter"
+	ae := make([]DeliveryMatter, 1)
+	cx := 0
+
+	for j := 0; j < 10; j++ {
+		cv := NextDeliveryMatter(&ae)
+		cx++; if len(ae) != j + 1 { t.Errorf("%s(ae) failed to append a new element: %d", fn, len(ae)) }
+		cx++; if cv == nil        { t.Errorf("%s(ae) returned nil", fn) }
+	}
+	cx++; if cv := NextDeliveryMatter(nil); cv != nil { t.Errorf("%s(nil) returns %v", fn, *cv) }
+	t.Logf("The number of tests = %d", cx)
+}
+
 func TestDeliveryMatter(t *testing.T) {
 	fn := "DeliveryMatter"
 	cv := &DeliveryMatter{
