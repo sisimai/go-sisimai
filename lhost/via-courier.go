@@ -53,13 +53,12 @@ func init() {
 
 		permessage := map[string]string{}   // Store values of each Per-Message field
 		keystrings := []string{}            // Key list of permessage
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
 		readslices := make([]string, 1, 32) // Copy each line for later reference
 		recipients := uint8(0)              // The number of 'Final-Recipient' header
 		thecommand := ""                    // An SMTP command name begins with the string ">>>"
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for j, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -77,18 +76,15 @@ func init() {
 				// "e" matched with any field defined in RFC3464
 				o := rfc1894.Field(e); if len(o) == 0 { continue }
 				z := rfc1894.FieldTable[o[0]]
-				v  = &(dscontents[len(dscontents) - 1])
+				v  = sis.TailDeliveryMatter(&dscontents)
 
 				if o[3] == "addr" {
 					// Final-Recipient: rfc822; kijitora@example.jp
 					// X-Actual-Recipient: rfc822; kijitora@example.co.jp
 					if o[0] == "final-recipient" {
 						// Final-Recipient: rfc822; kijitora@example.jp
-						if len(v.Recipient) > 0 {
-							// There are multiple recipient addresses in the message body.
-							dscontents = append(dscontents, sis.DeliveryMatter{})
-							v = &(dscontents[len(dscontents) - 1])
-						}
+						if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
+
 						v.Recipient = o[2]
 						recipients += 1
 
@@ -146,7 +142,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Set default values stored in "permessage" if each value in "dscontents" is empty.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
 				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }

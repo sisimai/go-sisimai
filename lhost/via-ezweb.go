@@ -68,12 +68,11 @@ func init() {
 			},
 		}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		substrings := []string{}          // All the values of "messagesof"
-		v          := &(dscontents[len(dscontents) - 1])
 
 		// Add all the values of messagesof into substrings
 		for e := range messagesof { for _, f := range messagesof[e] { substrings = append(substrings, f) } }
@@ -101,11 +100,7 @@ func init() {
 			if moji.Aligned(e, []string{"<", "@", ">"}) &&
 			   (strings.Index(e, "Recipient: <") > 1 || strings.HasPrefix(e, "<")) {
 				// Recipient: <******@ezweb.ne.jp> OR <***@ezweb.ne.jp>: 550 user unknown ...
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Recipient = address.S3S4(moji.Select(e, "<", ">", 0))
 				v.Diagnosis += " " + e
 				recipients += 1
@@ -144,7 +139,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Check each value of DeliveryMatter{}, try to detect the bounce reason.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }

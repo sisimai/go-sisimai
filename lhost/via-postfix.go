@@ -55,13 +55,12 @@ func init() {
 
 		permessage := map[string]string{} // Store values of each Per-Message field
 		keystrings := []string{}          // Key list of permessage
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		nomessages := false               // Delivery report unavailable
 		anotherset := map[string]string{} // Another error information
 		commandset := []string{}          // "in reply to * command" list
-		v          := &(dscontents[len(dscontents) - 1])
 
 		if proceedsto == 2 {
 			// The message body starts with "Transcript of session follows."
@@ -70,7 +69,7 @@ func init() {
 
 			for _, e := range *transcript {
 				// Pick email addresses, error messages, and the last SMTP command.
-				v  = &(dscontents[len(dscontents) - 1])
+				v = sis.TailDeliveryMatter(&dscontents)
 
 				if e.Command == "EHLO" || e.Command == "HELO" {
 					// Use the argument of EHLO/HELO command as a value of "lhost"
@@ -82,11 +81,7 @@ func init() {
 
 				} else if e.Command == "RCPT" {
 					// RCPT TO: <...>
-					if len(v.Recipient) > 0 {
-						// There are multiple recipient addresses in the transcript of the session
-						dscontents = append(dscontents, sis.DeliveryMatter{})
-						v = &(dscontents[len(dscontents) - 1])
-					}
+					if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 					v.Recipient = e.Argument
 					recipients += 1
 				}
@@ -120,18 +115,14 @@ func init() {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
 					z := rfc1894.FieldTable[o[0]]
-					v  = &(dscontents[len(dscontents) - 1])
+					v  = sis.TailDeliveryMatter(&dscontents)
 
 					if o[3] == "addr" {
 						// Final-Recipient: rfc822; kijitora@example.jp
 						// X-Actual-Recipient: rfc822; kijitora@example.co.jp
 						if o[0] == "final-recipient" {
 							// Final-Recipient: rfc822; kijitora@example.jp
-							if len(v.Recipient) > 0 {
-								// There are multiple recipient addresses in the message body.
-								dscontents = append(dscontents, sis.DeliveryMatter{})
-								v = &(dscontents[len(dscontents) - 1])
-							}
+							if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 							v.Recipient = o[2]
 							recipients += 1
 
@@ -224,7 +215,7 @@ func init() {
 				// "--- Delivery report unavailable ---"
 				if cv := address.S3S4(moji.Select(emailparts[1], "\nTo: ", "\n", 0)); cv != "" {
 					// Try to get a recipient address from To: field in the original message at message/rfc822 part
-					dscontents[len(dscontents) - 1].Recipient = cv
+					sis.TailDeliveryMatter(&dscontents).Recipient = cv
 					recipients += 1
 				}
 			}
@@ -233,7 +224,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Set default values stored in "permessage" if each value in "dscontents" is empty.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
 				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
@@ -288,8 +279,7 @@ func init() {
 
 			} else {
 				// There is no SMTP command
-				e.Command = command.Find(e.Diagnosis)
-				if len(e.Command) == 0 {
+				if e.Command = command.Find(e.Diagnosis); e.Command == "" {
 					// <kijitora@example.org>: host r2.example.org[198.51.100.18] refused to talk to me:
 					if strings.Contains(e.Diagnosis, "refused to talk to me:") { e.Command = "HELO" }
 				}

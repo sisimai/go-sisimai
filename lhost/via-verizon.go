@@ -49,10 +49,9 @@ func init() {
 			bf.Payload = strings.Replace(bf.Payload, "RCPT TO: ",   "To: ", 1)
 		}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -78,7 +77,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			for r := range messagesof {

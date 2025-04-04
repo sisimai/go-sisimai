@@ -87,17 +87,16 @@ func init() {
 			},
 		}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
+		rightindex := uint8(0)      // The last index number of dscontents
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)      // Points the current cursor position
 		recipients := uint8(0)      // The number of 'Final-Recipient' header
 		statuspart := false         // Flag, true if it has read the delivery status part
 		connvalues := 0             // Counter, 3 if it has got the all values of connheader
 		connheader := [3]string{}   // [To:, Subject:, Date:]
-		rightindex := uint8(0)      // The last index number of dscontents
 		anotherone := []string{""}  // Keeping another error messages
 		msexchange := []bool{false} // Flag, true if "MSEXCH:" text has been appeared
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -127,11 +126,10 @@ func init() {
 					//   kijitora@example.com on 4/29/99 9:19:59 AM
 					if len(v.Recipient) > 0 {
 						// There are multiple recipient addresses in the message body.
-						dscontents = append(dscontents, sis.DeliveryMatter{})
+						v          = sis.NextDeliveryMatter(&dscontents)
 						anotherone = append(anotherone, "")
 						msexchange = append(msexchange, false)
 						rightindex++
-						v = &(dscontents[rightindex])
 					}
 					p1 := strings.Index(strings.ToLower(e), "smtp="); if p1 < 0 { p1 = 0 } else { p1 += 5 }
 					p2 := strings.Index(e, " on ")
@@ -189,7 +187,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, try to detect the bounce reason.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			if moji.Aligned(e.Diagnosis, []string{"MSEXCH:", "(", ")"}) {

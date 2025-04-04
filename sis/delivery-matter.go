@@ -34,6 +34,26 @@ type DeliveryMatter struct {
 	Status       string     // The value of Status header
 }
 
+// TailDeliveryMatter returns the last element pointer of DeliveryMatter struct
+//   Arguments:
+//     - argv0 (*[]DeliveryMatter): The pointer to []DeliveryMatter
+//   Returns:
+//     - (*DeliveryMatter):         The last element pointer of DeliveryMatter struct
+func TailDeliveryMatter(argv0 *[]DeliveryMatter) *DeliveryMatter {
+	width := len(*argv0); if width == 0 { return nil }
+	return &(*argv0)[width - 1]
+}
+
+// NextDeliveryMatter appends a new element and returns the last element pointer
+//   Arguments:
+//     - argv0 (*[]DeliveryMatter): The pointer to []DeliveryMatter
+//   Returns:
+//     - (*DeliveryMatter):         The last element pointer of DeliveryMatter struct
+func NextDeliveryMatter(argv0 *[]DeliveryMatter) *DeliveryMatter {
+	*argv0 = append(*argv0, DeliveryMatter{})
+	return &(*argv0)[len(*argv0) - 1]
+}
+
 // *DeliveryMatter.Select returns the current value of the sis.DeliveryMatter instance.
 //   Arguments:
 //     - argv0 (string): Lower-cased member name of sis.DeliveryMatter

@@ -34,10 +34,9 @@ func init() {
 		if proceedsto == false { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822"}
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -60,8 +59,7 @@ func init() {
 
 				if len(v.Recipient) > 0 && strings.Contains(cr[0], v.Recipient) == false {
 					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
+					v = sis.NextDeliveryMatter(&dscontents)
 				}
 				if strings.Contains(e, "Unable to deliver ") { v.Diagnosis = e }
 
@@ -87,7 +85,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Tidy up error messages in e.Diagnosis, set the value of e.Reason
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			if strings.Contains(e.Diagnosis, "Unable to deliver") { e.Reason = "userunknown" }
 		}

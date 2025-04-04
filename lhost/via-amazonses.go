@@ -261,19 +261,15 @@ func init() {
 			return &sis.RisingUnderway{Errors: notdecoded}
 		}
 
-		dscontents := []sis.DeliveryMatter{{}}
 		recipients := uint8(0)
-		v          := &(dscontents[len(dscontents) - 1])
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 
 		if whatnotify == "B" {
 			// "notificationType":"Bounce"
 			o := &notifiedto.returnedto.Bounce; for _, e := range (*o).BouncedRecipients {
 				// {"emailAddress":"neko@example.jp", "action":"failed", "status":"5.1.1", "diagnosticCode": "..."}
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
+
 				v.Recipient = e.EmailAddress
 				v.Diagnosis = moji.Sweep(e.DiagnosticCode)
 				v.Command   = command.Find(v.Diagnosis)
@@ -293,11 +289,8 @@ func init() {
 			// "notificationType":"Complaint"
 			o := &notifiedto.complained.Complaint; for _, e := range (*o).ComplainedRecipients {
 				// {"emailAddress":"neko@example.jp"}
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
+
 				v.Recipient    = e.EmailAddress
 				v.Reason       = "feedback"
 				v.FeedbackType = (*o).ComplaintFeedbackType
@@ -309,11 +302,8 @@ func init() {
 			// "notificationType":"Delivery"
 			o := &notifiedto.deliveries.Delivery; for _, e := range (*o).Recipients {
 				// {"recipients":["neko@example.jp"]}
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
+
 				v.Recipient = e
 				v.Reason    = "delivered"
 				v.Action    = "delivered"

@@ -82,7 +82,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 		[]string{"this is an email abuse report"},
 	}
 
-	dscontents := []sis.DeliveryMatter{{}}
+	dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 	readcursor := uint8(0)            // Points the current cursor position
 	recipients := uint8(0)            // The number of "Final-Recipient" header
@@ -90,7 +90,6 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	remotehost := ""                  // The value of "Source-IP" field
 	reportedby := ""                  // The value of "Reporting-MTA" field
 	anotherone := ""                  // Other fields(append to Diagnosis)
-	v          := &(dscontents[len(dscontents) - 1])
 
     // 3.1.  Required Fields
     //
@@ -147,11 +146,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 				cv := address.S3S4(e[strings.IndexByte(e, ' ') + 1:]); if rfc5322.IsEmailAddress(cv) == false        { continue }
 				cw := len(dscontents);                                 if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
 
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Recipient = cv
 				recipients += 1
 
@@ -224,7 +219,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	if anotherone != "" { anotherone = ": " + strings.TrimRight(moji.Sweep(anotherone), ",") }
 	for j, _ := range dscontents {
 		// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
-		e := &(dscontents[j])
+		e := &dscontents[j]
 		e.Diagnosis = moji.Sweep(e.Diagnosis + anotherone)
 		e.Reason    = "feedback"
 		e.Rhost     = remotehost
@@ -233,7 +228,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 
 		// Copy some values from the previous element when the report have 2 or more email address
 		if j == 0 || len(dscontents) == 1 { continue }
-		p := &(dscontents[j - 1])
+		p := &dscontents[j - 1]
 		if e.Diagnosis    == "" { e.Diagnosis    = p.Diagnosis    }
 		if e.FeedbackType == "" { e.FeedbackType = p.FeedbackType }
 	}

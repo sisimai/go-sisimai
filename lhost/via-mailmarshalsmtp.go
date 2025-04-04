@@ -32,12 +32,11 @@ func init() {
 			"error":   []string{"Could not be delivered because of"},
 			"rcpts":   []string{"The following recipients were affected:"},
 		}
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 		endoferror := false               // Flag for the end of error messages
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -61,11 +60,7 @@ func init() {
 			if strings.HasPrefix(e, "    ") && strings.IndexByte(e, '@') > 0 {
 				// The following recipients were affected:
 				//    neko@example.com
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Recipient = e[4:]
 				recipients += 1
 
@@ -118,7 +113,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return &sis.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}

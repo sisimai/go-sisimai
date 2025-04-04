@@ -29,11 +29,10 @@ func init() {
 		boundaries := []string{"Received: from "}
 		startingof := map[string][]string{"message": []string{"The original message was received at "}}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		v          := &(dscontents[len(dscontents) - 1])
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -52,11 +51,8 @@ func init() {
 			// kijitora@example.co.jp [User unknown]
 			if moji.Aligned(e, []string{"@", " [", "]"}) {
 				// kijitora@example.co.jp [User unknown]
-				if len(v.Recipient) > 0 {
-					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
-					v = &(dscontents[len(dscontents) - 1])
-				}
+				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
+
 				p1 := strings.IndexByte(e, ' ')
 				cv := address.S3S4(e[:p1]); if rfc5322.IsEmailAddress(cv) == false { continue }
 				v.Recipient  = cv
@@ -78,7 +74,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Pick the date string from the error message.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			if e.Date == "" {

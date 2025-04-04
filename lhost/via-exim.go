@@ -181,7 +181,7 @@ func init() {
 			bf.Payload = strings.Replace(bf.Payload, "\n----- This ", "\n------ This ", 1)
 		}
 
-		dscontents := []sis.DeliveryMatter{{}}
+		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
 		nextcursor := uint8(0)
@@ -189,7 +189,6 @@ func init() {
 		anotherone := []string{""}          // Keeping another error messages
 		rightindex := uint8(0)              // The last index number of dscontents
 		boundary00 := ""                    // Boundary sting
-		v          := &(dscontents[len(dscontents) - 1])
 
 		if bf.Headers["content-type"][0] != "" {
 			// Get the boundary string and set regular expression for matching with the boundary string.
@@ -271,10 +270,9 @@ func init() {
 
 				if len(v.Recipient) > 0 && cv != v.Recipient {
 					// There are multiple recipient addresses in the message body.
-					dscontents = append(dscontents, sis.DeliveryMatter{})
+					v          = sis.NextDeliveryMatter(&dscontents)
 					anotherone = append(anotherone, "")
 					rightindex++
-					v = &(dscontents[rightindex])
 				}
 				v.Recipient = cv
 				recipients++
@@ -344,7 +342,7 @@ func init() {
 			// Check "an undisclosed address", "unroutable address"
 			for j, _ := range dscontents {
 				// Replace the recipient address with the value of "alias"
-				e := &(dscontents[j])
+				e := &dscontents[j]
 				if e.Alias == "" { continue }
 				if strings.IndexByte(e.Recipient, '@') < 0 { e.Recipient = e.Alias }
 			}
@@ -358,9 +356,8 @@ func init() {
 				for _, e := range rcptinhead {
 					// Insert each recipient address into "dscontents"
 					e = strings.Trim(e, " ")
-					dscontents[len(dscontents) - 1].Recipient = e
-					if len(dscontents) == recipients { continue }
-					dscontents = append(dscontents, sis.DeliveryMatter{})
+					sis.TailDeliveryMatter(&dscontents).Recipient = e
+					if len(dscontents) != recipients { sis.NextDeliveryMatter(&dscontents) }
 				}
 			}
 		}
@@ -373,7 +370,7 @@ func init() {
 
 		for j, _ := range dscontents {
 			// Check the error message, the rhost, the lhost, and the smtp command.
-			e := &(dscontents[j])
+			e := &dscontents[j]
 
 			if e.Diagnosis == "" && boundary00 != "" {
 				// Empty Diagnostic-Code: or error message
