@@ -13,7 +13,7 @@
 > results in any environment as long as it is a language that can read JSON, such as PHP, Java,
 > Python, and Rust.
 
-- [**README-JA(🇯🇵)**](README-JA.md)
+- [🇯🇵 **README-JA**](README-JA.md)
 - [What is Sisimai](#what-is-sisimai)
     - [The key features of Sisimai](#the-key-features-of-sisimai)
     - [Command line demo](#command-line-demo)

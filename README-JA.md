@@ -12,7 +12,7 @@
 > RustなどJSONを読める言語であれば、どのような環境においても解析結果を得ることでバウンスの発生状況を
 > 捉えるのにとても有用です。
 
-- [**README(English)**](README.md)
+- [🇬🇧 **README**](README.md)
 - [シシマイ? | What is Sisimai](#what-is-sisimai)
     - [主な特徴的機能 | The key features of Sisimai](#the-key-features-of-sisimai)
     - [コマンドラインでのデモ | command line demo](#command-line-demo)
