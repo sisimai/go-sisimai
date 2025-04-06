@@ -30,10 +30,6 @@ func init() {
 		//   e.g.) Received: (qmail 12345 invoked for bounce); 29 Apr 2009 12:34:56 -0000
 		//         Subject: failure notice
 		proceedsto := false
-		relayedvia := [][]string{
-			[]string{"(qmail ", "invoked for bounce)"},
-			[]string{"(qmail ", "invoked from ", "network)"},
-		}
 		emailtitle := []string{
 			"failure notice", // qmail-send.c:Subject: failure notice\n\
 			"Failure Notice", // Yahoo
@@ -43,8 +39,7 @@ func init() {
 			// Received: (qmail 2222 invoked for bounce);29 Apr 2017 23:34:45 +0900
 			// Received: (qmail 2202 invoked from network); 29 Apr 2018 00:00:00 +0900
 			if proceedsto == true { break }
-			if moji.Aligned(e, relayedvia[0]) { proceedsto = true }
-			if moji.Aligned(e, relayedvia[1]) { proceedsto = true }
+			if moji.Aligned(e, []string{"(qmail", " invoked "}) { proceedsto = true }
 		}
 		if proceedsto == false { return nil }
 
