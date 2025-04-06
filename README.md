@@ -13,7 +13,7 @@
 > results in any environment as long as it is a language that can read JSON, such as PHP, Java,
 > Python, and Rust.
 
-- [**README-JA(日本�**](README-JA.md)
+- [**README-JA(🇯🇵)**](README-JA.md)
 - [What is Sisimai](#what-is-sisimai)
     - [The key features of Sisimai](#the-key-features-of-sisimai)
     - [Command line demo](#command-line-demo)
@@ -389,7 +389,7 @@ Features
 | System requirements                          | 1.17 -         | 5.26 -          | 2.4 - / 9.2 - |
 | Dependencies (Except standard libs)          | **0 packages** | 2 modules       | 1 gem         |
 | Supported character sets                     | **UTF-8 only** | UTF-8,etc. [^2] | UTF-8,etc.[^3]|
-| Source lines of code                         | 9,000 lines    | 9,900 lines     | 9,800 lines   |
+| Source lines of code                         | 8,800 lines    | 9,900 lines     | 9,800 lines   |
 | The number of tests                          | 144,000 tests  | 320,000 tests   | 410,000 tests |
 | The number of bounce emails decoded/sec [^4] | 2900 emails    | 750 emails      | 620 emails    |
 | License                                      | 2 Clause BSD   | 2 Caluse BSD    | 2 Clause BSD  |
@@ -428,7 +428,7 @@ Related sites
 
 See also
 ---------------------------------------------------------------------------------------------------
-* [README-JA.md - README.md in Japanese(日本�](https://github.com/sisimai/go-sisimai/blob/5-stable/README-JA.md)
+* [README-JA.md - README.md in Japanese(日本??](https://github.com/sisimai/go-sisimai/blob/5-stable/README-JA.md)
 * [RFC3463 - Enhanced Mail System Status Codes](https://tools.ietf.org/html/rfc3463)
 * [RFC3464 - An Extensible Message Format for Delivery Status Notifications](https://tools.ietf.org/html/rfc3464)
 * [RFC3834 - Recommendations for Automatic Responses to Electronic Mail](https://tools.ietf.org/html/rfc3834)
