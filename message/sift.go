@@ -97,7 +97,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		break DECODER // as of now, we have no sample email for coding this block
 
 	} // End of for(DECODER)
-	if rising == nil { return false }
+	if rising == nil || len(rising.Digest) == 0 { return false }
 
 	for j, _ := range rising.Digest {
 		// Set the value of "Agent" such as "Postfix", "Sendmail", or "OpenSMTPD"
