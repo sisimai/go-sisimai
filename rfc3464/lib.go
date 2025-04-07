@@ -53,7 +53,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 		break
 	}
 	permessage := map[string]string{}   // Store values of each Per-Message field
-	keystrings := []string{}            // Key list of permessage
+	keystrings := make([]string, 0, 4)  // Key list of permessage
 	dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 	alternates := new(sis.DeliveryMatter)
 	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
