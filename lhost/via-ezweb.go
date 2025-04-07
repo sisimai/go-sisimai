@@ -70,9 +70,9 @@ func init() {
 
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)            // Points the current cursor position
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		substrings := []string{}          // All the values of "messagesof"
+		readcursor := uint8(0)              // Points the current cursor position
+		recipients := uint8(0)              // The number of 'Final-Recipient' header
+		substrings := make([]string, 0, 6)  // All the values of "messagesof"
 
 		// Add all the values of messagesof into substrings
 		for e := range messagesof { for _, f := range messagesof[e] { substrings = append(substrings, f) } }

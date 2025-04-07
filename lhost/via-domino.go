@@ -54,13 +54,13 @@ func init() {
 			},
 		}
 
-		permessage := map[string]string{} // Store values of each Per-Message field
-		keystrings := []string{}          // Key list of permessage
+		permessage := map[string]string{}   // Store values of each Per-Message field
+		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)            // Points the current cursor position
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		subjecttxt := ""                  // The value of "Subject:"
+		readcursor := uint8(0)              // Points the current cursor position
+		recipients := uint8(0)              // The number of 'Final-Recipient' header
+		subjecttxt := ""                    // The value of "Subject:"
 
 		for _, e := range(strings.Split(emailparts[0], "\n")) {
 			// Read error messages and delivery status lines from the head of the email to the

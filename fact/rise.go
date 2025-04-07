@@ -54,7 +54,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 	}
 
 	rfc822data := (*beforefact).RFC822
-	listoffact := []sis.Fact{}
+	listoffact := make([]sis.Fact, 0, 2)
 
 	RISEOF: for _, e := range (*beforefact).Digest {
 		// Create parameters for sis.Fact

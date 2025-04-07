@@ -51,14 +51,14 @@ func init() {
 			"error":   []string{"... while talking to "},
 		}
 		permessage := map[string]string{}   // Store values of each Per-Message field
-		keystrings := []string{}            // Key list of permessage
+		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
 		readslices := make([]string, 1, 32) // Copy each line for later reference
 		recipients := uint8(0)              // The number of 'Final-Recipient' header
 		thecommand := ""                    // An SMTP command name begins with the string ">>>"
-		esmtpreply := []string{}            // Reply messages from the remote server on an SMTP session
+		esmtpreply := make([]string, 0, 2)  // Reply messages from the remote server on an SMTP session
 		sessionerr := false                 // Flag, true if it is an SMTP session error
 		anotherset := map[string]string{}   // Another error information
 

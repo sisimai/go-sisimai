@@ -46,8 +46,8 @@ func Args() *sis.DecodingArgs { return new(sis.DecodingArgs) }
 //     - (*[]sis.Fact):            List of successfully decoded bounce messages
 //     - (*[]sis.NotDecoded):      List of occurred errors
 func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) {
-	sisidigest := []sis.Fact{}       // Decoded bounce message structures
-	notdecoded := []sis.NotDecoded{} // List of occurred errors and warnings
+	sisidigest := make([]sis.Fact, 0, 2)    // Decoded bounce message structures
+	notdecoded := make([]sis.NotDecoded, 0) // List of occurred errors and warnings
 
 	emailthing, nyaan := sisimbox.Rise(path); if nyaan != nil {
 		// The file does not exist, or is not a regular file.
@@ -109,7 +109,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 //     - (*[]sis.NotDecoded):      List of occurred errors
 func Dump(path string, args *sis.DecodingArgs) (*string, *[]sis.NotDecoded) {
 	sisidigest, notdecoded := Rise(path, args); if len(*sisidigest) == 0 { return nil, notdecoded }
-	serialized := []string{}
+	serialized := make([]string, 0)
 
 	for _, e := range *sisidigest {
 		cj, nyaan := e.Dump(); if nyaan != nil {
