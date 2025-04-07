@@ -53,14 +53,14 @@ func init() {
 			},
 		}
 
-		permessage := map[string]string{} // Store values of each Per-Message field
-		keystrings := []string{}          // Key list of permessage
+		permessage := map[string]string{}   // Store values of each Per-Message field
+		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		nomessages := false               // Delivery report unavailable
-		anotherset := map[string]string{} // Another error information
-		commandset := []string{}          // "in reply to * command" list
+		recipients := uint8(0)              // The number of 'Final-Recipient' header
+		nomessages := false                 // Delivery report unavailable
+		anotherset := map[string]string{}   // Another error information
+		commandset := make([]string, 0, 2)  // "in reply to * command" list
 
 		if proceedsto == 2 {
 			// The message body starts with "Transcript of session follows."
