@@ -97,7 +97,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 	boundary01 := Boundary(argv0, 0); if boundary01 == "" { return nil, nil }
 	multiparts := strings.Split(*argv1, boundary01 + "\n")
 	partstable := make([][3]string, 0, 4)
-	notdecoded := []sis.NotDecoded{}
+	notdecoded := make([]sis.NotDecoded, 0)
 
 	// Remove empty or useless preamble and epilogue of multipart/* block
 	if len(multiparts[0])                   < 8 { multiparts = multiparts[1:] }
@@ -117,8 +117,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 			bodyinside := strings.SplitN(cf[2], "\n\n", 2)[1]
 			if len(bodyinside) < 8 || strings.Contains(bodyinside, boundary02) == false { continue }
 
-			cv, ce := levelout(cf[0], &bodyinside)
-			if ce != nil && len(*ce) > 0 {
+			cv, ce := levelout(cf[0], &bodyinside); if ce != nil && len(*ce) > 0 {
 				// There is any errors
 				notdecoded = append(notdecoded, *ce...)
 				if cv == nil { continue }
@@ -209,19 +208,15 @@ func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
 			// Check the value of Content-Transfer-Encoding: header
 			if ctencoding == "base64" {
 				// Content-Transfer-Encoding: base64
-				cv, nyaan := DecodeB(bodyinside, ""); bodystring = cv
-				if nyaan != nil {
+				cv, nyaan := DecodeB(bodyinside, ""); bodystring = cv; if nyaan != nil {
 					// Something wrong when the function decodes the BASE64 encoded string
-					ce := *sis.MakeNotDecoded(nyaan.Error(), false)
-					*notdecoded = append(*notdecoded, ce)
+					*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false))
 				}
 			} else if ctencoding == "quoted-printable" {
 				// Content-Transfer-Encoding: quoted-printable
-				cv, nyaan := DecodeQ(bodyinside); bodystring = cv
-				if nyaan != nil {
+				cv, nyaan := DecodeQ(bodyinside); bodystring = cv; if nyaan != nil {
 					// Something wrong when the function decodes the Quoted-Printable encoded string
-					ce := *sis.MakeNotDecoded(nyaan.Error(), false)
-					*notdecoded = append(*notdecoded, ce)
+					*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false))
 				}
 			} else {
 				// - Content-Transfer-Encoding: 8bit, binary, and so on
