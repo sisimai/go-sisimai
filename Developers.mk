@@ -42,7 +42,7 @@ test:
 	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
 
 list-test-files:
-	@ find $(SISIMAIDIR) -type f -name '*_test.go'
+	@ find $(SISIMAIDIR) -type f -not -path '*/tmp/*' -name '*_test.go'
 
 count-test-cases:
 	@ $(GO) test -v ./ $(addprefix ./, $(SISIMAIDIR)) | grep 'The number of ' | awk '{ cx += $$7 } END { print cx }'
@@ -52,7 +52,7 @@ loc:
 		xargs grep -vE '(^$$|^//|/[*]|[*]/|^ |^--)' | grep -vE "\t+//" | wc -l
 
 how-many-engines:
-	@ echo `ls -1 lhost/via-* rhost/for-* | wc -l | tr -d ' '` + 4 | bc
+	@ echo `$(LS) lhost/via-* rhost/for-* | wc -l | tr -d ' '` + 4 | bc
 
 coverage:
 	@ $(GO) test -v ./ $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
