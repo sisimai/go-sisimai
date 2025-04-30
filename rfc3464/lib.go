@@ -202,10 +202,9 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 				if is3rdparty(e) == false { continue }
 				if cv := xfield(e); len(cv) > 0 && len(rfc1894.FieldTable[strings.ToLower(cv[0])]) == 0 {
 					// Check the first element is a field defined in RFC1894 or not
-					if strings.HasPrefix(cv[4], "reason:") {
-						// cv[4] is a string line "reason:mailboxfull"
-						v.Reason = cv[4][strings.IndexByte(cv[4], ':') + 1:]
-					}
+					// cv[4] is a string line "reason:mailboxfull"
+					v.Reason = moji.Select(cv[4] + moji.RHS, "reason:", "", 0)
+
 				} else {
 					// Set the value picked from "X-*" field to the member of sis.DeliveryMatter
 					// when the current value is empty
