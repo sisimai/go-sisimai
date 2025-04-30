@@ -14,6 +14,9 @@ import "fmt"
 import "strings"
 import "crypto/sha1"
 
+const LHS string = "<@>" // The LHS string for Select() function
+const RHS string = "<$>" // The RHS string for Select() function
+
 // Token creates the message token from an addresser, and a recipient, and an unix machine time.
 //   Arguments:
 //     - argv1 (string): Email address of the sender
@@ -120,7 +123,9 @@ func IndexOnTheWay(argv0, argv1 string, start int) int {
 //   Returns:
 //     - (string):       Selected string such as "neko@example.jp"
 func Select(argv0, begin, until string, start int) string {
-	if argv0 == "" || begin == "" || until == "" || start < 0 { return "" }
+	if argv0 == "" || start < 0 { return ""   }
+	if begin == "" /* <@> */    { begin = LHS }
+	if until == "" /* <$> */    { until = RHS }
 
 	textlength := [3]int{len(argv0), len(begin), len(until)}
 	sourcetext := argv0
