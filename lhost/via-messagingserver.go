@@ -74,7 +74,7 @@ func init() {
 			   moji.Aligned(e, []string{"  Original address: ",  "@", "."}) {
 				//   Recipient address: @smtp.example.net:kijitora@server
 				//   Original address: kijitora@example.jp
-				cv := address.S3S4(e[strings.Index(e, ": ") + 2:])
+				cv := moji.Select(e + moji.RHS, ": ", "", 16)
 				if rfc5322.IsEmailAddress(cv) == false { continue }
 				if len(v.Recipient) > 0 && cv != v.Recipient { v = sis.NextDeliveryMatter(&dscontents) }
 
