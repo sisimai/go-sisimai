@@ -14,7 +14,6 @@ import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc791"
 import "libsisimai.org/sisimai/v5/rfc1894"
 import "libsisimai.org/sisimai/v5/rfc5322"
-import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
