@@ -19,6 +19,9 @@ func TestSelect(t *testing.T) {
 		{"From: <neko@example.jp>\nTo: <cat@example.org>\n ", "\nTo: ", "\n", 0, "<cat@example.org>"},
 		{"Status: 4.4.0 (undefined routing status)", " (", ")", 1, "undefined routing status"},
 		{"550-5.7.26 The MAIL FROM domain [email.example.jp] has an SPF", " [", "] ", 10, "email.example.jp"},
+		{LHS + "nekochan" + RHS, "", "", 0, "nekochan"},
+		{LHS + "nekochan:", "", ":", 0, "nekochan"},
+		{":nekochan" + RHS, ":", "", 0, "nekochan"},
 	}
 	je := []struct {arg string; b string; u string; s int; exp string}{
 		{"From: <neko@example.jp> Kijitora", "(", ">", 0, ""},
