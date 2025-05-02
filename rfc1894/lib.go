@@ -204,7 +204,7 @@ func Field(argv0 string) []string {
 		// Extract text enclosed in parentheses as comments
 		// Reporting-MTA: dns; mr21p30im-asmtp004.me.example.com (tcp-daemon)
 		table[4] = moji.Select(table[2], " (", ")", 0)
-		table[2] = table[2][0:strings.Index(table[2], " (")]
+		table[2] = moji.Select(moji.LHS + table[2], "", " (", 0)
 	}
 
 	return table
