@@ -11,7 +11,6 @@ package lhost
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
-import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/rfc5322"
 import "libsisimai.org/sisimai/v5/smtp/command"
 
@@ -187,7 +186,7 @@ func init() {
 					anotherone = append(anotherone, "")
 					rightindex++
 				}
-				v.Recipient = address.S3S4(e[1:strings.Index(e, ">:")])
+				v.Recipient = moji.Select(e, "<", ">:", 0)
 				recipients += 1
 
 			} else if len(dscontents) == int(recipients) {
