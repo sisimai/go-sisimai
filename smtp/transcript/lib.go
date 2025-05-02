@@ -10,6 +10,7 @@
 // Package "smtp/transcript" provides functions related to SMTP transcript logs
 package transcript
 import "strings"
+import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
 import "libsisimai.org/sisimai/v5/smtp/command"
@@ -90,7 +91,7 @@ func Rise(argv0, argv1, argv2 string) *[]TranscriptLog {
 	}
 
 	// 3. Remove strings from the first blank line to the tail
-	p3 := strings.Index(argv0, "\n\n"); if p3 > 0 { argv0 = argv0[:p3 + 1] }
+	if strings.Contains(argv0, "\n\n") { argv0 = moji.Select(moji.LHS + argv0, "", "\n\n", 0) + "\n" }
 
 	// 4. Replace label strings of SMTP client/server at the each line
 	for _, e := range strings.Split(argv0, "\n") {
@@ -128,7 +129,7 @@ func Rise(argv0, argv1, argv2 string) *[]TranscriptLog {
 		if strings.HasPrefix(e, ">>> ") {
 			// >>> SMTP-Command Arguments (Sent by the client)
 			thecommand := command.Find(e); if len(thecommand) == 0 { continue }
-			commandarg := strings.TrimLeft(e[strings.Index(e, thecommand) + len(thecommand):], " ")
+			commandarg := strings.TrimLeft(moji.Select(e + moji.RHS, thecommand, "", 0), " ")
 			uppercased := strings.ToUpper(commandarg)
 			parameters := "" // Command parameters of MAIL, RCPT
 
@@ -142,14 +143,9 @@ func Rise(argv0, argv1, argv2 string) *[]TranscriptLog {
 				if strings.HasPrefix(uppercased, "FROM:") || strings.HasPrefix(uppercased, "TO:") {
 					// >>> MAIL FROM: <neko@example.com> SIZE=65535
 					// >>> RCPT TO: <kijitora@example.org>
-					p4 := strings.IndexByte(commandarg, '<'); if p4 < 0 { continue }
-					p5 := strings.IndexByte(commandarg, '>'); if p5 < 0 { continue }
-					cursession.Argument = commandarg[p4 + 1:p5]
+					cursession.Argument = moji.Select(commandarg, "<", ">", 1)
+					parameters = strings.TrimLeft(moji.Select(commandarg + moji.RHS, "> ", "", 1), " ")
 
-					if len(commandarg) > p5 {
-						// Store the value of the SMTP command arguments
-						parameters = strings.TrimLeft(commandarg[p5 + 1:], " ")
-					}
 				} else {
 					// >>> XFORWARD NAME=neko2.y.example.co.jp ADDR=230.0.113.2 PORT=53672
 					// <<< 250 2.0.0 Ok
@@ -168,7 +164,7 @@ func Rise(argv0, argv1, argv2 string) *[]TranscriptLog {
 			}
 		} else {
 			// <<< SMTP Server Response
-			if strings.Index(e, "<<< ") != 0 { continue }
+			if strings.HasPrefix(e, "<<< ") == false { continue }
 			if len(transcript) == 0 {
 				// The first server response
 				// Insert "CONN" as a pseudo SMTP command
