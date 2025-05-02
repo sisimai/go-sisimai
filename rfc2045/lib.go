@@ -10,6 +10,7 @@
 // Part One: Format of Internet Message Bodies https://datatracker.ietf.org/doc/html/rfc2045
 package rfc2045
 import "strings"
+import "libsisimai.org/sisimai/v5/moji"
 
 // Parameter finds a value of specified parameter name from Content-Type header.
 //   Arguments:
@@ -42,12 +43,7 @@ func Parameter(argv0 string, argv1 string) string {
 //     - (string):       Character set name like "iso-2022-jp"
 func CharacterSet(argv0 string) string {
 	if strings.HasPrefix(argv0, "=?") == false || strings.HasSuffix(argv0, "?=") == false { return "" }
-
-	argv1 := strings.ToUpper(argv0)
-	index := strings.Index(argv1, "?B?"); if index < 0 { index = strings.Index(argv1, "?Q?") }
-
-	if index < 0 { return "" }
-	return argv1[2:index]
+	return moji.Select(strings.ToUpper(argv0), "=?", "?", 0)
 }
 
 // Boundary finds a boundary string from the value of Content-Type header.
