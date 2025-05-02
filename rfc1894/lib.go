@@ -42,8 +42,8 @@ var ActionList = map[string]bool{
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
 func Label(argv0 string) string {
-	if argv0 == "" || strings.IndexByte(argv0, ':') < 1 { return "" }
-	return strings.ToLower(strings.SplitN(argv0, ":", 2)[0])
+	if argv0 == "" || strings.IndexByte(argv0, ':') < 0 { return "" }
+	return strings.ToLower(moji.Select(moji.LHS + argv0, "", ":", 0))
 }
 
 // Match checks that the argument matches with a field defined in RFC3464 or not.
