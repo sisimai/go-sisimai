@@ -127,8 +127,8 @@ func init() {
 			if moji.Aligned(e, []string{"@", " "}) {
 				// kijitora@example.jp: 550 5.2.2 <kijitora@example.jp>... Mailbox Full
 				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
-				v.Recipient = e[:strings.IndexByte(e, ':')]
-				v.Diagnosis = e[strings.IndexByte(e, ':') + 1:]
+				v.Recipient = moji.Select(moji.LHS + e, "", ":", 0)
+				v.Diagnosis = moji.Select(e + moji.RHS, ": ", "", 0)
 				recipients += 1
 			}
 		}
