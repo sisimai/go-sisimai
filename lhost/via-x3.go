@@ -10,7 +10,6 @@ package lhost
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
-import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/rfc1894"
 import "libsisimai.org/sisimai/v5/rfc5322"
 import "libsisimai.org/sisimai/v5/smtp/command"
@@ -67,7 +66,7 @@ func init() {
 			if moji.Aligned(e, []string{"  * ", "@", "."}) {
 				//   * kijitora@example.com
 				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
-				v.Recipient = address.S3S4(e[strings.Index(e, "  * ") + 3:])
+				v.Recipient = moji.Select(e + moji.RHS, "  * ", "", 0)
 				recipients += 1
 
 			} else {
