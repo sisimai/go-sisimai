@@ -58,9 +58,7 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 		for _, e := range strings.Split(latterpart, "") {
 			// Remove leading blank lines
 			if e == " " || e == "\n" || e == "\r" { continue }
-
-			// There is leading space characters at the head of parts[1]
-			if p := strings.Index(latterpart, e); p > 0 { latterpart = latterpart[p:len(latterpart)] }
+			latterpart = e + moji.Select(latterpart + moji.RHS, e, "", 0)
 			break
 		}
 
