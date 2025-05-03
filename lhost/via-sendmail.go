@@ -141,8 +141,8 @@ func init() {
 
 						if strings.HasPrefix(e, "<") && moji.Aligned(e, []string{"@", ">.", " "}) {
 							// <kijitora@example.co.jp>... Deferred: Name server: example.co.jp.: host name lookup failure
-							anotherset["recipient"] = address.S3S4(e[0:strings.IndexByte(e, '>')])
-							anotherset["diagnosis"] = e[strings.IndexByte(e, ' ') + 1:]
+							anotherset["recipient"] = moji.Select(e, "<", ">", 0)
+							anotherset["diagnosis"] = moji.Select(e + moji.RHS, " ", "", 1)
 
 						} else {
 							// ----- Transcript of session follows -----
