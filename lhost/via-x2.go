@@ -10,7 +10,6 @@ package lhost
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
-import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
 func init() {
@@ -58,7 +57,7 @@ func init() {
 			if strings.HasPrefix(e, "<") && moji.Aligned(e, []string{"<", "@", ">:"}) {
 				// <kijitora@example.com>:
 				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
-				v.Recipient = address.S3S4(e[:strings.IndexByte(e, ':')])
+				v.Recipient = moji.Select(e, "<", ">", 0)
 				recipients += 1
 
 			} else {

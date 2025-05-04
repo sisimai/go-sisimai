@@ -10,7 +10,6 @@ package lhost
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
-import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/rfc5322"
 import "libsisimai.org/sisimai/v5/smtp/command"
 
@@ -70,9 +69,7 @@ func init() {
 				//     Could not be delivered to: <******@**.***.**>
 				//     As their mailbox is full.
 				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
-
-				cv := address.S3S4(e[strings.IndexByte(e, '<'):])
-				if rfc5322.IsEmailAddress(cv) { v.Recipient = cv; recipients++ }
+				if cv := moji.Select(e, ": <", ">", 16); rfc5322.IsEmailAddress(cv) { v.Recipient = cv; recipients++ }
 
 			} else if strings.Contains(e, "Your mail sent on: ") {
 				// Your mail sent on: Thu, 29 Apr 2010 11:04:47 +0900

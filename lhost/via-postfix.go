@@ -174,12 +174,12 @@ func init() {
 							// <kijitora@exmaple.jp>: ...
 							anotherset["recipient"] = address.S3S4(moji.Select(e, "<", "< ", 0))
 							anotherset["alias"]     = address.S3S4(moji.Select(e, "(expanded from ", "):", 0))
-							if p1 := strings.Index(e, ">): ") + 4; len(e) > p1 { anotherset["diagnosis"] = e[p1:] }
+							if cv := moji.Select(e + moji.RHS, ">): ", "", 0); cv != "" { anotherset["diagnosis"] = cv }
 
 						} else if strings.HasPrefix(e, "<") && moji.Aligned(e, []string{"<", "@", ">:"}) {
 							// <kijitora@exmaple.jp>: ...
-							anotherset["recipient"] = address.S3S4(e[0:strings.IndexByte(e, '>') + 1])
-							anotherset["diagnosis"] = e[strings.Index(e, ">:") + 2:]
+							anotherset["recipient"] = moji.Select(e, "<", ">:", 0)
+							anotherset["diagnosis"] = moji.Select(e + moji.RHS, ">:", "", 2)
 
 						} else if strings.Contains(e, "--- Delivery report unavailable ---") {
 							// postfix-3.1.4/src/bounce/bounce_notify_util.c

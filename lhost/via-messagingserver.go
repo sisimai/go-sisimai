@@ -14,7 +14,6 @@ import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc791"
 import "libsisimai.org/sisimai/v5/rfc1894"
 import "libsisimai.org/sisimai/v5/rfc5322"
-import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
@@ -74,7 +73,7 @@ func init() {
 			   moji.Aligned(e, []string{"  Original address: ",  "@", "."}) {
 				//   Recipient address: @smtp.example.net:kijitora@server
 				//   Original address: kijitora@example.jp
-				cv := address.S3S4(e[strings.Index(e, ": ") + 2:])
+				cv := moji.Select(e + moji.RHS, ": ", "", 16)
 				if rfc5322.IsEmailAddress(cv) == false { continue }
 				if len(v.Recipient) > 0 && cv != v.Recipient { v = sis.NextDeliveryMatter(&dscontents) }
 
@@ -83,11 +82,11 @@ func init() {
 
 			} else if strings.HasPrefix(e, "  Date: ") {
 				//   Date: Fri, 21 Nov 2014 23:34:45 +0900
-				v.Date = e[strings.IndexByte(e, ':') + 2:]
+				v.Date = moji.Select(e + moji.RHS, "Date: ", "", 1)
 
 			} else if strings.HasPrefix(e, "  Reason: ") {
 				//   Reason: Remote SMTP server has rejected address
-				v.Diagnosis = e[strings.IndexByte(e, ':') + 2:]
+				v.Date = moji.Select(e + moji.RHS, " Reason: ", "", 1)
 
 			} else if strings.HasPrefix(e, "  Diagnostic code: ") {
 				//   Diagnostic code: smtp;550 5.1.1 <kijitora@example.jp>... User Unknown
@@ -101,8 +100,7 @@ func init() {
 			} else if strings.HasPrefix(e, "  Remote system: ") {
 				//   Remote system: dns;mx.example.jp (TCP|17.111.174.67|47323|192.0.2.225|25)
 				//     (6jo.example.jp ESMTP SENDMAIL-VM)
-				v.Rhost = moji.Select(e, ";", " (", 0); if v.Rhost == "" { continue }
-
+				if v.Rhost = moji.Select(e, ";", " (", 0); v.Rhost == "" { continue }
 				if cv := strings.Split(moji.Select(e, " (", ")", 0), "|"); len(cv) == 5 {
 					// (TCP|17.111.174.67|47323|192.0.2.225|25)
 					if cv[0] != "TCP" || strings.IndexByte(v.Rhost, '.') > 0 { continue }
@@ -123,12 +121,12 @@ func init() {
 				// Diagnostic-code: smtp;550 5.1.1 <kijitora@example.jp>... User Unknown
 				if strings.HasPrefix(e, "Status: ") {
 					// Status: 5.1.1 (Remote SMTP server has rejected address)
-					if v.Status    == "" { v.Status = status.Find(e, v.ReplyCode)      }
-					if v.Diagnosis == "" { v.Diagnosis = e[strings.IndexByte(e, '('):] }
+					if v.Status    == "" { v.Status = status.Find(e, v.ReplyCode)    }
+					if v.Diagnosis == "" { v.Diagnosis = moji.Select(e, "(", ")", 1) }
 
 				} else if strings.HasPrefix(e, "Arrival-Date: ") {
 					// Arrival-date: Thu, 29 Apr 2014 23:34:45 +0000 (GMT)
-					if v.Date == "" { v.Date = e[strings.IndexByte(e, ':') + 2:] }
+					if v.Date == "" { v.Date = moji.Select(e + moji.RHS, "-Date: ", "", 1) }
 
 				} else if strings.HasPrefix(e, "Reporting-MTA: ") {
 					// Reporting-MTA: dns;mr21p30im-asmtp004.me.com (tcp-daemon)

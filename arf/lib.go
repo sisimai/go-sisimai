@@ -143,8 +143,8 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 				// Original-Rcpt-To header field is optional and may appear any number of times as appropriate:
 				// Original-Rcpt-To: <kijitora@example.jp>
 				// Removal-Recipient: user@example.com
-				cv := address.S3S4(e[strings.IndexByte(e, ' ') + 1:]); if rfc5322.IsEmailAddress(cv) == false        { continue }
-				cw := len(dscontents);                                 if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
+				cv := moji.Select(e + moji.RHS, ": ", "", 17); if rfc5322.IsEmailAddress(cv) == false { continue }
+				cw := len(dscontents);                  if cw > 0 && cv == dscontents[cw-1].Recipient { continue }
 
 				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Recipient = cv
@@ -153,7 +153,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 			} else if strings.HasPrefix(e, "Feedback-Type: ") {
 				// The header field MUST appear exactly once.
 				// Feedback-Type: abuse
-				v.FeedbackType = e[strings.IndexByte(e, ' ') + 1:]
+				v.FeedbackType = moji.Select(e + moji.RHS, ": ", "", 12)
 
 			} else if moji.HasPrefixAny(e, []string{"Authentication-Results: ", "User-Agent: ", "Original-Mail-From: "}) {
 				// "Authentication-Results" indicates the result of one or more authentication checks
@@ -172,7 +172,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 				// Arrival-Date header is optional and MUST NOT appear more than once.
 				// Received-Date: Thu, 29 Apr 2010 00:00:00 JST
 				// Arrival-Date: Thu, 29 Apr 2010 00:00:00 +0000
-				timestamp0 = e[strings.IndexByte(e, ' ') + 1:]
+				timestamp0 = moji.Select(e + moji.RHS, ": ", "", 12)
 
 			} else if strings.HasPrefix(e, "Reporting-MTA: ") {
 				// The header is optional and MUST NOT appear more than once.
@@ -182,7 +182,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 			} else if strings.HasPrefix(e, "Source-IP: ") {
 				// The header is optional and MUST NOT appear more than once.
 				// Source-IP: 192.0.2.45
-				remotehost = e[strings.IndexByte(e, ' ') + 1:]
+				remotehost = moji.Select(e + moji.RHS, ": ", "", 8)
 			}
 		} else {
 			// Messages before "Content-Type: message/feedback-report" part

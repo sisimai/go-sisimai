@@ -73,12 +73,12 @@ func init() {
 
 			} else if strings.HasPrefix(e, "Received >>> ") {
 				// Received >>> 550 5.1.1 <kijitora@example.co.jp>... user unknown
-				v.Diagnosis = e[strings.Index(e, " >>> ") + 4:]
+				v.Diagnosis = moji.Select(e + moji.RHS, " >>> ", "", 8)
 
 			} else if p1 > 0 || p2 > 0 {
 				// Error messages are not written in English
-				if strings.Contains(e, " >>> ")             { v.Command = command.Find(e) }
-				if p3 := strings.Index(e, " <<< "); p3 > -1 { v.Diagnosis = e[p3 + 4:]    }
+				if strings.Contains(e, " >>> ") { v.Command   = command.Find(e) }
+				if strings.Contains(e, " <<< ") { v.Diagnosis = moji.Select(e + moji.RHS, "<<<", "", 3) }
 			}
 		}
 		if recipients == 0 { return nil }

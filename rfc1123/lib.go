@@ -34,7 +34,7 @@ var sandwiched = [][]string{
 }
 var startafter = []string{
 	"generating server: ",   // (Exchange2007) Generating server: mta4.example.org
-	"serveur de g",          // fr-FR/Serveur de g辿n辿ration
+	"serveur de g",          // fr-FR/Serveur de gènèration
 	"server di generazione", // it-CH
 	"genererande server",    // sv-SE
 }
@@ -140,18 +140,14 @@ func Find(argv1 string) string {
 		for _, e := range startafter {
 			// startafter have some strings, not a slice([]string).
 			if strings.Contains(sourcetext, e) == false { continue }
-			p1 := strings.Index(sourcetext, e)
-
-			sourcelist = strings.Split(sourcetext[p1 + len(e):], " ")
+			sourcelist = strings.Split(moji.Select(sourcetext + moji.RHS, e, "", 0), " ")
 			break MAKELIST
 		}
 
 		for _, e := range existuntil {
 			// existuntil have some strings, not a slice([]string).
 			if strings.Contains(sourcetext, e) == false { continue }
-			p1 := strings.Index(sourcetext, e)
-
-			sourcelist = strings.Split(sourcetext[0:p1], " ")
+			sourcelist = strings.Split(moji.Select(moji.LHS + sourcetext, "", e, 0), " ")
 			break MAKELIST
 		}
 

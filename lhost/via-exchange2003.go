@@ -11,7 +11,6 @@ package lhost
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
-import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/rfc5322"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
@@ -131,16 +130,17 @@ func init() {
 						msexchange = append(msexchange, false)
 						rightindex++
 					}
-					p1 := strings.Index(strings.ToLower(e), "smtp="); if p1 < 0 { p1 = 0 } else { p1 += 5 }
-					p2 := strings.Index(e, " on ")
-
-					v.Recipient = address.S3S4(e[p1:p2])
+					cv := moji.Select(strings.ToLower(e), ":smtp=", "; on ", 0); if cv == "" {
+						// c=US;a= ;p=neko;o=kijitora;cat:SMTP=NEKOCHAN@EXAMPLE.COM; on Fri, 4 Oct 2002
+						cv = strings.TrimLeft(moji.Select(moji.LHS + e, "", " on ", 0), " ")
+					}
+					v.Recipient = cv
 					recipients += 1
 					msexchange[rightindex] = false
 
 				} else if strings.HasPrefix(e, " ") && strings.Contains(e, "MSEXCH:") {
 					//     MSEXCH:IMS:KIJITORA CAT:EXAMPLE:EXCHANGE 0 (000C05A6) Unknown Recipient
-					v.Diagnosis += e[strings.Index(e, "MSEXCH:"):]
+					v.Diagnosis += strings.TrimLeft(e, " ")
 
 				} else {
 					if msexchange[rightindex] == true { continue }
@@ -165,20 +165,20 @@ func init() {
 				if moji.HasPrefixAny(e, []string{"  To:  ", "      To: "}) {
 					//  To:      shironeko@example.jp
 					if connheader[0] != "" { continue }
-					connheader[0] = strings.Trim(e[strings.Index(e, "To: ") + 4:], " ")
+					connheader[0] = moji.Select(e + moji.RHS, " To:", "", 0)
 					connvalues++
 
 				} else if moji.HasPrefixAny(e, []string{"      Subject: ", "  Subject: "}) {
 					//  Subject: ...
 					if connheader[1] != "" { continue }
-					connheader[1] = strings.Trim(e[strings.Index(e, "Subject: ") + 9:], " ")
+					connheader[0] = moji.Select(e + moji.RHS, " Subject:", "", 0)
 					connvalues++
 
 				} else if moji.HasPrefixAny(e, []string{"  Sent: ", "      Sent: "}) {
 					//  Sent:    Thu, 29 Apr 2010 18:14:35 +0000
 					//  Sent:    4/29/99 9:19:59 AM
 					if connheader[2] != "" { continue }
-					connheader[2] = strings.Trim(e[strings.Index(e, "Sent: ") + 6:], " ")
+					connheader[0] = moji.Select(e + moji.RHS, " Sent:", "", 0)
 					connvalues++
 				}
 			}
@@ -193,7 +193,7 @@ func init() {
 			if moji.Aligned(e.Diagnosis, []string{"MSEXCH:", "(", ")"}) {
 				//     MSEXCH:IMS:KIJITORA CAT:EXAMPLE:EXCHANGE 0 (000C05A6) Unknown Recipient
 				capturedcode := moji.Select(e.Diagnosis, "(", ")", 0)
-				errormessage := e.Diagnosis[strings.IndexByte(e.Diagnosis, ')') + 1:]
+				errormessage := moji.Select(e.Diagnosis + moji.RHS, ") ", "", 1)
 
 				FINDREASON: for r := range errorcodes {
 					// The key name is a bounce reason name

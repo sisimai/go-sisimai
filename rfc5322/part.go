@@ -8,6 +8,7 @@
 
 package rfc5322
 import "strings"
+import "libsisimai.org/sisimai/v5/moji"
 
 // Part splits the entire message body given as the 1st argument into error message lines and the
 // original message part only include email headers.
@@ -57,15 +58,13 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 		for _, e := range strings.Split(latterpart, "") {
 			// Remove leading blank lines
 			if e == " " || e == "\n" || e == "\r" { continue }
-
-			// There is leading space characters at the head of parts[1]
-			if p := strings.Index(latterpart, e); p > 0 { latterpart = latterpart[p:len(latterpart)] }
+			latterpart = e + moji.Select(latterpart + moji.RHS, e, "", 0)
 			break
 		}
 
 		if keeps == true && strings.Contains(latterpart, "\n\n") {
 			// Remove text after the first blank line when "keeps" is true
-			latterpart = latterpart[0:strings.Index(latterpart, "\n\n") + 1]
+			latterpart = moji.Select(moji.LHS + latterpart, "", "\n\n", 0) + "\n"
 		}
 
 		// Append "\n" at the end of the original message

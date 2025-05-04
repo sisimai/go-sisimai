@@ -44,7 +44,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 			// Build "Message" struct
 			if strings.HasPrefix(*mesg, "From ") {
 				// The message has Unix From line (MAILER-DAEMON Tue Feb 11 00:00:00 2014)
-				beforefact.Sender = (*mesg)[0:strings.IndexByte(*mesg, '\n')]
+				beforefact.Sender = moji.Select(moji.LHS + *mesg, "", "\n", 0)
 
 			} else {
 				// Set pseudo UNIX From line
@@ -65,7 +65,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 			if cv := strings.ToLower(rawsubject); moji.HasPrefixAny(cv, []string{"fwd:", "fw:"}) {
 				// - Remove "Fwd:" string from the "Subject:" header
 				// - Delete quoted strings, quote symbols(>)
-				rawsubject = strings.TrimSpace(rawsubject[strings.IndexByte(cv, ':') + 1:])
+				rawsubject = strings.TrimSpace(moji.Select(cv + moji.RHS, ":", "", 0))
 				beforefact.Payload = strings.ReplaceAll(beforefact.Payload, "\n> ", "\n")
 				beforefact.Payload = strings.ReplaceAll(beforefact.Payload, "\n>\n", "\n\n")
 			}

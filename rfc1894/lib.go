@@ -42,8 +42,8 @@ var ActionList = map[string]bool{
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
 func Label(argv0 string) string {
-	if argv0 == "" || strings.IndexByte(argv0, ':') < 1 { return "" }
-	return strings.ToLower(strings.SplitN(argv0, ":", 2)[0])
+	if argv0 == "" || strings.IndexByte(argv0, ':') < 0 { return "" }
+	return strings.ToLower(moji.Select(moji.LHS + argv0, "", ":", 0))
 }
 
 // Match checks that the argument matches with a field defined in RFC3464 or not.
@@ -204,7 +204,7 @@ func Field(argv0 string) []string {
 		// Extract text enclosed in parentheses as comments
 		// Reporting-MTA: dns; mr21p30im-asmtp004.me.example.com (tcp-daemon)
 		table[4] = moji.Select(table[2], " (", ")", 0)
-		table[2] = table[2][0:strings.Index(table[2], " (")]
+		table[2] = moji.Select(moji.LHS + table[2], "", " (", 0)
 	}
 
 	return table

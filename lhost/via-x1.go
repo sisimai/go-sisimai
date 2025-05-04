@@ -10,7 +10,6 @@ package lhost
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
-import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
 func init() {
@@ -53,8 +52,7 @@ func init() {
 				// kijitora@example.co.jp [User unknown]
 				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 
-				p1 := strings.IndexByte(e, ' ')
-				cv := address.S3S4(e[:p1]); if rfc5322.IsEmailAddress(cv) == false { continue }
+				cv := moji.Select(moji.LHS + e, "", " ", 0); if rfc5322.IsEmailAddress(cv) == false { continue }
 				v.Recipient  = cv
 				v.Diagnosis += " " + e
 				recipients  += 1

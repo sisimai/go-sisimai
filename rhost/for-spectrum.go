@@ -8,7 +8,6 @@
 //                                     |_|                                       
 
 package rhost
-import "strings"
 import "strconv"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
@@ -114,10 +113,10 @@ func init() {
 		}
 
 		issuedcode := fo.DiagnosticCode
-		labelindex := strings.Index(issuedcode, "AUP#"); if labelindex < 0 { return "" }
+		errorlabel := moji.Select(issuedcode + moji.RHS, "AUP#", "", 0); if errorlabel == "" { return "" }
 		codestring := ""
 
-		for _, e := range issuedcode[labelindex + 4:] {
+		for _, e := range errorlabel {
 			// Try to get the four digit error code number from the error message
 			if len(codestring) == 4 { break }
 

@@ -49,7 +49,7 @@ func tidy(argv0 *string) *string {
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
 		ab := make([]string, 0, 2)
 		bf := e[p0 + 1:]
-		p1 := strings.IndexByte(bf, ';')
+		cx := strings.Contains(bf, ";")
 		for {
 			// Such as Diagnostic-Code, Remote-MTA, and so on
 			// - Before: Diagnostic-Code: SMTP;550 User unknown
@@ -60,7 +60,7 @@ func tidy(argv0 *string) *string {
 			}
 			if match == false { break }
 
-			if p1 > 0 {
+			if cx == true {
 				// The field including one or more ";"
 				for _, ef := range strings.Split(bf, ";") {
 					// 2-1. Trim leading and trailing space characters from the current buffer
@@ -73,10 +73,10 @@ func tidy(argv0 *string) *string {
 						// - Content-Type: Charset=UTF8            => charset=utf8
 						// - Reporting-MTA: DNS; ...               => dns
 						// - Final-Recipient: RFC822; ...          => rfc822
-						if p2 := strings.IndexByte(ef, '='); p2 > 0 {
+						if cv := moji.Select(moji.LHS + ef, "", "=", 0); cv != "" {
 							// charset=, boundary=, and other pairs divided by "="
-							ps = strings.ToLower(ef[0:p2])
-							ef = strings.Replace(ef, ef[0:p2], ps, 1)
+							ps = strings.ToLower(cv)
+							ef = strings.Replace(ef, cv, ps, 1)
 						}
 						if ps != "boundary" { ef = strings.ToLower(ef) }
 					}
@@ -105,7 +105,7 @@ func tidy(argv0 *string) *string {
 			for _, ef := range replacesas[fn] {
 				// - Before: Content-Type: message/xdelivery-status; ...
 				// - After:  Content-Type: message/delivery-status; ...
-				p1 = strings.Index(bf, ef[0]); if p1 > -1 { bf = strings.Replace(bf, ef[0], ef[1], 1) }
+				if p1 := strings.Index(bf, ef[0]); p1 > -1 { bf = strings.Replace(bf, ef[0], ef[1], 1) }
 			}
 		}
 

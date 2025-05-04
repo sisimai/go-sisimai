@@ -256,7 +256,7 @@ func init() {
 						// parser.c:748|     s-1, (int)(s - US mailbox - 1), mailbox);
 						// parser.c:749|   goto PARSE_FAILED;
 						// parser.c:750|   }
-						v.Diagnosis = moji.Sweep(e[strings.Index(e, ">:") + 1:])
+						v.Diagnosis = moji.Sweep(moji.Select(e + moji.RHS, ">:", "", 0))
 
 					} else {
 						// There is an email address only in the line, such as "  kijitora@example.jp"
@@ -415,11 +415,10 @@ func init() {
 			}
 
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
-			if p1 := strings.Index(e.Diagnosis, "__"); p1 > 1 { e.Diagnosis = e.Diagnosis[0:p1] }
+			if cv := moji.Select(moji.LHS + e.Diagnosis, "", "__", 0); cv != "" { e.Diagnosis = cv }
 
-			if e.Rhost == "" { e.Rhost = rfc1123.Find(e.Diagnosis) }
-			if e.Lhost == "" { e.Lhost = recvdtoken[0] }
-
+			if e.Rhost   == "" { e.Rhost = rfc1123.Find(e.Diagnosis) }
+			if e.Lhost   == "" { e.Lhost = recvdtoken[0] }
 			if e.Command == "" {
 				// Get the SMTP command name for the session
 				for _, f := range startingof["command"] {
