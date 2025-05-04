@@ -4,6 +4,13 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
+v5.3.0p1
+---------------------------------------------------------------------------------------------------
+- release: ""
+- version: ""
+- changes:
+  - #105 #106 Tiny code improvement in `moji.Select()` function
+
 v5.3.0
 ---------------------------------------------------------------------------------------------------
 - release: "Sat, 29 Mar 2025 05:13:32 +0900 (JST)"
