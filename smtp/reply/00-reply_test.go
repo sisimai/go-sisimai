@@ -187,5 +187,3 @@ func TestAssociatedWith(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
-
-
