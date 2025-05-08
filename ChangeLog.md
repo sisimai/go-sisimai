@@ -31,7 +31,7 @@ v5.3.0
   - #82 `sis.Beforefact.Empty()` has been renamed to `IsEmpty()`
   - #90 #92 SMTP reply code improvements
     - Update the list of SMTP status codes in `smtp/reply/lib.go`
-    - Implement `smtp/reply.AssosiatedWith()`
+    - Implement `smtp/reply.AssociatedWith()`
     - Implement `smtp/status.IsExplicit()`
 
 v5.2.1
