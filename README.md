@@ -392,7 +392,7 @@ Features
 | Source lines of code                         | 8,800 lines    | 9,800 lines     | 9,800 lines   |
 | The number of tests                          | 144,000 tests  | 320,000 tests   | 410,000 tests |
 | The number of bounce emails decoded/sec [^4] | 2900 emails    | 750 emails      | 620 emails    |
-| License                                      | 2 Clause BSD   | 2 Caluse BSD    | 2 Clause BSD  |
+| License                                      | 2 Clause BSD   | 2 Clause BSD    | 2 Clause BSD  |
 | Commercial support                           | Available      | Available       | Available     |
 
 [^2]: Character sets supported by `Encode` and `Encode::Guess` modules
