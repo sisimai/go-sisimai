@@ -12,6 +12,8 @@ v5.3.0p1
   - #99 Use `error.Error()` instead of `fmt.Sprintf()` for stringify an error message
   - #101 #102 #103 Use `make()` to initialise a slice
   - #105 #106 Tiny code improvement in `moji.Select()` function
+  - #107 #108 Implement the new error code `5.7.515` of Microsoft
+  - #109 Fix spell errors in some documents
 
 v5.3.0
 ---------------------------------------------------------------------------------------------------
