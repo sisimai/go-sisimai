@@ -56,6 +56,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 		notdecoded = append(notdecoded, ce)
 		return &sisidigest, &notdecoded
 	}
+	if args == nil { args = new(sis.DecodingArgs) }
 
 	for {
 		// Read the email specified with the first argument until io.EOF
