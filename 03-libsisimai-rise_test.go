@@ -61,7 +61,7 @@ func TestRise(t *testing.T) {
 		}
 
 		// When the 2nd argument is nil
-		cv, ce  = Rise(ef, nil)
+		cv, _   = Rise(ef, nil)
 		cx++; if len(*cv) == 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, ef, *cv) }
 	}
 
@@ -77,7 +77,7 @@ func TestRise(t *testing.T) {
 		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns empty error", fn, ef) }
 
 		// When the 2nd argument is nil
-		cv, ce  = Rise(ef, nil)
+		cv, _   = Rise(ef, nil)
 		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, ef, *cv) }
 	}
 
@@ -88,7 +88,7 @@ func TestRise(t *testing.T) {
 		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, e) }
 
 		// When the 2nd argument is nil
-		cv, ce  = Rise(e, nil)
+		cv, _   = Rise(e, nil)
 		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, e, *cv) }
 	}
 
