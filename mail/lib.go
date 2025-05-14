@@ -199,7 +199,7 @@ func(this *EmailEntity) setNewLine() (bool, error) {
 	} else {
 		// Memory
 		if len(this.payload) ==  0 || this.payload[0] == "" { this.newline = 0; return false, nil }
-		readbuffer = this.payload[0][:1000]
+		readbuffer = this.payload[0][:min(1000, len(this.payload[0]))]
 	}
 
 	if strings.Contains(readbuffer, "\r\n")     { this.newline = 3; return true, nil }
