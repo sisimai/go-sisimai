@@ -59,6 +59,10 @@ func TestRise(t *testing.T) {
 			cx++; if e.Timestamp.IsZero() == true          { t.Errorf("[%04d] Invalid Timestamp: %v", j, e.Timestamp) }
 			cx++; if ! strings.Contains(e.Origin, rootdir) { t.Errorf("[%04d] Invalid Origin: %s ", j, e.Origin) }
 		}
+
+		// When the 2nd argument is nil
+		cv, _   = Rise(ef, nil)
+		cx++; if len(*cv) == 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, ef, *cv) }
 	}
 
 	for _, e := range normals {
@@ -71,6 +75,10 @@ func TestRise(t *testing.T) {
 
 		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, ef, *cv) }
 		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns empty error", fn, ef) }
+
+		// When the 2nd argument is nil
+		cv, _   = Rise(ef, nil)
+		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, ef, *cv) }
 	}
 
 	for _, e := range notfile {
@@ -78,6 +86,10 @@ func TestRise(t *testing.T) {
 
 		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, e, *cv) }
 		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, e) }
+
+		// When the 2nd argument is nil
+		cv, _   = Rise(e, nil)
+		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, e, *cv) }
 	}
 
 	comm := exec.Command("touch", isempty); nyaan := comm.Run()
@@ -85,6 +97,11 @@ func TestRise(t *testing.T) {
 		cv, ce := Rise(isempty, sisiarg)
 		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, isempty, *cv) }
 		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, isempty) }
+
+		// When the 2nd argument is nil
+		cv, _   = Rise(isempty, nil)
+		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, isempty, *cv) }
+
 		os.Remove(isempty)
 	}
 
