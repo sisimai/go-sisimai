@@ -17,6 +17,8 @@ v5.3.0p1
   - #109 Fix spell errors in some documents
   - #110 Fixed out of bounds read at `EmailEntity.setNewLine()` function in `mail/lib` and updated
     the minimum go version to 1.21. Thanks to @VolkerLieber
+  - #111 #113 Set a pointer to `sis.DecodingArgs` struct when the 2nd argument of `sisimai.Rise()`
+    is nil. Thanks to @VolkerLieber
 
 v5.3.0
 ---------------------------------------------------------------------------------------------------
