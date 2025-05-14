@@ -57,7 +57,11 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 		return &sisidigest, &notdecoded
 	}
 
+	// The second argument `args` is a pointer to avoid potentially numerous internal struct copies
+	// when fact.Rise function is called if the callback functions in sis.DecodingArgs.Callback0 or
+	// sis.DecodingArgs.Callback1 contain a large amount of code.
 	if args == nil { args = new(sis.DecodingArgs) }
+
 	for {
 		// Read the email specified with the first argument until io.EOF
 		if mesg, nyaan := emailthing.Read(); nyaan != nil {
