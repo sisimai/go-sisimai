@@ -23,6 +23,7 @@ LIBSISIMAI := libsisimai.org
 SISIMAIDIR := address arf fact lda lhost mail message moji reason rfc1123 rfc1894 rfc2045 rfc3464 \
 			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/*/
 COVERAGETO := coverage.txt
+ASSEMBLEIN := tmp/assembled-in-here
 PROFILESET := set-of-emails/maildir/bsd
 EXECUTABLE := bin/sisid
 BUILDFLAGS := -ldflags="-s -w" -trimpath
@@ -77,6 +78,27 @@ find:
 	find . -type f -name '*.go' -not -name '*_test.go' -not -path '*/bin/*' -not -path '*/sbin/*' \
 		-not -path '*/stash/*' -not -path '*/tmp/*' -exec grep '$(K)' {} +
 
+assemble:
+	$(MKDIR) $(ASSEMBLEIN)/smtp
+	printf "package sisimai\n"                                      > $(ASSEMBLEIN)/libsisimai.go
+	grep -Eh  '^import ' libsisimai.go interfaces.go | sort | uniq >> $(ASSEMBLEIN)/libsisimai.go
+	grep -Ehv '^(import|package) ' interfaces.go libsisimai.go     >> $(ASSEMBLEIN)/libsisimai.go
+
+	for v in `ls -1 smtp/`; do \
+		$(MKDIR) $(ASSEMBLEIN)/smtp/$$v; \
+		printf "package %s\n" $$v                                                           > $(ASSEMBLEIN)/smtp/$$v/lib.go; \
+		grep '^import ' `ls -1 ./smtp/$$v/*.go | grep -v _test.go` | sort | uniq           >> $(ASSEMBLEIN)/smtp/$$v/lib.go; \
+		ls -1 smtp/$$v/*.go | grep -v _test.go | xargs cat | grep -vE '^(import|package) ' >> $(ASSEMBLEIN)/smtp/$$v/lib.go; \
+	done
+
+	for v in $(SISIMAIDIR); do \
+		test -n "`echo $$v | grep 'smtp/'`" && continue; \
+		$(MKDIR) $(ASSEMBLEIN)/$$v; \
+		printf "package %s\n" $$v                                                      > $(ASSEMBLEIN)/$$v/lib.go; \
+		grep '^import ' `ls -1 ./$$v/*.go | grep -v _test.go` | sort | uniq           >> $(ASSEMBLEIN)/$$v/lib.go; \
+		ls -1 $$v/*.go | grep -v _test.go | xargs cat | grep -vE '^(import|package) ' >> $(ASSEMBLEIN)/$$v/lib.go; \
+	done
+
 init:
 	test -e ./go.mod || $(GO) mod init $(LIBSISIMAI)/$(NAME)
 
@@ -88,6 +110,7 @@ start-godoc-server:
 	godoc -http=$(LISTENADDR)
 
 clean:
-	$(RM) ./$(EXECUTABLE)
-	$(RM) ./$(COVERAGETO)
+	$(RM)    ./$(EXECUTABLE)
+	$(RM)    ./$(COVERAGETO)
+	$(RM) -r ./$(ASSEMBLEIN)
 
