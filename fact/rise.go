@@ -323,7 +323,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 			thing.Reason = re; break REASON
 		}
 
-		{	// HARDBOUNCE: Set the value of "hardbounce", default value of "bouncebounce" is 0
+		{	// HARDBOUNCE: Set the value of "hardbounce", default value of "hardbounce" is false
 			if moji.EqualsAny(thing.Reason, []string{"delivered", "feedback", "vacation"}) {
 				// Delete the value of ReplyCode when the Reason is "feedback" or "vacation"
 				if thing.Reason != "delivered" { thing.ReplyCode = "" }

@@ -234,7 +234,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	if recipients == 0 { return nil }
 
 	beforemesg := ""; if leadinbuff.Len() > 0 {
-		// Pick some values of []sis.DeliveryMatte{} from the string before startingof["message"]
+		// Pick some values of []sis.DeliveryMatter{} from the string before startingof["message"]
 		beforemesg           = moji.Sweep(leadinbuff.String())
 		alternates.Command   = command.Find(beforemesg)
 		alternates.ReplyCode = reply.Find(beforemesg, dscontents[0].Status)

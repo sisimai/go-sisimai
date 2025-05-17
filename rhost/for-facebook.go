@@ -24,7 +24,7 @@ func init() {
 
 		errorcodes := map[string][]string{
 			// http://postmaster.facebook.com/response_codes
-			// NOT TESTD EXCEPT RCP-P2
+			// NOT TESTED EXCEPT RCP-P2
 			"authfailure": []string{
 				"POL-P7",   // The message does not comply with Facebook's Domain Authentication requirements.
 			},

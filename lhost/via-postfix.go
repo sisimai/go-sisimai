@@ -156,7 +156,7 @@ func init() {
 						v.Diagnosis += " " + moji.Sweep(e)
 						readslices[j + 1] = "Diagnostic-Code: " + e
 
-					} else if moji.Aligned(e, []string{"X-Postfix-Sender:", "rfac822;", "@"}) {
+					} else if moji.Aligned(e, []string{"X-Postfix-Sender:", "rfc822;", "@"}) {
 						// X-Postfix-Sender: rfc822; shironeko@example.org
 						emailparts[1] += "X-Postfix-Sender: " + strings.Trim(strings.SplitN(e, ";", 2)[1], " ") + "\n"
 

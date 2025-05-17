@@ -87,7 +87,7 @@ assemble:
 	for v in `ls -1 smtp/`; do \
 		$(MKDIR) $(ASSEMBLEIN)/smtp/$$v; \
 		printf "package %s\n" $$v                                                           > $(ASSEMBLEIN)/smtp/$$v/lib.go; \
-		grep '^import ' `ls -1 ./smtp/$$v/*.go | grep -v _test.go` | sort | uniq           >> $(ASSEMBLEIN)/smtp/$$v/lib.go; \
+		grep -Eh '^import ' `ls -1 ./smtp/$$v/*.go | grep -v _test.go` | sort | uniq       >> $(ASSEMBLEIN)/smtp/$$v/lib.go; \
 		ls -1 smtp/$$v/*.go | grep -v _test.go | xargs cat | grep -vE '^(import|package) ' >> $(ASSEMBLEIN)/smtp/$$v/lib.go; \
 	done
 
@@ -95,7 +95,7 @@ assemble:
 		test -n "`echo $$v | grep 'smtp/'`" && continue; \
 		$(MKDIR) $(ASSEMBLEIN)/$$v; \
 		printf "package %s\n" $$v                                                      > $(ASSEMBLEIN)/$$v/lib.go; \
-		grep '^import ' `ls -1 ./$$v/*.go | grep -v _test.go` | sort | uniq           >> $(ASSEMBLEIN)/$$v/lib.go; \
+		grep -Eh '^import ' `ls -1 ./$$v/*.go | grep -v _test.go` | sort | uniq       >> $(ASSEMBLEIN)/$$v/lib.go; \
 		ls -1 $$v/*.go | grep -v _test.go | xargs cat | grep -vE '^(import|package) ' >> $(ASSEMBLEIN)/$$v/lib.go; \
 	done
 
