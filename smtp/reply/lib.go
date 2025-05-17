@@ -174,8 +174,6 @@ func Find(argv1 string, argv2 string) string {
 
 	} else {
 		// The first character of the 2nd argument is 0 or other values
-		// TODO: use "slices" package and slices.Concat() avaialble from Go 1.22
-		//       https://pkg.go.dev/slices@master
 		replycodes = append(replycodes, codeofsmtp["5"]...)
 		replycodes = append(replycodes, codeofsmtp["4"]...)
 		replycodes = append(replycodes, codeofsmtp["2"]...)
