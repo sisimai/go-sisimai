@@ -23,8 +23,9 @@ LIBSISIMAI := libsisimai.org
 SISIMAIDIR := address arf fact lda lhost mail message moji reason rfc1123 rfc1894 rfc2045 rfc3464 \
 			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/*/
 COVERAGETO := coverage.txt
+PUBLICFILE := set-of-emails
 ASSEMBLEIN := tmp/assembled-in-here
-PROFILESET := set-of-emails/maildir/bsd
+PROFILESET := tmp/all-the-emails
 EXECUTABLE := bin/sisid
 BUILDFLAGS := -ldflags="-s -w" -trimpath
 LISTENADDR := 127.0.0.1:5321
@@ -73,6 +74,12 @@ benchmark:
 	test -f bin/benchmark.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o min-sisid ./bin/benchmark.go
 	uptime
 	while true; do zsh -c 'time ./min-sisid $(PROFILESET)'; sleep 10; done
+
+samples:
+	$(MKDIR) $(PROFILESET)
+	$(CP) -p $(PUBLICFILE)/mailbox/mbox-* $(PROFILESET)/
+	$(CP) -p $(PUBLICFILE)/maildir/bsd/*.eml $(PROFILESET)/
+	find $(PUBLICFILE)/private -type f -name '*.eml' | xargs -I__EEF__ $(CP) -p __EEF__ $(PROFILESET)
 
 find:
 	find . -type f -name '*.go' -not -name '*_test.go' -not -path '*/bin/*' -not -path '*/sbin/*' \
