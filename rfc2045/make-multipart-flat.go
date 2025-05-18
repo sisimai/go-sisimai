@@ -142,8 +142,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 	boundary01 = strings.Replace(boundary01, "\n", "", -1)
 	cw := len(partstable)
 	bo := partstable[cw - 1][2]
-	p1 := strings.Index(bo, boundary01 + "--")
-	if p1 > -1 { partstable[cw - 1][2] = strings.SplitN(bo, boundary01 + "--", 2)[0] }
+	if ls, _, cx := strings.Cut(bo, boundary01 + "--"); cx { partstable[cw - 1][2] = ls }
 
 	return partstable, &notdecoded
 }
