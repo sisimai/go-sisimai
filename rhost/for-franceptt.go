@@ -151,10 +151,10 @@ func init() {
 
 		if errorlabel != "" {
 			// There is a label (like "LPN") in the error message
-			codenumber := strings.SplitN(issuedcode[labelindex + len(errorlabel) - 1:], " ", 2)[0]
+			lhs, _, _ := strings.Cut(issuedcode[labelindex + len(errorlabel) - 1:], " ")
 			for e := range errorcodes {
 				// The key is a code number like "525"
-				if strings.HasSuffix(codenumber, e) { return errorcodes[e] }
+				if strings.HasSuffix(lhs, e) { return errorcodes[e] }
 			}
 		}
 
