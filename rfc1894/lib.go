@@ -141,9 +141,9 @@ func Field(argv0 string) []string {
 	//  "text": []string{"X-Original-Message-ID", "Final-Log-ID", "Original-Envelope-ID"}
 	}
 
-	parts := strings.SplitN(argv0, ":", 2) // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
-	label := strings.ToLower(parts[0])     // "final-recipient"
-	group, nyaan := fieldgroup[label]      // "addr"
+	lhs, rhs, _  := strings.Cut(argv0, ":") // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
+	label        := strings.ToLower(lhs)    // "final-recipient"
+	group, nyaan := fieldgroup[label]       // "addr"
 	if nyaan == false || len(captureson[group]) == 0 { return []string{} }
 
 	match := false; for _, e := range captureson[group] {
@@ -157,22 +157,22 @@ func Field(argv0 string) []string {
 	// - 2: Value
 	// - 3: Field Group(addr, code, date, host, stat, text)
 	// - 4: Comment
-	table   := []string{label, "", "", group, ""}
-	parts[1] = strings.TrimSpace(parts[1])
+	table := []string{label, "", "", group, ""}
+	rhs    = strings.TrimSpace(rhs)
 
 	if group == "addr" || group == "code" || group == "host" {
 		// - Final-Recipient: RFC822; kijitora@example.jp
 		// - Diagnostic-Code: SMTP; 550 5.1.1 <kijitora@example.jp>... User Unknown
 		// - Remote-MTA: DNS; mx.example.jp
-		if strings.IndexByte(parts[1], ';') > 0 {
+		if strings.IndexByte(rhs, ';') > 0 {
 			// There is a valid sub type (including ";")
-			v := strings.SplitN(parts[1], ";", 2)
-			if len(v) > 0 { table[1] = strings.ToUpper(strings.TrimSpace(v[0])) }
-			if len(v) > 1 { table[2] = strings.TrimSpace(v[1])                  }
+			rel, rer, _ := strings.Cut(rhs, ";")
+			if rel != "" { table[1] = strings.ToUpper(strings.TrimSpace(rel)) }
+			if rer != "" { table[2] = strings.TrimSpace(rer)                  }
 
 		} else {
 			// There is no sub type like "Diagnostic-Code: 550 5.1.1 <kijitora@example.jp>..."
-			table[2] = strings.TrimSpace(parts[1])
+			table[2] = strings.TrimSpace(rhs)
 			switch group {
 				case "addr": table[1] = "RFC822"
 				case "code": table[1] = "SMTP"
@@ -187,7 +187,7 @@ func Field(argv0 string) []string {
 		// Action: failed
 		// Check that the value is an available value defined in "actionlist" or not.
 		// When the value is invalid, convert to an available value defined in "correction"
-		v := strings.ToLower(parts[1])
+		v := strings.ToLower(rhs)
 		if moji.EqualsAny(v, actionlist) { table[2] = v }
 		if table[2] == "" && len(correction[v]) > 0 { table[2] = correction[v] }
 
@@ -196,8 +196,8 @@ func Field(argv0 string) []string {
 		// There is no ";" character in the field.
 		// - Status: 5.2.2
 		// - Arrival-Date: Mon, 21 May 2018 16:09:59 +0900
-		table[2] = parts[1]
-		if group != "date" { table[2] = strings.ToLower(parts[1]) }
+		table[2] = rhs
+		if group != "date" { table[2] = strings.ToLower(rhs) }
 	}
 
 	if moji.Aligned(table[2], []string{" (", ")"}) {
