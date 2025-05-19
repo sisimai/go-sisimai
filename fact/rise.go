@@ -153,7 +153,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 
 				// Remove [], (), \r, and strings before "="
 				for _, c := range []string{"(", ")", "[", "]", "\r"} { *v = strings.ReplaceAll(*v, c, "") }
-				if strings.IndexByte(*v, '=') > -1 { *v = strings.SplitN(*v, "=", 2)[1] }
+				if _, rhs, cut := strings.Cut(*v, "="); cut == true  { *v = rhs }
 				if strings.IndexByte(*v, ' ') > -1 {
 					// Check a space character in each value and get the first hostname
 					ee := strings.Split(*v, " ")
