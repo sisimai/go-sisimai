@@ -18,11 +18,8 @@ import "libsisimai.org/sisimai/v5/moji"
 //   Returns:
 //     - ([]string):      Two headers and body part of multipart/* block
 func haircut(block *string, heads bool) []string {
-	textchunks := strings.SplitN(*block, "\n\n", 2); if len(textchunks) < 2 { return []string{"", ""} }
-	upperchunk := textchunks[0]
-	lowerchunk := textchunks[1]
-
 	// There is neither "Content-Type:" nor "Content-Transfer-Encoding:" header
+	upperchunk, lowerchunk, exists := strings.Cut(*block, "\n\n"); if exists == false { return []string{"", ""} }
 	if len(upperchunk) == 0 || strings.Contains(upperchunk, "Content-Type:") == false { return []string{"", ""} }
 
 	var headerpart[2] string = [2]string{} // {"text/plain; charset=iso-2022-jp; ...", "quoted-printable"}
@@ -36,18 +33,17 @@ func haircut(block *string, heads bool) []string {
 		//   Content-Type: text/plain; charset=us-ascii
 		if strings.HasPrefix(e, "Content-Type:") {
 			// Content-Type: ***
-			if cv := strings.SplitN(e, " ", 2); strings.Contains(cv[1], "boundary=") {
+			if _, rhs, cut := strings.Cut(e, " "); cut == true && strings.Contains(rhs, "boundary=") {
 				// Do not convert to lower-cased when the value of Content-Type include a boundary string
-				headerpart[0] = cv[1]
+				headerpart[0] = rhs
 
 			} else {
 				// The value of Content-Type does not include a boundary string
-				headerpart[0] = strings.ToLower(cv[1])
+				headerpart[0] = strings.ToLower(rhs)
 			}
 		} else if strings.HasPrefix(e, "Content-Transfer-Encoding:") {
 			// Content-Transfer-Encodig: ***
-			v := strings.SplitN(e, " ", 2)
-			headerpart[1] = strings.ToLower(v[1])
+			if _, rhs, cut := strings.Cut(e, " "); cut == true { headerpart[1] = strings.ToLower(rhs) }
 
 		} else if strings.Contains(e, "boundary=") || strings.Contains(e, "charset=") {
 			// "Content-Type" field has boundary="..." or charset="utf-8"
@@ -113,11 +109,11 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 
 		if cf := haircut(&e, false); strings.Contains(cf[0], "multipart/") {
 			// There is nested multipart/* block
-			boundary02 := Boundary(cf[0], -1); if len(boundary02) == 0 { continue }
-			bodyinside := strings.SplitN(cf[2], "\n\n", 2)[1]
-			if len(bodyinside) < 8 || strings.Contains(bodyinside, boundary02) == false { continue }
+			boundary02 := Boundary(cf[0], -1);  if len(boundary02) == 0 { continue }
+			_, bi, cut := strings.Cut(cf[2], "\n\n");   if cut == false { continue }
+			if len(bi) < 8 || strings.Contains(bi, boundary02) == false { continue }
 
-			cv, ce := levelout(cf[0], &bodyinside); if ce != nil && len(*ce) > 0 {
+			cv, ce := levelout(cf[0], &bi); if ce != nil && len(*ce) > 0 {
 				// There is any errors
 				notdecoded = append(notdecoded, *ce...)
 				if cv == nil { continue }
@@ -130,7 +126,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 			ub := e; if len(cf[cw - 1]) > 0 { ub = cf[cw - 1] }
 			cv := [3]string{cf[0], cf[1], ub}; for len(cf[0]) > 0 {
 				if cf[0] == "" || ub == "" || strings.Contains(ub, "\n\n") == false { break }
-				cv[2] = strings.SplitN(ub, "\n\n", 2)[1]
+				_, cv[2], _ = strings.Cut(ub, "\n\n")
 				break
 			}
 			partstable = append(partstable, cv)
@@ -141,9 +137,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 	// Remove `boundary01 + '--'` and strings from the boundary to the end of the body part.
 	boundary01 = strings.Replace(boundary01, "\n", "", -1)
 	cw := len(partstable)
-	bo := partstable[cw - 1][2]
-	p1 := strings.Index(bo, boundary01 + "--")
-	if p1 > -1 { partstable[cw - 1][2] = strings.SplitN(bo, boundary01 + "--", 2)[0] }
+	if ls, _, cx := strings.Cut(partstable[cw - 1][2], boundary01 + "--"); cx { partstable[cw - 1][2] = ls }
 
 	return partstable, &notdecoded
 }

@@ -35,10 +35,10 @@ func init() {
 			"routing-errors":      "systemerror",
 			"spam-related":        "spamdetected",
 		}
-		fieldparts := strings.SplitN(argv1, ":", 2)  // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
-		xfieldname := strings.ToLower(fieldparts[0]) // "final-recipient"
+		lhs,rhs, _ := strings.Cut(argv1, ":") // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
+		xfieldname := strings.ToLower(lhs)    // "final-recipient"
 		xef, nyaan := fieldgroup[xfieldname]; if nyaan == false { return []string{} }
-		xfieldlist := []string{"", "", strings.TrimSpace(fieldparts[1]), xef, "", "PowerMTA"}
+		xfieldlist := []string{"", "", strings.TrimSpace(rhs), xef, "", "PowerMTA"}
 
 		// - 0: Field-Name
 		// - 1: Sub Type: RFC822, DNS, X-Unix, and so on)
