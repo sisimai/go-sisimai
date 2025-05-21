@@ -8,6 +8,7 @@
 //       |_|                                                          
 
 package reason
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
@@ -140,7 +141,7 @@ func init() {
 		if fo == nil || fo.DeliveryStatus == ""             { return false }
 		if fo.Reason == "spamdetected"                      { return true  }
 		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true  }
-		if moji.EqualsAny(fo.Command, command.ExceptDATA)   { return false }
+		if slices.Contains(command.ExceptDATA, fo.Command)  { return false }
 		return IncludedIn["SpamDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

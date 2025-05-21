@@ -8,9 +8,9 @@
 //          |__/                         
 
 package reason
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
-import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
 func init() {
@@ -112,7 +112,7 @@ func init() {
 			// The session was rejected at 'DATA' command except "userunknown"
 			if IncludedIn["Rejected"](issuedcode) == true { return true }
 
-		} else if IsExplicit(tempreason) == false || moji.EqualsAny(tempreason, []string{"securityerror", "systemerror"}) {
+		} else if IsExplicit(tempreason) == false || slices.Contains([]string{"securityerror", "systemerror"}, tempreason) {
 			// Try to match with message patterns when the temporary reason is "onhold", "undefined",
 			// "securityerror", or "systemerror"
 			if IncludedIn["Rejected"](issuedcode) == true { return true }

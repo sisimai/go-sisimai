@@ -7,9 +7,9 @@
 // |_|   |_|_|\__\___|_|  \___|\__,_|
 
 package reason
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
-import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
 import "libsisimai.org/sisimai/v5/smtp/command"
 
@@ -65,7 +65,7 @@ func init() {
 			// The value of "Reason" is not "filtered" when the value of "fo.Command" is an SMTP
 			// command to be sent before the SMTP DATA command because all the MTAs read the headers
 			// and the entire message body after the DATA command.
-			if moji.EqualsAny(fo.Command, command.ExceptDATA) { return false }
+			if slices.Contains(command.ExceptDATA, fo.Command) { return false }
 			if IncludedIn["Filtered"](issuedcode) || IncludedIn["UserUnknown"](issuedcode) { return true }
 		}
 		return false
