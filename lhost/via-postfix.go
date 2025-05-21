@@ -7,6 +7,7 @@
 // |_|_| |_|\___/|___/\__/_/  |_|   \___/|___/\__|_| |_/_/\_\
 
 package lhost
+import "slices"
 import "strings"
 import "strconv"
 import "libsisimai.org/sisimai/v5/sis"
@@ -141,7 +142,7 @@ func init() {
 
 						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 						permessage[z] = o[2]
-						if moji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
+						if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
 					}
 				} else {
 					// If you do so, please include this problem report. You can
