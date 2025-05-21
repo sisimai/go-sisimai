@@ -9,6 +9,7 @@
 // Package "fact" provide a function for generating structs keeping decoded bounce mail data
 package fact
 import "time"
+import "slices"
 import "strings"
 import "net/mail"
 import "libsisimai.org/sisimai/v5/sis"
@@ -324,7 +325,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 		}
 
 		{	// HARDBOUNCE: Set the value of "hardbounce", default value of "hardbounce" is false
-			if moji.EqualsAny(thing.Reason, []string{"delivered", "feedback", "vacation"}) {
+			if slices.Contains([]string{"delivered", "feedback", "vacation"}, thing.Reason) {
 				// Delete the value of ReplyCode when the Reason is "feedback" or "vacation"
 				if thing.Reason != "delivered" { thing.ReplyCode = "" }
 
