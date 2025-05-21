@@ -55,6 +55,7 @@ package rfc5322
   the last two digits of the zone MUST be within the range 00 through 59.
 **************************************************************************************************/
 import "fmt"
+import "slices"
 import "strings"
 import "strconv"
 import "libsisimai.org/sisimai/v5/moji"
@@ -103,8 +104,8 @@ func Date(argv1 string) string {
 
 			} else {
 				upperfirst := strings.ToUpper(e[0:1]) + strings.ToLower(e[1:3])
-				if moji.EqualsAny(upperfirst, monthname) { p[1] = upperfirst; continue }
-				if moji.EqualsAny(upperfirst, dayofweek) { p[3] = upperfirst; continue }
+				if slices.Contains(monthname, upperfirst) { p[1] = upperfirst; continue }
+				if slices.Contains(dayofweek, upperfirst) { p[3] = upperfirst; continue }
 			}
 		} else if cw == 4 {
 			// This piece might be a 4-digit year such as 1997, 2018
