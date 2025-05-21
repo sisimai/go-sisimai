@@ -24,20 +24,6 @@ func ContainsAny(argv1 string, argv2 []string) bool {
 	return false
 }
 
-// EqualsAny checks whether any element in argv2 is equal to the argv1 or not.
-//   Arguments:
-//     - argv1 (string):   String containing any substring listed in argv2
-//     - argv2 ([]string): List of strings to find in argv1
-//   Returns:
-//     - (bool):           true if one or more string in argv2 equalled to the string in argv1
-func EqualsAny(argv1 string, argv2 []string) bool {
-	if argv1 == "" || len(argv2) == 0 { return false }
-
-	// It works like `grep { $e eq $_ } @list` in Perl
-	for _, e := range argv2 { if argv1 == e { return true } }
-	return false
-}
-
 // HasPrefixAny checks whether any alement in argv2 starts with the argv1 or not.
 //   Arguments:
 //     - argv1 (string):   String containing any substring listed in argv2
