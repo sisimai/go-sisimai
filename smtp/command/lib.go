@@ -9,6 +9,7 @@
 
 // Package "smtp/command" provides functions related to SMTP commands
 package command
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -68,7 +69,7 @@ func Find(argv0 string) string {
 		smtpc := e[0:4] // The first 4 characters of SMTP command found in the argument
 
 		if moji.HasPrefixAny(smtpc, commandset) { continue }
-		if moji.EqualsAny(smtpc, []string{"STAR", "XFOR"}) { smtpc = commandmap[smtpc] }
+		if slices.Contains([]string{"STAR", "XFOR"}, smtpc) { smtpc = commandmap[smtpc] }
 		commandset = append(commandset, smtpc)
 	}
 	if len(commandset) == 0 { return "" }
