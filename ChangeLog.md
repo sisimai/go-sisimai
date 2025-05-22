@@ -19,6 +19,7 @@ v5.3.0p1
     the minimum go version to 1.21. Thanks to @VolkerLieber
   - #111 #113 Set a pointer to `sis.DecodingArgs` struct when the 2nd argument of `sisimai.Rise()`
     is nil. Thanks to @VolkerLieber
+  - #120 Use golangci-lint. Thanks to @corny
 
 v5.3.0
 ---------------------------------------------------------------------------------------------------
