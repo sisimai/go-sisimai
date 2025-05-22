@@ -28,6 +28,7 @@ ASSEMBLEIN := tmp/assembled-in-here
 PROFILESET := tmp/all-the-emails
 EXECUTABLE := bin/sisid
 BUILDFLAGS := -ldflags="-s -w" -trimpath
+GOLANGLINT := golangci-lint
 LISTENADDR := 127.0.0.1:5321
 K          := neko
 
@@ -74,6 +75,10 @@ benchmark:
 	test -f bin/benchmark.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o min-sisid ./bin/benchmark.go
 	uptime
 	while true; do zsh -c 'time ./min-sisid $(PROFILESET)'; sleep 10; done
+
+lint:
+	test -x `which $(GOLANGLINT)`
+	$(GOLANGLINT) run $(SISIMAIDIR)
 
 samples:
 	$(MKDIR) $(PROFILESET)
