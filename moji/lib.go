@@ -38,10 +38,8 @@ func Token(argv1 string, argv2 string, epoch int) string {
 //   Arguments:
 //     - argv0 (*string): String including redundant characters like "neko  chan"
 //     - argv1 (byte):    Characters to be squeezed, for example ' '
-//   Returns:
-//     - (error):         Always nil
-func Squeeze(argv0 *string, argv1 byte) error {
-	if argv0 == nil || *argv0 == "" || strings.IndexByte(*argv0, argv1) < 0 { return nil }
+func Squeeze(argv0 *string, argv1 byte) {
+	if argv0 == nil || *argv0 == "" || strings.IndexByte(*argv0, argv1) < 0 { return }
 
 	textbuffer := make([]byte, 0, len(*argv0))
 	cb := byte(0); for _, by := range []byte(*argv0) {
@@ -50,7 +48,7 @@ func Squeeze(argv0 *string, argv1 byte) error {
 		textbuffer = append(textbuffer, by)
 		cb = by
 	}
-	*argv0 = string(textbuffer); return nil
+	*argv0 = string(textbuffer)
 }
 
 // Sweep clears the string out.
