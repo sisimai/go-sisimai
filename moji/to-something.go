@@ -49,9 +49,9 @@ func ToPlain(argv0 *string) *string {
 	lower := strings.ToLower(*argv0); if strings.Contains(lower, "<body") == false { return argv0 }
 	xhtml := *argv0
 	buffr := strings.Builder{}; buffr.Grow(len(xhtml) / 4)
-	body0 := -1; for _, e := range []string{">", " ", "\t", "\n"} {
+	for _, e := range []string{">", " ", "\t", "\n"} {
 		// Find the position of <body?, and remove the HTML header part
-		body0  = strings.Index(lower, "<body" + e); if body0 < 0 { continue }
+		body0 := strings.Index(lower, "<body" + e); if body0 < 0 { continue }
 		body0 += len("<body>") + 1
 
 		if e != ">" { body0 = IndexOnTheWay(lower, ">", body0) + 1 }
