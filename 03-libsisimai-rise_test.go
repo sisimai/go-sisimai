@@ -12,7 +12,7 @@ import "fmt"
 import "os"
 import "os/exec"
 import "strings"
-import "libsisimai.org/sisimai/v5/moji"
+import "slices"
 
 func TestRise(t *testing.T) {
 	fn := "sisimai.Rise"
@@ -38,7 +38,7 @@ func TestRise(t *testing.T) {
 		cx++; if len(*ce) != 0 {
 			for _, e := range *ce {
 				fe := strings.Split(e.EmailFile, "/");
-				cx++; if moji.EqualsAny(fe[len(fe) - 1], errorat)     { continue }
+				cx++; if slices.Contains(errorat, fe[len(fe) - 1])    { continue }
 				cx++; if strings.Contains(e.BecauseOf, "iso-2022-jp") { continue }
 
 				t.Errorf("%s(%s) returns error: %v", fn, ef, ce)

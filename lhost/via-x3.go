@@ -7,6 +7,7 @@
 // |_|_| |_|\___/|___/\__/_/   /_/\_\____/ 
 
 package lhost
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
@@ -112,7 +113,7 @@ func init() {
 
 						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
 						permessage[z] = o[2]
-						if moji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
+						if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
 					}
 				}
 			}

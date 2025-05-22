@@ -7,6 +7,7 @@
 // |_| \_\_|   \____|____/____/_____|_____/_/  |_| \_\___|\___\___|_| \_/ \___|\__,_(_)
 
 package rfc5322
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc791"
@@ -88,9 +89,9 @@ func Received(argv1 string) [6]string {
 
 	for _, e := range other {
 		// Check alternatives in "other", and then delete uninformative values.
-		if len(e) < 4 || moji.EqualsAny(e, skips) { continue }
-		if strings.IndexByte(e, '.') == -1        { continue }
-		if strings.IndexByte(e, '=')  >  1        { continue }
+		if len(e) < 4 || slices.Contains(skips, e) { continue }
+		if strings.IndexByte(e, '.') == -1         { continue }
+		if strings.IndexByte(e, '=')  >  1         { continue }
 		alter = append(alter, e)
 	}
 

@@ -9,6 +9,7 @@
 // Package "rfc1894" provides funtions related to RFC1894; An Extensible Message Format for Delivery
 // Status Notifications https://datatracker.ietf.org/doc/html/rfc1894
 package rfc1894
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -188,7 +189,7 @@ func Field(argv0 string) []string {
 		// Check that the value is an available value defined in "actionlist" or not.
 		// When the value is invalid, convert to an available value defined in "correction"
 		v := strings.ToLower(rhs)
-		if moji.EqualsAny(v, actionlist) { table[2] = v }
+		if slices.Contains(actionlist, v) { table[2] = v }
 		if table[2] == "" && len(correction[v]) > 0 { table[2] = correction[v] }
 
 	} else {

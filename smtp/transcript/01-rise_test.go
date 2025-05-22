@@ -10,8 +10,8 @@ package transcript
 //                                         |_|                                           |_|        
 import "testing"
 import "strings"
+import "slices"
 import "os"
-import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
@@ -29,7 +29,7 @@ func TestRise(t *testing.T) {
 
 	cx++; if ct == nil || len(*ct) == 0 { t.Errorf("%s() returns empty", fn) }
 	fn = "TanscriptLog"; for _, e := range *ct {
-		cx++; if cv := e.Command; moji.EqualsAny(cv, cc) == false {
+		cx++; if cv := e.Command; slices.Contains(cc, cv) == false {
 			t.Errorf("%s.Command(%s) is not listed in %v", fn, cv, cc)
 		}
 

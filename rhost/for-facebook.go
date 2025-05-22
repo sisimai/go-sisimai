@@ -7,9 +7,9 @@
 // |_|  |_| |_|\___/|___/\__/_/ |_|  \__,_|\___\___|_.__/ \___/ \___/|_|\_\
 
 package rhost
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
-import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
@@ -92,7 +92,7 @@ func init() {
 		errorlabel := fo.DiagnosticCode[errorindex - 3:errorindex + 3]
 		for e := range errorcodes {
 			// The key is a bounce reason name
-			if moji.EqualsAny(errorlabel, errorcodes[e]) { return e }
+			if slices.Contains(errorcodes[e], errorlabel) { return e }
 		}
 		return ""
 	}

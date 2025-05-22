@@ -8,6 +8,7 @@
 //                              |_|                    
 
 package lhost
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
@@ -33,7 +34,7 @@ func init() {
 			"failure notice", // qmail-send.c:Subject: failure notice\n\
 			"Failure Notice", // Yahoo
 		}
-		if moji.EqualsAny(bf.Headers["subject"][0], emailtitle) { proceedsto = true }
+		if slices.Contains(emailtitle, bf.Headers["subject"][0]) { proceedsto = true }
 		for _, e := range bf.Headers["received"] {
 			// Received: (qmail 2222 invoked for bounce);29 Apr 2017 23:34:45 +0900
 			// Received: (qmail 2202 invoked from network); 29 Apr 2018 00:00:00 +0900

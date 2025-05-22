@@ -7,9 +7,9 @@
 // |_|  \__,_|_|_|\___|\__,_|____/ |_/_/   \_\_| \_\|_|   |_| |_____|____/ 
 
 package reason
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
-import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -34,9 +34,9 @@ func init() {
 	//   Returns:
 	//     - (bool):         true if a reason is the reason defined in this file
 	ProbesInto["FailedSTARTTLS"] = func(fo *sis.Fact) bool {
-		if fo == nil                                                   { return false }
-		if fo.Reason == "failedstarttls" || fo.Command == "STARTTLS"   { return true  }
-		if moji.EqualsAny(fo.ReplyCode, []string{"523", "524", "538"}) { return true  }
+		if fo == nil                                                    { return false }
+		if fo.Reason == "failedstarttls" || fo.Command == "STARTTLS"    { return true  }
+		if slices.Contains([]string{"523", "524", "538"}, fo.ReplyCode) { return true  }
 		return IncludedIn["FailedSTARTTLS"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

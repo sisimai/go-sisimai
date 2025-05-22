@@ -10,6 +10,7 @@
 // messages formatted according to RFC3464; An Extensible Message Format for Delivery Status Notifications
 // https://datatracker.ietf.org/doc/html/rfc3464
 package rfc3464
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
@@ -193,7 +194,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 				// Copy the lower-cased member name of sis.DeliveryMatter{} for "permessage" for
 				// the later reference
 				permessage[z] = o[2]
-				if moji.EqualsAny(z, keystrings) == false { keystrings = append(keystrings, z) }
+				if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
 			}
 		} else {
 			// Check that the line is a continued line of the value of Diagnostic-Code: field or not

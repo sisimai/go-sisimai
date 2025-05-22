@@ -8,9 +8,9 @@
 //                                |___/         |___/ 
 
 package reason
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
-import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -57,8 +57,8 @@ func init() {
 	ProbesInto["NoRelaying"] = func(fo *sis.Fact) bool {
 		if fo         == nil          { return false }
 		if fo.Reason  == "norelaying" { return true  }
-		if moji.EqualsAny(fo.Reason,  []string{"securityerror", "systemerror", "undefined"}) { return false }
-		if moji.EqualsAny(fo.Command, []string{"CONN", "EHLO", "HELO"})                      { return false }
+		if slices.Contains([]string{"securityerror", "systemerror", "undefined"}, fo.Reason) { return false }
+		if slices.Contains([]string{"CONN", "EHLO", "HELO"}, fo.Command)                     { return false }
 		return IncludedIn["NoRelaying"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

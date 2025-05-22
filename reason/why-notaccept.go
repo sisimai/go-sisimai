@@ -8,9 +8,9 @@
 //                                     |_|        
 
 package reason
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
-import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -42,9 +42,9 @@ func init() {
 	//   Returns:
 	//     - (bool):         true if a reason is the reason defined in this file
 	ProbesInto["NotAccept"] = func(fo *sis.Fact) bool {
-		if fo        == nil                                     { return false }
-		if fo.Reason == "notaccept"                             { return true  }
-		if moji.EqualsAny(fo.ReplyCode, []string{"521", "556"}) { return true  }
+		if fo        == nil                                      { return false }
+		if fo.Reason == "notaccept"                              { return true  }
+		if slices.Contains([]string{"521", "556"}, fo.ReplyCode) { return true  }
 		return IncludedIn["NotAccept"](strings.ToLower(fo.DiagnosticCode))
 	}
 }

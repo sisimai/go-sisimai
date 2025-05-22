@@ -7,9 +7,9 @@
 //    \_/  |_|_|   \__,_|___/____/ \___|\__\___|\___|\__\___|\__,_|
 
 package reason
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
-import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/command"
 
 func init() {
@@ -40,9 +40,9 @@ func init() {
 	//   Returns:
 	//     - (bool):         true if a reason is the reason defined in this file
 	ProbesInto["VirusDetected"] = func(fo *sis.Fact) bool {
-		if fo        == nil                               { return false }
-		if fo.Reason == "virusdetected"                   { return true  }
-		if moji.EqualsAny(fo.Command, command.ExceptDATA) { return false }
+		if fo        == nil                                { return false }
+		if fo.Reason == "virusdetected"                    { return true  }
+		if slices.Contains(command.ExceptDATA, fo.Command) { return false }
 		return IncludedIn["VirusDetected"](strings.ToLower(fo.DiagnosticCode))
 	}
 }
