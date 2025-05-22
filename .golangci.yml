@@ -1,0 +1,7 @@
+# go-sisimai/.golangci.yaml
+# https://golangci-lint.run/usage/configuration/
+version: "2"
+linters:
+  disable:
+    - staticcheck
+
