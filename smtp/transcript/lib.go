@@ -152,7 +152,6 @@ func Rise(argv0, argv1, argv2 string) *[]TranscriptLog {
 					// >>> XFORWARD PROTO=SMTP HELO=neko2.y.example.co.jp IDENT=2LYC6642BLzFK3MM SOURCE=REMOTE
 					// <<< 250 2.0.0 Ok
 					parameters = commandarg
-					commandarg = ""
 				}
 
 				for _, f := range strings.Split(parameters, " ") {
