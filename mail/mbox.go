@@ -49,7 +49,7 @@ func(this *EmailEntity) readMailbox() (*string, error) {
 		// The last email message in the UNIX mbox
 		emailblock   = readbuffer.String()
 		this.offset += readbuffer.Len() + (thisheight * lineending)
-		this.handle.Close()
+		if nyaan := this.handle.Close(); nyaan != nil { return nil, nyaan }
 	}
 	return &emailblock, nil
 }

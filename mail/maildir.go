@@ -27,8 +27,8 @@ func(this *EmailEntity) listMaildir() (int, error) {
 		// Read each email file in the Maildir/
 		if e.IsDir() == false || e.Size() > 0 { this.payload = append(this.payload, e.Name()) }
 	}
-	this.handle.Close(); this.handle = nil
-	return len(this.payload), nil
+	nyaan = this.handle.Close(); this.handle = nil
+	return len(this.payload), nyaan
 }
 
 // readMaildir is an email reader in the Maildir/, works like a iterator.
