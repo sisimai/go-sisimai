@@ -97,9 +97,10 @@ func init() {
 		anotherone := []string{""}  // Keeping another error messages
 		msexchange := []bool{false} // Flag, true if "MSEXCH:" text has been appeared
 
-		for _, e := range(strings.Split(emailparts[0], "\n")) {
+		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
+			e  = strings.TrimRight(e, "\n\r")
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
