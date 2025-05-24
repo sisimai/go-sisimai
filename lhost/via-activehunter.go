@@ -32,7 +32,7 @@ func init() {
 		recipients := uint8(0)     // The number of 'Final-Recipient' header
 		readcursor := uint8(0)     // Points the current cursor position
 
-		for _, e := range(strings.Split(emailparts[0], "\n")) {
+		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
 			if readcursor == 0 {
