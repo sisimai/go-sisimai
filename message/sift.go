@@ -118,9 +118,10 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 
 	// Convert headers of the original message to data structure/map[string][]string
 	rfc822buff := strings.Builder{}; rfc822buff.Grow(len(rising.RFC822))
-	for _, e := range strings.Split(rising.RFC822, "\n") {
+	for e := range strings.Lines(rising.RFC822) {
 		// Append each line of rising.RFC822 to rfc822buff except malformed headers
-		if e == "" && rfc822buff.Len() > 0 { break } // The blank line between the header and the body
+		// The blank line between the header and the body
+		if e = strings.TrimRight(e, "\n\r"); e == "" && rfc822buff.Len() > 0 { break }
 		if strings.IndexByte(e, ':') < 1 {           // The line does not contain ":" or begins with ":"
 			// The line is not a line continued from the previous line of a long header
 			if strings.HasPrefix(e, " ") == false || strings.HasPrefix(e, "\t") == false { continue }
