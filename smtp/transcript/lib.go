@@ -94,10 +94,9 @@ func Rise(argv0, argv1, argv2 string) *[]TranscriptLog {
 	if strings.Contains(argv0, "\n\n") { argv0 = moji.Select(moji.LHS + argv0, "", "\n\n", 0) + "\n" }
 
 	// 4. Replace label strings of SMTP client/server at the each line
-	for _, e := range strings.Split(argv0, "\n") {
+	for e := range strings.Lines(argv0) {
 		// Replace the following labels
-		e = strings.TrimLeft(e, " ")
-
+		e  = strings.Trim(e, "\n\r ")
 		if strings.HasPrefix(e, argv1) || strings.HasPrefix(e, argv2) {
 			// - The line starts with ">>>" or the specified label in argv1
 			// - The line starts with "<<<" or the specified label in argv2
