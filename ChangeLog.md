@@ -9,9 +9,10 @@ v5.3.0p1
 - release: ""
 - version: ""
 - changes:
-  - The minimum Go version required to run Sisimai is now Go 1.21 #112
+  - The minimum Go version required to run Sisimai is now Go 1.24 #112 #127
     - #116 #117 Use `strings.Cut()` instead of `strings.SplitN(v,s,2)` and `v[n:strings.Index(v,s)]`
     - #118 #122 Use `slices.Contains()` instead of `moji.EqualsAny()`
+    - #123 #128 Use `strings.Lines()` instead of `strings.Split(v, "\n")`
   - #99 Use `error.Error()` instead of `fmt.Sprintf()` for stringify an error message
   - #101 #102 #103 Use `make()` to initialise a slice
   - #105 #106 Tiny code improvement in `moji.Select()` function
