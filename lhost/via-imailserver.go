@@ -45,9 +45,10 @@ func init() {
 		recipients := uint8(0)
 		mesgbuffer := strings.Builder{}; mesgbuffer.Grow(len(emailparts[0]) / 2)
 
-		for _, e := range(strings.Split(emailparts[0], "\n")) {
+		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
+			e  = strings.TrimRight(e, "\n\r")
 			if (strings.Index(e, ": ") > 8 && moji.Aligned(e, []string{": ", "@"})) || strings.HasPrefix(e, "undeliverable ") {
 				// Unknown user: kijitora@example.com
 				// undeliverable to kijitora@example.com

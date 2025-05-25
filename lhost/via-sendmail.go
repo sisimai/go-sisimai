@@ -63,9 +63,10 @@ func init() {
 		sessionerr := false                 // Flag, true if it is an SMTP session error
 		anotherset := map[string]string{}   // Another error information
 
-		for j, e := range(strings.Split(emailparts[0], "\n")) {
+		j := -1; for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
+			j++; e = strings.TrimRight(e, "\n\r")
 			readslices = append(readslices, e) // Save the current line for the next loop
 
 			if readcursor == 0 {

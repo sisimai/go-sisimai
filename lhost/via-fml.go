@@ -59,10 +59,10 @@ func init() {
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)            // The number of 'Final-Recipient' header
 
-		for _, e := range(strings.Split(emailparts[0], "\n")) {
+		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
-			if e == "" { continue }
+			e  = strings.TrimRight(e, "\n\r"); if e == "" { continue }
 
 			if cv := moji.Select(e, "<", ">", 0); cv != "" {
 				// You are not a member of this mailing list <neko-meeting@example.org>.

@@ -148,16 +148,22 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 							// DeliveryStatus
 							t.Errorf("%s Status is (%s) but (%s)", ee, fs.DeliveryStatus, ev.Status)
 						}
+						cx++; if strings.Contains(fs.DeliveryStatus, "\n") { t.Errorf("%s DeliveryStatus includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.DeliveryStatus, "\r") { t.Errorf("%s DeliveryStatus includes 'CR'", ee) }
 
 						cx++; if fs.ReplyCode != ev.ReplyCode {
 							// ReplyCode
 							t.Errorf("%s ReplyCode is (%s) but (%s)", ee, fs.ReplyCode, ev.ReplyCode)
 						}
+						cx++; if strings.Contains(fs.ReplyCode, "\n") { t.Errorf("%s ReplyCode includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.ReplyCode, "\r") { t.Errorf("%s ReplyCode includes 'CR'", ee) }
 
 						cx++; if fs.Reason != ev.Reason {
 							// Reason
 							t.Errorf("%s Reason is (%s) but (%s)", ee, fs.Reason, ev.Reason)
 						}
+						cx++; if strings.Contains(fs.Reason, "\n") { t.Errorf("%s Reason includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.Reason, "\r") { t.Errorf("%s Reason includes 'CR'", ee) }
 
 						cx++; if fs.HardBounce != ev.HardBounce {
 							// HardBounce
@@ -199,6 +205,8 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 								}
 							}
 						}
+						cx++; if strings.Contains(fs.DecodedBy, "\n") { t.Errorf("%s DecodedBy includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.DecodedBy, "\r") { t.Errorf("%s DecodedBy includes 'CR'", ee) }
 
 						/* Other fields except above */
 						// Action
@@ -209,6 +217,8 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 								t.Errorf("%s Action (%s) is an invalid value", ee, fs.Action)
 							}
 						}
+						cx++; if strings.Contains(fs.Action, "\n") { t.Errorf("%s Action includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.Action, "\r") { t.Errorf("%s Action includes 'CR'", ee) }
 
 						// Addresser
 						cx++; if fs.Addresser.Address == "" { t.Errorf("%s Addresser.Address is empty", ee) }
@@ -220,6 +230,8 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 								t.Errorf("%s Addresser.Verp is (%s) not empty", ee, fs.Addresser.Verp)
 							}
 						}
+						cx++; if strings.Contains(fs.Addresser.Address, "\n") { t.Errorf("%s Addresser.Address includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.Addresser.Address, "\r") { t.Errorf("%s Addresser.Address includes 'CR'", ee) }
 
 						cx++; if address.IsMailerDaemon(fs.Addresser.Address) == false {
 							cx++; if fs.Addresser.User == "" { t.Errorf("%s Addresser.User is empty", ee) }
@@ -262,6 +274,12 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 							// Is not a valid email address
 							t.Errorf("%s Recipient.Alias (%s) is not a valid email address", ee, fs.Recipient.Alias)
 						}
+						cx++; if strings.Contains(fs.Recipient.Address, "\n") { t.Errorf("%s Recipient.Address includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.Recipient.Address, "\r") { t.Errorf("%s Recipient.Address includes 'CR'", ee) }
+
+						// DiagnosticCode
+						cx++; if strings.Contains(fs.DiagnosticCode, "\n") { t.Errorf("%s DiagnosticCode includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.DiagnosticCode, "\r") { t.Errorf("%s DiagnosticCode includes 'CR'", ee) }
 
 						// DiagnosticType
 						cx++; if fs.Reason != "feedback" && fs.Reason != "vacation" {
@@ -271,31 +289,47 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						cx++; if strings.Contains(fs.DiagnosticType, " ") {
 							t.Errorf("%s DiagnosticType includes space characters (%s)", ee, fs.DiagnosticType)
 						}
+						cx++; if strings.Contains(fs.DiagnosticType, "\n") { t.Errorf("%s DiagnosticType includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.DiagnosticType, "\r") { t.Errorf("%s DiagnosticType includes 'CR'", ee) }
 
 						// FeedbackID
 						cx++; if strings.Contains(fs.FeedbackID, " ") {
 							t.Errorf("%s FeedbackID includes space characters (%s)", ee, fs.FeedbackID)
 						}
+						cx++; if strings.Contains(fs.FeedbackID, "\n") { t.Errorf("%s FeedbackID includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.FeedbackID, "\r") { t.Errorf("%s FeedbackID includes 'CR'", ee) }
 
 						// Lhost, Rhost
 						cx++; if strings.Contains(fs.Lhost, " ") { t.Errorf("%s Lhost includes space characters (%s)", ee, fs.Lhost) }
 						cx++; if strings.Contains(fs.Rhost, " ") { t.Errorf("%s Rhost includes space characters (%s)", ee, fs.Rhost) }
+						cx++; if strings.Contains(fs.Lhost, "\n"){ t.Errorf("%s Lhost includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.Lhost, "\r"){ t.Errorf("%s Lhost includes 'CR'", ee) }
+						cx++; if strings.Contains(fs.Rhost, "\n"){ t.Errorf("%s Rhost includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.Rhost, "\r"){ t.Errorf("%s Rhost includes 'CR'", ee) }
 
 						// ListID
 						cx++; if strings.Contains(fs.ListID, " ") { t.Errorf("%s ListID includes space characters (%s)", ee, fs.ListID) }
+						cx++; if strings.Contains(fs.ListID, "\n"){ t.Errorf("%s ListID includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.ListID, "\r"){ t.Errorf("%s ListID includes 'CR'", ee) }
 
 						// MessageID
 						cx++; if strings.Contains(fs.MessageID, " ") {
 							t.Errorf("%s MessageID includes space characters (%s)", ee, fs.MessageID)
 						}
+						cx++; if strings.Contains(fs.MessageID, "\n"){ t.Errorf("%s MessageID includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.MessageID, "\r"){ t.Errorf("%s MessageID includes 'CR'", ee) }
 
 						// Origin
 						cx++; if fs.Origin == "" { t.Errorf("%s Origin is empty", ee) }
+						cx++; if strings.Contains(fs.Origin, "\n"){ t.Errorf("%s Origin includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.Origin, "\r"){ t.Errorf("%s Origin includes 'CR'", ee) }
 
 						// Command
 						cx++; if fs.Command != "" && command.Test(fs.Command) == false {
 							t.Errorf("%s Command (%s) is an invalid SMTP command", ee, fs.Command)
 						}
+						cx++; if strings.Contains(fs.Command, "\n"){ t.Errorf("%s Command includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.Command, "\r"){ t.Errorf("%s Command includes 'CR'", ee) }
 
 						// Subject (not needed to test)
 						// Timestamp
@@ -307,10 +341,14 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						cx++; if strings.Contains(fs.TimezoneOffset, " ") {
 							t.Errorf("%s TimezoneOffset (%s) includes space characters", ee, fs.TimezoneOffset)
 						}
+						cx++; if strings.Contains(fs.TimezoneOffset, "\n"){ t.Errorf("%s TimezoneOffset includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.TimezoneOffset, "\r"){ t.Errorf("%s TimezoneOffset includes 'CR'", ee) }
 
 						// Token
 						cx++; if fs.Token      == "" { t.Errorf("%s Token is empty", ee) }
 						cx++; if len(fs.Token) != 40 { t.Errorf("%s Token (%s) is not 40 characaters", ee, fs.Token) }
+						cx++; if strings.Contains(fs.Token, "\n"){ t.Errorf("%s Token includes 'LF'", ee) }
+						cx++; if strings.Contains(fs.Token, "\r"){ t.Errorf("%s Token includes 'CR'", ee) }
 
 						cx++; if jx, je := fs.Dump(); len(jx) == 0 || je != nil {
 							// Dump()
@@ -318,6 +356,8 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 						} else {
 							// Check the string as a JSON
+							cx++; if strings.Contains(jx, "\n"){ t.Errorf("%s JSON includes 'LF'", jx) }
+							cx++; if strings.Contains(jx, "\r"){ t.Errorf("%s JSON includes 'CR'", jx) }
 							cx++; if strings.Contains(jx, "{") == false {
 								t.Errorf("%s Dump() returned invalid JSON string (%s)", ee, jx[:20])
 							}

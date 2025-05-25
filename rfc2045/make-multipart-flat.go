@@ -23,7 +23,7 @@ func haircut(block *string, heads bool) []string {
 	if len(upperchunk) == 0 || strings.Contains(upperchunk, "Content-Type:") == false { return []string{"", ""} }
 
 	var headerpart[2] string = [2]string{} // {"text/plain; charset=iso-2022-jp; ...", "quoted-printable"}
-	for _, e := range strings.Split(upperchunk, "\n") {
+	for e := range strings.Lines(upperchunk) {
 		// Remove fields except Content-Type:, and Content-Transfer-Encoding: in each part of multipart/*
 		// block such as the following:
 		//   Date: Thu, 29 Apr 2018 22:22:22 +0900
@@ -31,7 +31,7 @@ func haircut(block *string, heads bool) []string {
 		//   Message-ID: ...
 		//   Content-Transfer-Encoding: quoted-printable
 		//   Content-Type: text/plain; charset=us-ascii
-		if strings.HasPrefix(e, "Content-Type:") {
+		if e = strings.TrimRight(e, "\n\r"); strings.HasPrefix(e, "Content-Type:") {
 			// Content-Type: ***
 			if _, rhs, cut := strings.Cut(e, " "); cut == true && strings.Contains(rhs, "boundary=") {
 				// Do not convert to lower-cased when the value of Content-Type include a boundary string

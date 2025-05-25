@@ -106,10 +106,11 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 		emailparts[0] = emailparts[0][:p1] + emailparts[0][p1 + 1:]
 	}
 
-	for j, e := range(strings.Split(emailparts[0], "\n")) {
+	j := -1; for e := range strings.Lines(emailparts[0]) {
 		// Read error messages and delivery status lines from the head of the email to the
 		// previous line of the beginning of the original message.
-		readslices = append(readslices, e) // Save the current line for the next loop
+		e = strings.TrimRight(e, "\n\r")
+		j++; readslices = append(readslices, e) // Save the current line for the next loop
 
 		if readcursor == 0 {
 			// Beginning of the bounce message or message/delivery-status part
