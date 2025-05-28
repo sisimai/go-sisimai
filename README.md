@@ -39,9 +39,9 @@
 
 What is Sisimai
 ===================================================================================================
-Sisimai is a Go package, is a library that decodes complex and diverse bounce emails and outputs the
-results of the delivery failure, such as the reason for the bounce and the recipient email address,
-in structured data. It is also possible to output in JSON format.
+Sisimai (pronounced /ɕi.ɕi.ma.i/) is a Go package, is a library that decodes complex and diverse
+bounce emails and outputs the results of the delivery failure, such as the reason for the bounce
+and the recipient email address, in structured data. It is also possible to output in JSON format.
 
 ![](https://libsisimai.org/static/images/figure/sisimai-overview-2.png)
 
