@@ -95,8 +95,7 @@ func Aligned(argv1 string, argv2 []string) bool {
 		right++
 	}
 
-	if right == len(argv2) { return true }
-	return false
+	return right == len(argv2)
 }
 
 // IndexOnTheWay returns the index of the first string of argv1 finding after the start position in argv0
