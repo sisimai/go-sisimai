@@ -248,7 +248,7 @@ func init() {
 			} else {
 				// There is no "notificationType" field or unknown type of "notificationType" field
 				// in the JSON string in the message body
-				jsonerrors = errors.New("There is no notificationType field or unknown type of notificationType field")
+				jsonerrors = errors.New("there is no notificationType field or unknown type of notificationType field")
 			}
 			break
 		}
