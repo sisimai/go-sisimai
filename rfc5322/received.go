@@ -137,8 +137,8 @@ func Received(argv1 string) [6]string {
 		// Delete an invalid value
 		if token[e] == ""                        { token[e] = ""; continue }
 		if strings.IndexByte(token[e], ' ') > -1 { token[e] = ""; continue }
-		if strings.IndexByte(token[e], '[') > -1 { strings.Replace(token[e], "[", "", 1) }
-		if strings.IndexByte(token[e], ']') > -1 { strings.Replace(token[e], "]", "", 1) }
+		if strings.IndexByte(token[e], '[') > -1 { token[e] = strings.Replace(token[e], "[", "", 1) }
+		if strings.IndexByte(token[e], ']') > -1 { token[e] = strings.Replace(token[e], "]", "", 1) }
 	}
 
 	return [6]string{token["from"], token["by"], token["via"], token["with"], token["id"], token["for"]}
