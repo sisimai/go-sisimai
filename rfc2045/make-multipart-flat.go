@@ -22,7 +22,7 @@ func haircut(block *string, heads bool) []string {
 	upperchunk, lowerchunk, exists := strings.Cut(*block, "\n\n"); if exists == false { return []string{"", ""} }
 	if len(upperchunk) == 0 || strings.Contains(upperchunk, "Content-Type:") == false { return []string{"", ""} }
 
-	var headerpart[2] string = [2]string{} // {"text/plain; charset=iso-2022-jp; ...", "quoted-printable"}
+	headerpart := [2]string{} // {"text/plain; charset=iso-2022-jp; ...", "quoted-printable"}
 	for e := range strings.Lines(upperchunk) {
 		// Remove fields except Content-Type:, and Content-Transfer-Encoding: in each part of multipart/*
 		// block such as the following:
