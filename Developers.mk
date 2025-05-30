@@ -78,7 +78,7 @@ benchmark:
 
 lint:
 	test -x `which $(GOLANGLINT)`
-	$(GOLANGLINT) run $(SISIMAIDIR)
+	NO_COLOR=2 $(GOLANGLINT) run $(SISIMAIDIR)
 
 samples:
 	$(MKDIR) $(PROFILESET)
