@@ -152,7 +152,7 @@ func init() {
 				// The key name is a bounce reason name
 				// Try to find an error message including lower-cased string listed in messagesof
 				if moji.ContainsAny(e.Diagnosis, messagesof[r]) == false { continue }
-				if e.Status == "" { status.Code(r, false) }
+				if e.Status == "" { e.Status = status.Code(r, false) }
 				e.Reason = r; break
 			}
 
