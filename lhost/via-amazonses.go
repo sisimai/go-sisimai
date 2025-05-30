@@ -213,8 +213,8 @@ func init() {
 		var notifiedto NotifiedTo  // This instance have 3 types: ReturnedTo, Deliveries, Complained
 		var mailinside *mailObject // The pointer to mailObject struct
 		var notdecoded []sis.NotDecoded
-		var jsonerrors error  = errors.New("Invalid JSON format")
-		var jsonstring []byte = []byte(sespayload)
+		var jsonerrors = errors.New("Invalid JSON format")
+		var jsonstring = []byte(sespayload)
 
 		for json.Valid(jsonstring) == true {
 			// The JSON string should contain one of the followings in "notificationType" field
