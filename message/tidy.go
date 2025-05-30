@@ -118,7 +118,7 @@ func tidy(argv0 *string) *string {
 	}
 
 	email := bu.String();
-	if email[len(email) - 2:len(email)] != "\n\n" { email += "\n\n" }
+	if email[len(email) - 2:] != "\n\n" { email += "\n\n" }
 	return &email
 }
 
