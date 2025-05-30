@@ -99,7 +99,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	} // End of for(DECODER)
 	if rising == nil || len(rising.Digest) == 0 { return false }
 
-	for j, _ := range rising.Digest {
+	for j := range rising.Digest {
 		// Set the value of "Agent" such as "Postfix", "Sendmail", or "OpenSMTPD"
 		if rising.Digest[j].Agent == "" { rising.Digest[j].Agent = module }
 	}
