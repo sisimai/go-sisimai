@@ -161,21 +161,21 @@ func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
 	for _, e := range []string{"CONTENT-TYPE", "Content-type", "content-type"} {
 		// Transform the Content-Type header name to the camel cased
 		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
-		*argv1 = strings.Replace(*argv1, e + ":", "Content-Type:", -1)
+		*argv1 = strings.ReplaceAll(*argv1, e + ":", "Content-Type:")
 	}
 
 	for _, e := range []string{"CONTENT-TRANSFER-ENCODING", "content-transfer-encoding"} {
 		// Transform the Content-Transfer-Encoding header name to the camel cased
 		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
-		*argv1 = strings.Replace(*argv1, e + ":", "Content-Transfer-Encoding:", -1)
+		*argv1 = strings.ReplaceAll(*argv1, e + ":", "Content-Transfer-Encoding:")
 	}
 
 	for _, e := range []string{"CHARSET", "CharSet", "Charset", "BOUNDARY", "Boundary"} {
 		// Transform each parameter field name to the lower cased
 		// TODO: These parameters have been transformed by sisimai.message.Tidy() function ...?
-		*argv1 = strings.Replace(*argv1, e + "=", strings.ToLower(e) + "=", -1)
+		*argv1 = strings.ReplaceAll(*argv1, e + "=", strings.ToLower(e) + "=")
 	}
-	*argv1 = strings.Replace(*argv1, "message/xdelivery-status", "message/delivery-status", -1)
+	*argv1 = strings.ReplaceAll(*argv1, "message/xdelivery-status", "message/delivery-status")
 
 	multiparts, notdecoded := levelout(argv0, argv1)
 	flatbuffer := strings.Builder{}; flatbuffer.Grow(len(*argv1) / 2)

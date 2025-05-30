@@ -31,7 +31,7 @@ func Parameter(argv0 string, argv1 string) string {
 
 	// Find the value of the parameter name specified in "argv1"
 	cf := strings.Split(argv0[ci + len(cv):], ";")[0]; if argv1 != "boundary" { cf = strings.ToLower(cf) }
-	for _, e := range []string{`'`, `"`} { cf = strings.Replace(cf, e, "", -1) }
+	for _, e := range []string{`'`, `"`} { cf = strings.ReplaceAll(cf, e, "") }
 
 	return cf
 }
