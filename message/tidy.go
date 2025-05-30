@@ -105,7 +105,7 @@ func tidy(argv0 *string) *string {
 			for _, ef := range replacesas[fn] {
 				// - Before: Content-Type: message/xdelivery-status; ...
 				// - After:  Content-Type: message/delivery-status; ...
-				if strings.Contains(bf, ef[0]) { bf = strings.Replace(bf, ef[0], ef[1], 1) }
+				bf = strings.Replace(bf, ef[0], ef[1], 1)
 			}
 		}
 
