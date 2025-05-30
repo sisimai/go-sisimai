@@ -248,11 +248,9 @@ func Find(argv1 string) [3]string {
 		// Remove trailing spaces at the display name and the comment block
 		layoutbuff[1] = strings.TrimSpace(layoutbuff[1])
 
-		for {
+		if strings.HasPrefix(layoutbuff[1], `"`) == false || strings.HasSuffix(layoutbuff[1], `"`) == false {
 			// Remove redundant spaces from the display name when the value is not a "quoted-string"
-			if strings.HasPrefix(layoutbuff[1], `"`) && strings.HasSuffix(layoutbuff[1], `"`) { break }
 			moji.Squeeze(&layoutbuff[1], ' ')
-			break
 		}
 		if rfc5322.IsQuotedAddress(layoutbuff[1]) == false {
 			// Trim `"` from the display name when the value is not like "neko-cat"@libsisimai.org
