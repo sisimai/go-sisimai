@@ -135,7 +135,7 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 	if len(partstable) == 0 { return nil, &notdecoded }
 
 	// Remove `boundary01 + '--'` and strings from the boundary to the end of the body part.
-	boundary01 = strings.Replace(boundary01, "\n", "", -1)
+	boundary01 = strings.ReplaceAll(boundary01, "\n", "")
 	cw := len(partstable)
 	if ls, _, cx := strings.Cut(partstable[cw - 1][2], boundary01 + "--"); cx { partstable[cw - 1][2] = ls }
 
