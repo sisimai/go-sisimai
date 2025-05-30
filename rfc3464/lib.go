@@ -119,7 +119,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 			for {
 				// Append each string before startingof["message"][0] except the following patterns
 				// for the later reference
-				if e == ""  || goestonext { break } // Skip if the line is empty or the part is text/html, image/icon in multipart/*
+				if e == "" || goestonext { break } // Skip if the line is empty or the part is text/html, image/icon in multipart/*
 
 				// This line is a boundary kept in "multiparts" as a string, when the end of
 				// the boundary appeared, the condition above also returns true.
@@ -244,7 +244,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	}
 	issuedcode := strings.ToLower(beforemesg)
 
-	for j, _ := range dscontents {
+	for j := range dscontents {
 		// Set default values stored in "permessage" if each value in "dscontents" is empty.
 		e := &dscontents[j]; for _, z := range keystrings {
 			// Do not set an empty string into each member of sis.DeliveryMatter{}
