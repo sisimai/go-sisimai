@@ -240,7 +240,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
 		}
 
 		// Append "\n" when the last character of $bodystring is not LF
-		if bodystring[len(bodystring) - 2:len(bodystring)] != "\n\n" { bodystring += "\n\n" }
+		if bodystring[len(bodystring) - 2:] != "\n\n" { bodystring += "\n\n" }
 		flatbuffer.WriteString(bodystring)
 	}
 	flattenout := flatbuffer.String()
