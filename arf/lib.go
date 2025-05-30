@@ -218,7 +218,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	if recipients == 0 { return nil }
 
 	if anotherone != "" { anotherone = ": " + strings.TrimRight(moji.Sweep(anotherone), ",") }
-	for j, _ := range dscontents {
+	for j := range dscontents {
 		// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 		e := &dscontents[j]
 		e.Diagnosis = moji.Sweep(e.Diagnosis + anotherone)
