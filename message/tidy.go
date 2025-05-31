@@ -7,6 +7,7 @@
 //                                |___/      
 
 package message
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc1894"
@@ -22,11 +23,9 @@ var replacesas = map[string][][]string{
 }
 
 // makefield generates a map including each field name defined in RFC1894, RFC5322, and RFC5965.
-func makefield(argv1 []string, argv2 []string, argv3 []string) map[string]string {
+func makefield(argv0 ...[]string) map[string]string {
 	fieldtable := make(map[string]string, 40)
-	for _, e := range argv1 { fieldtable[strings.ToLower(e)] = e }
-	for _, e := range argv2 { fieldtable[strings.ToLower(e)] = e }
-	for _, e := range argv3 { fieldtable[strings.ToLower(e)] = e }
+	for _, e := range slices.Concat(argv0...) { fieldtable[strings.ToLower(e)] = e }
 	return fieldtable
 }
 
