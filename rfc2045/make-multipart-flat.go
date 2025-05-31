@@ -200,24 +200,17 @@ func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
 
 		if ctencoding := e[1]; len(ctencoding) > 0 {
 			// Check the value of Content-Transfer-Encoding: header
-			if ctencoding == "base64" {
-				// Content-Transfer-Encoding: base64
-				cv, nyaan := DecodeB(bodyinside, ""); bodystring = cv; if nyaan != nil {
-					// Something wrong when the function decodes the BASE64 encoded string
-					*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false))
-				}
-			} else if ctencoding == "quoted-printable" {
-				// Content-Transfer-Encoding: quoted-printable
-				cv, nyaan := DecodeQ(bodyinside); bodystring = cv; if nyaan != nil {
-					// Something wrong when the function decodes the Quoted-Printable encoded string
-					*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false))
-				}
-			} else {
+			var nyaan error
+			switch ctencoding {
 				// - Content-Transfer-Encoding: 8bit, binary, and so on
 				// - sisimai no longer supports multibyte characters except UTF-8
 				// - https://github.com/sisimai/go-sisimai/issues/42
-				bodystring = bodyinside
+				default: bodystring = bodyinside
+
+				case "base64":           bodystring, nyaan = DecodeB(bodyinside, "")
+				case "quoted-printable": bodystring, nyaan = DecodeQ(bodyinside)
 			}
+			if nyaan != nil { *notdecoded = append(*notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false)) }
 
 			// Try to delete HTML tags inside of text/html part whenever possible
 			if istexthtml { bodystring = *moji.ToPlain(&bodystring) }
