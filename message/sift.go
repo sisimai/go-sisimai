@@ -27,7 +27,7 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	if bf == nil || bf.IsEmpty() == true { return false }
 
-	bf.Payload = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
+	bf.Payload  = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
 	mesgformat := ""
 	ctencoding := ""
 
@@ -36,22 +36,15 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 
 	if moji.HasPrefixAny(mesgformat, []string{"text/plain", "text/html"}) {
 		// Content-Type: text/plain; charset=UTF-8
-		if ctencoding == "base64" {
-			// Content-Transfer-Encoding: base64
-			cv, nyaan := rfc2045.DecodeB(bf.Payload, ""); bf.Payload = cv
-			if nyaan != nil {
-				// Something wrong when the function decodes the BASE64 encoded string
-				ce := *sis.MakeNotDecoded(nyaan.Error(), false)
-				bf.Errors = append(bf.Errors, ce)
-			}
-		} else if ctencoding == "quoted-printable" {
-			// Content-Transfer-Encoding: quoted-printable
-			cv, nyaan := rfc2045.DecodeQ(bf.Payload); bf.Payload = cv
-			if nyaan != nil {
-				// Something wrong when the function decodes the Quoted-Printable encoded string
-				ce := *sis.MakeNotDecoded(nyaan.Error(), false)
-				bf.Errors = append(bf.Errors, ce)
-			}
+		var nyaan error
+		switch ctencoding {
+			case "base64":           bf.Payload, nyaan = rfc2045.DecodeB(bf.Payload, "")
+			case "quoted-printable": bf.Payload, nyaan = rfc2045.DecodeQ(bf.Payload)
+		}
+		if nyaan != nil {
+			// Something wrong when the function decodes the Quoted-Printable encoded string
+			ce := *sis.MakeNotDecoded(nyaan.Error(), false)
+			bf.Errors = append(bf.Errors, ce)
 		}
 		if strings.HasPrefix(mesgformat, "text/html") { bf.Payload = *(moji.ToPlain(&bf.Payload)) }
 
