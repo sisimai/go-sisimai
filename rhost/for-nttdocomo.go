@@ -103,7 +103,7 @@ func init() {
 				// Diagnostic-Code: smtp; 550 Unknown user ***@docomo.ne.jp
 				reasontext = "rejected"
 
-			} else {
+			// } else {
 				// Rejected by other SMTP commands: AUTH, MAIL,
 				//   もしもこのブロックを通過するNTTドコモからのエラーメッセージを見つけたら
 				//   https://github.com/sisimai/go-sisimai/issues からご連絡ねがいます。
