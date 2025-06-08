@@ -69,10 +69,10 @@ func init() {
 
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if moji.ContainsAny(e, startingof["message"]) { readcursor |= Indicators["deliverystatus"] }
+				if moji.ContainsAny(e, startingof["message"]) { readcursor |= HereIsDeliveryStatus }
 				continue
 			}
-			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
 
 			f := rfc1894.Match(e); if f > 0 {
 				// "e" matched with any field defined in RFC3464
