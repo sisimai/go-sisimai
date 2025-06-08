@@ -83,9 +83,9 @@ func init() {
 			e  = strings.TrimRight(e, "\n\r")
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if moji.HasPrefixAny(e, startingof["message"]) { readcursor |= Indicators["deliverystatus"] }
+				if moji.HasPrefixAny(e, startingof["message"]) { readcursor |= HereIsDeliveryStatus }
 			}
-			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
 
 			// The user(s) account is disabled.
 			//
