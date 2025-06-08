@@ -12,6 +12,12 @@ import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc1123"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
+const (
+	HereIsEmailAddress = 1 << (iota + 1) // <neko@example.org>
+	HereIsQuotedString                   // "Neko, Nyaan"
+	HereIsCommentBlock                   // (nekochan)
+)
+
 // S3S4 runs like the ruleset 3 and 4 of /etc/sendmail.cf file.
 //   Arguments:
 //     - argv1 (string): String including an email address
@@ -32,14 +38,9 @@ func Find(argv1 string) [3]string {
 	if len(argv1) < 5 { return [3]string{} }
 
 	delimiters := `<>(),"`
-	groupindex := uint8(0)    // Group index: 0=undefined, 1=address, 2=name, 3=comment
-	readcursor := uint8(0)    // Points the current cursor position
+	groupindex := 0 // Group index: 0=undefined, 1=address, 2=name, 3=comment
+	readcursor := 0 // Points the current cursor position
 	readbuffer := [3]strings.Builder{}; readbuffer[0].Grow(32); readbuffer[1].Grow(32); readbuffer[2].Grow(8)
-	indicators := map[string]uint8{
-		"email-address": (1 << 0), // <neko@example.org>
-		"quoted-string": (1 << 1), // "Neko, Nyaan"
-		"comment-block": (1 << 2), // (nekochan)
-	}
 
 	for _, e := range argv1 {
 		// Check each character
@@ -49,11 +50,11 @@ func Find(argv1 string) [3]string {
 				// The "," is a email address separator or a character in a "name"
 				if IsIncluded(readbuffer[0].String()) {
 					// The email address has already been picked
-					if readcursor & indicators["comment-block"] > 0 {
+					if readcursor & HereIsCommentBlock > 0 {
 						// The cursor is in the comment block (Neko, Nyaan)
 						readbuffer[2].WriteRune(e)
 
-					} else if readcursor & indicators["quoted-string"] > 0 {
+					} else if readcursor & HereIsQuotedString > 0 {
 						// "Neko, Nyaan"
 						readbuffer[1].WriteRune(e)
 
@@ -78,7 +79,7 @@ func Find(argv1 string) [3]string {
 				// "<": The beginning of an email address or a character in the display name or the comment
 				if readbuffer[0].Len() == 0 {
 					// The 1st character of the email address: <neko@cat.example.jp>
-					readcursor |= indicators["email-address"]
+					readcursor |= HereIsEmailAddress
 					readbuffer[0].Reset(); readbuffer[0].WriteRune(e)
 					groupindex = 1
 
@@ -96,9 +97,9 @@ func Find(argv1 string) [3]string {
 				} // End of if("<")
 			} else if e == '>' {
 				// ">": The end of an email address or a character in the display name or the comment
-				if readcursor & indicators["email-address"] > 0 {
+				if readcursor & HereIsEmailAddress > 0 {
 					// The email address in readbuffer[0] has been successfully constructed
-					readcursor &= ^indicators["email-address"]
+					readcursor &= ^HereIsEmailAddress
 					readbuffer[0].WriteRune(e)
 					groupindex = 0
 
@@ -115,7 +116,7 @@ func Find(argv1 string) [3]string {
 				} // End of if(">")
 			} else if e == '(' {
 				// "(": The beginning of a comment block or a character in the display name or the comment
-				if readcursor & indicators["email-address"] > 0 {
+				if readcursor & HereIsEmailAddress > 0 {
 					// An email address including a comment like the followings:
 					// <"neko(cat)"@example.org> or <neko(cat)@example.org>
 					if strings.IndexByte(readbuffer[0].String(), '"') > -1 {
@@ -124,30 +125,30 @@ func Find(argv1 string) [3]string {
 
 					} else {
 						// A comment in the email address like <neko(cat)@example.org>
-						readcursor |= indicators["comment-block"]
+						readcursor |= HereIsCommentBlock
 						if strings.HasSuffix(readbuffer[2].String(), ")") { readbuffer[2].WriteRune(' ') }
 						readbuffer[2].WriteRune(e)
 						groupindex = 2
 					}
-				} else if readcursor & indicators["comment-block"] > 0 {
+				} else if readcursor & HereIsCommentBlock > 0 {
 					// Comment at the outside of an email address (...(...)
 					if strings.HasSuffix(readbuffer[2].String(), ")") { readbuffer[2].WriteRune(' ') }
 					readbuffer[2].WriteRune(e)
 
-				} else if readcursor & indicators["quoted-string"] > 0 {
+				} else if readcursor & HereIsQuotedString > 0 {
 					// "Neko, Nyaan(cat)", Deal as a display name
 					readbuffer[1].WriteRune(e)
 
 				} else {
 					// The beginning of the comment block
-					readcursor |= indicators["comment-block"]
+					readcursor |= HereIsCommentBlock
 					if strings.HasSuffix(readbuffer[2].String(), ")") { readbuffer[2].WriteRune(' ') }
 					readbuffer[2].WriteRune(e)
 					groupindex = 3
 				} // End of if("(")
 			} else if e == ')' {
 				// "(": The end of a comment block or a character in the display name or the comment
-				if readcursor & indicators["email-address"] > 0 {
+				if readcursor & HereIsEmailAddress > 0 {
 					// An email address including a comment like the followings:
 					// <"neko(cat)"@example.org> or <neko(cat)@example.org>
 					if strings.IndexByte(readbuffer[0].String(), '"') > -1 {
@@ -156,13 +157,13 @@ func Find(argv1 string) [3]string {
 
 					} else {
 						// A comment in the email address like <neko(cat)@example.org>
-						readcursor &= ^indicators["comment-block"]
+						readcursor &= ^HereIsCommentBlock
 						readbuffer[2].WriteRune(e)
 						groupindex = 1
 					}
-				} else if readcursor & indicators["comment-block"] > 0 {
+				} else if readcursor & HereIsCommentBlock > 0 {
 					// Comment at the outside of an email address (...(...)
-					readcursor &= ^indicators["comment-block"]
+					readcursor &= ^HereIsCommentBlock
 					readbuffer[2].WriteRune(e)
 					groupindex = 0
 
@@ -181,9 +182,9 @@ func Find(argv1 string) [3]string {
 				} else {
 					// The display name lke "Neko, Nyaan"
 					readbuffer[1].WriteRune(e)
-					if readcursor & indicators["quoted-string"] == 0   { continue }
+					if readcursor & HereIsQuotedString == 0            { continue }
 					if strings.HasSuffix(readbuffer[1].String(), `\"`) { continue } // "Neko, Nyaan \"...
-					readcursor &= ^indicators["quoted-string"]
+					readcursor &= ^HereIsQuotedString
 					groupindex = 0
 				} 
 			} // End of if(`"`)
