@@ -59,13 +59,13 @@ func init() {
 				if strings.HasPrefix(e, startingof["message"][0]) {
 					// Message details:
 					//   Subject: Nyaaan
-					readcursor |= Indicators["deliverystatus"]
+					readcursor |= HereIsDeliveryStatus
 					continue
 				}
 				if e != "" { v.Diagnosis += e + " " }
 				continue
 			}
-			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
 
 			// Message details:
 			//   Subject: Nyaaan
