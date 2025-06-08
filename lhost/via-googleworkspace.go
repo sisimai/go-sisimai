@@ -53,12 +53,12 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.HasPrefix(e, startingof["message"][0]) {
 					// ** Message not delivered **
-					readcursor |= Indicators["deliverystatus"]
+					readcursor |= HereIsDeliveryStatus
 					v.Diagnosis = e + " "
 				}
 				continue
 			}
-			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
 
 			// ** Message not delivered **
 			// You're sending this from a different address or alias using the 'Send mail as' feature.
