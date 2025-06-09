@@ -43,10 +43,10 @@ func init() {
 				// Beginning of the bounce message or message/delivery-status part
 				if strings.IndexByte(e, '@') > 1 && strings.IndexByte(e, ' ') < 0 && rfc5322.IsEmailAddress(e) {
 					// This line contains an email address only: "kijitora@example.jp"
-					readcursor |= Indicators["deliverystatus"]
+					readcursor |= HereIsDeliveryStatus
 				}
 			}
-			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
 
 			// このメールは「m-FILTER」が自動的に生成して送信しています。
 			// メールサーバーとの通信中、下記の理由により

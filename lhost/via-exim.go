@@ -204,7 +204,7 @@ func init() {
 				for _, f := range startingof["message"] {
 					// Check the message defined in startingof["message"], ["frozen"]
 					if strings.Contains(e, f) == false { continue }
-					readcursor |= Indicators["deliverystatus"]
+					readcursor |= HereIsDeliveryStatus
 
 					for _, g := range startingof["frozen"] {
 						// Goes to the next loop if the string does not contain "frozen" message
@@ -212,7 +212,7 @@ func init() {
 					}
 				}
 			}
-			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
 
 			// This message was created automatically by mail delivery software.
 			//

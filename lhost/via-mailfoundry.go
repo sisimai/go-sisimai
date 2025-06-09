@@ -49,9 +49,9 @@ func init() {
 			e  = strings.TrimRight(e, "\n\r")
 			if readcursor == 0 {
 				// Beginning of the bounce message or message/delivery-status part
-				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= Indicators["deliverystatus"] }
+				if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= HereIsDeliveryStatus }
 			}
-			if readcursor & Indicators["deliverystatus"] == 0 || e == "" { continue }
+			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
 
 			// Unable to deliver message to: <kijitora@example.org>
 			// Delivery failed for the following reason:

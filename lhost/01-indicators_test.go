@@ -10,13 +10,10 @@ package lhost
 import "testing"
 
 func TestIndicators(t *testing.T) {
-	fn := "lhost.Indicators"
-	cv := Indicators
 	cx := 0
 
-	cx++; if cv == nil                 { t.Fatalf("%s = nil", fn) }
-	cx++; if cv["deliverystatus"] != 2 { t.Errorf("%s[deliverystatus] = %d", fn, cv["deliverystatus"]) }
-	cx++; if cv["message-rfc822"] != 4 { t.Errorf("%s[message-rfc822] = %d", fn, cv["message-rfc822"]) }
+	cx++; if HereIsDeliveryStatus != 2 { t.Errorf("HereIsDeliveryStatus = %d", HereIsDeliveryStatus) }
+	cx++; if HereIsMessageRFC822  != 4 { t.Errorf("HereIsMessageRFC822  = %d", HereIsMessageRFC822)  }
 	t.Logf("The number of tests = %d", cx)
 }
 

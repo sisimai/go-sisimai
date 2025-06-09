@@ -13,5 +13,5 @@ import "libsisimai.org/sisimai/v5/sis"
 
 // Keep each function for decoding a bounce mail: % grep '^func init' ./lhost/via-*.go | wc -l
 var InquireFor = make(map[string]func(*sis.BeforeFact) *sis.RisingUnderway, 36)
-var Indicators = map[string]uint8 {"deliverystatus": (1 << 1), "message-rfc822": (1 << 2)}
+const (HereIsDeliveryStatus = 1 << (iota + 1); HereIsMessageRFC822)
 

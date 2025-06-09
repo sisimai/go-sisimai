@@ -114,7 +114,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 
 		if readcursor == 0 {
 			// Beginning of the bounce message or message/delivery-status part
-			if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= lhost.Indicators["deliverystatus"] }
+			if strings.HasPrefix(e, startingof["message"][0]) { readcursor |= lhost.HereIsDeliveryStatus }
 
 			for {
 				// Append each string before startingof["message"][0] except the following patterns
@@ -148,7 +148,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 			}
 			continue
 		}
-		if readcursor & lhost.Indicators["deliverystatus"] == 0 || e == "" { continue }
+		if readcursor & lhost.HereIsDeliveryStatus == 0 || e == "" { continue }
 
 		if f := rfc1894.Match(e); f > 0 {
 			// This line matched with any field defined in RFC3464
