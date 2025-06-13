@@ -25,16 +25,15 @@ func init() {
 		// - Courier MTA: https://www.courier-mta.org/
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := true; for {
+		switch {
 			// Subject: NOTICE: mail delivery status.
 			// Message-ID: <courier.4D025E3A.00001792@5jo.example.org>
-			if strings.Contains(bf.Headers["from"][0],    "Courier mail server at ")       { break }
-			if strings.Contains(bf.Headers["subject"][0], "NOTICE: mail delivery status.") { break }
-			if strings.Contains(bf.Headers["subject"][0], "WARNING: delayed mail.")        { break }
-			if strings.HasPrefix(bf.Headers["message-id"][0], "<courier.")                 { break }
-			proceedsto = false; break
+			case strings.Contains(bf.Headers["from"][0],    "Courier mail server at "):
+			case strings.Contains(bf.Headers["subject"][0], "NOTICE: mail delivery status."):
+			case strings.Contains(bf.Headers["subject"][0], "WARNING: delayed mail."):
+			case strings.HasPrefix(bf.Headers["message-id"][0], "<courier."):
+			default: return nil
 		}
-		if proceedsto == false { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][]string{
