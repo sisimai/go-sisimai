@@ -30,14 +30,13 @@ func init() {
 		// - https://www.proofpoint.com/us/products/email-protection/open-source-email-solution
 		if bf == nil || bf.IsEmpty() || len(bf.Headers["x-aol-ip"]) > 0 { return nil } // X-AOL-IP is a header defined in AOL
 
-		proceedsto := false
-		if strings.HasPrefix(bf.Headers["subject"][0], "Warning: ") ||
-		   strings.HasSuffix(bf.Headers["subject"][0], "see transcript for details") {
+		switch {
 			// Subject: Warning: could not send message for past 4 hours
 			// Subject: Returned mail: see transcript for details
-			proceedsto = true
+			case strings.HasPrefix(bf.Headers["subject"][0], "Warning: "):
+			case strings.HasSuffix(bf.Headers["subject"][0], "see transcript for details"):
+			default: return nil
 		}
-		if proceedsto == false { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][]string{
