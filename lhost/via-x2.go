@@ -23,11 +23,12 @@ func init() {
 		// - Can anyone identify the MTA that produced the set-of-emails/maildir/bsd/lhost-x2-*.eml files?
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := false
 		emailtitle := []string{"Delivery failure", "failure delivery", "failed delivery"}
-		if strings.Contains(bf.Headers["from"][0], "MAILER-DAEMON@") { proceedsto = true }
-		if moji.HasPrefixAny(bf.Headers["subject"][0], emailtitle)   { proceedsto = true }
-		if proceedsto == false { return nil }
+		switch {
+			case strings.Contains(bf.Headers["from"][0], "MAILER-DAEMON@"):
+			case moji.HasPrefixAny(bf.Headers["subject"][0], emailtitle):
+			default: return nil
+		}
 
 		boundaries := []string{"--- Original message follows."}
 		startingof := map[string][]string{
