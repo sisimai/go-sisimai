@@ -29,33 +29,30 @@ func init() {
 		// - https://docs.aws.amazon.com/ses/latest/dg/notification-contents.html
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := false
+		// Remote the following string begins with "--"
+		// --
+		// If you wish to stop receiving notifications from this topic, please click or visit the link below to unsubscribe:
+		// https://sns.us-west-2.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:us-west-2:1...
 		sespayload := bf.Payload
-		for {
-			// Remote the following string begins with "--"
-			// --
-			// If you wish to stop receiving notifications from this topic, please click or visit the link below to unsubscribe:
-			// https://sns.us-west-2.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:us-west-2:1...
-			if cv := moji.Select(moji.LHS + bf.Payload, "", "\n\n--\n", 0); cv != "" { sespayload = cv }
-			if strings.Contains(sespayload, "!\n ") { sespayload = strings.ReplaceAll(sespayload, "!\n ", "") }
-			if p1 := strings.Index(sespayload, `"Message"`); p1 > 0 {
-				// The JSON included in the email is a format like the following:
-				// {
-				//  "Type" : "Notification",
-				//  "MessageId" : "02f86d9b-eecf-573d-b47d-3d1850750c30",
-				//  "TopicArn" : "arn:aws:sns:us-west-2:123456789012:SES-EJ-B",
-				//  "Message" : "{\"notificationType\"...
-				if strings.Contains(sespayload, "\\") { sespayload = strings.ReplaceAll(sespayload, "\\",   "") }
-				sespayload = "{" + moji.Select(sespayload, "{", "\n", p1 + 9)
-				sespayload = strings.TrimRight(sespayload, `,"`)
-			}
-
-			if strings.Contains(sespayload, "notificationType") == false { break }
-			if strings.HasPrefix(sespayload, "{")               == false { break }
-			if strings.HasSuffix(sespayload, "}")               == false { break }
-			proceedsto = true; break
+		if cv := moji.Select(moji.LHS + bf.Payload, "", "\n\n--\n", 0); cv != "" { sespayload = cv }
+		if strings.Contains(sespayload, "!\n ") { sespayload = strings.ReplaceAll(sespayload, "!\n ", "") }
+		if p1 := strings.Index(sespayload, `"Message"`); p1 > 0 {
+			// The JSON included in the email is a format like the following:
+			// {
+			//  "Type" : "Notification",
+			//  "MessageId" : "02f86d9b-eecf-573d-b47d-3d1850750c30",
+			//  "TopicArn" : "arn:aws:sns:us-west-2:123456789012:SES-EJ-B",
+			//  "Message" : "{\"notificationType\"...
+			if strings.Contains(sespayload, "\\") { sespayload = strings.ReplaceAll(sespayload, "\\",   "") }
+			sespayload = "{" + moji.Select(sespayload, "{", "\n", p1 + 9)
+			sespayload = strings.TrimRight(sespayload, `,"`)
 		}
-		if proceedsto == false { return nil }
+
+		switch {
+			case strings.Contains(sespayload, "notificationType") == false: return nil
+			case strings.HasPrefix(sespayload, "{")               == false: return nil
+			case strings.HasSuffix(sespayload, "}")               == false: return nil
+		}
 
 		// https://docs.aws.amazon.com/en_us/ses/latest/DeveloperGuide/notification-contents.html
 		type eachHeader struct {
