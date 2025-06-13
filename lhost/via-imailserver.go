@@ -25,10 +25,11 @@ func init() {
 		// - X-Mailer: <SMTP32 v8.22>
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := false
-		if strings.HasPrefix(bf.Headers["subject"][0], "Undeliverable Mail ") { proceedsto = true }
-		if len(bf.Headers["x-mailer"]) > 0 && strings.HasPrefix(bf.Headers["x-mailer"][0], "<SMTP32 v") { proceedsto = true }
-		if proceedsto == false { return nil }
+		switch {
+			case strings.HasPrefix(bf.Headers["subject"][0], "Undeliverable Mail "):
+			case len(bf.Headers["x-mailer"]) > 0 && strings.HasPrefix(bf.Headers["x-mailer"][0], "<SMTP32 v"):
+			default: return nil
+		}
 
 		boundaries := []string{"Original message follows."}
 		startingof := map[string][]string{"error": []string{"Body of message generated response:"}}
