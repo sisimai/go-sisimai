@@ -42,13 +42,12 @@ func isARF(bf *sis.BeforeFact) bool {
 		}
 	}
 
-	APPLE: for {
+	switch {
 		// X-Apple-Unsubscribe: true
-		if len(bf.Headers["x-apple-unsubscribe"]) == 0      { break APPLE }
-		if bf.Headers["x-apple-unsubscribe"][0]   == "true" { return true }
-		break APPLE
+		case len(bf.Headers["x-apple-unsubscribe"]) == 0:    return false
+		case bf.Headers["x-apple-unsubscribe"][0] == "true": return true
+		default: return false
 	}
-	return false
 }
 
 // Inquire decodes a bounce message that is ARF; Abuse Feedback Reporting Formatted email.
