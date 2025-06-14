@@ -23,22 +23,18 @@ func init() {
 		// - au by KDDI: https://www.au.kddi.com
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := false
 		senderlist := []string{"no-reply@.", ".dion.ne.jp"}
-		replyslist := []string{"no-reply@app.auone-net.jp"}
-		ISKDDI: for {
-			replyto := ""; if len(bf.Headers["reply-to"]) > 0  { replyto = bf.Headers["reply-to"][0] }
-			if moji.ContainsAny(bf.Headers["from"][0], senderlist) { proceedsto = true; break ISKDDI }
-			if moji.ContainsAny(replyto, replyslist)               { proceedsto = true; break ISKDDI }
+		replyaddrs := []string{"no-reply@app.auone-net.jp"}
+		replyingto := ""; if len(bf.Headers["reply-to"]) > 0 { replyingto = bf.Headers["reply-to"][0] }
 
-			for _, e := range bf.Headers["received"] {
-				// Received: from ezweb.ne.jp (nx3oBP05-09.ezweb.ne.jp [59.135.39.233])
-				if strings.Contains(e, "ezweb.ne.jp (") { proceedsto = true; break ISKDDI }
-				if strings.Contains(e, ".au.com (")     { proceedsto = true; break ISKDDI }
-			}
-			break
+		switch {
+			// Received: from ezweb.ne.jp (nx3oBP05-09.ezweb.ne.jp [59.135.39.233])
+			case moji.ContainsAny(bf.Headers["from"][0], senderlist):
+			case moji.ContainsAny(replyingto, replyaddrs):
+			case moji.IsContained("ezweb.ne.jp (", bf.Headers["received"]):
+			case moji.IsContained(".au.com (",     bf.Headers["received"]):
+			default: return nil
 		}
-		if proceedsto == false { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{
