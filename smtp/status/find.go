@@ -39,7 +39,7 @@ func Find(argv1 string, argv2 string) string {
 	}
 
 	// Rewrite an IPv4 address in the given string(argv1) with '***.***.***.***'
-	ip4address := rfc791.FindIPv4Address(&esmtperror)
+	ip4address := rfc791.FindIPv4Address(esmtperror)
 	for _, e := range ip4address { esmtperror = strings.ReplaceAll(esmtperror, e, "***.***.***.***") }
 	for _, e := range eestatuses {
 		// Count the number of "5.", "4.", and "2." in the error message
