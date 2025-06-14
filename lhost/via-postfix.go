@@ -30,17 +30,14 @@ func init() {
 		// - Postfix https://www.postfix.org/
 		if bf == nil || bf.IsEmpty() || len(bf.Headers["x-aol-ip"]) > 0 { return nil } // X-AOL-IP: 192.0.2.1
 
-		proceedsto := uint8(0)
-		if strings.Index(bf.Headers["subject"][0], "SMTP server: errors from ") > 0 {
+		proceedsto := uint8(0); switch {
 			// src/smtpd/smtpd_chat.c:|337: post_mail_fprintf(notice, "Subject: %s SMTP server: errors from %s",
 			// src/smtpd/smtpd_chat.c:|338:   var_mail_name, state->namaddr);
-			proceedsto = 2
-
-		} else if bf.Headers["subject"][0] == "Undelivered Mail Returned to Sender" {
 			// Subject: Undelivered Mail Returned to Sender
-			proceedsto = 1
+			case strings.Index(bf.Headers["subject"][0], "SMTP server: errors from ") > 0: proceedsto = 2
+			case bf.Headers["subject"][0] == "Undelivered Mail Returned to Sender":        proceedsto = 1
+			default: return nil
 		}
-		if proceedsto == 0 { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][][]string{
@@ -262,14 +259,13 @@ func init() {
 						if ar != "" && strings.HasSuffix(ar, "00") == false { e.ReplyCode = ar }
 					}
 
-					for {
+					switch {
 						// Replace e.Diagnosis with the value of anotherset["diagnosis"] when all
 						// the following conditions have not matched.
-						if len(as + ar) == 0                                       { break }
-						if len(anotherset["diagnosis"]) < len(e.Diagnosis)         { break }
-						if strings.Index(anotherset["diagnosis"], e.Diagnosis) < 0 { break }
-
-						e.Diagnosis = anotherset["diagnosis"]; break
+						case len(as + ar) == 0:
+						case len(anotherset["diagnosis"]) < len(e.Diagnosis):
+						case strings.Index(anotherset["diagnosis"], e.Diagnosis) < 0:
+						default: e.Diagnosis = anotherset["diagnosis"]
 					}
 				}
 			}
