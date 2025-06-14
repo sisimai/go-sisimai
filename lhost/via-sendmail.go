@@ -190,13 +190,10 @@ func init() {
 				if len(e.Diagnosis) == 0                 { e.Diagnosis = anotherset["diagnosis"] } 
 			}
 
-			for {
+			if len(esmtpreply) > 0 && recipients == 1 {
 				// Replace or append the error message in "diagnosis" with the ESMTP Reply Code
 				// when the following conditions have matched
-				if len(esmtpreply) == 0 || recipients != 1 { break }
-
 				e.Diagnosis = strings.Join(esmtpreply, " ") + " " + e.Diagnosis
-				break
 			}
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			if e.Command == "" { e.Command = thecommand }
