@@ -169,18 +169,16 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 			}
 		}
 
-		MESG_ID: for len(rfc822data["message-id"]) > 0 {
+		if len(rfc822data["message-id"]) > 0 && moji.Aligned(rfc822data["message-id"][0], []string{"<", "@", ">"}) {
 			// https://www.rfc-editor.org/rfc/rfc5322#section-3.6.4
 			// Leave only string inside of angle brackets(<>)
-			if moji.Aligned(rfc822data["message-id"][0], []string{"<", "@", ">"}) == false { break MESG_ID }
-			piece["messageid"] = strings.Trim(rfc822data["message-id"][0], "<>");            break MESG_ID
+			piece["messageid"] = strings.Trim(rfc822data["message-id"][0], "<>")
 		}
 
-		LIST_ID: for len(rfc822data["list-id"]) > 0 {
+		if len(rfc822data["list-id"]) > 0 && moji.Aligned(rfc822data["list-id"][0], []string{"<", ".", ">"}) {
 			// https://www.rfc-editor.org/rfc/rfc2919
 			// Get the value of List-Id header: "List name <list-id@example.org>"
-			if moji.Aligned(rfc822data["list-id"][0], []string{"<", ".", ">"}) == false { break LIST_ID }
-			piece["listid"] = moji.Select(rfc822data["list-id"][0], "<", ">", 0);         break LIST_ID
+			piece["listid"] = moji.Select(rfc822data["list-id"][0], "<", ">", 0)
 		}
 
 		DIAGNOSTICCODE: for {
@@ -241,15 +239,13 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 			break DIAGNOSTICCODE
 		}
 
-		DIAGNOSTICTYPE: for {
-			// Set the value of "diagnostictype" if it is empty
-			piece["diagnostictype"] = e.Spec
-			piece["reason"]         = e.Reason
+		// Set the value of "diagnostictype" if it is empty
+		piece["reason"]         = e.Reason
+		piece["diagnostictype"] = e.Spec
 
-			if e.Spec != "" { break DIAGNOSTICTYPE }
+		if e.Spec == "" {
 			if piece["reason"] == "mailererror"                               { piece["diagnostictype"] = "X-UNIX" }
 			if piece["reason"] != "feedback" && piece["reason"] != "vacation" { piece["diagnostictype"] = "SMTP"   }
-			break DIAGNOSTICTYPE
 		}
 
 		// Set other values returned from message.Rise()
