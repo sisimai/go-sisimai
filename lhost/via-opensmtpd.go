@@ -23,21 +23,15 @@ func init() {
 		// - OpenSMTPD: https://www.opensmtpd.org/
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := uint8(0)
-		ISOPENSMTPD: for {
-			if strings.Contains(bf.Headers["subject"][0], "Delivery status notification") { proceedsto++ }
-			if strings.Contains(bf.Headers["from"][0], "Mailer Daemon <")                 { proceedsto++ }
-
-			if len(bf.Headers["received"]) == 0 { break ISOPENSMTPD }
-			for _, e := range bf.Headers["received"] {
-				// Received: from localhost (localhost [local]);
-				//   by localhost (OpenSMTPD) with ESMTPA id 1e2a9eaa;
-				//   for <kijitora@example.jp>;
-				if strings.Contains(e, " (OpenSMTPD) with ") { proceedsto++; break ISOPENSMTPD }
-			}
-			break ISOPENSMTPD
+		switch {
+			// Received: from localhost (localhost [local]);
+			//   by localhost (OpenSMTPD) with ESMTPA id 1e2a9eaa;
+			//   for <kijitora@example.jp>;
+			case strings.Contains(bf.Headers["subject"][0], "Delivery status notification"):
+			case strings.Contains(bf.Headers["from"][0], "Mailer Daemon <"):
+			case moji.IsContained(" (OpenSMTPD) with ", bf.Headers["received"]):
+			default: return nil
 		}
-		if proceedsto == 0 { return nil }
 
 		boundaries := []string{"    Below is a copy of the original message:"}
 		startingof := map[string][]string{
