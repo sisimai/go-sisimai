@@ -25,13 +25,12 @@ func init() {
 		// - https://www.trendmicro.com/en_us/business/products/user-protection/sps/email-and-collaboration/interscan-messaging.html
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := false; for {
-			if strings.HasPrefix(bf.Headers["from"][0], `"InterScan`)       { proceedsto = true; break }
-			if strings.Contains(bf.Headers["content-type"][0], "InterScan") { proceedsto = true; break }
-			if strings.Contains(bf.Payload, " InterScan ")                  { proceedsto = true; break }
-			break
+		switch {
+			case strings.HasPrefix(bf.Headers["from"][0], `"InterScan`):
+			case strings.Contains(bf.Headers["content-type"][0], "InterScan"):
+			case strings.Contains(bf.Payload, " InterScan "):
+			default: return nil
 		}
-		if proceedsto == false { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822"}
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]

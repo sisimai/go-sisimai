@@ -23,10 +23,11 @@ func init() {
 		// - Verizon: https://www.verizon.com/
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := uint8(0)
-		if strings.Contains(bf.Headers["from"][0], "post_master@vtext.com")          { proceedsto = 1 }
-		if moji.Aligned(bf.Headers["from"][0], []string{"sysadmin@", ".vzwpix.com"}) { proceedsto = 1 }
-		if proceedsto == 0 { return nil }
+		switch {
+			case strings.Contains(bf.Headers["from"][0], "post_master@vtext.com"):
+			case moji.Aligned(bf.Headers["from"][0], []string{"sysadmin@", ".vzwpix.com"}):
+			default: return nil
+		}
 
 		boundaries := []string{"Original Message:", "Message details:"}
 		nooriginal := false

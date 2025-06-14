@@ -26,12 +26,11 @@ func init() {
 		// - HCL Domino: https://www.hcl-software.com/domino
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := false; for {
-			if strings.HasPrefix(bf.Headers["subject"][0], "DELIVERY FAILURE:") { proceedsto = true }
-			if strings.Contains( bf.Headers["subject"][0], "DELIVERY_FAILURE" ) { proceedsto = true }
-			break
+		switch {
+			case strings.HasPrefix(bf.Headers["subject"][0], "DELIVERY FAILURE:"):
+			case strings.Contains( bf.Headers["subject"][0], "DELIVERY_FAILURE" ):
+			default: return nil
 		}
-		if proceedsto == false { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{"message": []string{"Your message"}}

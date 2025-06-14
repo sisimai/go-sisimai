@@ -62,16 +62,13 @@ func haircut(block *string, heads bool) []string {
 	multipart1 := [3]string{headerpart[0], headerpart[1], ""}
 	multipart2 := strings.Builder{}; multipart2.Grow(len(lowerchunk) / 10 * 15)
 
-	for {
-		// UPPER CHUNK: Make a body part at the 2nd element of multipart1
-		multipart2.WriteString("Content-Type: " + headerpart[0] + "\n")
-
+	// UPPER CHUNK: Make a body part at the 2nd element of multipart1
+	multipart2.WriteString("Content-Type: " + headerpart[0] + "\n")
+	if moji.ContainsAny(mediatypev, mediatable) == false && ctencoding != "" {
 		// Do not append Content-Transfer-Encoding: header when the part is the original message:
 		// Content-Type is message/rfc822 or text/rfc822-headers, or message/delivery-status, or
 		// message/feedback-report
-		if moji.ContainsAny(mediatypev, mediatable) || ctencoding == "" { break }
 		multipart2.WriteString("Content-Transfer-Encoding: " + ctencoding + "\n")
-		break
 	}
 
 	// LOWER CHUNK: Append LF before the lower chunk into the 2nd element of multipart1

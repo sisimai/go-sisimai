@@ -34,6 +34,9 @@ func init() {
 		proceedsto := uint8(0)
 		messageidv := bf.Headers["message-id"][0]
 		emailtitle := []string{
+			// Subject: Mail delivery failed: returning message to sender
+			// Subject: Mail delivery failed
+			// Subject: Message frozen
 			"Delivery Status Notification",
 			"Mail delivery failed",
 			"Mail failure",
@@ -42,6 +45,7 @@ func init() {
 			"error(s) in forwarding or filtering",
 		}
 		if strings.Contains(bf.Headers["from"][0], "Mail Delivery System") { proceedsto++ }
+		if moji.ContainsAny(bf.Headers["subject"][0], emailtitle) == true  { proceedsto++ }
 		for messageidv != "" {
 			// Message-Id: <E1P1YNN-0003AD-Ga@example.org>
 			if strings.IndexByte(messageidv, '<') !=  0 { break }
@@ -49,21 +53,13 @@ func init() {
 			if strings.IndexByte(messageidv, '@') != 18 { break }
 			proceedsto++; break
 		}
-		for _, e := range emailtitle {
-			// Subject: Mail delivery failed: returning message to sender
-			// Subject: Mail delivery failed
-			// Subject: Message frozen
-			if strings.Contains(bf.Headers["subject"][0], e) { proceedsto++; break }
-		}
-
-		for {
+		switch {
 			// Exim clones of the third Parties
 			// 1. McAfee Saas (Formerly MXLogic)
-			if len(bf.Headers["x-mx-bounce"])    > 0 { thirdparty = true; break }
-			if len(bf.Headers["x-mxl-hash"])     > 0 { thirdparty = true; break }
-			if len(bf.Headers["x-mxl-notehash"]) > 0 { thirdparty = true; break }
-			if strings.Contains(messageidv, "<mxl~") { thirdparty = true; break }
-			break
+			case len(bf.Headers["x-mx-bounce"])    > 0: thirdparty = true
+			case len(bf.Headers["x-mxl-hash"])     > 0: thirdparty = true
+			case len(bf.Headers["x-mxl-notehash"]) > 0: thirdparty = true
+			case strings.Contains(messageidv, "<mxl~"): thirdparty = true
 		}
 		if proceedsto < 2 && thirdparty == false { return nil }
 
@@ -222,16 +218,15 @@ func init() {
 			//  kijitora@example.jp
 			//    SMTP error from remote mail server after RCPT TO:<kijitora@example.jp>:
 			//    host neko.example.jp [192.0.2.222]: 550 5.1.1 <kijitora@example.jp>... User Unknown
-			ce := false; for {
+			ce := false; switch {
 				// Check whether the line matches the following conditions or not
-				if strings.HasPrefix(e, "  ") == false  { break } // The line should start with "  " (2 spaces)
-				if strings.IndexByte(e, '@') < 2        { break } // "@" should be included (email)
-				if strings.IndexByte(e, '.') < 2        { break } // "." should be included (domain part)
-				if strings.Contains(e, "pipe to |")     { break } // Exclude "pipe to /path/to/prog" line
-				if e[2:3] == " "                        { break } // The 3rd character is " "
-				if thirdparty == false && e[2:3] == "<" { break } // MXLogic returns "  <neko@example.jp>: ..."
-
-				ce = true; break
+				case strings.HasPrefix(e, "  ") == false:  // The line should start with "  " (2 spaces)
+				case strings.IndexByte(e, '@') < 2:        // "@" should be included (email)
+				case strings.IndexByte(e, '.') < 2:        // "." should be included (domain part)
+				case strings.Contains(e, "pipe to |"):     // Exclude "pipe to /path/to/prog" line
+				case e[2:3] == " ":                        // The 3rd character is " "
+				case thirdparty == false && e[2:3] == "<": // MXLogic returns "  <neko@example.jp>: ..."
+				default: ce = true
 			}
 
 			if cv := ""; ce == true || moji.ContainsAny(e, startingof["alias"]) {

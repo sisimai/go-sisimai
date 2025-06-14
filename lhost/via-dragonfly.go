@@ -24,18 +24,18 @@ func init() {
 		// - DragonFly: https://www.dragonflybsd.org/handbook/mta/
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		// From: MAILER-DAEMON <>
-		// To: kijitora@df.example.jp
-		// Subject: Mail delivery failed
-		if strings.Contains(bf.Headers["subject"][0], "Mail delivery failed") == false { return nil }
-		proceedsto := false; for _, e := range bf.Headers["received"] {
+		switch {
+			// From: MAILER-DAEMON <>
+			// To: kijitora@df.example.jp
+			// Subject: Mail delivery failed
 			// Received: from MAILER-DAEMON
 			//    id e070f
 			//    by df.example.jp (DragonFly Mail Agent v0.13);
 			//    Sun, 16 Jun 2024 18:15:07 +0900
-			if strings.Contains(e, " (DragonFly Mail Agent") { proceedsto = true; break }
+			case strings.Contains(bf.Headers["subject"][0], "Mail delivery failed"):
+			case moji.IsContained(" (DragonFly Mail Agent", bf.Headers["received"]):
+			default: return nil
 		}
-		if proceedsto == false { return nil }
 
 		boundaries := []string{"Original message follows.", "Message headers follow"}
 		startingof := map[string][]string{

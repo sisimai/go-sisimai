@@ -27,10 +27,11 @@ func init() {
 		// - https://docs.oracle.com/en/industries/communications/messaging-server/index.html
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := false
-		if strings.Contains(bf.Headers["content-type"][0], "Boundary_(ID_")       { proceedsto = true }
-		if strings.HasPrefix(bf.Headers["subject"][0], "Delivery Notification: ") { proceedsto = true }
-		if proceedsto == false { return nil }
+		switch {
+			case strings.Contains(bf.Headers["content-type"][0], "Boundary_(ID_"):
+			case strings.HasPrefix(bf.Headers["subject"][0], "Delivery Notification: "):
+			default: return nil
+		}
 
 		boundaries := []string{"Content-Type: message/rfc822", "\nReturn-Path: "}
 		startingof := map[string][]string{"message": []string{"This report relates to a message you sent with the following header fields:"}}

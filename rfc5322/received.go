@@ -100,20 +100,17 @@ func Received(argv1 string) [6]string {
 		if token[e] == ""                        { continue }
 		if strings.IndexByte(token[e], '[') != 0 { continue }
 
-		ce := token[e]; cv := rfc791.FindIPv4Address(&ce)
+		cv := rfc791.FindIPv4Address(token[e])
 		if len(cv) > 0 { token[e] = cv[0] } else { token[e] = "" }
 	}
 	_, e := token["from"]; if e == false { token["from"] = "" }
 
-	for token["from"] != "localhost" {
+	switch {
 		// Prefer hostnames over IP addresses, except for localhost.localdomain and similar.
-		if token["from"] == "localhost.localdomain"  { break }
-		if strings.IndexByte(token["from"], '.') < 0 { break } // A hostname without a domain name
-		if ce := token["from"]; len(rfc791.FindIPv4Address(&ce)) > 0 { break }
-
-		// No need to rewrite token["from"]
-		right = true
-		break
+		case token["from"] == "localhost" || token["from"] == "localhost.localdomain":
+		case strings.IndexByte(token["from"], '.') < 0:
+		case len(rfc791.FindIPv4Address(token["from"])) > 0:
+		default: right = true // No need to rewrite token["from"]
 	}
 
 	for right == false && len(alter) > 0 {
