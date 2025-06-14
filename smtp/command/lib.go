@@ -52,17 +52,16 @@ func Find(argv0 string) string {
 		p0 := strings.Index(argv0, e); if p0 < 0 { continue }
 		if strings.IndexByte(e, ' ') < 0 {
 			// For example, "RCPT T" does not appear in an email address or a domain name
-			cx := true; for {
+			cx := true
+			cw := len(e) + 1
+			ca, cz := []byte(issuedcode[p0:p0 + 1])[0], []byte(issuedcode[p0 + cw:p0 + cw + 1])[0]
+			switch {
 				// Exclude an SMTP command in the part of an email address, a domain name, such as
 				// DATABASE@EXAMPLE.JP, EMAIL.EXAMPLE.COM, and so on.
-				cw := len(e) + 1
-				ca := []byte(issuedcode[p0:p0 + 1])[0]
-				cz := []byte(issuedcode[p0 + cw:p0 + cw + 1])[0]
-
-				if ca > 47 && ca <  58 || cz > 47 && cz <  58 { break } // 0-9
-				if ca > 63 && ca <  91 || cz > 63 && cz <  91 { break } // @-Z
-				if ca > 96 && ca < 123 || cz > 96 && cz < 123 { break } // `-z
-				cx = false; break
+				case ca > 47 && ca <  58 || cz > 47 && cz <  58: // 0-9
+				case ca > 63 && ca <  91 || cz > 63 && cz <  91: // @-Z
+				case ca > 96 && ca < 123 || cz > 96 && cz < 123: // `-z
+				default: cx = false
 			}
 			if cx == true { continue }
 		}
