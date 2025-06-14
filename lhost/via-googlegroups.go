@@ -65,14 +65,13 @@ func init() {
 			moji.Sweep(issuedcode),             // diagnosis
 		}
 
-		for {
+		switch {
 			// * You might have spelled or formatted the group name incorrectly.
 			// * The owner of the group may have removed this group.
 			// * You may need to join the group before receiving permission to post.
 			// * This group may not be open to posting.
-			if strings.Count(emailparts[0], "\n *") == 4 { recordwide[1] = "rejected"; break }
-			if strings.Count(emailparts[0], "\n*")  == 4 { recordwide[1] = "rejected"; break }
-			break
+			case strings.Count(emailparts[0], "\n *") == 4: recordwide[1] = "rejected"
+			case strings.Count(emailparts[0], "\n*")  == 4: recordwide[1] = "rejected"
 		}
 
 		for _, e := range strings.Split(bf.Headers["x-failed-recipients"][0], ",") {
