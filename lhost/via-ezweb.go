@@ -25,25 +25,18 @@ func init() {
 		// - au EZweb: https://www.au.com/mobile/
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := 0; for {
-			// Pre-process email headers of NON-STANDARD bounce message au by EZweb, as known as ezweb.ne.jp.
-			//   Subject: Mail System Error - Returned Mail
-			//   From: <Postmaster@ezweb.ne.jp>
-			//   Message-Id: <20110000000000.F000000@lsean.ezweb.ne.jp>
-			if strings.Contains(bf.Headers["from"][0], "Postmaster@ezweb.ne.jp") { proceedsto++ }
-			if strings.Contains(bf.Headers["from"][0], "Postmaster@au.com")      { proceedsto++ }
-			if bf.Headers["subject"][0] == "Mail System Error - Returned Mail"   { proceedsto++ }
-			for _, e := range bf.Headers["received"] {
-				//   Received: from ezweb.ne.jp (wmflb12na02.ezweb.ne.jp [222.15.69.197])
-				//   Received: from nmomta.auone-net.jp ([aaa.bbb.ccc.ddd]) by ...
-				if moji.ContainsAny(e, []string{"ezweb.ne.jp (EZweb Mail) with", ".au.com ("}) {
-					proceedsto++
-					break
-				}
-			}
-			if strings.Contains(bf.Headers["message-id"][0], ".ezweb.ne.jp>") { proceedsto++ }
-			if strings.Contains(bf.Headers["message-id"][0], ".au.com>")      { proceedsto++ }
-			break
+		// Pre-process email headers of NON-STANDARD bounce message au by EZweb, as known as ezweb.ne.jp.
+		//   Subject: Mail System Error - Returned Mail
+		//   From: <Postmaster@ezweb.ne.jp>
+		//   Message-Id: <20110000000000.F000000@lsean.ezweb.ne.jp>
+		proceedsto := 0
+		if moji.ContainsAny(bf.Headers["from"][0], []string{"Postmaster@ezweb.ne.jp", "Postmaster@au.com"}) { proceedsto++ }
+		if moji.ContainsAny(bf.Headers["message-id"][0], []string{".ezweb.ne.jp>", ".au.com>"})             { proceedsto++ }
+		if bf.Headers["subject"][0] == "Mail System Error - Returned Mail"                                  { proceedsto++ }
+		for _, e := range bf.Headers["received"] {
+			//   Received: from ezweb.ne.jp (wmflb12na02.ezweb.ne.jp [222.15.69.197])
+			//   Received: from nmomta.auone-net.jp ([aaa.bbb.ccc.ddd]) by ...
+			if moji.ContainsAny(e, []string{"ezweb.ne.jp (EZweb Mail) with", ".au.com ("}) { proceedsto++; break }
 		}
 		if proceedsto < 2 { return nil }
 
