@@ -49,53 +49,49 @@ func tidy(argv0 *string) *string {
 		ab := make([]string, 0, 2)
 		bf := e[p0 + 1:]
 		cx := strings.Contains(bf, ";")
-		for {
-			// Such as Diagnostic-Code, Remote-MTA, and so on
-			// - Before: Diagnostic-Code: SMTP;550 User unknown
-			// - After:  Diagnostic-Code: smtp; 550 User unknown
-			match := false; for _, ef := range rfc1894.FieldIndex {
-				// The field name is not listed in RFC1894
-				if fn == ef || fn == "Content-Type" { match = true; break }
-			}
-			if match == false { break }
 
-			if cx == true {
-				// The field including one or more ";"
-				for _, ef := range strings.Split(bf, ";") {
-					// 2-1. Trim leading and trailing space characters from the current buffer
-					ef = strings.Trim(ef, " ")
+		// Such as Diagnostic-Code, Remote-MTA, and so on
+		// - Before: Diagnostic-Code: SMTP;550 User unknown
+		// - After:  Diagnostic-Code: smtp; 550 User unknown
+		match := false; for _, ef := range rfc1894.FieldIndex {
+			// The field name is not listed in RFC1894
+			if fn == ef || fn == "Content-Type" { match = true; break }
+		}
+		if match == true && cx == true {
+			// The field including one or more ";"
+			for _, ef := range strings.Split(bf, ";") {
+				// 2-1. Trim leading and trailing space characters from the current buffer
+				ef = strings.Trim(ef, " ")
 
-					// 2-2. Convert some parameters to the lower-cased string
-					if ps := ""; strings.IndexByte(ef, ' ') < 1 {
-						// For example,
-						// - Content-Type: Message/delivery-status => message/delivery-status
-						// - Content-Type: Charset=UTF8            => charset=utf8
-						// - Reporting-MTA: DNS; ...               => dns
-						// - Final-Recipient: RFC822; ...          => rfc822
-						if cv := moji.Select(moji.LHS + ef, "", "=", 0); cv != "" {
-							// charset=, boundary=, and other pairs divided by "="
-							ps = strings.ToLower(cv)
-							ef = strings.Replace(ef, cv, ps, 1)
-						}
-						if ps != "boundary" { ef = strings.ToLower(ef) }
+				// 2-2. Convert some parameters to the lower-cased string
+				if ps := ""; strings.IndexByte(ef, ' ') < 1 {
+					// For example,
+					// - Content-Type: Message/delivery-status => message/delivery-status
+					// - Content-Type: Charset=UTF8            => charset=utf8
+					// - Reporting-MTA: DNS; ...               => dns
+					// - Final-Recipient: RFC822; ...          => rfc822
+					if cv := moji.Select(moji.LHS + ef, "", "=", 0); cv != "" {
+						// charset=, boundary=, and other pairs divided by "="
+						ps = strings.ToLower(cv)
+						ef = strings.Replace(ef, cv, ps, 1)
 					}
-					ab = append(ab, ef)
+					if ps != "boundary" { ef = strings.ToLower(ef) }
 				}
-
-				if fn == "Diagnostic-Code" && len(ab) == 1 && strings.IndexByte(el[j + 1], ' ') != 0 {
-					// Diagnostic-Code: x-unix;
-					//   /var/email/kijitora/Maildir/tmp/1000000000.A000000B00000.neko22:
-					//   Disk quota exceeded
-					ab = append(ab, "")
-				}
-				bf = strings.Join(ab, "; ")
-				ab = make([]string, 0, 2)
-
-			} else {
-				// There is no ";" in the field
-				if moji.ContainsAny(fn, []string{"-Date", "-Message-ID"}) == false { bf = strings.ToLower(bf) }
+				ab = append(ab, ef)
 			}
-			break
+
+			if fn == "Diagnostic-Code" && len(ab) == 1 && strings.IndexByte(el[j + 1], ' ') != 0 {
+				// Diagnostic-Code: x-unix;
+				//   /var/email/kijitora/Maildir/tmp/1000000000.A000000B00000.neko22:
+				//   Disk quota exceeded
+				ab = append(ab, "")
+			}
+			bf = strings.Join(ab, "; ")
+			ab = make([]string, 0, 2)
+
+		} else {
+			// There is no ";" in the field
+			if moji.ContainsAny(fn, []string{"-Date", "-Message-ID"}) == false { bf = strings.ToLower(bf) }
 		}
 
 		// 3. Tidy up a value, and a parameter of Content-Type: field 
