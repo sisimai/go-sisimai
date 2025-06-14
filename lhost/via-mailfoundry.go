@@ -22,16 +22,13 @@ func init() {
 		// - MailFoundry: https://www.barracuda.com/
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := false; for {
+		switch {
 			// Subject: Message delivery has failed
-			if bf.Headers["subject"][0] != "Message delivery has failed" { break }
-			for _, e := range bf.Headers["received"] {
-				// Received: From localhost (127.0.0.1) by smtp9.mf.example.ne.jp (MAILFOUNDRY) id ...
-				if strings.Contains(e, "(MAILFOUNDRY) id") { proceedsto = true; break }
-			}
-			break
+			// Received: From localhost (127.0.0.1) by smtp9.mf.example.ne.jp (MAILFOUNDRY) id ...
+			case bf.Headers["subject"][0] == "Message delivery has failed":
+			case moji.IsContained("(MAILFOUNDRY) id", bf.Headers["received"]):
+			default: return nil
 		}
-		if proceedsto == false { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{
