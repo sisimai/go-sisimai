@@ -23,19 +23,15 @@ func init() {
 		// - Apache James: https://james.apache.org/
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		proceedsto := false; ISJAMES: for {
+		switch {
 			// Subject:     [BOUNCE]
 			// Message-Id:  JavaMail.
-			if bf.Headers["subject"][0] == "[BOUNCE]"                      { proceedsto = true; break ISJAMES }
-			if strings.Contains(bf.Headers["message-id"][0], ".JavaMail.") { proceedsto = true; break ISJAMES }
-			for _, e := range bf.Headers["received"] {
-				// Received: from localhost ([127.0.0.1])
-				//    by mx.example.org (JAMES SMTP Server 2.3.2) with SMTP ID 220...
-				if strings.Contains(e, "JAMES SMTP Server") == true        { proceedsto = true; break ISJAMES }
-			}
-			break
+			// Received: from localhost ([127.0.0.1]) by mx.example.org (JAMES SMTP Server 2.3.2) with SMTP ID 220...
+			case bf.Headers["subject"][0] == "[BOUNCE]":
+			case strings.Contains(bf.Headers["message-id"][0], ".JavaMail."):
+			case moji.IsContained("JAMES SMTP Server", bf.Headers["received"]):
+			default: return nil
 		}
-		if proceedsto == false { return nil }
 
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{
