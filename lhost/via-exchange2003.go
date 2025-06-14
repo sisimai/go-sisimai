@@ -24,38 +24,28 @@ func init() {
 		// - Microsoft Exchange Server 2003: https://www.microsoft.com/microsoft-365/exchange/email
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		// X-MS-TNEF-Correlator: <00000000000000000000000000000000000000@example.com>
-		// X-Mailer: Internet Mail Service (5.5.1960.3)
-		// X-MS-Embedded-Report:
-		proceedsto := false
-		if len(bf.Headers["x-ms-embedded-report"]) > 0 { proceedsto = true }
-		for proceedsto == false {
-			// Check X-Mailer, X-MimeOLE, and Received headers
-			tryto := []string{
-				"Internet Mail Service (",                           // X-Mailer:
-				"Microsoft Exchange Server Internet Mail Connector", // X-Mailer:
-				"Produced By Microsoft Exchange",                    // X-MimeOLE:
-				" with Internet Mail Service (",                     // Received:
-			}
-			if len(bf.Headers["x-mailer"]) > 0 {
-				// X-Mailer:  Microsoft Exchange Server Internet Mail Connector Version 4.0.994.63
-				// X-Mailer: Internet Mail Service (5.5.2232.9)
-				if strings.HasPrefix(bf.Headers["x-mailer"][0], tryto[0]) { proceedsto = true; break }
-				if strings.HasPrefix(bf.Headers["x-mailer"][0], tryto[1]) { proceedsto = true; break }
-			}
-
-			if len(bf.Headers["x-mimeole"]) > 0 {
-				// X-MimeOLE: Produced By Microsoft Exchange V6.5
-				if strings.HasPrefix(bf.Headers["x-mimeole"][0],tryto[2]) { proceedsto = true; break }
-			}
-
-			for _, e := range bf.Headers["received"] {
-				// Received: by ***.**.** with Internet Mail Service (5.5.2657.72)
-				if strings.Contains(e, tryto[3]) { proceedsto = true; break }
-			}
-			break
+		tryto := []string{
+			"Internet Mail Service (",                           // X-Mailer:
+			"Microsoft Exchange Server Internet Mail Connector", // X-Mailer:
+			"Produced By Microsoft Exchange",                    // X-MimeOLE:
+			" with Internet Mail Service (",                     // Received:
 		}
-		if proceedsto == false { return nil }
+		switch {
+			// X-MS-TNEF-Correlator: <00000000000000000000000000000000000000@example.com>
+			// X-Mailer: Internet Mail Service (5.5.1960.3)
+			// X-MS-Embedded-Report:
+			case len(bf.Headers["x-ms-embedded-report"]) > 0:
+			// X-Mailer:  Microsoft Exchange Server Internet Mail Connector Version 4.0.994.63
+			// X-Mailer: Internet Mail Service (5.5.2232.9)
+			case len(bf.Headers["x-mailer"]) > 0 && (
+				strings.HasPrefix(bf.Headers["x-mailer"][0], tryto[0]) ||
+				strings.HasPrefix(bf.Headers["x-mailer"][0], tryto[1])):
+			// X-MimeOLE: Produced By Microsoft Exchange V6.5
+			case len(bf.Headers["x-mimeole"]) > 0 && strings.HasPrefix(bf.Headers["x-mimeole"][0], tryto[2]):
+			// Received: by ***.**.** with Internet Mail Service (5.5.2657.72)
+			case moji.IsContained(tryto[3], bf.Headers["received"]):
+			default: return nil
+		}
 
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{
