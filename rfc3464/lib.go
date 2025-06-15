@@ -228,9 +228,8 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 			}
 		}
 	}
-	for recipients == 0 {
+	if recipients == 0 && rfc5322.IsEmailAddress(dscontents[0].Alias) {
 		// There is no valid recipient address, Try to use the alias addaress as a final recipient
-		if rfc5322.IsEmailAddress(dscontents[0].Alias) == false { break }
 		dscontents[0].Recipient = dscontents[0].Alias; recipients++
 	}
 	if recipients == 0 { return nil }
