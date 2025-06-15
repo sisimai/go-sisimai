@@ -28,14 +28,9 @@ func Find(argv1 string, argv2 string) string {
 	esmtperror := " " + argv1 + "   " // Why 3 space characters? see https://github.com/sisimai/p5-sisimai/issues/574
 	lookingfor := make(map[string]string, 10)
 	indextable := make([]int, 0, 10)
-
-	if givenclass := argv2[0:1]; givenclass == "2" || givenclass == "4" || givenclass == "5" {
-		// The second argument is a valid value
-		eestatuses = append(eestatuses, givenclass + ".")
-
-	} else {
-		// The second argument has not been specified or an invalid value
-		eestatuses = append(eestatuses, []string{"5.", "4.", "2."}...)
+	givenclass := argv2[0:1]; switch givenclass {
+		case "2", "4", "5": eestatuses = append(eestatuses, givenclass + ".")
+		default:            eestatuses = append(eestatuses, []string{"5.", "4.", "2."}...)
 	}
 
 	// Rewrite an IPv4 address in the given string(argv1) with '***.***.***.***'
@@ -43,8 +38,7 @@ func Find(argv1 string, argv2 string) string {
 	for _, e := range ip4address { esmtperror = strings.ReplaceAll(esmtperror, e, "***.***.***.***") }
 	for _, e := range eestatuses {
 		// Count the number of "5.", "4.", and "2." in the error message
-		p0 := 0
-		p1 := 0
+		p0, p1 := 0, 0
 		for p0 > -1 {
 			// Find all of the "5." and "4." string and store its postion
 			p0 = moji.IndexOnTheWay(esmtperror, e, p1); if p0 < 0 { break }
