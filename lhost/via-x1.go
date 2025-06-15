@@ -76,11 +76,9 @@ func init() {
 			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
-			if e.Date == "" {
-				// The original message was received at Thu, 29 Apr 2010 23:34:45 +0900 (JST)
-				// from shironeko@example.jp
-				e.Date = strings.Trim(moji.Select(e.Diagnosis, " at ", "from", 0), " ")
-			}
+			// The original message was received at Thu, 29 Apr 2010 23:34:45 +0900 (JST)
+			// from shironeko@example.jp
+			if e.Date == "" { e.Date = strings.Trim(moji.Select(e.Diagnosis, " at ", "from", 0), " ") }
 		}
 		return &sis.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}
