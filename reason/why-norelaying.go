@@ -11,6 +11,7 @@ package reason
 import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -44,9 +45,7 @@ func init() {
 			"unable to relay for",
 			"we don't handle mail for",
 		}
-
-		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		return false
+		return moji.ContainsAny(argv1, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
