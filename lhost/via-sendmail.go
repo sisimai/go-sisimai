@@ -123,12 +123,8 @@ func init() {
 
 					} else if strings.HasPrefix(e, "<<< ") {
 						// <<< Response from SMTP Server
-						isincluded := false
-						for _, r := range esmtpreply {
-							// Whether the response is included in the "estmpreply" or not
-							if strings.Contains(r, e[4:]) == true { isincluded = true; break }
-						}
-						if isincluded == false { esmtpreply = append(esmtpreply, e[4:]) }
+						// Whether the response is included in the "estmpreply" or not
+						if moji.IsContained(e[4:], esmtpreply) == false { esmtpreply = append(esmtpreply, e[4:]) }
 
 					} else {
 						// Detect an SMTP session error or a connection error
