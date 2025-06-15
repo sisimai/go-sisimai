@@ -46,18 +46,18 @@ func init() {
 		// - 3: Field Group(addr, code, date, host, stat, text)
 		// - 4: Comment
 		// - 5: 3rd Party MTA-Name
-		if xfieldname == "x-powermta-bouncecategory" {
+		switch xfieldname {
 			// X-PowerMTA-BounceCategory: bad-mailbox
 			// Set the bounce reason picked from the value of the field
-			xfieldlist[0] = xfieldname
-			if len(messagesof[xfieldlist[2]]) > 0 {
-				// "reason:mailboxfull"; the 5th value supposed to be assigned to "Reason" member
-				// of sis.DeliveryMatter{} struct.
-				xfieldlist[4] = "reason:" + messagesof[xfieldlist[2]]
-			}
-		} else if xfieldname == "x-powermta-virtualmta" {
+			case "x-powermta-bouncecategory":
+				xfieldlist[0] = xfieldname
+				if len(messagesof[xfieldlist[2]]) > 0 {
+					// "reason:mailboxfull"; the 5th value supposed to be assigned to "Reason" member
+					// of sis.DeliveryMatter{} struct.
+					xfieldlist[4] = "reason:" + messagesof[xfieldlist[2]]
+				}
 			// X-PowerMTA-VirtualMTA: mx22.neko.example.jp
-			xfieldlist[0] = "Reporting-MTA"
+			case "x-powermta-virtualmta": xfieldlist[0] = "Reporting-MTA"
 		}
 
 		return xfieldlist
