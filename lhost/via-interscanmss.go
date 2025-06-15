@@ -42,8 +42,7 @@ func init() {
 			// previous line of the beginning of the original message.
 			e  = strings.TrimRight(e, "\n\r"); if e == "" { continue }
 
-			p1 := strings.Index(e, " <<< ") // Sent <<< ...
-			p2 := strings.Index(e, " >>> ") // Received >>> ...
+			p1, p2 := strings.Index(e, " <<< "), strings.Index(e, " >>> ")
 			if strings.IndexByte(e, '@') > 1 && strings.Index(e, " <") > 1 && 
 			   (p1 > 1 || p2 > 1 || strings.Contains(e, "Unable to deliver ")) {
 				// Sent <<< RCPT TO:<kijitora@example.co.jp>
@@ -51,8 +50,7 @@ func init() {
 				// Received >>> 550 5.1.1 unknown user.
 				// Unable to deliver message to <kijitora@neko.example.jp>
 				// Unable to deliver message to <neko@example.jp> (and other recipients in the same domain).
-				p3 := strings.LastIndexByte(e, '<')
-				p4 := strings.LastIndexByte(e, '>')
+				p3, p4 := strings.LastIndexByte(e, '<'), strings.LastIndexByte(e, '>')
 				cr := address.Find(e[p3:p4 + 1])
 				if len(cr) == 0 || rfc5322.IsEmailAddress(cr[0]) == false { continue }
 
