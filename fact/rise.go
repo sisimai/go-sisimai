@@ -348,8 +348,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 
 			if cx[0] != cx[1] {
 				// The class of the "Status:" is defer with the first digit of the reply code
-				cx[1] = reply.Find(piece["diagnosticcode"], cx[0])
-				if strings.HasPrefix(cx[1], cx[0]) {
+				if cx[1] = reply.Find(piece["diagnosticcode"], cx[0]); strings.HasPrefix(cx[1], cx[0]) {
 					// The first digit of cx[1] found by status.Find() is equal to cx[0]
 					thing.ReplyCode = cx[1]
 
@@ -367,8 +366,10 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 				//     action-value = "failed" / "delayed" / "delivered" / "relayed" / "expanded"
 				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 { thing.Action = ox[2] }
 			}
-			if thing.Reason == "delivered"                          { thing.Action = "delivered" }
-			if thing.Reason == "expired"                            { thing.Action = "delayed"   }
+			switch thing.Reason {
+				case "delivered": thing.Action = "delivered"
+				case "expired":   thing.Action = "delayed"
+			}
 			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed"    }
 		}
 
