@@ -202,10 +202,8 @@ func init() {
 					if strings.Contains(e, f) == false { continue }
 					readcursor |= HereIsDeliveryStatus
 
-					for _, g := range startingof["frozen"] {
-						// Goes to the next loop if the string does not contain "frozen" message
-						if strings.Contains(e, g) == false { continue }
-					}
+					// Goes to the next loop if the string does not contain "frozen" message
+					if moji.ContainsAny(e, startingof["frozen"]) == false { continue }
 				}
 			}
 			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
@@ -214,7 +212,7 @@ func init() {
 			//
 			// A message that you sent could not be delivered to one or more of its
 			// recipients. This is a permanent error. The following address(es) failed:
-		    //
+			//
 			//  kijitora@example.jp
 			//    SMTP error from remote mail server after RCPT TO:<kijitora@example.jp>:
 			//    host neko.example.jp [192.0.2.222]: 550 5.1.1 <kijitora@example.jp>... User Unknown
@@ -424,16 +422,11 @@ func init() {
 					break
 				}
 
-				// Detect the bounce reason by using the SMTP command
-				if e.Command == "EHLO" || e.Command == "HELO" {
-					// HELO | Connected to 192.0.2.135 but my name was rejected.
-					e.Reason = "blocked"
-
-				} else if e.Command == "MAIL" {
-					// MAIL | Connected to 192.0.2.135 but sender was rejected.
-					e.Reason = "onhold"
-
-				} else {
+				switch e.Command {
+					// Detect the bounce reason by using the SMTP command
+					case "EHLO", "HELO": e.Reason = "blocked" // HELO | Connected to 192.0.2.135 but my name was rejected.
+					case "MAIL":         e.Reason = "onhold"  // MAIL | Connected to 192.0.2.135 but sender was rejected.
+				default:
 					// Find any error message string defined in "messagesof" from e.Diagnosis
 					for r := range messagesof {
 						// The key is a bounce reason name
