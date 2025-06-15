@@ -7,8 +7,8 @@
 //    \_/ \__,_|\___\__,_|\__|_|\___/|_| |_|
 
 package reason
-import "strings"
 import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -19,9 +19,7 @@ func init() {
 	IncludedIn["Vacation"] = func(argv1 string) bool {
 		if argv1 == "" { return false }
 		index := []string{"i am away on vacation", "i am away until", "i am out of the office", "i will be traveling for work on"}
-
-		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		return false
+		return moji.ContainsAny(argv1, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
