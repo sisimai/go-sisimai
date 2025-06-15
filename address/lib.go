@@ -8,7 +8,7 @@
 
 // Package "address" provide functions related to an email address
 package address
-
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -64,11 +64,11 @@ func IsIncluded(argv0 string) bool {
 //     - (bool):         true if an email address is a mailer-dameon or postmaster address
 func IsMailerDaemon(argv0 string) bool {
 	value := strings.ToLower(argv0)
+	names := []string{"mailer-daemon", "postmaster"}
 	table := []string{
 		"mailer-daemon@", "(mailer-daemon)", "<mailer-daemon>", "mailer-daemon ",
 		"postmaster@", "(postmaster)", "<postmaster>",
 	}
-	if moji.ContainsAny(value, table) || value == "mailer-daemon" || value == "postmaster" { return true }
-	return false
+	return moji.ContainsAny(value, table) || slices.Contains(names, value)
 }
 
