@@ -162,8 +162,7 @@ func Test(argv0 string) bool {
 //   Returns:
 //     - (string):       SMTP reply code found in the 1st argument
 func Find(argv1 string, argv2 string) string {
-	if len(argv1) < 3                                     { return "" }
-	if strings.Contains(strings.ToUpper(argv1), "X-UNIX") { return "" }
+	if len(argv1) < 3 || strings.Contains(strings.ToUpper(argv1), "X-UNIX") { return "" }
 	if len(argv2) == 0 { argv2 = "0" }
 
 	esmtperror := " " + argv1 + " "
