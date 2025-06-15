@@ -10,6 +10,7 @@
 package reason
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
 func init() {
@@ -37,9 +38,7 @@ func init() {
 			"trop de connexions, ",
 			"we have already made numerous attempts to deliver this message",
 		}
-
-		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		return false
+		return moji.ContainsAny(argv1, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
