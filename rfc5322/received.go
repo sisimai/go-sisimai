@@ -97,8 +97,7 @@ func Received(argv1 string) [6]string {
 
 	for _, e := range []string{"from", "by"} {
 		// Remove square brackets from the IP address such as "[192.0.2.25]"
-		if token[e] == ""                        { continue }
-		if strings.IndexByte(token[e], '[') != 0 { continue }
+		if token[e] == "" || strings.IndexByte(token[e], '[') != 0 { continue }
 
 		cv := rfc791.FindIPv4Address(token[e])
 		if len(cv) > 0 { token[e] = cv[0] } else { token[e] = "" }
