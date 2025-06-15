@@ -390,8 +390,8 @@ Features
 | System requirements                          | 1.24 -         | 5.26 -          | 2.4 - / 9.2 - |
 | Dependencies (Except standard libs)          | **0 packages** | 2 modules       | 1 gem         |
 | Supported character sets                     | **UTF-8 only** | UTF-8,etc. [^2] | UTF-8,etc.[^3]|
-| Source lines of code                         | 8,800 lines    | 9,800 lines     | 9,800 lines   |
-| The number of tests                          | 240,000 tests  | 320,000 tests   | 410,000 tests |
+| Source lines of code                         | 8,700 lines    | 9,800 lines     | 9,800 lines   |
+| The number of tests                          | 241,000 tests  | 320,000 tests   | 410,000 tests |
 | The number of bounce emails decoded/sec [^4] | 2900 emails    | 750 emails      | 620 emails    |
 | License                                      | 2 Clause BSD   | 2 Clause BSD    | 2 Clause BSD  |
 | Commercial support                           | Available      | Available       | Available     |
