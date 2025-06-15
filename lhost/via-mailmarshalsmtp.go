@@ -87,25 +87,20 @@ func init() {
 					// Reporting-MTA:      <relay.xxxxxxxxxxxx.com>
 					// MessageName:        <B549996730000.000000000001.0003.mml>
 					// Last-Attempt-Date:  <16:21:07 seg, 22 Dezembro 2014>
-					if strings.HasPrefix(e, "Original Sender: ") {
+					switch {
 						// Original Sender:    <originalsender@example.com>
 						// Use this line instead of "From" header of the original message.
-						emailparts[1] += "From: " + moji.Select(e, "<", ">", 0) + "\n"
-
-					} else if strings.HasPrefix(e, "Sender-MTA: ") {
-						// Sender-MTA:         <10.11.12.13>
-						v.Lhost = moji.Select(e, "<", ">", 0)
-
-					} else if strings.HasPrefix(e, "Reporting-MTA: ") {
-						// Reporting-MTA:      <relay.xxxxxxxxxxxx.com>
-						v.Rhost = moji.Select(e, "<", ">", 0)
-
-					} else if moji.ContainsAny(e, []string{" From:", " Subject:"}) {
-						//    From:    originalsender@example.com
-						//    Subject: ...
-						p1 := strings.Index(e, " From:"); if p1 < 0 { p1 = strings.Index(e, " Subject:") }
-						p2 := strings.IndexByte(e, ':')
-						emailparts[1] += e[p1 + 1:p2] + ": " + moji.Sweep(e[p2 + 1:]) + "\n"
+						case strings.HasPrefix(e, "Original Sender: "): emailparts[1] += "From: " + moji.Select(e, "<", ">", 0) + "\n"
+						case strings.HasPrefix(e, "Sender-MTA: "):      v.Lhost = moji.Select(e, "<", ">", 0)
+						case strings.HasPrefix(e, "Reporting-MTA: "):   v.Rhost = moji.Select(e, "<", ">", 0)
+					default:
+						if moji.ContainsAny(e, []string{" From:", " Subject:"}) {
+							//    From:    originalsender@example.com
+							//    Subject: ...
+							p1 := strings.Index(e, " From:"); if p1 < 0 { p1 = strings.Index(e, " Subject:") }
+							p2 := strings.IndexByte(e, ':')
+							emailparts[1] += e[p1 + 1:p2] + ": " + moji.Sweep(e[p2 + 1:]) + "\n"
+						}
 					}
 				}
 			}
