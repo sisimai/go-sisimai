@@ -91,8 +91,7 @@ func init() {
 			//    Recipient: <******@ezweb.ne.jp>
 			//    >>> RCPT TO:<******@ezweb.ne.jp>
 			//    <<< 550 <******@ezweb.ne.jp>: User unknown
-			if moji.Aligned(e, []string{"<", "@", ">"}) &&
-			   (strings.Index(e, "Recipient: <") > 1 || strings.HasPrefix(e, "<")) {
+			if moji.Aligned(e, []string{"<", "@", ">"}) && (strings.Index(e, "Recipient: <") > 1 || strings.HasPrefix(e, "<")) {
 				// Recipient: <******@ezweb.ne.jp> OR <***@ezweb.ne.jp>: 550 user unknown ...
 				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Recipient = address.S3S4(moji.Select(e, "<", ">", 0))
@@ -107,16 +106,11 @@ func init() {
 
 				} else {
 					// The line does not begin with a DSN field defined in RFC3464
-					if strings.Contains(e, " >>> ") {
+					switch {
 						//    >>> RCPT TO:<******@ezweb.ne.jp>
-						v.Command    = command.Find(e)
-						v.Diagnosis += " " + e
-
-					} else if strings.Contains(e, " <<< ") {
-						//    <<< 550 ...
-						v.Diagnosis += " " + e
-
-					} else {
+						case strings.Contains(e, " >>> "): v.Command = command.Find(e); v.Diagnosis += " " + e
+						case strings.Contains(e, " <<< "): v.Diagnosis += " " + e //    <<< 550 ...
+					default:
 						// Check the error message
 						isincluded := false; for _, r := range substrings {
 							// Try to find that the line contains any error message text
