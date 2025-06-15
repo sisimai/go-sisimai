@@ -52,8 +52,7 @@ func Find(argv0 string) string {
 		p0 := strings.Index(argv0, e); if p0 < 0 { continue }
 		if strings.IndexByte(e, ' ') < 0 {
 			// For example, "RCPT T" does not appear in an email address or a domain name
-			cx := true
-			cw := len(e) + 1
+			cx, cw := true, len(e) + 1
 			ca, cz := []byte(issuedcode[p0:p0 + 1])[0], []byte(issuedcode[p0 + cw:p0 + cw + 1])[0]
 			switch {
 				// Exclude an SMTP command in the part of an email address, a domain name, such as
