@@ -35,10 +35,7 @@ func init() {
 			[]string{" is not allowed to send mail.", "_401"},
 			[]string{"is not allowed to send from <", " per it's spf record"},
 		}
-
-		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		for _, v := range pairs { if moji.Aligned(argv1, v)     { return true }}
-		return false
+		return moji.ContainsAny(argv1, index) || moji.AlignedAny(argv1, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.

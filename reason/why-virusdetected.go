@@ -10,6 +10,7 @@ package reason
 import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/command"
 
 func init() {
@@ -29,9 +30,7 @@ func init() {
 			"virus phishing/malicious_url detected",
 			"your message was infected with a virus",
 		}
-
-		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		return false
+		return moji.ContainsAny(argv1, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.

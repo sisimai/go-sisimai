@@ -50,3 +50,15 @@ func HasPrefixAny(argv1 string, argv2 []string) bool {
 	return false
 }
 
+// AlignedAny checks if each slice of the 2nd argument is aligned in the 1st argument or not.
+//   Arguments:
+//     - argv1 (string):     String to be checked such as "I am a cat. I have, as yet, no name."
+//     - argv2 ([][]string): List including the ordered strings such as [][]string{[]striing{"cat", "yet"}}
+//   Returns:
+//     - (bool):           true if the all strings are ordered in argv1, false otherwise.
+func AlignedAny(argv1 string, argv2 [][]string) bool {
+	if argv1 == "" || len(argv2) == 0 { return false }
+	for _, e := range argv2 { if p := Aligned(argv1, e); p == true { return true } }
+	return false
+}
+

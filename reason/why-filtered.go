@@ -10,6 +10,7 @@ package reason
 import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
 import "libsisimai.org/sisimai/v5/smtp/command"
 
@@ -40,9 +41,7 @@ func init() {
 			"we failed to deliver mail because the following address recipient id refuse to receive mail", // Willcom
 			"you have been blocked by the recipient",
 		}
-
-		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		return false
+		return moji.ContainsAny(argv1, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.

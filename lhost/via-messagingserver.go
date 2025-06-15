@@ -36,6 +36,7 @@ func init() {
 		boundaries := []string{"Content-Type: message/rfc822", "\nReturn-Path: "}
 		startingof := map[string][]string{"message": []string{"This report relates to a message you sent with the following header fields:"}}
 		messagesof := map[string][]string{"hostunknown": []string{"Illegal host/domain name found"}}
+		envelopeto := [][]string{[]string{"  Recipient address: ", "@", "."}, []string{"  Original address: ",  "@", "."}}
 
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
@@ -71,8 +72,7 @@ func init() {
 			//   Reason: Remote SMTP server has rejected address
 			//   Diagnostic code: smtp;550 5.1.1 <kijitora@example.jp>... User Unknown
 			//   Remote system: dns;mx.example.jp (TCP|17.111.174.67|47323|192.0.2.225|25) (6jo.example.jp ESMTP SENDMAIL-VM)
-			if moji.Aligned(e, []string{"  Recipient address: ", "@", "."}) ||
-			   moji.Aligned(e, []string{"  Original address: ",  "@", "."}) {
+			if moji.AlignedAny(e, envelopeto) {
 				//   Recipient address: @smtp.example.net:kijitora@server
 				//   Original address: kijitora@example.jp
 				cv := moji.Select(e + moji.RHS, ": ", "", 16)

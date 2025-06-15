@@ -10,6 +10,7 @@ package reason
 import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -24,8 +25,7 @@ func init() {
 			"starttls is required to send mail",
 			"tls required but not supported", // SendGrid:the recipient mailserver does not support TLS or have a valid certificate
 		}
-		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		return false
+		return moji.ContainsAny(argv1, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
