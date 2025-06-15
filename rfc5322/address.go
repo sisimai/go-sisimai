@@ -29,9 +29,8 @@ func IsEmailAddress(email string) bool {
 	//                                     ;  "]", or "\"
 	if len(email) < 5 { return false } // n@e.e
 
-	email  = strings.Trim(email, " \t")
-	lasta := strings.LastIndex(email, "@")
-	lastd := strings.LastIndex(email, ".")
+	email = strings.Trim(email, " \t")
+	lasta, lastd := strings.LastIndex(email, "@"), strings.LastIndex(email, ".")
 
 	if len(email)         > 254 { return false } // The maximum length of an email address is 254
 	if lasta < 1 || lasta >  64 { return false } // The maximum length of a local part is 64
