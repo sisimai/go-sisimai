@@ -120,8 +120,7 @@ func IsEmailAddress(email string) bool {
 //   Returns:
 //     - (bool):         true if the local part is quoted such as "neko kijitora"@example.jp
 func IsQuotedAddress(email string) bool {
-	if strings.HasPrefix(email, `"`) == false || strings.Contains(email, `"@`) == false { return false }
-	return true
+	return strings.HasPrefix(email, `"`) && strings.Contains(email, `"@`)
 }
 
 // IsComment returns true if the string starts with "(" and ends with ")".
