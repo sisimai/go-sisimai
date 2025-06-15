@@ -8,7 +8,6 @@
 //                                   |___/                           
 
 package reason
-import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -42,10 +41,7 @@ func init() {
 			[]string{"domain ", " is a dead domain"},
 			[]string{"user ", " is not authorized to perform ses:sendrawemail on resource"},
 		}
-
-		for _, v := range index { if strings.Contains(argv1, v) { return true }}
-		for _, v := range pairs { if moji.Aligned(argv1, v)     { return true }}
-		return false
+		return moji.ContainsAny(argv1, index) || moji.AlignedAny(argv1, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
