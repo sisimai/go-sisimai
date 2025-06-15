@@ -37,8 +37,7 @@ func Part(email *string, cutby []string, keeps bool) [2]string {
 
 		for _, e := range rfc822part {
 			// Find a part including "Received:", "From:" header
-			if strings.Contains(e, "Received: ") == false { continue }
-			if strings.Contains(e, "From: ")     == false { continue }
+			if moji.ContainsAny(e, []string{"Received: ", "From: "}) == false { continue }
 			latterbuff.WriteString(e); break
 		}
 		if latterbuff.Len() == 0 { latterbuff.WriteString((*email)[positionor:]) }
