@@ -63,37 +63,28 @@ func init() {
 			}
 			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
 
-			// Message details:
-			//   Subject: Nyaaan
-			//   Sent date: Thu Apr 29 01:20:50 JST 2015
-			//   MAIL FROM: shironeko@example.jp
-			//   RCPT TO: kijitora@example.org
-			//   From: Neko <shironeko@example.jp>
-			//   To: kijitora@example.org
-			//   Size (in bytes): 1024
-			//   Number of lines: 64
-			if strings.HasPrefix(e, "  RCPT TO: ") {
-				//   RCPT TO: kijitora@example.org
-				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
-				v.Recipient = e[12:]
-				recipients += 1
-
-			} else if strings.HasPrefix(e, "  Sent date: ") {
-				//   Sent date: Thu Apr 29 01:20:50 JST 2015
-				v.Date        = e[13:]
-				alternates[2] = v.Date
-
-			} else if strings.HasPrefix(e, "  Subject: ") {
+			switch {
+				// Message details:
 				//   Subject: Nyaaan
-				alternates[3] = e[11:]
-
-			} else if strings.HasPrefix(e, "  MAIL FROM: ") {
+				//   Sent date: Thu Apr 29 01:20:50 JST 2015
 				//   MAIL FROM: shironeko@example.jp
-				alternates[0] = e[13:]
-
-			} else if strings.HasPrefix(e, "  From: ") {
+				//   RCPT TO: kijitora@example.org
 				//   From: Neko <shironeko@example.jp>
-				alternates[1] = e[8:]
+				//   To: kijitora@example.org
+				//   Size (in bytes): 1024
+				//   Number of lines: 64
+				case strings.HasPrefix(e, "  RCPT TO: "):   //   RCPT TO: kijitora@example.org
+					if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
+					v.Recipient = e[12:]
+					recipients += 1
+
+				case strings.HasPrefix(e, "  Sent date: "): //   Sent date: Thu Apr 29 01:20:50 JST 2015
+					v.Date        = e[13:]
+					alternates[2] = v.Date
+
+				case strings.HasPrefix(e, "  Subject: "):   alternates[3] = e[11:]
+				case strings.HasPrefix(e, "  MAIL FROM: "): alternates[0] = e[13:]
+				case strings.HasPrefix(e, "  From: "):      alternates[1] = e[8:]
 			}
 		}
 		if recipients == 0 { return nil }
