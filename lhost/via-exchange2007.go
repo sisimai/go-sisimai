@@ -145,15 +145,14 @@ func init() {
 			if cv == "" || rfc5322.IsEmailAddress(cv) == false { break }
 			dscontents[0].Recipient = cv; recipients++
 		}
-		if recipients == 0  { return nil }
+		if recipients == 0 { return nil }
 
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason
 			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
-			p0 := -1
-			p1 := strings.IndexByte(e.Diagnosis, ';')
+			p0, p1 := -1, strings.IndexByte(e.Diagnosis, ';')
 			for _, r := range startingof["error"] {
 				// Find an error message and an error code 
 				p0 = strings.Index(e.Diagnosis, r); if p0 > -1 { break }
