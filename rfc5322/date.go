@@ -87,14 +87,9 @@ func Date(argv1 string) string {
 		if cw < 3 {
 			// This piece might be a day such as 1, or 02, or 31
 			cv, nyaan := strconv.ParseUint(e, 10, 8); if nyaan != nil { return "" }
-
-			if cv > 31 || cv == 0 {
-				// 2-digit year ?
-				year2digit = uint8(cv)
-
-			} else {
-				// Deal as a day of month
-				p[2] = fmt.Sprintf("%02d", cv)
+			switch {
+				case cv > 31 || cv == 0: year2digit = uint8(cv) // 2-digit year?
+				default: p[2] = fmt.Sprintf("%02d", cv)         // Deal as a day of month
 			}
 		} else if cw == 3 || (cw == 4 && strings.HasSuffix(e, ",")) {
 			// 3 characters: "Feb" or "Thu" or "Thu,", or 3-digit date like "029"
