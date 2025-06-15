@@ -44,9 +44,7 @@ func Squeeze(argv0 *string, argv1 byte) {
 	textbuffer := make([]byte, 0, len(*argv0))
 	cb := byte(0); for _, by := range []byte(*argv0) {
 		// Remove a character that is the same character of the previous character
-		if by == argv1 && by == cb { continue }
-		textbuffer = append(textbuffer, by)
-		cb = by
+		if by != argv1 || by != cb { textbuffer = append(textbuffer, by); cb = by }
 	}
 	*argv0 = string(textbuffer)
 }
@@ -83,9 +81,7 @@ func ContainsOnlyNumbers(argv1 string) bool {
 func Aligned(argv1 string, argv2 []string) bool {
 	if argv1 == "" || len(argv2) == 0 { return false }
 
-	align := -1
-	right :=  0
-	for _, e := range argv2 {
+	align, right := -1, 0; for _, e := range argv2 {
 		// Get the position of each element in the 1st argument using index()
 		if align > 0 { argv1 = argv1[align + 1:] }
 		p := strings.Index(argv1, e)
@@ -94,7 +90,6 @@ func Aligned(argv1 string, argv2 []string) bool {
 		align = len(e) + p - 1  // There is an aligned string in the 1st argument
 		right++
 	}
-
 	return right == len(argv2)
 }
 
