@@ -68,20 +68,16 @@ func init() {
 			for _, e := range *transcript {
 				// Pick email addresses, error messages, and the last SMTP command.
 				v = sis.TailDeliveryMatter(&dscontents)
-
-				if e.Command == "EHLO" || e.Command == "HELO" {
-					// Use the argument of EHLO/HELO command as a value of "lhost"
-					v.Lhost = e.Argument
-
-				} else if e.Command == "MAIL" {
-					// Set the argument of "MAIL" command to pseudo To: header of the original message
-					if len(emailparts[1]) == 0 { emailparts[1] += "To: " + e.Argument + "\n" }
-
-				} else if e.Command == "RCPT" {
-					// RCPT TO: <...>
-					if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
-					v.Recipient = e.Argument
-					recipients += 1
+				switch e.Command {
+					case "EHLO", "HELO": v.Lhost = e.Argument // Use the argument of EHLO/HELO command as a value of "lhost"
+					case "MAIL":
+						// Set the argument of "MAIL" command to pseudo To: header of the original message
+						if len(emailparts[1]) == 0 { emailparts[1] += "To: " + e.Argument + "\n" }
+					case "RCPT":
+						// RCPT TO: <...>
+						if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
+						v.Recipient = e.Argument
+						recipients += 1
 				}
 				if reply, nyaan := strconv.ParseUint(e.Response.Reply, 10, 16); nyaan != nil || reply < 400 { continue }
 
@@ -242,8 +238,7 @@ func init() {
 
 				} else {
 					// More detailed error message is in anotherset
-					as := "" // The value of SMTP Status Code picked from anotherset["diagnosis"]
-					ar := "" // The value of SMTP  Reply Code picked from anotherset["diagnosis"]
+					as, ar := "", "" // The value of SMTP (Status, Reply) Code picked from anotherset["diagnosis"]
 
 					if e.Status == "" || strings.HasSuffix(e.Status, ".0.0") {
 						// Check the value of D.S.N. in "anotherset"
