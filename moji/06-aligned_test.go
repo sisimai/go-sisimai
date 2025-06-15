@@ -30,3 +30,24 @@ func TestAligned(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestAlignedAny(t *testing.T) {
+	fn := "moji.AlignedAny"
+	cw := "Final-Recipient: rfc822; <neko@example.jp>"
+	cx := 0
+	s0 := []string{"NEKO", "CAT"}
+
+	cx++; if AlignedAny(cw, [][]string{s0, []string{"rfc822", "<", "@", ">"}}) == false { t.Errorf("%s(%s) returns false", fn, cw) }
+	cx++; if AlignedAny(cw, [][]string{s0, []string{"rfc822", " ", "@", ">"}}) == false { t.Errorf("%s(%s) returns false", fn, cw) }
+	cx++; if AlignedAny(cw, [][]string{s0, []string{"rfc822", ";", "<", ">"}}) == false { t.Errorf("%s(%s) returns false", fn, cw) }
+	cx++; if AlignedAny(cw, [][]string{s0, []string{"Final-", ":", ";", ">"}}) == false { t.Errorf("%s(%s) returns false", fn, cw) }
+	cx++; if AlignedAny(cw, [][]string{s0, []string{"rfc822", "[", "@", ">"}}) == true  { t.Errorf("%s(%s) returns true",  fn, cw) }
+	cx++; if AlignedAny(cw, [][]string{s0, []string{"rfc822", "<", "@", " "}}) == true  { t.Errorf("%s(%s) returns true",  fn, cw) }
+
+	cx++; if AlignedAny("", [][]string{})          == true   { t.Errorf("%s(%s) returns true",  fn, "") }
+	cx++; if AlignedAny("neko", [][]string{})      == true   { t.Errorf("%s(%s) returns true",  fn, "neko") }
+	cx++; if AlignedAny("", [][]string{[]string{"neko"}})    { t.Errorf("%s(%s) returns true",  fn, "") }
+	cx++; if AlignedAny("cat", [][]string{[]string{"neko"}}) { t.Errorf("%s(%s) returns true",  fn, "cat") }
+
+	t.Logf("The number of tests = %d", cx)
+
+}
