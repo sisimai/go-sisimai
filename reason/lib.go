@@ -8,6 +8,7 @@
 // Package "reason" provides functions for detecting the bounce reason by matching many error message
 // patterns defined in why-*.go files
 package reason
+import "slices"
 import "libsisimai.org/sisimai/v5/sis"
 
 // Keep each function (pointer) defined in reason/why-*.go to check/detect the bounce reason.
@@ -52,10 +53,6 @@ var Availables = map[string]string{
 	"Vacation":        "Email replied automatically due to a recipient is out of office",
 	"VirusDetected":   "Email rejected due to a virus scanner on a destination host",
 }
-var GetRetried = map[string]bool{
-	"undefined": true, "onhold": true,  "systemerror": true, "securityerror": true,
-	"expired": true, "networkerror": true, "hostunknown": true, "userunknown": true,
-}
 var classorder = [][]string{
 	[]string{
 		"MailboxFull", "MesgTooBig", "ExceedLimit", "Suspend", "HasMoved", "NoRelaying", "AuthFailure",
@@ -84,5 +81,15 @@ var classorder = [][]string{
 func IsExplicit(argv1 string) bool {
 	if argv1 == "" || argv1 == "undefined" || argv1 == "onhold" { return false }
 	return true
+}
+
+// ShouldBeRetried returns true if the argument is a reason listed in the table defined in this function.
+//   Arguments:
+//     - argv1 (string): Reason name
+//   Returns:
+//     - (bool):         true if the reason is listed in the table
+func ShouldBeRetried(argv1 string) bool {
+	cv := []string{"undefined", "onhold", "systemerror", "securityerror", "expired", "networkerror", "hostunknown", "userunknown"}
+	return slices.Contains(cv, argv1) || argv1 == ""
 }
 
