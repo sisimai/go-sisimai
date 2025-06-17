@@ -10,13 +10,13 @@ package sis
 
 // message.Rise() returns BeforeFact{}
 type BeforeFact struct {
-	Sender  string              // Unix FROM line ("From ")
 	Headers map[string][]string // Email headers of the bounce mail
-	Payload string              // Entire message body of the bounce mail
 	RFC822  map[string][]string // Email headers of the original message
 	Digest  []DeliveryMatter    // Decoded results returned from lhost/via-*.go
-	Catch   interface{}         // Any data structure returned by the callback function [0]
 	Errors  []NotDecoded        // All the errors and warnings
+	Catch   interface{}         // Any data structure returned by the callback function [0]
+	Sender  string              // Unix FROM line ("From ")
+	Payload string              // Entire message body of the bounce mail
 }
 
 // *BeforeFact.IsEmpty returns true when Headers or body is empty.

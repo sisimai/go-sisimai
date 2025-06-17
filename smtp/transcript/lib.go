@@ -49,16 +49,16 @@ import "libsisimai.org/sisimai/v5/smtp/command"
  Out: 221 2.0.0 Bye
 ------------------------------------------------------------------------------------------------ */
 type ResponseTable struct {
+	Text   []string  // Response text string
 	Reply    string  // SMTP reply code such as 550
 	Status   string  // SMTP status code such as 5.1.1
-	Text   []string  // Response text string
 }
 
 type TranscriptLog struct {
+	Response  ResponseTable     // A Response from an SMTP server
+	Parameter map[string]string // Parameter pairs of the SMTP command
 	Command   string            // SMTP Command
 	Argument  string            // An argumenet of each SMTP command sent from a client
-	Parameter map[string]string // Parameter pairs of the SMTP command
-	Response  ResponseTable     // A Response from an SMTP server
 }
 
 // Rise returns the decoded transcript of the SMTP session and makes the structured data.

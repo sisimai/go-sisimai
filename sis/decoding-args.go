@@ -15,9 +15,9 @@ type CfParameter1 func(arg *CallbackArg1) (bool, error)
 
 // DecodingArgs is an argument of the sisimai.Rise() function
 type DecodingArgs struct {
-	Delivered bool // Include sis.Fact{}.Action = "delivered" records in the decoded data
-	Vacation  bool // Include sis.Fact{}.Reason = "vacation" records in the decoded data
 	Callback0 CfParameter0 // [0] The 1st callback function
 	Callback1 CfParameter1 // [1] The 2nd callback function
+	Delivered bool         // Include sis.Fact{}.Action = "delivered" records in the decoded data
+	Vacation  bool         // Include sis.Fact{}.Reason = "vacation" records in the decoded data
 }
 

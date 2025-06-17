@@ -67,6 +67,9 @@ func init() {
 			Subject   string          // "Message sent using Amazon SES"
 		}
 		type mailObject struct {
+			Headers          []eachHeader
+			CommonHeaders    commonHead
+			Destination      []string // ["recipient@example.com"]
 			Timestamp        string   // "2018-10-08T14:05:45 +0000"
 			MessageID        string   // "000001378603177f-7a5433e7-8edb-42ae-af10-f0181f34d6ee-000000"
 			Source           string   // "sender@example.com"
@@ -74,10 +77,7 @@ func init() {
 			SourceIP         string   // "127.0.3.0"
 			SendingAccountID string   // "123456789012"
 			CallerIdentity   string   // ?
-			Destination      []string // ["recipient@example.com"]
 			HeadersTruncated bool
-			Headers          []eachHeader
-			CommonHeaders    commonHead
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -135,18 +135,18 @@ func init() {
 			Status         string     // "5.1.1"
 		}
 		type bounceBack struct {
+			BouncedRecipients []failedRCPT
 			BounceType        string  // "Undetermined", "Permanent", "Transient"
 			BounceSubType     string  // "General", "Suppressed", "MailboxFull", and so on
-			BouncedRecipients []failedRCPT
 			Timestamp         string  // "2016-10-21T06:58:02.245Z"
 			FeedbackID        string  // "01010157e6083d17-38cf01f3-852d-4401-8e8a-84e67a3e51d8-000000"
 			RemoteMTAIP       string  // "127.0.2.0"
 			ReportingMTA      string  // "dsn; a27-33.smtp-out.us-west-2.amazonses.com"
 		}
 		type ReturnedTo struct {
-			NotificationType string
 			Mail   mailObject
 			Bounce bounceBack // This field is present only if the notificationType is Bounce
+			NotificationType  string
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -176,26 +176,26 @@ func init() {
 			ArrivalDate           string // The value of the Arrival-Date or Received-Date field
 		}
 		type Complained struct {
-			NotificationType string
 			Mail      mailObject
-			Complaint complaints // This field is present only if the notificationType is Complaint 
+			Complaint complaints  // This field is present only if the notificationType is Complaint 
+			NotificationType string
 		}
 
 		//-----------------------------------------------------------------------------------------
 		// "notificationType": "Delivery"
 		// https://docs.aws.amazon.com/ses/latest/dg/notification-contents.html#delivery-object
 		type sentstatus struct {
-			Timestamp             string   // "2016-10-21T06:58:02.245Z"
-			ProcessingTimeMillis  int      // 5753
 			Recipients            []string // ["complaint@simulator.amazonses.com"]
+			Timestamp             string   // "2016-10-21T06:58:02.245Z"
 			SMTPResponse          string   // "250 2.6.0 Message received"
 			RemoteMTAIP           string   // "127.0.2.0"
 			ReportingMTA          string   // "dsn; a27-33.smtp-out.us-west-2.amazonses.com"
+			ProcessingTimeMillis  int      // 5753
 		}
 		type Deliveries struct {
-			NotificationType      string
 			Mail      mailObject
 			Delivery  sentstatus // This field is present only if the notificationType is Complaint 
+			NotificationType      string
 		}
 
 		//-----------------------------------------------------------------------------------------

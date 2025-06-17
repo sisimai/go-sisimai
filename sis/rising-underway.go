@@ -12,7 +12,7 @@ package sis
 // Each MTA function in lhost package returns sis.RisingUnderway
 type RisingUnderway struct {
 	Digest []DeliveryMatter // List of DeliveryMatter structs
-	RFC822 string           // The original message
 	Errors []NotDecoded     // Errors occurred in lhost/*
+	RFC822 string           // The original message
 }
 

@@ -12,12 +12,12 @@ import "time"
 import "runtime"
 
 type NotDecoded struct {
+	Timestamp time.Time // When the error occurred
 	EmailFile string    // An email file name sisimai tried to decoded
-	CalledOff bool      // Unrecoverable error, the decoding process have called off
 	BecauseOf string    // An error message of the failure
 	WhoCalled string    // Who called the constructor?
 	DecodedBy string    // Copy of sis.Fact.DecodedBy
-	Timestamp time.Time // When the error occurred
+	CalledOff bool      // Unrecoverable error, the decoding process have called off
 }
 
 // MakeNotDecoded is a constructor of sis.NotDecoded struct.

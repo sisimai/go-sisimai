@@ -19,9 +19,9 @@ type CallbackArg0 struct {
 // CallbackArg1 is an argument of the callback functions that are called at sisimai.Rise(). It is
 // aliased to sisimai.CallbackArg1 at the libsisimai.go
 type CallbackArg1 struct {
+	Fact *[]Fact // Decoded results
 	Path  string // Path to the original email file or "<STDIN>" or "<MEMORY>"
 	Kind  string // Kind of the original email file or "stdin" or "memory"
 	Mail *string // Entire message body of the bounce mail including all the headers
-	Fact *[]Fact // Decoded results
 }
 
