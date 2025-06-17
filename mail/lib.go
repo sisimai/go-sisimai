@@ -31,6 +31,8 @@ import "path/filepath"
  | payload    |           | o         | o         | o          |
 */
 type EmailEntity struct {
+	handle  *os.File // https://pkg.go.dev/os#File
+	payload []string // Each email message/file name
 	Kind    string   // "mailbox", "maildir", "memory" or "stdin"
 	Path    string   // Path to the mbox, Maildir/, or "<MEMORY>" or "<STDIN>"
 	Dir     string   // Directory name of mbox, Maildir/
@@ -38,8 +40,6 @@ type EmailEntity struct {
 	Size    int      // Payload size
 	offset  int      // Offset position
 	newline uint8    // 0 = undefined, 1 = LF, 2 = CR, 3 = CRLF
-	handle  *os.File // https://pkg.go.dev/os#File
-	payload []string // Each email message/file name
 }
 const maximumSize = 2000 * 1024 * 1024 * 1024
 
