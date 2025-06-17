@@ -54,3 +54,22 @@ func TestIsExplicit(t *testing.T) {
 
 	t.Logf("The number of tests = %d", cx)
 }
+
+func TestShouldBeRetried(t *testing.T) {
+	fn := "reason.ShouldBeRetried"
+	re := []string{"undefined", "onhold", "systemerror", "securityerror", "expired", "networkerror", "hostunknown", "userunknown"}
+	cx := 0
+
+	for _, e := range re {
+		cx++; if ShouldBeRetried(e) == false  { t.Errorf("%s(%s) returns false", fn, e) }
+	}
+	for _, e := range ae {
+		if slices.Contains(re, e) { continue }
+		cx++; if ShouldBeRetried(e) == true   { t.Errorf("%s(%s) returns true",  fn, e) }
+	}
+	cx++; if ShouldBeRetried("")     == false { t.Errorf("%s('') returns false", fn) }
+	cx++; if ShouldBeRetried("neko") == true  { t.Errorf("%s(neko) returns true", fn) }
+
+	t.Logf("The number of tests = %d", cx)
+}
+

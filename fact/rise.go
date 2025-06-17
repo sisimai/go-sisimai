@@ -308,7 +308,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 		}
 		if thing.Alias == thing.Recipient.Address { thing.Alias = "" }
 
-		REASON: for thing.Reason == "" || reason.GetRetried[thing.Reason] {
+		REASON: for reason.ShouldBeRetried(thing.Reason) == true {
 			// Decide the reason of the email bounce
 			// The value of thing.Reason is empty or is needed to check with other values again
 			re := thing.Reason;        if re == ""              { re = "undefined"                }

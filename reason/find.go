@@ -16,11 +16,11 @@ import "libsisimai.org/sisimai/v5/smtp/status"
 //   Returns:
 //     - (string):       Bounce reason name or an empty string
 func Find(fo *sis.Fact) string {
-	// Return the reason text already decided except the reason matched with the name defined in
-	// reason.GetRetried variable.
+	// Return the reason text already decided except the reason matched with the name checked by
+	// reason.ShouldBeRetried() function.
 	if fo == nil { return "" }
-	if fo.Reason != "" && GetRetried[fo.Reason]   == false { return fo.Reason   }
-	if strings.HasPrefix(fo.DeliveryStatus, "2.") == true  { return "delivered" }
+	if fo.Reason != "" && ShouldBeRetried(fo.Reason) == false { return fo.Reason   }
+	if strings.HasPrefix(fo.DeliveryStatus, "2.")    == true  { return "delivered" }
 
 	reasontext := ""; if fo.DiagnosticType == "SMTP" || fo.DiagnosticType == "" {
 		// Diagnostic-Code: SMTP; ... or empty value
@@ -58,10 +58,10 @@ func anotherone(fo *sis.Fact) string {
 	issuedcode := strings.ToLower(fo.DiagnosticCode)
 	reasontext := status.Name(fo.DeliveryStatus)
 
-	if reasontext == "" || GetRetried[reasontext] || fo.DiagnosticType == "SMTP" {
+	if ShouldBeRetried(reasontext) || fo.DiagnosticType == "SMTP" {
 		// - The value of the reason is not decided yet by the fo.DeliveryStatus.
 		// - Try to find the bounce reason by the fo.DeliveryStatus or fo.DianosticCode when the
-		//   reasontext is listed in GetRetried or fo.DiagnosticType is "SMTP".
+		//   ShouldBeRetried(reasontext) returns true or fo.DiagnosticType is "SMTP".
 		for _, e := range classorder[1] {
 			// Trying to match with other patterns in reason/why-*.go
 			if IncludedIn[e](issuedcode) == true { return strings.ToLower(e) }
