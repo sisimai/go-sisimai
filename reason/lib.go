@@ -79,8 +79,7 @@ var classorder = [][]string{
 //   Returns:
 //     - (bool):         true if the reason is an explicit, false otherwise
 func IsExplicit(argv1 string) bool {
-	if argv1 == "" || argv1 == "undefined" || argv1 == "onhold" { return false }
-	return true
+	return !(argv1 == "" || argv1 == "undefined" || argv1 == "onhold")
 }
 
 // ShouldBeRetried returns true if the argument is a reason listed in the table defined in this function.
