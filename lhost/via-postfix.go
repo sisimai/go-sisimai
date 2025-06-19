@@ -63,9 +63,9 @@ func init() {
 		if proceedsto == 2 {
 			// The message body starts with "Transcript of session follows."
 			transcript := transcript.Rise(emailparts[0], "In:", "Out:")
-			if transcript == nil || len(*transcript) == 0 { return nil }
+			if transcript == nil || len(transcript) == 0 { return nil }
 
-			for _, e := range *transcript {
+			for _, e := range transcript {
 				// Pick email addresses, error messages, and the last SMTP command.
 				v = sis.TailDeliveryMatter(&dscontents)
 				switch e.Command {
