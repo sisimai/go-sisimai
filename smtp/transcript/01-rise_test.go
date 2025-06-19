@@ -27,8 +27,8 @@ func TestRise(t *testing.T) {
 	cw := string(bx); cw = cw[strings.Index(cw, "\n\n") + 2:]
 	ct := Rise(cw, "In:", "Out:")
 
-	cx++; if ct == nil || len(*ct) == 0 { t.Errorf("%s() returns empty", fn) }
-	fn = "TanscriptLog"; for _, e := range *ct {
+	cx++; if ct == nil || len(ct) == 0 { t.Errorf("%s() returns empty", fn) }
+	fn = "TanscriptLog"; for _, e := range ct {
 		cx++; if cv := e.Command; slices.Contains(cc, cv) == false {
 			t.Errorf("%s.Command(%s) is not listed in %v", fn, cv, cc)
 		}
@@ -57,9 +57,9 @@ func TestRise(t *testing.T) {
 		}
 	}
 
-	ct = Rise(cw, "", "");    cx++; if ct != nil && len(*ct) > 0 { t.Errorf("%s returns %v", fn, ct) }
-	ct = Rise(cw, ">>>", ""); cx++; if ct != nil && len(*ct) > 0 { t.Errorf("%s returns %v", fn, ct) }
-	ct = Rise(cw, "", "<<<"); cx++; if ct != nil && len(*ct) > 0 { t.Errorf("%s returns %v", fn, ct) }
+	ct = Rise(cw, "", "");    cx++; if ct != nil && len(ct) > 0 { t.Errorf("%s returns %v", fn, ct) }
+	ct = Rise(cw, ">>>", ""); cx++; if ct != nil && len(ct) > 0 { t.Errorf("%s returns %v", fn, ct) }
+	ct = Rise(cw, "", "<<<"); cx++; if ct != nil && len(ct) > 0 { t.Errorf("%s returns %v", fn, ct) }
 
 	cw = "<<<  OK\n>>>  NEKO\n<<<  Closed\n"
 	ct = Rise(cw, "", ""); cx++; if ct == nil { t.Errorf("%s is nil", fn) }
