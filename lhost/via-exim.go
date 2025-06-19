@@ -350,7 +350,7 @@ func init() {
 				for _, e := range rcptinhead {
 					// Insert each recipient address into "dscontents"
 					e = strings.Trim(e, " ")
-					sis.TailDeliveryMatter(&dscontents).Recipient = e
+					sis.TailDeliveryMatter(dscontents).Recipient = e
 					if len(dscontents) != recipients { sis.NextDeliveryMatter(&dscontents) }
 				}
 			}

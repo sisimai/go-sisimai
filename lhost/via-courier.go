@@ -77,7 +77,7 @@ func init() {
 				// "e" matched with any field defined in RFC3464
 				o := rfc1894.Field(e); if len(o) == 0 { continue }
 				z := rfc1894.FieldTable[o[0]]
-				v  = sis.TailDeliveryMatter(&dscontents)
+				v  = sis.TailDeliveryMatter(dscontents)
 
 				if o[3] == "addr" {
 					// Final-Recipient: rfc822; kijitora@example.jp
