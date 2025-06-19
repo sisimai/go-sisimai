@@ -15,11 +15,11 @@ func TestRise(t *testing.T) {
 	cx := 0
 
 	cv, ce := Rise(nil, "", nil)
-	cx++; if cv != nil && len(*cv)  > 0 { t.Errorf("%s(nil) returns %v", fn, *cv) }
-	cx++; if ce != nil && len(*ce) == 0 { t.Errorf("%s(nil) did not return errors", fn) }
-	cx++; if ce != nil && len(*ce) != 1 { t.Errorf("%s(nil) return errors: %v", fn, ce) }
+	cx++; if cv != nil && len(cv)  > 0 { t.Errorf("%s(nil) returns %v", fn, cv) }
+	cx++; if ce != nil && len(ce) == 0 { t.Errorf("%s(nil) did not return errors", fn) }
+	cx++; if ce != nil && len(ce) != 1 { t.Errorf("%s(nil) return errors: %v", fn, ce) }
 
-	for _, e := range *ce {
+	for _, e := range ce {
 		cx++; if e.EmailFile != ""    { t.Errorf("%s.EmailFile is not empty: %s", fs, e.EmailFile) }
 		cx++; if e.Email("cat") == "" { t.Errorf("%s.Email(cat) returns empty", fs) }
 		cx++; if e.EmailFile != "cat" { t.Errorf("%s.EmailFile is not `cat`: %s", fs, e.EmailFile) }
