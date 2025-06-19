@@ -36,12 +36,12 @@ type DeliveryMatter struct {
 
 // TailDeliveryMatter returns the last element pointer of DeliveryMatter struct
 //   Arguments:
-//     - argv0 (*[]DeliveryMatter): The pointer to []DeliveryMatter
+//     - argv0 ([]DeliveryMatter): []DeliveryMatter
 //   Returns:
-//     - (*DeliveryMatter):         The last element pointer of DeliveryMatter struct
-func TailDeliveryMatter(argv0 *[]DeliveryMatter) *DeliveryMatter {
-	width := len(*argv0); if width == 0 { return nil }
-	return &(*argv0)[width - 1]
+//     - (*DeliveryMatter):        The last element pointer of DeliveryMatter struct
+func TailDeliveryMatter(argv0 []DeliveryMatter) *DeliveryMatter {
+	width := len(argv0); if width == 0 { return nil }
+	return &(argv0)[width - 1]
 }
 
 // NextDeliveryMatter appends a new element and returns the last element pointer
