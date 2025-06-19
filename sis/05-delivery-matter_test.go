@@ -30,7 +30,7 @@ func TestTailDeliveryMatter(t *testing.T) {
 	ae := make([]DeliveryMatter, 1)
 	cx := 0
 
-	cv := TailDeliveryMatter(&ae)
+	cv := TailDeliveryMatter(ae)
 	cx++; if cv == nil    { t.Errorf("%s(nil) returns nil", fn) }
 	cx++; if len(ae) != 1 { t.Errorf("%s(ae) have invalid elements: %d", fn, len(ae)) }
 

@@ -63,11 +63,11 @@ func init() {
 		if proceedsto == 2 {
 			// The message body starts with "Transcript of session follows."
 			transcript := transcript.Rise(emailparts[0], "In:", "Out:")
-			if transcript == nil || len(*transcript) == 0 { return nil }
+			if transcript == nil || len(transcript) == 0 { return nil }
 
-			for _, e := range *transcript {
+			for _, e := range transcript {
 				// Pick email addresses, error messages, and the last SMTP command.
-				v = sis.TailDeliveryMatter(&dscontents)
+				v = sis.TailDeliveryMatter(dscontents)
 				switch e.Command {
 					case "EHLO", "HELO": v.Lhost = e.Argument // Use the argument of EHLO/HELO command as a value of "lhost"
 					case "MAIL":
@@ -110,7 +110,7 @@ func init() {
 					// "e" matched with any field defined in RFC3464
 					o := rfc1894.Field(e); if len(o) == 0 { continue }
 					z := rfc1894.FieldTable[o[0]]
-					v  = sis.TailDeliveryMatter(&dscontents)
+					v  = sis.TailDeliveryMatter(dscontents)
 
 					if o[3] == "addr" {
 						// Final-Recipient: rfc822; kijitora@example.jp
@@ -210,7 +210,7 @@ func init() {
 				// "--- Delivery report unavailable ---"
 				if cv := address.S3S4(moji.Select(emailparts[1], "\nTo: ", "\n", 0)); cv != "" {
 					// Try to get a recipient address from To: field in the original message at message/rfc822 part
-					sis.TailDeliveryMatter(&dscontents).Recipient = cv
+					sis.TailDeliveryMatter(dscontents).Recipient = cv
 					recipients += 1
 				}
 			}

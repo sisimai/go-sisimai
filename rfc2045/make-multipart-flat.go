@@ -84,8 +84,8 @@ func haircut(block *string, heads bool) []string {
 //     - arvg1 (*string):     Pointer to multipart/* message blocks
 //   Returns:
 //     - ([][3]string):       List of each part of multipart/*
-//     - (*[]sis.NotDecoded): Pointer to an occurred error list
-func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
+//     - ([]sis.NotDecoded):  Pointer to an occurred error list
+func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 	if argv0 == "" || argv1 == nil || *argv1 == ""        { return nil, nil }
 	boundary01 := Boundary(argv0, 0); if boundary01 == "" { return nil, nil }
 	multiparts := strings.Split(*argv1, boundary01 + "\n")
@@ -110,9 +110,9 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 			_, bi, cut := strings.Cut(cf[2], "\n\n");   if cut == false { continue }
 			if len(bi) < 8 || strings.Contains(bi, boundary02) == false { continue }
 
-			cv, ce := levelout(cf[0], &bi); if ce != nil && len(*ce) > 0 {
+			cv, ce := levelout(cf[0], &bi); if ce != nil && len(ce) > 0 {
 				// There is any errors
-				notdecoded = append(notdecoded, *ce...)
+				notdecoded = append(notdecoded, ce...)
 				if cv == nil { continue }
 			}
 			for _, w := range cv { partstable = append(partstable, [3]string{w[0], w[1], w[2]}) }
@@ -129,14 +129,14 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 			partstable = append(partstable, cv)
 		}
 	}
-	if len(partstable) == 0 { return nil, &notdecoded }
+	if len(partstable) == 0 { return nil, notdecoded }
 
 	// Remove `boundary01 + '--'` and strings from the boundary to the end of the body part.
 	boundary01 = strings.ReplaceAll(boundary01, "\n", "")
 	cw := len(partstable)
 	if ls, _, cx := strings.Cut(partstable[cw - 1][2], boundary01 + "--"); cx { partstable[cw - 1][2] = ls }
 
-	return partstable, &notdecoded
+	return partstable, notdecoded
 }
 
 // Makeflat makes multipart/* part blocks flat and decode each part.
@@ -145,8 +145,8 @@ func levelout(argv0 string, argv1 *string) ([][3]string, *[]sis.NotDecoded) {
 //     - argv1 (*string):     Pointer to multipart/* message blocks
 //   Returns:
 //     - (*string):           Message body
-//     - (*[]sis.NotDecoded): Occurred errors
-func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
+//     - ([]sis.NotDecoded):  Occurred errors
+func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 	lhead := strings.ToLower(argv0)
 	if moji.ContainsAny(lhead, []string{"multipart/", "boundary="}) == false { return nil, nil }
 
@@ -207,7 +207,7 @@ func MakeFlat(argv0 string, argv1 *string) (*string, *[]sis.NotDecoded) {
 				case "base64":           bodystring, nyaan = DecodeB(bodyinside, "")
 				case "quoted-printable": bodystring, nyaan = DecodeQ(bodyinside)
 			}
-			if nyaan != nil { *notdecoded = append(*notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false)) }
+			if nyaan != nil { notdecoded = append(notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false)) }
 
 			// Try to delete HTML tags inside of text/html part whenever possible
 			if istexthtml { bodystring = *moji.ToPlain(&bodystring) }

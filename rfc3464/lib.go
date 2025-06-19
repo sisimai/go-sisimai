@@ -154,7 +154,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 			// This line matched with any field defined in RFC3464
 			o := rfc1894.Field(e); if len(o) == 0 { continue }
 			z := rfc1894.FieldTable[o[0]]
-			v  = sis.TailDeliveryMatter(&dscontents)
+			v  = sis.TailDeliveryMatter(dscontents)
 			b  = &(eachbuffer[len(eachbuffer) - 1]); b.Grow(128)
 
 			if o[3] == "addr" {
