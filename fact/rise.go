@@ -34,20 +34,20 @@ import "libsisimai.org/sisimai/v5/smtp/failure"
 //     - origin (string):          Path to the original bounce email file
 //     - args (*sis.DecodingArgs): Arguments for decoding(delivered, vacation, callbacks)
 //   Returns:
-//     - (*[]sis.Fact):            List of successfully decoded bounce messages
-//     - (*[]sis.NotDecoded):      List of occurred errors
-func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) {
+//     - ([]sis.Fact):             List of successfully decoded bounce messages
+//     - ([]sis.NotDecoded):       List of occurred errors
+func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 	if email == nil || len(*email) < 1 {
 		// The email message is empty
 		ce := *sis.MakeNotDecoded("email file is empty", true); ce.Email(origin)
-		return nil, &[]sis.NotDecoded{ce}
+		return nil, []sis.NotDecoded{ce}
 	}
 
 	beforefact := message.Rise(email, args.Callback0); if len((*beforefact).Errors) > 0 {
 		// There is some errors while reading the email, decoding the bounce message.
 		// Set the email path to sis.NotDecoded.EmailFile
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
-		if (*beforefact).HasDone() == false { return nil, &beforefact.Errors }
+		if (*beforefact).HasDone() == false { return nil, beforefact.Errors }
 
 	} else {
 		// There is neither decoded result nor error
@@ -393,6 +393,6 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) (*[]sis.Fact, *[
 		// Set the email path to sis.NotDecoded.EmailFile if it is empty
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
 	}
-	return &listoffact, &beforefact.Errors
+	return listoffact, beforefact.Errors
 }
 
