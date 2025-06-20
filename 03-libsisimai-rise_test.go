@@ -34,9 +34,9 @@ func TestRise(t *testing.T) {
 		ef := "./" + rootdir + e
 		cv, ce := Rise(ef, sisiarg)
 
-		cx++; if len(*cv) == 0 { t.Errorf("%s(%s) returns empty", fn, ef) }
-		cx++; if len(*ce) != 0 {
-			for _, e := range *ce {
+		cx++; if len(cv) == 0 { t.Errorf("%s(%s) returns empty", fn, ef) }
+		cx++; if len(ce) != 0 {
+			for _, e := range ce {
 				fe := strings.Split(e.EmailFile, "/");
 				cx++; if slices.Contains(errorat, fe[len(fe) - 1])    { continue }
 				cx++; if strings.Contains(e.BecauseOf, "iso-2022-jp") { continue }
@@ -45,7 +45,7 @@ func TestRise(t *testing.T) {
 			}
 		}
 
-		for j, e := range *cv {
+		for j, e := range cv {
 			cx++; if e.Addresser.Address == "" { t.Errorf("[%04d] Addresser is nil", j) }
 			cx++; if e.Recipient.Address == "" { t.Errorf("[%04d] Recipient is nil", j) }
 			cx++; if e.Catch            != nil { t.Errorf("[%04d] Catch inlcude data: %v", j, e.Catch) }
@@ -62,7 +62,7 @@ func TestRise(t *testing.T) {
 
 		// When the 2nd argument is nil
 		cv, _   = Rise(ef, nil)
-		cx++; if len(*cv) == 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, ef, *cv) }
+		cx++; if len(cv) == 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, ef, cv) }
 	}
 
 	for _, e := range normals {
@@ -73,34 +73,34 @@ func TestRise(t *testing.T) {
 		}
 		cv, ce := Rise(ef, sisiarg)
 
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, ef, *cv) }
-		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns empty error", fn, ef) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, ef, cv) }
+		cx++; if len(ce) == 0 { t.Errorf("%s(%s) returns empty error", fn, ef) }
 
 		// When the 2nd argument is nil
 		cv, _   = Rise(ef, nil)
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, ef, *cv) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, ef, cv) }
 	}
 
 	for _, e := range notfile {
 		cv, ce := Rise(e, sisiarg)
 
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, e, *cv) }
-		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, e) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, e, cv) }
+		cx++; if len(ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, e) }
 
 		// When the 2nd argument is nil
 		cv, _   = Rise(e, nil)
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, e, *cv) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, e, cv) }
 	}
 
 	comm := exec.Command("touch", isempty); nyaan := comm.Run()
 	if nyaan == nil {
 		cv, ce := Rise(isempty, sisiarg)
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, isempty, *cv) }
-		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, isempty) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, isempty, cv) }
+		cx++; if len(ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, isempty) }
 
 		// When the 2nd argument is nil
 		cv, _   = Rise(isempty, nil)
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, isempty, *cv) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, isempty, cv) }
 
 		os.Remove(isempty)
 	}
