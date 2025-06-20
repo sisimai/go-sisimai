@@ -130,11 +130,11 @@ func main() {
     args := sisimai.Args()
 
     sisi, nyaan := sisimai.Rise(path, args)
-    for _, e := range *sisi {
+    for _, e := range sisi {
         cv, _ := e.Dump()
         fmt.Printf("%s\n",cv)
     }
-    if len(*nyaan) > 0 { fmt.Frpintf(os.Stderr, "%v\n", *nyaan) }
+    if len(nyaan) > 0 { fmt.Frpintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
@@ -182,8 +182,8 @@ Usage
 Basic usage
 ---------------------------------------------------------------------------------------------------
 `libsisimai.org/sisimai.Rise()` function provides the feature for getting decoded data as
-[`*[]sis.Fact`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go) struct, occurred
-errors as [`*[]sis.NotDecoded`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/not-decoded.go)
+[`[]sis.Fact`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go) struct, occurred
+errors as [`[]sis.NotDecoded`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/not-decoded.go)
 from bounced email messages as the following.
 
 ```go
@@ -204,10 +204,10 @@ func main() {
     // the "Vacation" option for the Rise() function as shown in the following code.
     args.Vacation  = true
 
-    // sisi is a pointer to []sis.Fact
+    // sisi is []sis.Fact
     sisi, nyaan := sisimai.Rise(path, args)
-    if len(*sisi) > 0 {
-        for _, e := range *sisi {
+    if len(sisi) > 0 {
+        for _, e := range sisi {
             // e is a sis.Fact struct
             fmt.Printf("- Sender is %s\n", e.Addresser.Address)
             fmt.Printf("- Recipient is %s\n", e.Recipient.Address)
@@ -218,8 +218,8 @@ func main() {
             fmt.Printf("%s\n",cv) // JSON formatted string the jq command can read
         }
     }
-    // nyaan is a pointer to []sis.NotDecoded
-    if len(*nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", *nyaan) }
+    // nyaan is []sis.NotDecoded
+    if len(nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
@@ -239,8 +239,8 @@ func main() {
     args := sisimai.Args()
 
     json, nyaan := sisimai.Dump(path, args)
-    if json != nil && *json != "" { fmt.Printf("%s\n", *json)   }
-    if len(*nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", *nyaan) }
+    if json != nil && *json != "" { fmt.Printf("%s\n", *json) }
+    if len(nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
@@ -292,8 +292,8 @@ func main() {
     }
 
     sisi, _ := sisimai.Rise(path, args)
-    if len(*sisi) > 0 {
-        for _, e := range *sisi {
+    if len(sisi) > 0 {
+        for _, e := range sisi {
             // e is a sis.Fact struct
             re, as := e.Catch.(map[string]interface{})
             if as == false { continue }
@@ -328,10 +328,10 @@ func main() {
         return true, nil
     }
 
-    // sisi is a pointer to []sis.Fact
+    // sisi is []sis.Fact
     sisi, nyaan := sisimai.Rise(path, args)
-    if len(*sisi) > 0 {
-        for _, e := range *sisi {
+    if len(sisi) > 0 {
+        for _, e := range sisi {
             // e is a sis.Fact struct
             ...
         }
