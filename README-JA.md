@@ -125,11 +125,11 @@ func main() {
     args := sisimai.Args()
 
     sisi, nyaan := sisimai.Rise(path, args)
-    for _, e := range *sisi {
+    for _, e := range sisi {
         cv, _ := e.Dump()
         fmt.Printf("%s\n",cv)
     }
-    if len(*nyaan) > 0 { fmt.Frpintf(os.Stderr, "%v\n", *nyaan) }
+    if len(nyaan) > 0 { fmt.Frpintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
@@ -176,8 +176,8 @@ Usage
 Basic usage
 ---------------------------------------------------------------------------------------------------
 以下のように`libsisimai.org/sisimai.Rise()`関数にバウンスメールへのPATHを渡して呼び出すと解析結果が
-[`*[]sis.Fact`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go)構造体として、
-発生したエラーが[`*[]sis.NotDecoded`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/not-decoded.go)
+[`[]sis.Fact`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go)構造体として、
+発生したエラーが[`[]sis.NotDecoded`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/not-decoded.go)
 構造体としてそれぞれ得られます。
 
 ```go
@@ -195,10 +195,10 @@ func main() {
     // バウンス理由が"vacation"になった結果も必要ならargs.Vacationにtrueを入れる
     args.Vacation  = true
 
-    // sisiは[]sis.Factへのポインタ
+    // sisiは[]sis.Fact構造体スライス
     sisi, nyaan := sisimai.Rise(path, args)
-    if len(*sisi) > 0 {
-        for _, e := range *sisi {
+    if len(sisi) > 0 {
+        for _, e := range sisi {
             // e is a sis.Fact struct
             fmt.Printf("- Sender is %s\n", e.Addresser.Address)
             fmt.Printf("- Recipient is %s\n", e.Recipient.Address)
@@ -209,8 +209,8 @@ func main() {
             fmt.Printf("%s\n",cv) // jqコマンドで読めるJSON文字列を出力する
         }
     }
-    // nyaanは[]sis.NotDecodedへのポインタ
-    if len(*nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", *nyaan) }
+    // nyaanは[]sis.NotDecoded構造体スライス
+    if len(nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
@@ -230,8 +230,8 @@ func main() {
     args := sisimai.Args()
 
     json, nyaan := sisimai.Dump(path, args)
-    if json != nil && *json != "" { fmt.Printf("%s\n", *json)   }
-    if len(*nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", *nyaan) }
+    if json != nil && *json != "" { fmt.Printf("%s\n", *json) }
+    if len(nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
@@ -281,8 +281,8 @@ func main() {
     }
 
     sisi, _ := sisimai.Rise(path, args)
-    if len(*sisi) > 0 {
-        for _, e := range *sisi {
+    if len(sisi) > 0 {
+        for _, e := range sisi {
             // eはsis.Fact構造体
             re, as := e.Catch.(map[string]interface{})
             if as == false { continue }
@@ -317,10 +317,10 @@ func main() {
         return true, nil
     }
 
-    // sisiは[]sis.Factへのポインター
+    // sisiは[]sis.Fact構造体スライス
     sisi, nyaan := sisimai.Rise(path, args)
-    if len(*sisi) > 0 {
-        for _, e := range *sisi {
+    if len(sisi) > 0 {
+        for _, e := range sisi {
             // e is a sis.Fact struct
             ...
         }
