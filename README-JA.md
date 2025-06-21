@@ -54,7 +54,7 @@ The key features of Sisimai
     * __メール情報__: `Subject`, `MessageID`, `ListID`,
     * __その他情報__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`
   * __出力可能な形式__
-    * struct ([sisimai/sis.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go)
+    * struct ([sisimai/sis.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go))
     * JSON ([`encoding/json`](https://pkg.go.dev/encoding/json)を使用)
 * __インストールも使用も簡単__
   * `$ go get -u libsisimai.org/sisimai/v5@latest`
@@ -81,7 +81,7 @@ System requirements
 
 * [Go 1.24.0 or later](http://go.dev/dl/)
 * v5.2.1で標準モジュールを除く外部モジュール依存は無くなりました
-* v5.3.1からGo 1.24以上が必要になりました
+* v5.4.0からGo 1.24以上が必要になりました
 
 Install
 ---------------------------------------------------------------------------------------------------
@@ -417,7 +417,7 @@ Related sites
 
 See also
 ---------------------------------------------------------------------------------------------------
-* [README.md - README.md in English](https://github.com/sisimai/go-sisimai/blob/5-stable/README.md)
+* [README.md - README.md in English(🇬🇧)](https://github.com/sisimai/go-sisimai/blob/5-stable/README.md)
 * [RFC3463 - Enhanced Mail System Status Codes](https://tools.ietf.org/html/rfc3463)
 * [RFC3464 - An Extensible Message Format for Delivery Status Notifications](https://tools.ietf.org/html/rfc3464)
 * [RFC3834 - Recommendations for Automatic Responses to Electronic Mail](https://tools.ietf.org/html/rfc3834)
