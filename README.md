@@ -86,7 +86,7 @@ More details about system requirements are available at
 
 * [Go 1.24.0 or later](http://go.dev/dl/)
 * No external dependencies (excluding standard library) since v5.2.1
-* Sisimai requires Go 1.24 or later since v5.3.1
+* Sisimai requires Go 1.24 or later since v5.4.0
 
 Install and Build
 ---------------------------------------------------------------------------------------------------
