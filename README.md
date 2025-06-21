@@ -429,7 +429,7 @@ Related sites
 
 See also
 ---------------------------------------------------------------------------------------------------
-* [README-JA.md - README.md in Japanese(日本??](https://github.com/sisimai/go-sisimai/blob/5-stable/README-JA.md)
+* [README-JA.md - README.md in Japanese(🇯🇵)](https://github.com/sisimai/go-sisimai/blob/5-stable/README-JA.md)
 * [RFC3463 - Enhanced Mail System Status Codes](https://tools.ietf.org/html/rfc3463)
 * [RFC3464 - An Extensible Message Format for Delivery Status Notifications](https://tools.ietf.org/html/rfc3464)
 * [RFC3834 - Recommendations for Automatic Responses to Electronic Mail](https://tools.ietf.org/html/rfc3834)
