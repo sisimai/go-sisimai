@@ -436,4 +436,3 @@ License
 ===================================================================================================
 This software is distributed under The BSD 2-Clause License.
 
-cat: /Users/ak/.myaddr: No such file or directory
