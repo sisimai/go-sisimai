@@ -23,7 +23,7 @@ import sisifact "libsisimai.org/sisimai/v5/fact"
 
 const libname string = "sisimai"
 const version string = "5.3.0"
-const patchlv uint8  = 0
+const patchlv uint8  = 2
 type  CallbackArg0 = sis.CallbackArg0
 type  CallbackArg1 = sis.CallbackArg1
 type  CfParameter0 = sis.CfParameter0
