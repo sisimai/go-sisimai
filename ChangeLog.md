@@ -4,15 +4,17 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
-v5.3.0p2
+v5.3.0p2 (The next version is 5.4.0, will be released in July.)
 ---------------------------------------------------------------------------------------------------
 - release: ""
 - version: ""
 - changes:
   - **BREAKING CHANGES**
-    - `sisimai.Rise()` return `[]sis.Fact` and `[]sis.NotDecoded` instead of a pointer. #145 #147
-      Thanks to @corny #119
+    - `sisimai.Rise()` function now return `[]sis.Fact` and `[]sis.NotDecoded` instead of pointers.
+      Thanks to @corny #119 #145 #148
     - The minimum Go version required to run Sisimai is now **Go 1.24** #112 #127
+      - #110 Fixed out of bounds read at `EmailEntity.setNewLine()` function in `mail/lib.go` using
+        the build-in `min()` function. Thanks to @VolkerLieber
       - #116 #117 Use `strings.Cut()` instead of `strings.SplitN(v,s,2)` and `v[n:strings.Index(v,s)]`
       - #118 #122 Use `slices.Contains()` instead of `moji.EqualsAny()`
       - #123 #128 Use `strings.Lines()` instead of `strings.Split(v, "\n")`
@@ -21,12 +23,20 @@ v5.3.0p2
   - #105 #106 Tiny code improvement in `moji.Select()` function
   - #107 #108 Implement the new error code `5.7.515` of Microsoft
   - #109 #115 Fix spell errors in some documents
-  - #110 Fixed out of bounds read at `EmailEntity.setNewLine()` function in `mail/lib.go` using the
-    build-in `min()` function. Thanks to @VolkerLieber
   - #111 #113 Set a pointer to `sis.DecodingArgs` struct when the 2nd argument of `sisimai.Rise()`
-    is nil. Thanks to @VolkerLieber
-  - #120 Use golangci-lint. Thanks to @corny
-  - #121 #124 #125 moji.Squeeze() and mail.setNewLine() no longer returns any value
+    is `nil`. Thanks to @VolkerLieber
+  - #120 #121 Use golangci-lint with the minimum linters. Thanks to @corny
+  - #124 #125 `moji.Squeeze()` and `mail.setNewLine()` no longer returns any value
+  - #131 #132 Use iota instead of `lhost.DeliveryStatus` hash map
+  - #133 #134 use the `switch` statement without a condition instead of the infinite `for` loop and
+    the `if` statement
+  - #135 Use `moji.IsContained()` instead of `string.Contains()` in the loop
+  - #136 #137 Implement `moji.AlignedAny()` function in `moji/any.go`
+  - #139 #141 `reason.GetRetried` has been replaced with `reason.ShouldBeRetried()` function
+  - #140 Tiny code improvements in `reason.IsExplicit()` function
+  - #142 #143 Change the order of fields in some structs to improve memory alignment
+  - #146 #147 Adopt idiomatic Go style by returning direct slices instead of pointers to slices in
+    some functions except `sisimai.Rise()`
 
 v5.3.0
 ---------------------------------------------------------------------------------------------------
