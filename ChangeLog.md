@@ -4,22 +4,25 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
-v5.3.0p1
+v5.3.0p2
 ---------------------------------------------------------------------------------------------------
 - release: ""
 - version: ""
 - changes:
-  - **The minimum Go version required to run Sisimai is now Go 1.24** #112 #127
-    - #116 #117 Use `strings.Cut()` instead of `strings.SplitN(v,s,2)` and `v[n:strings.Index(v,s)]`
-    - #118 #122 Use `slices.Contains()` instead of `moji.EqualsAny()`
-    - #123 #128 Use `strings.Lines()` instead of `strings.Split(v, "\n")`
+  - **BREAKING CHANGES**
+    - `sisimai.Rise()` return `[]sis.Fact` and `[]sis.NotDecoded` instead of a pointer. #145 #147
+      Thanks to @corny #119
+    - The minimum Go version required to run Sisimai is now **Go 1.24** #112 #127
+      - #116 #117 Use `strings.Cut()` instead of `strings.SplitN(v,s,2)` and `v[n:strings.Index(v,s)]`
+      - #118 #122 Use `slices.Contains()` instead of `moji.EqualsAny()`
+      - #123 #128 Use `strings.Lines()` instead of `strings.Split(v, "\n")`
   - #99 Use `error.Error()` instead of `fmt.Sprintf()` for stringify an error message
   - #101 #102 #103 Use `make()` to initialise a slice
   - #105 #106 Tiny code improvement in `moji.Select()` function
   - #107 #108 Implement the new error code `5.7.515` of Microsoft
   - #109 #115 Fix spell errors in some documents
-  - #110 Fixed out of bounds read at `EmailEntity.setNewLine()` function in `mail/lib` and updated
-    the minimum go version to 1.21. Thanks to @VolkerLieber
+  - #110 Fixed out of bounds read at `EmailEntity.setNewLine()` function in `mail/lib.go` using the
+    build-in `min()` function. Thanks to @VolkerLieber
   - #111 #113 Set a pointer to `sis.DecodingArgs` struct when the 2nd argument of `sisimai.Rise()`
     is nil. Thanks to @VolkerLieber
   - #120 Use golangci-lint. Thanks to @corny
