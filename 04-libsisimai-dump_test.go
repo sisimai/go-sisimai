@@ -47,21 +47,21 @@ func TestDump(t *testing.T) {
 
 	for _, e := range notfile {
 		cv, ce := Rise(e, sisiarg)
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, e, *cv) }
-		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, e) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, e, cv) }
+		cx++; if len(ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, e) }
 
 		cv, _   = Rise(e, nil)
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, e, *cv) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, e, cv) }
 	}
 
 	comm := exec.Command("touch", isempty); nyaan := comm.Run()
 	if nyaan == nil {
 		cv, ce := Rise(isempty, sisiarg)
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, isempty, *cv) }
-		cx++; if len(*ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, isempty) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, isempty, cv) }
+		cx++; if len(ce) == 0 { t.Errorf("%s(%s) returns an empty error", fn, isempty) }
 
 		cv, _   = Rise(isempty, nil)
-		cx++; if len(*cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, isempty, *cv) }
+		cx++; if len(cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, isempty, cv) }
 
 		os.Remove(isempty)
 	}

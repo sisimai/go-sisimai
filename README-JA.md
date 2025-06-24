@@ -54,7 +54,7 @@ The key features of Sisimai
     * __メール情報__: `Subject`, `MessageID`, `ListID`,
     * __その他情報__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`
   * __出力可能な形式__
-    * struct ([sisimai/sis.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go)
+    * struct ([sisimai/sis.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go))
     * JSON ([`encoding/json`](https://pkg.go.dev/encoding/json)を使用)
 * __インストールも使用も簡単__
   * `$ go get -u libsisimai.org/sisimai/v5@latest`
@@ -81,7 +81,7 @@ System requirements
 
 * [Go 1.24.0 or later](http://go.dev/dl/)
 * v5.2.1で標準モジュールを除く外部モジュール依存は無くなりました
-* v5.3.1からGo 1.24以上が必要になりました
+* v5.4.0からGo 1.24以上が必要になりました
 
 Install
 ---------------------------------------------------------------------------------------------------
@@ -125,11 +125,11 @@ func main() {
     args := sisimai.Args()
 
     sisi, nyaan := sisimai.Rise(path, args)
-    for _, e := range *sisi {
+    for _, e := range sisi {
         cv, _ := e.Dump()
         fmt.Printf("%s\n",cv)
     }
-    if len(*nyaan) > 0 { fmt.Frpintf(os.Stderr, "%v\n", *nyaan) }
+    if len(nyaan) > 0 { fmt.Frpintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
@@ -176,8 +176,8 @@ Usage
 Basic usage
 ---------------------------------------------------------------------------------------------------
 以下のように`libsisimai.org/sisimai.Rise()`関数にバウンスメールへのPATHを渡して呼び出すと解析結果が
-[`*[]sis.Fact`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go)構造体として、
-発生したエラーが[`*[]sis.NotDecoded`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/not-decoded.go)
+[`[]sis.Fact`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go)構造体として、
+発生したエラーが[`[]sis.NotDecoded`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/not-decoded.go)
 構造体としてそれぞれ得られます。
 
 ```go
@@ -195,10 +195,10 @@ func main() {
     // バウンス理由が"vacation"になった結果も必要ならargs.Vacationにtrueを入れる
     args.Vacation  = true
 
-    // sisiは[]sis.Factへのポインタ
+    // sisiは[]sis.Fact構造体スライス
     sisi, nyaan := sisimai.Rise(path, args)
-    if len(*sisi) > 0 {
-        for _, e := range *sisi {
+    if len(sisi) > 0 {
+        for _, e := range sisi {
             // e is a sis.Fact struct
             fmt.Printf("- Sender is %s\n", e.Addresser.Address)
             fmt.Printf("- Recipient is %s\n", e.Recipient.Address)
@@ -209,8 +209,8 @@ func main() {
             fmt.Printf("%s\n",cv) // jqコマンドで読めるJSON文字列を出力する
         }
     }
-    // nyaanは[]sis.NotDecodedへのポインタ
-    if len(*nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", *nyaan) }
+    // nyaanは[]sis.NotDecoded構造体スライス
+    if len(nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
@@ -230,8 +230,8 @@ func main() {
     args := sisimai.Args()
 
     json, nyaan := sisimai.Dump(path, args)
-    if json != nil && *json != "" { fmt.Printf("%s\n", *json)   }
-    if len(*nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", *nyaan) }
+    if json != nil && *json != "" { fmt.Printf("%s\n", *json) }
+    if len(nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
@@ -281,8 +281,8 @@ func main() {
     }
 
     sisi, _ := sisimai.Rise(path, args)
-    if len(*sisi) > 0 {
-        for _, e := range *sisi {
+    if len(sisi) > 0 {
+        for _, e := range sisi {
             // eはsis.Fact構造体
             re, as := e.Catch.(map[string]interface{})
             if as == false { continue }
@@ -317,10 +317,10 @@ func main() {
         return true, nil
     }
 
-    // sisiは[]sis.Factへのポインター
+    // sisiは[]sis.Fact構造体スライス
     sisi, nyaan := sisimai.Rise(path, args)
-    if len(*sisi) > 0 {
-        for _, e := range *sisi {
+    if len(sisi) > 0 {
+        for _, e := range sisi {
             // e is a sis.Fact struct
             ...
         }
@@ -417,7 +417,7 @@ Related sites
 
 See also
 ---------------------------------------------------------------------------------------------------
-* [README.md - README.md in English](https://github.com/sisimai/go-sisimai/blob/5-stable/README.md)
+* [README.md - README.md in English(🇬🇧)](https://github.com/sisimai/go-sisimai/blob/5-stable/README.md)
 * [RFC3463 - Enhanced Mail System Status Codes](https://tools.ietf.org/html/rfc3463)
 * [RFC3464 - An Extensible Message Format for Delivery Status Notifications](https://tools.ietf.org/html/rfc3464)
 * [RFC3834 - Recommendations for Automatic Responses to Electronic Mail](https://tools.ietf.org/html/rfc3834)
@@ -436,4 +436,3 @@ License
 ===================================================================================================
 This software is distributed under The BSD 2-Clause License.
 
-cat: /Users/ak/.myaddr: No such file or directory

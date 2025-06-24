@@ -43,9 +43,9 @@ func Args() *sis.DecodingArgs { return new(sis.DecodingArgs) }
 //     - path (string):            Path to an UNIX mbox, Maildir/, or "STDIN" for standard input.
 //     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages
 //   Returns:
-//     - (*[]sis.Fact):            List of successfully decoded bounce messages
-//     - (*[]sis.NotDecoded):      List of occurred errors
-func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) {
+//     - ([]sis.Fact):             List of successfully decoded bounce messages
+//     - ([]sis.NotDecoded):       List of occurred errors
+func Rise(path string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 	sisidigest := make([]sis.Fact, 0, 2)    // Decoded bounce message structures
 	notdecoded := make([]sis.NotDecoded, 0) // List of occurred errors and warnings
 
@@ -54,7 +54,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 		ef := "<STDIN>"; if emailthing != nil { ef = emailthing.Path }
 		ce := *sis.MakeNotDecoded(nyaan.Error(), true); ce.Email(ef)
 		notdecoded = append(notdecoded, ce)
-		return &sisidigest, &notdecoded
+		return sisidigest, notdecoded
 	}
 
 	// The second argument `args` is a pointer to avoid potentially numerous internal struct copies
@@ -102,7 +102,7 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 
 	// TODO: Add warning information of the decoding results into notdecoded as sis.NotDecoded{}
 	// when the reason is "onhold" or "undefined"
-	return &sisidigest, &notdecoded
+	return sisidigest, notdecoded
 }
 
 // Dump returns decoded data as a JSON string.
@@ -111,14 +111,14 @@ func Rise(path string, args *sis.DecodingArgs) (*[]sis.Fact, *[]sis.NotDecoded) 
 //     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages
 //   Returns:
 //     - (*string):                Decoded data as a JSON string array
-//     - (*[]sis.NotDecoded):      List of occurred errors
-func Dump(path string, args *sis.DecodingArgs) (*string, *[]sis.NotDecoded) {
-	sisidigest, notdecoded := Rise(path, args); if len(*sisidigest) == 0 { return nil, notdecoded }
+//     - ([]sis.NotDecoded):       List of occurred errors
+func Dump(path string, args *sis.DecodingArgs) (*string, []sis.NotDecoded) {
+	sisidigest, notdecoded := Rise(path, args); if len(sisidigest) == 0 { return nil, notdecoded }
 	serialized := make([]string, 0)
 
-	for _, e := range *sisidigest {
+	for _, e := range sisidigest {
 		cj, nyaan := e.Dump(); if nyaan != nil {
-			*notdecoded = append(*notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false))
+			notdecoded = append(notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false))
 		}
 		if cj != "" { serialized = append(serialized, cj) }
 	}
