@@ -17,6 +17,7 @@ func TestRhostMicrosoft(t *testing.T) {
 		{{"03",   1, "5.1.10",  "550", "userunknown",      true, ""}},
 		{{"04",   1, "5.7.509", "550", "authfailure",     false, ""}},
 		{{"05",   1, "4.7.650", "451", "badreputation",   false, ""}},
+		{{"06",   1, "5.7.515", "550", "authfailure",     false, ""}},
 	}; EngineTest(t, "Microsoft", publiclist, true)
 
 	secretlist := [][]IsExpected{
