@@ -84,9 +84,8 @@ System requirements
 More details about system requirements are available at
 [Sisimai | Getting Started](https://libsisimai.org/en/start/) page.
 
-* [Go 1.24.0 or later](http://go.dev/dl/)
+* [Go 1.24.0 or later](http://go.dev/dl/) (Sisimai requires Go 1.24 or later since v5.4.0)
 * No external dependencies (excluding standard library) since v5.2.1
-* Sisimai requires Go 1.24 or later since v5.4.0
 
 Install and Build
 ---------------------------------------------------------------------------------------------------
