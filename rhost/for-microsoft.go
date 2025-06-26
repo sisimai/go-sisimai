@@ -642,11 +642,16 @@ func init() {
 				[4]string{"5.2.14", "", "", "misconfigured forwarding address"},
 
 				// Undocumented error messages ---------------------------------------------------------
-				[4]string{"4.4.3",  "", "", "temporary server error. please try again later attr18"},
-				[4]string{"4.7.0",  "", "", "temporary server error. please try again later. prx4 nexthop:"},
-				[4]string{"4.4.24", "", "", "message failed to be replicated: insufficient system resource:"},
-				[4]string{"4.4.25", "", "", "message failed to be replicated: no healthy secondary server available to accept replica at this time."},
-				[4]string{"4.4.28", "", "", "message failed to be replicated: the operation was canceled"},
+				// - 451 4.4.22 Message failed to be replicated: no healthy peers found ... (in reply to end of DATA command)
+				// - 451 4.4.23 Message failed to be replicated: No healthy secondary server available
+				//   to accept replica at this time. ... (in reply to end of DATA command)
+				// - 451 4.4.28 Message failed to be replicated:
+				//   Microsoft.Exchange.Transport.Net.Http.TransportHttpException(session Id: -1) ...(in reply to end of DATA command)
+				// - 451 4.4.28 Message failed to be replicated:
+				//   System.Net.Http.HttpRequestException(session Id: ****) ... (in reply to end of DATA command)
+				[4]string{"4.4.", "22", "28", "message failed to be replicated:"},
+				[4]string{"4.4.3",  "",   "", "temporary server error. please try again later attr18"},
+				[4]string{"4.7.0",  "",   "", "temporary server error. please try again later. prx4 nexthop:"},
 
 				// 550 5.4.318 Message expired, connection reset (SuspiciousRemoteServerError)
 				// 450 4.4.318 Connection was closed abruptly (SuspiciousRemoteServerError)
