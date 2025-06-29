@@ -21,7 +21,8 @@ v5.3.0p2 (The next version is 5.4.0, will be released in July.)
   - #99 Use `error.Error()` instead of `fmt.Sprintf()` for stringify an error message
   - #101 #102 #103 Use `make()` to initialise a slice
   - #105 #106 Tiny code improvement in `moji.Select()` function
-  - #107 #108 Implement the new error code `5.7.515` of Microsoft
+  - #107 #108 #149 #150 #151 Implement the new status code `5.7.515` as `authfailure` and other
+    undocumented status codes begin with `4.4.` as `systemerror` of Microsoft in `sisimai/rhost`
   - #109 #115 Fix spell errors in some documents
   - #111 #113 Set a pointer to `sis.DecodingArgs` struct when the 2nd argument of `sisimai.Rise()`
     is `nil`. Thanks to @VolkerLieber
@@ -37,8 +38,6 @@ v5.3.0p2 (The next version is 5.4.0, will be released in July.)
   - #142 #143 Change the order of fields in some structs to improve memory alignment
   - #146 #147 Adopt idiomatic Go style by returning direct slices instead of pointers to slices in
     some functions except `sisimai.Rise()`
-  - #149 #150 #151 Implement the new status code `5.7.515` as `authfailure` and other undocumented
-    status codes as `systemerror` of Microsoft in `sisimai/rhost`
 
 v5.3.0
 ---------------------------------------------------------------------------------------------------
