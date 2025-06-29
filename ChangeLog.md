@@ -37,6 +37,8 @@ v5.3.0p2 (The next version is 5.4.0, will be released in July.)
   - #142 #143 Change the order of fields in some structs to improve memory alignment
   - #146 #147 Adopt idiomatic Go style by returning direct slices instead of pointers to slices in
     some functions except `sisimai.Rise()`
+  - #149 #150 #151 Implement the new status code `5.7.515` as `authfailure` and other undocumented
+    status codes as `systemerror` of Microsoft in `sisimai/rhost`
 
 v5.3.0
 ---------------------------------------------------------------------------------------------------
