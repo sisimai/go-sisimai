@@ -31,7 +31,7 @@ v5.3.0p2 (The next version is 5.4.0, will be released in July.)
   - #131 #132 Use iota instead of `lhost.DeliveryStatus` hash map
   - #133 #134 use the `switch` statement without a condition instead of the infinite `for` loop and
     the `if` statement
-  - #135 Use `moji.IsContained()` instead of `string.Contains()` in the loop
+  - #135 Use `moji.IsContained()` instead of `string.Contains()` in some loops
   - #136 #137 Implement `moji.AlignedAny()` function in `moji/any.go`
   - #139 #141 `reason.GetRetried` has been replaced with `reason.ShouldBeRetried()` function
   - #140 Tiny code improvements in `reason.IsExplicit()` function
