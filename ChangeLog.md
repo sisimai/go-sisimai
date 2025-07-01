@@ -4,10 +4,10 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
-v5.3.0p2 (The next version is 5.4.0, will be released in July.)
+v5.4.0
 ---------------------------------------------------------------------------------------------------
-- release: ""
-- version: ""
+- release: "Tue,  1 Jul 2025 20:22:22 +0900 (JST)"
+- version: "5.4.0"
 - changes:
   - **BREAKING CHANGES**
     - `sisimai.Rise()` function now return `[]sis.Fact` and `[]sis.NotDecoded` instead of pointers.
@@ -20,6 +20,7 @@ v5.3.0p2 (The next version is 5.4.0, will be released in July.)
       - #123 #128 Use `strings.Lines()` instead of `strings.Split(v, "\n")`
   - #99 Use `error.Error()` instead of `fmt.Sprintf()` for stringify an error message
   - #101 #102 #103 Use `make()` to initialise a slice
+  - #104 #152 Implement new status codes of Google: `4.7.40` and `5.7.32` as `authfailure`
   - #105 #106 Tiny code improvement in `moji.Select()` function
   - #107 #108 #149 #150 #151 Implement the new status code `5.7.515` as `authfailure` and other
     undocumented status codes begin with `4.4.` as `systemerror` of Microsoft in `sisimai/rhost`
