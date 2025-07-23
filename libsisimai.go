@@ -79,7 +79,12 @@ func Rise(path string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 		} else {
 			// Read and decode each email file as a string
 			if emailthing.Size == 0 {
-				// The email file was empty
+				// Reason for this check:
+				//   While mail.Rise() already validates the overall size of the input source, this
+				//   specific condition addresses the case where an individual email message extracted
+				//   from a multi-message source (like a UNIX mbox) might be empty.
+				//   This acts as a necessary secondary validation to prevent issues during further
+				//   processing of empty messages.
 				ce := *sis.MakeNotDecoded("the email file is empty", true); ce.Email(emailthing.Path)
 				notdecoded = append(notdecoded, ce)
 				continue
