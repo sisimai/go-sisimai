@@ -29,6 +29,8 @@ PROFILESET := tmp/all-the-emails
 EXECUTABLE := bin/sisid
 BUILDFLAGS := -ldflags="-s -w" -trimpath
 GOLANGLINT := golangci-lint
+GO_SYSNAME := $(shell echo $$GOOS   || $(GO) env GOOS  )
+GO_CPUARCH := $(shell echo $$GOARCH || $(GO) env GOARCH)
 LISTENADDR := 127.0.0.1:5321
 K          := neko
 
@@ -37,9 +39,19 @@ K          := neko
 $(EXECUTABLE):
 	CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o $@ $@.go
 
+$(EXECUTABLE).$(GO_SYSNAME)-$(GO_CPUARCH):
+	GOOS=$(GO_SYSNAME) GOARCH=$(GO_CPUARCH) CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o $@ $(EXECUTABLE).go
+
 build:
 	$(RM) $(EXECUTABLE)
 	$(MAKE) -f $(FILE) $(EXECUTABLE)
+
+cross-build:
+	# https://go.dev/doc/install/source#environment
+	test -n "$(GO_SYSNAME)"
+	test -n "$(GO_CPUARCH)"
+	$(RM) $(EXECUTABLE).$(GO_SYSNAME)-$(GO_CPUARCH)
+	$(MAKE) -f $(FILE) $(EXECUTABLE).$(GO_SYSNAME)-$(GO_CPUARCH)
 
 test:
 	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
