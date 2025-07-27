@@ -13,10 +13,10 @@ import "libsisimai.org/sisimai/v5/moji"
 
 // Headers converts a mail.Header struct to a map[string][]string.
 //   Arguments:
-//     - argv0 (*mail.Header): Email headers
-//     - argv1 (bool):         Decode "Subject:" header or not
+//     - argv0 (*mail.Header): Email headers.
+//     - argv1 (bool):         Decode "Subject:" header or not.
 //   Returns:
-//     - (map[string][]string: Structured email header data
+//     - (map[string][]string: Structured email header data.
 func Headers(argv0 *mail.Header, argv1 bool) map[string][]string {
 	headermaps := map[string][]string{}
 	isrequired := []string{"from", "received", "message-id", "content-type", "subject"}
