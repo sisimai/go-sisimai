@@ -13,9 +13,9 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 
 // ExpandVERP gets the original recipient address from a VERP address.
 //   Arguments:
-//     - email (string): VERP address such as "bounce+neko=example.jp@example.org"
+//     - email (string): VERP address such as "bounce+neko=example.jp@example.org".
 //   Returns:
-//     - (string):       Expanded email address such as "neko@example.jp"
+//     - (string): Expanded email address such as "neko@example.jp".
 func ExpandVERP(email string) string {
 	if email                          == ""   { return "" }
 	if strings.IndexByte(email, '@')  == -1   { return "" }
@@ -28,9 +28,9 @@ func ExpandVERP(email string) string {
 
 // ExpandAlias removes string from "+" to "@" at a local part.
 //   Arguments:
-//     - email (string): Email alias such as "neko+straycat@example.jp"
+//     - email (string): Email alias such as "neko+straycat@example.jp".
 //   Returns:
-//     - (string):       Email address "neko@example.jp"
+//     - (string): Email address "neko@example.jp".
 func ExpandAlias(email string) string {
 	if email == "" || strings.IndexByte(email, '+') < 1 { return "" }
 	if rfc5322.IsEmailAddress(email)  == false          { return "" }
