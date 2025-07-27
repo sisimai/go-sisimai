@@ -7,8 +7,7 @@
 // |_| |_| |_|\___// |_|
 //               |__/   
 
-// Package "moji" provides functions for dealing strings
-// "moji" stands for "character" or "string" in Japanese
+// Package "moji" provides functions for dealing strings. "moji" stands for "character" or "string" in Japanese.
 package moji
 import "fmt"
 import "strings"
@@ -19,11 +18,11 @@ const RHS string = "<$>" // The RHS string for Select() function
 
 // Token creates the message token from an addresser, and a recipient, and an unix machine time.
 //   Arguments:
-//     - argv1 (string): Email address of the sender
-//     - argv2 (string): Email address of the recipient
-//     - epoch (int):    Machine time of the bounce
+//     - argv1 (string): Email address of the sender.
+//     - argv2 (string): Email address of the recipient.
+//     - epoch (int):    Machine time of the bounce.
 //   Returns:
-//     - (string):       Message token(SHA1 hex digest) or empty string
+//     - (string): Message token(SHA1 hex digest) or empty string.
 func Token(argv1 string, argv2 string, epoch int) string {
 	// - http://en.wikipedia.org/wiki/ASCII
 	if argv1 == "" || len(argv2) == 0 { return "" }
@@ -34,10 +33,10 @@ func Token(argv1 string, argv2 string, epoch int) string {
 	return fmt.Sprintf("%x", crypt.Sum(nil))
 }
 
-// Squeeze remove redundant characters from the given string
+// Squeeze remove redundant characters from the given string.
 //   Arguments:
-//     - argv0 (*string): String including redundant characters like "neko  chan"
-//     - argv1 (byte):    Characters to be squeezed, for example ' '
+//     - argv0 (*string): String including redundant characters like "neko  chan".
+//     - argv1 (byte):    Characters to be squeezed, for example ' '.
 func Squeeze(argv0 *string, argv1 byte) {
 	if argv0 == nil || *argv0 == "" || strings.IndexByte(*argv0, argv1) < 0 { return }
 
@@ -51,9 +50,9 @@ func Squeeze(argv0 *string, argv1 byte) {
 
 // Sweep clears the string out.
 //   Arguments:
-//     - argv1 (string): String to be cleaned
+//     - argv1 (string): String to be cleaned.
 //   Returns:
-//     - (string):       Cleaned out string
+//     - (string): Cleaned out string.
 func Sweep(argv1 string) string {
 	if argv1 == "" { return "" }
 
@@ -66,6 +65,10 @@ func Sweep(argv1 string) string {
 }
 
 // ContainsOnlyNumbers returns true when the given string contain numbers only.
+//   Arguments:
+//     - argv1 (string): String including only numbers such as "2022"
+//   Returns:
+//     - (string): true if the string contain only numbers
 func ContainsOnlyNumbers(argv1 string) bool {
 	if argv1 == "" { return false }
 	for _, e := range argv1 { if e < 48 || e > 57 { return false } }
@@ -74,10 +77,10 @@ func ContainsOnlyNumbers(argv1 string) bool {
 
 // Aligned checks if each element of the 2nd argument is aligned in the 1st argument or not.
 //   Arguments:
-//     - argv1 (string):   String to be checked such as "I am a cat. I have, as yet, no name."
-//     - argv2 ([]string): List including the ordered strings such as []string{"cat", "yet"}
+//     - argv1 (string):   String to be checked such as "I am a cat. I have, as yet, no name.".
+//     - argv2 ([]string): List including the ordered strings such as `[]string{"cat", "yet"}`.
 //   Returns:
-//     - (bool):           true if the all strings are ordered in argv1, false otherwise.
+//     - (bool): true if the all strings are ordered in argv1, false otherwise.
 func Aligned(argv1 string, argv2 []string) bool {
 	if argv1 == "" || len(argv2) == 0 { return false }
 
@@ -93,13 +96,13 @@ func Aligned(argv1 string, argv2 []string) bool {
 	return right == len(argv2)
 }
 
-// IndexOnTheWay returns the index of the first string of argv1 finding after the start position in argv0
+// IndexOnTheWay returns the index of the first string of argv1 finding after the start position in argv0.
 //   Arguments:
-//     - argv0 (string): The string to be searched
-//     - argv1 (string): The substring to search for
-//     - start (int):    The index from which to start the search
+//     - argv0 (string): The string to be searched.
+//     - argv1 (string): The substring to search for.
+//     - start (int):    The index from which to start the search.
 //   Returns:
-//     - (int):          The index of argv1
+//     - (int): The index of argv1.
 func IndexOnTheWay(argv0, argv1 string, start int) int {
 	if start < 0 || start >= len(argv0)                    { return -1 }
 	fi := strings.Index(argv0[start:], argv1); if fi == -1 { return -1 }
@@ -108,12 +111,12 @@ func IndexOnTheWay(argv0, argv1 string, start int) int {
 
 // Select returns a string selected between the 2nd argument and 3rd argument from the 1st argument.
 //   Arguments:
-//     - argv0 (string): The string to be searched for example "From: <neko@example.jp>"
-//     - begin (string): Substring such as "<"
-//     - until (string): Substring such as ">"
-//     - start (int):    The index position for seeking
+//     - argv0 (string): The string to be searched for example "From: <neko@example.jp>".
+//     - begin (string): Substring such as "<".
+//     - until (string): Substring such as ">".
+//     - start (int):    The index position for seeking.
 //   Returns:
-//     - (string):       Selected string such as "neko@example.jp"
+//     - (string): Selected string such as "neko@example.jp".
 func Select(argv0, begin, until string, start int) string {
 	if argv0 == "" || start < 0 { return ""   }
 	if begin == "" /* <@> */    { begin = LHS }
