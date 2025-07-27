@@ -22,10 +22,10 @@ type NotDecoded struct {
 
 // MakeNotDecoded is a constructor of sis.NotDecoded struct.
 //   Arguments:
-//     - argv0 (string): Error message
-//     - argv1 (bool):   Unrecoverable error or not
+//     - argv0 (string): Error message.
+//     - argv1 (bool):   Unrecoverable error or not.
 //   Returns:
-//     - (*NotDecoded):  Initialized error struct
+//     - (*NotDecoded):  Initialized error struct.
 func MakeNotDecoded(argv0 string, argv1 bool) *NotDecoded {
 	p, _, l, _ := runtime.Caller(1); return &NotDecoded{
 		BecauseOf: argv0,
@@ -36,6 +36,8 @@ func MakeNotDecoded(argv0 string, argv1 bool) *NotDecoded {
 }
 
 // *NotDecoded.Error returns the error message as a string.
+//   Returns:
+//     - (string): Formatted error message with a timestamp.
 func(this *NotDecoded) Error() string {
 	if this.BecauseOf == "" { return "" }
 
@@ -44,6 +46,8 @@ func(this *NotDecoded) Error() string {
 }
 
 // *NotDecoded.Label returns a label string for printing error message.
+//   Returns:
+//     - (string): Label string
 func(this *NotDecoded) Label() string {
 	if this.CalledOff == true { return " *****error: " }
 	return " ***warning: "
@@ -51,9 +55,9 @@ func(this *NotDecoded) Label() string {
 
 // *NotDecoded.Email receives a path to email and set it into EmailFile.
 //   Arguments:
-//     - argv1 (string): Path to an email being set into the EmailFile
+//     - argv1 (string): Path to an email being set into the EmailFile.
 //   Returns:
-//     - (string):       Current value of the EmailFile
+//     - (string): Current value of the EmailFile.
 func(this *NotDecoded) Email(argv1 string) string {
 	if argv1          == "" { return this.EmailFile  }
 	if this.EmailFile == "" { this.EmailFile = argv1 }
