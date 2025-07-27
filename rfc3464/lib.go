@@ -7,7 +7,7 @@
 // |_| \_\_|   \____|____/   |_|  \___/   |_|  
 
 // Package "rfc3464" provides functions like a MTA module in "lhost" package for decoding bounce
-// messages formatted according to RFC3464; An Extensible Message Format for Delivery Status Notifications
+// messages formatted according to RFC3464; An Extensible Message Format for Delivery Status Notifications.
 // https://datatracker.ietf.org/doc/html/rfc3464
 package rfc3464
 import "slices"
@@ -25,9 +25,9 @@ import "libsisimai.org/sisimai/v5/smtp/command"
 
 // Inquire decodes a bounce message that have fields defined in RFC3464.
 //   Arguments:
-//     - bf (*sis.BeforeFact):  Message entity in progress
+//     - bf (*sis.BeforeFact):  Message entity in progress.
 //   Returns:
-//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
+//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
 func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
