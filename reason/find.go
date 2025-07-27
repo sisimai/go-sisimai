@@ -12,9 +12,9 @@ import "libsisimai.org/sisimai/v5/smtp/status"
 
 // Find detects and returns the bounce reason.
 //   Arguments:
-//     - fo (*sis.Fact): Decoded data in progress
+//     - fo (*sis.Fact): Decoded data in progress.
 //   Returns:
-//     - (string):       Bounce reason name or an empty string
+//     - (string): Bounce reason name or an empty string.
 func Find(fo *sis.Fact) string {
 	// Return the reason text already decided except the reason matched with the name checked by
 	// reason.ShouldBeRetried() function.
@@ -48,9 +48,9 @@ func Find(fo *sis.Fact) string {
 
 // anotherone detects the other bounce reason, is a fall back function for Find().
 //   Arguments:
-//     - fo (*sis.Fact): Decoded data in progress
+//     - fo (*sis.Fact): Decoded data in progress.
 //   Returns:
-//     - (string):       Bounce reason name or an empty string
+//     - (string): Bounce reason name or an empty string.
 func anotherone(fo *sis.Fact) string {
 	if fo                    == nil  { return ""        }
 	if IsExplicit(fo.Reason) == true { return fo.Reason }
