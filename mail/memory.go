@@ -13,7 +13,7 @@ import "io"
 // readMemory is an email reader stored in a variable as a string.
 //   Returns:
 //     - (*string): Contents of each email in EmailEntity.payload field.
-//     - (error):   Occurred error
+//     - (error):   Occurred error.
 func (this *EmailEntity) readMemory() (*string, error) {
 	if this.Size == 0 || this.offset >= len(this.payload) { return nil, io.EOF }
 
