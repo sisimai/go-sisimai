@@ -17,7 +17,7 @@ func init() {
 	//   Arguments:
 	//     - argv1 (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
-	//     - (bool):         true if the argument includes one or more error message pattern
+	//     - (bool): true if the argument includes one or more error message pattern.
 	IncludedIn["Suspend"] = func(argv1 string) bool {
 		if argv1 == "" { return false }
 
@@ -51,9 +51,9 @@ func init() {
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress
+	//     - fo (*sis.Fact): Decoded data in progress.
 	//   Returns:
-	//     - (bool):         true if a reason is the reason defined in this file
+	//     - (bool): true if a reason is the reason defined in this file.
 	ProbesInto["Suspend"] = func(fo *sis.Fact) bool {
 		if fo == nil                                       { return false }
 		if fo.Reason == "suspend" || fo.ReplyCode == "525" { return true  }
