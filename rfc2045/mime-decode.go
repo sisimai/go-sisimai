@@ -15,10 +15,10 @@ import "mime/quotedprintable"
 
 // DecodeB decodes Base64 encoded text.
 //   Arguments:
-//     - argv0 (string): Base64-Encoded text
-//     - argv1 (string): Character set name
+//     - argv0 (string): Base64-Encoded text.
+//     - argv1 (string): Character set name.
 //   Returns:
-//     - (string):       Decoded text
+//     - (string): Decoded text.
 func DecodeB(argv0 string, argv1 string) (string, error) {
 	if len(argv0) < 8 { return argv0, nil }
 
@@ -27,12 +27,12 @@ func DecodeB(argv0 string, argv1 string) (string, error) {
 	return string(cv), nil
 }
 
-// DecodeQ() decodes Quoted-Pritable encdoed text
+// DecodeQ decodes Quoted-Pritable encdoed text.
 //   Arguments:
-//     - argv0 (string): Quoted-Printable encoded text
+//     - argv0 (string): Quoted-Printable encoded text.
 //   Returns:
-//     - (string):       Decoded text
-//     - (error):        Decoding error
+//     - (string): Decoded text.
+//     - (error):  Decoding error.
 func DecodeQ(argv0 string) (string, error) {
 	if len(argv0)  < 8 { return argv0, nil }
 	decodingif := quotedprintable.NewReader(bytes.NewReader([]byte(argv0)))
