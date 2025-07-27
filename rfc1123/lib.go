@@ -6,7 +6,7 @@
 // |  _ <|  _|| |___| | |/ __/ ___) |
 // |_| \_\_|   \____|_|_|_____|____/ 
 
-// package "rfc1123" provides functions related to Internet hosts described in RFC1123
+// package "rfc1123" provides functions related to Internet hosts described in RFC1123.
 // https://datatracker.ietf.org/doc/html/rfc1123
 package rfc1123
 import "strings"
@@ -48,7 +48,7 @@ var suffix0x32 = []string{")", "]", ">", ":", ";"}
 //   Arguments:
 //     - argv1 (string): Hostname
 //   Returns:
-//     - (bool):         true if it is a valid Internet hostname, false otherwise.
+//     - (bool): true if it is a valid Internet hostname, false otherwise.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc1123
 func IsInternetHost(argv1 string) bool {
@@ -84,9 +84,9 @@ func IsInternetHost(argv1 string) bool {
 
 // IsDomainLiteral returns true if the domain part is [IPv4:...] or [IPv6:...].
 //   Arguments:
-//     - email (string): Email address
+//     - email (string): Email address.
 //   Returns:
-//     - (bool):         true if the domain part is a valid domain-literal, false otherwise.
+//     - (bool): true if the domain part is a valid domain-literal, false otherwise.
 func IsDomainLiteral(email string) bool {
 	email = strings.Trim(email, "<>")
 	if len(email)                     < 16    { return false } // e@[IPv4:0.0.0.0] is 16 characters
@@ -104,11 +104,11 @@ func IsDomainLiteral(email string) bool {
 	return false
 }
 
-// Find() returns a valid internet hostname found from the argument
+// Find returns a valid internet hostname found from the argument.
 //   Arguments:
-//     - argv1 (string): String including hostnames
+//     - argv1 (string): String including hostnames.
 //   Returns:
-//     - (string):       Valid internet hostname found in the argument
+//     - (string): Valid internet hostname found in the argument.
 func Find(argv1 string) string {
 	if argv1 == "" { return "" }
 
