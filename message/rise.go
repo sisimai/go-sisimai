@@ -6,7 +6,7 @@
 // |_| |_| |_|\___||___/___/\__,_|\__, |\___|
 //                                |___/      
 
-// Package "message" provides functions to read email message as a string, to tidy up each line
+// Package "message" provides functions to read email message as a string, to tidy up each line.
 package message
 
 import "io"
@@ -21,10 +21,10 @@ var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rf
 
 // Rise decode and structure various formats of bounce emails.
 //   Arguments:
-//     - mesg (*string):          Entire email message
-//     - hook (sis.CfParameter0): The first callback function
+//     - mesg (*string):          Entire email message.
+//     - hook (sis.CfParameter0): The first callback function.
 //   Returns:
-//     - (*sis.BeforeFact):       Decoded and structured bounce email data
+//     - (*sis.BeforeFact): Decoded and structured bounce email data.
 func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 	if mesg == nil || len(*mesg) < 1 { return new(sis.BeforeFact) }
 
