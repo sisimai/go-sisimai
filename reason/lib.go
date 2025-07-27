@@ -6,8 +6,9 @@
 // |_|  \___|\__,_|___/\___/|_| |_|
 
 // Package "reason" provides functions for detecting the bounce reason by matching many error message
-// patterns defined in why-*.go files
+// patterns defined in why-*.go files.
 package reason
+
 import "slices"
 import "libsisimai.org/sisimai/v5/sis"
 
@@ -75,18 +76,18 @@ var classorder = [][]string{
 
 // IsExplicit returns false when the argument is empty or is "undefined" or is "onhold".
 //   Arguments:
-//     - argv1 (string): Reason name
+//     - argv1 (string): Reason name.
 //   Returns:
-//     - (bool):         true if the reason is an explicit, false otherwise
+//     - (bool): true if the reason is an explicit, false otherwise.
 func IsExplicit(argv1 string) bool {
 	return !(argv1 == "" || argv1 == "undefined" || argv1 == "onhold")
 }
 
 // ShouldBeRetried returns true if the argument is a reason listed in the table defined in this function.
 //   Arguments:
-//     - argv1 (string): Reason name
+//     - argv1 (string): Reason name.
 //   Returns:
-//     - (bool):         true if the reason is listed in the table
+//     - (bool): true if the reason is listed in the table.
 func ShouldBeRetried(argv1 string) bool {
 	cv := []string{"undefined", "onhold", "systemerror", "securityerror", "expired", "networkerror", "hostunknown", "userunknown"}
 	return slices.Contains(cv, argv1) || argv1 == ""
