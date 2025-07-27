@@ -47,8 +47,8 @@ const maximumSize = 2000 * 1024 * 1024 * 1024
 //   Arguments:
 //     - path (string):  Path to an UNIX mbox, Maildir/, or "STDIN" for standard input.
 //   Returns:
-//     - (*EmailEntity): Pointer to mail.EmailEntity struct
-//     - (error):        Occurred error
+//     - (*EmailEntity): Pointer to mail.EmailEntity struct.
+//     - (error):        Occurred error.
 func Rise(argv0 string) (*EmailEntity, error) {
 	ee := EmailEntity{}
 
@@ -133,9 +133,9 @@ func Rise(argv0 string) (*EmailEntity, error) {
 
 // countUnixMboxFrom returns the number of "From " line of the UNIX mbox.
 //   Arguments:
-//     - argv0 (*string):  Pointer to the entire email message
+//     - argv0 (*string): Pointer to the entire email message.
 //   Returns:
-//     - (uint): The number of "From " lines
+//     - (uint): The number of "From " lines.
 func countUnixMboxFrom(argv0 *string) uint {
 	if len(*argv0) < 5 || strings.HasPrefix(*argv0, "From ") == false { return 0 }
 	cw := strings.Count(*argv0, "\nFrom ")
@@ -144,8 +144,8 @@ func countUnixMboxFrom(argv0 *string) uint {
 
 // *EmailEntity.Read is an email reader, works like an iterator.
 //   Returns:
-//     - (*string): Each email message one by one
-//     - (error):        Occurred error
+//     - (*string): Each email message one by one.
+//     - (error):   Occurred error
 func(this *EmailEntity) Read() (*string, error) {
 	var email *string // Email contents: headers and entire message body
 	var nyaan  error  // Some errors while reading an email file
