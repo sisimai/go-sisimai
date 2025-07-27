@@ -7,7 +7,7 @@
 // |___/_| |_| |_|\__| .__/_/   \__|_|  \__,_|_| |_|___/\___|_|  |_| .__/ \__|
 //                   |_|                                           |_|        
 
-// Package "smtp/transcript" provides functions related to SMTP transcript logs
+// Package "smtp/transcript" provides functions related to SMTP transcript logs.
 package transcript
 import "strings"
 import "libsisimai.org/sisimai/v5/moji"
@@ -63,11 +63,11 @@ type TranscriptLog struct {
 
 // Rise returns the decoded transcript of the SMTP session and makes the structured data.
 //   Arguments:
-//     - argv0 (string):     Transcript text MTA returned
-//     - argv1 (string):     Label string of the SMTP cilent such as ">>>"
-//     - argv2 (string):     Label string of the SMTP server such as "<<<"
+//     - argv0 (string): Transcript text MTA returned.
+//     - argv1 (string): Label string of the SMTP cilent such as ">>>".
+//     - argv2 (string): Label string of the SMTP server such as "<<<".
 //   Returns:
-//     - ([]TranscriptLog):  List of structured transcript logs
+//     - ([]TranscriptLog):  List of structured transcript logs.
 func Rise(argv0, argv1, argv2 string) []TranscriptLog {
 	if argv0 == "" { return nil    }
 	if argv1 == "" { argv1 = ">>>" } // Label for an SMTP client
