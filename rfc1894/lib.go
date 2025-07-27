@@ -7,7 +7,7 @@
 // |_| \_\_|   \____|_|\___/  /_/   |_|  
 
 // Package "rfc1894" provides funtions related to RFC1894; An Extensible Message Format for Delivery
-// Status Notifications https://datatracker.ietf.org/doc/html/rfc1894
+// Status Notifications. https://datatracker.ietf.org/doc/html/rfc1894
 package rfc1894
 import "slices"
 import "strings"
@@ -37,9 +37,9 @@ var ActionList = map[string]bool{
 
 // Label returns a lower-cased field name.
 //   Arguments:
-//     - argv0 (string): A line including field and value defined in RFC3464
+//     - argv0 (string): A line including field and value defined in RFC3464.
 //   Returns:
-//     - (string):       Lower-cased field name as a label
+//     - (string): Lower-cased field name as a label.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
 func Label(argv0 string) string {
@@ -49,9 +49,9 @@ func Label(argv0 string) string {
 
 // Match checks that the argument matches with a field defined in RFC3464 or not.
 //   Arguments:
-//     - argv0 (string): Line inlcuding field and value defined in RFC3464
+//     - argv0 (string): Line inlcuding field and value defined in RFC3464.
 //   Returns:
-//     - (uint8):        0 is not matched, 1 is matched with per-message field, 2 is per-recipient.
+//     - (uint8): 0 is not matched, 1 is matched with per-message field, 2 is per-recipient.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
 func Match(argv0 string) uint8 {
@@ -104,9 +104,9 @@ func Match(argv0 string) uint8 {
 
 // Field checks that the argument is including field defined in RFC3464 or not and return values.
 //   Arguments:
-//     - argv0 (string): A line including field and value defined in RFC3464
+//     - argv0 (string): A line including field and value defined in RFC3464.
 //   Returns:
-//     - ([]string):     []string{"field-name", "value-type", "value", "field-group", "comment"}
+//     - ([]string): []string{"field-name", "value-type", "value", "field-group", "comment"}
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
 func Field(argv0 string) []string {
