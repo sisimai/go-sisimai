@@ -14,8 +14,8 @@ import "path/filepath"
 
 // listMaildir is a Maildir/ reader, works like a iterator.
 //   Returns:
-//     - (int):   The number of email files in the Maildir/
-//     - (error): Occurred error
+//     - (int):   The number of email files in the Maildir/.
+//     - (error): Occurred error.
 func(this *EmailEntity) listMaildir() (int, error) {
 	if this.handle == nil {
 		// Open the Maildir/
@@ -33,8 +33,8 @@ func(this *EmailEntity) listMaildir() (int, error) {
 
 // readMaildir is an email reader in the Maildir/, works like a iterator.
 //   Returns:
-//     - (*string): Contents of each email file in the Maildir/ one by one
-//     - (error):   Occurred error
+//     - (*string): Contents of each email file in the Maildir/ one by one.
+//     - (error):   Occurred error.
 func(this *EmailEntity) readMaildir() (*string, error) {
 	if this.Size == 0           { return nil, fmt.Errorf("there is no email file in %s", this.Dir) }
 	if this.Size <= this.offset { return nil, io.EOF }
