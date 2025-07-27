@@ -12,9 +12,9 @@ import "strings"
 func init() {
 	// ReturnedBy["PowerMTA"] returns a []string which is compatible with the value returned from rfc1894.Field().
 	//   Arguments:
-	//     - argv1 (string): Line of the error message
+	//     - argv1 (string): Line of the error message.
 	//   Returns:
-	//     - ([]string):     []string{"field-name", "value-type", "value", "field-group", "comment"}
+	//     - ([]string): []string{"field-name", "value-type", "value", "field-group", "comment"}
 	//   See:
 	//     - https://bird.com/email/power-mta
 	ReturnedBy["PowerMTA"] = func(argv1 string) []string {
