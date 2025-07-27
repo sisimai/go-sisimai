@@ -14,9 +14,9 @@ import "libsisimai.org/sisimai/v5/moji"
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress
+	//     - fo (*sis.Fact): Decoded data in progress.
 	//   Returns:
-	//     - (string):       Bounce reason name or an empty string
+	//     - (string): Bounce reason name or an empty string.
 	ReturnedBy["Cloudflare"] = func(fo *sis.Fact) string {
 		// - Cloudflare Email Routing: https://developers.cloudflare.com/email-routing/postmaster/
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
