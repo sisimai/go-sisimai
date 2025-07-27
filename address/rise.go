@@ -12,9 +12,9 @@ import "libsisimai.org/sisimai/v5/sis"
 
 // Rise is a constructor of sis.EmailAddress.
 //   Arguments:
-//     - argvs ([3]string):   [3]string{"email address", "display name", "comment"}
+//     - argvs ([3]string): Address slice such as `[3]string{"email address", "display name", "comment"}`.
 //   Returns:
-//     - (*sis.EmailAddress): EmailAddress struct when the email address is valid
+//     - (*sis.EmailAddress): EmailAddress struct when the email address is valid.
 func Rise(argvs [3]string) *sis.EmailAddress {
 	if argvs[0] == "" { return nil }
 
