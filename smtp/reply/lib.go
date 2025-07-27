@@ -129,9 +129,9 @@ func AssociatedWith(reply string) []string { return associated[reply] }
 
 // Test checks whether a reply code is a valid code or not.
 //   Arguments:
-//     - argv0 (string): SMTP reply code
+//     - argv0 (string): SMTP reply code.
 //   Returns:
-//     - (bool):         true if the argument is a valid SMTP reply code, false otherwise.
+//     - (bool): true if the argument is a valid SMTP reply code, false otherwise.
 func Test(argv0 string) bool {
 	if len(argv0)  <  3 { return false }
 
@@ -157,10 +157,10 @@ func Test(argv0 string) bool {
 
 // Find returns an SMTP reply code found from the given string.
 //   Arguments:
-//     - argv1 (string): String including SMTP reply code like 550
-//     - argv2 (string): SMTP status code like "5.1.1", or the 1st digit of the code like "2", "4", or "5"
+//     - argv1 (string): String including SMTP reply code like 550.
+//     - argv2 (string): SMTP status code like "5.1.1", or the 1st digit of the code like "2", "4", or "5".
 //   Returns:
-//     - (string):       SMTP reply code found in the 1st argument
+//     - (string): SMTP reply code found in the 1st argument.
 func Find(argv1 string, argv2 string) string {
 	if len(argv1) < 3 || strings.Contains(strings.ToUpper(argv1), "X-UNIX") { return "" }
 	if len(argv2) == 0 { argv2 = "0" }
