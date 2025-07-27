@@ -12,9 +12,9 @@ import "libsisimai.org/sisimai/v5/rfc1123"
 
 // IsEmailAddress checks that the argument is an email address or not.
 //   Arguments:
-//     - email (string): Email address string
+//     - email (string): Email address string.
 //   Returns:
-//     - (bool):         true if the argument is a valid email address
+//     - (bool): true if the argument is a valid email address.
 func IsEmailAddress(email string) bool {
 	// See http://www.ietf.org/rfc/rfc5322.txt
 	//   or http://www.ex-parrot.com/pdw/Mail-RFC822-Address.html ...
@@ -116,18 +116,18 @@ func IsEmailAddress(email string) bool {
 
 // IsQuotedAddress checks that the local part of the argument is quoted address or not.
 //   Arguments:
-//     - email (string): Email address string
+//     - email (string): Email address string.
 //   Returns:
-//     - (bool):         true if the local part is quoted such as "neko kijitora"@example.jp
+//     - (bool): true if the local part is quoted such as "neko kijitora"@example.jp .
 func IsQuotedAddress(email string) bool {
 	return strings.HasPrefix(email, `"`) && strings.Contains(email, `"@`)
 }
 
 // IsComment returns true if the string starts with "(" and ends with ")".
 //   Arguments:
-//     - argv0 (string): String including an comment in email address like "(neko, cat)"
+//     - argv0 (string): String including an comment in email address like "(neko, cat)".
 //   Returns:
-//     - (bool):         true if the argument is a comment
+//     - (bool): true if the argument is a comment.
 func IsComment(argv0 string) bool {
 	if argv0 == "" || !strings.HasPrefix(argv0, "(") || !strings.HasSuffix(argv0, ")") { return false }
 	return true
