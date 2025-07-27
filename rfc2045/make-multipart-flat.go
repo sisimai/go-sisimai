@@ -13,10 +13,10 @@ import "libsisimai.org/sisimai/v5/moji"
 
 // haircut remove unnecessary header fields except Content-Type, Content-Transfer-Encoding from multipart/* block.
 //   Arguments:
-//     - block (*string): multipart/* block text
-//     - heads (bool):    true if it returns only Content-(Type|Transfer-Encoding) headers
+//     - block (*string): multipart/* block text.
+//     - heads (bool):    true if it returns only Content-(Type|Transfer-Encoding) headers.
 //   Returns:
-//     - ([]string):      Two headers and body part of multipart/* block
+//     - ([]string): Two headers and body part of multipart/* block.
 func haircut(block *string, heads bool) []string {
 	// There is neither "Content-Type:" nor "Content-Transfer-Encoding:" header
 	upperchunk, lowerchunk, exists := strings.Cut(*block, "\n\n"); if exists == false { return []string{"", ""} }
@@ -80,11 +80,11 @@ func haircut(block *string, heads bool) []string {
 
 // levelout splits the second argument: multipart/* blocks by a boundary string in the first argument.
 //   Arguments:
-//     - arvg0 (string):      value of Content-Type header
-//     - arvg1 (*string):     Pointer to multipart/* message blocks
+//     - arvg0 (string):  value of Content-Type header.
+//     - arvg1 (*string): Pointer to multipart/* message blocks.
 //   Returns:
-//     - ([][3]string):       List of each part of multipart/*
-//     - ([]sis.NotDecoded):  Pointer to an occurred error list
+//     - ([][3]string):      List of each part of multipart/*.
+//     - ([]sis.NotDecoded): Pointer to an occurred error list.
 func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 	if argv0 == "" || argv1 == nil || *argv1 == ""        { return nil, nil }
 	boundary01 := Boundary(argv0, 0); if boundary01 == "" { return nil, nil }
@@ -141,11 +141,11 @@ func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
 
 // Makeflat makes multipart/* part blocks flat and decode each part.
 //   Arguments:
-//     - argv0 (string):      Value of Content-Type header
-//     - argv1 (*string):     Pointer to multipart/* message blocks
+//     - argv0 (string):  Value of Content-Type header.
+//     - argv1 (*string): Pointer to multipart/* message blocks.
 //   Returns:
-//     - (*string):           Message body
-//     - ([]sis.NotDecoded):  Occurred errors
+//     - (*string):          Message body.
+//     - ([]sis.NotDecoded): Occurred errors.
 func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 	lhead := strings.ToLower(argv0)
 	if moji.ContainsAny(lhead, []string{"multipart/", "boundary="}) == false { return nil, nil }
