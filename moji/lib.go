@@ -75,6 +75,18 @@ func ContainsOnlyNumbers(argv1 string) bool {
 	return true
 }
 
+// IsContained checks whether any element in argv2 includes argv1 or not. (argv1 < argv2)
+//   Arguments:
+//     - argv1 (string):   String to be contained as a substring listed in argv2.
+//     - argv2 ([]string): List of strings.
+//   Returns:
+//     - (bool): true if one or more string in argv1 was found in argv2.
+func IsContained(argv1 string, argv2 []string) bool {
+	if argv1 == "" || len(argv2) == 0 { return false }
+	for _, e := range argv2 { if strings.Contains(e, argv1) { return true } }
+	return false
+}
+
 // Aligned checks if each element of the 2nd argument is aligned in the 1st argument or not.
 //   Arguments:
 //     - argv1 (string):   String to be checked such as "I am a cat. I have, as yet, no name.".
