@@ -146,32 +146,32 @@ func countUnixMboxFrom(argv0 *string) uint {
 //   Returns:
 //     - (*string): Each email message one by one.
 //     - (error):   Occurred error
-func(this *EmailEntity) Read() (*string, error) {
+func(ee *EmailEntity) Read() (*string, error) {
 	var email *string // Email contents: headers and entire message body
 	var nyaan  error  // Some errors while reading an email file
 
-	switch this.Kind {
-		case "maildir": email, nyaan = this.readMaildir()
-		case "mailbox": email, nyaan = this.readMailbox()
-		case "memory":  email, nyaan = this.readMemory()
-		case "stdin":   email, nyaan = this.readSTDIN()
+	switch ee.Kind {
+		case "maildir": email, nyaan = ee.readMaildir()
+		case "mailbox": email, nyaan = ee.readMailbox()
+		case "memory":  email, nyaan = ee.readMemory()
+		case "stdin":   email, nyaan = ee.readSTDIN()
 	}
 	return email, nyaan
 }
 
 // *EmailEntity.setNewLine set a new line type(CRLF, CR, LF) to EmailEntity.newline field.
-func(this *EmailEntity) setNewLine() {
-	if this.Kind == "maildir" { return }
+func(ee *EmailEntity) setNewLine() {
+	if ee.Kind == "maildir" { return }
 	var bufferedio *bufio.Reader
 	var readbuffer string
 
-	if this.Kind == "mailbox" || this.Kind == "stdin" {
+	if ee.Kind == "mailbox" || ee.Kind == "stdin" {
 		// UNIX mbox or STDIN
-		if this.Kind == "mailbox" {
+		if ee.Kind == "mailbox" {
 			// UNIX mbox
-			filep, nyaan := os.Open(this.Path); if nyaan != nil { return }
-			this.handle   = filep
-			bufferedio    = bufio.NewReader(this.handle)
+			filep, nyaan := os.Open(ee.Path); if nyaan != nil { return }
+			ee.handle  = filep
+			bufferedio = bufio.NewReader(ee.handle)
 
 		} else {
 			// STDIN
@@ -184,13 +184,13 @@ func(this *EmailEntity) setNewLine() {
 
 	} else {
 		// Memory
-		if len(this.payload) == 0 || this.payload[0] == "" { this.newline = 0; return }
-		readbuffer = this.payload[0][:min(1000, len(this.payload[0]))]
+		if len(ee.payload) == 0 || ee.payload[0] == "" { ee.newline = 0; return }
+		readbuffer = ee.payload[0][:min(1000, len(ee.payload[0]))]
 	}
 
-	if strings.Contains(readbuffer, "\r\n")     { this.newline = 3; return }
-	if strings.IndexByte(readbuffer, '\r') > -1 { this.newline = 2; return }
-	if strings.IndexByte(readbuffer, '\n') > -1 { this.newline = 1; return }
-	this.newline = 0
+	if strings.Contains(readbuffer, "\r\n")     { ee.newline = 3; return }
+	if strings.IndexByte(readbuffer, '\r') > -1 { ee.newline = 2; return }
+	if strings.IndexByte(readbuffer, '\n') > -1 { ee.newline = 1; return }
+	ee.newline = 0
 }
 
