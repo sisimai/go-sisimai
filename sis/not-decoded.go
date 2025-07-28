@@ -38,18 +38,18 @@ func MakeNotDecoded(argv0 string, argv1 bool) *NotDecoded {
 // *NotDecoded.Error returns the error message as a string.
 //   Returns:
 //     - (string): Formatted error message with a timestamp.
-func(this *NotDecoded) Error() string {
-	if this.BecauseOf == "" { return "" }
+func(no *NotDecoded) Error() string {
+	if no.BecauseOf == "" { return "" }
 
-	timestring:= this.Timestamp.Format("2006/01/02 15:04:05")
-	return timestring + " " + this.EmailFile + " " + this.BecauseOf
+	timestring:= no.Timestamp.Format("2006/01/02 15:04:05")
+	return timestring + " " + no.EmailFile + " " + no.BecauseOf
 }
 
 // *NotDecoded.Label returns a label string for printing error message.
 //   Returns:
 //     - (string): Label string
-func(this *NotDecoded) Label() string {
-	if this.CalledOff == true { return " *****error: " }
+func(no *NotDecoded) Label() string {
+	if no.CalledOff == true { return " *****error: " }
 	return " ***warning: "
 }
 
@@ -58,9 +58,9 @@ func(this *NotDecoded) Label() string {
 //     - argv1 (string): Path to an email being set into the EmailFile.
 //   Returns:
 //     - (string): Current value of the EmailFile.
-func(this *NotDecoded) Email(argv1 string) string {
-	if argv1          == "" { return this.EmailFile  }
-	if this.EmailFile == "" { this.EmailFile = argv1 }
-	return this.EmailFile
+func(no *NotDecoded) Email(argv1 string) string {
+	if argv1        == "" { return no.EmailFile  }
+	if no.EmailFile == "" { no.EmailFile = argv1 }
+	return no.EmailFile
 }
 
