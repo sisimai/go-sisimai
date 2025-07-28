@@ -6,17 +6,17 @@
 // |  _ <|  _|| |___  / / \__, | |
 // |_| \_\_|   \____|/_/    /_/|_|
 
-// Package "rfc791" provides functions related to IPv4 address described in RFC791
+// Package "rfc791" provides functions related to IPv4 address described in RFC791.
 // https://datatracker.ietf.org/doc/html/rfc791
 package rfc791
 import "strings"
 import "strconv"
 
-// IsIPv4Address returns "true" when the given string is an IPv4 address
+// IsIPv4Address returns "true" when the given string is an IPv4 address.
 //   Arguments:
-//     - argv1 (string): IPv4 address like "192.0.2.25"
+//     - argv1 (string): IPv4 address like "192.0.2.25".
 //   Returns:
-//     - (bool):         true if the argument is a valid IPv4 Address
+//     - (bool): true if the argument is a valid IPv4 Address.
 //    See:
 //     - https://datatracker.ietf.org/doc/html/rfc791
 func IsIPv4Address(argv1 string) bool {
@@ -31,9 +31,9 @@ func IsIPv4Address(argv1 string) bool {
 
 // FindIPv4Address finds IPv4 addresses from the given string.
 //   Arguments:
-//     - argv1 (string):  String including an IPv4 address
+//     - argv1 (string): String including an IPv4 address.
 //   Returns:
-//     - ([]string):      List of IPv4 addresses found and picked from the argument
+//     - ([]string): List of IPv4 addresses found and picked from the argument.
 func FindIPv4Address(argv1 string) []string {
 	if len(argv1) < 7 { return []string{} }
 

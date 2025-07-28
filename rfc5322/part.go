@@ -13,11 +13,11 @@ import "libsisimai.org/sisimai/v5/moji"
 // Part splits the entire message body given as the 1st argument into error message lines and the
 // original message part only include email headers.
 //   Arguments:
-//     - email (*string):  Entire message body
-//     - cutby ([]string): String list of the message/rfc822 or the beginning of the original message part
-//     - keeps (bool):     Flag for keeping strings after "\n\n"
+//     - email (*string):  Entire message body.
+//     - cutby ([]string): String list of the message/rfc822 or the beginning of the original message part.
+//     - keeps (bool):     Flag for keeping strings after "\n\n".
 //   Returns:
-//     - ([2]string):      [2]string{"Error message lines", "The original message"}
+//     - ([2]string): [2]string{"Error message lines", "The original message"}
 func Part(email *string, cutby []string, keeps bool) [2]string {
 	if email == nil || *email == "" || len(cutby) == 0 { return [2]string{} }
 

@@ -34,21 +34,21 @@ type DeliveryMatter struct {
 	Status       string     // The value of Status header
 }
 
-// TailDeliveryMatter returns the last element pointer of DeliveryMatter struct
+// TailDeliveryMatter returns the last element pointer of DeliveryMatter struct.
 //   Arguments:
 //     - argv0 ([]DeliveryMatter): []DeliveryMatter
 //   Returns:
-//     - (*DeliveryMatter):        The last element pointer of DeliveryMatter struct
+//     - (*DeliveryMatter): The last element pointer of DeliveryMatter struct.
 func TailDeliveryMatter(argv0 []DeliveryMatter) *DeliveryMatter {
 	width := len(argv0); if width == 0 { return nil }
 	return &(argv0)[width - 1]
 }
 
-// NextDeliveryMatter appends a new element and returns the last element pointer
+// NextDeliveryMatter appends a new element and returns the last element pointer.
 //   Arguments:
-//     - argv0 (*[]DeliveryMatter): The pointer to []DeliveryMatter
+//     - argv0 (*[]DeliveryMatter): The pointer to []DeliveryMatter.
 //   Returns:
-//     - (*DeliveryMatter):         The last element pointer of DeliveryMatter struct
+//     - (*DeliveryMatter): The last element pointer of DeliveryMatter struct.
 func NextDeliveryMatter(argv0 *[]DeliveryMatter) *DeliveryMatter {
 	*argv0 = append(*argv0, DeliveryMatter{})
 	return &(*argv0)[len(*argv0) - 1]
@@ -56,9 +56,9 @@ func NextDeliveryMatter(argv0 *[]DeliveryMatter) *DeliveryMatter {
 
 // *DeliveryMatter.Select returns the current value of the sis.DeliveryMatter instance.
 //   Arguments:
-//     - argv0 (string): Lower-cased member name of sis.DeliveryMatter
+//     - argv0 (string): Lower-cased member name of sis.DeliveryMatter.
 //   Returns:
-//     - (string):       The value of the member name specified at argv0
+//     - (string): The value of the member name specified at argv0.
 func(this *DeliveryMatter) Select(argv0 string) string {
 	switch argv0 {
 		case "action":       return this.Action
@@ -81,10 +81,10 @@ func(this *DeliveryMatter) Select(argv0 string) string {
 
 // *DeliveryMatter.Update set the argument into the member of sis.DeliveryMatter instance.
 //   Arguments:
-//     - argv0 (string): Lower-cased member name of sis.DeliveryMatter
-//     - argv1 (string): New value to be updated
+//     - argv0 (string): Lower-cased member name of sis.DeliveryMatter.
+//     - argv1 (string): New value to be updated.
 //   Returns:
-//     - (bool):         true if it has updated successfully
+//     - (bool): true if it has updated successfully.
 func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 	if argv0 == "" || argv1 == "" { return false }
 
@@ -113,9 +113,9 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 
 // *DeliveryMatter.AsRFC1894 returns a lower-cased member name converted from a field name defined in RFC1894.
 //   Arguments:
-//     - argv1 (string): Field name defined in RFC1894
+//     - argv1 (string): Field name defined in RFC1894.
 //   Returns:
-//     - (string):       Member name of sis.DeliveryMatter struct
+//     - (string): Member name of sis.DeliveryMatter struct.
 func(this *DeliveryMatter) AsRFC1894(argv1 string) string {
 	// Available values are the followings:
 	// - "action":             Action    (list)

@@ -12,11 +12,11 @@ import "strings"
 
 // Prefer returns the preferred value selected from the arguments.
 //   Arguments:
-//     - argv0 (string): Value of Status: field
-//     - argv1 (string): SMTP status code value picked from the error message
-//     - argv2 (string): Value of the SMTP reply code
+//     - argv0 (string): Value of Status: field.
+//     - argv1 (string): SMTP status code value picked from the error message.
+//     - argv2 (string): Value of the SMTP reply code.
 //   Returns:
-//     - (string):       Preferred value
+//     - (string): Preferred value.
 func Prefer(argv0, argv1, argv2 string) string {
 	if argv0 == "" { return argv1 }
 	if argv1 == "" { return argv0 }

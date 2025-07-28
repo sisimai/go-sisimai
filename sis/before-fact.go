@@ -8,7 +8,7 @@
 
 package sis
 
-// message.Rise() returns BeforeFact{}
+// message.Rise() returns BeforeFact{}.
 type BeforeFact struct {
 	Headers map[string][]string // Email headers of the bounce mail
 	RFC822  map[string][]string // Email headers of the original message

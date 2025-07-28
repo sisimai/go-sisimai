@@ -65,9 +65,9 @@ var dayofweek = []string{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}
 
 // Date tidies up and converts the date string to the format.
 //   Arguments:
-//     - argv1 (string): Date string
+//     - argv1 (string): Date string.
 //   Returns:
-//     - (string):       Tidied date string
+//     - (string): Tidied date string.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc5322#section-3.3
 //     - https://datatracker.ietf.org/doc/html/rfc3339

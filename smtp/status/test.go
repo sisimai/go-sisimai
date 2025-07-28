@@ -13,9 +13,9 @@ import "strconv"
 
 // Test checks whether an SMTP status code is a valid code or not.
 //   Arguments:
-//     - argv1 (string): SMTP status code to be checked
+//     - argv1 (string): SMTP status code to be checked.
 //   Returns:
-//     - (bool):         true if the argument is a valid SMTP status code
+//     - (bool): true if the argument is a valid SMTP status code.
 func Test(argv1 string) bool {
 	if len(argv1) < 5 || len(argv1) > 7 { return false }
 

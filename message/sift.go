@@ -20,8 +20,8 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 
 // sift is called from the Rise function and decode and structure various formats of bounce emails.
 //   Arguments:
-//     - bf (*sis.BeforeFact):    Message entity in progress
-//     - hook (sis.CfParameter0): The first callback function
+//     - bf (*sis.BeforeFact):    Message entity in progress.
+//     - hook (sis.CfParameter0): The first callback function.
 //   Returns:
 //     - (bool): true = successfully decoded and structured the bounce emails, false = failed to decode.
 func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {

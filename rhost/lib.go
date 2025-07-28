@@ -38,9 +38,9 @@ var RhostClass = map[string][]string{
 
 // Name returns the rhost class name.
 //   Arguments:
-//     - fo (*sis.Fact): Decoded data in progress
+//     - fo (*sis.Fact): Decoded data in progress.
 //   Returns:
-//     - (string):       Rhost class name
+//     - (string): Rhost class name.
 func Name(fo *sis.Fact) string {
 	// Try to match the hostname patterns with the following order:
 	// 1. destination: The domain part of the recipient address
@@ -68,9 +68,9 @@ func Name(fo *sis.Fact) string {
 
 // Find detects the bounce reason from certain remote hosts.
 //   Arguments:
-//     - fo (*sis.Fact): Decoded data in progress
+//     - fo (*sis.Fact): Decoded data in progress.
 //   Returns:
-//     - (string):       Bounce reason name
+//     - (string): Bounce reason name.
 func Find(fo *sis.Fact) string {
 	rhostclass := Name(fo); if rhostclass != "" { return ReturnedBy[rhostclass](fo) }
 	return ""

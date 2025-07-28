@@ -24,9 +24,9 @@ var defaultorder = []string{
 
 // OrderBySubject returns the order list of MTA modules decided by the first two words of the "Subject": header.
 //   Arguments:
-//     - title (string): The value of Subject header
+//     - title (string): The value of Subject header.
 //   Returns:
-//     - ([]string):     The order list of MTA modules
+//     - ([]string): The order list of MTA modules.
 func OrderBySubject(title string) []string {
 	if title == "" { return []string{} }
 

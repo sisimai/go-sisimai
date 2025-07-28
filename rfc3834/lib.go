@@ -8,7 +8,7 @@
 
 // Package "rfc3834" provides functions like a MTA module in "lhost" package for decoding automatic
 // responded messages formatted according to RFC3834; Recommendations for Automatic Responses to 
-// Electronic Mail https://datatracker.ietf.org/doc/html/rfc3834
+// Electronic Mail. https://datatracker.ietf.org/doc/html/rfc3834
 package rfc3834
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
@@ -17,11 +17,11 @@ import "libsisimai.org/sisimai/v5/rfc2045"
 import "libsisimai.org/sisimai/v5/rfc5322"
 import "libsisimai.org/sisimai/v5/address"
 
-// Inquire() decodes a bounce message that includes a vacation message.
+// Inquire decodes a bounce message that includes a vacation message.
 //   Arguments:
-//     - bf (*sis.BeforeFact):  Message entity in progress
+//     - bf (*sis.BeforeFact): Message entity in progress.
 //   Returns:
-//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function
+//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3834
 func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {

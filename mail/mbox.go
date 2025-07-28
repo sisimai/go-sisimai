@@ -14,8 +14,8 @@ import "strings"
 
 // readMailbox is a UNIX mbox reader, works like a iterator.
 //   Returns:
-//     - (*string): Contents of each email in the UNIX mbox one by one
-//     - (error):   Occurred error
+//     - (*string): Contents of each email in the UNIX mbox one by one.
+//     - (error):   Occurred error.
 func(this *EmailEntity) readMailbox() (*string, error) {
 	if this.offset >= this.Size { return nil, io.EOF } // The method has been completed to read the mbox
 	if this.handle == nil {

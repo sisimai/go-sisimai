@@ -20,9 +20,9 @@ const (
 
 // S3S4 runs like the ruleset 3 and 4 of /etc/sendmail.cf file.
 //   Arguments:
-//     - argv1 (string): String including an email address
+//     - argv1 (string): String including an email address.
 //   Returns:
-//     - (string):       Email address picked from the given string
+//     - (string): Email address picked from the given string.
 func S3S4(argv1 string) string {
 	if len(argv1)   == 0 { return "" }; list := Find(argv1)
 	if len(list[0]) == 0 { return "" }
@@ -31,9 +31,9 @@ func S3S4(argv1 string) string {
 
 // Find is an email address parser with a name and comment.
 //   Arguments:
-//     - argv1 (string): String including an email address
+//     - argv1 (string): String including an email address.
 //   Returns:
-//     - ([3]string):    Email address table such as  [3]string{"address", "name", "comment"}
+//     - ([3]string): Email address table such as `[3]string{"address", "name", "comment"}`.
 func Find(argv1 string) [3]string {
 	if len(argv1) < 5 { return [3]string{} }
 
@@ -200,7 +200,6 @@ func Find(argv1 string) [3]string {
 			}
 		}
 	} // End of the loop(for)
-	//tempbuffer
 
 	layoutbuff := [3]string{readbuffer[0].String(), readbuffer[1].String(), readbuffer[2].String()}
 	emailtable := [3]string{} // [0]Address, [1]Name, [2]Comment

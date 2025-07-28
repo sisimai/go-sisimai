@@ -12,9 +12,9 @@ import "strings"
 
 // ToLF replace CR and CR/LF with LF.
 //   Arguments:
-//     - argv0 (*string): Text including CR or CR/LF
+//     - argv0 (*string): Text including CR or CR/LF.
 //   Returns:
-//     - (error):         Always nil
+//     - (*string): Text converted to UTF8.
 func ToLF(argv0 *string) *string {
 	if argv0 == nil || *argv0 == "" || strings.IndexByte(*argv0, '\r') < 0 { return nil }
 
@@ -40,9 +40,9 @@ func ToLF(argv0 *string) *string {
 
 // ToPlain converts given HTML text to a plain text.
 //   Arguments:
-//     - argv0 (*string): Text including HTML elements
+//     - argv0 (*string): Text including HTML elements.
 //   Returns:
-//     - (*string):       Converted plain text
+//     - (*string): Converted plain text.
 func ToPlain(argv0 *string) *string {
 	if argv0 == nil || *argv0 == "" { return argv0 }
 

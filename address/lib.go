@@ -6,7 +6,7 @@
 // | (_| | (_| | (_| | | |  __/\__ \__ \
 //  \__,_|\__,_|\__,_|_|  \___||___/___/
 
-// Package "address" provide functions related to an email address
+// Package "address" provide functions related to an email address.
 package address
 import "slices"
 import "strings"
@@ -15,9 +15,9 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 
 // Undisclosed returns a pseudo recipient or sender address.
 //   Arguments:
-//     - argv0 (bool): Address type; true = recipient, false = sender
+//     - argv0 (bool): Address type; true = recipient, false = sender.
 //   Returns:
-//     - (string):     Generated pseudo recipient or sender address
+//     - (string): Generated pseudo recipient or sender address.
 func Undisclosed(argv0 bool) string {
 	p := "recipient"; if argv0 == false { p = "sender" }
 	return "undisclosed-" + p + "-in-headers@libsisimai.org.invalid"
@@ -25,9 +25,9 @@ func Undisclosed(argv0 bool) string {
 
 // Final returns a string processed by the ruleset 4 in sendmail.cf file.
 //   Arguments:
-//     - argv0 (string): String including an email address like "<neko@example.jp>"
+//     - argv0 (string): String including an email address like "<neko@example.jp>".
 //   Returns:
-//     - (string):       Email address without angle brackets such as "neko@example.jp"
+//     - (string): Email address without angle brackets such as "neko@example.jp"
 func Final(argv0 string) string {
 	if  strings.Count(argv0, "@") != 1 { return argv0 }
 	for strings.HasPrefix(argv0, "<")  { argv0 = strings.Trim(argv0, "<") }
@@ -37,9 +37,9 @@ func Final(argv0 string) string {
 
 // IsIncluded returns true if the string includes an email address.
 //   Arguments:
-//     - argv0 (string): String including an email address like "<neko@example.jp>"
+//     - argv0 (string): String including an email address like "<neko@example.jp>".
 //   Returns:
-//     - (bool):         true if An email address is included in the given string
+//     - (bool): true if An email address is included in the given string.
 func IsIncluded(argv0 string) bool {
 	if len(argv0) < 5 || strings.IndexByte(argv0,  '@') < 0 { return false }
 	if strings.HasPrefix(argv0, "<") && strings.HasSuffix(argv0, ">") {
@@ -59,9 +59,9 @@ func IsIncluded(argv0 string) bool {
 
 // IsMailerDaemon checks that the argument is mailer-daemon address or not.
 //   Arguments:
-//     - argv0 (string): Email address
+//     - argv0 (string): Email address.
 //   Returns:
-//     - (bool):         true if an email address is a mailer-dameon or postmaster address
+//     - (bool): true if an email address is a mailer-dameon or postmaster address.
 func IsMailerDaemon(argv0 string) bool {
 	value := strings.ToLower(argv0)
 	names := []string{"mailer-daemon", "postmaster"}

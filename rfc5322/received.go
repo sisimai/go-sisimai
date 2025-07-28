@@ -14,7 +14,7 @@ import "libsisimai.org/sisimai/v5/rfc791"
 
 // Received convert Received headers to a structured data.
 //   Arguments:
-//     - argv1 (string): Received header
+//     - argv1 (string): Received header.
 //   Returns:
 //     - ([]string):     Each item in the Received header order by the following:
 //                       - 0: (from)   "hostname"

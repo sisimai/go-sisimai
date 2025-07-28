@@ -11,8 +11,8 @@ import "io"
 
 // readSTDIN is an email reader input from the STDIN.
 //   Returns:
-//     - (*string): Contents of each email in the STDIN
-//     - (error):   Occurred error
+//     - (*string): Contents of each email in the STDIN.
+//     - (error):   Occurred error.
 func (this *EmailEntity) readSTDIN() (*string, error) {
 	if this.Size == 0 || this.offset >= len(this.payload) { return nil, io.EOF }
 

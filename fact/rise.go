@@ -6,7 +6,7 @@
 // |  _| (_| | (__| |_ _|  _ <| \__ \  __/
 // |_|  \__,_|\___|\__(_)_| \_\_|___/\___|
 
-// Package "fact" provide a function for generating structs keeping decoded bounce mail data
+// Package "fact" provide a function for generating structs keeping decoded bounce mail data.
 package fact
 import "time"
 import "slices"
@@ -30,12 +30,12 @@ import "libsisimai.org/sisimai/v5/smtp/failure"
 
 // Rise() returns []sis.Fact when it successfully decoded bounce messages.
 //   Arguments:
-//     - email (*string):          Entire email message
-//     - origin (string):          Path to the original bounce email file
-//     - args (*sis.DecodingArgs): Arguments for decoding(delivered, vacation, callbacks)
+//     - email (*string):          Entire email message.
+//     - origin (string):          Path to the original bounce email file.
+//     - args (*sis.DecodingArgs): Arguments for decoding(delivered, vacation, callbacks).
 //   Returns:
-//     - ([]sis.Fact):             List of successfully decoded bounce messages
-//     - ([]sis.NotDecoded):       List of occurred errors
+//     - ([]sis.Fact):       List of successfully decoded bounce messages.
+//     - ([]sis.NotDecoded): List of occurred errors.
 func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 	if email == nil || len(*email) < 1 {
 		// The email message is empty

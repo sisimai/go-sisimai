@@ -7,17 +7,17 @@
 // |_| \_\_|   \____|_____|\___/   |_||____/ 
 
 // Package "rfc2045" provides functions for RFC2045; Multipurpose Internet Mail Extensions (MIME)
-// Part One: Format of Internet Message Bodies https://datatracker.ietf.org/doc/html/rfc2045
+// Part One: Format of Internet Message Bodies. https://datatracker.ietf.org/doc/html/rfc2045
 package rfc2045
 import "strings"
 import "libsisimai.org/sisimai/v5/moji"
 
 // Parameter finds a value of specified parameter name from Content-Type header.
 //   Arguments:
-//     - argv0 (string): Value of Content-Type: header
-//     - argv1 (string): Lower-cased attribute name of the parameter
+//     - argv0 (string): Value of Content-Type: header.
+//     - argv1 (string): Lower-cased attribute name of the parameter.
 //   Returns:
-//     - (string):       The value of the parameter
+//     - (string): The value of the parameter.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc2045
 func Parameter(argv0 string, argv1 string) string {
@@ -38,9 +38,9 @@ func Parameter(argv0 string, argv1 string) string {
 
 // CharacterSet returns "ISO-2022-JP" as a character set name from "=?ISO-2022-JP?B?...?=".
 //   Arguments:
-//     - argv0 (string): Base64 or Quoted-Printable encoded text
+//     - argv0 (string): Base64 or Quoted-Printable encoded text.
 //   Returns:
-//     - (string):       Character set name like "iso-2022-jp"
+//     - (string): Character set name like "iso-2022-jp".
 func CharacterSet(argv0 string) string {
 	if strings.HasPrefix(argv0, "=?") == false || strings.HasSuffix(argv0, "?=") == false { return "" }
 	return moji.Select(strings.ToUpper(argv0), "=?", "?", 0)
@@ -48,13 +48,13 @@ func CharacterSet(argv0 string) string {
 
 // Boundary finds a boundary string from the value of Content-Type header.
 //   Arguments:
-//     - argv0 (string): Value of Content-Type header
+//     - argv0 (string): Value of Content-Type header.
 //     - start (int): 
 //        - -1: boundary string itself
 //        -  0: Start of boundary: "--boundary"
 //        -  1: End of boundary" "--boundary--"
 //   Returns:
-//     - (string): Boundary string
+//     - (string): Boundary string.
 func Boundary(argv0 string, start int) string {
 	if argv0 == "" { return "" }; btext := Parameter(argv0, "boundary")
 	if btext == "" { return "" }

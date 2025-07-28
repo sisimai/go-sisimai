@@ -7,7 +7,7 @@
 // |_| \_\_|   \____|____/____/_____|_____|
 
 // Package "rfc5322" provides functions for email addresses, Date: header, Received: headers, and
-// other headers and messages related to RFC5322 https://datatracker.ietf.org/doc/html/rfc5322
+// other headers and messages related to RFC5322. https://datatracker.ietf.org/doc/html/rfc5322
 package rfc5322
 
 var FieldIndex = []string{
@@ -19,8 +19,7 @@ var FieldIndex = []string{
 }
 var HeaderTable = map[string][]string{
 	"messageid": []string{"message-id"},
-	"subject":   []string{"subject"},
-	"listid":    []string{"list-id"},
+	"subject":   []string{"subject"}, "listid":    []string{"list-id"},
 	"date":      []string{"date", "osted-date", "posted", "resent-date"},
 	"addresser": []string{
 		"from", "return-path", "reply-to", "errors-to", "reverse-path", "x-postfix-sender",

@@ -15,9 +15,9 @@ import "libsisimai.org/sisimai/v5/moji"
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress
+	//     - fo (*sis.Fact): Decoded data in progress.
 	//   Returns:
-	//     - (string):       Bounce reason name or an empty string
+	//     - (string): Bounce reason name or an empty string.
 	ReturnedBy["Apple"] = func(fo *sis.Fact) string {
 		// - Apple iCloud Mail: https://support.apple.com/en-us/102322
 		if fo == nil || fo.DiagnosticCode == "" { return "" }

@@ -31,9 +31,9 @@ func makefield(argv0 ...[]string) map[string]string {
 
 // tidy tidies up each field name and format of email headers.
 //   Arguments:
-//     - argv0 (*string): String including fields and values in email headers
+//     - argv0 (*string): String including fields and values in email headers.
 //   Returns:
-//     - (*string):       String tidied up
+//     - (*string): String tidied up.
 func tidy(argv0 *string) *string {
 	if argv0 == nil || *argv0 == "" { return nil }
 

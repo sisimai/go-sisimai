@@ -7,7 +7,7 @@
 // |___/_| |_| |_|\__| .__/_/ |___/\__\__,_|\__|\__,_|___/
 //                   |_|                                  
 
-// Package "smtp/status" provides functions related to SMTP Status codes such as 4.2.2, 5.1.1
+// Package "smtp/status" provides functions related to SMTP Status codes such as 4.2.2, 5.1.1.
 // http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
 package status
 import "strings"
@@ -486,10 +486,10 @@ import "strings"
 
 // Code returns an internal delivery status code matched with the given reason string.
 //   Arguments:
-//     - argv0 (string): Reason name
-//     - argv1 (bool):   false: Permanent error, true: Temporary error
+//     - argv0 (string): Reason name.
+//     - argv1 (bool):   false: Permanent error, true: Temporary error.
 //   Returns:
-//     - (string):       Internal delivery status code or an empty string
+//     - (string): Internal delivery status code or an empty string.
 func Code(argv0 string, argv1 bool) string {
 	if len(argv0) < 6 { return "" }
 
@@ -570,9 +570,9 @@ func Code(argv0 string, argv1 bool) string {
 
 // Name returns a reason string matched with the given delivery status code.
 //   Arguments:
-//     - argv0 (string): SMTP status code such as "5.2.2"
+//     - argv0 (string): SMTP status code such as "5.2.2".
 //   Returns:
-//     - (string):       Reason name assigned with the argument
+//     - (string): Reason name assigned with the argument.
 func Name(argv0 string) string {
 	if len(argv0) < 5 || Test(argv0) == false { return "" }
 
@@ -692,13 +692,13 @@ func Name(argv0 string) string {
 	return standardcr[argv0]
 }
 
-// IsExplicit returns true if the status code is not empty and is not an internal delivery status code
+// IsExplicit returns true if the status code is not empty and is not an internal delivery status code.
 //   Arguments:
-//     - argv0 (string): Delivery status code
+//     - argv0 (string): Delivery status code.
 //   Returns:
-//     - (bool):         true if the code is an explicit, false otherwise
+//     - (bool): true if the code is an explicit, false otherwise.
 //   Since:
-//     - 5.2.2
+//     - v5.2.2
 func IsExplicit(argv1 string) bool {
 	if argv1 == "" || len(argv1) == 7 && strings.Index(argv1, ".0.9") == 1 { return false }
 	return true

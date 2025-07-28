@@ -7,7 +7,7 @@
 // |___/_| |_| |_|\__| .__/_/ \___\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_|
 //                   |_|                                                      
 
-// Package "smtp/command" provides functions related to SMTP commands
+// Package "smtp/command" provides functions related to SMTP commands.
 package command
 import "slices"
 import "strings"
@@ -26,9 +26,9 @@ var ExceptDATA = []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}
 
 // Test checks that an SMTP command in the argument is valid or not.
 //   Arguments:
-//     - argv0 (string): An SMTP command
+//     - argv0 (string): An SMTP command.
 //   Returns:
-//     - (bool):         true if the argument is a valid SMTP command
+//     - (bool): true if the argument is a valid SMTP command.
 func Test(argv0 string) bool {
 	if len(argv0) < 4                      { return false }
 	if moji.ContainsAny(argv0, availables) { return true  }
@@ -37,9 +37,9 @@ func Test(argv0 string) bool {
 
 // Find returns an SMTP command found in the argument.
 //   Arguments:
-//     - argv0 (string): Text including SMTP command
+//     - argv0 (string): Text including SMTP command.
 //   Returns:
-//     - (string):       Found SMTP command
+//     - (string): Found SMTP command.
 func Find(argv0 string) string {
 	if Test(argv0) == false { return "" }
 

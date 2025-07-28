@@ -7,7 +7,7 @@
 // |___/_| |_| |_|\__| .__/_/ |_|  \__,_|_|_|\__,_|_|  \___|
 //                   |_|                                    
 
-// Package "smtp/failure" provides functions related to SMTP errors
+// Package "smtp/failure" provides functions related to SMTP errors.
 package failure
 import "strings"
 import "libsisimai.org/sisimai/v5/smtp/reply"
@@ -15,9 +15,9 @@ import "libsisimai.org/sisimai/v5/smtp/status"
 
 // IsPermanent returns true if the given string indicates a permanent error.
 //   Arguments:
-//     - argv1 (string): String including SMTP status code
+//     - argv1 (string): String including SMTP status code.
 //   Returns:
-//     - (bool):         true if it indicates permanent error, false otherwise.
+//     - (bool): true if it indicates permanent error, false otherwise.
 func IsPermanent(argv1 string) bool {
 	if argv1 == "" { return false }
 
@@ -46,10 +46,10 @@ func IsTemporary(argv1 string) bool {
 
 // IsHardBounce checks the reason sisimai detected is a hard bounce or not.
 //   Arguments:
-//     - argv1 (string): The bounce reason sisimai detected
-//     - argv2 (string): String including SMTP status code
+//     - argv1 (string): The bounce reason sisimai detected.
+//     - argv2 (string): String including SMTP status code.
 //   Returns:
-//     - (bool):         true if it indicates hard bounce, false otherwise.
+//     - (bool): true if it indicates hard bounce, false otherwise.
 func IsHardBounce (argv1, argv2 string) bool {
 	if argv1 == "undefined" || argv1 == "onhold"      || argv1 == ""            { return false }
 	if argv1 == "deliverd"  || argv1 == "feedback"    || argv1 == "vacation"    { return false }
@@ -67,10 +67,10 @@ func IsHardBounce (argv1, argv2 string) bool {
 
 // IsSoftBounce checks the reason sisimai detected is a soft bounce or not.
 //   Arguments:
-//     - argv1 (string): The bounce reason sisimai detected
-//     - argv2 (string): String including SMTP status code
+//     - argv1 (string): The bounce reason sisimai detected.
+//     - argv2 (string): String including SMTP status code.
 //   Returns:
-//     - (bool):         true if it indicates soft bounce, false otherwise.
+//     - (bool): true if it indicates soft bounce, false otherwise.
 func IsSoftBounce (argv1, argv2 string) bool {
 	if argv1 == "deliverd"  || argv1 == "feedback"    || argv1 == "vacation"    { return false }
 	if argv1 == "hasmoved"  || argv1 == "userunknown" || argv1 == "hostunknown" { return false }

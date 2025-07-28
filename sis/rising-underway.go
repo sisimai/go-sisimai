@@ -9,7 +9,7 @@
 
 package sis
 
-// Each MTA function in lhost package returns sis.RisingUnderway
+// Each MTA function in lhost package returns sis.RisingUnderway.
 type RisingUnderway struct {
 	Digest []DeliveryMatter // List of DeliveryMatter structs
 	Errors []NotDecoded     // Errors occurred in lhost/*

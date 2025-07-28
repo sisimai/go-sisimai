@@ -6,7 +6,7 @@
 // |  _| (_| | (__| |_ 
 // |_|  \__,_|\___|\__|
 
-// Package "sis" provides types for data structure of sisimai
+// Package "sis" provides types for data structure of sisimai.
 package sis
 
 import "time"
@@ -41,7 +41,10 @@ type Fact struct {
 	Token           string       `json:"token"`          // The Message token(MD5 Hex digest value)
 }
 
-// Fact.MarshalJSON returns serialized JSON string of "Addresser", "Recipient", and "Timestamp".
+// Fact.MarshalJSON returns a lower-cased member name converted from a field name defined in RFC1894.
+//   Returns:
+//     - ([]byte): JSON string.
+//     - (error):  Occurred error.
 func(this Fact) MarshalJSON() ([]byte, error) {
 	type AnotherOne Fact // To avoid an infinite loop
 	return json.Marshal(&struct {
@@ -58,6 +61,9 @@ func(this Fact) MarshalJSON() ([]byte, error) {
 }
 
 // Fact.Dump() returns a serialized sis.Fact{} structure as a JSON string.
+//   Returns:
+//     - (string): JSON string.
+//     - (error):  Occurred error.
 func(this Fact) Dump() (string, error) {
 	jsonb, nyaan := json.Marshal(this); if nyaan != nil { return "", nyaan }
 	return string(jsonb), nil

@@ -41,10 +41,10 @@ func Args() *sis.DecodingArgs { return new(sis.DecodingArgs) }
 // Rise is a function for decoding bounce mails in a mailbox or a Maildir/.
 //   Arguments:
 //     - path (string):            Path to an UNIX mbox, Maildir/, or "STDIN" for standard input.
-//     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages
+//     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages.
 //   Returns:
-//     - ([]sis.Fact):             List of successfully decoded bounce messages
-//     - ([]sis.NotDecoded):       List of occurred errors
+//     - ([]sis.Fact):       List of successfully decoded bounce messages.
+//     - ([]sis.NotDecoded): List of occurred errors.
 func Rise(path string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 	sisidigest := make([]sis.Fact, 0, 2)    // Decoded bounce message structures
 	notdecoded := make([]sis.NotDecoded, 0) // List of occurred errors and warnings
@@ -113,10 +113,10 @@ func Rise(path string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 // Dump returns decoded data as a JSON string.
 //   Arguments:
 //     - path (string):            Path to an mbox, Maildir/, or "STDIN" for standard input.
-//     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages
+//     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages.
 //   Returns:
-//     - (*string):                Decoded data as a JSON string array
-//     - ([]sis.NotDecoded):       List of occurred errors
+//     - (*string):          Decoded data as a JSON string array
+//     - ([]sis.NotDecoded): List of occurred errors
 func Dump(path string, args *sis.DecodingArgs) (*string, []sis.NotDecoded) {
 	sisidigest, notdecoded := Rise(path, args); if len(sisidigest) == 0 { return nil, notdecoded }
 	serialized := make([]string, 0)
