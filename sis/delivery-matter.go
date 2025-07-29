@@ -59,22 +59,22 @@ func NextDeliveryMatter(argv0 *[]DeliveryMatter) *DeliveryMatter {
 //     - argv0 (string): Lower-cased member name of sis.DeliveryMatter.
 //   Returns:
 //     - (string): The value of the member name specified at argv0.
-func(this *DeliveryMatter) Select(argv0 string) string {
+func(de *DeliveryMatter) Select(argv0 string) string {
 	switch argv0 {
-		case "action":       return this.Action
-		case "agent":        return this.Agent
-		case "alias":        return this.Alias
-		case "command":      return this.Command
-		case "date":         return this.Date
-		case "diagnosis":    return this.Diagnosis
-		case "feedbacktype": return this.FeedbackType
-		case "lhost":        return this.Lhost
-		case "reason":       return this.Reason
-		case "recipient":    return this.Recipient
-		case "replycode":    return this.ReplyCode
-		case "rhost":        return this.Rhost
-		case "spec":         return this.Spec
-		case "status":       return this.Status
+		case "action":       return de.Action
+		case "agent":        return de.Agent
+		case "alias":        return de.Alias
+		case "command":      return de.Command
+		case "date":         return de.Date
+		case "diagnosis":    return de.Diagnosis
+		case "feedbacktype": return de.FeedbackType
+		case "lhost":        return de.Lhost
+		case "reason":       return de.Reason
+		case "recipient":    return de.Recipient
+		case "replycode":    return de.ReplyCode
+		case "rhost":        return de.Rhost
+		case "spec":         return de.Spec
+		case "status":       return de.Status
 		default:             return ""
 	}
 }
@@ -85,7 +85,7 @@ func(this *DeliveryMatter) Select(argv0 string) string {
 //     - argv1 (string): New value to be updated.
 //   Returns:
 //     - (bool): true if it has updated successfully.
-func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
+func(de *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 	if argv0 == "" || argv1 == "" { return false }
 
 	//actionlist := []string{"delayed", "delivered", "expanded", "failed", "relayed"}
@@ -93,20 +93,20 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 
 	switch argv0 {
 		default: return false
-		case "action":       if rfc1894.ActionList[argv1] { this.Action = argv1 }    // Only valid values are accepted
-		case "agent":        this.Agent = argv1                                      // Any value is accepted
-		case "alias":        if rfc5322.IsEmailAddress(argv1) { this.Alias = argv1 } // Only valid email addresses are accepted
-		case "command":      if command.Test(argv1) { this.Command = argv1 }         // Only valid values are accepted
-		case "date":         this.Date = argv1                                       // Any value is accepted
-		case "diagnosis":    this.Diagnosis = argv1                                  // Any value is accepted
-		case "feedbacktype": if slices.Contains(feedbacklo, argv1) { this.FeedbackType = argv1      } // Only valid values are accepted
-		case "lhost":        if rfc1123.IsInternetHost(argv1) { this.Lhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
-		case "reason":       this.Reason = strings.ToLower(argv1)
-		case "recipient":    if rfc5322.IsEmailAddress(argv1) { this.Recipient = argv1 } // Only valid email addresses are accepted
-		case "replycode":    if reply.Test(argv1) { this.ReplyCode = argv1 }             // Only valid SMTP reply codes are accepted
-		case "rhost":        if rfc1123.IsInternetHost(argv1) { this.Rhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
-		case "spec":         this.Spec = argv1                             // Any value is accepted
-		case "status":       if status.Test(argv1) { this.Status = argv1 } // Only valid SMTP status codes are accepted
+		case "action":       if rfc1894.ActionList[argv1] { de.Action = argv1 }    // Only valid values are accepted
+		case "agent":        de.Agent = argv1                                      // Any value is accepted
+		case "alias":        if rfc5322.IsEmailAddress(argv1) { de.Alias = argv1 } // Only valid email addresses are accepted
+		case "command":      if command.Test(argv1) { de.Command = argv1 }         // Only valid values are accepted
+		case "date":         de.Date = argv1                                       // Any value is accepted
+		case "diagnosis":    de.Diagnosis = argv1                                  // Any value is accepted
+		case "feedbacktype": if slices.Contains(feedbacklo, argv1) { de.FeedbackType = argv1      } // Only valid values are accepted
+		case "lhost":        if rfc1123.IsInternetHost(argv1) { de.Lhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
+		case "reason":       de.Reason = strings.ToLower(argv1)
+		case "recipient":    if rfc5322.IsEmailAddress(argv1) { de.Recipient = argv1 } // Only valid email addresses are accepted
+		case "replycode":    if reply.Test(argv1) { de.ReplyCode = argv1 }             // Only valid SMTP reply codes are accepted
+		case "rhost":        if rfc1123.IsInternetHost(argv1) { de.Rhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
+		case "spec":         de.Spec = argv1                             // Any value is accepted
+		case "status":       if status.Test(argv1) { de.Status = argv1 } // Only valid SMTP status codes are accepted
 	}
 	return true
 }
@@ -116,7 +116,7 @@ func(this *DeliveryMatter) Update(argv0 string, argv1 string) bool {
 //     - argv1 (string): Field name defined in RFC1894.
 //   Returns:
 //     - (string): Member name of sis.DeliveryMatter struct.
-func(this *DeliveryMatter) AsRFC1894(argv1 string) string {
+func(de *DeliveryMatter) AsRFC1894(argv1 string) string {
 	// Available values are the followings:
 	// - "action":             Action    (list)
 	// - "arrival-date":       Date      (date)

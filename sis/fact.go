@@ -45,7 +45,7 @@ type Fact struct {
 //   Returns:
 //     - ([]byte): JSON string.
 //     - (error):  Occurred error.
-func(this Fact) MarshalJSON() ([]byte, error) {
+func(fa Fact) MarshalJSON() ([]byte, error) {
 	type AnotherOne Fact // To avoid an infinite loop
 	return json.Marshal(&struct {
 		Addresser string `json:"addresser"`
@@ -53,10 +53,10 @@ func(this Fact) MarshalJSON() ([]byte, error) {
 		Timestamp int64  `json:"timestamp"`
 		AnotherOne
 	}{
-		Addresser:  (this).Addresser.Address,
-		Recipient:  (this).Recipient.Address,
-		Timestamp:  (this).Timestamp.Unix(),
-		AnotherOne: (AnotherOne)(this),
+		Addresser:  (fa).Addresser.Address,
+		Recipient:  (fa).Recipient.Address,
+		Timestamp:  (fa).Timestamp.Unix(),
+		AnotherOne: (AnotherOne)(fa),
 	})
 }
 
@@ -64,8 +64,8 @@ func(this Fact) MarshalJSON() ([]byte, error) {
 //   Returns:
 //     - (string): JSON string.
 //     - (error):  Occurred error.
-func(this Fact) Dump() (string, error) {
-	jsonb, nyaan := json.Marshal(this); if nyaan != nil { return "", nyaan }
+func(fa Fact) Dump() (string, error) {
+	jsonb, nyaan := json.Marshal(fa); if nyaan != nil { return "", nyaan }
 	return string(jsonb), nil
 }
 

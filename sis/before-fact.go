@@ -20,14 +20,14 @@ type BeforeFact struct {
 }
 
 // *BeforeFact.IsEmpty returns true when Headers or body is empty.
-func(this *BeforeFact) IsEmpty() bool {
-	if len(this.Headers) == 0 || this.Payload == "" { return true }
+func(be *BeforeFact) IsEmpty() bool {
+	if len(be.Headers) == 0 || be.Payload == "" { return true }
 	return false
 }
 
 // *BeforeFact.HasDone returns false when Digest or RFC822 is empty.
-func(this *BeforeFact) HasDone() bool {
-	if len(this.Digest) == 0 || len(this.RFC822) == 0 { return false }
+func(be *BeforeFact) HasDone() bool {
+	if len(be.Digest) == 0 || len(be.RFC822) == 0 { return false }
 	return true
 }
 
