@@ -4,6 +4,14 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
+v5.4.0p1
+---------------------------------------------------------------------------------------------------
+- release: ""
+- version: ""
+  - #158 #160 Update SMTP error and status codes of Gmail updated in August 2025.
+    - Gmail SMTP errors and codes https://support.google.com/a/answer/3726730
+    - https://github.com/azumakuniyuki/feb-2024-no-auth-no-entry/commit/364214227
+
 v5.4.0
 ---------------------------------------------------------------------------------------------------
 - release: "Tue,  1 Jul 2025 20:22:22 +0900 (JST)"
