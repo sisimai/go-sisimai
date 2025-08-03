@@ -110,7 +110,11 @@ func init() {
 				// - 421 4.7.40 Your email has been rate limited because the sending domain doesn't
 				//   have a DMARC record, or the DMARC record doesn’t specify a DMARC policy. Gmail
 				//   requires all bulk email senders to add a DMARC record to their sending domain.
+				// - 550 5.7.40 Your message was blocked because the sending domain doesn't have a
+				//   DMARC record or the DMARC record doesn't specify a DMARC policy. Gmail requires
+				//   all bulk email senders to add a DMARC record to their sending domain. 
 				[3]string{"421", "4.7.40", "to add a dmarc record to "},
+				[3]string{"550", "5.7.40", "to add a dmarc record to "},
 			},
 			"badreputation": [][3]string{
 				// - 421 4.7.0 This message is suspicious due to the very low reputation of the sending
@@ -383,19 +387,19 @@ func init() {
 
 				// - 535 5.7.1 Application-specific password required.
 				//   For more information, visit https://support.google.com/accounts/answer/185833
-				[3]string{"535", "5.7.1", "application-specific password required"},
-				[3]string{"535", "5.7.9", "application-specific password required"},
+				[3]string{"535", "5.7.1",  "application-specific password required"},
+				[3]string{"535", "5.7.90", "application-specific password required"},
 
 				// - 535 5.7.1 Please log in with your web browser and then try again. For more infor-
 				//   mation, visit https://support.google.com/mail/bin/accounts/answer/78754
 				[3]string{"535", "5.7.1",  "please log in with your web browser"},
-				[3]string{"534", "5.7.9",  "please log in with your web browser"},
+				[3]string{"534", "5.7.90", "please log in with your web browser"},
 				[3]string{"534", "5.7.14", "please log in through your web browser"},
 
 				// - 535 5.7.1 Username and Password not accepted. For more information, visit 
 				//   https://support.google.com/accounts/troubleshooter/2402620
-				[3]string{"535", "5.7.1", "username and password not accepted"},
-				[3]string{"535", "5.7.8", "username and password not accepted"},
+				[3]string{"535", "5.7.1",  "username and password not accepted"},
+				[3]string{"535", "5.7.80", "username and password not accepted"},
 			},
 			"spamdetected": [][3]string{
 				// - 421 4.7.0 This message is suspicious due to the nature of the content or the links
@@ -474,17 +478,17 @@ func init() {
 				//   sequence. For more information, go to About SMTP error messages and review RFC 3030
 				//   specifications.
 				// - https://support.google.com/a/answer/3221692
-				[3]string{"502", "5.5.1", "too many unrecognized commands, goodbye"},
-				[3]string{"502", "5.5.1", "unimplemented command"},
-				[3]string{"502", "5.5.1", "unrecognized command"},
-				[3]string{"503", "5.5.1", "bad sequence of commands"},
-				[3]string{"503", "5.5.1", "ehlo/helo first"},
-				[3]string{"503", "5.5.1", "mail first"},
-				[3]string{"503", "5.5.1", "rcpt first"},
-				[3]string{"503", "5.5.1", "no data after bdat"},
-				[3]string{"504", "5.7.4", "unrecognized authentication type"},
-				[3]string{"504", "5.7.4", "xoauth is no longer supported"},
-				[3]string{"554", "5.7.0", "too many unauthenticated commands"},
+				[3]string{"502", "5.5.1",  "too many unrecognized commands, goodbye"},
+				[3]string{"502", "5.5.1",  "unimplemented command"},
+				[3]string{"502", "5.5.1",  "unrecognized command"},
+				[3]string{"503", "5.5.1",  "bad sequence of commands"},
+				[3]string{"503", "5.5.1",  "ehlo/helo first"},
+				[3]string{"503", "5.5.1",  "mail first"},
+				[3]string{"503", "5.5.1",  "rcpt first"},
+				[3]string{"503", "5.5.1",  "no data after bdat"},
+				[3]string{"504", "5.7.40", "unrecognized authentication type"},
+				[3]string{"504", "5.7.40", "xoauth is no longer supported"},
+				[3]string{"554", "5.7.0",  "too many unauthenticated commands"},
 			},
 			"systemerror": [][3]string{
 				// About SMTP error messages, https://support.google.com/a/answer/3221692
