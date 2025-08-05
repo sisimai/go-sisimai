@@ -25,14 +25,14 @@ func Undisclosed(ctype bool) string {
 
 // Final returns a string processed by the ruleset 4 in sendmail.cf file.
 //   Arguments:
-//     - argv0 (string): String including an email address like "<neko@example.jp>".
+//     - email (string): String including an email address like "<neko@example.jp>".
 //   Returns:
 //     - (string): Email address without angle brackets such as "neko@example.jp"
-func Final(argv0 string) string {
-	if  strings.Count(argv0, "@") != 1 { return argv0 }
-	for strings.HasPrefix(argv0, "<")  { argv0 = strings.Trim(argv0, "<") }
-	for strings.HasSuffix(argv0, ">")  { argv0 = strings.Trim(argv0, ">") }
-	return argv0
+func Final(email string) string {
+	if  strings.Count(email, "@") != 1 { return email }
+	for strings.HasPrefix(email, "<")  { email = strings.Trim(email, "<") }
+	for strings.HasSuffix(email, ">")  { email = strings.Trim(email, ">") }
+	return email
 }
 
 // IsIncluded returns true if the string includes an email address.
