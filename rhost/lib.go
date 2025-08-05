@@ -16,7 +16,7 @@ import "libsisimai.org/sisimai/v5/sis"
 var ReturnedBy = make(map[string]func(*sis.Fact) string, 19) // grep '^func init' ./rhost/for-*.go | wc -l
 var RhostClass = map[string][]string{
 	"Aol":         []string{".mail.aol.com", ".mx.aol.com"},
-	"Apple":       []string{".mail.icloud.com", ".apple.com", ".me.com"},
+	"Apple":       []string{".mail.icloud.com", ".apple.com", ".me.com", "privaterelay.appleid.com"},
 	"Cloudflare":  []string{".mx.cloudflare.net"},
 	"Cox":         []string{"cox.net"},
 	"Facebook":    []string{".facebook.com"},
