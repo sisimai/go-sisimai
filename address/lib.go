@@ -59,11 +59,11 @@ func IsIncluded(argv0 string) bool {
 
 // IsMailerDaemon checks that the argument is mailer-daemon address or not.
 //   Arguments:
-//     - argv0 (string): Email address.
+//     - email (string): Email address.
 //   Returns:
 //     - (bool): true if an email address is a mailer-dameon or postmaster address.
-func IsMailerDaemon(argv0 string) bool {
-	value := strings.ToLower(argv0)
+func IsMailerDaemon(email string) bool {
+	value := strings.ToLower(email)
 	names := []string{"mailer-daemon", "postmaster"}
 	table := []string{
 		"mailer-daemon@", "(mailer-daemon)", "<mailer-daemon>", "mailer-daemon ",
