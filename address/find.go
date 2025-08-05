@@ -20,11 +20,11 @@ const (
 
 // S3S4 runs like the ruleset 3 and 4 of /etc/sendmail.cf file.
 //   Arguments:
-//     - argv1 (string): String including an email address.
+//     - email (string): String including an email address.
 //   Returns:
 //     - (string): Email address picked from the given string.
-func S3S4(argv1 string) string {
-	if len(argv1)   == 0 { return "" }; list := Find(argv1)
+func S3S4(email string) string {
+	if len(email)   == 0 { return "" }; list := Find(email)
 	if len(list[0]) == 0 { return "" }
 	return list[0]
 }
