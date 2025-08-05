@@ -37,14 +37,14 @@ func Final(email string) string {
 
 // IsIncluded returns true if the string includes an email address.
 //   Arguments:
-//     - argv0 (string): String including an email address like "<neko@example.jp>".
+//     - text (string): String including an email address like "<neko@example.jp>".
 //   Returns:
 //     - (bool): true if An email address is included in the given string.
-func IsIncluded(argv0 string) bool {
-	if len(argv0) < 5 || strings.IndexByte(argv0,  '@') < 0 { return false }
-	if strings.HasPrefix(argv0, "<") && strings.HasSuffix(argv0, ">") {
+func IsIncluded(text string) bool {
+	if len(text) < 5 || strings.IndexByte(text,  '@') < 0 { return false }
+	if strings.HasPrefix(text, "<") && strings.HasSuffix(text, ">") {
 		// The argument is like "<neko@example.jp>"
-		if rfc5322.IsEmailAddress(strings.Trim(argv0, "<>")) { return true }
+		if rfc5322.IsEmailAddress(strings.Trim(text, "<>")) { return true }
 		return false
 
 	} else {
