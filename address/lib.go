@@ -15,11 +15,11 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 
 // Undisclosed returns a pseudo recipient or sender address.
 //   Arguments:
-//     - argv0 (bool): Address type; true = recipient, false = sender.
+//     - ctype (bool): Address type; true = recipient, false = sender.
 //   Returns:
 //     - (string): Generated pseudo recipient or sender address.
-func Undisclosed(argv0 bool) string {
-	p := "recipient"; if argv0 == false { p = "sender" }
+func Undisclosed(ctype bool) string {
+	p := "recipient"; if ctype == false { p = "sender" }
 	return "undisclosed-" + p + "-in-headers@libsisimai.org.invalid"
 }
 
