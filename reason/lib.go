@@ -85,11 +85,11 @@ func IsExplicit(name string) bool {
 
 // ShouldBeRetried returns true if the argument is a reason listed in the table defined in this function.
 //   Arguments:
-//     - argv1 (string): Reason name.
+//     - name (string): Reason name.
 //   Returns:
 //     - (bool): true if the reason is listed in the table.
-func ShouldBeRetried(argv1 string) bool {
+func ShouldBeRetried(name string) bool {
 	cv := []string{"undefined", "onhold", "systemerror", "securityerror", "expired", "networkerror", "hostunknown", "userunknown"}
-	return slices.Contains(cv, argv1) || argv1 == ""
+	return slices.Contains(cv, name) || name == ""
 }
 
