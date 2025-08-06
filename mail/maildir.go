@@ -16,36 +16,36 @@ import "path/filepath"
 //   Returns:
 //     - (int):   The number of email files in the Maildir/.
 //     - (error): Occurred error.
-func(this *EmailEntity) listMaildir() (int, error) {
-	if this.handle == nil {
+func(ee *EmailEntity) listMaildir() (int, error) {
+	if ee.handle == nil {
 		// Open the Maildir/
-		filehandle, nyaan := os.Open(this.Dir);  if nyaan != nil { return 0, nyaan }
-		this.handle = filehandle // Successfully opened the Maildir/
+		filehandle, nyaan := os.Open(ee.Dir);  if nyaan != nil { return 0, nyaan }
+		ee.handle = filehandle // Successfully opened the Maildir/
 	}
-	direntries, nyaan := this.handle.Readdir(0); if nyaan != nil { return 0, nyaan }
+	direntries, nyaan := ee.handle.Readdir(0); if nyaan != nil { return 0, nyaan }
 	for _, e := range direntries {
 		// Read each email file in the Maildir/
-		if e.IsDir() == false || e.Size() > 0 { this.payload = append(this.payload, e.Name()) }
+		if e.IsDir() == false || e.Size() > 0 { ee.payload = append(ee.payload, e.Name()) }
 	}
-	nyaan = this.handle.Close(); this.handle = nil
-	return len(this.payload), nyaan
+	nyaan = ee.handle.Close(); ee.handle = nil
+	return len(ee.payload), nyaan
 }
 
 // readMaildir is an email reader in the Maildir/, works like a iterator.
 //   Returns:
 //     - (*string): Contents of each email file in the Maildir/ one by one.
 //     - (error):   Occurred error.
-func(this *EmailEntity) readMaildir() (*string, error) {
-	if this.Size == 0           { return nil, fmt.Errorf("there is no email file in %s", this.Dir) }
-	if this.Size <= this.offset { return nil, io.EOF }
+func(ee *EmailEntity) readMaildir() (*string, error) {
+	if ee.Size == 0         { return nil, fmt.Errorf("there is no email file in %s", ee.Dir) }
+	if ee.Size <= ee.offset { return nil, io.EOF }
 
 	for {
 		// Try to read the email file
-		this.File = this.payload[this.offset]; this.offset++
-		this.Path = filepath.Clean(filepath.FromSlash(this.Dir + "/" + this.File))
-		b, nyaan := os.ReadFile(this.Path); if nyaan != nil || len(b) == 0 {
+		ee.File = ee.payload[ee.offset]; ee.offset++
+		ee.Path = filepath.Clean(filepath.FromSlash(ee.Dir + "/" + ee.File))
+		b, nyaan := os.ReadFile(ee.Path); if nyaan != nil || len(b) == 0 {
 			// Failed to read the email file or the email file is empty
-			if this.offset >= this.Size { return nil, io.EOF }
+			if ee.offset >= ee.Size { return nil, io.EOF }
 			continue
 		}
 		cv := string(b); return &cv, nil
