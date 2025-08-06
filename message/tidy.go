@@ -23,23 +23,27 @@ var replacesas = map[string][][]string{
 }
 
 // makefield generates a map including each field name defined in RFC1894, RFC5322, and RFC5965.
-func makefield(argv0 ...[]string) map[string]string {
+//   Arguments:
+//     - fs ([]string): Slices including field names.
+//   Returns:
+//     - (map[string]string): Hash table.
+func makefield(fs ...[]string) map[string]string {
 	fieldtable := make(map[string]string, 40)
-	for _, e := range slices.Concat(argv0...) { fieldtable[strings.ToLower(e)] = e }
+	for _, e := range slices.Concat(fs...) { fieldtable[strings.ToLower(e)] = e }
 	return fieldtable
 }
 
 // tidy tidies up each field name and format of email headers.
 //   Arguments:
-//     - argv0 (*string): String including fields and values in email headers.
+//     - head (*string): String including fields and values in email headers.
 //   Returns:
 //     - (*string): String tidied up.
-func tidy(argv0 *string) *string {
-	if argv0 == nil || *argv0 == "" { return nil }
+func tidy(head *string) *string {
+	if head == nil || *head == "" { return nil }
 
 	// Find and tidy up fields defined in RFC5322, RFC1894, and RFC5965
 	bu := strings.Builder{}; bu.Grow(1024)
-	el := strings.Split(*argv0, "\n"); for j, e := range el {
+	el := strings.Split(*head, "\n"); for j, e := range el {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
 		p0 := strings.IndexByte(e, ':'); if p0 < 0                         { bu.WriteString(e + "\n"); continue }
 		cf := strings.ToLower(e[0:p0]);  if strings.IndexByte(cf, ' ') > 0 { bu.WriteString(e + "\n"); continue }
