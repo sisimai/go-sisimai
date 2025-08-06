@@ -49,14 +49,14 @@ const maximumSize = 2000 * 1024 * 1024 * 1024
 //   Returns:
 //     - (*EmailEntity): Pointer to mail.EmailEntity struct.
 //     - (error):        Occurred error.
-func Rise(argv0 string) (*EmailEntity, error) {
+func Rise(path string) (*EmailEntity, error) {
 	ee := EmailEntity{}
 
-	if argv0 == "STDIN" || strings.IndexByte(argv0, '\n') > -1 {
+	if path == "STDIN" || strings.IndexByte(path, '\n') > -1 {
 		// Read from STDIN or Memory(string)
 		payload := ""
 
-		if argv0 == "STDIN" {
+		if path == "STDIN" {
 			// For example, % cat ./bounce.eml | go run sisimai.go STDIN
 			ee.Kind = "stdin"
 			ee.Path = "<STDIN>"
@@ -72,13 +72,13 @@ func Rise(argv0 string) (*EmailEntity, error) {
 
 		} else {
 			// Email data is in a string(memory)
-			if textlength := len(argv0); textlength == 0 || textlength > maximumSize {
+			if textlength := len(path); textlength == 0 || textlength > maximumSize {
 				// The input text is empty or too large (2GB)
 				return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
 			}
 			ee.Kind = "memory"
 			ee.Path = "<MEMORY>"
-			payload = argv0
+			payload = path
 		}
 
 		if cw := countUnixMboxFrom(&payload); cw < 2 {
@@ -100,14 +100,14 @@ func Rise(argv0 string) (*EmailEntity, error) {
 
 	} else {
 		// UNIX mbox or Maildir/
-		if filestatus, nyaan:= os.Stat(argv0); nyaan == nil {
+		if filestatus, nyaan:= os.Stat(path); nyaan == nil {
 			// the file or the maildir exist
-			ee.Path = argv0
+			ee.Path = path
 
 			if filestatus.IsDir() {
 				// Maildir/
 				ee.Kind = "maildir"
-				ee.Dir  = argv0
+				ee.Dir  = path
 				cw, ce := ee.listMaildir(); if ce != nil { return &ee, ce }
 				ee.Size = cw
 
@@ -115,12 +115,12 @@ func Rise(argv0 string) (*EmailEntity, error) {
 				// UNIX mbox
 				cw := filestatus.Size(); if cw == 0 || cw > maximumSize {
 					// The mbox is empty or too large (2GB)
-					return &ee, fmt.Errorf("%s is empty or too large: %d bytes", argv0, ee.Size)
+					return &ee, fmt.Errorf("%s is empty or too large: %d bytes", path, ee.Size)
 				}
 				ee.Size = int(cw)
 				ee.Kind = "mailbox"
-				ee.File = filepath.Base(argv0)
-				ee.Dir  = filepath.Dir(argv0)
+				ee.File = filepath.Base(path)
+				ee.Dir  = filepath.Dir(path)
 				ee.setNewLine()
 			}
 		} else {
