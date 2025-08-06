@@ -14,11 +14,11 @@ import "io"
 //   Returns:
 //     - (*string): Contents of each email in EmailEntity.payload field.
 //     - (error):   Occurred error.
-func (this *EmailEntity) readMemory() (*string, error) {
-	if this.Size == 0 || this.offset >= len(this.payload) { return nil, io.EOF }
+func (ee *EmailEntity) readMemory() (*string, error) {
+	if ee.Size == 0 || ee.offset >= len(ee.payload) { return nil, io.EOF }
 
-	emailblock := this.payload[this.offset]
-	this.offset++
+	emailblock := ee.payload[ee.offset]
+	ee.offset++
 	return &emailblock, nil
 }
 
