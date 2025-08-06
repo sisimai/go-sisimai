@@ -18,17 +18,17 @@ const RHS string = "<$>" // The RHS string for Select() function
 
 // Token creates the message token from an addresser, and a recipient, and an unix machine time.
 //   Arguments:
-//     - argv1 (string): Email address of the sender.
-//     - argv2 (string): Email address of the recipient.
+//     - addre (string): Email address of the sender.
+//     - recip (string): Email address of the recipient.
 //     - epoch (int):    Machine time of the bounce.
 //   Returns:
 //     - (string): Message token(SHA1 hex digest) or empty string.
-func Token(argv1 string, argv2 string, epoch int) string {
+func Token(addre string, recip string, epoch int) string {
 	// - http://en.wikipedia.org/wiki/ASCII
-	if argv1 == "" || len(argv2) == 0 { return "" }
+	if addre == "" || len(recip) == 0 { return "" }
 
 	// Format: STX(0x02) Sender-Address RS(0x1e) Recipient-Address ETX(0x03)
-	plain := fmt.Sprintf("\x02%s\x1e%s\x1e%d\x03", strings.ToLower(argv1), strings.ToLower(argv2), epoch)
+	plain := fmt.Sprintf("\x02%s\x1e%s\x1e%d\x03", strings.ToLower(addre), strings.ToLower(recip), epoch)
 	crypt := sha1.New(); crypt.Write([]byte(plain))
 	return fmt.Sprintf("%x", crypt.Sum(nil))
 }
