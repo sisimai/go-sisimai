@@ -40,14 +40,14 @@ func ToLF(text *string) *string {
 
 // ToPlain converts given HTML text to a plain text.
 //   Arguments:
-//     - argv0 (*string): Text including HTML elements.
+//     - htmle (*string): Text including HTML elements.
 //   Returns:
 //     - (*string): Converted plain text.
-func ToPlain(argv0 *string) *string {
-	if argv0 == nil || *argv0 == "" { return argv0 }
+func ToPlain(htmle *string) *string {
+	if htmle == nil || *htmle == "" { return htmle }
 
-	lower := strings.ToLower(*argv0); if strings.Contains(lower, "<body") == false { return argv0 }
-	xhtml := *argv0
+	lower := strings.ToLower(*htmle); if strings.Contains(lower, "<body") == false { return htmle }
+	xhtml := *htmle
 	buffr := strings.Builder{}; buffr.Grow(len(xhtml) / 4)
 	for _, e := range []string{">", " ", "\t", "\n"} {
 		// Find the position of <body?, and remove the HTML header part
