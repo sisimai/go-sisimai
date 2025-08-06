@@ -76,11 +76,11 @@ var classorder = [][]string{
 
 // IsExplicit returns false when the argument is empty or is "undefined" or is "onhold".
 //   Arguments:
-//     - argv1 (string): Reason name.
+//     - name (string): Reason name.
 //   Returns:
 //     - (bool): true if the reason is an explicit, false otherwise.
-func IsExplicit(argv1 string) bool {
-	return !(argv1 == "" || argv1 == "undefined" || argv1 == "onhold")
+func IsExplicit(name string) bool {
+	return !(name == "" || name == "undefined" || name == "onhold")
 }
 
 // ShouldBeRetried returns true if the argument is a reason listed in the table defined in this function.
