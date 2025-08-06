@@ -12,13 +12,13 @@ import "strings"
 
 // ToLF replace CR and CR/LF with LF.
 //   Arguments:
-//     - argv0 (*string): Text including CR or CR/LF.
+//     - text (*string): Text including CR or CR/LF.
 //   Returns:
 //     - (*string): Text converted to UTF8.
-func ToLF(argv0 *string) *string {
-	if argv0 == nil || *argv0 == "" || strings.IndexByte(*argv0, '\r') < 0 { return nil }
+func ToLF(text *string) *string {
+	if text == nil || *text == "" || strings.IndexByte(*text, '\r') < 0 { return nil }
 
-	readbuffer := []byte(*argv0)
+	readbuffer := []byte(*text)
 	tolinefeed := make([]byte, 0, len(readbuffer))
 	bytelength := len(readbuffer)
 
@@ -34,7 +34,7 @@ func ToLF(argv0 *string) *string {
 			tolinefeed = append(tolinefeed, '\n')
 		}
 	}
-	*argv0 = string(tolinefeed)
+	*text = string(tolinefeed)
 	return nil
 }
 
