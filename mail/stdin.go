@@ -13,11 +13,11 @@ import "io"
 //   Returns:
 //     - (*string): Contents of each email in the STDIN.
 //     - (error):   Occurred error.
-func (this *EmailEntity) readSTDIN() (*string, error) {
-	if this.Size == 0 || this.offset >= len(this.payload) { return nil, io.EOF }
+func (ee *EmailEntity) readSTDIN() (*string, error) {
+	if ee.Size == 0 || ee.offset >= len(ee.payload) { return nil, io.EOF }
 
-	emailblock := this.payload[this.offset]
-	this.offset++
+	emailblock := ee.payload[ee.offset]
+	ee.offset++
 	return &emailblock, nil
 }
 
