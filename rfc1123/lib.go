@@ -46,26 +46,26 @@ var suffix0x32 = []string{")", "]", ">", ":", ";"}
 
 // IsInternetHost returns true when the given string is a valid Internet hostname.
 //   Arguments:
-//     - argv1 (string): Hostname
+//     - host (string): Hostname
 //   Returns:
 //     - (bool): true if it is a valid Internet hostname, false otherwise.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc1123
-func IsInternetHost(argv1 string) bool {
-	if len(argv1) < 4 || len(argv1) > 255 { return false }
+func IsInternetHost(host string) bool {
+	if len(host) < 4 || len(host) > 255 { return false }
 
 	// Deal "localhost", "localhost6" as a valid hostname
-	if argv1 == "localhost" || argv1 == "localhost6" { return true  }
-	if strings.IndexByte(argv1, '.') == -1           { return false }
-	if strings.Contains(argv1, "..") == true         { return false }
-	if moji.HasPrefixAny(argv1, []string{".", "-"})  { return false }
-	if strings.HasSuffix(argv1, "-") == true         { return false }
+	if host == "localhost" || host == "localhost6" { return true  }
+	if strings.IndexByte(host, '.') == -1          { return false }
+	if strings.Contains(host, "..") == true        { return false }
+	if moji.HasPrefixAny(host, []string{".", "-"}) { return false }
+	if strings.HasSuffix(host, "-") == true        { return false }
 
 	// Allow the hostname starting with A-Label: "xn--" of IDN(Internationalized Domain Name)
-	if strings.Contains(argv1, "--") == true && strings.HasPrefix(argv1, "xn--") == false { return false }
+	if strings.Contains(host, "--") == true && strings.HasPrefix(host, "xn--") == false { return false }
 
 	hostnameok := true
-	for _, e := range strings.Split(strings.ToUpper(argv1), "") {
+	for _, e := range strings.Split(strings.ToUpper(host), "") {
 		// Check each characater is a number or an alphabet
 		if e[0] <  45              { hostnameok = false; break } //  45 = '-'
 		if e[0] == 47              { hostnameok = false; break } //  47 = '/'
@@ -74,7 +74,7 @@ func IsInternetHost(argv1 string) bool {
 	}
 	if hostnameok == false { return false }
 
-	cv := argv1[strings.LastIndex(argv1, ".") + 1:]; if len(cv) > 63 { return false }
+	cv := host[strings.LastIndex(host, ".") + 1:]; if len(cv) > 63 { return false }
 	for _, e := range strings.Split(cv, "") {
 		// The top level domain should not include a number
 		if e[0] > 47 && e[0] < 58  { hostnameok = false; break }
