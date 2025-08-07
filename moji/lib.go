@@ -66,12 +66,12 @@ func Sweep(text string) string {
 
 // ContainsOnlyNumbers returns true when the given string contain numbers only.
 //   Arguments:
-//     - argv1 (string): String including only numbers such as "2022"
+//     - text (string): String including only numbers such as "2022"
 //   Returns:
 //     - (string): true if the string contain only numbers
-func ContainsOnlyNumbers(argv1 string) bool {
-	if argv1 == "" { return false }
-	for _, e := range argv1 { if e < 48 || e > 57 { return false } }
+func ContainsOnlyNumbers(text string) bool {
+	if text == "" { return false }
+	for _, e := range text { if e < 48 || e > 57 { return false } }
 	return true
 }
 
