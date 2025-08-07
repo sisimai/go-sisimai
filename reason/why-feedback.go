@@ -10,7 +10,7 @@ package reason
 import "libsisimai.org/sisimai/v5/sis"
 
 func init() {
-	IncludedIn["Feedback"] = func(argv1 string) bool { return false }
+	IncludedIn["Feedback"] = func(mesg string)  bool { return false }
 	ProbesInto["Feedback"] = func(fo *sis.Fact) bool { return false }
 }
 
