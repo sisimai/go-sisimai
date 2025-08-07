@@ -106,16 +106,16 @@ func IsDomainLiteral(email string) bool {
 
 // Find returns a valid internet hostname found from the argument.
 //   Arguments:
-//     - argv1 (string): String including hostnames.
+//     - text (string): String including hostnames.
 //   Returns:
 //     - (string): Valid internet hostname found in the argument.
-func Find(argv1 string) string {
-	if argv1 == "" { return "" }
+func Find(text string) string {
+	if text == "" { return "" }
 
 	// Replace some string for splitting by " "
 	// - mx.example.net[192.0.2.1] => mx.example.net [192.0.2.1]
 	// - mx.example.jp:[192.0.2.1] => mx.example.jp :[192.0.2.1]
-	sourcetext := strings.ToLower(argv1)
+	sourcetext := strings.ToLower(text)
 	for _, e := range prefix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, " " + e) }
 	for _, e := range suffix0x32 { sourcetext = strings.ReplaceAll(sourcetext, e, e + " ") }
 
