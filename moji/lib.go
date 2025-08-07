@@ -16,7 +16,7 @@ import "crypto/sha1"
 const LHS string = "<@>" // The LHS string for Select() function
 const RHS string = "<$>" // The RHS string for Select() function
 
-// Token creates the message token from an addresser, and a recipient, and an unix machine time.
+// Token creates a message token string from the given arguments: addresser, recipient, unix time.
 //   Arguments:
 //     - addre (string): Email address of the sender.
 //     - recip (string): Email address of the recipient.
