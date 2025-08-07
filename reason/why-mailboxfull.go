@@ -15,11 +15,11 @@ import "libsisimai.org/sisimai/v5/smtp/status"
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
 	//   Arguments:
-	//     - argv1 (string): Does the string include any of the strings listed in the pattern?
+	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["MailboxFull"] = func(argv1 string) bool {
-		if argv1 == "" { return false }
+	IncludedIn["MailboxFull"] = func(mesg string) bool {
+		if mesg == "" { return false }
 
 		index := []string{
 			"452 insufficient disk space",
@@ -72,7 +72,7 @@ func init() {
 			"was automatically rejected: quota exceeded",
 			"would be over the allowed quota",
 		}
-		return moji.ContainsAny(argv1, index)
+		return moji.ContainsAny(mesg, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
