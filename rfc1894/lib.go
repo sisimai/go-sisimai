@@ -104,13 +104,13 @@ func Match(line string) uint8 {
 
 // Field checks that the argument is including field defined in RFC3464 or not and return values.
 //   Arguments:
-//     - argv0 (string): A line including field and value defined in RFC3464.
+//     - line (string): A line including field and value defined in RFC3464.
 //   Returns:
 //     - ([]string): []string{"field-name", "value-type", "value", "field-group", "comment"}
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
-func Field(argv0 string) []string {
-	if len(argv0) < 7 { return []string{} }
+func Field(line string) []string {
+	if len(line) < 7 { return []string{} }
 
 	fieldgroup := map[string]string{
 		"original-recipient":    "addr",
@@ -142,9 +142,9 @@ func Field(argv0 string) []string {
 	//  "text": []string{"X-Original-Message-ID", "Final-Log-ID", "Original-Envelope-ID"}
 	}
 
-	lhs, rhs, _  := strings.Cut(argv0, ":") // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
-	label        := strings.ToLower(lhs)    // "final-recipient"
-	group, nyaan := fieldgroup[label]       // "addr"
+	lhs, rhs, _  := strings.Cut(line, ":") // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
+	label        := strings.ToLower(lhs)   // "final-recipient"
+	group, nyaan := fieldgroup[label]      // "addr"
 	if nyaan == false || len(captureson[group]) == 0 { return []string{} }
 
 	match := false; for _, e := range captureson[group] {
