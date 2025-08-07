@@ -89,23 +89,23 @@ func IsContained(text string, list []string) bool {
 
 // Aligned checks if each element of the 2nd argument is aligned in the 1st argument or not.
 //   Arguments:
-//     - argv1 (string):   String to be checked such as "I am a cat. I have, as yet, no name.".
-//     - argv2 ([]string): List including the ordered strings such as `[]string{"cat", "yet"}`.
+//     - text (string):   String to be checked such as "I am a cat. I have, as yet, no name.".
+//     - sort ([]string): List including the ordered strings such as `[]string{"cat", "yet"}`.
 //   Returns:
-//     - (bool): true if the all strings are ordered in argv1, false otherwise.
-func Aligned(argv1 string, argv2 []string) bool {
-	if argv1 == "" || len(argv2) == 0 { return false }
+//     - (bool): true if the all strings in "sort" are ordered in "text", false otherwise.
+func Aligned(text string, sort []string) bool {
+	if text == "" || len(sort) == 0 { return false }
 
-	align, right := -1, 0; for _, e := range argv2 {
+	align, right := -1, 0; for _, e := range sort {
 		// Get the position of each element in the 1st argument using index()
-		if align > 0 { argv1 = argv1[align + 1:] }
-		p := strings.Index(argv1, e)
+		if align > 0 { text = text[align + 1:] }
+		p := strings.Index(text, e)
 
 		if p < 0 { break }      // Break this loop when there is no string in the 1st argument
 		align = len(e) + p - 1  // There is an aligned string in the 1st argument
 		right++
 	}
-	return right == len(argv2)
+	return right == len(sort)
 }
 
 // IndexOnTheWay returns the index of the first string of argv1 finding after the start position in argv0.
