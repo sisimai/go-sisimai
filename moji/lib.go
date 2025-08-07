@@ -108,16 +108,16 @@ func Aligned(text string, sort []string) bool {
 	return right == len(sort)
 }
 
-// IndexOnTheWay returns the index of the first string of argv1 finding after the start position in argv0.
+// IndexOnTheWay returns the index of the first string of "parts" finding after the start position in "whole".
 //   Arguments:
-//     - argv0 (string): The string to be searched.
-//     - argv1 (string): The substring to search for.
+//     - whole (string): The whole string to be searched.
+//     - parts (string): The substring to search for.
 //     - start (int):    The index from which to start the search.
 //   Returns:
-//     - (int): The index of argv1.
-func IndexOnTheWay(argv0, argv1 string, start int) int {
-	if start < 0 || start >= len(argv0)                    { return -1 }
-	fi := strings.Index(argv0[start:], argv1); if fi == -1 { return -1 }
+//     - (int): The index of parts.
+func IndexOnTheWay(whole, parts string, start int) int {
+	if start < 0 || start >= len(whole)                    { return -1 }
+	fi := strings.Index(whole[start:], parts); if fi == -1 { return -1 }
 	return fi + start
 }
 
