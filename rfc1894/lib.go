@@ -49,12 +49,12 @@ func Label(line string) string {
 
 // Match checks that the argument matches with a field defined in RFC3464 or not.
 //   Arguments:
-//     - argv0 (string): Line inlcuding field and value defined in RFC3464.
+//     - line (string): Line inlcuding field and value defined in RFC3464.
 //   Returns:
 //     - (uint8): 0 is not matched, 1 is matched with per-message field, 2 is per-recipient.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
-func Match(argv0 string) uint8 {
+func Match(line string) uint8 {
 	fieldname0 := map[string]string{
 		// https://tools.ietf.org/html/rfc3464#section-2.2
 		//   Some fields of a DSN apply to all of the delivery attempts described by that DSN. At
@@ -95,10 +95,10 @@ func Match(argv0 string) uint8 {
 		"status":                ".",
 		"x-actual-recipient":    ";",
 	}
-	cv := Label(argv0)
+	cv := Label(line)
 
-	for e := range fieldname0 { if cv == e && strings.Contains(argv0, fieldname0[e]) { return 1 } }
-	for e := range fieldname1 { if cv == e && strings.Contains(argv0, fieldname1[e]) { return 2 } }
+	for e := range fieldname0 { if cv == e && strings.Contains(line, fieldname0[e]) { return 1 } }
+	for e := range fieldname1 { if cv == e && strings.Contains(line, fieldname1[e]) { return 2 } }
 	return 0
 }
 
