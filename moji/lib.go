@@ -123,23 +123,23 @@ func IndexOnTheWay(whole, parts string, start int) int {
 
 // Select returns a string selected between the 2nd argument and 3rd argument from the 1st argument.
 //   Arguments:
-//     - argv0 (string): The string to be searched for example "From: <neko@example.jp>".
+//     - whole (string): The whole string to be searched for example "From: <neko@example.jp>".
 //     - begin (string): Substring such as "<".
 //     - until (string): Substring such as ">".
 //     - start (int):    The index position for seeking.
 //   Returns:
 //     - (string): Selected string such as "neko@example.jp".
-func Select(argv0, begin, until string, start int) string {
-	if argv0 == "" || start < 0 { return ""   }
+func Select(whole, begin, until string, start int) string {
+	if whole == "" || start < 0 { return ""   }
 	if begin == "" /* <@> */    { begin = LHS }
 	if until == "" /* <$> */    { until = RHS }
 
-	textlength := [3]int{len(argv0), len(begin), len(until)}
-	sourcetext := argv0
+	textlength := [3]int{len(whole), len(begin), len(until)}
+	sourcetext := whole
 
 	if start > 0 {
 		if start > textlength[0] - 2 { return "" }
-		sourcetext = argv0[start:]
+		sourcetext = whole[start:]
 		textlength[0] = len(sourcetext)
 	}
 
