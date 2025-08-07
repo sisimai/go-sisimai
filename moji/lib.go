@@ -50,18 +50,18 @@ func Squeeze(text *string, char byte) {
 
 // Sweep clears the string out.
 //   Arguments:
-//     - argv1 (string): String to be cleaned.
+//     - text (string): String to be cleaned.
 //   Returns:
 //     - (string): Cleaned out string.
-func Sweep(argv1 string) string {
-	if argv1 == "" { return "" }
+func Sweep(text string) string {
+	if text == "" { return "" }
 
-	argv1 = strings.TrimSpace(strings.ReplaceAll(argv1, "\t", " ")); Squeeze(&argv1, ' ')
-	if strings.Contains(argv1, " --") && strings.Contains(argv1, "-- ") == false {
+	text = strings.TrimSpace(strings.ReplaceAll(text, "\t", " ")); Squeeze(&text, ' ')
+	if strings.Contains(text, " --") && strings.Contains(text, "-- ") == false {
 		// Delete all the string after a boundary string like " --neko-chan"
-		argv1 = Select(LHS + argv1, "", " --", 0)
+		text = Select(LHS + text, "", " --", 0)
 	}
-	return argv1
+	return text 
 }
 
 // ContainsOnlyNumbers returns true when the given string contain numbers only.
