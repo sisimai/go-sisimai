@@ -37,14 +37,14 @@ var ActionList = map[string]bool{
 
 // Label returns a lower-cased field name.
 //   Arguments:
-//     - text (string): A line including field and value defined in RFC3464.
+//     - line (string): A line including field and value defined in RFC3464.
 //   Returns:
 //     - (string): Lower-cased field name as a label.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
-func Label(text string) string {
-	if text == "" || strings.IndexByte(text, ':') < 0 { return "" }
-	return strings.ToLower(moji.Select(moji.LHS + text, "", ":", 0))
+func Label(line string) string {
+	if line == "" || strings.IndexByte(line, ':') < 0 { return "" }
+	return strings.ToLower(moji.Select(moji.LHS + line, "", ":", 0))
 }
 
 // Match checks that the argument matches with a field defined in RFC3464 or not.
