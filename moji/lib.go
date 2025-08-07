@@ -35,17 +35,17 @@ func Token(addre string, recip string, epoch int) string {
 
 // Squeeze remove redundant characters from the given string.
 //   Arguments:
-//     - argv0 (*string): String including redundant characters like "neko  chan".
-//     - argv1 (byte):    Characters to be squeezed, for example ' '.
-func Squeeze(argv0 *string, argv1 byte) {
-	if argv0 == nil || *argv0 == "" || strings.IndexByte(*argv0, argv1) < 0 { return }
+//     - text (*string): String including redundant characters like "neko  chan".
+//     - char (byte):    Characters to be squeezed, for example ' '.
+func Squeeze(text *string, char byte) {
+	if text == nil || *text== "" || strings.IndexByte(*text, char) < 0 { return }
 
-	textbuffer := make([]byte, 0, len(*argv0))
-	cb := byte(0); for _, by := range []byte(*argv0) {
+	textbuffer := make([]byte, 0, len(*text))
+	cb := byte(0); for _, by := range []byte(*text) {
 		// Remove a character that is the same character of the previous character
-		if by != argv1 || by != cb { textbuffer = append(textbuffer, by); cb = by }
+		if by != char || by != cb { textbuffer = append(textbuffer, by); cb = by }
 	}
-	*argv0 = string(textbuffer)
+	*text = string(textbuffer)
 }
 
 // Sweep clears the string out.
