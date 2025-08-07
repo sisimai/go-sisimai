@@ -14,23 +14,23 @@ import "libsisimai.org/sisimai/v5/moji"
 
 // Parameter finds a value of specified parameter name from Content-Type header.
 //   Arguments:
-//     - argv0 (string): Value of Content-Type: header.
-//     - argv1 (string): Lower-cased attribute name of the parameter.
+//     - ctype (string): Value of Content-Type: header.
+//     - lower (string): Lower-cased attribute name of the parameter.
 //   Returns:
 //     - (string): The value of the parameter.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc2045
-func Parameter(argv0 string, argv1 string) string {
-	if argv0 == "" { return "" }
+func Parameter(ctype string, lower string) string {
+	if ctype == "" { return "" }
 
-	cv := ""; ci := 0; if len(argv1) > 0 {
+	cv := ""; ci := 0; if len(lower) > 0 {
 		// There is a parameter name in the second argument
-		cv = strings.ToLower(argv1) + "="
-		ci = strings.Index(strings.ToLower(argv0), cv); if ci == -1 { return "" }
+		cv = strings.ToLower(lower) + "="
+		ci = strings.Index(strings.ToLower(ctype), cv); if ci == -1 { return "" }
 	}
 
-	// Find the value of the parameter name specified in "argv1"
-	cf := strings.Split(argv0[ci + len(cv):], ";")[0]; if argv1 != "boundary" { cf = strings.ToLower(cf) }
+	// Find the value of the parameter name specified in "lower"
+	cf := strings.Split(ctype[ci + len(cv):], ";")[0]; if lower != "boundary" { cf = strings.ToLower(cf) }
 	for _, e := range []string{`'`, `"`} { cf = strings.ReplaceAll(cf, e, "") }
 
 	return cf
