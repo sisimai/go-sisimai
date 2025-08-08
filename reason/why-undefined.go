@@ -10,7 +10,7 @@ package reason
 import "libsisimai.org/sisimai/v5/sis"
 
 func init() {
-	IncludedIn["Undefined"] = func(argv1 string) bool { return false }
+	IncludedIn["Undefined"] = func(mesg string) bool  { return false }
 	ProbesInto["Undefined"] = func(fo *sis.Fact) bool { return false }
 }
 
