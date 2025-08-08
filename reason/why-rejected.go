@@ -17,11 +17,11 @@ import "libsisimai.org/sisimai/v5/smtp/status"
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
 	//   Arguments:
-	//     - argv1 (string): Does the string include any of the strings listed in the pattern?
+	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["Rejected"] = func(argv1 string) bool {
-		if argv1 == "" { return false }
+	IncludedIn["Rejected"] = func(mesg string) bool {
+		if mesg == "" { return false }
 
 		isnot := []string{
 			"5.1.0 address rejected",
@@ -85,8 +85,8 @@ func init() {
 			"your access to submit messages to this e-mail system has been rejected",
 			"your email address has been blacklisted",  // MessageLabs
 		}
-		if moji.ContainsAny(argv1, isnot) { return false }
-		if moji.ContainsAny(argv1, index) { return true  }
+		if moji.ContainsAny(mesg, isnot) { return false }
+		if moji.ContainsAny(mesg, index) { return true  }
 		return false
 	}
 
