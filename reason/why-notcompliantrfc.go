@@ -15,11 +15,11 @@ import "libsisimai.org/sisimai/v5/moji"
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
 	//   Arguments:
-	//     - argv1 (string): Does the string include any of the strings listed in the pattern?
+	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["NotCompliantRFC"] = func(argv1 string) bool {
-		if argv1 == "" { return false }
+	IncludedIn["NotCompliantRFC"] = func(mesg string) bool {
+		if mesg == "" { return false }
 
 		index := []string{
 			"duplicate header",
@@ -29,7 +29,7 @@ func init() {
 		pairs := [][]string{
 			[]string{" multiple ", " header"},
 		}
-		return moji.ContainsAny(argv1, index) || moji.AlignedAny(argv1, pairs)
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
