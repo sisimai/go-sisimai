@@ -15,18 +15,18 @@ import "libsisimai.org/sisimai/v5/moji"
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
 	//   Arguments:
-	//     - argv1 (string): Does the string include any of the strings listed in the pattern?
+	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["Speeding"] = func(argv1 string) bool {
-		if argv1 == "" { return false }
+	IncludedIn["Speeding"] = func(mesg string) bool {
+		if mesg == "" { return false }
 
 		index := []string{
 			"mail sent from your IP address has been temporarily rate limited",
 			"please try again slower",
 			"receiving mail at a rate that prevents additional messages from being delivered",
 		}
-		return moji.ContainsAny(argv1, index)
+		return moji.ContainsAny(mesg, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
