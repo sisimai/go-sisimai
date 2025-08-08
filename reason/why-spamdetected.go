@@ -18,11 +18,11 @@ import "libsisimai.org/sisimai/v5/smtp/command"
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
 	//   Arguments:
-	//     - argv1 (string): Does the string include any of the strings listed in the pattern?
+	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["SpamDetected"] = func(argv1 string) bool {
-		if argv1 == "" { return false }
+	IncludedIn["SpamDetected"] = func(mesg string) bool {
+		if mesg == "" { return false }
 
 		index := []string{
 			" - spam",
@@ -126,7 +126,7 @@ func init() {
 			[]string{"spam ", " exceeded"},
 			[]string{"this message scored ", " spam points"},
 		}
-		return moji.ContainsAny(argv1, index) || moji.AlignedAny(argv1, pairs)
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
