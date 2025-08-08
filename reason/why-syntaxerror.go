@@ -14,10 +14,10 @@ import "libsisimai.org/sisimai/v5/sis"
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
 	//   Arguments:
-	//     - argv1 (string): Does the string include any of the strings listed in the pattern?
+	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["SyntaxError"] = func(argv1 string) bool { return false }
+	IncludedIn["SyntaxError"] = func(mesg string) bool { return false }
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
