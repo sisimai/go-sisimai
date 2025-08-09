@@ -38,25 +38,25 @@ func Parameter(ctype string, lower string) string {
 
 // CharacterSet returns "ISO-2022-JP" as a character set name from "=?ISO-2022-JP?B?...?=".
 //   Arguments:
-//     - argv0 (string): Base64 or Quoted-Printable encoded text.
+//     - text (string): Base64 or Quoted-Printable encoded text.
 //   Returns:
 //     - (string): Character set name like "iso-2022-jp".
-func CharacterSet(argv0 string) string {
-	if strings.HasPrefix(argv0, "=?") == false || strings.HasSuffix(argv0, "?=") == false { return "" }
-	return moji.Select(strings.ToUpper(argv0), "=?", "?", 0)
+func CharacterSet(text string) string {
+	if strings.HasPrefix(text, "=?") == false || strings.HasSuffix(text, "?=") == false { return "" }
+	return moji.Select(strings.ToUpper(text), "=?", "?", 0)
 }
 
 // Boundary finds a boundary string from the value of Content-Type header.
 //   Arguments:
-//     - argv0 (string): Value of Content-Type header.
+//     - ctype (string): Value of Content-Type header.
 //     - start (int): 
 //        - -1: boundary string itself
 //        -  0: Start of boundary: "--boundary"
 //        -  1: End of boundary" "--boundary--"
 //   Returns:
 //     - (string): Boundary string.
-func Boundary(argv0 string, start int) string {
-	if argv0 == "" { return "" }; btext := Parameter(argv0, "boundary")
+func Boundary(ctype string, start int) string {
+	if ctype == "" { return "" }; btext := Parameter(ctype, "boundary")
 	if btext == "" { return "" }
 
 	// Content-Type: multipart/mixed; boundary=Apple-Mail-5--931376066
