@@ -14,7 +14,7 @@ import "libsisimai.org/sisimai/v5/rfc791"
 
 // Received convert Received headers to a structured data.
 //   Arguments:
-//     - argv1 (string): Received header.
+//     - rhead (string): Received header.
 //   Returns:
 //     - ([]string):     Each item in the Received header order by the following:
 //                       - 0: (from)   "hostname"
@@ -25,7 +25,7 @@ import "libsisimai.org/sisimai/v5/rfc791"
 //                       - 5: (for)    "envelope-to address"
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc5322#section-3.6.7
-func Received(argv1 string) [6]string {
+func Received(rhead string) [6]string {
 	//   received        =   "Received:" *received-token ";" date-time CRLF
 	//   received-token  =   word / angle-addr / addr-spec / domain
 	//
@@ -37,9 +37,9 @@ func Received(argv1 string) [6]string {
 	//       with ESMTP
 	//       id ABC12345
 	//       for <mary@example.net>;  21 Nov 1997 10:05:43 -0600
-	if strings.IndexByte(argv1, ' ') < 0 || moji.ContainsAny(argv1, woReceived) { return [6]string{} }
+	if strings.IndexByte(rhead, ' ') < 0 || moji.ContainsAny(rhead, woReceived) { return [6]string{} }
 
-	recvd := strings.Split(argv1, " ")
+	recvd := strings.Split(rhead, " ")
 	label := [6]string{"from", "by", "via", "with", "id", "for"}
 	skips := []string{"unknown", "localhost", "[127.0.0.1]", "[IPv6:::1]"}
 	chars := []string{"(", ")", ";"} // Removed by strings.ReplaceAll()
