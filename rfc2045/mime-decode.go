@@ -15,14 +15,13 @@ import "mime/quotedprintable"
 
 // DecodeB decodes Base64 encoded text.
 //   Arguments:
-//     - argv0 (string): Base64-Encoded text.
-//     - argv1 (string): Character set name.
+//     - text (string): Base64-Encoded text.
 //   Returns:
 //     - (string): Decoded text.
-func DecodeB(argv0 string, argv1 string) (string, error) {
-	if len(argv0) < 8 { return argv0, nil }
+func DecodeB(text string) (string, error) {
+	if len(text) < 8 { return text, nil }
 
-	base64text := strings.ReplaceAll(strings.TrimSpace(argv0), "\n", "")
+	base64text := strings.ReplaceAll(strings.TrimSpace(text), "\n", "")
 	cv, nyaan  := base64.StdEncoding.DecodeString(base64text); if nyaan != nil { return "", nyaan }
 	return string(cv), nil
 }
