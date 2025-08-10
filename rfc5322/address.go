@@ -125,11 +125,11 @@ func IsQuotedAddress(email string) bool {
 
 // IsComment returns true if the string starts with "(" and ends with ")".
 //   Arguments:
-//     - argv0 (string): String including an comment in email address like "(neko, cat)".
+//     - text (string): String including an comment in email address like "(neko, cat)".
 //   Returns:
 //     - (bool): true if the argument is a comment.
-func IsComment(argv0 string) bool {
-	if argv0 == "" || !strings.HasPrefix(argv0, "(") || !strings.HasSuffix(argv0, ")") { return false }
+func IsComment(text string) bool {
+	if text == "" || !strings.HasPrefix(text, "(") || !strings.HasSuffix(text, ")") { return false }
 	return true
 }
 
