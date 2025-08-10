@@ -80,15 +80,15 @@ func haircut(block *string, heads bool) []string {
 
 // levelout splits the second argument: multipart/* blocks by a boundary string in the first argument.
 //   Arguments:
-//     - arvg0 (string):  value of Content-Type header.
-//     - arvg1 (*string): Pointer to multipart/* message blocks.
+//     - ctype (string):  value of Content-Type header.
+//     - multi (*string): Pointer to multipart/* message blocks.
 //   Returns:
 //     - ([][3]string):      List of each part of multipart/*.
 //     - ([]sis.NotDecoded): Pointer to an occurred error list.
-func levelout(argv0 string, argv1 *string) ([][3]string, []sis.NotDecoded) {
-	if argv0 == "" || argv1 == nil || *argv1 == ""        { return nil, nil }
-	boundary01 := Boundary(argv0, 0); if boundary01 == "" { return nil, nil }
-	multiparts := strings.Split(*argv1, boundary01 + "\n")
+func levelout(ctype string, multi *string) ([][3]string, []sis.NotDecoded) {
+	if ctype == "" || multi == nil || *multi == ""        { return nil, nil }
+	boundary01 := Boundary(ctype, 0); if boundary01 == "" { return nil, nil }
+	multiparts := strings.Split(*multi, boundary01 + "\n")
 	partstable := make([][3]string, 0, 4)
 	notdecoded := make([]sis.NotDecoded, 0)
 
