@@ -12,13 +12,13 @@ import "strings"
 func init() {
 	// ReturnedBy["PowerMTA"] returns a []string which is compatible with the value returned from rfc1894.Field().
 	//   Arguments:
-	//     - argv1 (string): Line of the error message.
+	//     - mesg (string): Line of the error message.
 	//   Returns:
 	//     - ([]string): []string{"field-name", "value-type", "value", "field-group", "comment"}
 	//   See:
 	//     - https://bird.com/email/power-mta
-	ReturnedBy["PowerMTA"] = func(argv1 string) []string {
-		if argv1 == "" || strings.Contains(argv1, ": ") == false { return []string{} }
+	ReturnedBy["PowerMTA"] = func(mesg string) []string {
+		if mesg == "" || strings.Contains(mesg, ": ") == false { return []string{} }
 
 		fieldgroup := map[string]string{
 			"x-powermta-virtualmta":     "host", // X-PowerMTA-VirtualMTA: mx22.neko.example.jp
@@ -35,8 +35,8 @@ func init() {
 			"routing-errors":      "systemerror",
 			"spam-related":        "spamdetected",
 		}
-		lhs,rhs, _ := strings.Cut(argv1, ":") // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
-		xfieldname := strings.ToLower(lhs)    // "final-recipient"
+		lhs,rhs, _ := strings.Cut(mesg, ":") // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
+		xfieldname := strings.ToLower(lhs)   // "final-recipient"
 		xef, nyaan := fieldgroup[xfieldname]; if nyaan == false { return []string{} }
 		xfieldlist := []string{"", "", strings.TrimSpace(rhs), xef, "", "PowerMTA"}
 
