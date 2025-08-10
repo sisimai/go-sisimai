@@ -28,13 +28,13 @@ func DecodeB(text string) (string, error) {
 
 // DecodeQ decodes Quoted-Pritable encdoed text.
 //   Arguments:
-//     - argv0 (string): Quoted-Printable encoded text.
+//     - text (string): Quoted-Printable encoded text.
 //   Returns:
 //     - (string): Decoded text.
 //     - (error):  Decoding error.
-func DecodeQ(argv0 string) (string, error) {
-	if len(argv0)  < 8 { return argv0, nil }
-	decodingif := quotedprintable.NewReader(bytes.NewReader([]byte(argv0)))
+func DecodeQ(text string) (string, error) {
+	if len(text) < 8 { return text, nil }
+	decodingif := quotedprintable.NewReader(bytes.NewReader([]byte(text)))
 
 	var readbuffer bytes.Buffer
 	_, nyaan := io.Copy(&readbuffer, decodingif); if nyaan != nil { return "", nyaan }
