@@ -141,13 +141,13 @@ func levelout(ctype string, mpart *string) ([][3]string, []sis.NotDecoded) {
 
 // Makeflat makes multipart/* part blocks flat and decode each part.
 //   Arguments:
-//     - argv0 (string):  Value of Content-Type header.
-//     - argv1 (*string): Pointer to multipart/* message blocks.
+//     - ctype (string):  Value of Content-Type header.
+//     - mpart (*string): Pointer to multipart/* message blocks.
 //   Returns:
 //     - (*string):          Message body.
 //     - ([]sis.NotDecoded): Occurred errors.
-func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
-	lhead := strings.ToLower(argv0)
+func MakeFlat(ctype string, mpart *string) (*string, []sis.NotDecoded) {
+	lhead := strings.ToLower(ctype)
 	if moji.ContainsAny(lhead, []string{"multipart/", "boundary="}) == false { return nil, nil }
 
 	// Some bounce messages include lower-cased "content-type:" field such as the followings:
@@ -158,24 +158,24 @@ func MakeFlat(argv0 string, argv1 *string) (*string, []sis.NotDecoded) {
 	for _, e := range []string{"CONTENT-TYPE", "Content-type", "content-type"} {
 		// Transform the Content-Type header name to the camel cased
 		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
-		*argv1 = strings.ReplaceAll(*argv1, e + ":", "Content-Type:")
+		*mpart = strings.ReplaceAll(*mpart, e + ":", "Content-Type:")
 	}
 
 	for _, e := range []string{"CONTENT-TRANSFER-ENCODING", "content-transfer-encoding"} {
 		// Transform the Content-Transfer-Encoding header name to the camel cased
 		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
-		*argv1 = strings.ReplaceAll(*argv1, e + ":", "Content-Transfer-Encoding:")
+		*mpart = strings.ReplaceAll(*mpart, e + ":", "Content-Transfer-Encoding:")
 	}
 
 	for _, e := range []string{"CHARSET", "CharSet", "Charset", "BOUNDARY", "Boundary"} {
 		// Transform each parameter field name to the lower cased
 		// TODO: These parameters have been transformed by sisimai.message.Tidy() function ...?
-		*argv1 = strings.ReplaceAll(*argv1, e + "=", strings.ToLower(e) + "=")
+		*mpart = strings.ReplaceAll(*mpart, e + "=", strings.ToLower(e) + "=")
 	}
-	*argv1 = strings.ReplaceAll(*argv1, "message/xdelivery-status", "message/delivery-status")
+	*mpart = strings.ReplaceAll(*mpart, "message/xdelivery-status", "message/delivery-status")
 
-	multiparts, notdecoded := levelout(argv0, argv1)
-	flatbuffer := strings.Builder{}; flatbuffer.Grow(len(*argv1) / 2)
+	multiparts, notdecoded := levelout(ctype, mpart)
+	flatbuffer := strings.Builder{}; flatbuffer.Grow(len(*mpart) / 2)
 	delimiters := []string{"/delivery-status", "/rfc822", "/feedback-report", "/partial"}
 
 	for _, e := range multiparts {
