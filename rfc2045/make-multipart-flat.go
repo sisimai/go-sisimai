@@ -204,7 +204,7 @@ func MakeFlat(ctype string, mpart *string) (*string, []sis.NotDecoded) {
 				// - https://github.com/sisimai/go-sisimai/issues/42
 				default: bodystring = bodyinside
 
-				case "base64":           bodystring, nyaan = DecodeB(bodyinside, "")
+				case "base64":           bodystring, nyaan = DecodeB(bodyinside)
 				case "quoted-printable": bodystring, nyaan = DecodeQ(bodyinside)
 			}
 			if nyaan != nil { notdecoded = append(notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false)) }
