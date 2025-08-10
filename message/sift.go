@@ -38,7 +38,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		// Content-Type: text/plain; charset=UTF-8
 		var nyaan error
 		switch ctencoding {
-			case "base64":           bf.Payload, nyaan = rfc2045.DecodeB(bf.Payload, "")
+			case "base64":           bf.Payload, nyaan = rfc2045.DecodeB(bf.Payload)
 			case "quoted-printable": bf.Payload, nyaan = rfc2045.DecodeQ(bf.Payload)
 		}
 		if nyaan != nil {

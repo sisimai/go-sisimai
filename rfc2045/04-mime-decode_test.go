@@ -18,12 +18,12 @@ func TestDecodeB(t *testing.T) {
 
 	for j, e := range be {
 		for _, f := range []string{"", "utf-8"} {
-			cv, ce := DecodeB(e, f)
+			cv, ce := DecodeB(e)
 			cx++; if cv != jp[j] { t.Errorf("%s(%s, %s) returns %s", fn, e, f, cv) }
 			cx++; if ce != nil   { t.Errorf("%s(%s, %s) returns error: %s", fn, e, f, ce) }
 		}
 	}
-	if cv, _ := DecodeB("", ""); cv != "" { t.Errorf("%s('') returns %s", fn, cv) }
+	if cv, _ := DecodeB(""); cv != "" { t.Errorf("%s('') returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }
