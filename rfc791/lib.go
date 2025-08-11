@@ -31,15 +31,15 @@ func IsIPv4Address(addr string) bool {
 
 // FindIPv4Address finds IPv4 addresses from the given string.
 //   Arguments:
-//     - argv1 (string): String including an IPv4 address.
+//     - text (string): String including an IPv4 address.
 //   Returns:
 //     - ([]string): List of IPv4 addresses found and picked from the argument.
-func FindIPv4Address(argv1 string) []string {
-	if len(argv1) < 7 { return []string{} }
+func FindIPv4Address(text string) []string {
+	if len(text) < 7 { return []string{} }
 
 	// Rewrite: "mx.example.jp[192.0.2.1]" => "mx.example.jp 192.0.2.1"
-	for _, e := range []string{"(", ")", "[", "]", ","} { argv1 = strings.ReplaceAll(argv1, e, " ") }
-	ipv4a := make([]string, 0, 4); for _, e := range strings.Split(argv1, " ") {
+	for _, e := range []string{"(", ")", "[", "]", ","} { text = strings.ReplaceAll(text, e, " ") }
+	ipv4a := make([]string, 0, 4); for _, e := range strings.Split(text, " ") {
 		// Find a string including an IPv4 address
 		if IsIPv4Address(e){ ipv4a = append(ipv4a, e) }
 	}
