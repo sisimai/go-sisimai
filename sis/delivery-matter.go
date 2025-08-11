@@ -113,10 +113,10 @@ func(de *DeliveryMatter) Update(field string, value string) bool {
 
 // *DeliveryMatter.AsRFC1894 returns a lower-cased member name converted from a field name defined in RFC1894.
 //   Arguments:
-//     - argv1 (string): Field name defined in RFC1894.
+//     - field (string): Field name defined in RFC1894.
 //   Returns:
 //     - (string): Member name of sis.DeliveryMatter struct.
-func(de *DeliveryMatter) AsRFC1894(argv1 string) string {
+func(de *DeliveryMatter) AsRFC1894(field string) string {
 	// Available values are the followings:
 	// - "action":             Action    (list)
 	// - "arrival-date":       Date      (date)
@@ -129,11 +129,11 @@ func(de *DeliveryMatter) AsRFC1894(argv1 string) string {
 	// - "reporting-mta":      Lhost     (host)
 	// - "status":             Status    (stat)
 	// - "x-actual-recipient": Alias     (addr)
-	if argv1 == "" { return "" }
+	if field == "" { return "" }
 
-	switch argv1 {
+	switch field {
 		default:                                         return ""
-		case "action", "status":                         return argv1
+		case "action", "status":                         return field
 		case "arrival-date", "last-attempt-date":        return "date"
 		case "diagnostic-code":                          return "diagnosis"
 		case "final-recipient":                          return "recipient"
