@@ -36,22 +36,22 @@ type DeliveryMatter struct {
 
 // TailDeliveryMatter returns the last element pointer of DeliveryMatter struct.
 //   Arguments:
-//     - argv0 ([]DeliveryMatter): []DeliveryMatter
+//     - de ([]DeliveryMatter): []DeliveryMatter
 //   Returns:
 //     - (*DeliveryMatter): The last element pointer of DeliveryMatter struct.
-func TailDeliveryMatter(argv0 []DeliveryMatter) *DeliveryMatter {
-	width := len(argv0); if width == 0 { return nil }
-	return &(argv0)[width - 1]
+func TailDeliveryMatter(de []DeliveryMatter) *DeliveryMatter {
+	width := len(de); if width == 0 { return nil }
+	return &(de)[width - 1]
 }
 
 // NextDeliveryMatter appends a new element and returns the last element pointer.
 //   Arguments:
-//     - argv0 (*[]DeliveryMatter): The pointer to []DeliveryMatter.
+//     - de (*[]DeliveryMatter): The pointer to []DeliveryMatter.
 //   Returns:
 //     - (*DeliveryMatter): The last element pointer of DeliveryMatter struct.
-func NextDeliveryMatter(argv0 *[]DeliveryMatter) *DeliveryMatter {
-	*argv0 = append(*argv0, DeliveryMatter{})
-	return &(*argv0)[len(*argv0) - 1]
+func NextDeliveryMatter(de *[]DeliveryMatter) *DeliveryMatter {
+	*de = append(*de, DeliveryMatter{})
+	return &(*de)[len(*de) - 1]
 }
 
 // *DeliveryMatter.Select returns the current value of the sis.DeliveryMatter instance.
