@@ -26,12 +26,12 @@ var ExceptDATA = []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}
 
 // Test checks that an SMTP command in the argument is valid or not.
 //   Arguments:
-//     - argv0 (string): An SMTP command.
+//     - comm (string): An SMTP command.
 //   Returns:
 //     - (bool): true if the argument is a valid SMTP command.
-func Test(argv0 string) bool {
-	if len(argv0) < 4                      { return false }
-	if moji.ContainsAny(argv0, availables) { return true  }
+func Test(comm string) bool {
+	if len(comm) < 4                      { return false }
+	if moji.ContainsAny(comm, availables) { return true  }
 	return false
 }
 
