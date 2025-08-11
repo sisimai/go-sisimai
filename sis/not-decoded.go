@@ -55,12 +55,12 @@ func(no *NotDecoded) Label() string {
 
 // *NotDecoded.Email receives a path to email and set it into EmailFile.
 //   Arguments:
-//     - argv1 (string): Path to an email being set into the EmailFile.
+//     - path (string): Path to an email being set into the EmailFile.
 //   Returns:
 //     - (string): Current value of the EmailFile.
-func(no *NotDecoded) Email(argv1 string) string {
-	if argv1        == "" { return no.EmailFile  }
-	if no.EmailFile == "" { no.EmailFile = argv1 }
+func(no *NotDecoded) Email(path string) string {
+	if path         == "" { return no.EmailFile }
+	if no.EmailFile == "" { no.EmailFile = path }
 	return no.EmailFile
 }
 
