@@ -129,13 +129,13 @@ func AssociatedWith(reply string) []string { return associated[reply] }
 
 // Test checks whether a reply code is a valid code or not.
 //   Arguments:
-//     - argv0 (string): SMTP reply code.
+//     - code (string): SMTP reply code.
 //   Returns:
 //     - (bool): true if the argument is a valid SMTP reply code, false otherwise.
-func Test(argv0 string) bool {
-	if len(argv0)  <  3 { return false }
+func Test(code string) bool {
+	if len(code) < 3 { return false }
 
-	reply, nyaan := strconv.Atoi(argv0)
+	reply, nyaan := strconv.Atoi(code)
 	if nyaan != nil     { return false } // Failed to convert from a string to an integer
 	if reply <  211     { return false } // The minimum SMTP Reply code is 211
 	if reply >  556     { return false } // The maximum SMTP Reply code is 556 (RFC7504)
