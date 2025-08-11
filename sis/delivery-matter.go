@@ -56,11 +56,11 @@ func NextDeliveryMatter(de *[]DeliveryMatter) *DeliveryMatter {
 
 // *DeliveryMatter.Select returns the current value of the sis.DeliveryMatter instance.
 //   Arguments:
-//     - argv0 (string): Lower-cased member name of sis.DeliveryMatter.
+//     - field (string): Lower-cased member name of sis.DeliveryMatter.
 //   Returns:
-//     - (string): The value of the member name specified at argv0.
-func(de *DeliveryMatter) Select(argv0 string) string {
-	switch argv0 {
+//     - (string): The value of the member name specified at "field".
+func(de *DeliveryMatter) Select(field string) string {
+	switch field {
 		case "action":       return de.Action
 		case "agent":        return de.Agent
 		case "alias":        return de.Alias
