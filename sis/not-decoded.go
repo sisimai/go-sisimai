@@ -22,14 +22,14 @@ type NotDecoded struct {
 
 // MakeNotDecoded is a constructor of sis.NotDecoded struct.
 //   Arguments:
-//     - argv0 (string): Error message.
-//     - argv1 (bool):   Unrecoverable error or not.
+//     - mesg (string): Error message.
+//     - flag (bool):   Unrecoverable error or not.
 //   Returns:
 //     - (*NotDecoded):  Initialized error struct.
-func MakeNotDecoded(argv0 string, argv1 bool) *NotDecoded {
+func MakeNotDecoded(mesg string, flag bool) *NotDecoded {
 	p, _, l, _ := runtime.Caller(1); return &NotDecoded{
-		BecauseOf: argv0,
-		CalledOff: argv1,
+		BecauseOf: mesg,
+		CalledOff: flag,
 		Timestamp: time.Now(),
 		WhoCalled: fmt.Sprintf("%s():%d", runtime.FuncForPC(p).Name(), l),
 	}
