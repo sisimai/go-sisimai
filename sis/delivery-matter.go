@@ -81,32 +81,32 @@ func(de *DeliveryMatter) Select(field string) string {
 
 // *DeliveryMatter.Update set the argument into the member of sis.DeliveryMatter instance.
 //   Arguments:
-//     - argv0 (string): Lower-cased member name of sis.DeliveryMatter.
-//     - argv1 (string): New value to be updated.
+//     - field (string): Lower-cased member name of sis.DeliveryMatter.
+//     - value (string): New value to be updated.
 //   Returns:
 //     - (bool): true if it has updated successfully.
-func(de *DeliveryMatter) Update(argv0 string, argv1 string) bool {
-	if argv0 == "" || argv1 == "" { return false }
+func(de *DeliveryMatter) Update(field string, value string) bool {
+	if field == "" || value == "" { return false }
 
 	//actionlist := []string{"delayed", "delivered", "expanded", "failed", "relayed"}
 	feedbacklo := []string{"abuse", "dkim", "fraud", "miscategorized", "not-spam", "opt-out", "virus", "other"}
 
-	switch argv0 {
+	switch field {
 		default: return false
-		case "action":       if rfc1894.ActionList[argv1] { de.Action = argv1 }    // Only valid values are accepted
-		case "agent":        de.Agent = argv1                                      // Any value is accepted
-		case "alias":        if rfc5322.IsEmailAddress(argv1) { de.Alias = argv1 } // Only valid email addresses are accepted
-		case "command":      if command.Test(argv1) { de.Command = argv1 }         // Only valid values are accepted
-		case "date":         de.Date = argv1                                       // Any value is accepted
-		case "diagnosis":    de.Diagnosis = argv1                                  // Any value is accepted
-		case "feedbacktype": if slices.Contains(feedbacklo, argv1) { de.FeedbackType = argv1      } // Only valid values are accepted
-		case "lhost":        if rfc1123.IsInternetHost(argv1) { de.Lhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
-		case "reason":       de.Reason = strings.ToLower(argv1)
-		case "recipient":    if rfc5322.IsEmailAddress(argv1) { de.Recipient = argv1 } // Only valid email addresses are accepted
-		case "replycode":    if reply.Test(argv1) { de.ReplyCode = argv1 }             // Only valid SMTP reply codes are accepted
-		case "rhost":        if rfc1123.IsInternetHost(argv1) { de.Rhost = strings.ToLower(argv1) } // Only valid hostnames are accepted
-		case "spec":         de.Spec = argv1                             // Any value is accepted
-		case "status":       if status.Test(argv1) { de.Status = argv1 } // Only valid SMTP status codes are accepted
+		case "action":       if rfc1894.ActionList[value] { de.Action = value }    // Only valid values are accepted
+		case "agent":        de.Agent = value                                      // Any value is accepted
+		case "alias":        if rfc5322.IsEmailAddress(value) { de.Alias = value } // Only valid email addresses are accepted
+		case "command":      if command.Test(value) { de.Command = value }         // Only valid values are accepted
+		case "date":         de.Date = value                                       // Any value is accepted
+		case "diagnosis":    de.Diagnosis = value                                  // Any value is accepted
+		case "feedbacktype": if slices.Contains(feedbacklo, value) { de.FeedbackType = value      } // Only valid values are accepted
+		case "lhost":        if rfc1123.IsInternetHost(value) { de.Lhost = strings.ToLower(value) } // Only valid hostnames are accepted
+		case "reason":       de.Reason = strings.ToLower(value)
+		case "recipient":    if rfc5322.IsEmailAddress(value) { de.Recipient = value } // Only valid email addresses are accepted
+		case "replycode":    if reply.Test(value) { de.ReplyCode = value }             // Only valid SMTP reply codes are accepted
+		case "rhost":        if rfc1123.IsInternetHost(value) { de.Rhost = strings.ToLower(value) } // Only valid hostnames are accepted
+		case "spec":         de.Spec = value                             // Any value is accepted
+		case "status":       if status.Test(value) { de.Status = value } // Only valid SMTP status codes are accepted
 	}
 	return true
 }
