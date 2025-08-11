@@ -14,15 +14,15 @@ import "strconv"
 
 // IsIPv4Address returns "true" when the given string is an IPv4 address.
 //   Arguments:
-//     - argv1 (string): IPv4 address like "192.0.2.25".
+//     - addr (string): IPv4 address like "192.0.2.25".
 //   Returns:
 //     - (bool): true if the argument is a valid IPv4 Address.
 //    See:
 //     - https://datatracker.ietf.org/doc/html/rfc791
-func IsIPv4Address(argv1 string) bool {
-	if len(argv1) < 7 || strings.Count(argv1, ".") != 3 { return false }
+func IsIPv4Address(addr string) bool {
+	if len(addr) < 7 || strings.Count(addr, ".") != 3 { return false }
 
-	for _, e := range strings.Split(argv1, ".") {
+	for _, e := range strings.Split(addr, ".") {
 		// Check each octet is between 0 and 255
 		if v, nyaan := strconv.Atoi(e); nyaan != nil || v < 0 || v > 255 { return false }
 	}
