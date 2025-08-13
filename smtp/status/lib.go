@@ -486,12 +486,12 @@ import "strings"
 
 // Code returns an internal delivery status code matched with the given reason string.
 //   Arguments:
-//     - argv0 (string): Reason name.
-//     - argv1 (bool):   false: Permanent error, true: Temporary error.
+//     - name (string): Reason name.
+//     - temp (bool):   false: Permanent error, true: Temporary error.
 //   Returns:
 //     - (string): Internal delivery status code or an empty string.
-func Code(argv0 string, argv1 bool) string {
-	if len(argv0) < 6 { return "" }
+func Code(name string, temp bool) string {
+	if len(name) < 6 { return "" }
 
 	codetable0 := map[string]string{
 		"authfailure":     "5.0.926",
@@ -564,8 +564,8 @@ func Code(argv0 string, argv1 bool) string {
 		"virusdetected":   "4.0.981",
 	}
 
-	if argv1 == true { return codetable1[argv0] }
-	return codetable0[argv0]
+	if temp == true { return codetable1[name] }
+	return codetable0[name]
 }
 
 // Name returns a reason string matched with the given delivery status code.
