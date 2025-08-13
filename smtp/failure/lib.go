@@ -29,14 +29,14 @@ func IsPermanent(text string) bool {
 
 // IsTemporary returns true if the given string indicates a temporary error.
 //   Arguments:
-//     - argv1 (string): String including SMTP status code.
+//     - text (string): String including SMTP status code.
 //   Returns:
 //     - (bool): true if it indicates temporary error, false otherwise.
-func IsTemporary(argv1 string) bool {
-	if argv1 == "" { return false }
+func IsTemporary(text string) bool {
+	if text == "" { return false }
 
-	statuscode := status.Find(argv1, ""); if statuscode == "" { statuscode = reply.Find(argv1, "") }
-	issuedcode := strings.ToLower(argv1)
+	statuscode := status.Find(text, ""); if statuscode == "" { statuscode = reply.Find(text, "") }
+	issuedcode := strings.ToLower(text)
 
 	if strings.HasPrefix(statuscode, "4")          { return true }
 	if strings.Contains(issuedcode, " temporar")   { return true }
