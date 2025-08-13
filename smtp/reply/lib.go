@@ -157,17 +157,17 @@ func Test(code string) bool {
 
 // Find returns an SMTP reply code found from the given string.
 //   Arguments:
-//     - argv1 (string): String including SMTP reply code like 550.
-//     - argv2 (string): SMTP status code like "5.1.1", or the 1st digit of the code like "2", "4", or "5".
+//     - text (string): String including SMTP reply code like 550.
+//     - code (string): SMTP status code like "5.1.1", or the 1st digit of the code like "2", "4", or "5".
 //   Returns:
 //     - (string): SMTP reply code found in the 1st argument.
-func Find(argv1 string, argv2 string) string {
-	if len(argv1) < 3 || strings.Contains(strings.ToUpper(argv1), "X-UNIX") { return "" }
-	if len(argv2) == 0 { argv2 = "0" }
+func Find(text, code string) string {
+	if len(text) < 3 || strings.Contains(strings.ToUpper(text), "X-UNIX") { return "" }
+	if len(code) == 0 { code = "0" }
 
-	esmtperror := " " + argv1 + " "
+	esmtperror := " " + text + " "
 	replycodes := make([]string, 0, 50)
-	if statuscode := argv2[0:1]; statuscode == "2" || statuscode == "4" || statuscode == "5" {
+	if statuscode := code[0:1]; statuscode == "2" || statuscode == "4" || statuscode == "5" {
 		// The first character of the 2nd argument is 2 or 4 or 5
 		replycodes = codeofsmtp[statuscode]
 
