@@ -15,15 +15,15 @@ import "libsisimai.org/sisimai/v5/smtp/status"
 
 // IsPermanent returns true if the given string indicates a permanent error.
 //   Arguments:
-//     - argv1 (string): String including SMTP status code.
+//     - text (string): String including SMTP status code.
 //   Returns:
 //     - (bool): true if it indicates permanent error, false otherwise.
-func IsPermanent(argv1 string) bool {
-	if argv1 == "" { return false }
+func IsPermanent(text string) bool {
+	if text == "" { return false }
 
-	statuscode := status.Find(argv1, "");  if statuscode == "" { statuscode = reply.Find(argv1, "") }
+	statuscode := status.Find(text, "");  if statuscode == "" { statuscode = reply.Find(text, "") }
 	if strings.HasPrefix(statuscode, "5")                      { return true }
-	if strings.Contains(strings.ToLower(argv1), " permanent ") { return true }
+	if strings.Contains(strings.ToLower(text), " permanent ") { return true }
 	return false
 }
 
