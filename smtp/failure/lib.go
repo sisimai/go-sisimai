@@ -29,9 +29,9 @@ func IsPermanent(text string) bool {
 
 // IsTemporary returns true if the given string indicates a temporary error.
 //   Arguments:
-//     - argv1 (string): String including SMTP status code
+//     - argv1 (string): String including SMTP status code.
 //   Returns:
-//     - (bool):         true if it indicates temporary error, false otherwise.
+//     - (bool): true if it indicates temporary error, false otherwise.
 func IsTemporary(argv1 string) bool {
 	if argv1 == "" { return false }
 
