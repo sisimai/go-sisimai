@@ -13,14 +13,14 @@ import "strconv"
 
 // Test checks whether an SMTP status code is a valid code or not.
 //   Arguments:
-//     - argv1 (string): SMTP status code to be checked.
+//     - code (string): SMTP status code to be checked.
 //   Returns:
 //     - (bool): true if the argument is a valid SMTP status code.
-func Test(argv1 string) bool {
-	if len(argv1) < 5 || len(argv1) > 7 { return false }
+func Test(code string) bool {
+	if len(code) < 5 || len(code) > 7 { return false }
 
 	token := make([]int16, 0, 3) // Each digit like [5,7,26] converted from "5.7.26"
-	for _, e := range strings.Split(argv1, ".") {
+	for _, e := range strings.Split(code, ".") {
 		digit, nyaan := strconv.Atoi(e); if nyaan == nil { token = append(token, int16(digit)) }
 	}
 	if len(token) != 3 { return false } // The number of elements should be 3 like [5,1,1]
