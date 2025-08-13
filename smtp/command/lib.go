@@ -37,19 +37,19 @@ func Test(comm string) bool {
 
 // Find returns an SMTP command found in the argument.
 //   Arguments:
-//     - argv0 (string): Text including SMTP command.
+//     - text (string): Text including SMTP command.
 //   Returns:
 //     - (string): Found SMTP command.
-func Find(argv0 string) string {
-	if Test(argv0) == false { return "" }
+func Find(text string) string {
+	if Test(text) == false { return "" }
 
 	commandset := make([]string, 0, 4)
 	commandmap := map[string]string{"STAR": "STARTTLS", "XFOR": "XFORWARD"}
-	issuedcode := " " + argv0 + " "
+	issuedcode := " " + text + " "
 
 	for _, e := range detectable {
 		// Find an SMTP command from the given string
-		p0 := strings.Index(argv0, e); if p0 < 0 { continue }
+		p0 := strings.Index(text, e); if p0 < 0 { continue }
 		if strings.IndexByte(e, ' ') < 0 {
 			// For example, "RCPT T" does not appear in an email address or a domain name
 			cx, cw := true, len(e) + 1
