@@ -694,13 +694,13 @@ func Name(code string) string {
 
 // IsExplicit returns true if the status code is not empty and is not an internal delivery status code.
 //   Arguments:
-//     - argv0 (string): Delivery status code.
+//     - code (string): Delivery status code.
 //   Returns:
 //     - (bool): true if the code is an explicit, false otherwise.
 //   Since:
 //     - v5.2.2
-func IsExplicit(argv1 string) bool {
-	if argv1 == "" || len(argv1) == 7 && strings.Index(argv1, ".0.9") == 1 { return false }
+func IsExplicit(code string) bool {
+	if code == "" || len(code) == 7 && strings.Index(code, ".0.9") == 1 { return false }
 	return true
 }
 
