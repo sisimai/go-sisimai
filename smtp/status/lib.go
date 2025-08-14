@@ -570,11 +570,11 @@ func Code(name string, temp bool) string {
 
 // Name returns a reason string matched with the given delivery status code.
 //   Arguments:
-//     - argv0 (string): SMTP status code such as "5.2.2".
+//     - code (string): SMTP status code such as "5.2.2".
 //   Returns:
 //     - (string): Reason name assigned with the argument.
-func Name(argv0 string) string {
-	if len(argv0) < 5 || Test(argv0) == false { return "" }
+func Name(code string) string {
+	if len(code) < 5 || Test(code) == false { return "" }
 
 	standardcr := map[string]string{
 		"2.1.5":  "delivered",			// Successfully delivered
@@ -689,7 +689,7 @@ func Name(argv0 string) string {
 		"5.7.29": "authfailure",		// This status code may be returned when a message fails ARC validation.
 		"5.7.30": "failedstarttls",		// REQUIRETLS support required
 	}
-	return standardcr[argv0]
+	return standardcr[code]
 }
 
 // IsExplicit returns true if the status code is not empty and is not an internal delivery status code.
