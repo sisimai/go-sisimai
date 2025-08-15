@@ -31,7 +31,7 @@ func TestSift(t *testing.T) {
 	}
 
 	bf.Sender  = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
-	bf.Headers = rfc5322.Headers(&em.Header, false)
+	bf.Headers = rfc5322.Headers(&em.Header)
 	bf.Payload = string(eb)
 
 	cx++; if len(bf.Headers) == 0             { t.Errorf("rfc5322.Headers() returns empty headers") }
