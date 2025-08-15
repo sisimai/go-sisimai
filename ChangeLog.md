@@ -12,6 +12,7 @@ v5.4.0p1
   - #158 #160 Update SMTP error and status codes of Gmail updated in August 2025.
     - Gmail SMTP errors and codes https://support.google.com/a/answer/3726730
     - https://github.com/azumakuniyuki/feb-2024-no-auth-no-entry/commit/364214227
+    - #163 #164 Sisimai can be built with Go 1.25.
 
 v5.4.0
 ---------------------------------------------------------------------------------------------------
