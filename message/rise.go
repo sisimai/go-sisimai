@@ -52,7 +52,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 			}
 
 			// Build "Head", "Body" members of BeforeFact
-			beforefact.Headers = rfc5322.Headers(&email.Header, false)
+			beforefact.Headers = rfc5322.Headers(&email.Header)
 			bodystring, nyaan := io.ReadAll(email.Body); if nyaan != nil { break RISE }
 			beforefact.Payload = string(bodystring)
 		}
