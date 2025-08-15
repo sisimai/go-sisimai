@@ -25,7 +25,7 @@ func TestHeaders(t *testing.T) {
 			cx++; t.Fatalf("os.ReadFile(%s) returns an empty string", ef)
 		}
 		et := string(bx); em, _ := mail.ReadMessage(strings.NewReader(et))
-		cv := Headers(&em.Header, false)
+		cv := Headers(&em.Header)
 
 		cx++; if len(cv) == 0 { t.Errorf("%s() returns empty", fn) }
 		for e := range cv {

@@ -43,7 +43,7 @@ func TestInquire48(t *testing.T) {
 		eo, _ := mail.ReadMessage(strings.NewReader(ee))
 		bo, _ := io.ReadAll(eo.Body)
 		bf    := &sis.BeforeFact{
-			Headers: rfc5322.Headers(&eo.Header, false),
+			Headers: rfc5322.Headers(&eo.Header),
 			Payload: string(bo),
 		}
 
