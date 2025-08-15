@@ -130,7 +130,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		bf.Errors = append(bf.Errors, ce)
 		return false
 	}
-	bf.RFC822 = rfc5322.Headers(&rfc822part.Header, false)
+	bf.RFC822 = rfc5322.Headers(&rfc822part.Header)
 	bf.Digest = rising.Digest
 
 	return true
