@@ -65,19 +65,19 @@ var dayofweek = []string{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}
 
 // Date tidies up and converts the date string to the format.
 //   Arguments:
-//     - argv1 (string): Date string.
+//     - date0 (string): Date string.
 //   Returns:
 //     - (string): Tidied date string.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc5322#section-3.3
 //     - https://datatracker.ietf.org/doc/html/rfc3339
 //     - https://en.wikipedia.org/wiki/ISO_8601
-func Date(argv1 string) string {
+func Date(date0 string) string {
 	// rfc5322.Date("2018-02-02T18:30:22 Fri") => Fri, 2 Feb 2018 18:30:22 +0000
 	// rfc5322.Date("Fri, Feb 2 2018 2:2:2")   => Fri, 2 Feb 2018 02:02:02 +0000
-	if argv1 == "" { return "" }
+	if date0 == "" { return "" }
 
-	datestring := strings.ReplaceAll(argv1, ",", ", "); moji.Squeeze(&datestring, ' ') // "Thu,22" -> "Thu, 22"
+	datestring := strings.ReplaceAll(date0, ",", ", "); moji.Squeeze(&datestring, ' ') // "Thu,22" -> "Thu, 22"
 	year2digit := uint8(0)    // 2-digit year such as 22, 97
 	p          := [6]string{} // [0] 2018, [1] Feb, [2] 2(Day), [3] Fri, [4] 18:30:22, [5] Timezone Offset(0)
 
