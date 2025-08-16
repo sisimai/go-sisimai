@@ -46,22 +46,22 @@ func IsTemporary(text string) bool {
 
 // IsHardBounce checks the reason sisimai detected is a hard bounce or not.
 //   Arguments:
-//     - argv1 (string): The bounce reason sisimai detected.
-//     - argv2 (string): String including SMTP status code.
+//     - name (string): The bounce reason sisimai detected.
+//     - code (string): String including SMTP status code.
 //   Returns:
 //     - (bool): true if it indicates hard bounce, false otherwise.
-func IsHardBounce (argv1, argv2 string) bool {
-	if argv1 == "undefined" || argv1 == "onhold"      || argv1 == ""            { return false }
-	if argv1 == "deliverd"  || argv1 == "feedback"    || argv1 == "vacation"    { return false }
-	if argv1 == "hasmoved"  || argv1 == "userunknown" || argv1 == "hostunknown" { return true  }
-	if argv1 != "notaccept"                                                     { return false }
-	if argv2 == ""                                                              { return true  }
+func IsHardBounce (name, code string) bool {
+	if name == "undefined" || name == "onhold"      || name == ""            { return false }
+	if name == "deliverd"  || name == "feedback"    || name == "vacation"    { return false }
+	if name == "hasmoved"  || name == "userunknown" || name == "hostunknown" { return true  }
+	if name != "notaccept"                                                   { return false }
+	if code == ""                                                            { return true  }
 
 	// Check the 2nd argument(a status code or a reply code)
 	//   - The SMTP status code or the SMTP reply code starts with "5"
 	//   - Deal as a hard bounce when the error message does not indicate a temporary error 
-	cv := status.Find(argv2, ""); if cv == "" { cv = reply.Find(argv2, "") }
-	if strings.HasPrefix(cv, "5") || IsTemporary(argv2) == false { return true }
+	cv := status.Find(code, ""); if cv == "" { cv = reply.Find(code, "") }
+	if strings.HasPrefix(cv, "5") || IsTemporary(code) == false { return true }
 	return false
 }
 
