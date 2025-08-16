@@ -31,18 +31,18 @@ func S3S4(email string) string {
 
 // Find is an email address parser with a name and comment.
 //   Arguments:
-//     - argv1 (string): String including an email address.
+//     - text (string): String including an email address.
 //   Returns:
 //     - ([3]string): Email address table such as `[3]string{"address", "name", "comment"}`.
-func Find(argv1 string) [3]string {
-	if len(argv1) < 5 { return [3]string{} }
+func Find(text string) [3]string {
+	if len(text) < 5 { return [3]string{} }
 
 	delimiters := `<>(),"`
 	groupindex := 0 // Group index: 0=undefined, 1=address, 2=name, 3=comment
 	readcursor := 0 // Points the current cursor position
 	readbuffer := [3]strings.Builder{}; readbuffer[0].Grow(32); readbuffer[1].Grow(32); readbuffer[2].Grow(8)
 
-	for _, e := range argv1 {
+	for _, e := range text {
 		// Check each character
 		if strings.ContainsRune(delimiters, e) {
 			// The character is a delimiter
