@@ -67,20 +67,20 @@ func IsHardBounce (name, code string) bool {
 
 // IsSoftBounce checks the reason sisimai detected is a soft bounce or not.
 //   Arguments:
-//     - argv1 (string): The bounce reason sisimai detected.
-//     - argv2 (string): String including SMTP status code.
+//     - name (string): The bounce reason sisimai detected.
+//     - code (string): String including SMTP status code.
 //   Returns:
 //     - (bool): true if it indicates soft bounce, false otherwise.
-func IsSoftBounce (argv1, argv2 string) bool {
-	if argv1 == "deliverd"  || argv1 == "feedback"    || argv1 == "vacation"    { return false }
-	if argv1 == "hasmoved"  || argv1 == "userunknown" || argv1 == "hostunknown" { return false }
-	if argv1 == "undefined" || argv1 == "onhold"                                { return true  }
-	if argv1 != "notaccept"                                                     { return true  }
-	if argv2 == ""                                                              { return false }
+func IsSoftBounce (name, code string) bool {
+	if name == "deliverd"  || name == "feedback"    || name == "vacation"    { return false }
+	if name == "hasmoved"  || name == "userunknown" || name == "hostunknown" { return false }
+	if name == "undefined" || name == "onhold"                               { return true  }
+	if name != "notaccept"                                                   { return true  }
+	if code == ""                                                            { return false }
 
 	// NotAccept: 5xx => hard bounce, 4xx => soft bounce
 	// Check the 2nd argument(a status code or a reply code)
-	cv := status.Find(argv2, ""); if cv == "" { cv = reply.Find(argv2, "") }
+	cv := status.Find(code, ""); if cv == "" { cv = reply.Find(code, "") }
 	if strings.HasPrefix(cv, "4") { return true }
 	return false
 }
