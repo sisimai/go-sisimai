@@ -16,24 +16,24 @@ import "libsisimai.org/sisimai/v5/rfc791"
 
 // Find returns a delivery status code found from the given string.
 //   Arguments:
-//     - argv1 (string): String including DSN; SMTP status code.
-//     - argv2 (string): SMTP Reply Code like "550" or the 1st digit of code such as "2", "4", or "5".
+//     - text (string): String including DSN; SMTP status code.
+//     - code (string): SMTP Reply Code like "550" or the 1st digit of code such as "2", "4", or "5".
 //   Returns:
 //     - (string): SMTP status code found in the 1st argument.
-func Find(argv1 string, argv2 string) string {
-	if len(argv1) < 7 { return ""   }
-	if len(argv2) < 1 { argv2 = " " }
+func Find(text string, code string) string {
+	if len(text) < 7 { return ""   }
+	if len(code) < 1 { code = " " }
 
 	eestatuses := make([]string, 0, 3)
-	esmtperror := " " + argv1 + "   " // Why 3 space characters? see https://github.com/sisimai/p5-sisimai/issues/574
+	esmtperror := " " + text + "   " // Why 3 space characters? see https://github.com/sisimai/p5-sisimai/issues/574
 	lookingfor := make(map[string]string, 10)
 	indextable := make([]int, 0, 10)
-	givenclass := argv2[0:1]; switch givenclass {
+	givenclass := code[0:1]; switch givenclass {
 		case "2", "4", "5": eestatuses = append(eestatuses, givenclass + ".")
 		default:            eestatuses = append(eestatuses, []string{"5.", "4.", "2."}...)
 	}
 
-	// Rewrite an IPv4 address in the given string(argv1) with '***.***.***.***'
+	// Rewrite an IPv4 address in the given string(text) with '***.***.***.***'
 	ip4address := rfc791.FindIPv4Address(esmtperror)
 	for _, e := range ip4address { esmtperror = strings.ReplaceAll(esmtperror, e, "***.***.***.***") }
 	for _, e := range eestatuses {
