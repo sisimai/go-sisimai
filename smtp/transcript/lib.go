@@ -63,51 +63,51 @@ type TranscriptLog struct {
 
 // Rise returns the decoded transcript of the SMTP session and makes the structured data.
 //   Arguments:
-//     - argv0 (string): Transcript text MTA returned.
-//     - argv1 (string): Label string of the SMTP cilent such as ">>>".
-//     - argv2 (string): Label string of the SMTP server such as "<<<".
+//     - log (string): Transcript text MTA returned.
+//     - rhs (string): Label string of the SMTP cilent such as ">>>".
+//     - lhs (string): Label string of the SMTP server such as "<<<".
 //   Returns:
 //     - ([]TranscriptLog):  List of structured transcript logs.
-func Rise(argv0, argv1, argv2 string) []TranscriptLog {
-	if argv0 == "" { return nil    }
-	if argv1 == "" { argv1 = ">>>" } // Label for an SMTP client
-	if argv2 == "" { argv2 = "<<<" } // Label for an SMTP server
+func Rise(log, rhs, lhs string) []TranscriptLog {
+	if log == "" { return nil    }
+	if rhs == "" { rhs = ">>>" } // Label for an SMTP client
+	if lhs == "" { lhs = "<<<" } // Label for an SMTP server
 
 	// 1. Get the position of ">>>" and "<<<"
-	p1 := strings.Index(argv0, argv1); if p1 < 0 { return nil }
-	p2 := strings.Index(argv0, argv2); if p2 < 0 { return nil }
+	p1 := strings.Index(log, rhs); if p1 < 0 { return nil }
+	p2 := strings.Index(log, lhs); if p2 < 0 { return nil }
 
-	// 2. Remove the head of the argv0 to the first "<<<" or ">>>"
-	sessionlog := make([]string, 0, 32)       // Each line of the SMTP transcript log(argv0)
+	// 2. Remove the head of the "log" to the first "<<<" or ">>>"
+	sessionlog := make([]string, 0, 32)       // Each line of the SMTP transcript log
 	transcript := make([]TranscriptLog, 0, 8) // The list of TranscriptLog{}
 
 	if p2 < p1 {
 		// An SMTP server response starting with "<<<" is the first
-		argv0 = argv0[p2:]
+		log = log[p2:]
 
 	} else {
 		// An SMTP command starting with ">>>" is the first
-		argv0 = argv0[p1:]
+		log = log[p1:]
 	}
 
 	// 3. Remove strings from the first blank line to the tail
-	if strings.Contains(argv0, "\n\n") { argv0 = moji.Select(moji.LHS + argv0, "", "\n\n", 0) + "\n" }
+	if strings.Contains(log, "\n\n") { log = moji.Select(moji.LHS + log, "", "\n\n", 0) + "\n" }
 
 	// 4. Replace label strings of SMTP client/server at the each line
-	for e := range strings.Lines(argv0) {
+	for e := range strings.Lines(log) {
 		// Replace the following labels
 		e  = strings.Trim(e, "\n\r ")
-		if strings.HasPrefix(e, argv1) || strings.HasPrefix(e, argv2) {
-			// - The line starts with ">>>" or the specified label in argv1
-			// - The line starts with "<<<" or the specified label in argv2
-			if strings.HasPrefix(e, argv1) {
-				// 1. argv1 => ">>> " (leading a single space character)
-				e = strings.Replace(e, argv1, ">>>", 1)
+		if strings.HasPrefix(e, rhs) || strings.HasPrefix(e, lhs) {
+			// - The line starts with ">>>" or the specified label in rhs
+			// - The line starts with "<<<" or the specified label in lhs
+			if strings.HasPrefix(e, rhs) {
+				// 1. rhs => ">>> " (leading a single space character)
+				e = strings.Replace(e, rhs, ">>>", 1)
 				for strings.HasPrefix(e, ">>>  ") { e = strings.Replace(e, ">>>  ", ">>> ", 1) }
 
 			} else {
-				// 2. argv2 => "<<< " (leading a single space character)
-				e = strings.Replace(e, argv2, "<<<", 1)
+				// 2. lhs => "<<< " (leading a single space character)
+				e = strings.Replace(e, lhs, "<<<", 1)
 				for strings.HasPrefix(e, "<<<  ") { e = strings.Replace(e, "<<<  ", "<<< ", 1) }
 			}
 			sessionlog = append(sessionlog, e)
