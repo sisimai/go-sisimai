@@ -22,7 +22,7 @@ import sisimbox "libsisimai.org/sisimai/v5/mail"
 import sisifact "libsisimai.org/sisimai/v5/fact"
 
 const libname string = "sisimai"
-const version string = "5.4.0"
+const version string = "5.4.1"
 const patchlv uint8  = 0
 type  CallbackArg0 = sis.CallbackArg0
 type  CallbackArg1 = sis.CallbackArg1
