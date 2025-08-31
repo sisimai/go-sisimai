@@ -4,10 +4,10 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
-v5.4.0p1
+v5.4.1
 ---------------------------------------------------------------------------------------------------
-- release: ""
-- version: ""
+- release: "Sun, 31 Aug 2025 09:22:25 +0900 (JST)"
+- version: "5.4.1"
   - #155 #161 Support a bounce mail returned from `privaterelay.appleid.com`.
   - #158 #160 Update SMTP error and status codes of Gmail updated in August 2025.
     - Gmail SMTP errors and codes https://support.google.com/a/answer/3726730
