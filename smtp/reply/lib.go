@@ -103,6 +103,7 @@ var codeofsmtp = map[string][]string{"2": replycode2, "4": replycode4, "5": repl
 var associated = map[string][]string{
 	"422": []string{"AUTH",     "4.7.12",  "securityerror"}, // RFC5238
 	"432": []string{"AUTH",     "4.7.12",  "securityerror"}, // RFC4954, RFC5321
+	"451": []string{"",         "",        "systemerror"},   // RFC2465, RFC5321
 	"500": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"501": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"502": []string{"",         "",        "syntaxerror"},   // RFC5321
