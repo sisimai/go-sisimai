@@ -104,6 +104,7 @@ var associated = map[string][]string{
 	"422": []string{"AUTH",     "4.7.12",  "securityerror"}, // RFC5238
 	"432": []string{"AUTH",     "4.7.12",  "securityerror"}, // RFC4954, RFC5321
 	"451": []string{"",         "",        "systemerror"},   // RFC2465, RFC5321
+	"452": []string{"",         "",        "systemfull"},    // RFC5321
 	"500": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"501": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"502": []string{"",         "",        "syntaxerror"},   // RFC5321
