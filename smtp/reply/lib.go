@@ -112,9 +112,9 @@ var associated = map[string][]string{
 	"503": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"504": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"521": []string{"CONN",     "",        "notaccept"},     // RFC7504
-	"523": []string{"AUTH",     "",        "securityerror"}, // RFC5248
-	"524": []string{"AUTH",     "",        "securityerror"}, // RFC5248
-	"525": []string{"AUTH",     "",        "securityerror"}, // RFC5248
+	"523": []string{"AUTH",     "5.7.10",  "securityerror"}, // RFC5248
+	"524": []string{"AUTH",     "5.7.11",  "securityerror"}, // RFC5248
+	"525": []string{"AUTH",     "5.7.13",  "securityerror"}, // RFC5248
 	"534": []string{"AUTH",     "5.7.9",   "securityerror"}, // RFC4954, RFC5248
 	"535": []string{"AUTH",     "5.7.8",   "securityerror"}, // RFC4954, RFC5248
 	"538": []string{"AUTH",     "5.7.11",  "securityerror"}, // RFC4954, RFC5248
