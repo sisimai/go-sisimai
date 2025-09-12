@@ -105,15 +105,16 @@ var associated = map[string][]string{
 	"432": []string{"AUTH",     "4.7.12",  "securityerror"}, // RFC4954, RFC5321
 	"451": []string{"",         "",        "systemerror"},   // RFC2465, RFC5321
 	"452": []string{"",         "",        "systemfull"},    // RFC5321
+	"454": []string{"AUTH",     "4.7.0",   "securityerror"}, // RFC3207, 4954
 	"500": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"501": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"502": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"503": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"504": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"521": []string{"CONN",     "",        "notaccept"},     // RFC7504
-	"523": []string{"AUTH",     "",        "securityerror"}, // RFC5248
-	"524": []string{"AUTH",     "",        "securityerror"}, // RFC5248
-	"525": []string{"AUTH",     "",        "securityerror"}, // RFC5248
+	"523": []string{"AUTH",     "5.7.10",  "securityerror"}, // RFC5248
+	"524": []string{"AUTH",     "5.7.11",  "securityerror"}, // RFC5248
+	"525": []string{"AUTH",     "5.7.13",  "securityerror"}, // RFC5248
 	"534": []string{"AUTH",     "5.7.9",   "securityerror"}, // RFC4954, RFC5248
 	"535": []string{"AUTH",     "5.7.8",   "securityerror"}, // RFC4954, RFC5248
 	"538": []string{"AUTH",     "5.7.11",  "securityerror"}, // RFC4954, RFC5248
