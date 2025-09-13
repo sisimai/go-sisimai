@@ -119,6 +119,7 @@ var associated = map[string][]string{
 	"534": []string{"AUTH",     "5.7.9",   "securityerror"}, // RFC4954, RFC5248
 	"535": []string{"AUTH",     "5.7.8",   "securityerror"}, // RFC4954, RFC5248
 	"538": []string{"AUTH",     "5.7.11",  "securityerror"}, // RFC4954, RFC5248
+	"551": []string{"",         "",        "hasmoved"},      // RFC5321, RFC5336, RFC6531
 	"552": []string{"",         "",        "mailboxfull"},   // RFC5321
 	"555": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"556": []string{"RCPT",     "",        "notaccept"},     // RFC7504
