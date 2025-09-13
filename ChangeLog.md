@@ -4,6 +4,13 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
+v5.4.1p1
+---------------------------------------------------------------------------------------------------
+- release: ""
+- version: ""
+  - #173 Add some SMTP reply codes that uniquely identify a bounce reason at `smtp/reply/lib.go`.
+
+
 v5.4.1
 ---------------------------------------------------------------------------------------------------
 - release: "Sun, 31 Aug 2025 09:22:25 +0900 (JST)"
