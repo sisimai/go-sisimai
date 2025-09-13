@@ -370,7 +370,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 				case "delivered": thing.Action = "delivered"
 				case "expired":   thing.Action = "delayed"
 			}
-			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed"    }
+			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed" }
 		}
 
 		if thing.ReplyCode != "" {
