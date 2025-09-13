@@ -106,6 +106,7 @@ var associated = map[string][]string{
 	"451": []string{"",         "",        "systemerror"},   // RFC2465, RFC5321
 	"452": []string{"",         "",        "systemfull"},    // RFC5321
 	"454": []string{"AUTH",     "4.7.0",   "securityerror"}, // RFC3207, 4954
+	"455": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"500": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"501": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"502": []string{"",         "",        "syntaxerror"},   // RFC5321
@@ -119,6 +120,7 @@ var associated = map[string][]string{
 	"535": []string{"AUTH",     "5.7.8",   "securityerror"}, // RFC4954, RFC5248
 	"538": []string{"AUTH",     "5.7.11",  "securityerror"}, // RFC4954, RFC5248
 	"552": []string{"",         "",        "mailboxfull"},   // RFC5321
+	"555": []string{"",         "",        "syntaxerror"},   // RFC5321
 	"556": []string{"RCPT",     "",        "notaccept"},     // RFC7504
 }
 
