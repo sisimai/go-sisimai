@@ -173,3 +173,16 @@ func TestIsExplicit(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestIsAmbiguous(t *testing.T) {
+	fn := "smtp/status/IsAmbiguous"
+	cx := 0
+
+	for _, e := range StatusList {
+		cx++; if cv := IsAmbiguous(e); cv == true  { t.Errorf("%s(%s) returns true",  fn, e) }
+	}
+	for _, e := range []string{"", "2.0.0", "4.0.0", "5.0.0"} {
+		cx++; if cv := IsAmbiguous(e); cv == false { t.Errorf("%s(%s) returns false", fn, e)  }
+	}
+
+	t.Logf("The number of tests = %d", cx)
+}
