@@ -240,11 +240,11 @@ func init() {
 					// More detailed error message is in anotherset
 					as, ar := "", "" // The value of SMTP (Status, Reply) Code picked from anotherset["diagnosis"]
 
-					if e.Status == "" || strings.HasSuffix(e.Status, ".0.0") {
+					if status.IsAmbiguous(e.Status) {
 						// Check the value of D.S.N. in "anotherset"
 						// The delivery status code is neither an empty nor *.0.0
 						as = status.Find(anotherset["diagnosis"], "")
-						if as != "" && strings.HasSuffix(as, ".0.0") == false { e.Status = as }
+						if as != "" && status.IsAmbiguous(as) == false { e.Status = as }
 					}
 
 					if e.ReplyCode == "" || strings.HasSuffix(e.ReplyCode, "00") {

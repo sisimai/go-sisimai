@@ -704,3 +704,15 @@ func IsExplicit(code string) bool {
 	return true
 }
 
+// IsAmbiguous returns true if the status code is not empty and ends with ".0.0".
+//   Arguments:
+//     - code (string): Delivery status code.
+//   Returns:
+//     - (bool): true if the code is ambiguous, false otherwise.
+//   Since:
+//     - v5.4.2
+func IsAmbiguous(code string) bool {
+	if code == "" || len(code) == 5 && strings.HasSuffix(code, ".0.0") { return true }
+	return false
+}
+

@@ -83,7 +83,7 @@ func Find(text string, code string) string {
 		if cx[3] < 48 || cx[3] > 57 { continue } // The 1st digit of the detail is not a number
 		readbuffer.WriteByte(cx[3])
 
-		if cv := readbuffer.String(); strings.Index(cv, ".0.0") == 1 || cv == "4.4.7" {
+		if cv := readbuffer.String(); IsAmbiguous(cv) || cv == "4.4.7" {
 			// Find another status code except *.0.0, 4.4.7
 			anotherone = cv; continue
 		}
