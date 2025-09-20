@@ -9,7 +9,7 @@ v5.4.1p1
 - release: ""
 - version: ""
   - #173 Add some SMTP reply codes that uniquely identify a bounce reason at `smtp/reply/lib.go`.
-
+  - #174 #186 Implement `is_ambiguous()` function at `smtp/status/lib.go`.
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
