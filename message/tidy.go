@@ -15,16 +15,14 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 import "libsisimai.org/sisimai/v5/rfc5965"
 
 var fieldtable = makefield(rfc1894.FieldIndex, rfc5322.FieldIndex, rfc5965.FieldIndex)
-var replacesas = map[string][][]string{
-    "Content-Type": [][]string{
-		{"message/xdelivery-status",                "message/delivery-status"},
-		{"message/disposition-notification",        "message/delivery-status"},
-		{"message/global-delivery-status",          "message/delivery-status"},
-		{"message/global-disposition-notification", "message/delivery-status"},
-		{"message/global-delivery-status",          "message/delivery-status"},
-		{"message/global-headers",                  "text/rfc822-headers"},
-		{"message/global",                          "message/rfc822"},
-	},
+var mediatypes = [][]string{
+	{"message/xdelivery-status",                "message/delivery-status"},
+	{"message/disposition-notification",        "message/delivery-status"},
+	{"message/global-delivery-status",          "message/delivery-status"},
+	{"message/global-disposition-notification", "message/delivery-status"},
+	{"message/global-delivery-status",          "message/delivery-status"},
+	{"message/global-headers",                  "text/rfc822-headers"},
+	{"message/global",                          "message/rfc822"},
 }
 
 // makefield generates a map including each field name defined in RFC1894, RFC5322, and RFC5965.
@@ -104,9 +102,9 @@ func tidy(head *string) *string {
 		}
 
 		// 3. Tidy up a value, and a parameter of Content-Type: field 
-		if len(replacesas[fn]) > 0 {
+		if fn == "Content-Type" {
 			// Replace the value of "Content-Type" field
-			for _, ef := range replacesas[fn] {
+			for _, ef := range mediatypes {
 				// - Before: Content-Type: message/xdelivery-status; ...
 				// - After:  Content-Type: message/delivery-status; ...
 				bf = strings.Replace(bf, ef[0], ef[1], 1)
