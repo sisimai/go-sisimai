@@ -150,30 +150,6 @@ func MakeFlat(ctype string, mpart *string) (*string, []sis.NotDecoded) {
 	lhead := strings.ToLower(ctype)
 	if moji.ContainsAny(lhead, []string{"multipart/", "boundary="}) == false { return nil, nil }
 
-	// Some bounce messages include lower-cased "content-type:" field such as the followings:
-	//   - content-type: message/delivery-status        => Content-Type: message/delivery-status
-	//   - content-transfer-encoding: quoted-printable  => Content-Transfer-Encoding: quoted-printable
-	//   - CHARSET=, BOUNDARY=                          => charset-, boundary=
-	//   - message/xdelivery-status                     => message/delivery-status
-	for _, e := range []string{"CONTENT-TYPE", "Content-type", "content-type"} {
-		// Transform the Content-Type header name to the camel cased
-		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
-		*mpart = strings.ReplaceAll(*mpart, e + ":", "Content-Type:")
-	}
-
-	for _, e := range []string{"CONTENT-TRANSFER-ENCODING", "content-transfer-encoding"} {
-		// Transform the Content-Transfer-Encoding header name to the camel cased
-		// TODO: These fields have been transformed by sisimai.message.Tidy() function ...?
-		*mpart = strings.ReplaceAll(*mpart, e + ":", "Content-Transfer-Encoding:")
-	}
-
-	for _, e := range []string{"CHARSET", "CharSet", "Charset", "BOUNDARY", "Boundary"} {
-		// Transform each parameter field name to the lower cased
-		// TODO: These parameters have been transformed by sisimai.message.Tidy() function ...?
-		*mpart = strings.ReplaceAll(*mpart, e + "=", strings.ToLower(e) + "=")
-	}
-	*mpart = strings.ReplaceAll(*mpart, "message/xdelivery-status", "message/delivery-status")
-
 	multiparts, notdecoded := levelout(ctype, mpart)
 	flatbuffer := strings.Builder{}; flatbuffer.Grow(len(*mpart) / 2)
 	delimiters := []string{"/delivery-status", "/rfc822", "/feedback-report", "/partial"}
