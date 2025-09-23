@@ -98,7 +98,7 @@ samples:
 	$(MKDIR) $(PROFILESET)
 	$(CP) -p $(PUBLICFILE)/mailbox/mbox-* $(PROFILESET)/
 	$(CP) -p $(PUBLICFILE)/maildir/bsd/*.eml $(PROFILESET)/
-	find $(PUBLICFILE)/private -type f -name '*.eml' | xargs -I__EEF__ $(CP) -p __EEF__ $(PROFILESET)
+	find $(PRICATESET)/ -type f -name '*.eml' | xargs -I__EEF__ $(CP) -p __EEF__ $(PROFILESET)
 
 private-sample:
 	@test -n "$(E)" || ( echo 'Usage: make -f Developers.mk $@ E=/path/to/email' && exit 1 )
