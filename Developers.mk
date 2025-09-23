@@ -23,7 +23,9 @@ LIBSISIMAI := libsisimai.org
 SISIMAIDIR := address arf fact lda lhost mail message moji reason rfc1123 rfc1894 rfc2045 rfc3464 \
 			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/*/
 COVERAGETO := coverage.txt
+MAILSUFFIX := eml
 PUBLICFILE := set-of-emails
+PRIVATESET := $(PUBLICFILE)/private
 ASSEMBLEIN := tmp/assembled-in-here
 PROFILESET := tmp/all-the-emails
 EXECUTABLE := bin/sisid
@@ -97,6 +99,33 @@ samples:
 	$(CP) -p $(PUBLICFILE)/mailbox/mbox-* $(PROFILESET)/
 	$(CP) -p $(PUBLICFILE)/maildir/bsd/*.eml $(PROFILESET)/
 	find $(PUBLICFILE)/private -type f -name '*.eml' | xargs -I__EEF__ $(CP) -p __EEF__ $(PROFILESET)
+
+private-sample:
+	@test -n "$(E)" || ( echo 'Usage: make -f Developers.mk $@ E=/path/to/email' && exit 1 )
+	@test -f $(EXECUTABLE).go
+	@test -f $(E)
+	$(GO) run $(EXECUTABLE).go $(E)
+	@echo
+	@while true; do \
+		d=`$(GO) run $(EXECUTABLE).go -format json $(E) | jq -M '.decodedby' | head -1 \
+			| tr '[A-Z]' '[a-z]' | tr -d '-' | sed -e 's/"//g' -e 's/^/lhost-/g'`; \
+		if [ -d "$(PRIVATESET)/$$d" ]; then \
+			thelatest=`ls -1 $(PRIVATESET)/$$d/*.$(MAILSUFFIX) | tail -1`; \
+			currindex=`basename $$thelatest | cut -d'-' -f1`; \
+			nextindex=`echo $$currindex + 1 | bc`; \
+		else \
+			$(MKDIR) $(PRIVATESET)/$$d; \
+			nextindex=1001; \
+		fi; \
+		hashvalue=`md5 -q $(E) | cut -c 1-8`; \
+		if [ -n "`ls -1 $(PRIVATESET)/$$d/ | grep $$hashvalue`" ]; then \
+			echo 'Already exists:' `ls -1 $(PRIVATESET)/$$d/*$$hashvalue.$(MAILSUFFX)`; \
+		else \
+			printf "[%04d] %s %s\n" $$nextindex $$hashvalue; \
+			mv -v $(E) $(PRIVATESET)/$$d/$${nextindex}-$${hashvalue}.$(MAILSUFFIX); \
+		fi; \
+		break; \
+	done
 
 find:
 	find . -type f -name '*.go' -not -name '*_test.go' -not -path '*/bin/*' -not -path '*/sbin/*' \
