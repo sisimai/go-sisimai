@@ -97,8 +97,8 @@ lint:
 samples:
 	$(MKDIR) $(PROFILESET)
 	$(CP) -p $(PUBLICFILE)/mailbox/mbox-* $(PROFILESET)/
-	$(CP) -p $(PUBLICFILE)/maildir/bsd/*.eml $(PROFILESET)/
-	find $(PRICATESET)/ -type f -name '*.eml' | xargs -I__EEF__ $(CP) -p __EEF__ $(PROFILESET)
+	$(CP) -p $(PUBLICFILE)/maildir/bsd/*.$(MAILSUFFIX) $(PROFILESET)/
+	find $(PRICATESET)/ -type f -name '*.$(MAILSUFFIX)' | xargs -I__EEF__ $(CP) -p __EEF__ $(PROFILESET)
 
 private-sample:
 	@test -n "$(E)" || ( echo 'Usage: make -f Developers.mk $@ E=/path/to/email' && exit 1 )
