@@ -12,12 +12,13 @@ import "testing"
 import "strings"
 import "slices"
 import "os"
+import "path/filepath"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
 func TestRise(t *testing.T) {
 	fn := "smtp/transcript.Rise"
-	ef := "../../set-of-emails/maildir/bsd/lhost-postfix-75.eml"
+	ef := filepath.Join("..", "..", "set-of-emails", "maildir", "bsd", "lhost-postfix-75.eml")
 	cc := []string{"CONN", "HELO", "EHLO", "AUTH", "MAIL", "RCPT", "DATA", "QUIT", "RSET", "XFORWARD"}
 	cx := 0
 
