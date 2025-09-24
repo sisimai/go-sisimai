@@ -13,25 +13,30 @@ import "os"
 import "os/exec"
 import "strings"
 import "slices"
+import "path/filepath"
 
 func TestRise(t *testing.T) {
 	fn := "sisimai.Rise"
 	cx := 0
 
-	rootdir := "set-of-emails/"
-	samples := []string{"mailbox/mbox-0", "mailbox/mbox-1", "maildir/bsd"}
-	normals := []string{"maildir/not"}
+	rootdir := "set-of-emails"
+	samples := []string{
+		filepath.Join("mailbox", "mbox-0"),
+		filepath.Join("mailbox", "mbox-1"),
+		filepath.Join("maildir", "bsd"),
+	}
+	normals := []string{filepath.Join("maildir", "not")}
 	sisiarg := Args(); sisiarg.Delivered = true; sisiarg.Vacation = true
 	errorat := []string{"lhost-office365-13.eml"}
 	notfile := []string{"/dev/null", "/dev/neko"}
-	isempty := "/tmp/empty-file-for-test-of-sisimai"
+	isempty := filepath.Join(".", "empty-file-for-test-of-sisimai")
 
 	sisiarg.Callback1 = func(arg *CallbackArg1) (bool, error) {
 		return true, nil
 	}
 
 	for _, e := range samples {
-		ef := "./" + rootdir + e
+		ef := filepath.Join(".", rootdir, e)
 		cv, ce := Rise(ef, sisiarg)
 
 		cx++; if len(cv) == 0 { t.Errorf("%s(%s) returns empty", fn, ef) }
@@ -66,7 +71,7 @@ func TestRise(t *testing.T) {
 	}
 
 	for _, e := range normals {
-		ef := "./" + rootdir + e
+		ef := filepath.Join(".", rootdir, e)
 
 		sisiarg.Callback1 = func(arg *CallbackArg1) (bool, error) {
 			return true, fmt.Errorf("Fake error: nyaan?")
@@ -82,6 +87,7 @@ func TestRise(t *testing.T) {
 	}
 
 	for _, e := range notfile {
+		// TODO: Device files on Windows
 		cv, ce := Rise(e, sisiarg)
 
 		cx++; if len(cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, e, cv) }
@@ -92,6 +98,7 @@ func TestRise(t *testing.T) {
 		cx++; if len(cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, e, cv) }
 	}
 
+	// TODO: How create an empty file on Windows?
 	comm := exec.Command("touch", isempty); nyaan := comm.Run()
 	if nyaan == nil {
 		cv, ce := Rise(isempty, sisiarg)
