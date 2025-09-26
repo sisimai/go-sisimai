@@ -12,6 +12,7 @@ import "os"
 import "io"
 import "strings"
 import "net/mail"
+import "path/filepath"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
@@ -26,7 +27,8 @@ func TestInquire62(t *testing.T) {
 	cx++; if cv != nil { t.Errorf("%s(nil) did not return nil", fn) }
 
 	for _, e := range ae {
-		ef := "../set-of-emails/maildir/bsd/" + e + ".eml"; eb, _ := os.ReadFile(ef); ee := string(eb)
+		ef    := filepath.Join("..", "set-of-emails", "maildir", "bsd", e); ef += ".eml"
+		eb, _ := os.ReadFile(ef); ee := string(eb)
 		eo, _ := mail.ReadMessage(strings.NewReader(ee))
 		bo, _ := io.ReadAll(eo.Body)
 		bf    := &sis.BeforeFact{
