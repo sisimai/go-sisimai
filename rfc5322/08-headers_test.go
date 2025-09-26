@@ -11,14 +11,15 @@ package rfc5322
 import "testing"
 import "strings"
 import "net/mail"
+import "path/filepath"
 import "os"
 
 func TestHeaders(t *testing.T) {
 	fn := "rfc5322.Headers"
 	cx := 0
 	ae := []string{
-		"../set-of-emails/maildir/bsd/lhost-opensmtpd-17.eml",
-		"../set-of-emails/maildir/bsd/lhost-postfix-78.eml",
+		filepath.Join("..", "set-of-emails", "maildir", "bsd", "lhost-opensmtpd-17.eml"),
+		filepath.Join("..", "set-of-emails", "maildir", "bsd", "lhost-postfix-78.eml"),
 	}
 	for _, ef := range ae {
 		bx, _ := os.ReadFile(ef); if len(bx) == 0 {

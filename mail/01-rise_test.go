@@ -10,6 +10,7 @@ package mail
 import "testing"
 import "strings"
 import "os"
+import "path/filepath"
 
 /*
  | FIELD      | UNIX mbox | Maildir/  | Memory    | <STDIN>    |
@@ -24,17 +25,17 @@ import "os"
  | handle     | o         | o         |           |            |
  | payload    |           | o         | o         | o          |
 */
-var RootDir = "../set-of-emails"
-var Mailtxt = RootDir + "/maildir/bsd/lhost-opensmtpd-01.eml"
+var RootDir = filepath.Join("..", "set-of-emails")
+var Mailtxt = filepath.Join(RootDir, "maildir", "bsd", "lhost-opensmtpd-01.eml")
 var Mailbox = []string{
-	RootDir + "/mailbox/mbox-0",
-	RootDir + "/mailbox/mbox-1",
+	filepath.Join(RootDir, "mailbox", "mbox-0"),
+	filepath.Join(RootDir, "mailbox", "mbox-1"),
 }
 var Maildir = []string{
-	RootDir + "/maildir/bsd",
-	RootDir + "/maildir/dos",
-	RootDir + "/maildir/mac",
-	RootDir + "/maildir/err",
+	filepath.Join(RootDir, "maildir", "bsd"),
+	filepath.Join(RootDir, "maildir", "dos"),
+	filepath.Join(RootDir, "maildir", "mac"),
+	filepath.Join(RootDir, "maildir", "err"),
 }
 
 func TestRise(t *testing.T) {

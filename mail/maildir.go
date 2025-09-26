@@ -42,7 +42,7 @@ func(ee *EmailEntity) readMaildir() (*string, error) {
 	for {
 		// Try to read the email file
 		ee.File = ee.payload[ee.offset]; ee.offset++
-		ee.Path = filepath.Clean(filepath.FromSlash(ee.Dir + "/" + ee.File))
+		ee.Path = filepath.Join(ee.Dir, ee.File)
 		b, nyaan := os.ReadFile(ee.Path); if nyaan != nil || len(b) == 0 {
 			// Failed to read the email file or the email file is empty
 			if ee.offset >= ee.Size { return nil, io.EOF }

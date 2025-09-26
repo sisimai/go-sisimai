@@ -33,9 +33,9 @@ type IsExpected struct {
 	HardBounce bool   // true or false
 	AnotherOne string // "Feedback-Type" or other value
 }
-var SampleRoot = "set-of-emails/"
-var PublicDirs = "maildir/bsd/"
-var SecretDirs = "private/"
+var SampleRoot = "set-of-emails"
+var PublicDirs = filepath.Join("maildir", "bsd")
+var SecretDirs = "private"
 var Alternates = map[string][]string{
 	"Exchange2007": []string{"Office365"},
 	"Exim":         []string{"MailRu", "MXLogic"},
@@ -59,7 +59,7 @@ var ArgForRise = &sis.DecodingArgs{Delivered: true, Vacation: true, Callback0: C
 //     - publictest (bool)           false if set-of-emails/private
 func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publictest bool) {
 	cx         := 0
-	prefixpath := "../" + SampleRoot
+	prefixpath := filepath.Join("..", SampleRoot)
 	hostprefix := ""
 	remotehost := false
 	rhostclass := ""
@@ -74,11 +74,11 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 	if publictest == true {
 		// Public samples are in set-of-emails/maildir/bsd/lhost-*.eml
-		prefixpath += PublicDirs + hostprefix + strings.ToLower(enginename)
+		prefixpath += string(os.PathSeparator) + filepath.Join(PublicDirs, hostprefix + strings.ToLower(enginename))
 
 	} else {
 		// Private samples are in set-of-emails/private/lhost-* directory
-		prefixpath += SecretDirs + hostprefix + strings.ToLower(enginename) + "/"
+		prefixpath += filepath.Join(SecretDirs, hostprefix, strings.ToLower(enginename))
 	}
 	if len(isexpected) == 0 { t.Skip() }
 
@@ -254,7 +254,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						cx++; if fs.Recipient.Address == "" { t.Errorf("%s Recipient.Address is empty", ee) }
 						cx++; if fs.Recipient.User    == "" { t.Errorf("%s Recipient.User is empty", ee)    }
 						cx++; if fs.Recipient.Host    == "" { t.Errorf("%s Recipient.User is empty", ee)    }
-						cx++; if fs.Recipient.Host    != fs.Destination { 
+						cx++; if fs.Recipient.Host    != fs.Destination {
 							// Destination
 							t.Errorf("%s Recipient.Host is (%s) but (%s)", ee, fs.Recipient.Host, fs.Destination)
 						}
