@@ -58,7 +58,7 @@ cross-build:
 test:
 	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
 	@ $(foreach v, $(shell make -f ./Developers.mk lhost-files), grep -Fq "$(v)" ./lhost/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
-	@ $(foreach v, $(shell make -f ./Developers.mk other-files), grep -Fq "$(v)" ./rfc**/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
+	@ $(foreach v, $(shell make -f ./Developers.mk other-files), grep -Fq "$(v)" ./rfc3*/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
 
 lhost-files:
 	@ $(LS) $(PUBLICFILE)/maildir/bsd/lhost-*.eml \
