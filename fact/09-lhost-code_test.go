@@ -78,7 +78,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 	} else {
 		// Private samples are in set-of-emails/private/lhost-* directory
-		prefixpath += filepath.Join(SecretDirs, hostprefix, strings.ToLower(enginename))
+		prefixpath += string(os.PathSeparator) + filepath.Join(SecretDirs, hostprefix + strings.ToLower(enginename))
 	}
 	if len(isexpected) == 0 { t.Skip() }
 
@@ -97,7 +97,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 				// Try to find the email file path in the set-of-emails/private, the file exists as
 				// a file name such as private/lhost-opensmtpd/1012-933ce597.eml
 				if _, nyaan := os.Stat(prefixpath); nyaan == nil {
-					match, nyaan  := filepath.Glob(prefixpath + e[0].Label + "-*.eml")
+					match, nyaan  := filepath.Glob(prefixpath + string(os.PathSeparator) + e[0].Label + "-*.eml")
 					cx++; if nyaan      != nil { t.Errorf("%s something wrong: %s", ee, nyaan) }
 					cx++; if len(match) == 0   { t.Errorf("%s email not found: %s", ee, nyaan) }
 					for _, f := range match { ef = f; break }
