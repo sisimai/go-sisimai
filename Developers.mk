@@ -57,6 +57,17 @@ cross-build:
 
 test:
 	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
+	@ $(foreach v, $(shell make -f ./Developers.mk lhost-files), grep -Fq "$(v)" ./lhost/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
+	@ $(foreach v, $(shell make -f ./Developers.mk other-files), grep -Fq "$(v)" ./rfc3*/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
+
+lhost-files:
+	@ $(LS) $(PUBLICFILE)/maildir/bsd/lhost-*.eml \
+		| grep -vE 'lhost-(amavis|amazon|barracuda|bigfoot|domino|mailru|mcafee|mfilter|mxlogic|office365)' \
+		| grep -vE 'lhost-(outlook|powermta|receivingses|sendgrid|surfcontrol|x4|x5|yahoo|yandex)'          \
+		| xargs basename | sed -e 's/.eml//g'
+
+other-files:
+	@ $(LS) $(PUBLICFILE)/maildir/bsd/rfc*.eml | xargs basename | sed -e 's/.eml//g'
 
 list-test-files:
 	@ find $(SISIMAIDIR) -type f -not -path '*/tmp/*' -name '*_test.go'

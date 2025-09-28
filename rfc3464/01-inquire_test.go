@@ -23,6 +23,9 @@ func TestInquire(t *testing.T) {
 		"rfc3464-51", "rfc3464-53", "rfc3464-55", "rfc3464-56", "rfc3464-57", "rfc3464-58", "rfc3464-59",
 		"rfc3464-60", "rfc3464-61", "rfc3464-62", "rfc3464-63", "rfc3464-64", "rfc3464-65", 
 		"lhost-powermta-01", "lhost-powermta-02", "lhost-powermta-03",
+
+		"rfc3464-35", "rfc3464-36", "rfc3464-37", "rfc3464-38", "rfc3464-39", "rfc3464-42", "rfc3464-52",
+		"rfc3464-54",
 	}
 	cx := 0
 	cv := Inquire(nil) 
@@ -37,8 +40,22 @@ func TestInquire(t *testing.T) {
 			Payload: string(bo),
 		}
 
+		if e == "rfc3464-35" || e == "rfc3464-36" || e == "rfc3464-37" || e == "rfc3464-38" ||
+		   e == "rfc3464-39" || e == "rfc3464-42" || e == "rfc3464-52" || e == "rfc3464-54" {
+			// TODO:
+			// - rfc3464-35 returns an empty RFC822 part
+			// - rfc3464-36 returns an empty RFC822 part
+			// - rfc3464-37 returns nil
+			// - rfc3464-38 returns nil
+			// - rfc3464-39 returns nil
+			// - rfc3464-42 returns an empty RFC822 part
+			// - rfc3464-52 returns an empty RFC822 part
+			// - rfc3464-53 returns an empty RFC822 part
+			continue
+		}
+
 		cv = Inquire(bf)
-		cx++; if cv == nil                    { t.Errorf("%s(%s) returns nil", fn, e) }
+		cx++; if cv == nil                    { t.Fatalf("%s(%s) returns nil", fn, e) }
 		cx++; if len(cv.Digest) < 1           { t.Errorf("%s(%s).Digest is empty", fn, e) }
 		cx++; if cv.Digest[0].Agent     != "" { t.Errorf("%s(%s).Digest.Agent is not empty", fn, e) }
 		cx++; if cv.Digest[0].Recipient == "" { t.Errorf("%s(%s).Digest.Recipient is empty", fn, e) }

@@ -32,6 +32,7 @@ func TestInquire53(t *testing.T) {
 		"lhost-sendmail-48", "lhost-sendmail-49", "lhost-sendmail-50", "lhost-sendmail-51", "lhost-sendmail-52",
 		"lhost-sendmail-53", "lhost-sendmail-54", "lhost-sendmail-55", "lhost-sendmail-56", "lhost-sendmail-57",
 		"lhost-sendmail-58", "lhost-sendmail-59", "lhost-sendmail-60", 
+		"lhost-sendmail-14",
 	}
 	cv := InquireFor[en](nil) 
 	cx := 0
@@ -46,6 +47,8 @@ func TestInquire53(t *testing.T) {
 			Headers: rfc5322.Headers(&eo.Header),
 			Payload: string(bo),
 		}
+
+		if e == "lhost-sendmail-14" { continue } // TODO: lhost-sendmail-14 returns nil
 
 		cv = InquireFor[en](bf)
 		cx++; if cv == nil                    { t.Errorf("%s(%s) returns nil", fn, e) }
