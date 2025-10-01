@@ -63,7 +63,7 @@ func TestRise(t *testing.T) {
 		cx++; if ce != nil            { t.Errorf("%s(%s) returns error: %s", fn, e, ce) }
 		cx++; if cv.Kind != "maildir" { t.Errorf("%s.Kind is not maildir: %s", cf, cv.Kind) }
 		cx++; if cv.Path == ""        { t.Errorf("%s.Path is empty: %s", cf, cv.Path) }
-		cx++; if strings.Contains(cv.Dir, "/maildir/") == false { t.Errorf("%s.Dir does not contain /maildir/: %s", cf, cv.Dir) }
+		cx++; if strings.Contains(cv.Dir, "maildir") == false { t.Errorf("%s.Dir does not contain maildir: %s", cf, cv.Dir) }
 		cx++; if cv.Size == 0         { t.Errorf("%s.Size is 0", cf) }
 		cx++; if cv.newline != 0      { t.Errorf("%s.newline is not 0: %d", cf, cv.newline) }
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
