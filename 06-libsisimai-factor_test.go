@@ -14,7 +14,7 @@ func TestFactor(t *testing.T) {
 	cx := 0
 	cv := Factor()
 
-	cx++; if cv == nil { t.Errorf("%s() returned nil", fn) }
+	cx++; if cv                == nil  { t.Fatalf("%s() returned nil", fn) }
 	cx++; if cv.Action         != ""   { t.Errorf("%s().Action is not empty: %s", fn, cv.Action) }
 	cx++; if cv.Addresser.User != ""   { t.Errorf("%s().Addresser.User is not empty: %s", fn, cv.Addresser.User) }
 	cx++; if cv.Alias          != ""   { t.Errorf("%s().Alias is not empty: %s", fn, cv.Alias) }
