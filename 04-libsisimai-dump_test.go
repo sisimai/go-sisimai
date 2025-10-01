@@ -31,7 +31,7 @@ func TestDump(t *testing.T) {
 	for _, e := range samples {
 		ef := filepath.Join(".", rootdir, e)
 		cv, _ := Dump(ef, sisiarg)
-		cx++; if cv == nil || len(*cv) == 0 { t.Errorf("%s(%s) returns empty", fn, ef) }
+		cx++; if cv == nil || len(*cv) == 0 { t.Fatalf("%s(%s) returns empty", fn, ef) }
 		cx++; if strings.HasPrefix(*cv, "[{") == false { t.Errorf("%s(%s) returns invalid JSON string", fn, ef) }
 		cx++; if strings.HasSuffix(*cv, "}]") == false { t.Errorf("%s(%s) returns invalid JSON string", fn, ef) }
 

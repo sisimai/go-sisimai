@@ -45,7 +45,7 @@ func TestRise(t *testing.T) {
 
 	cf = "EmailEntity(mailbox)"; for _, e := range Mailbox {
 		cv, ce := Rise(e)
-		cx++; if cv == nil            { t.Errorf("%s(%s) returns nil", fn, e) }
+		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, e) }
 		cx++; if ce != nil            { t.Errorf("%s(%s) returns error: %s", fn, e, ce) }
 		cx++; if cv.Kind != "mailbox" { t.Errorf("%s.Kind is not mailbox: %s", cf, cv.Kind) }
 		cx++; if cv.Path != e         { t.Errorf("%s.Path is not %s", cf, e) }
@@ -59,7 +59,7 @@ func TestRise(t *testing.T) {
 
 	cf = "EmailEntity(maildir)"; for _, e := range Maildir {
 		cv, ce:= Rise(e)
-		cx++; if cv == nil            { t.Errorf("%s(%s) returns nil", fn, e) }
+		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, e) }
 		cx++; if ce != nil            { t.Errorf("%s(%s) returns error: %s", fn, e, ce) }
 		cx++; if cv.Kind != "maildir" { t.Errorf("%s.Kind is not maildir: %s", cf, cv.Kind) }
 		cx++; if cv.Path == ""        { t.Errorf("%s.Path is empty: %s", cf, cv.Path) }
@@ -73,7 +73,7 @@ func TestRise(t *testing.T) {
 	b, _ := os.ReadFile(Mailtxt); if len(b) == 0 {
 		cf = "EmailEntity(memory)"
 		cv, ce:= Rise(string(b))
-		cx++; if cv == nil            { t.Errorf("%s(%s) returns nil", fn, Mailtxt) }
+		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, Mailtxt) }
 		cx++; if ce != nil            { t.Errorf("%s(%s) returns error: %s", fn, Mailtxt, ce) }
 		cx++; if cv.Kind != "memory"  { t.Errorf("%s.Kind is not memory: %s", cf, cv.Kind) }
 		cx++; if cv.Path == ""        { t.Errorf("%s.Path is empty: %s", cf, cv.Path) }
