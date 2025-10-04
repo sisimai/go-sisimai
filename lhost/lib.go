@@ -12,6 +12,6 @@ package lhost
 import "libsisimai.org/sisimai/v5/sis"
 
 // Keep each function for decoding a bounce mail: % grep '^func init' ./lhost/via-*.go | wc -l
-var InquireFor = make(map[string]func(*sis.BeforeFact) *sis.RisingUnderway, 36)
+var InquireFor = make(map[string]func(*sis.BeforeFact) *sis.RisingUnderway, 37)
 const (HereIsDeliveryStatus = 1 << (iota + 1); HereIsMessageRFC822)
 
