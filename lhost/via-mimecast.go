@@ -36,8 +36,8 @@ func init() {
 		startingof := map[string][]string{"message": []string{"-- "}}
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)              // Points the current cursor position
-		recipients := uint8(0)              // The number of 'Final-Recipient' header
+		readcursor := uint8(0)
+		recipients := uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -59,10 +59,11 @@ func init() {
 					recipients += 1
 
 				} else {
-					// The problem appears to be :
-					// -- Recipient email address is possibly incorrect
-					// Additional information follows :
-					// -- 5.4.1 Recipient address rejected: Access denied. 
+					// Deal each line begins with "-- " as an error message.
+					//   The problem appears to be :
+					//   -- Recipient email address is possibly incorrect
+					//   Additional information follows :
+					//   -- 5.4.1 Recipient address rejected: Access denied. 
 					v.Diagnosis += cv + " "
 				}
 			}
