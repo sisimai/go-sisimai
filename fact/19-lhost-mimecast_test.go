@@ -23,6 +23,7 @@ func TestLhostMimecast(t *testing.T) {
 		{{"1003", 1, "5.1.1",   "",    "userunknown",      true, ""}},
 		{{"1004", 1, "5.4.14",  "554", "networkerror",    false, ""}},
 		{{"1005", 1, "5.1.1",   "550", "userunknown",      true, ""}},
+		{{"1006", 1, "5.7.54",  "550", "norelaying",      false, ""}},
 	}; EngineTest(t, "Mimecast", secretlist, false)
 }
 
