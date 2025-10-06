@@ -8,10 +8,12 @@
 //                                                                       
 
 package lhost
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
+import "libsisimai.org/sisimai/v5/rfc1894"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
 func init() {
@@ -32,8 +34,10 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"If you sent the email to multiple recipients, "}
+		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{"message": []string{"-- "}}
+		permessage := map[string]string{}   // Store values of each Per-Message field
+		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)
@@ -66,6 +70,28 @@ func init() {
 					//   -- 5.4.1 Recipient address rejected: Access denied. 
 					v.Diagnosis += cv + " "
 				}
+			} else {
+				// Lines after Content-Type: message/delivery-status
+				f := rfc1894.Match(e); if f > 0 {
+					// "e" matched with any field defined in RFC3464
+					o := rfc1894.Field(e); if len(o) == 0 { continue }
+					z := rfc1894.FieldTable[o[0]]
+					v  = sis.TailDeliveryMatter(dscontents)
+
+					if o[3] == "code" {
+						// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
+						v.Spec = o[1]
+						v.Diagnosis = o[2]
+
+					} else {
+						// Other DSN fields defined in RFC3464
+						v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
+
+						// Copy the lower-cased member name of DeliveryMatter{} for "permessage"
+						permessage[z] = o[2]
+						if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
+					}
+				}
 			}
 		}
 		if recipients == 0 { return nil }
@@ -73,6 +99,12 @@ func init() {
 		for j, _ := range dscontents {
 			// Check each value of DeliveryMatter{}, try to detect the bounce reason.
 			e := &dscontents[j]
+
+			for _, z := range keystrings {
+				// Do not set an empty string into each member of DeliveryMatter{}
+				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
+				e.Update(z, permessage[z])
+			}
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return &sis.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
