@@ -34,7 +34,7 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Content-Type: message/rfc822"}
+		boundaries := []string{"Content-Type: message/rfc822"} // No such line in lhost-mimecast-*
 		startingof := map[string][]string{"message": []string{"-- "}}
 		permessage := map[string]string{}   // Store values of each Per-Message field
 		keystrings := make([]string, 0, 4)  // Key list of permessage
