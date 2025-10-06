@@ -19,7 +19,7 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 func TestInquire19(t *testing.T) {
 	en := "Mimecast"
 	fn := "lhost.InquireFor[" + en + "]"
-	ae := []string{"lhost-mimecast-01"}
+	ae := []string{"lhost-mimecast-01", "lhost-mimecast-02"}
 	cv := InquireFor[en](nil) 
 	cx := 0
 	cx++; if cv != nil { t.Errorf("%s(nil) did not return nil", fn) }

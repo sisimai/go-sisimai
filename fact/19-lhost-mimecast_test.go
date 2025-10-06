@@ -13,6 +13,7 @@ func TestLhostMimecast(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"01",   1, "5.4.1",   "",    "userunknown",      true, ""}},
+		{{"02",   1, "5.7.54",  "550", "norelaying",      false, ""}},
 	}; EngineTest(t, "Mimecast", publiclist, true)
 
 	secretlist := [][]IsExpected{
