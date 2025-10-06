@@ -84,6 +84,7 @@ func tidy(head *string) *string {
 						ef = strings.Replace(ef, cv, ps, 1)
 					}
 					if ps != "boundary" { ef = strings.ToLower(ef) }
+					if ef == "rfc/822"  { ef = "rfc822"            }
 				}
 				ab = append(ab, ef)
 			}
