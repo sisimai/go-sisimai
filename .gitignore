@@ -2,9 +2,9 @@ coverage.*
 usage-of-*
 *pprof*
 *sisid*
-*.eml
 *.txt
-sbin/
-stash/
-set-of-emails/private
-tmp/
+./*.eml
+./sbin/
+./stash/
+./set-of-emails/private
+./tmp/

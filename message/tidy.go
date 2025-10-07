@@ -48,9 +48,10 @@ func tidy(head *string) *string {
 	bu := strings.Builder{}; bu.Grow(1024)
 	el := strings.Split(*head, "\n"); for j, e := range el {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
-		p0 := strings.IndexByte(e, ':'); if p0 < 0                         { bu.WriteString(e + "\n"); continue }
-		cf := strings.ToLower(e[0:p0]);  if strings.IndexByte(cf, ' ') > 0 { bu.WriteString(e + "\n"); continue }
-		fn := fieldtable[cf];            if fn == ""                       { bu.WriteString(e + "\n"); continue }
+		p0 := strings.IndexByte(e, ':'); if p0 < 0 { bu.WriteString(e + "\n"); continue }
+		cf := strings.ToLower(strings.TrimRight(e[0:p0], " "))
+		if strings.IndexByte(cf, ' ') > 0 { bu.WriteString(e + "\n"); continue }
+		fn := fieldtable[cf]; if fn == "" { bu.WriteString(e + "\n"); continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
 		ab := make([]string, 0, 2)
@@ -83,6 +84,7 @@ func tidy(head *string) *string {
 						ef = strings.Replace(ef, cv, ps, 1)
 					}
 					if ps != "boundary" { ef = strings.ToLower(ef) }
+					if ef == "rfc/822"  { ef = "rfc822"            }
 				}
 				ab = append(ab, ef)
 			}

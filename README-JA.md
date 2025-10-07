@@ -59,7 +59,7 @@ The key features of Sisimai
   * `$ go get -u libsisimai.org/sisimai/v5@latest`
   * `import "libsisimai.org/sisimai/v5"`
 * __高い解析精度__
-  * [59種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
+  * [60種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
   * Feedback Loop(ARF)にも対応
   * [36種類のバウンス理由](https://libsisimai.org/en/reason/)を検出
 
@@ -378,7 +378,7 @@ Features
 | 依存モジュール数(標準パッケージを除く)  | **0**           | 2 モジュール      | 1 gem           |
 | 対応している文字コード                  | **UTF-8のみ**   | UTF-8と他[^2]     | UTF-8と他[^3]   |
 | ソースコードの行数                      | 8,700 行        | 9,800 行          | 9,800 行        |
-| テスト件数                              | 241,000 件      | 320,000 件        | 410,000 件      |
+| テスト件数                              | 243,000 件      | 320,000 件        | 410,000 件      |
 | 1秒間に解析できるバウンスメール数[^4]   | 2900 通         | 750 通            | 620 通          |
 | ライセンス                              | 二条項BSD       | 二条項BSD         | 二条項BSD       |
 | 開発会社による商用サポート              | 提供中          | 提供中            | 提供中          |

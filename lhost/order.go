@@ -19,7 +19,8 @@ var defaultorder = []string{
 	// The following is a fallback list
 	"Postfix", "OpenSMTPD", "qmail", "Courier", "MessagingServer", "GoogleWorkspace", "Gmail", "GMX",
 	"Zoho", "Domino", "Notes", "IMailServer", "mFILTER", "Activehunter", "MailFoundry", "GoogleGroups",
-	"MailMarshalSMTP", "V5sendmail", "EZweb", "Biglobe", "EinsUndEins", "DragonFly", "X1", "X3", "X6",
+	"Mimecast", "MailMarshalSMTP", "V5sendmail", "EZweb", "Biglobe", "EinsUndEins", "DragonFly",
+	"X1", "X3", "X6",
 }
 
 // OrderBySubject returns the order list of MTA modules decided by the first two words of the "Subject": header.
@@ -55,6 +56,7 @@ func OrderBySubject(title string) []string {
 		"non-recapitabile":      []string{"Exchange2007"},
 		"non-remis":             []string{"Exchange2007"},
 		"notice":                []string{"Courier"},
+		"postmaster-email":      []string{"Mimecast"},
 		"postmaster-notify":     []string{"Sendmail"},
 		"returned-mail":         []string{"Sendmail", "Biglobe", "V5sendmail", "X1"},
 		"there-was":             []string{"X6"},
@@ -67,6 +69,7 @@ func OrderBySubject(title string) []string {
 
 	// The following order is decided by the first 2 words of Subject: header
 	for _, e := range []string{"[", "]", "_"} { title = strings.Replace(title, e, " ", -1) }
+	title  = strings.Trim(title, " ")
 
 	if strings.Contains(title, "  ") { moji.Squeeze(&title, ' ') }
 	buffr := strings.Builder{}; buffr.Grow(len(title))
