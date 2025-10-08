@@ -12,6 +12,7 @@ v5.4.1p1
   - #174 #186 Implement `is_ambiguous()` function at `smtp/status/lib.go`.
   - #185 Sisimai partially supports the media types described in RFC6533 such as `message/global`.
   - #189 #190 Refactor: Remove redundant header normalization in rfc2045 package.
+  - #153 #200 #201 Implement `lhost/via-mimecast.go` for decoding bounce mails from Mimecast.
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
