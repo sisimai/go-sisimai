@@ -13,6 +13,7 @@ v5.4.1p1
   - #185 Sisimai partially supports the media types described in RFC6533 such as `message/global`.
   - #189 #190 Refactor: Remove redundant header normalization in rfc2045 package.
   - #153 #200 #201 Implement `lhost/via-mimecast.go` for decoding bounce mails from Mimecast.
+  - #203 #204 Fix the index out of range bug in multipart blocks.
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
