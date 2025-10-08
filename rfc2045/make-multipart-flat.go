@@ -93,8 +93,11 @@ func levelout(ctype string, mpart *string) ([][3]string, []sis.NotDecoded) {
 	notdecoded := make([]sis.NotDecoded, 0)
 
 	// Remove empty or useless preamble and epilogue of multipart/* block
-	if len(multiparts[0])                   < 8 { multiparts = multiparts[1:] }
-	if len(multiparts[len(multiparts) - 1]) < 8 { multiparts = multiparts[0:len(multiparts) - 2] }
+	if len(multiparts[0]) < 8 { multiparts = multiparts[1:] }
+	switch cw := len(multiparts); cw {
+		case 0:  return nil, nil // There is no valid multipart block
+		default: if cw > 2 && len(multiparts[cw - 1]) < 8 { multiparts = multiparts[0:cw - 2] }
+	}
 
 	for j, e := range multiparts {
 		// Check each part and breaks up internal multipart/* block
