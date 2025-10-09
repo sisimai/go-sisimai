@@ -22,6 +22,8 @@ func init() {
 	//     - bf (*sis.BeforeFact):  Message entity in progress.
 	//   Returns:
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
+	//   Since:
+	//     - v5.5.0
 	InquireFor["Mimecast"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Mimecast: https://www.mimecast.com/
 		if bf == nil || bf.IsEmpty() == true { return nil }
