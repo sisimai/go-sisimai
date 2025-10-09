@@ -710,7 +710,7 @@ func IsExplicit(code string) bool {
 //   Returns:
 //     - (bool): true if the code is ambiguous, false otherwise.
 //   Since:
-//     - v5.4.2
+//     - v5.5.0
 func IsAmbiguous(code string) bool {
 	if code == "" || len(code) == 5 && strings.HasSuffix(code, ".0.0") { return true }
 	return false
