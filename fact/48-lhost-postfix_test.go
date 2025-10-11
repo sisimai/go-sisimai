@@ -379,6 +379,15 @@ func TestLhostPostfix(t *testing.T) {
 		{{"1283", 1, "5.4.4",   "",    "hostunknown",      true, ""}},
 		{{"1284", 1, "5.0.0",   "552", "mailboxfull",     false, ""}},
 		{{"1285", 1, "5.0.0",   "552", "mailboxfull",     false, ""}},
+		{{"1286", 1, "5.7.0",   "552", "contenterror",    false, ""}},
+		{{"1287", 1, "5.0.0",   "550", "rejected",        false, ""}},
+		{{"1288", 1, "5.7.64",  "550", "norelaying",      false, ""}},
+		{{"1289", 1, "5.1.0",   "",    "notaccept",        true, ""}},
+		{{"1290", 1, "5.0.0",   "503", "syntaxerror",     false, ""}},
+		{{"1291", 1, "5.0.0",   "501", "syntaxerror",     false, ""}},
+		{{"1292", 1, "5.7.26",  "550", "authfailure",     false, ""}},
+		{{"1293", 1, "4.4.1",   "",    "expired",         false, ""}},
+		{{"1294", 1, "5.2.3",   "554", "exceedlimit",     false, ""}},
 	}; EngineTest(t, "Postfix", secretlist, false)
 }
 
