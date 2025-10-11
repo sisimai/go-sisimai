@@ -142,6 +142,7 @@ func TestLhostEZweb(t *testing.T) {
 		{{"1119", 1, "5.0.910", "",    "filtered",        false, ""}},
 		{{"1120", 1, "5.0.911", "550", "userunknown",      true, ""}},
 		{{"1121", 1, "5.0.971", "550", "blocked",         false, ""}},
+		{{"1122", 1, "5.0.0",   "",    "suspend",         false, ""}},
 	}; EngineTest(t, "EZweb", secretlist, false)
 }
 
