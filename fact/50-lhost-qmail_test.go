@@ -121,6 +121,19 @@ func TestLhostqmail(t *testing.T) {
 		{{"1071", 1, "5.7.1",   "554", "norelaying",      false, ""}},
 		{{"1072", 1, "5.0.912", "",    "hostunknown",      true, ""}},
 		{{"1073", 1, "5.0.921", "",    "suspend",         false, ""}},
+		{{"1074", 1, "5.1.1",   "550", "userunknown",      true, ""},
+		 {"1074", 2, "5.4.4",   "",    "notaccept",        true, ""},
+		 {"1074", 3, "5.4.4",   "",    "notaccept",        true, ""},
+		 {"1074", 4, "5.1.2",   "",    "hostunknown",      true, ""},
+		 {"1074", 5, "5.7.26",  "550", "authfailure",     false, ""},
+		 {"1074", 6, "5.7.509", "550", "authfailure",     false, ""},
+		 {"1074", 7, "5.1.1",   "550", "userunknown",      true, ""},
+		 {"1074", 8, "5.1.1",   "550", "userunknown",      true, ""},
+		 {"1074", 9, "5.2.2",   "552", "mailboxfull",     false, ""}},
+		{{"1075", 1, "5.1.1",   "550", "userunknown",      true, ""},
+		 {"1075", 2, "5.2.2",   "552", "mailboxfull",     false, ""},
+		 {"1075", 3, "4.7.0",   "421", "badreputation",   false, ""},
+		 {"1075", 4, "4.7.0",   "421", "userunknown",      true, ""}}, // TODO: badreputation
 	}; EngineTest(t, "qmail", secretlist, false)
 }
 
