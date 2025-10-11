@@ -23,9 +23,8 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"does not accept mail (nullmx)",
+			"does not accept mail",             // Sendmail
 			"host/domain does not accept mail", // iCloud
-			"host does not accept mail",        // Sendmail
 			"mail receiving disabled",
 			"name server: .: host not found",   // Sendmail
 			"no mx record found for domain=",   // Oath(Yahoo!)
