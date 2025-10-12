@@ -234,6 +234,7 @@ func TestRFC3464(t *testing.T) {
 		{{"1318", 1, "5.4.1",   "550", "rejected",        false, ""}},
 		{{"1319", 1, "5.0.0",   "",    "userunknown",      true, ""}},
 		{{"1320", 1, "5.7.0",   "550", "filtered",        false, ""}},
+		{{"1321", 1, "5.4.1",   "550", "userunknown",      true, ""}},
 	}; EngineTest(t, "RFC3464", secretlist, false)
 }
 
