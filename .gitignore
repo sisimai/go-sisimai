@@ -3,8 +3,8 @@ usage-of-*
 *pprof*
 *sisid*
 *.txt
-./*.eml
-./sbin/
-./stash/
-./set-of-emails/private
-./tmp/
+sbin/
+stash/
+set-of-emails/private
+tmp/
+var/
