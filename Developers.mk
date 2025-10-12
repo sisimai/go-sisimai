@@ -119,7 +119,12 @@ private-sample:
 	@echo
 	@while true; do \
 		d=`$(GO) run $(EXECUTABLE).go -format json $(E) | jq -M '.decodedby' | head -1 \
-			| tr '[A-Z]' '[a-z]' | tr -d '-' | sed -e 's/"//g' -e 's/^/lhost-/g'`; \
+			| tr '[A-Z]' '[a-z]' | tr -d '-' | sed -e 's/"//g'`; \
+		if [ "$$d" = "rfc3464" -o "$$d" = "rfc3834" -o "$$d" = "arf" ]; then \
+			:; \
+		else \
+			d=`echo $$d | sed -e 's/^/lhost-/g'`; \
+		fi; \
 		if [ -d "$(PRIVATESET)/$$d" ]; then \
 			thelatest=`ls -1 $(PRIVATESET)/$$d/*.$(MAILSUFFIX) | tail -1`; \
 			currindex=`basename $$thelatest | cut -d'-' -f1`; \
