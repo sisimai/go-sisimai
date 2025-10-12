@@ -208,8 +208,10 @@ func MakeFlat(ctype string, mpart *string) (*string, []sis.NotDecoded) {
 			bodystring = "Content-Type: " + mediatypev + "\n" + bodystring
 		}
 
-		// Append "\n" when the last character of $bodystring is not LF
-		if bodystring[len(bodystring) - 2:] != "\n\n" { bodystring += "\n\n" }
+		if cw := len(bodystring); cw > 1 && bodystring[cw - 2:] != "\n\n" {
+			// Append "\n" when the last character of "bodystring" is not LF
+			bodystring += "\n\n"
+		}
 		flatbuffer.WriteString(bodystring)
 	}
 	flattenout := flatbuffer.String()
