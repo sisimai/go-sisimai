@@ -17,10 +17,10 @@ import "libsisimai.org/sisimai/v5/sis"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
 func TestInquire35(t *testing.T) {
-	en := "InterScanMSS"
+	en := "TrendMicro"
 	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
-		"lhost-interscanmss-01", "lhost-interscanmss-02", "lhost-interscanmss-03", 
+		"lhost-trendmicro-01", "lhost-trendmicro-02", "lhost-trendmicro-03", 
 	}
 	cv := InquireFor[en](nil) 
 	cx := 0

@@ -2,20 +2,20 @@
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
-//  _____         _      ___ _               _       ___       _            ____                  __  __ ____ ____  
-// |_   _|__  ___| |_   / / | |__   ___  ___| |_    |_ _|_ __ | |_ ___ _ __/ ___|  ___ __ _ _ __ |  \/  / ___/ ___| 
-//   | |/ _ \/ __| __| / /| | '_ \ / _ \/ __| __|____| || '_ \| __/ _ \ '__\___ \ / __/ _` | '_ \| |\/| \___ \___ \ 
-//   | |  __/\__ \ |_ / / | | | | | (_) \__ \ ||_____| || | | | ||  __/ |   ___) | (_| (_| | | | | |  | |___) |__) |
-//   |_|\___||___/\__/_/  |_|_| |_|\___/|___/\__|   |___|_| |_|\__\___|_|  |____/ \___\__,_|_| |_|_|  |_|____/____/ 
+//  _____         _      ___ _               _      _____                   _ __  __ _                
+// |_   _|__  ___| |_   / / | |__   ___  ___| |_   |_   _| __ ___ _ __   __| |  \/  (_) ___ _ __ ___  
+//   | |/ _ \/ __| __| / /| | '_ \ / _ \/ __| __|____| || '__/ _ \ '_ \ / _` | |\/| | |/ __| '__/ _ \ 
+//   | |  __/\__ \ |_ / / | | | | | (_) \__ \ ||_____| || | |  __/ | | | (_| | |  | | | (__| | | (_) |
+//   |_|\___||___/\__/_/  |_|_| |_|\___/|___/\__|    |_||_|  \___|_| |_|\__,_|_|  |_|_|\___|_|  \___/ 
 import "testing"
 
-func TestLhostInterScanMSS(t *testing.T) {
+func TestLhostTrendMicro(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"01",   1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"02",   1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"03",   1, "5.0.911", "",    "userunknown",      true, ""}},
-	}; EngineTest(t, "InterScanMSS", publiclist, true)
+	}; EngineTest(t, "TrendMicro", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
@@ -37,6 +37,6 @@ func TestLhostInterScanMSS(t *testing.T) {
 		{{"1016", 1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"1017", 1, "5.0.911", "",    "userunknown",      true, ""}},
 		{{"1018", 1, "5.0.911", "",    "userunknown",      true, ""}},
-	}; EngineTest(t, "InterScanMSS", secretlist, false)
+	}; EngineTest(t, "TrendMicro", secretlist, false)
 }
 
