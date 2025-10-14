@@ -22,13 +22,21 @@ func init() {
 	InquireFor["mFILTER"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Digital Arts m-FILTER: https://www.daj.jp/bs/mf/
 		if bf == nil || bf.IsEmpty() || bf.Headers["subject"][0]  != "failure notice" { return nil }
-		if len(bf.Headers["x-mailer"]) < 1 || bf.Headers["x-mailer"][0] != "m-FILTER" { return nil }
 
 		boundaries := []string{"-------original message", "-------original mail info"}
 		startingof := map[string][]string{
 			"command": []string{"-------SMTP command"},
 			"error":   []string{"-------server message"},
 		}
+
+		switch {
+			case len(bf.Headers["x-mailer"]) > 1 && bf.Headers["x-mailer"][0] == "m-FILTER":
+			case moji.ContainsAny(bf.Payload, boundaries):
+			case moji.ContainsAny(bf.Payload, startingof["command"]):
+			case moji.ContainsAny(bf.Payload, startingof["error"]):
+			default: return nil
+		}
+
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
