@@ -21,13 +21,16 @@ func init() {
 	InquireFor["X1"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
 		// - Unknown MTA #1
 		// - Can anyone identify the MTA that produced the set-of-emails/maildir/bsd/lhost-x1-*.eml files?
-		if bf == nil || bf.IsEmpty() == true                                           { return nil }
-		if strings.HasPrefix(bf.Headers["subject"][0], "Returned Mail: ")     == false { return nil }
-		if strings.HasPrefix(bf.Headers["from"][0], `"Mail Deliver System" `) == false { return nil }
+		if bf == nil || bf.IsEmpty() == true { return nil }
+		switch {
+			case strings.HasPrefix(bf.Headers["subject"][0], "Returned Mail: "):
+			case strings.HasPrefix(bf.Headers["subject"][0], "Mail Delivery Failure"):
+			case moji.Aligned(bf.Headers["from"][0], []string{`"Mail Deliver`, `System" `}):
+			default: return nil
+		}
 
 		boundaries := []string{"Received: from "}
 		startingof := map[string][]string{"message": []string{"The original message was received at "}}
-
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position
