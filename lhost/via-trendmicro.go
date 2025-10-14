@@ -1,10 +1,10 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-//  _ _               _      _____       _            ____                  __  __ ____ ____  
-// | | |__   ___  ___| |_   / /_ _|_ __ | |_ ___ _ __/ ___|  ___ __ _ _ __ |  \/  / ___/ ___| 
-// | | '_ \ / _ \/ __| __| / / | || '_ \| __/ _ \ '__\___ \ / __/ _` | '_ \| |\/| \___ \___ \ 
-// | | | | | (_) \__ \ |_ / /  | || | | | ||  __/ |   ___) | (_| (_| | | | | |  | |___) |__) |
-// |_|_| |_|\___/|___/\__/_/  |___|_| |_|\__\___|_|  |____/ \___\__,_|_| |_|_|  |_|____/____/ 
+//  _ _               _      _______                   _ __  __ _                
+// | | |__   ___  ___| |_   / /_   _| __ ___ _ __   __| |  \/  (_) ___ _ __ ___  
+// | | '_ \ / _ \/ __| __| / /  | || '__/ _ \ '_ \ / _` | |\/| | |/ __| '__/ _ \ 
+// | | | | | (_) \__ \ |_ / /   | || | |  __/ | | | (_| | |  | | | (__| | | (_) |
+// |_|_| |_|\___/|___/\__/_/    |_||_|  \___|_| |_|\__,_|_|  |_|_|\___|_|  \___/ 
 
 package lhost
 import "strings"
@@ -20,9 +20,10 @@ func init() {
 	//     - bf (*sis.BeforeFact):  Message entity in progress.
 	//   Returns:
 	//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
-	InquireFor["InterScanMSS"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
-		// - Trend Micro InterScan Messaging Security Suite
-		// - https://www.trendmicro.com/en_us/business/products/user-protection/sps/email-and-collaboration/interscan-messaging.html
+	InquireFor["TrendMicro"] = func(bf *sis.BeforeFact) *sis.RisingUnderway {
+		// - TREND VISION ONE: Email and Collaboration Security
+		// - https://www.trendmicro.com/en_us/business/products/email-and-collaboration.html
+		// - Formerly known as "Trend Micro InterScan Messaging Security Suite"
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
 		switch {
