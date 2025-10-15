@@ -115,15 +115,19 @@ func init() {
 					if o[3] == "addr" {
 						// Final-Recipient: rfc822; kijitora@example.jp
 						// X-Actual-Recipient: rfc822; kijitora@example.co.jp
-						if o[0] == "final-recipient" {
-							// Final-Recipient: rfc822; kijitora@example.jp
-							if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
-							v.Recipient = o[2]
-							recipients += 1
+						if rfc5322.IsEmailAddress(o[2]) {
+							// The email address is a valid email address, avoid an email address
+							// without a valid domain part such as "neko@mailhost".
+							if o[0] == "final-recipient" {
+								// Final-Recipient: rfc822; kijitora@example.jp
+								if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
+								v.Recipient = o[2]
+								recipients += 1
 
-						} else {
-							// X-Actual-Recipient: rfc822; kijitora@example.co.jp
-							v.Alias = o[2]
+							} else {
+								// X-Actual-Recipient: rfc822; kijitora@example.co.jp
+								v.Alias = o[2]
+							}
 						}
 					} else if o[3] == "code" {
 						// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
@@ -200,9 +204,10 @@ func init() {
 
 		if recipients == 0 {
 			// Fallback: get a recipient address from error messages
-			if len(anotherset["recipient"]) > 0 {
+			if len(anotherset["recipient"]) > 0 || len(anotherset["alias"]) > 0 {
 				// Set a recipient address saved in "anotherset"
 				v.Recipient = anotherset["recipient"]
+				if v.Recipient == "" { v.Recipient = anotherset["alias"] }
 				recipients += 1
 
 			} else if nomessages == true {
