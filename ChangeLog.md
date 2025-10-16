@@ -14,7 +14,7 @@ v5.4.1p1
   - #189 #190 Refactor: Remove redundant header normalization in rfc2045 package.
   - #153 #200 #201 Implement `lhost/via-mimecast.go` for decoding bounce mails from Mimecast.
   - #203 #204 Fix the index out of range bug in multipart blocks.
-  - #211 #216 `lhost/interscanmss.go` has been renamed to `lhost/trendmicro.go`.
+  - #211 #216 `lhost/via-interscanmss.go` has been renamed to `lhost/via-trendmicro.go`.
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
