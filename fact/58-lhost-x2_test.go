@@ -88,6 +88,10 @@ func TestLhostX2(t *testing.T) {
 		 {"1027", 2, "5.0.922", "",    "mailboxfull",     false, ""}},
 		{{"1028", 1, "4.4.1",   "",    "expired",         false, ""}},
 		{{"1029", 1, "4.1.9",   "",    "expired",         false, ""}},
+		{{"1030", 1, "5.1.1",   "550", "userunknown",      true, ""}},
+		{{"1031", 1, "5.4.14",  "554", "networkerror",    false, ""}},
+		{{"1032", 1, "5.4.14",  "554", "networkerror",    false, ""}},
+		{{"1033", 1, "5.1.1",   "550", "userunknown",      true, ""}},
 	}; EngineTest(t, "X2", secretlist, false)
 }
 
