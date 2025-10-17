@@ -81,7 +81,7 @@ func init() {
 				// Delivery failed: kijitora@example.co.jp
 				if len(v.Recipient) > 0 { v = sis.NextDeliveryMatter(&dscontents) }
 				v.Recipient = moji.Select(e, "<", ">", 0)
-				if v.Recipient == "" { v.Recipient = moji.Select(e + moji.RHS, "Delivery failed: ", "", 0) }
+				if v.Recipient == "" { v.Recipient = moji.Select(e + moji.RHS, ": ", "", 12) }
 				recipients += 1
 
 			} else if strings.HasPrefix(e, "STEP: ") {
