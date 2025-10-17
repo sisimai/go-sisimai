@@ -58,7 +58,7 @@ func anotherone(fo *sis.Fact) string {
 	issuedcode := strings.ToLower(fo.DiagnosticCode)
 	reasontext := status.Name(fo.DeliveryStatus)
 
-	if ShouldBeRetried(reasontext) || fo.DiagnosticType == "SMTP" {
+	if ShouldBeRetried(reasontext) || fo.DiagnosticType != "SMTP" {
 		// - The value of the reason is not decided yet by the fo.DeliveryStatus.
 		// - Try to find the bounce reason by the fo.DeliveryStatus or fo.DianosticCode when the
 		//   ShouldBeRetried(reasontext) returns true or fo.DiagnosticType is "SMTP".
