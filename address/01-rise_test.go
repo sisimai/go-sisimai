@@ -56,7 +56,7 @@ var TestEmailAddrs = []struct {testname string; argument string; expected string
 	{"", `" "@example.org`, `" "@example.org`, `" "@example.org`, ""},
 	{"", "neko@localhost", "neko@localhost", "neko@localhost", ""},
 	{"", "neko@[IPv4:192.0.2.22]", "neko@[IPv4:192.0.2.22]", "neko@[IPv4:192.0.2.22]", ""},
-	{"", "neko@[IPv6:2001:DB8::1]", "", "neko@[IPv6:2001:DB8::1]", ""},
+	{"", "neko@[IPv6:2001:DB8::1]", "neko@[IPv6:2001:DB8::1]", "neko@[IPv6:2001:DB8::1]", ""},
 	{"", "neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]", "neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]",
 		 "neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]", ""},
 }

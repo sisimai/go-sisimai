@@ -19,9 +19,9 @@ func TestIsDomainLiteral(t *testing.T) {
 		{"", "neko@[IPv4:192.0.2.25]", true},
 		{"", "neko@[Neko:192.0.2.25]", false},
 		{"", "neko@[IPv6:192.0.2.25]", false},
-		{"", "neko@[IPv6:2001:DB8::1]", false},
+		{"", "neko@[IPv6:2001:DB8::1]", true},
 		{"", "neko@[IPv5:2001:DB8::1]", false},
-		{"", "<neko@[IPv6:2001:DB8::1]>", false},
+		{"", "<neko@[IPv6:2001:DB8::1]>", true},
 		{"", "neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]", true},
 		{"", "<neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]>", true},
 	}
