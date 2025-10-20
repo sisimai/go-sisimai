@@ -98,8 +98,24 @@ func IsDomainLiteral(email string) bool {
 
 	} else if strings.Contains(email, "@[IPv6:") {
 		// neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]
+		// IPv6-address-literal  = "IPv6:" IPv6-addr
+		//    IPv6-addr      = IPv6-full / IPv6-comp / IPv6v4-full / IPv6v4-comp
+		//    IPv6-hex       = 1*4HEXDIG
+		//    IPv6-full      = IPv6-hex 7(":" IPv6-hex)
+		//    IPv6-comp      = [IPv6-hex *5(":" IPv6-hex)] "::"
+		//                     [IPv6-hex *5(":" IPv6-hex)]
+		//                     ; The "::" represents at least 2 16-bit groups of
+		//                     ; zeros.  No more than 6 groups in addition to the
+		//                     ; "::" may be present.
+		//    IPv6v4-full    = IPv6-hex 5(":" IPv6-hex) ":" IPv4-address-literal
+		//    IPv6v4-comp    = [IPv6-hex *3(":" IPv6-hex)] "::"
+		//                     [IPv6-hex *3(":" IPv6-hex) ":"]
+		//                     IPv4-address-literal
+		//                     ; The "::" represents at least 2 16-bit groups of
+		//                     ; zeros.  No more than 4 groups in addition to the
+		//                     ; "::" and IPv4-address-literal may be present.
 		cv := moji.Select(email, "@[IPv6:", "]", 0)
-		if len(cv) == 39 && strings.Count(cv, ":") == 7 { return true }
+		if len(cv) > 2 && strings.Count(cv, ":") > 2 { return true }
 	}
 	return false
 }
