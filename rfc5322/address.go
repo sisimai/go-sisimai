@@ -92,13 +92,13 @@ func IsEmailAddress(email string) bool {
 
 			if ipv46 == false {
 				// Such as "example.jp", "neko.example.org"
-				if email[j] >  57 && email[j] <  64 { match = false; break } // ':' to '?'
-				if email[j] >  90 && email[j] <  97 { match = false; break } // '[' to '`'
+				if email[j] > 57 && email[j] < 64 { match = false; break } // ':' to '?'
+				if email[j] > 90 && email[j] < 97 { match = false; break } // '[' to '`'
 
 			} else {
 				// Such as "[IPv4:192.0.2.25]"
-				if email[j] >  59 && email[j] <  64 { match = false; break } // ';' to '?'
-				if email[j] >  93 && email[j] <  97 { match = false; break } // '^' to '`'
+				if email[j] > 59 && email[j] < 64 { match = false; break } // ';' to '?'
+				if email[j] > 93 && email[j] < 97 { match = false; break } // '^' to '`'
 			}
 
 			if j > lastd && ipv46 == false {
