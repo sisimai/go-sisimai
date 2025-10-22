@@ -28,6 +28,7 @@ func TestIsInternetHost(t *testing.T) {
 	}
 	hostnames1 := []string{
 		"localhost",
+		"localhost6",
 		"mx1.example.jp",
 		"mx1.example.jp.",
 		"a.jp",
