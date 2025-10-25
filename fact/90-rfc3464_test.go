@@ -243,7 +243,7 @@ func TestRFC3464(t *testing.T) {
 		{{"1327", 1, "4.4.7",   "",    "expired",         false, ""}},
 		{{"1328", 1, "5.4.4",   "",    "hostunknown",      true, ""}},
 		{{"1329", 1, "5.7.1",   "",    "securityerror",   false, ""}},
-		{{"1330", 1, "5.0.911","550", "userunknown",      true, ""}},
+		{{"1330", 1, "5.0.911","550",  "userunknown",      true, ""}},
 		{{"1331", 1, "5.4.7",   "",    "expired",         false, ""}},
 		{{"1332", 1, "5.3.0",   "550", "filtered",        false, ""}},
 		{{"1333", 1, "4.4.1",   "",    "expired",         false, ""}},
