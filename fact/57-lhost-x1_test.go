@@ -27,6 +27,7 @@ func TestLhostX1(t *testing.T) {
 		{{"1005", 1, "5.0.910", "",    "filtered",        false, ""}},
 		{{"1006", 1, "5.0.910", "",    "filtered",        false, ""}},
 		{{"1007", 1, "5.0.947", "",    "expired",         false, ""}},
+		{{"1008", 1, "5.0.921", "",    "suspend",         false, ""}},
 	}; EngineTest(t, "X1", secretlist, false)
 }
 
