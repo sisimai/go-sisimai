@@ -29,7 +29,7 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Received: from "}
+		boundaries := []string{"Content-Type: message/rfc822", "Received: from "}
 		startingof := map[string][]string{"message": []string{"The original message was received at "}}
 		dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
