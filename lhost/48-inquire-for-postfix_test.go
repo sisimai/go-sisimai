@@ -33,7 +33,7 @@ func TestInquire48(t *testing.T) {
 		"lhost-postfix-62", "lhost-postfix-63", "lhost-postfix-64", "lhost-postfix-65", "lhost-postfix-66",
 		"lhost-postfix-67", "lhost-postfix-68", "lhost-postfix-69", "lhost-postfix-70", "lhost-postfix-71",
 		"lhost-postfix-72", "lhost-postfix-73", "lhost-postfix-74", "lhost-postfix-75", "lhost-postfix-76",
-		"lhost-postfix-77", "lhost-postfix-78", 
+		"lhost-postfix-77", "lhost-postfix-78", "lhost-postfix-79",
 	}
 	cv := InquireFor[en](nil) 
 	cx := 0
