@@ -21,6 +21,7 @@ func TestLhostX2(t *testing.T) {
 		{{"04",   1, "5.0.922", "",    "mailboxfull",     false, ""}},
 		{{"05",   1, "4.1.9",   "",    "expired",         false, ""}},
 		{{"06",   1, "4.4.1",   "",    "expired",         false, ""}},
+		{{"07",   1, "5.4.14",  "554", "networkerror",    false, ""}},
 	}; EngineTest(t, "X2", publiclist, true)
 
 	secretlist := [][]IsExpected{

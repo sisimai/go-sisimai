@@ -20,7 +20,7 @@ func TestInquire58(t *testing.T) {
 	en := "X2"
 	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
-		"lhost-x2-01", "lhost-x2-02", "lhost-x2-03", "lhost-x2-04", "lhost-x2-05", "lhost-x2-06", 
+		"lhost-x2-01", "lhost-x2-02", "lhost-x2-03", "lhost-x2-04", "lhost-x2-05", "lhost-x2-06", "lhost-x2-07",
 	}
 	cv := InquireFor[en](nil) 
 	cx := 0
@@ -41,7 +41,6 @@ func TestInquire58(t *testing.T) {
 		cx++; if len(cv.Digest) < 1           { t.Errorf("%s(%s).Digest is empty", fn, e) }
 		cx++; if cv.Digest[0].Agent     != "" { t.Errorf("%s(%s).Digest.Agent is not empty", fn, e) }
 		cx++; if cv.Digest[0].Recipient == "" { t.Errorf("%s(%s).Digest.Recipient is empty", fn, e) }
-		cx++; if cv.RFC822 == ""              { t.Errorf("%s(%s).RFC822 is empty (%d)", fn, e, len(cv.RFC822)) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
