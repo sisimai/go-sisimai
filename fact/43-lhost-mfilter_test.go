@@ -16,6 +16,7 @@ func TestLhostmFILTER(t *testing.T) {
 		{{"02",   1, "5.1.1",   "550", "userunknown",      true, ""}},
 		{{"03",   1, "5.0.910", "550", "filtered",        false, ""}},
 		{{"04",   1, "5.4.1",   "550", "rejected",        false, ""}},
+		{{"05",   1, "4.3.1",   "452", "systemfull",      false, ""}},
 	}; EngineTest(t, "mFILTER", publiclist, true)
 
 	secretlist := [][]IsExpected{

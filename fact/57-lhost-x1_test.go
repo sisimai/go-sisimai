@@ -15,6 +15,8 @@ func TestLhostX1(t *testing.T) {
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"01",   1, "5.0.910", "",    "filtered",        false, ""}},
 		{{"02",   1, "5.0.910", "",    "filtered",        false, ""}},
+		{{"03",   1, "5.0.910", "",    "filtered",        false, ""}},
+		{{"04",   1, "5.0.947", "",    "expired",         false, ""}},
 	}; EngineTest(t, "X1", publiclist, true)
 
 	secretlist := [][]IsExpected{
