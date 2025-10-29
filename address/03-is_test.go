@@ -19,6 +19,8 @@ func TestIsIncluded(t *testing.T) {
 		{"", "Sironeko <siro@example.jp> (Meow)", true},
 		{"", "<mailer-daemon>", false},
 		{"", "<neko@chan>", false},
+		{"", "<neko@localhost>", true},
+		{"", "<cat@localhost6>", true},
 		{"", "", false},
 	}
 
