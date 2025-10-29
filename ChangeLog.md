@@ -15,7 +15,7 @@ v5.4.1p1
   - #153 #200 #201 Implement `lhost/via-mimecast.go` for decoding bounce mails from Mimecast.
   - #203 #204 Fix the index out of range bug in multipart blocks.
   - #211 #216 `lhost/via-interscanmss.go` has been renamed to `lhost/via-trendmicro.go`.
-  - The following MTA modules have been updated for decoding more bounce emails:
+  - #223 #226 The following MTA modules have been updated for decoding more bounce emails:
     - #209 #214 `lhost/via-mfilter.go`
     - #217 #218 `lhost/via-postfix.go`
     - #210 #215 `lhost/via-x1.go`
