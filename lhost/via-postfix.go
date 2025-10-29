@@ -204,13 +204,14 @@ func init() {
 
 		if recipients == 0 {
 			// Fallback: get a recipient address from error messages
-			if len(anotherset["recipient"]) > 0 || len(anotherset["alias"]) > 0 {
+			for _, e := range []string{"recipient", "alias"} {
 				// Set a recipient address saved in "anotherset"
-				v.Recipient = anotherset["recipient"]
-				if v.Recipient == "" { v.Recipient = anotherset["alias"] }
-				recipients += 1
+				if len(anotherset[e]) < 1 || rfc5322.IsEmailAddress(anotherset[e]) == false { continue }
+				v.Recipient = anotherset[e]; recipients++
+				break
+			}
 
-			} else if nomessages == true {
+			if nomessages == true {
 				// Get a recipient address from message/rfc822 part if the delivery report was unavailable:
 				// "--- Delivery report unavailable ---"
 				if cv := address.S3S4(moji.Select(emailparts[1], "\nTo: ", "\n", 0)); cv != "" {
