@@ -171,7 +171,7 @@ func init() {
 							// <r@example.ne.jp> (expanded from <kijitora@example.org>): user ...
 							// OR
 							// <kijitora@exmaple.jp>: ...
-							anotherset["recipient"] = address.S3S4(moji.Select(e, "<", "< ", 0))
+							anotherset["recipient"] = address.S3S4(moji.Select(e, "<", "> ", 0))
 							anotherset["alias"]     = address.S3S4(moji.Select(e, "(expanded from ", "):", 0))
 							if cv := moji.Select(e + moji.RHS, ">): ", "", 0); cv != "" { anotherset["diagnosis"] = cv }
 
