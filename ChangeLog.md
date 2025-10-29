@@ -20,6 +20,7 @@ v5.4.1p1
     - #217 #218 `lhost/via-postfix.go`
     - #210 #215 `lhost/via-x1.go`
     - #219 #222 `lhost/via-x2.go`
+  - #229 Add new error message pattern for Spamhaus (Blocked).
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
