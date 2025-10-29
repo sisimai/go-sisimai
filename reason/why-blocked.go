@@ -53,6 +53,7 @@ func init() {
 			"invalid ip for sending mail of domain",
 			"is in a black list",
 			"is not allowed to send mail from",
+			"mailfrom domain is listed in spamhaus",
 			"no access from mail server",
 			"no matches to nameserver query",
 			"not currently accepting mail from your ip", // Microsoft
