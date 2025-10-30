@@ -1,10 +1,10 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-//  _ _               _      ____  __       _ _ __  __                _           _ ____  __  __ _____ ____  
-// | | |__   ___  ___| |_   / /  \/  | __ _(_) |  \/  | __ _ _ __ ___| |__   __ _| / ___||  \/  |_   _|  _ \ 
-// | | '_ \ / _ \/ __| __| / /| |\/| |/ _` | | | |\/| |/ _` | '__/ __| '_ \ / _` | \___ \| |\/| | | | | |_) |
-// | | | | | (_) \__ \ |_ / / | |  | | (_| | | | |  | | (_| | |  \__ \ | | | (_| | |___) | |  | | | | |  __/ 
-// |_|_| |_|\___/|___/\__/_/  |_|  |_|\__,_|_|_|_|  |_|\__,_|_|  |___/_| |_|\__,_|_|____/|_|  |_| |_| |_|    
+//  _ _               _      ____  __       _ _ __  __                _           _ 
+// | | |__   ___  ___| |_   / /  \/  | __ _(_) |  \/  | __ _ _ __ ___| |__   __ _| |
+// | | '_ \ / _ \/ __| __| / /| |\/| |/ _` | | | |\/| |/ _` | '__/ __| '_ \ / _` | |
+// | | | | | (_) \__ \ |_ / / | |  | | (_| | | | |  | | (_| | |  \__ \ | | | (_| | |
+// |_|_| |_|\___/|___/\__/_/  |_|  |_|\__,_|_|_|_|  |_|\__,_|_|  |___/_| |_|\__,_|_|
 
 package lhost
 import "strings"
@@ -19,7 +19,8 @@ func init() {
 	//     - bf (*siba.BeforeFact):  Message entity in progress.
 	//   Returns:
 	//     - (*siba.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
-	InquireFor["MailMarshalSMTP"] = func(bf *siba.BeforeFact) *siba.RisingUnderway {
+	InquireFor["MailMarshal"] = func(bf *siba.BeforeFact) *siba.RisingUnderway {
+		// - Trustwave MailMarshal: https://support.trustwave.com/mailmarshal-smtp/
 		// - Trustwave Secure Email Gateway: https://www.trustwave.com/en-us/services/email-security/
 		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], `Undeliverable Mail: "`) == false { return nil }
