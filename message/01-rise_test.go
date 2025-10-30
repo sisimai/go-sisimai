@@ -12,7 +12,7 @@ import "testing"
 import "strings"
 import "io"
 import "errors"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/rfc791"
 import "libsisimai.org/sisimai/v5/rfc1123"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -27,7 +27,7 @@ func TestRise(t *testing.T) {
 	cx := 0
 	en := 0
 	ae := "../set-of-emails/mailbox/mbox-0"
-	c0 := func(arg *sis.CallbackArg0) (map[string]interface{}, error) {
+	c0 := func(arg *siba.CallbackArg0) (map[string]interface{}, error) {
 		data := make(map[string]interface{})
 		head := []string{"X-Mailer", "Return-Path"}
 		for _, e := range head {

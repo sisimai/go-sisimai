@@ -9,7 +9,7 @@
 package message
 import "strings"
 import "net/mail"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/arf"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/lhost"
@@ -20,11 +20,11 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 
 // sift is called from the Rise function and decode and structure various formats of bounce emails.
 //   Arguments:
-//     - bf (*sis.BeforeFact):    Message entity in progress.
-//     - hook (sis.CfParameter0): The first callback function.
+//     - bf (*siba.BeforeFact):    Message entity in progress.
+//     - hook (siba.CfParameter0): The first callback function.
 //   Returns:
 //     - (bool): true = successfully decoded and structured the bounce emails, false = failed to decode.
-func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
+func sift(bf *siba.BeforeFact, hook siba.CfParameter0) bool {
 	if bf == nil || bf.IsEmpty() == true { return false }
 
 	bf.Payload  = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
@@ -43,7 +43,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 		}
 		if nyaan != nil {
 			// Something wrong when the function decodes the Quoted-Printable encoded string
-			ce := *sis.MakeNotDecoded(nyaan.Error(), false)
+			ce := *siba.MakeNotDecoded(nyaan.Error(), false)
 			bf.Errors = append(bf.Errors, ce)
 		}
 		if strings.HasPrefix(mesgformat, "text/html") { bf.Payload = *(moji.ToPlain(&bf.Payload)) }
@@ -59,9 +59,9 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 
 	if hook != nil {
 		// Execute the first callback function
-		cvv, nyaan := hook(&sis.CallbackArg0{Headers: bf.Headers, Payload: &bf.Payload}); if nyaan != nil {
+		cvv, nyaan := hook(&siba.CallbackArg0{Headers: bf.Headers, Payload: &bf.Payload}); if nyaan != nil {
 			// Something wrong when the 1st callback function executed
-			ce := *sis.MakeNotDecoded(nyaan.Error(), false)
+			ce := *siba.MakeNotDecoded(nyaan.Error(), false)
 			bf.Errors = append(bf.Errors, ce)
 		}
 		bf.Catch = cvv
@@ -69,7 +69,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 
 	orders := lhost.OrderBySubject(bf.Headers["subject"][0])
 	called := make(map[string]bool, 40)
-	rising := &sis.RisingUnderway{}
+	rising := &siba.RisingUnderway{}
 	module := ""
 
 	DECODER: for bf.IsEmpty() == false {
@@ -126,7 +126,7 @@ func sift(bf *sis.BeforeFact, hook sis.CfParameter0) bool {
 	rfc822part, nyaan := mail.ReadMessage(strings.NewReader(rising.RFC822))
 	if nyaan != nil {
 		// Failed to read the original message part
-		ce := *sis.MakeNotDecoded(nyaan.Error(), false)
+		ce := *siba.MakeNotDecoded(nyaan.Error(), false)
 		bf.Errors = append(bf.Errors, ce)
 		return false
 	}
