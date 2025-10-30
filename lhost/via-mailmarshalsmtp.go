@@ -24,7 +24,7 @@ func init() {
 		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], `Undeliverable Mail: "`) == false { return nil }
 
-		boundaries := []string{"'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"}
+		boundaries := []string{"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"}
 		if cv := rfc2045.Boundary(bf.Headers["content-type"][0], 1); cv != "" { boundaries = append(boundaries, cv) }
 
 		startingof := map[string][]string{
