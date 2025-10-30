@@ -9,17 +9,17 @@ package fact
 //   |_|\___||___/\__/_/  |_|_| |_|\___/|___/\__|    |_|  |_|\__,_|_|_|_|  |_|\__,_|_|  |___/_| |_|\__,_|_|
 import "testing"
 
-func TestLhostMailMarshalSMTP(t *testing.T) {
+func TestLhostMailMarshal(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"02",   1, "5.1.1",   "550", "userunknown",      true, ""}},
-	}; EngineTest(t, "MailMarshalSMTP", publiclist, true)
+	}; EngineTest(t, "MailMarshal", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"1001", 1, "5.3.0",   "553", "filtered",        false, ""},
 		 {"1001", 2, "5.3.0",   "553", "filtered",        false, ""}},
 		{{"1002", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-	}; EngineTest(t, "MailMarshalSMTP", secretlist, false)
+	}; EngineTest(t, "MailMarshal", secretlist, false)
 }
 
