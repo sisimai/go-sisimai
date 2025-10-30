@@ -7,7 +7,7 @@
 //  \___/|_| |_|_| |_|\___/|_|\__,_|
 
 package reason
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
 func init() {
@@ -20,10 +20,10 @@ func init() {
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["OnHold"] = func(fo *sis.Fact) bool {
+	ProbesInto["OnHold"] = func(fo *siba.Fact) bool {
 		if fo        == nil                           { return false }
 		if fo.Reason == "onhold"                      { return true  }
 		if status.Name(fo.DeliveryStatus) == "onhold" { return true  }

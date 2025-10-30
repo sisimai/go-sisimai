@@ -10,7 +10,7 @@
 package reason
 import "slices"
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
 import "libsisimai.org/sisimai/v5/smtp/command"
@@ -131,10 +131,10 @@ func init() {
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["SpamDetected"] = func(fo *sis.Fact) bool {
+	ProbesInto["SpamDetected"] = func(fo *siba.Fact) bool {
 		if fo == nil || fo.DeliveryStatus == ""             { return false }
 		if fo.Reason == "spamdetected"                      { return true  }
 		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true  }

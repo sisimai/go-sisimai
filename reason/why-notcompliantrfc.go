@@ -9,7 +9,7 @@
 
 package reason
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
@@ -34,10 +34,10 @@ func init() {
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["NotCompliantRFC"] = func(fo *sis.Fact) bool {
+	ProbesInto["NotCompliantRFC"] = func(fo *siba.Fact) bool {
 		if fo        == nil               { return false }
 		if fo.Reason == "notcompliantrfc" { return true  }
 		return IncludedIn["NotCompliantRFC"](strings.ToLower(fo.DiagnosticCode))

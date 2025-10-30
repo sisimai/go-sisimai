@@ -9,7 +9,7 @@
 
 package reason
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -21,10 +21,10 @@ func init() {
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["Suppressed"] = func(fo *sis.Fact) bool {
+	ProbesInto["Suppressed"] = func(fo *siba.Fact) bool {
 		if fo        == nil          { return false }
 		if fo.Reason == "suppressed" { return true  }
 		return IncludedIn["Suppressed"](strings.ToLower(fo.DiagnosticCode))
