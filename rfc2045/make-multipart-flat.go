@@ -8,7 +8,7 @@
 
 package rfc2045
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
 // haircut remove unnecessary header fields except Content-Type, Content-Transfer-Encoding from multipart/* block.
@@ -83,14 +83,14 @@ func haircut(block *string, heads bool) []string {
 //     - ctype (string):  value of Content-Type header.
 //     - mpart (*string): Pointer to multipart/* message blocks.
 //   Returns:
-//     - ([][3]string):      List of each part of multipart/*.
-//     - ([]sis.NotDecoded): Pointer to an occurred error list.
-func levelout(ctype string, mpart *string) ([][3]string, []sis.NotDecoded) {
+//     - ([][3]string):       List of each part of multipart/*.
+//     - ([]siba.NotDecoded): Pointer to an occurred error list.
+func levelout(ctype string, mpart *string) ([][3]string, []siba.NotDecoded) {
 	if ctype == "" || mpart == nil || *mpart == ""        { return nil, nil }
 	boundary01 := Boundary(ctype, 0); if boundary01 == "" { return nil, nil }
 	multiparts := strings.Split(*mpart, boundary01 + "\n")
 	partstable := make([][3]string, 0, 4)
-	notdecoded := make([]sis.NotDecoded, 0)
+	notdecoded := make([]siba.NotDecoded, 0)
 
 	// Remove empty or useless preamble and epilogue of multipart/* block
 	if len(multiparts[0]) < 8 { multiparts = multiparts[1:] }
@@ -148,8 +148,8 @@ func levelout(ctype string, mpart *string) ([][3]string, []sis.NotDecoded) {
 //     - mpart (*string): Pointer to multipart/* message blocks.
 //   Returns:
 //     - (*string):          Message body.
-//     - ([]sis.NotDecoded): Occurred errors.
-func MakeFlat(ctype string, mpart *string) (*string, []sis.NotDecoded) {
+//     - ([]siba.NotDecoded): Occurred errors.
+func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 	lhead := strings.ToLower(ctype)
 	if moji.ContainsAny(lhead, []string{"multipart/", "boundary="}) == false { return nil, nil }
 
@@ -186,7 +186,7 @@ func MakeFlat(ctype string, mpart *string) (*string, []sis.NotDecoded) {
 				case "base64":           bodystring, nyaan = DecodeB(bodyinside)
 				case "quoted-printable": bodystring, nyaan = DecodeQ(bodyinside)
 			}
-			if nyaan != nil { notdecoded = append(notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false)) }
+			if nyaan != nil { notdecoded = append(notdecoded, *siba.MakeNotDecoded(nyaan.Error(), false)) }
 
 			// Try to delete HTML tags inside of text/html part whenever possible
 			if istexthtml { bodystring = *moji.ToPlain(&bodystring) }

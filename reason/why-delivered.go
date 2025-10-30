@@ -7,10 +7,10 @@
 // |____/ \___|_|_| \_/ \___|_|  \___|\__,_|
 
 package reason
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 
 func init() {
-	IncludedIn["Delivered"] = func(mesg string)  bool { return false }
-	ProbesInto["Delivered"] = func(fo *sis.Fact) bool { return false }
+	IncludedIn["Delivered"] = func(mesg string)   bool { return false }
+	ProbesInto["Delivered"] = func(fo *siba.Fact) bool { return false }
 }
 

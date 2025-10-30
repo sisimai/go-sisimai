@@ -9,16 +9,16 @@
 package rhost
 import "strings"
 import "strconv"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
-	ReturnedBy["Microsoft"] = func(fo *sis.Fact) string {
+	ReturnedBy["Microsoft"] = func(fo *siba.Fact) string {
 		// - https://technet.microsoft.com/en-us/library/bb232118
 		if fo == nil || fo.DiagnosticCode == ""    { return "" }
 		if status.Test(fo.DeliveryStatus) == false { return "" }

@@ -21,7 +21,7 @@ GOPATH := $(shell echo $$GOPATH)
 
 LIBSISIMAI := libsisimai.org
 SISIMAIDIR := address arf fact lda lhost mail message moji reason rfc1123 rfc1894 rfc2045 rfc3464 \
-			  rfc3834 rfc5322 rfc5965 rfc791 rhost sis smtp/*/
+			  rfc3834 rfc5322 rfc5965 rfc791 rhost siba smtp/*/
 COVERAGETO := coverage.txt
 MAILSUFFIX := eml
 PUBLICFILE := set-of-emails

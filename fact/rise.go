@@ -12,7 +12,7 @@ import "time"
 import "slices"
 import "strings"
 import "net/mail"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/lda"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rhost"
@@ -28,24 +28,24 @@ import "libsisimai.org/sisimai/v5/smtp/status"
 import "libsisimai.org/sisimai/v5/smtp/command"
 import "libsisimai.org/sisimai/v5/smtp/failure"
 
-// Rise() returns []sis.Fact when it successfully decoded bounce messages.
+// Rise() returns []siba.Fact when it successfully decoded bounce messages.
 //   Arguments:
-//     - email (*string):          Entire email message.
-//     - origin (string):          Path to the original bounce email file.
-//     - args (*sis.DecodingArgs): Arguments for decoding(delivered, vacation, callbacks).
+//     - email (*string):           Entire email message.
+//     - origin (string):           Path to the original bounce email file.
+//     - args (*siba.DecodingArgs): Arguments for decoding(delivered, vacation, callbacks).
 //   Returns:
-//     - ([]sis.Fact):       List of successfully decoded bounce messages.
-//     - ([]sis.NotDecoded): List of occurred errors.
-func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
+//     - ([]siba.Fact):       List of successfully decoded bounce messages.
+//     - ([]siba.NotDecoded): List of occurred errors.
+func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, []siba.NotDecoded) {
 	if email == nil || len(*email) < 1 {
 		// The email message is empty
-		ce := *sis.MakeNotDecoded("email file is empty", true); ce.Email(origin)
-		return nil, []sis.NotDecoded{ce}
+		ce := *siba.MakeNotDecoded("email file is empty", true); ce.Email(origin)
+		return nil, []siba.NotDecoded{ce}
 	}
 
 	beforefact := message.Rise(email, args.Callback0); if len((*beforefact).Errors) > 0 {
 		// There is some errors while reading the email, decoding the bounce message.
-		// Set the email path to sis.NotDecoded.EmailFile
+		// Set the email path to siba.NotDecoded.EmailFile
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
 		if (*beforefact).HasDone() == false { return nil, beforefact.Errors }
 
@@ -55,10 +55,10 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 	}
 
 	rfc822data := (*beforefact).RFC822
-	listoffact := make([]sis.Fact, 0, 2)
+	listoffact := make([]siba.Fact, 0, 2)
 
 	RISEOF: for _, e := range (*beforefact).Digest {
-		// Create parameters for sis.Fact
+		// Create parameters for siba.Fact
 		// - Skip if the value of "recipient" length is 4 or shorter
 		// - Skip if the value of "deliverystatus" begins with "2." such as 2.1.5
 		// - Skip if the value of "reason" is "vacation"
@@ -68,7 +68,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 		addrs := map[string][3]string{} // Addresser, and Recipient
 		piece := map[string]string{}    // Each element except email addresses
-		thing := sis.Fact{}             // Each sis.Fact struct
+		thing := siba.Fact{}            // Each siba.Fact struct
 		clock := time.Time{}            // The source value of "Timestamp"
 
 		ADDRESSER: for {
@@ -254,7 +254,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 		if command.Test(e.Command) { piece["command"] = e.Command }
 
 		{	// - Create email address object as address.EmailAddress struct
-			// - Create decoded bounce mail object as sis.Fact struct
+			// - Create decoded bounce mail object as siba.Fact struct
 			as := address.Rise(addrs["addresser"]); if as == nil { continue RISEOF }
 			ar := address.Rise(addrs["recipient"]); if ar == nil { continue RISEOF }
 
@@ -390,7 +390,7 @@ func Rise(email *string, origin string, args *sis.DecodingArgs) ([]sis.Fact, []s
 
 	if len((*beforefact).Errors) > 0 {
 		// There is some errors while reading the email, decoding the bounce message.
-		// Set the email path to sis.NotDecoded.EmailFile if it is empty
+		// Set the email path to siba.NotDecoded.EmailFile if it is empty
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
 	}
 	return listoffact, beforefact.Errors

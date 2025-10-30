@@ -8,7 +8,7 @@ package lda
 //   | |  __/\__ \ |_ / / | |___| |_| / ___ \ 
 //   |_|\___||___/\__/_/  |_____|____/_/   \_\
 import "testing"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 
 func TestFind(t *testing.T) {
 	fn := "lda.Find"
@@ -21,7 +21,7 @@ func TestFind(t *testing.T) {
 		[]string{`554 "|IFS=' ' && exec /usr/local/bin/procmail -f- || exit 75 #kijitora"... Service unavailable`, "DATA"},
 		[]string{"mail.local: unknown user: kijitora", ""},
 	}
-	cv := &sis.Fact{}
+	cv := &siba.Fact{}
 
 	cx++; if Find(nil) != "" { t.Errorf("%s(nil) returns true", fn) }
 	for _, e := range ae {

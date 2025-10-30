@@ -13,7 +13,7 @@ import "io"
 import "strings"
 import "net/mail"
 import "path/filepath"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
 func TestInquire19(t *testing.T) {
@@ -29,7 +29,7 @@ func TestInquire19(t *testing.T) {
 		eb, _ := os.ReadFile(ef); ee := string(eb)
 		eo, _ := mail.ReadMessage(strings.NewReader(ee))
 		bo, _ := io.ReadAll(eo.Body)
-		bf    := &sis.BeforeFact{
+		bf    := &siba.BeforeFact{
 			Headers: rfc5322.Headers(&eo.Header),
 			Payload: string(bo),
 		}

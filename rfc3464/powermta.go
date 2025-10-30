@@ -53,7 +53,7 @@ func init() {
 				xfieldlist[0] = xfieldname
 				if len(messagesof[xfieldlist[2]]) > 0 {
 					// "reason:mailboxfull"; the 5th value supposed to be assigned to "Reason" member
-					// of sis.DeliveryMatter{} struct.
+					// of siba.DeliveryMatter{} struct.
 					xfieldlist[4] = "reason:" + messagesof[xfieldlist[2]]
 				}
 			// X-PowerMTA-VirtualMTA: mx22.neko.example.jp

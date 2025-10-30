@@ -6,7 +6,7 @@
 // | |_) |  __/  _| (_) | | |  __/  _| (_| | (__| |_ 
 // |____/ \___|_|  \___/|_|  \___|_|  \__,_|\___|\__|
 
-package sis
+package siba
 
 // message.Rise() returns BeforeFact{}.
 type BeforeFact struct {

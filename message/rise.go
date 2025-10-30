@@ -12,7 +12,7 @@ package message
 import "io"
 import "strings"
 import "net/mail"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
@@ -22,21 +22,21 @@ var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rf
 // Rise decode and structure various formats of bounce emails.
 //   Arguments:
 //     - mesg (*string):          Entire email message.
-//     - hook (sis.CfParameter0): The first callback function.
+//     - hook (siba.CfParameter0): The first callback function.
 //   Returns:
-//     - (*sis.BeforeFact): Decoded and structured bounce email data.
-func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
-	if mesg == nil || len(*mesg) < 1 { return new(sis.BeforeFact) }
+//     - (*siba.BeforeFact): Decoded and structured bounce email data.
+func Rise(mesg *string, hook siba.CfParameter0) *siba.BeforeFact {
+	if mesg == nil || len(*mesg) < 1 { return new(siba.BeforeFact) }
 
 	retryagain := 0
-	beforefact := new(sis.BeforeFact)
+	beforefact := new(siba.BeforeFact)
 
 	RISE: for retryagain < 2 {
 		// 1. Split email data to headers and a body part.
 		moji.ToLF(mesg)
 		if email, nyaan := mail.ReadMessage(strings.NewReader(*mesg)); nyaan != nil {
 			// Failed to read the message as an email
-			ce := *sis.MakeNotDecoded(nyaan.Error(), true)
+			ce := *siba.MakeNotDecoded(nyaan.Error(), true)
 			beforefact.Errors = append(beforefact.Errors, ce)
 			return beforefact
 
@@ -88,7 +88,7 @@ func Rise(mesg *string, hook sis.CfParameter0) *sis.BeforeFact {
 		cv := rfc5322.Part(&beforefact.Payload, boundaries, true)[1]; if len(cv) < 128 { break RISE }
 		mesg = &cv
 	}
-	if beforefact.HasDone() == false { return new(sis.BeforeFact) }
+	if beforefact.HasDone() == false { return new(siba.BeforeFact) }
 	return beforefact
 }
 

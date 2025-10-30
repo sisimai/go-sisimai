@@ -8,7 +8,7 @@
 
 package reason
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
@@ -26,10 +26,10 @@ func init() {
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["ExceedLimit"] = func(fo *sis.Fact) bool {
+	ProbesInto["ExceedLimit"] = func(fo *siba.Fact) bool {
 		// Status: 5.2.3
 		// Diagnostic-Code: SMTP; 552 5.2.3 Message size exceeds fixed maximum message size
 		if fo == nil                                       { return false }

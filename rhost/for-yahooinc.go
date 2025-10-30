@@ -8,16 +8,16 @@
 
 package rhost
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
-	ReturnedBy["YahooInc"] = func(fo *sis.Fact) string {
+	ReturnedBy["YahooInc"] = func(fo *siba.Fact) string {
 		// - https://senders.yahooinc.com/smtp-error-codes
 		// - https://smtpfieldmanual.com/provider/yahoo
 		// - https://www.postmastery.com/yahoo-postmaster/

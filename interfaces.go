@@ -8,12 +8,12 @@
 // https://libsisimai.org/                             |___/            
 
 package sisimai
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/reason"
 
 // Reason returns the list of bounce reasons sisimai can detect.
 func Reason() map[string]string { return reason.Availables }
 
-// Factor retuns empty (initialized with zero values) sis.Fact instance.
-func Factor() *sis.Fact { return new(sis.Fact) }
+// Factor retuns empty (initialized with zero values) siba.Fact instance.
+func Factor() *siba.Fact { return new(siba.Fact) }
 

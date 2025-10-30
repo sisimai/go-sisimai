@@ -9,7 +9,7 @@
 
 package reason
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
@@ -55,10 +55,10 @@ func init() {
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["RequirePTR"] = func(fo *sis.Fact) bool {
+	ProbesInto["RequirePTR"] = func(fo *siba.Fact) bool {
 		if fo == nil                                      { return false }
 		if fo.Reason == "requireptr"                      { return true  }
 		if status.Name(fo.DeliveryStatus) == "requireptr" { return true  }

@@ -7,7 +7,7 @@
 // |____/ \___|_|_| \_/ \___|_|   \__, |_|  |_|\__,_|\__|\__\___|_|   
 //                                |___/                               
 
-package sis
+package siba
 import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/rfc1894"
@@ -54,9 +54,9 @@ func NextDeliveryMatter(de *[]DeliveryMatter) *DeliveryMatter {
 	return &(*de)[len(*de) - 1]
 }
 
-// *DeliveryMatter.Select returns the current value of the sis.DeliveryMatter instance.
+// *DeliveryMatter.Select returns the current value of the siba.DeliveryMatter instance.
 //   Arguments:
-//     - field (string): Lower-cased member name of sis.DeliveryMatter.
+//     - field (string): Lower-cased member name of siba.DeliveryMatter.
 //   Returns:
 //     - (string): The value of the member name specified at "field".
 func(de *DeliveryMatter) Select(field string) string {
@@ -79,9 +79,9 @@ func(de *DeliveryMatter) Select(field string) string {
 	}
 }
 
-// *DeliveryMatter.Update set the argument into the member of sis.DeliveryMatter instance.
+// *DeliveryMatter.Update set the argument into the member of siba.DeliveryMatter instance.
 //   Arguments:
-//     - field (string): Lower-cased member name of sis.DeliveryMatter.
+//     - field (string): Lower-cased member name of siba.DeliveryMatter.
 //     - value (string): New value to be updated.
 //   Returns:
 //     - (bool): true if it has updated successfully.
@@ -115,7 +115,7 @@ func(de *DeliveryMatter) Update(field string, value string) bool {
 //   Arguments:
 //     - field (string): Field name defined in RFC1894.
 //   Returns:
-//     - (string): Member name of sis.DeliveryMatter struct.
+//     - (string): Member name of siba.DeliveryMatter struct.
 func(de *DeliveryMatter) AsRFC1894(field string) string {
 	// Available values are the followings:
 	// - "action":             Action    (list)

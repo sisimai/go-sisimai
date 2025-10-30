@@ -8,16 +8,16 @@
 
 package rhost
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
-	ReturnedBy["Mimecast"] = func(fo *sis.Fact) string {
+	ReturnedBy["Mimecast"] = func(fo *siba.Fact) string {
 		// https://community.mimecast.com/s/article/Mimecast-SMTP-Error-Codes-842605754
 		// https://community.mimecast.com/s/article/email-security-cloud-gateway-mimecast-smtp-error-codes
 		if fo == nil || fo.DiagnosticCode == "" { return "" }

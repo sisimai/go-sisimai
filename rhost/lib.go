@@ -11,9 +11,9 @@
 package rhost
 
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 
-var ReturnedBy = make(map[string]func(*sis.Fact) string, 19) // grep '^func init' ./rhost/for-*.go | wc -l
+var ReturnedBy = make(map[string]func(*siba.Fact) string, 19) // grep '^func init' ./rhost/for-*.go | wc -l
 var RhostClass = map[string][]string{
 	"Aol":         []string{".mail.aol.com", ".mx.aol.com"},
 	"Apple":       []string{".mail.icloud.com", ".apple.com", ".me.com", "privaterelay.appleid.com"},
@@ -38,10 +38,10 @@ var RhostClass = map[string][]string{
 
 // Name returns the rhost class name.
 //   Arguments:
-//     - fo (*sis.Fact): Decoded data in progress.
+//     - fo (*siba.Fact): Decoded data in progress.
 //   Returns:
 //     - (string): Rhost class name.
-func Name(fo *sis.Fact) string {
+func Name(fo *siba.Fact) string {
 	// Try to match the hostname patterns with the following order:
 	// 1. destination: The domain part of the recipient address
 	// 2. rhost: remote hostname
@@ -68,10 +68,10 @@ func Name(fo *sis.Fact) string {
 
 // Find detects the bounce reason from certain remote hosts.
 //   Arguments:
-//     - fo (*sis.Fact): Decoded data in progress.
+//     - fo (*siba.Fact): Decoded data in progress.
 //   Returns:
 //     - (string): Bounce reason name.
-func Find(fo *sis.Fact) string {
+func Find(fo *siba.Fact) string {
 	rhostclass := Name(fo); if rhostclass != "" { return ReturnedBy[rhostclass](fo) }
 	return ""
 }

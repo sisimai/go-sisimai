@@ -8,7 +8,7 @@ package lhost
 //   | |  __/\__ \ |_ / / | | | | | (_) \__ \ |_ 
 //   |_|\___||___/\__/_/  |_|_| |_|\___/|___/\__|
 import "testing"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 
 func TestInquireFor(t *testing.T) {
 	fn := "lhost.InquireFor"
@@ -22,7 +22,7 @@ func TestInquireFor(t *testing.T) {
 	}
 
 	for _, e := range ae {
-		bf := &sis.BeforeFact{
+		bf := &siba.BeforeFact{
 			Sender:  "MAILER-DAEMON",
 			Headers: map[string][]string{
 				"from": []string{"<postmaster@example.jp>"},
@@ -33,7 +33,7 @@ func TestInquireFor(t *testing.T) {
 			},
 			Payload: "Nekochan",
 			RFC822:  map[string][]string{},
-			Digest:  []sis.DeliveryMatter{},
+			Digest:  []siba.DeliveryMatter{},
 		}
 		cx++; if cv := InquireFor[e](nil); cv != nil { t.Errorf("%s[%s]() did not return nil", fn, e) }
 		cx++; if cv := InquireFor[e](bf);  cv != nil { t.Errorf("%s[%s]() did not return nil", fn, e) }

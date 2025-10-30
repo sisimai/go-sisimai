@@ -8,7 +8,7 @@ package rhost
 //   | |  __/\__ \ |_ / /| |  | | | | (_) \__ \ |_ 
 //   |_|\___||___/\__/_/ |_|  |_| |_|\___/|___/\__|
 import "testing"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 
 var TestRhosts = []struct {lhost string; rhost string; destination string; expected string}{
 	{"mx.example.com", "mx2.mail.aol.com", "aol.com", "Aol"},
@@ -96,7 +96,7 @@ func TestName(t *testing.T) {
 
 	cx++; if cv != "" { t.Errorf("%s(nil) returns %s", fn, cv) }
 	for _, e := range TestRhosts {
-		ae := &sis.Fact{
+		ae := &siba.Fact{
 			Lhost: e.lhost,
 			Rhost: e.rhost,
 			Destination: e.destination,
@@ -114,7 +114,7 @@ func TestFind(t *testing.T) {
 
 	cx++; if cv != "" { t.Errorf("%s(nil) returns %s", fn, cv) }
 	for _, e := range TestRhosts {
-		ae := &sis.Fact{
+		ae := &siba.Fact{
 			Lhost: e.lhost,
 			Rhost: e.rhost,
 			Destination: e.destination,

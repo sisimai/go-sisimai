@@ -7,7 +7,7 @@
 //  \____\__,_|_|_|_.__/ \__,_|\___|_|\_\/_/   \_\_|  \__, |___/
 //                                                    |___/     
 
-package sis
+package siba
 
 // CallbackArg0 is an argument of the first callback function that are called at message.sift().
 // It is aliased to sisimai.CallbackArg0 at the libsisimai.go.

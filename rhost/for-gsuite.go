@@ -8,16 +8,16 @@
 // Google Workspace (formerly G Suite) https://workspace.google.com/
 
 package rhost
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
-	ReturnedBy["GSuite"] = func(fo *sis.Fact) string {
+	ReturnedBy["GSuite"] = func(fo *siba.Fact) string {
 		// - https://workspace.google.com/
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 

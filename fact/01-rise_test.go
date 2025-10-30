@@ -11,7 +11,7 @@ import "testing"
 
 func TestRise(t *testing.T) {
 	fn := "fact.Rise"
-	fs := "sis.NotDecoded"
+	fs := "siba.NotDecoded"
 	cx := 0
 
 	cv, ce := Rise(nil, "", nil)

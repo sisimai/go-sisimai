@@ -13,15 +13,15 @@ import "strings"
 import "io"
 import "os"
 import "net/mail"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
 func TestSift(t *testing.T) {
 	fn := "message.sift"
-	fs := "sis.BeforeFact"
+	fs := "siba.BeforeFact"
 	ae := "../set-of-emails/maildir/bsd/lhost-postfix-55.eml"
 	cx := 0
-	bf := new(sis.BeforeFact)
+	bf := new(siba.BeforeFact)
 	bx, _ := os.ReadFile(ae); cx++; if len(bx) == 0 {
 		t.Fatalf("os.ReadFile(%s) returns an empty string", ae)
 	}

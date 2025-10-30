@@ -10,12 +10,12 @@
 package reason
 
 import "slices"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 
 // Keep each function (pointer) defined in reason/why-*.go to check/detect the bounce reason.
 // % grep '^func init' ./reason/why-*.go | wc -l
 var IncludedIn = make(map[string]func(string) bool, 36)
-var ProbesInto = make(map[string]func(*sis.Fact) bool, 36)
+var ProbesInto = make(map[string]func(*siba.Fact) bool, 36)
 var Availables = map[string]string{
 	"AuthFailure":     "Email rejected due to SPF, DKIM, DMARC failure",
 	"BadReputation":   "Email rejected due to an IP address reputation",
