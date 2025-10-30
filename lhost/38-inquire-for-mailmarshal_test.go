@@ -17,10 +17,10 @@ import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
 func TestInquire38(t *testing.T) {
-	en := "MailMarshalSMTP"
+	en := "MailMarshal"
 	fn := "lhost.InquireFor[" + en + "]"
 	ae := []string{
-		"lhost-mailmarshalsmtp-02", 
+		"lhost-mailmarshal-02", 
 	}
 	cv := InquireFor[en](nil) 
 	cx := 0
