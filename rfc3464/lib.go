@@ -12,7 +12,7 @@
 package rfc3464
 import "slices"
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/lhost"
 import "libsisimai.org/sisimai/v5/address"
@@ -25,12 +25,12 @@ import "libsisimai.org/sisimai/v5/smtp/command"
 
 // Inquire decodes a bounce message that have fields defined in RFC3464.
 //   Arguments:
-//     - bf (*sis.BeforeFact):  Message entity in progress.
+//     - bf (*siba.BeforeFact):  Message entity in progress.
 //   Returns:
-//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
+//     - (*siba.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3464
-func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
+func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	if bf == nil || bf.IsEmpty() == true { return nil }
 
 	boundaries := []string{
@@ -55,8 +55,8 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	}
 	permessage := map[string]string{}   // Store values of each Per-Message field
 	keystrings := make([]string, 0, 4)  // Key list of permessage
-	dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
-	alternates := new(sis.DeliveryMatter)
+	dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
+	alternates := new(siba.DeliveryMatter)
 	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 	readcursor := uint8(0)              // Points the current cursor position
 	readslices := make([]string, 1, 32) // Copy each line for later reference
@@ -154,7 +154,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 			// This line matched with any field defined in RFC3464
 			o := rfc1894.Field(e); if len(o) == 0 { continue }
 			z := rfc1894.FieldTable[o[0]]
-			v  = sis.TailDeliveryMatter(dscontents)
+			v  = siba.TailDeliveryMatter(dscontents)
 			b  = &(eachbuffer[len(eachbuffer) - 1]); b.Grow(128)
 
 			if o[3] == "addr" {
@@ -168,7 +168,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 
 					if len(v.Recipient) > 0 {
 						// There are multiple recipient addresses in the message body.
-						v = sis.NextDeliveryMatter(&dscontents)
+						v = siba.NextDeliveryMatter(&dscontents)
 						eachbuffer = append(eachbuffer, strings.Builder{})
 						b = &(eachbuffer[len(eachbuffer) - 1]); b.Grow(128)
 					}
@@ -192,7 +192,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 				if o[4] != "" { b.WriteString(" " + o[4] + " ") }
 				v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 
-				// Copy the lower-cased member name of sis.DeliveryMatter{} for "permessage" for
+				// Copy the lower-cased member name of siba.DeliveryMatter{} for "permessage" for
 				// the later reference
 				permessage[z] = o[2]
 				if slices.Contains(keystrings, z) == false { keystrings = append(keystrings, z) }
@@ -208,7 +208,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 					v.Reason = moji.Select(cv[4] + moji.RHS, "reason:", "", 0)
 
 				} else {
-					// Set the value picked from "X-*" field to the member of sis.DeliveryMatter
+					// Set the value picked from "X-*" field to the member of siba.DeliveryMatter
 					// when the current value is empty
 					z := rfc1894.FieldTable[strings.ToLower(cv[0])]; if len(z) < 1 { continue }
 					if v.Select(z) == "" { v.Update(z, cv[2]) }
@@ -235,7 +235,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	if recipients == 0 { return nil }
 
 	beforemesg := ""; if leadinbuff.Len() > 0 {
-		// Pick some values of []sis.DeliveryMatter{} from the string before startingof["message"]
+		// Pick some values of []siba.DeliveryMatter{} from the string before startingof["message"]
 		beforemesg           = moji.Sweep(leadinbuff.String())
 		alternates.Command   = command.Find(beforemesg)
 		alternates.ReplyCode = reply.Find(beforemesg, dscontents[0].Status)
@@ -246,7 +246,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	for j := range dscontents {
 		// Set default values stored in "permessage" if each value in "dscontents" is empty.
 		e := &dscontents[j]; for _, z := range keystrings {
-			// Do not set an empty string into each member of sis.DeliveryMatter{}
+			// Do not set an empty string into each member of siba.DeliveryMatter{}
 			if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 			e.Update(z, permessage[z])
 		}
@@ -272,6 +272,6 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 		if e.Status == "" { e.Status = status.Find(e.Diagnosis, e.ReplyCode) }
 		if e.Status == "" { e.Status = alternates.Status                     }
 	}
-	return &sis.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
+	return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 }
 
