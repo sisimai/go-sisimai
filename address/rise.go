@@ -8,17 +8,17 @@
 
 package address
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 
-// Rise is a constructor of sis.EmailAddress.
+// Rise is a constructor of siba.EmailAddress.
 //   Arguments:
 //     - addrs ([3]string): Address slice such as `[3]string{"email address", "display name", "comment"}`.
 //   Returns:
-//     - (*sis.EmailAddress): EmailAddress struct when the email address is valid.
-func Rise(addrs [3]string) *sis.EmailAddress {
+//     - (*siba.EmailAddress): EmailAddress struct when the email address is valid.
+func Rise(addrs [3]string) *siba.EmailAddress {
 	if addrs[0] == "" { return nil }
 
-	thing := new(sis.EmailAddress)
+	thing := new(siba.EmailAddress)
 	email := Final(addrs[0])
 
 	if lasta := strings.LastIndex(email, "@"); lasta > 0 {
