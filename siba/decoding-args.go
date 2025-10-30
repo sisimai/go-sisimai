@@ -7,7 +7,7 @@
 // |____/ \___|\___\___/ \__,_|_|_| |_|\__, /_/   \_\_|  \__, |___/
 //                                     |___/             |___/     
 
-package sis
+package siba
 
 // CfParameter* is an argument of the callback function specified at sisimai.Rise().
 type CfParameter0 func(arg *CallbackArg0) (map[string]interface{}, error)
@@ -17,7 +17,7 @@ type CfParameter1 func(arg *CallbackArg1) (bool, error)
 type DecodingArgs struct {
 	Callback0 CfParameter0 // [0] The 1st callback function
 	Callback1 CfParameter1 // [1] The 2nd callback function
-	Delivered bool         // Include sis.Fact{}.Action = "delivered" records in the decoded data
-	Vacation  bool         // Include sis.Fact{}.Reason = "vacation" records in the decoded data
+	Delivered bool         // Include siba.Fact{}.Action = "delivered" records in the decoded data
+	Vacation  bool         // Include siba.Fact{}.Reason = "vacation" records in the decoded data
 }
 

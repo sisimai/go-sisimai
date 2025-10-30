@@ -1,12 +1,12 @@
 // Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package sis
+package siba
 
-//  _____         _      __   _       ____        __                _____          _   
-// |_   _|__  ___| |_   / /__(_)___  | __ )  ___ / _| ___  _ __ ___|  ___|_ _  ___| |_ 
-//   | |/ _ \/ __| __| / / __| / __| |  _ \ / _ \ |_ / _ \| '__/ _ \ |_ / _` |/ __| __|
-//   | |  __/\__ \ |_ / /\__ \ \__ \_| |_) |  __/  _| (_) | | |  __/  _| (_| | (__| |_ 
-//   |_|\___||___/\__/_/ |___/_|___(_)____/ \___|_|  \___/|_|  \___|_|  \__,_|\___|\__|
+//  _____         _      __   _ _             ____        __                _____          _   
+// |_   _|__  ___| |_   / /__(_) |__   __ _  | __ )  ___ / _| ___  _ __ ___|  ___|_ _  ___| |_ 
+//   | |/ _ \/ __| __| / / __| | '_ \ / _` | |  _ \ / _ \ |_ / _ \| '__/ _ \ |_ / _` |/ __| __|
+//   | |  __/\__ \ |_ / /\__ \ | |_) | (_| |_| |_) |  __/  _| (_) | | |  __/  _| (_| | (__| |_ 
+//   |_|\___||___/\__/_/ |___/_|_.__/ \__,_(_)____/ \___|_|  \___/|_|  \___|_|  \__,_|\___|\__|
 import "testing"
 
 // Sender  string              // Unix FROM line ("From ")
@@ -17,7 +17,7 @@ import "testing"
 // Catch   interface{}         // Any data structure returned by the callback function
 // Errors  []NotDecoded        // All the errors and warnings
 func TestBeforeFact(t *testing.T) {
-	fn := "sis.BeforeFact"
+	fn := "siba.BeforeFact"
 	cv := &BeforeFact{
 		Sender:  "From <mailer-daemon@example.jp>",
 		Headers: map[string][]string{"Subject": []string{"Delivery Failure"}},

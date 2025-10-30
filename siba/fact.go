@@ -6,8 +6,9 @@
 // |  _| (_| | (__| |_ 
 // |_|  \__,_|\___|\__|
 
-// Package "sis" provides types for data structure of sisimai.
-package sis
+// Package "siba" provides types for data structure of sisimai
+// SIBA stands for Sisimai Internal Bounce Abstraction.
+package siba
 
 import "time"
 import "encoding/json"
@@ -60,7 +61,7 @@ func(fa Fact) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// Fact.Dump() returns a serialized sis.Fact{} structure as a JSON string.
+// Fact.Dump() returns a serialized siba.Fact{} structure as a JSON string.
 //   Returns:
 //     - (string): JSON string.
 //     - (error):  Occurred error.

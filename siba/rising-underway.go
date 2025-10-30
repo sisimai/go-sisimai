@@ -7,9 +7,9 @@
 // |_| \_\_|___/_|_| |_|\__, |\___/|_| |_|\__,_|\___|_|    \_/\_/ \__,_|\__, |
 //                      |___/                                           |___/ 
 
-package sis
+package siba
 
-// Each MTA function in lhost package returns sis.RisingUnderway.
+// Each MTA function in lhost package returns siba.RisingUnderway.
 type RisingUnderway struct {
 	Digest []DeliveryMatter // List of DeliveryMatter structs
 	Errors []NotDecoded     // Errors occurred in lhost/*

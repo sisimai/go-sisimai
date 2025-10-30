@@ -1,21 +1,21 @@
 // Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-package sis
+package siba
 
-//  _____         _      __   _       ____                     _ _                _                  
-// |_   _|__  ___| |_   / /__(_)___  |  _ \  ___  ___ ___   __| (_)_ __   __ _   / \   _ __ __ _ ___ 
-//   | |/ _ \/ __| __| / / __| / __| | | | |/ _ \/ __/ _ \ / _` | | '_ \ / _` | / _ \ | '__/ _` / __|
-//   | |  __/\__ \ |_ / /\__ \ \__ \_| |_| |  __/ (_| (_) | (_| | | | | | (_| |/ ___ \| | | (_| \__ \
-//   |_|\___||___/\__/_/ |___/_|___(_)____/ \___|\___\___/ \__,_|_|_| |_|\__, /_/   \_\_|  \__, |___/
-//                                                                       |___/             |___/     
+//  _____         _      __   _ _             ____                     _ _                _                  
+// |_   _|__  ___| |_   / /__(_) |__   __ _  |  _ \  ___  ___ ___   __| (_)_ __   __ _   / \   _ __ __ _ ___ 
+//   | |/ _ \/ __| __| / / __| | '_ \ / _` | | | | |/ _ \/ __/ _ \ / _` | | '_ \ / _` | / _ \ | '__/ _` / __|
+//   | |  __/\__ \ |_ / /\__ \ | |_) | (_| |_| |_| |  __/ (_| (_) | (_| | | | | | (_| |/ ___ \| | | (_| \__ \
+//   |_|\___||___/\__/_/ |___/_|_.__/ \__,_(_)____/ \___|\___\___/ \__,_|_|_| |_|\__, /_/   \_\_|  \__, |___/
+//                                                                               |___/             |___/     
 import "testing"
 
-// Delivered bool // Include sis.Fact{}.Action = "delivered" records in the decoded data
-// Vacation  bool // Include sis.Fact{}.Reason = "vacation" records in the decoded data
+// Delivered bool // Include siba.Fact{}.Action = "delivered" records in the decoded data
+// Vacation  bool // Include siba.Fact{}.Reason = "vacation" records in the decoded data
 // Callback0 CfParameter0 // [0] The 1st callback function
 // Callback1 CfParameter1 // [1] The 2nd callback function
 func TestDecodingArgs(t *testing.T) {
-	fn := "sis.DecodingArgs"
+	fn := "isba.DecodingArgs"
 	c1 := func(arg *CallbackArg0) (map[string]interface{}, error) {
 		data := make(map[string]interface{}); data["nekochan"] = []string{"kijitora", "nyaaaan"}
 		return data, nil

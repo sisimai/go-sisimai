@@ -6,7 +6,7 @@
 // | |\  | (_) | |_| |_| |  __/ (_| (_) | (_| |  __/ (_| |
 // |_| \_|\___/ \__|____/ \___|\___\___/ \__,_|\___|\__,_|
 
-package sis
+package siba
 import "fmt"
 import "time"
 import "runtime"
@@ -16,11 +16,11 @@ type NotDecoded struct {
 	EmailFile string    // An email file name sisimai tried to decoded
 	BecauseOf string    // An error message of the failure
 	WhoCalled string    // Who called the constructor?
-	DecodedBy string    // Copy of sis.Fact.DecodedBy
+	DecodedBy string    // Copy of siba.Fact.DecodedBy
 	CalledOff bool      // Unrecoverable error, the decoding process have called off
 }
 
-// MakeNotDecoded is a constructor of sis.NotDecoded struct.
+// MakeNotDecoded is a constructor of siba.NotDecoded struct.
 //   Arguments:
 //     - mesg (string): Error message.
 //     - flag (bool):   Unrecoverable error or not.

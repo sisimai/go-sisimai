@@ -6,7 +6,7 @@
 // | |___| | | | | | (_| | | |/ ___ \ (_| | (_| | | |  __/\__ \__ \
 // |_____|_| |_| |_|\__,_|_|_/_/   \_\__,_|\__,_|_|  \___||___/___/
 
-package sis
+package siba
 type EmailAddress struct {
 	Address string // Email address
 	User    string // Local part of the email addres
