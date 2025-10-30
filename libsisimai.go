@@ -16,7 +16,7 @@ package sisimai
 import "io"
 import "errors"
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import sisimbox "libsisimai.org/sisimai/v5/mail"
 import sisifact "libsisimai.org/sisimai/v5/fact"
@@ -24,10 +24,10 @@ import sisifact "libsisimai.org/sisimai/v5/fact"
 const libname string = "sisimai"
 const version string = "5.4.1"
 const patchlv uint8  = 0
-type  CallbackArg0 = sis.CallbackArg0
-type  CallbackArg1 = sis.CallbackArg1
-type  CfParameter0 = sis.CfParameter0
-type  CfParameter1 = sis.CfParameter1
+type  CallbackArg0 = siba.CallbackArg0
+type  CallbackArg1 = siba.CallbackArg1
+type  CfParameter0 = siba.CfParameter0
+type  CfParameter1 = siba.CfParameter1
 
 // Version returns the version number of sisimai such as "v5.2.0" or "v5.2.1p22".
 func Version() string {
@@ -35,32 +35,32 @@ func Version() string {
 	return v
 }
 
-// Args returns a pointer to sis.DecodingArgs as the 2nd argument of the Rise function.
-func Args() *sis.DecodingArgs { return new(sis.DecodingArgs) }
+// Args returns a pointer to siba.DecodingArgs as the 2nd argument of the Rise function.
+func Args() *siba.DecodingArgs { return new(siba.DecodingArgs) }
 
 // Rise is a function for decoding bounce mails in a mailbox or a Maildir/.
 //   Arguments:
-//     - path (string):            Path to an UNIX mbox, Maildir/, or "STDIN" for standard input.
-//     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages.
+//     - path (string):             Path to an UNIX mbox, Maildir/, or "STDIN" for standard input.
+//     - args (*siba.DecodingArgs): Options and callback functions for decoding bounce messages.
 //   Returns:
-//     - ([]sis.Fact):       List of successfully decoded bounce messages.
-//     - ([]sis.NotDecoded): List of occurred errors.
-func Rise(path string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
-	sisidigest := make([]sis.Fact, 0, 2)    // Decoded bounce message structures
-	notdecoded := make([]sis.NotDecoded, 0) // List of occurred errors and warnings
+//     - ([]siba.Fact):       List of successfully decoded bounce messages.
+//     - ([]siba.NotDecoded): List of occurred errors.
+func Rise(path string, args *siba.DecodingArgs) ([]siba.Fact, []siba.NotDecoded) {
+	sisidigest := make([]siba.Fact, 0, 2)    // Decoded bounce message structures
+	notdecoded := make([]siba.NotDecoded, 0) // List of occurred errors and warnings
 
 	emailthing, nyaan := sisimbox.Rise(path); if nyaan != nil {
 		// The file does not exist, or is not a regular file.
 		ef := "<STDIN>"; if emailthing != nil { ef = emailthing.Path }
-		ce := *sis.MakeNotDecoded(nyaan.Error(), true); ce.Email(ef)
+		ce := *siba.MakeNotDecoded(nyaan.Error(), true); ce.Email(ef)
 		notdecoded = append(notdecoded, ce)
 		return sisidigest, notdecoded
 	}
 
 	// The second argument `args` is a pointer to avoid potentially numerous internal struct copies
-	// when fact.Rise function is called if the callback functions in sis.DecodingArgs.Callback0 or
-	// sis.DecodingArgs.Callback1 contain a large amount of code.
-	if args == nil { args = new(sis.DecodingArgs) }
+	// when fact.Rise function is called if the callback functions in siba.DecodingArgs.Callback0
+	// or siba.DecodingArgs.Callback1 contain a large amount of code.
+	if args == nil { args = new(siba.DecodingArgs) }
 
 	for {
 		// Read the email specified with the first argument until io.EOF
@@ -72,7 +72,7 @@ func Rise(path string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 
 			} else {
 				// Something wrong, sisimai failed to read the email as a text
-				ce := *sis.MakeNotDecoded(nyaan.Error(), true); ce.Email(emailthing.Path)
+				ce := *siba.MakeNotDecoded(nyaan.Error(), true); ce.Email(emailthing.Path)
 				notdecoded = append(notdecoded, ce)
 				continue
 			}
@@ -85,7 +85,7 @@ func Rise(path string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 				//   from a multi-message source (like a UNIX mbox) might be empty.
 				//   This acts as a necessary secondary validation to prevent issues during further
 				//   processing of empty messages.
-				ce := *sis.MakeNotDecoded("the email file is empty", true); ce.Email(emailthing.Path)
+				ce := *siba.MakeNotDecoded("the email file is empty", true); ce.Email(emailthing.Path)
 				notdecoded = append(notdecoded, ce)
 				continue
 			}
@@ -94,36 +94,36 @@ func Rise(path string, args *sis.DecodingArgs) ([]sis.Fact, []sis.NotDecoded) {
 			if nyaan != nil && len(nyaan) > 0 { notdecoded = append(notdecoded, nyaan...) }
 
 			if args.Callback1 != nil {
-				// Run the callback function stored in sis.DecodingArgs.Callback1 specified with the
-				// 2nd argument of Sisimai.Rise() after reading each email file every time
-				carg := &sis.CallbackArg1{Path: emailthing.Path, Kind: emailthing.Kind, Mail: mesg, Fact: &facts}
+				// Run the callback function stored in siba.DecodingArgs.Callback1 specified with
+				// the 2nd argument of Sisimai.Rise() after reading each email file every time
+				carg := &siba.CallbackArg1{Path: emailthing.Path, Kind: emailthing.Kind, Mail: mesg, Fact: &facts}
 				if _, nyaan := args.Callback1(carg); nyaan != nil {
-					ce := *sis.MakeNotDecoded(nyaan.Error(), true); ce.Email(emailthing.Path)
+					ce := *siba.MakeNotDecoded(nyaan.Error(), true); ce.Email(emailthing.Path)
 					notdecoded = append(notdecoded, ce)
 				}
 			}
 		}
 	}
 
-	// TODO: Add warning information of the decoding results into notdecoded as sis.NotDecoded{}
+	// TODO: Add warning information of the decoding results into notdecoded as siba.NotDecoded{}
 	// when the reason is "onhold" or "undefined"
 	return sisidigest, notdecoded
 }
 
 // Dump returns decoded data as a JSON string.
 //   Arguments:
-//     - path (string):            Path to an mbox, Maildir/, or "STDIN" for standard input.
-//     - args (*sis.DecodingArgs): Options and callback functions for decoding bounce messages.
+//     - path (string):             Path to an mbox, Maildir/, or "STDIN" for standard input.
+//     - args (*siba.DecodingArgs): Options and callback functions for decoding bounce messages.
 //   Returns:
-//     - (*string):          Decoded data as a JSON string array
-//     - ([]sis.NotDecoded): List of occurred errors
-func Dump(path string, args *sis.DecodingArgs) (*string, []sis.NotDecoded) {
+//     - (*string):           Decoded data as a JSON string array
+//     - ([]siba.NotDecoded): List of occurred errors
+func Dump(path string, args *siba.DecodingArgs) (*string, []siba.NotDecoded) {
 	sisidigest, notdecoded := Rise(path, args); if len(sisidigest) == 0 { return nil, notdecoded }
 	serialized := make([]string, 0)
 
 	for _, e := range sisidigest {
 		cj, nyaan := e.Dump(); if nyaan != nil {
-			notdecoded = append(notdecoded, *sis.MakeNotDecoded(nyaan.Error(), false))
+			notdecoded = append(notdecoded, *siba.MakeNotDecoded(nyaan.Error(), false))
 		}
 		if cj != "" { serialized = append(serialized, cj) }
 	}
