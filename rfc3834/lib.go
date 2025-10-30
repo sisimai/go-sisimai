@@ -11,7 +11,7 @@
 // Electronic Mail. https://datatracker.ietf.org/doc/html/rfc3834
 package rfc3834
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc2045"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -19,12 +19,12 @@ import "libsisimai.org/sisimai/v5/address"
 
 // Inquire decodes a bounce message that includes a vacation message.
 //   Arguments:
-//     - bf (*sis.BeforeFact): Message entity in progress.
+//     - bf (*siba.BeforeFact): Message entity in progress.
 //   Returns:
-//     - (*sis.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
+//     - (*siba.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc3834
-func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
+func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	if bf == nil || bf.IsEmpty() == true { return nil }
 
 	boundaries := []string{"__SISIMAI_PSEUDO_BOUNDARY__"}
@@ -68,7 +68,7 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	if proceedsto == false { return nil }
 
 	recipients := uint8(0)            // The number of recipients
-	dscontents := make([]sis.DeliveryMatter, 1); v := &dscontents[0]
+	dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 
 	RECIPIENT_ADDRESS: for _, e := range []string{"from", "return-path"} {
 		// Try to get the recipient adddress from some headers
@@ -112,6 +112,6 @@ func Inquire(bf *sis.BeforeFact) *sis.RisingUnderway {
 	v.Reason    = "vacation"
 	v.Date      = bf.Headers["date"][0]
 	rfc822part += "To: <" + dscontents[0].Recipient + ">\n"
-	return &sis.RisingUnderway{Digest: dscontents, RFC822: rfc822part}
+	return &siba.RisingUnderway{Digest: dscontents, RFC822: rfc822part}
 }
 
