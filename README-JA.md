@@ -53,7 +53,7 @@ The key features of Sisimai
     * __メール情報__: `Subject`, `MessageID`, `ListID`,
     * __その他情報__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`
   * __出力可能な形式__
-    * struct ([sisimai/sis.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go))
+    * struct ([sisimai/siba.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/siba/fact.go))
     * JSON ([`encoding/json`](https://pkg.go.dev/encoding/json)を使用)
 * __インストールも使用も簡単__
   * `$ go get -u libsisimai.org/sisimai/v5@latest`
@@ -174,8 +174,8 @@ Usage
 Basic usage
 ---------------------------------------------------------------------------------------------------
 以下のように`libsisimai.org/sisimai.Rise()`関数にバウンスメールへのPATHを渡して呼び出すと解析結果が
-[`[]sis.Fact`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/fact.go)構造体として、
-発生したエラーが[`[]sis.NotDecoded`](https://github.com/sisimai/go-sisimai/blob/5-stable/sis/not-decoded.go)
+[`[]siba.Fact`](https://github.com/sisimai/go-sisimai/blob/5-stable/siba/fact.go)構造体として、発生
+したエラーが[`[]siba.NotDecoded`](https://github.com/sisimai/go-sisimai/blob/5-stable/siba/not-decoded.go)
 構造体としてそれぞれ得られます。
 
 ```go
@@ -185,7 +185,7 @@ import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
-    args := sisimai.Args() // sis.DecodingArgs{}
+    args := sisimai.Args() // siba.DecodingArgs{}
 
     // バウンス理由が"delivered"になった結果も必要ならargs.Deliveredにtrueを入れる
     args.Delivered = true
@@ -193,11 +193,11 @@ func main() {
     // バウンス理由が"vacation"になった結果も必要ならargs.Vacationにtrueを入れる
     args.Vacation  = true
 
-    // sisiは[]sis.Fact構造体スライス
+    // sisiは[]siba.Fact構造体スライス
     sisi, nyaan := sisimai.Rise(path, args)
     if len(sisi) > 0 {
         for _, e := range sisi {
-            // e is a sis.Fact struct
+            // e is a siba.Fact struct
             fmt.Printf("- Sender is %s\n", e.Addresser.Address)
             fmt.Printf("- Recipient is %s\n", e.Recipient.Address)
             fmt.Printf("- Bounced due to %s\n", e.Reason)
@@ -207,7 +207,7 @@ func main() {
             fmt.Printf("%s\n",cv) // jqコマンドで読めるJSON文字列を出力する
         }
     }
-    // nyaanは[]sis.NotDecoded構造体スライス
+    // nyaanは[]siba.NotDecoded構造体スライス
     if len(nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
@@ -240,7 +240,7 @@ Callback feature
 `args.Callback0`は`sisimai/message.sift()`で呼び出される関数でメールヘッダと本文に対して行う処理を、
 `args.Callback1`は解析対象のメールファイルに対して行う処理をそれぞれ入れます。
 
-コールバック関数0(`args.Callback0`)で処理した結果は`sis.Fact.Catch`を通して得られます。
+コールバック関数0(`args.Callback0`)で処理した結果は`siba.Fact.Catch`を通して得られます。
 
 ### Callback0: メールヘッダと本文に対して
 `args.Callback0`は`sisimai/message.sift()`で呼び出される関数でメールヘッダと本文に対して行う処理を
@@ -255,12 +255,12 @@ import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
-    args := sisimai.Args() // sis.DecodingArgs{}
+    args := sisimai.Args() // siba.DecodingArgs{}
 
     args.Callback0 = func(arg *sisimai.CallbackArg0) (map[string]interface{}, error) {
         // - この関数は解析処理実行前に呼び出される
         // - 例えば元メールにある"X-Delivery-App-ID:"ヘッダーの値を取り出してdata["x-delivery-app-id"]に入れる
-        // - dataに入れた値はsis.Fact構造体のCatchを通して型アサーションを経て参照可能
+        // - dataに入れた値はsiba.Fact構造体のCatchを通して型アサーションを経て参照可能
         name := "X-Delivery-App-ID"
         data := make(map[string]interface{})
         data[strings.ToLower(name)] = ""
@@ -281,7 +281,7 @@ func main() {
     sisi, _ := sisimai.Rise(path, args)
     if len(sisi) > 0 {
         for _, e := range sisi {
-            // eはsis.Fact構造体
+            // eはsiba.Fact構造体
             re, as := e.Catch.(map[string]interface{})
             if as == false { continue }
             if ca, ok := re["x-delivery-app-id"].(string); ok {
@@ -304,7 +304,7 @@ import "libsisimai.org/sisimai/v5"
 
 func main() {
     path := os.Args[1]     // go run ./sisid /path/to/mailbox or maildir/
-    args := sisimai.Args() // sis.DecodingArgs{}
+    args := sisimai.Args() // siba.DecodingArgs{}
 
     args.Callback1 = func(arg *sisimai.CallbackArg1) (bool, error) {
         // - 解析対象になったメールのファイルごとに呼び出される
@@ -315,11 +315,11 @@ func main() {
         return true, nil
     }
 
-    // sisiは[]sis.Fact構造体スライス
+    // sisiは[]siba.Fact構造体スライス
     sisi, nyaan := sisimai.Rise(path, args)
     if len(sisi) > 0 {
         for _, e := range sisi {
-            // e is a sis.Fact struct
+            // e is a siba.Fact struct
             ...
         }
     }
