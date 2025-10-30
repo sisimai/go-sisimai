@@ -9,17 +9,17 @@
 
 package rhost
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
-	ReturnedBy["Google"] = func(fo *sis.Fact) string {
+	ReturnedBy["Google"] = func(fo *siba.Fact) string {
 		// - https://support.google.com/a/answer/3726730?hl=en
 		if fo == nil || fo.DiagnosticCode == ""    { return "" }
 		if reply.Test(fo.ReplyCode)       == false { return "" }

@@ -8,15 +8,15 @@
 
 package rhost
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
-	ReturnedBy["KDDI"] = func(fo *sis.Fact) string {
+	ReturnedBy["KDDI"] = func(fo *siba.Fact) string {
 		// - https://www.au.com/support/service/internet/trouble/mail/01/
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 

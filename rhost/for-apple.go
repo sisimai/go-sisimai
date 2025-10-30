@@ -9,16 +9,16 @@
 
 package rhost
 import "strings"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
-	ReturnedBy["Apple"] = func(fo *sis.Fact) string {
+	ReturnedBy["Apple"] = func(fo *siba.Fact) string {
 		// - Apple iCloud Mail: https://support.apple.com/en-us/102322
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 

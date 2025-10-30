@@ -7,16 +7,16 @@
 // |_|  |_| |_|\___/|___/\__/_/  \___/ \__,_|\__|_|\___/ \___/|_|\_\
 
 package rhost
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
 func init() {
 	// ReturnedBy[*] detects the reason of the bounce returned by this email service.
 	//   Arguments:
-	//     - fo (*sis.Fact): Decoded data in progress.
+	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
-	ReturnedBy["Outlook"] = func(fo *sis.Fact) string {
+	ReturnedBy["Outlook"] = func(fo *siba.Fact) string {
 		// - https://technet.microsoft.com/en-us/library/bb232118
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
