@@ -19,8 +19,7 @@ var defaultorder = []string{
 	// The following is a fallback list
 	"Postfix", "OpenSMTPD", "qmail", "Courier", "MessagingServer", "GoogleWorkspace", "Gmail", "GMX",
 	"Zoho", "Domino", "Notes", "IMailServer", "mFILTER", "Activehunter", "MailFoundry", "GoogleGroups",
-	"Mimecast", "MailMarshalSMTP", "V5sendmail", "EZweb", "Biglobe", "EinsUndEins", "DragonFly",
-	"X1", "X3", "X6",
+	"Mimecast", "MailMarshal", "V5sendmail", "EZweb", "Biglobe", "EinsUndEins", "DragonFly", "X1", "X3", "X6",
 }
 
 // OrderBySubject returns the order list of MTA modules decided by the first two words of the "Subject": header.
@@ -61,7 +60,7 @@ func OrderBySubject(title string) []string {
 		"returned-mail":         []string{"Sendmail", "Biglobe", "V5sendmail", "X1"},
 		"there-was":             []string{"X6"},
 		"undeliverable":         []string{"Exchange2007", "Exchange2003"},
-		"undeliverable-mail":    []string{"MailMarshalSMTP", "IMailServer"},
+		"undeliverable-mail":    []string{"MailMarshal", "IMailServer"},
 		"undeliverable-message": []string{"Notes", "Verizon"},
 		"undelivered-mail":      []string{"Postfix", "Zoho"},
 		"warning":               []string{"Sendmail", "Exim"},

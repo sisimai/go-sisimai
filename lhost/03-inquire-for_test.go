@@ -16,7 +16,7 @@ func TestInquireFor(t *testing.T) {
 	ae := []string{
 		"Activehunter", "AmazonSES", "ApacheJames", "Biglobe", "Courier", "Domino", "DragonFly", "EZweb",
 		"EinsUndEins", "Exchange2003", "Exchange2007", "Exim", "FML", "GMX", "GoogleGroups", "Gmail",
-		"GoogleWorkspace", "IMailServer", "KDDI", "MailFoundry", "MailMarshalSMTP", "MessagingServer",
+		"GoogleWorkspace", "IMailServer", "KDDI", "MailFoundry", "MailMarshal", "MessagingServer",
 		"Notes", "OpenSMTPD", "Postfix", "Sendmail", "TrendMicro", "V5sendmail", "Verizon",
 		"X1", "X2", "X3", "X6", "Zoho", "mFILTER", "qmail",
 	}

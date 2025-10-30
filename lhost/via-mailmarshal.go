@@ -19,7 +19,8 @@ func init() {
 	//     - bf (*siba.BeforeFact):  Message entity in progress.
 	//   Returns:
 	//     - (*siba.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
-	InquireFor["MailMarshalSMTP"] = func(bf *siba.BeforeFact) *siba.RisingUnderway {
+	InquireFor["MailMarshal"] = func(bf *siba.BeforeFact) *siba.RisingUnderway {
+		// - Trustwave MailMarshal: https://support.trustwave.com/mailmarshal-smtp/
 		// - Trustwave Secure Email Gateway: https://www.trustwave.com/en-us/services/email-security/
 		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], `Undeliverable Mail: "`) == false { return nil }
