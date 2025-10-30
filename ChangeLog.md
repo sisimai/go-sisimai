@@ -21,6 +21,7 @@ v5.4.1p1
     - #210 #215 `lhost/via-x1.go`
     - #219 #222 `lhost/via-x2.go`
   - #229 Add new error message pattern for Spamhaus (Blocked).
+  - #230 #238 Package `sis` has been renamed to `siba`: Sisimai Internal Bounce Abstraction.
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
