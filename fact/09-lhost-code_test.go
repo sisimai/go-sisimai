@@ -14,7 +14,7 @@ import "fmt"
 import "errors"
 import "strings"
 import "path/filepath"
-import "libsisimai.org/sisimai/v5/sis"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rhost"
 import "libsisimai.org/sisimai/v5/address"
@@ -48,8 +48,8 @@ var Alternates = map[string][]string{
 }
 
 var TestReturn = map[string]interface{}{"neko-dono": []string{"Michitsuna", "Suzu"}}
-var CallbackFn = func(arg *sis.CallbackArg0) (map[string]interface{}, error) { return TestReturn, nil }
-var ArgForRise = &sis.DecodingArgs{Delivered: true, Vacation: true, Callback0: CallbackFn}
+var CallbackFn = func(arg *siba.CallbackArg0) (map[string]interface{}, error) { return TestReturn, nil }
+var ArgForRise = &siba.DecodingArgs{Delivered: true, Vacation: true, Callback0: CallbackFn}
 
 // EngineTest is called from lhost/*_test.go, rhost/*_test.go, rfc3464/lib_test.go, arf/lib_test.go.
 //   Arguments:
@@ -114,8 +114,8 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 				t.Errorf("%s failed to load the sample email: %s", ee, nyaan)
 
 			} else {
-				// Check each value in sis.Fact{}
-				sisi := []sis.Fact{}; for {
+				// Check each value in siba.Fact{}
+				sisi := []siba.Fact{}; for {
 					if mesg, nyaan := emailthing.Read(); nyaan != nil {
 						// Failed to read the email
 						cx++; if errors.Is(nyaan, io.EOF) {
