@@ -23,6 +23,9 @@ v5.4.1p1
   - #229 Add new error message pattern for Spamhaus (Blocked).
   - #230 #238 Package `sis` has been renamed to `siba`: Sisimai Internal Bounce Abstraction.
   - #234 #241 MTA module `MailMarshalSMTP` has been renamed to `MailMarshal`.
+  - #202 #243 Detect `Suspend` reason from a auto replied message by `rfc3834/lib.go`.
+  - #242 Fixed an issue where auto-reply messages were not decoded by `Rise()` function when the
+    `vacation` option was specified.
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
