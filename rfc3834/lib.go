@@ -27,6 +27,7 @@ import "libsisimai.org/sisimai/v5/address"
 func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	if bf == nil || bf.IsEmpty() == true { return nil }
 
+	proceedsto := true
 	boundaries := []string{"__SISIMAI_PSEUDO_BOUNDARY__"}
 	lowerlabel := []string{"from", "to", "subject", "auto-submitted", "precedence", "x-apple-action"}
 	lowervalue := map[string]string{}
@@ -44,8 +45,10 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		"precedence":     []string{"auto_reply"},
 		"subject":        []string{"auto:", "auto response:", "automatic reply:", "out of office:", "out of the office:"},
 		"x-apple-action": []string{"vacation"},
-    };
-	proceedsto := true
+    }
+	suspending := [][]string{
+		[]string{"this email inbox", " is no longer in use."},
+	}
 
 	for _, e := range lowerlabel {
 		// Set lower-cased value of each header related to auto-response
@@ -69,8 +72,9 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 
 	recipients := uint8(0)            // The number of recipients
 	dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
+	v.Reason    = "vacation"
 
-	RECIPIENT_ADDRESS: for _, e := range []string{"from", "return-path"} {
+	RECIPIENT_ADDRESS: for _, e := range []string{"reply-to", "from", "return-path"} {
 		// Try to get the recipient adddress from some headers
 		if len(bf.Headers[e]) == 0 { continue }
 		cv := address.S3S4(bf.Headers[e][0]); if rfc5322.IsEmailAddress(cv) == false { continue }
@@ -109,7 +113,11 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		}
 	}
 
-	v.Reason    = "vacation"
+	cv := strings.ToLower(v.Diagnosis); for _, e := range suspending {
+		// Check that the auto-replied message indicates the "Suspend" reason or not.
+		if moji.Aligned(cv, e) { v.Reason = "suspend"; break }
+	}
+
 	v.Date      = bf.Headers["date"][0]
 	rfc822part += "To: <" + dscontents[0].Recipient + ">\n"
 	return &siba.RisingUnderway{Digest: dscontents, RFC822: rfc822part}

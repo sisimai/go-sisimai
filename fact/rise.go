@@ -64,7 +64,7 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		// - Skip if the value of "reason" is "vacation"
 		if rfc5322.IsEmailAddress(e.Recipient) == false                { continue RISEOF }
 		if args.Delivered != true && strings.HasPrefix(e.Status, "2.") { continue RISEOF }
-		if args.Vacation  != true && e.Reason == "vaction"             { continue RISEOF }
+		if args.Vacation  != true && e.Reason == "vacation"            { continue RISEOF }
 
 		addrs := map[string][3]string{} // Addresser, and Recipient
 		piece := map[string]string{}    // Each element except email addresses

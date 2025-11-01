@@ -17,6 +17,7 @@ func TestRFC3834(t *testing.T) {
 		{{"03",   1, "",        "",    "vacation",        false, ""}},
 		{{"04",   1, "",        "",    "vacation",        false, ""}},
 		{{"05",   1, "",        "",    "vacation",        false, ""}},
+		{{"06",   1, "5.0.921", "",    "suspend",         false, ""}},
 	}; EngineTest(t, "RFC3834", publiclist, true)
 
 	secretlist := [][]IsExpected{
@@ -34,7 +35,7 @@ func TestRFC3834(t *testing.T) {
 		{{"1011", 1, "",        "",    "vacation",        false, ""}},
 		{{"1012", 1, "",        "",    "vacation",        false, ""}},
 		{{"1013", 1, "",        "",    "vacation",        false, ""}},
-
+		{{"1014", 1, "5.0.921", "",    "suspend",         false, ""}},
 	}; EngineTest(t, "RFC3834", secretlist, false)
 }
 
