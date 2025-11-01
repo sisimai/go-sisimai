@@ -19,7 +19,7 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 func TestInquire(t *testing.T) {
 	fn := "rfc3834.Inquire"
 	ae := []string{
-		"rfc3834-01", "rfc3834-02", "rfc3834-03", "rfc3834-04", "rfc3834-05", 
+		"rfc3834-01", "rfc3834-02", "rfc3834-03", "rfc3834-04", "rfc3834-05", "rfc3834-06",
 	}
 	cx := 0
 	cv := Inquire(nil) 
