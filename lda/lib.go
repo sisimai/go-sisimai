@@ -10,6 +10,7 @@
 package lda
 
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -37,20 +38,20 @@ func Find(fo *siba.Fact) string {
 	messagesof := map[string]map[string][]string{
 		// Each error message should be a lower-cased string
 		"dovecot": map[string][]string{
-			"mailboxfull": []string{
+			eb.ReFULL: []string{
 				"not enough disk space",
 				"quota exceeded", // Dovecot 1.2 dovecot/src/plugins/quota/quota.c
 				"quota exceeded (mailbox for user is full)", // dovecot/src/plugins/quota/quota.c
 			},
-			"userunknown": []string{"mailbox doesn't exist: "},
+			eb.ReUSER: []string{"mailbox doesn't exist: "},
 		},
 		"mail.local": map[string][]string{
-			"mailboxfull": []string{
+			eb.ReFULL: []string{
 				"disc quota exceeded",
 				"mailbox full or quota exceeded",
 			},
-			"systemerror": []string{"temporary file write error"},
-			"userunknown": []string{
+			eb.ReSYSE: []string{"temporary file write error"},
+			eb.ReUSER: []string{
 				": invalid mailbox path",
 				": unknown user:",
 				": user missing home directory",
@@ -58,26 +59,26 @@ func Find(fo *siba.Fact) string {
 			},
 		},
 		"procmail": map[string][]string{
-			"mailboxfull": []string{"quota exceeded while writing", "user over quota"},
-			"systemerror": []string{"service unavailable"},
-			"systemfull":  []string{"no space left to finish writing"},
+			eb.ReFULL: []string{"quota exceeded while writing", "user over quota"},
+			eb.ReSYSE: []string{"service unavailable"},
+			eb.ReSYSF: []string{"no space left to finish writing"},
 		},
 		"maildrop": map[string][]string{
-			"mailboxfull": []string{"maildir over quota."},
-			"userunknown": []string{
+			eb.ReFULL: []string{"maildir over quota."},
+			eb.ReUSER: []string{
 				"cannot find system user",
 				"invalid user specified.",
 			},
 		},
 		"vpopmail": map[string][]string{
-			"filtered":    []string{"user does not exist, but will deliver to "},
-			"mailboxfull": []string{"domain is over quota", "user is over quota"},
-			"suspend":     []string{"account is locked email bounced"},
-			"userunknown": []string{"sorry, no mailbox here by that name."},
+			eb.ReFILT: []string{"user does not exist, but will deliver to "},
+			eb.ReFULL: []string{"domain is over quota", "user is over quota"},
+			eb.ReQUIT: []string{"account is locked email bounced"},
+			eb.ReUSER: []string{"sorry, no mailbox here by that name."},
 		},
 		"vmailmgr": map[string][]string{
-			"mailboxfull": []string{"delivery failed due to system quota violation"},
-			"userunknown": []string{
+			eb.ReFULL: []string{"delivery failed due to system quota violation"},
+			eb.ReUSER: []string{
 				"invalid or unknown base user or domain",
 				"invalid or unknown virtual user",
 				"user name does not refer to a virtual user",
@@ -100,7 +101,7 @@ func Find(fo *siba.Fact) string {
 	}
 
 	// procmail: Couldn't create "/var/mail/tmp.nekochan.22"
-	if reasontext == "" { reasontext = "mailererror" }
+	if reasontext == "" { reasontext = eb.ReUNIX }
 	return reasontext
 }
 
