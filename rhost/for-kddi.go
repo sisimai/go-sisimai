@@ -8,6 +8,7 @@
 
 package rhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 
 func init() {
@@ -21,8 +22,8 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string]string{
-			"filtered":    "550 : user unknown", // The response was: 550 : User unknown
-			"userunknown": ">: user unknown",    // The response was: 550 <...>: User unknown
+			eb.ReFILT: "550 : user unknown", // The response was: 550 : User unknown
+			eb.ReUSER: ">: user unknown",    // The response was: 550 <...>: User unknown
 		}
 		issuedcode := strings.ToLower(fo.DiagnosticCode); for e := range messagesof {
 			// The key name is a bounce reason name

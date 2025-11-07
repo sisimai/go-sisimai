@@ -7,6 +7,7 @@
 // |_|  |_| |_|\___/|___/\__/_/_/   \_\___/|_|
 
 package rhost
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -21,8 +22,8 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
-			"hostunknown": []string{"Host or domain name not found"},
-			"notaccept":   []string{"type=MX: Malformed or unexpected name server reply"},
+			eb.ReHOST: []string{"Host or domain name not found"},
+			eb.Re00MX: []string{"type=MX: Malformed or unexpected name server reply"},
 		}
 
 		for e := range messagesof {

@@ -8,6 +8,7 @@
 //                                                           |___/                           
 
 package rhost
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -22,8 +23,8 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
-			"securityerror": []string{"Please turn on SMTP Authentication in your mail client"},
-			"userunknown":   []string{"542 ", " Rejected", "No such user"},
+			eb.ReSECU: []string{"Please turn on SMTP Authentication in your mail client"},
+			eb.ReUSER: []string{"542 ", " Rejected", "No such user"},
 		}
 
 		for e := range messagesof {

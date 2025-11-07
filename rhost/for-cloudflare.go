@@ -8,6 +8,7 @@
 // |_|  |_| |_|\___/|___/\__/_/  \____|_|\___/ \__,_|\__,_|_| |_|\__,_|_|  \___|
 
 package rhost
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -22,8 +23,8 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
-			"blocked":     []string{"found on one or more DNSBLs"},
-			"systemerror": []string{"Upstream error"},
+			eb.ReBLOC: []string{"found on one or more DNSBLs"}, // Blocked
+			eb.ReSYSE: []string{"Upstream error"}, // SystemError
 		}
 
 		for e := range messagesof {

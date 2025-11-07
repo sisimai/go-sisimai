@@ -9,6 +9,7 @@
 
 package rhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -26,7 +27,7 @@ func init() {
 		if status.Test(fo.DeliveryStatus) == false { return "" }
 
 		messagesof := map[string][][3]string{
-			"authfailure": [][3]string{
+			eb.ReAUTH: [][3]string{ // AuthFailure
 				// - 451 4.7.24 The SPF record of the sending domain has one or more suspicious entries.
 				//   To protect our users from spam, mail sent from your IP address has been temporarily
 				//   rate limited. For more information, go to Email sender guidelines.
@@ -46,10 +47,10 @@ func init() {
 				[3]string{"421", "4.7.26", "senders to authenticate with either spf or dkim"},
 				[3]string{"550", "5.7.26", "senders to authenticate with either spf or dkim"},
 
-				// - 550 5.7.26 This message fails to pass SPF checks for an SPF record with a hard fail
-				//   policy (-all). To best protect our users from spam and phishing, the message has
-				//   been blocked. Please visit https://support.google.com/mail/answer/81126 for more
-				//   information.
+				// - 550 5.7.26 This message fails to pass SPF checks for an SPF record with a hard
+				//   fail policy (-all). To best protect our users from spam and phishing, the message
+				//   has been blocked. Please visit https://support.google.com/mail/answer/81126 for
+				//   more information.
 				//
 				// - 550 5.7.26 The MAIL FROM domain [domain-name] has an SPF record with a hard fail
 				//   policy (-all) but it fails to pass SPF checks with the ip: [ip-address]. To best
@@ -60,47 +61,48 @@ func init() {
 				[3]string{"550", "5.7.26", "has an spf record with a hard fail policy"},
 
 				// - 451 4.7.26 Unauthenticated email from domain-name is not accepted due to domain's
-				//   DMARC policy, but temporary DNS failures prevent authentication. Please contact the
-				//   administrator of domain-name domain if this was a legitimate mail. To learn about
-				//   the DMARC initiative, go to https://support.google.com/mail/?p=DmarcRejection
+				//   DMARC policy, but temporary DNS failures prevent authentication. Please contact
+				//   the administrator of domain-name domain if this was a legitimate mail. To learn
+				//   about the DMARC initiative, go to https://support.google.com/mail/?p=DmarcRejection
 				[3]string{"451", "4.7.26", "is not accepted due to domain's dmarc policy"},
 				[3]string{"550", "5.7.26", "is not accepted due to domain's dmarc policy"},
 
 				// - 550 5.7.26 Unauthenticated email from domain-name is not accepted due to domain's
-				//   DMARC policy. Please contact the administrator of domain-name domain. If this was
-				//   a legitimate mail please visit [Control unauthenticated mail from your domain] to
-				//   learn about the DMARC initiative. If the messages are valid and aren't spam, con-
-				//   tact the administrator of the receiving mail server to determine why your outgoing
-				//   messages don't pass authentication checks.
+				//   DMARC policy. Please contact the administrator of domain-name domain. If this
+				//   was a legitimate mail please visit https://support.google.com/a/answer/2451690
+				//   to learn about the DMARC initiative. If the messages are valid and aren't spam,
+				//   contact the administrator of the receiving mail server to determine why your
+				//   outgoing messages don't pass authentication checks.
 				[3]string{"550", "5.7.26", "is not accepted due to domain's dmarc policy"},
 
 				// - 550 5.7.26 This message does not have authentication information or fails to pass
-				//   authentication checks (SPF or DKIM). To best protect our users from spam, the mes-
-				//   sage has been blocked. Please visit https://support.google.com/mail/answer/81126
+				//   authentication checks (SPF or DKIM). To best protect our users from spam, the
+				//   message has been blocked. Please visit https://support.google.com/mail/answer/81126
 				//   for more information.
 				[3]string{"550", "5.7.1",  "fails to pass authentication checks"},
 				[3]string{"550", "5.7.26", "fails to pass authentication checks"},
 
-				// - 421 4.7.27 Your email has been rate limited because SPF authentication didn't pass
-				//   for this message. Gmail requires all bulk email senders to authenticate their emaili
-				//   with SPF. Authentication results: SPF domain-name with IP address: ip-address = Did
-				//   not pass.
+				// - 421 4.7.27 Your email has been rate limited because SPF authentication didn't
+				//   pass for this message. Gmail requires all bulk email senders to authenticate
+				//   their email with SPF. Authentication results: SPF domain-name with IP address:
+				//   ip-address = Did not pass.
 				[3]string{"421", "4.7.27", "senders to authenticate with spf"},
 				[3]string{"421", "4.7.27", "senders to authenticate their email with spf"},
 				[3]string{"550", "5.7.27", "senders to authenticate with spf"},
 
-				// - 421 4.7.30 Your email has been rate limited because DKIM authentication didn't pass
-				//   for this message. Gmail requires all email bulk senders to authenticate their email
-				//   with DKIM. Authentication results: DKIM = Did not pass.
+				// - 421 4.7.30 Your email has been rate limited because DKIM authentication didn't
+				//   pass for this message. Gmail requires all email bulk senders to authenticate
+				//   their email with DKIM. Authentication results: DKIM = Did not pass.
 				[3]string{"421", "4.7.30", "senders to authenticate their email with dkim"},
 
-				// - 550 5.7.30 This mail has been blocked because DKIM does not pass. Gmail requires all
-				//   large senders to authenticate with DKIM. Authentication results: DKIM = did not pass.
-				//   For instructions on setting up DKIM authentication, go to Turn on DKIM for your domain.   
+				// - 550 5.7.30 This mail has been blocked because DKIM does not pass. Gmail requires
+				//   all large senders to authenticate with DKIM. Authentication results: DKIM = did
+				//   not pass. For instructions on setting up DKIM authentication, go to Turn on DKIM
+				//    for your domain.
 				[3]string{"550", "5.7.30", "senders to authenticate with dkim"},
 
-				// - 421 4.7.32 Your email has been rate limited because the From: header (RFC5322) in
-				//   this message isn't aligned with either the authenticated SPF or DKIM organizational
+				// - 421 4.7.32 Your email has been rate limited because the From: header (RFC5322)
+				//   in this message isn't aligned with either the authenticated SPF or DKIM organizational
 				//   domain.
 				// - 421 5.7.32 Your email was blocked because the From: header (RFC5322) in this message
 				//   isn't aligned with either the authenticated SPF or DKIM organizational domain.
@@ -116,7 +118,7 @@ func init() {
 				[3]string{"421", "4.7.40", "to add a dmarc record to "},
 				[3]string{"550", "5.7.40", "to add a dmarc record to "},
 			},
-			"badreputation": [][3]string{
+			eb.ReREPU: [][3]string{ // BadReputation
 				// - 421 4.7.0 This message is suspicious due to the very low reputation of the sending
 				//   IP address/domain. To protect our users from spam, mail sent from your IP address
 				//   has been temporarily rate limited. For more information, go to Why has Gmail blocked
@@ -124,14 +126,14 @@ func init() {
 				[3]string{"421", "4.7.0", "very low reputation of the sending ip address"},
 				[3]string{"421", "4.7.0", "very low reputation of the sending domain"},
 
-				// - 550 5.7.1 Our system has detected that this message is likely suspicious due to the
-				//   very low reputation of the sending IP address/domain. To best protect our users
-				//   from spam, the message has been blocked. 
+				// - 550 5.7.1 Our system has detected that this message is likely suspicious due to
+				//   the very low reputation of the sending IP address/domain. To best protect our
+				//   users from spam, the message has been blocked. 
 				//   Please visit https://support.google.com/mail/answer/188131 for more information.
 				[3]string{"550", "5.7.1", "due to the very low reputation of the sending ip address"},
 				[3]string{"550", "5.7.1", "due to the very low reputation of the sending domain"},
 			},
-			"blocked": [][3]string{
+			eb.ReBLOC: [][3]string{ // Blocked
 				// - 421 4.7.0 IP not in whitelist for RCPT domain, closing connection.
 				//   For more information, go to Allowlists, denylists, and approved senders.
 				//   https://support.google.com/a/answer/60752
@@ -161,16 +163,17 @@ func init() {
 				[3]string{"421", "4.7.28", "an unusual rate of mail"},
 
 				// - 550 5.7.1 Our system has detected an unusual rate of unsolicited mail originating
-				//   from your IP address. To protect our users from spam, mail sent from your IP ad-
-				//   dress has been blocked. Review https://support.google.com/mail/answer/81126
+				//   from your IP address. To protect our users from spam, mail sent from your IP
+				//   address has been blocked. Review https://support.google.com/mail/answer/81126
 				//
-				// - 550 5.7.28 There is an unusual rate of unsolicited mail originating from your IP
-				//   address. To protect our users from spam, mail sent from your IP address has been
-				//   blocked. To review our bulk email senders guidelines, go to Email sender guidelines.
+				// - 550 5.7.28 There is an unusual rate of unsolicited mail originating from your
+				//   IP address. To protect our users from spam, mail sent from your IP address has
+				//   been blocked. To review our bulk email senders guidelines, go to Email sender
+				//   guidelines.
 				[3]string{"550", "5.7.1",  "an unusual rate of unsolicited mail"},
 				[3]string{"550", "5.7.28", "an unusual rate of unsolicited mail"},
 			},
-			"exceedlimit": [][3]string{
+			eb.ReXLIM: [][3]string{ // ExceedLimit
 				// - 552 5.2.3 Your message exceeded Google's message size limits. For more information,
 				//   visit https://support.google.com/mail/answer/6584
 				[3]string{"552", "5.2.3", "exceeded google's message size limits"},
@@ -188,7 +191,7 @@ func init() {
 				[3]string{"552", "5.3.4", "exceeds google's header name limit of"},
 				[3]string{"552", "5.3.4", "exceeds google's message header size limit"},
 			},
-			"expired": [][3]string{
+			eb.ReEXPR: [][3]string{ // Expired
 				// - 421 4.7.0 Connection expired, try reconnecting. For more information, go to About
 				// SMTP error messages. https://support.google.com/a/answer/3221692
 				[3]string{"421", "4.7.0", "connection expired"},
@@ -197,7 +200,7 @@ func init() {
 				//   error messages. https://support.google.com/a/answer/3221692
 				[3]string{"451", "4.4.2", "timeout - closing connection"},
 			},
-			"failedstarttls": [][3]string{
+			eb.ReTTLS: [][3]string{ // FailedSTARTTLS
 				// - 530 5.7.0 Must issue a STARTTLS command first. For more information, go to About
 				//   SMTP error messages and review RFC 3207 specifications.
 				[3]string{"530", "5.7.0", "must issue a starttls command first"},
@@ -207,13 +210,13 @@ func init() {
 				//   go to Email encryption in transit. https://support.google.com/mail/answer/6330403
 				[3]string{"421", "4.7.0", "tls required for rcpt domain"},
 
-				// - 421 4.7.29 Your email has been rate limited because this message wasn't sent over a
-				//   TLS connection. Gmail requires all bulk email senders to use TLS/SSL for SMTP conn-
-				//   ections.
+				// - 421 4.7.29 Your email has been rate limited because this message wasn't sent
+				//   over a TLS connection. Gmail requires all bulk email senders to use TLS/SSL for
+				//   SMTP connections.
 				[3]string{"421", "4.7.29", "senders to use tls/ssl for smtp"},
 				[3]string{"550", "5.7.29", "senders to use tls/ssl for smtp"},
 			},
-			"mailboxfull": [][3]string{
+			eb.ReFULL: [][3]string{ // MailboxFull
 				// - 452 4.2.2 The recipient's inbox is out of storage space.
 				//   Please direct the recipient to https://support.google.com/mail/?p=OverQuotaTemp
 				// - Please direct the recipient to https://support.google.com/mail/?p=OverQuotaPerm
@@ -226,7 +229,7 @@ func init() {
 				[3]string{"552", "5.2.2", "is over quota"},
 				[3]string{"550", "5.7.1", "email quota exceeded"},
 			},
-			"mesgtoobig": [][3]string{
+			eb.ReSIZE: [][3]string{ // MesgTooBig
 				// - 552 5.3.4 Your message exceeded Google"s message size limits. To view our message
 				//   size guidelines, go to Send attachments with your Gmail message.
 				// - https://support.google.com/mail/?p=MaxSizeError
@@ -238,19 +241,19 @@ func init() {
 				// - https://support.google.com/mail/?p=MaxSizeError
 				[3]string{"552", "5.3.4", "exceeds google's message size limit of"},
 			},
-			"networkerror": [][3]string{
+			eb.ReNETW: [][3]string{ // NetworkError
 				// - 554 5.4.6 Message exceeded 50 hops, this may indicate a mail loop.
 				//   For more information, go to Gmail Help. https://support.google.com/mail/?p=MailLoop
 				[3]string{"554", "5.4.6", "message exceeded 50 hops"},
 				[3]string{"554", "5.6.0", "message exceeded 50 hops"},
 			},
-			"norelaying": [][3]string{
-				// - 550 5.7.0 Mail relay denied <ip-address>. Invalid credentials for relay for one of
-				//   the domains in: <domain-name> (as obtained from HELO and MAIL FROM). Email is being
-				//   sent from a domain or IP address which isn't registered in your Workspace account.
-				//   Please login to your Workspace account and verify that your sending device IP
-				//   address has been registered within the Workspace SMTP Relay Settings. For more
-				//   information, go to SMTP relay service error messages. 
+			eb.ReRELA: [][3]string{ // NoRelaying
+				// - 550 5.7.0 Mail relay denied <ip-address>. Invalid credentials for relay for one
+				//   of the domains in: <domain-name> (as obtained from HELO and MAIL FROM). Email
+				//   is being sent from a domain or IP address which isn't registered in your Workspace
+				//   account. Please login to your Workspace account and verify that your sending
+				//   device IP address has been registered within the Workspace SMTP Relay Settings.
+				//   For more information, go to SMTP relay service error messages. 
 				// - https://support.google.com/a/answer/6140680//maildenied
 				[3]string{"550", "5.7.0", "mail relay denied"},
 
@@ -259,8 +262,8 @@ func init() {
 				//   account this email is being sent from. If you are trying to relay mail from a
 				//   domain that isn't registered under your Workspace account or has empty
 				//   envelope-from:, you must configure your mail server either to use SMTP AUTH to
-				//   identify the sending domain or to present one of your domain names in the HELO or
-				//   EHLO command. For more information, go to SMTP relay service error messages. 
+				//   identify the sending domain or to present one of your domain names in the HELO
+				//   or EHLO command. For more information, go to SMTP relay service error messages. 
 				// - https://support.google.com/a/answer/6140680//invalidcred
 				[3]string{"550", "5.7.1", "invalid credentials for relay"},
 
@@ -270,17 +273,17 @@ func init() {
 				// - https://support.google.com/mail/?p=NotAuthorizedError
 				[3]string{"550", "5.7.1", "is not authorized to send email directly to our servers"},
 			},
-			"notcompliantrfc": [][3]string{
-				// - 550 5.7.1 Messages missing a valid address in the From: header, or having no From:
-				//   header, are not accepted. For more information, go to Email sender guidelines and
-				//   review RFC 5322 specifications.
+			eb.ReNRFC: [][3]string{ // NotCompliantRFC
+				// - 550 5.7.1 Messages missing a valid address in the From: header, or having no
+				//   From: header, are not accepted. For more information, go to Email sender guidelines
+				//   and review RFC 5322 specifications.
 				// - https://support.google.com/mail/?p=RfcMessageNonCompliant
 				[3]string{"550", "5.7.1", "missing a valid address in the from: header"},
 				[3]string{"550", "5.7.1", "multiple addresses in from: header are not accepted"},
 
 				// - 550 5.7.1 This message is not RFC 5322 compliant because it has duplicate headers.
-				//   To reduce the amount of spam sent to Gmail, this message has been blocked. For more
-				//   information, go to Email sender guidelines and review RFC 5322 specifications.
+				//   To reduce the amount of spam sent to Gmail, this message has been blocked. For
+				//   more information, go to Email sender guidelines and review RFC 5322 specifications.
 				// - https://support.google.com/mail/?p=RfcMessageNonCompliant
 				[3]string{"550", "5.7.1", "is not rfc 5322 compliant"},
 
@@ -290,13 +293,13 @@ func init() {
 				[3]string{"550", "5.7.1", "missing a valid message-id: header"},
 
 				// - 550 5.7.1 The message contains a unicode character in a disallowed header.
-				//   To review our message and header content guidelines, go to File types blocked in
-				//   Gmail. https://support.google.com/mail/?p=BlockedMessage
+				//   To review our message and header content guidelines, go to File types blocked
+				//   in Gmail. https://support.google.com/mail/?p=BlockedMessage
 				[3]string{"550", "5.7.1", "contains a unicode character in a disallowed header"},
 
-				// - 550 5.7.1 Encoded-word syntax is not permitted in message header header-name. To
-				//   reduce the amount of spam sent to Gmail, this message has been blocked. For more
-				//   information, go to Email sender guidelines and review RFC 5322 specifications.
+				// - 550 5.7.1 Encoded-word syntax is not permitted in message header header-name.
+				//   To reduce the amount of spam sent to Gmail, this message has been blocked. For
+				//   more information, go to Email sender guidelines and review RFC 5322 specifications.
 				// - https://support.google.com/mail/?p=RfcMessageNonCompliant
 				[3]string{"550", "5.7.1", "encoded-word syntax is not permitted"},
 
@@ -310,7 +313,7 @@ func init() {
 				// - https://support.google.com/mail/?p=RfcMessageNonCompliant
 				[3]string{"554", "5.6.0", "mail message is malformed"},
 			},
-			"policyviolation": [][3]string{
+			eb.RePOLI: [][3]string{ // PolicyViolation
 				// - 552 5.7.0 Our system detected an illegal attachment on your message. Please visit
 				//   http://mail.google.com/support/bin/answer.py?answer=6590 to review our attachment
 				//   guidelines.
@@ -333,14 +336,14 @@ func init() {
 				//   https://support.google.com/mail/answer/188131
 				[3]string{"421", "4.7.28", "sending messages with the same message-id:"},
 			},
-			"rejected": [][3]string{
+			eb.ReREJE: [][3]string{ // Rejected
 				// - 550 5.7.0, Mail Sending denied. This error occurs if the sender account is disabled
 				//   or not registered within your Google Workspace domain.
 				// - https://support.google.com/a/answer/6140680//maildenied
 				[3]string{"550", "5.7.0", "mail sending denied"},
 				[3]string{"550", "5.7.1", "unauthenticated email is not accepted"},
 			},
-			"requireptr": [][3]string{
+			eb.ReQPTR: [][3]string{ // RequirePTR
 				// - 421 4.7.0 The IP address sending this message does not have a PTR record, or the
 				//   corresponding forward DNS entry does not point to the sending IP. To protect our
 				//   users from spam, mail sent from your IP address has been temporarily rate limited.
@@ -356,10 +359,10 @@ func init() {
 				//   and authentication. For more information, go to Email sender guidelines.
 				//   https://support.google.com/mail/?p=IPv6AuthError
 				//
-				// - 550 5.7.25 The IP address sending this message does not have a PTR record setup, or
-				//   the corresponding forward DNS entry does not point to the sending IP. As a policy,
-				//   Gmail does not accept messages from IPs with missing PTR records.
-				//   For more information, go to Email sender guidelines.
+				// - 550 5.7.25 The IP address sending this message does not have a PTR record setup,
+				//   or the corresponding forward DNS entry does not point to the sending IP. As a
+				//   policy, Gmail does not accept messages from IPs with missing PTR records. For
+				//   more information, go to Email sender guidelines.
 				// - https://support.google.com/mail/answer/81126//ip-practices
 				//
 				// - 550 5.7.25 The sending IP does not match the IP address of the hostname specified
@@ -369,9 +372,9 @@ func init() {
 				[3]string{"550", "5.7.25", "does not have a ptr record"},
 				[3]string{"550", "5.7.25", "does not match the ip address of the hostname"},
 			},
-			"securityerror": [][3]string{
-				// - 454 4.7.0 Too many login attempts, please try again later. For more information, go
-				//   to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
+			eb.ReSECU: [][3]string{ // SecurityError
+				// - 454 4.7.0 Too many login attempts, please try again later. For more information,
+				//   go to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
 				[3]string{"454", "4.7.0", "too many login attempts"},
 
 				// - 503 5.7.0 No identity changes permitted. For more information, go to About SMTP
@@ -390,8 +393,8 @@ func init() {
 				[3]string{"535", "5.7.1",  "application-specific password required"},
 				[3]string{"535", "5.7.90", "application-specific password required"},
 
-				// - 535 5.7.1 Please log in with your web browser and then try again. For more infor-
-				//   mation, visit https://support.google.com/mail/bin/accounts/answer/78754
+				// - 535 5.7.1 Please log in with your web browser and then try again. For more
+				//   information, visit https://support.google.com/mail/bin/accounts/answer/78754
 				[3]string{"535", "5.7.1",  "please log in with your web browser"},
 				[3]string{"534", "5.7.90", "please log in with your web browser"},
 				[3]string{"534", "5.7.14", "please log in through your web browser"},
@@ -401,20 +404,20 @@ func init() {
 				[3]string{"535", "5.7.1",  "username and password not accepted"},
 				[3]string{"535", "5.7.80", "username and password not accepted"},
 			},
-			"spamdetected": [][3]string{
-				// - 421 4.7.0 This message is suspicious due to the nature of the content or the links
-				//   within. To best protect our users from spam, the message has been blocked. For more
-				//   information, go to Why has Gmail blocked my messages?.
+			eb.ReSPAM: [][3]string{ // SpamDetected
+				// - 421 4.7.0 This message is suspicious due to the nature of the content or the
+				//   links within. To best protect our users from spam, the message has been blocked.
+				//   For more information, go to Why has Gmail blocked my messages?.
 				//   https://support.google.com/mail/answer/188131
 				[3]string{"421", "4.7.0", "due to the nature of the content or the links within"},
 
-				// - 550 5.7.1 Our system has detected that this message is likely unsolicited mail. To
-				//   reduce the amount of spam sent to Gmail, this message has been blocked.
-				//   For more information, visit https://support.google.com/mail/answer/188131
+				// - 550 5.7.1 Our system has detected that this message is likely unsolicited mail.
+				//   To reduce the amount of spam sent to Gmail, this message has been blocked. For
+				//   more information, visit https://support.google.com/mail/answer/188131
 				// - https://support.google.com/mail/?p=UnsolicitedMessageError
 				[3]string{"550", "5.7.1", "likely unsolicited mail"},
 			},
-			"speeding": [][3]string{
+			eb.ReFAST: [][3]string{ // Speeding
 				// - 450 4.2.1 The user you are trying to contact is receiving mail too quickly. Please
 				//   resend your message at a later time. If the user is able to receive mail at that
 				//   time, your message will be delivered. 
@@ -426,10 +429,10 @@ func init() {
 				[3]string{"450", "4.2.1", "is receiving mail too quickly"},
 				[3]string{"450", "4.2.1", "peak smtp relay limit exceeded for customer"},
 
-				// - 450 4.2.1 The user you are trying to contact is receiving mail at a rate that pre-
-				//   vents additional messages from being delivered. Please resend your message at a
-				//   later time. If the user is able to receive mail at that time, your message will be
-				//   delivered. For more information, visit https://support.google.com/mail/answer/6592
+				// - 450 4.2.1 The user you are trying to contact is receiving mail at a rate that
+				//   prevents additional messages from being delivered. Please resend your message
+				//   at a later time. If the user is able to receive mail at that time, your message
+				//   will be delivered. For more information, visit https://support.google.com/mail/answer/6592
 				// - https://support.google.com/mail/?p=ReceivingRatePerm
 				[3]string{"450", "4.2.1", "rate that prevents additional messages from being delivered"},
 				[3]string{"550", "5.2.1", "rate that prevents additional messages from being delivered"},
@@ -446,13 +449,13 @@ func init() {
 				[3]string{"550", "5.7.1", "daily smtp relay sending limit exceeded for"},
 				[3]string{"550", "5.7.1", "this mail has been rate limited"},
 			},
-			"suspend": [][3]string{
+			eb.ReQUIT: [][3]string{ // Suspend
 				// - 550 5.2.1 The email account that you tried to reach is inactive.
 				//   For more information, go to https://support.google.com/mail/?p=DisabledUser
 				[3]string{"550", "5.2.1", "account that you tried to reach is disabled"},
 				[3]string{"550", "5.2.1", "account that you tried to reach is inactive"},
 			},
-			"syntaxerror": [][3]string{
+			eb.ReSYNT: [][3]string{ // SyntaxERROR
 				// - 523 5.7.10 SMTP protocol violation, no commands allowed to pipeline after STARTTLS.
 				//   For more information, go to About SMTP error messages and review RFC 3207
 				//   specifications.
@@ -474,9 +477,9 @@ func init() {
 				//   messages and review RFC 5321 specifications.
 				// - https://support.google.com/mail/?p=helo
 				//
-				// - 503 5.5.1 No DATA after BDAT. A mail transaction protocol command was issued out of
-				//   sequence. For more information, go to About SMTP error messages and review RFC 3030
-				//   specifications.
+				// - 503 5.5.1 No DATA after BDAT. A mail transaction protocol command was issued
+				//   out of sequence. For more information, go to About SMTP error messages and review
+				//   RFC 3030 specifications.
 				// - https://support.google.com/a/answer/3221692
 				[3]string{"502", "5.5.1",  "too many unrecognized commands, goodbye"},
 				[3]string{"502", "5.5.1",  "unimplemented command"},
@@ -490,21 +493,21 @@ func init() {
 				[3]string{"504", "5.7.40", "xoauth is no longer supported"},
 				[3]string{"554", "5.7.0",  "too many unauthenticated commands"},
 			},
-			"systemerror": [][3]string{
+			eb.ReSYSE: [][3]string{ // SystemError
 				// About SMTP error messages, https://support.google.com/a/answer/3221692
 				[3]string{"421", "4.3.0", "temporary system problem"},
 				[3]string{"421", "4.7.0", "temporary system problem"},
 				[3]string{"421", "4.4.5", "server busy"},
 
-				// - 451 4.3.0 Multiple destination domains per transaction is unsupported. Please try
-				//   again. For more information, go to About SMTP error messages and review RFC 5321
-				//   specifications. https://support.google.com/a/answer/3221692
+				// - 451 4.3.0 Multiple destination domains per transaction is unsupported. Please
+				//   try again. For more information, go to About SMTP error messages and review
+				//   RFC 5321 specifications. https://support.google.com/a/answer/3221692
 				[3]string{"451", "4.3.0", "multiple destination domains per transaction is unsupported"},
 				[3]string{"451", "4.3.0", "mail server has temporarily rejected this message"},
 				[3]string{"451", "4.3.0", "mail server temporarily rejected message"},
 
-				// - 452 4.5.3 Domain policy size per transaction exceeded, please try this recipient in
-				//   a separate transaction. This message means the email policy size (size of policies,
+				// - 452 4.5.3 Domain policy size per transaction exceeded, please try this recipient
+				//   in a separate transaction. This message means the email policy size (size of policies,
 				//   number of policies, or both) for the recipient domain has been exceeded.
 				//   https://support.google.com/a/answer/7282433
 				[3]string{"452", "4.5.3", "domain policy size per transaction exceeded"},
@@ -514,28 +517,28 @@ func init() {
 				//   https://support.google.com/a/answer/3221692
 				[3]string{"454", "4.7.0", "cannot authenticate due to temporary system problem"},
 			},
-			"toomanyconn": [][3]string{
+			eb.ReCONN: [][3]string{ // TooManyConn
 				// - 452 4.5.3 Your message has too many recipients. For more information regarding
 				//   Google's sending limits, visit https://support.google.com/mail/answer/6592
 				//   https://support.google.com/mail/?p=TooManyRecipientsError
 				[3]string{"452", "4.5.3", "your message has too many recipients"},
 				[3]string{"550", "5.5.3", "too many recipients for this sender"},
 			},
-			"userunknown": [][3]string{
-				// - 550 5.1.1 The email account that you tried to reach does not exist. Please try dou-
-				//   ble-checking the recipient's email address for typos or unnecessary spaces.
+			eb.ReUSER: [][3]string{ // UserUnknown
+				// - 550 5.1.1 The email account that you tried to reach does not exist. Please try
+				//   double-checking the recipient's email address for typos or unnecessary spaces.
 				//   For more information, visit https://support.google.com/mail/answer/6596
 				// - https://support.google.com/mail/?p=NoSuchUser
 				[3]string{"550", "5.1.1", "the email account that you tried to reach does not exist"},
 
-				// - 553 5.1.2 We weren"t able to find the recipient domain. Please check for any spell-
-				//   ing errors, and make sure you didn"t enter any spaces, periods, or other punctua-
-				//   tion after the recipient"s email address.
+				// - 553 5.1.2 We weren"t able to find the recipient domain. Please check for any
+				//   spelling errors, and make sure you didn"t enter any spaces, periods, or other
+				//   punctuation after the recipient"s email address.
 				// - https://support.google.com/mail/?p=BadRcptDomain
 				[3]string{"553", "5.1.2", "we weren't able to find the recipient domain"},
 
-				// - 553 5.1.3 The recipient address <address> is not a valid RFC 5321 address. For more
-				//   information, go to About SMTP error messages and review RFC 5321 specifications.
+				// - 553 5.1.3 The recipient address <address> is not a valid RFC 5321 address. For
+				//   more information, go to About SMTP error messages and review RFC 5321 specifications.
 				// - https://support.google.com/a/answer/3221692
 				[3]string{"553", "5.1.3", "is not a valid rfc 5321 address"},
 			},
