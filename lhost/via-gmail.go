@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -80,12 +81,12 @@ func init() {
 			"error":   []string{"The error that the other server returned was:"},
 		}
 		messagesof := map[string][]string{
-			"expired": []string{
+			eb.ReEXPR: []string{
 				"DNS Error: Could not contact DNS servers",
 				"Delivery to the following recipient has been delayed",
 				"The recipient server did not accept our requests to connect",
 			},
-			"hostunknown": []string{
+			eb.ReHOST: []string{
 				"DNS Error: Domain name not found",
 				"DNS Error: DNS server returned answer with no data",
 			},
@@ -96,7 +97,7 @@ func init() {
 			// We recommend contacting the other email provider for further information about the
 			// cause of this error. The error that the other server returned was:
 			// 500 Remote server does not support TLS (state 6).
-			"6":  [2]string{"MAIL", "failedstarttls"},
+			"6":  [2]string{"MAIL", eb.ReTTLS},
 
 			// https://www.google.td/support/forum/p/gmail/thread?tid=08a60ebf5db24f7b&hl=en
 			// Technical details of permanent failure:
@@ -104,7 +105,7 @@ func init() {
 			// We recommend contacting the other email provider for further information about the
 			// cause of this error. The error that the other server returned was:
 			// 535 SMTP AUTH failed with the remote server. (state 8).
-			"8":  [2]string{"AUTH", "systemerror"},
+			"8":  [2]string{"AUTH", eb.ReSYSE},
 
 			// https://www.google.co.nz/support/forum/p/gmail/thread?tid=45208164dbca9d24&hl=en
 			// Technical details of temporary failure:
@@ -112,7 +113,7 @@ func init() {
 			// We recommend contacting the other email provider for further information about the
 			// cause of this error. The error that the other server returned was:
 			// 454 454 TLS missing certificate: error:0200100D:system library:fopen:Permission denied (//4.3.0) (state 9).
-			"9":  [2]string{"AUTH", "failedstarttls"},
+			"9":  [2]string{"AUTH", eb.ReTTLS},
 
 			// https://www.google.com/support/forum/p/gmail/thread?tid=5cfab8c76ec88638&hl=en
 			// Technical details of permanent failure:
@@ -120,14 +121,14 @@ func init() {
 			// We recommend contacting the other email provider for further information about the
 			// cause of this error. The error that the other server returned was:
 			// 500 Remote server does not support SMTP Authenticated Relay (state 12).
-			"12": [2]string{"AUTH", "relayingdenied"},
+			"12": [2]string{"AUTH", eb.ReRELA},
 
 			// Technical details of permanent failure:
 			// Google tried to deliver your message, but it was rejected by the recipient domain.
 			// We recommend contacting the other email provider for further information about the
 			// cause of this error. The error that the other server returned was:
 			// 550 550 5.7.1 <****@gmail.com>... Access denied (state 13).
-			"13": [2]string{"EHLO", "blocked"},
+			"13": [2]string{"EHLO", eb.ReBLOC},
 
 			// Technical details of permanent failure:
 			// Google tried to deliver your message, but it was rejected by the recipient domain.
@@ -135,7 +136,7 @@ func init() {
 			// cause of this error. The error that the other server returned was:
 			// 550 550 5.1.1 <******@*********.**>... User Unknown (state 14).
 			// 550 550 5.2.2 <*****@****.**>... Mailbox Full (state 14).
-			"14": [2]string{"RCPT", "userunknown"},
+			"14": [2]string{"RCPT", eb.ReUSER},
 
 			// https://www.google.cz/support/forum/p/gmail/thread?tid=7090cbfd111a24f9&hl=en
 			// Technical details of permanent failure:
@@ -144,7 +145,7 @@ func init() {
 			// cause of this error. The error that the other server returned was:
 			// 550 550 5.7.1 SPF unauthorized mail is prohibited. (state 15).
 			// 554 554 Error: no valid recipients (state 15).
-			"15": [2]string{"DATA", "filtered"},
+			"15": [2]string{"DATA", eb.ReFILT},
 
 			// https://www.google.com/support/forum/p/Google%20Apps/thread?tid=0aac163bc9c65d8e&hl=en
 			// Technical details of permanent failure:
@@ -153,14 +154,14 @@ func init() {
 			// cause of this error. The error that the other server returned was:
 			// 550 550 <****@***.**> No such user here (state 17).
 			// 550 550 //5.1.0 Address rejected ***@***.*** (state 17).
-			"17": [2]string{"DATA", "filtered"},
+			"17": [2]string{"DATA", eb.ReFILT},
 
 			// Technical details of permanent failure:
 			// Google tried to deliver your message, but it was rejected by the recipient domain.
 			// We recommend contacting the other email provider for further information about the
 			// cause of this error. The error that the other server returned was:
 			// 550 550 Unknown user *****@***.**.*** (state 18).
-			"18": [2]string{"DATA", "filtered"},
+			"18": [2]string{"DATA", eb.ReFILT},
 		}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
