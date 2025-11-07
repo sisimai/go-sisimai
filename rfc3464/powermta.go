@@ -8,6 +8,7 @@
 
 package rfc3464
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 
 func init() {
 	// ReturnedBy["PowerMTA"] returns a []string which is compatible with the value returned from rfc1894.Field().
@@ -25,15 +26,15 @@ func init() {
 			"x-powermta-bouncecategory": "text", // X-PowerMTA-BounceCategory: bad-mailbox
 		}
 		messagesof := map[string]string{
-			"bad-domain":          "hostunknown",
-			"bad-mailbox":         "userunknown",
-			"inactive-mailbox":    "disabled",
-			"message-expired":     "expired",
-			"no-answer-from-host": "networkerror",
-			"policy-related":      "policyviolation",
-			"quota-issues":        "mailboxfull",
-			"routing-errors":      "systemerror",
-			"spam-related":        "spamdetected",
+			"bad-domain":          eb.ReHOST, // HostUnknown
+			"bad-mailbox":         eb.ReUSER, // UserUnknown
+			"inactive-mailbox":    eb.ReQUIT, // Suspend
+			"message-expired":     eb.ReEXPR, // Expired
+			"no-answer-from-host": eb.ReNETW, // NetworkError
+			"policy-related":      eb.RePOLI, // PolicyViolation
+			"quota-issues":        eb.ReFULL, // MailboxFull
+			"routing-errors":      eb.ReSYSE, // SystemError
+			"spam-related":        eb.ReSPAM, // SpamDetected
 		}
 		lhs,rhs, _ := strings.Cut(mesg, ":") // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}
 		xfieldname := strings.ToLower(lhs)   // "final-recipient"
