@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -53,23 +54,23 @@ func init() {
 			"error":   []string{"did not reach the following recipient(s):"},
 		}
 		errorcodes := map[string][]string{
-			"userunknown":  []string{"000C05A6", /* Unknown Recipient   */ },
-			"filtered":     []string{"000C0595", /* Ambiguous Recipient */ },
-			"systemerror":  []string{
+			eb.ReUSER: []string{"000C05A6", /* Unknown Recipient   */ }, // UserUnknown
+			eb.ReFILT: []string{"000C0595", /* Ambiguous Recipient */ }, // Filtered
+			eb.ReSYSE: []string{ // SystemError
 				"00010256", // Too many recipients.
 				"000D06B5", // No proxy for recipient (non-smtp mail?)
 			},
-			"networkerror": []string{
+			eb.ReNETW: []string{ // NetworkError
 				"00120270", // Too Many Hops
 			},
-			"contenterror": []string{
+			eb.ReBODY: []string{ // ContentError
 				"00050311", // Conversion to Internet format failed
 				"000502CC", // Conversion to Internet format failed
 			},
-			"securityerror":[]string{
+			eb.ReSECU: []string{ // SecurityError
 				"000B0981", // 502 Server does not support AUTH
 			},
-			"onhold":       []string{
+			eb.Re___1:       []string{ // OnHold
 				"000B099C", // Host Unknown, Message exceeds size limit, ...
 				"000B09AA", // Unable to relay for, Message exceeds size limit,...
 				"000B09B6", // Error messages by remote MTA

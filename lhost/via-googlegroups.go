@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -61,7 +62,7 @@ func init() {
 		receivedby := []string{""}; if len(bf.Headers["received"]) > 0 { receivedby = bf.Headers["received"] }
 		recordwide := [3]string{
 			rfc5322.Received(receivedby[0])[1], // rhost
-			"onhold",                           // reason
+			eb.Re___1,                          // reason
 			moji.Sweep(issuedcode),             // diagnosis
 		}
 
@@ -70,8 +71,8 @@ func init() {
 			// * The owner of the group may have removed this group.
 			// * You may need to join the group before receiving permission to post.
 			// * This group may not be open to posting.
-			case strings.Count(emailparts[0], "\n *") == 4: recordwide[1] = "rejected"
-			case strings.Count(emailparts[0], "\n*")  == 4: recordwide[1] = "rejected"
+			case strings.Count(emailparts[0], "\n *") == 4: recordwide[1] = eb.ReREJE
+			case strings.Count(emailparts[0], "\n*")  == 4: recordwide[1] = eb.ReREJE
 		}
 
 		for _, e := range strings.Split(bf.Headers["x-failed-recipients"][0], ",") {

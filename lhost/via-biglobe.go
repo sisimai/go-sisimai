@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -38,8 +39,8 @@ func init() {
 			"error":   []string{"   ----- Non-delivered information -----"},
 		}
 		messagesof := map[string][]string{
-			"filtered":    []string{"Mail Delivery Failed... User unknown"},
-			"mailboxfull": []string{"The number of messages in recipient's mailbox exceeded the local limit."},
+			eb.ReFILT: []string{"Mail Delivery Failed... User unknown"},
+			eb.ReFULL: []string{"The number of messages in recipient's mailbox exceeded the local limit."},
 		}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]

@@ -10,6 +10,7 @@
 package lhost
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -104,14 +105,14 @@ func init() {
 		onholdpair := []string{" does not like recipient.", "this message has been in the queue too long."}
 		failonldap := map[string][]string{
 			// qmail-ldap-1.03-20040101.patch:19817 - 19866
-			"exceedlimit": []string{"The message exeeded the maximum size the user accepts"}, // 5.2.3
-			"suspend":     []string{
+			eb.ReXLIM: []string{"The message exeeded the maximum size the user accepts"}, // 5.2.3
+			eb.ReQUIT: []string{
 				"Mailaddress is administrativly disabled",
 				"Mailaddress is administrativley disabled",
 				"Mailaddress is administratively disabled",
 				"Mailaddress is administrativeley disabled",
 			},  // 5.2.1
-			"systemerror": []string{
+			eb.ReSYSE: []string{
 				"Automatic homedir creator crashed",                // 4.3.0
 				"Illegal value in LDAP attribute",                  // 5.3.5
 				"LDAP attribute is not given but mandatory",        // 5.3.5
@@ -124,34 +125,34 @@ func init() {
 				"Unable to contact LDAP server",                    // 4.4.3
 				"Unable to login into LDAP server, bad credentials",// 4.4.3
 			},
-			"userunknown": []string{"Sorry, no mailbox here by that name"}, // 5.1.1
+			eb.ReUSER: []string{"Sorry, no mailbox here by that name"}, // 5.1.1
 		}
 		messagesof := map[string][]string{
 			// qmail-local.c:589|  strerr_die1x(100,"Sorry, no mailbox here by that name. (#5.1.1)");
 			// qmail-remote.c:253|  out("s"); outhost(); out(" does not like recipient.\n");
-			"hostunknown": []string{"Sorry, I couldn't find any host "},
+			eb.ReHOST: []string{"Sorry, I couldn't find any host "},
 			// error_str.c:192|  X(EDQUOT,"disk quota exceeded")
-			"mailboxfull": []string{"disk quota exceeded"},
+			eb.ReFULL: []string{"disk quota exceeded"},
 			// qmail-qmtpd.c:233| ... result = "Dsorry, that message size exceeds my databytes limit (#5.3.4)";
 			// qmail-smtpd.c:391| ... out("552 sorry, that message size exceeds my databytes limit (#5.3.4)\r\n"); return;
-			"mesgtoobig":  []string{"Message size exceeds fixed maximum message size:"},
+			eb.ReSIZE: []string{"Message size exceeds fixed maximum message size:"},
 			// qmail-remote.c:68|  Sorry, I couldn't find any host by that name. (#4.1.2)\n"); zerodie();
 			// qmail-remote.c:78|  Sorry, I couldn't find any host named ");
-			"networkerror": []string{
+			eb.ReNETW: []string{
 				"Sorry, I wasn't able to establish an SMTP connection",
 				"Sorry. Although I'm listed as a best-preference MX or A for that host",
 			},
-			"notaccept":   []string{
+			eb.Re00MX: []string{
 				// notqmail 1.08 returns the following error message when the destination MX is NullMX
 				"Sorry, I couldn't find a mail exchanger or IP address",
 			},
-			"systemerror": []string{
+			eb.ReSYSE: []string{
 				"bad interpreter: No such file or directory",
 				"system error",
 				"Unable to",
 			},
-			"systemfull":  []string{"Requested action not taken: mailbox unavailable (not enough free space)"},
-			"userunknown": []string{"no mailbox here by that name"},
+			eb.ReSYSF: []string{"Requested action not taken: mailbox unavailable (not enough free space)"},
+			eb.ReUSER: []string{"no mailbox here by that name"},
 		}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
@@ -220,13 +221,13 @@ func init() {
 
 			if e.Command == "EHLO" || e.Command == "HELO" {
 				// HELO | Connected to 192.0.2.135 but my name was rejected.
-				e.Reason = "blocked"
+				e.Reason = eb.ReBLOC
 
 			} else {
 				// The error message includes any of patterns defined in the variable avobe
 				if moji.Aligned(e.Diagnosis, onholdpair) {
 					// Need to be matched with error message pattens defined in reason/*
-					e.Reason = "onhold"
+					e.Reason = eb.Re___1
 
 				} else {
 					FINDREASON: for _, f := range []string{anotherone[j], e.Diagnosis} {
@@ -242,7 +243,7 @@ func init() {
 							// The key name is a bounce reason name
 							if moji.ContainsAny(f, failonldap[r]) { e.Reason = r; break FINDREASON }
 						}
-						if strings.Contains(f, hasexpired) { e.Reason = "expired" }
+						if strings.Contains(f, hasexpired) { e.Reason = eb.ReEXPR }
 					}
 				}
 			}

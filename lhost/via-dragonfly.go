@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -43,7 +44,7 @@ func init() {
 			"message": []string{"This is the DragonFly Mail Agent "},
 		}
 		messagesof := map[string][]string{
-			"expired": []string{
+			eb.ReEXPR: []string{
 				// https://github.com/corecode/dma/blob/master/dma.c#L370C1-L374C19
 				// dma.c:370| if (gettimeofday(&now, NULL) == 0 &&
 				// dma.c:371|     (now.tv_sec - st.st_mtim.tv_sec > MAX_TIMEOUT)) {
@@ -54,7 +55,7 @@ func init() {
 				// dma.c:376| }
 				"Could not deliver for the last ",
 			},
-			"hostunknown": []string{
+			eb.ReHOST: []string{
 				// net.c:663| snprintf(errmsg, sizeof(errmsg), "DNS lookup failure: host %s not found", host);
 				"DNS lookup failure: host ",
 			},

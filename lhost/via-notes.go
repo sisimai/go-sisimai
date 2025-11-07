@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -28,8 +29,8 @@ func init() {
 		boundaries := []string{"------- Returned Message --------"}
 		startingof := map[string][]string{"message": []string{"------- Failure Reasons "} }
 		messagesof := map[string][]string{
-			"networkerror": []string{"Message has exceeded maximum hop count"},
-			"userunknown":  []string{
+			eb.ReNETW: []string{"Message has exceeded maximum hop count"},
+			eb.ReUSER: []string{
 				"User not listed in public Name & Address Book",
 				"ディレクトリのリストにありません",
 			},

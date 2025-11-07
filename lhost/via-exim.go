@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -107,11 +108,11 @@ func init() {
 		messagesof := map[string][]string{
 			// find exim/ -type f -exec grep 'message = US' {} /dev/null \;
 			// route.c:1158|  DEBUG(D_uid) debug_printf("getpwnam() returned NULL (user not found)\n");
-			"userunknown": []string{"user not found"},
+			eb.ReUSER: []string{"user not found"},
 			// transports/smtp.c:3524|  addr->message = US"all host address lookups failed permanently";
 			// routers/dnslookup.c:331|  addr->message = US"all relevant MX records point to non-existent hosts";
 			// route.c:1826|  uschar *message = US"Unrouteable address";
-			"hostunknown": []string{
+			eb.ReHOST: []string{
 				"all host address lookups failed permanently",
 				"all relevant MX records point to non-existent hosts",
 				"Unrouteable address",
@@ -119,13 +120,13 @@ func init() {
 			// transports/appendfile.c:2567|  addr->user_message = US"mailbox is full";
 			// transports/appendfile.c:3049|  addr->message = string_sprintf("mailbox is full "
 			// transports/appendfile.c:3050|  "(quota exceeded while writing to file %s)", filename);
-			"mailboxfull": []string{
+			eb.ReFULL: []string{
 				"mailbox is full",
 				"error: quota exceed",
 			},
 			// routers/dnslookup.c:328|  addr->message = US"an MX or SRV record indicated no SMTP service";
 			// transports/smtp.c:3502|  addr->message = US"no host found for existing SMTP connection";
-			"notaccept": []string{
+			eb.Re00MX: []string{ // NotAccept
 				"an MX or SRV record indicated no SMTP service",
 				"no host found for existing SMTP connection",
 			},
@@ -133,7 +134,7 @@ func init() {
 			// parser.c:701| if(bracket_count++ > 5) FAILED(US"angle-brackets nested too deep");
 			// parser.c:738| FAILED(US"domain missing in source-routed address");
 			// parser.c:747| : string_sprintf("malformed address: %.32s may not follow %.*s",
-			"syntaxerror": []string{
+			eb.ReSYNT: []string{ // SyntaxError
 				"angle-brackets nested too deep",
 				`expected word or "<"`,
 				"domain missing in source-routed address",
@@ -142,14 +143,14 @@ func init() {
 			// deliver.c:5614|  addr->message = US"delivery to file forbidden";
 			// deliver.c:5624|  addr->message = US"delivery to pipe forbidden";
 			// transports/pipe.c:1156|  addr->user_message = US"local delivery failed";
-			"systemerror": []string{
+			eb.ReSYSE: []string{ // SystemError
 				"delivery to file forbidden",
 				"delivery to pipe forbidden",
 				"local delivery failed",
 				"LMTP error after ",
 			},
 			// deliver.c:5425|  new->message = US"Too many \"Received\" headers - suspected mail loop";
-			"contenterror": []string{`Too many "Received" headers`},
+			eb.ReBODY: []string{`Too many "Received" headers`},
 		}
 		delayedfor := []string{
 			// retry.c:902|  addr->message = (addr->message == NULL)? US"retry timeout exceeded" :
@@ -424,8 +425,8 @@ func init() {
 
 				switch e.Command {
 					// Detect the bounce reason by using the SMTP command
-					case "EHLO", "HELO": e.Reason = "blocked" // HELO | Connected to 192.0.2.135 but my name was rejected.
-					case "MAIL":         e.Reason = "onhold"  // MAIL | Connected to 192.0.2.135 but sender was rejected.
+					case "EHLO", "HELO": e.Reason = eb.ReBLOC // HELO | Connected to 192.0.2.135 but my name was rejected.
+					case "MAIL":         e.Reason = eb.Re___1 // MAIL | Connected to 192.0.2.135 but sender was rejected.
 				default:
 					// Find any error message string defined in "messagesof" from e.Diagnosis
 					for r := range messagesof {
@@ -437,11 +438,11 @@ func init() {
 						// The reason is "expired", or "mailererror"
 						if moji.ContainsAny(e.Diagnosis, delayedfor) == true {
 							// The reason is "expired"
-							e.Reason = "expired"
+							e.Reason = eb.ReEXPR
 
 						} else {
 							// The reason is "mailererror"
-							if strings.Contains(e.Diagnosis, "pipe to |") { e.Reason = "mailererror" }
+							if strings.Contains(e.Diagnosis, "pipe to |") { e.Reason = eb.ReUNIX }
 						}
 					}
 				}
@@ -462,7 +463,7 @@ func init() {
 			cs := status.Find(e.Diagnosis, cr)
 			cv := ""
 
-			if strings.HasPrefix(cr, "4") || e.Reason == "expired" || e.Reason == "mailboxfull" {
+			if strings.HasPrefix(cr, "4") || e.Reason == eb.ReEXPR || e.Reason == eb.ReUNIX {
 				// Set the pseudo status code as a temporary error
 				cv = status.Code(e.Reason, true)
 

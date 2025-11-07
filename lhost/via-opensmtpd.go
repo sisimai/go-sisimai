@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -65,15 +66,15 @@ func init() {
 		messagesof := map[string][]string{
 			// smtpd/queue.c:221|  envelope_set_errormsg(&evp, "Envelope expired");
 			// smtpd/mta.c:1013|  relay->failstr = "Could not retrieve credentials";
-			"expired":       []string{"Envelope expired"},
-			"securityerror": []string{"Could not retrieve credentials"},
-			"hostunknown":   []string{
+			eb.ReEXPR: []string{"Envelope expired"},
+			eb.ReSECU: []string{"Could not retrieve credentials"},
+			eb.ReHOST: []string{
 				// smtpd/mta.c:976|  relay->failstr = "Invalid domain name";
 				// smtpd/mta.c:980|  relay->failstr = "Domain does not exist";
 				"Invalid domain name",
 				"Domain does not exist",
 			},
-			"networkerror":  []string{
+			eb.ReNETW: []string{
 				//  smtpd/mta.c:972|  relay->failstr = "Temporary failure in MX lookup";
 				"Address family mismatch on destination MXs",
 				"All routes to destination blocked",
@@ -85,7 +86,7 @@ func init() {
 				"No valid route to destination",
 				"Temporary failure in MX lookup",
 			},
-			"notaccept": []string{
+			eb.Re00MX: []string{
 				// smtp/mta.c:1085|  relay->failstr = "Destination seem to reject all mails";
 				"Destination seem to reject all mails",
 				"No MX found for domain",

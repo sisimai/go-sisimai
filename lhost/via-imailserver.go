@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -34,12 +35,12 @@ func init() {
 		boundaries := []string{"Original message follows."}
 		startingof := map[string][]string{"error": []string{"Body of message generated response:"}}
 		messagesof := map[string][]string{
-			"hostunknown":   []string{"Unknown host"},
-			"userunknown":   []string{"Unknown user", "Invalid final delivery userid"},
-			"mailboxfull":   []string{"User mailbox exceeds allowed size"},
-			"virusdetected": []string{"Requested action not taken: virus detected"},
-			"spamdetected":  []string{"Blacklisted URL in message"},
-			"expired":       []string{"Delivery failed "},
+			eb.ReHOST: []string{"Unknown host"},
+			eb.ReUSER: []string{"Unknown user", "Invalid final delivery userid"},
+			eb.ReFULL: []string{"User mailbox exceeds allowed size"},
+			eb.ReEXEC: []string{"Requested action not taken: virus detected"},
+			eb.ReSPAM: []string{"Blacklisted URL in message"},
+			eb.ReEXPR: []string{"Delivery failed "},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)

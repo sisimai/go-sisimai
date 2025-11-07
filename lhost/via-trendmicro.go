@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -85,7 +86,7 @@ func init() {
 			// Tidy up error messages in e.Diagnosis, set the value of e.Reason
 			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
-			if strings.Contains(e.Diagnosis, "Unable to deliver") { e.Reason = "userunknown" }
+			if strings.Contains(e.Diagnosis, "Unable to deliver") { e.Reason = eb.ReUSER }
 		}
 
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}

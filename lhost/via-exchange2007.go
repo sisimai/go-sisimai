@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -62,19 +63,19 @@ func init() {
 			},
 		}
 		ndrsubject := map[string]string{
-			"SMTPSEND.DNS.NonExistentDomain": "hostunknown",   // 554 5.4.4 SMTPSEND.DNS.NonExistentDomain
-			"SMTPSEND.DNS.MxLoopback":        "networkerror",  // 554 5.4.4 SMTPSEND.DNS.MxLoopback
-			"RESOLVER.ADR.BadPrimary":        "systemerror",   // 550 5.2.0 RESOLVER.ADR.BadPrimary
-			"RESOLVER.ADR.RecipNotFound":     "userunknown",   // 550 5.1.1 RESOLVER.ADR.RecipNotFound
-			"RESOLVER.ADR.RecipientNotFound": "userunknown",   // 550 5.1.1 RESOLVER.ADR.RecipientNotFound
-			"RESOLVER.ADR.ExRecipNotFound":   "userunknown",   // 550 5.1.1 RESOLVER.ADR.ExRecipNotFound
-			"RESOLVER.ADR.RecipLimit":        "toomanyconn",   // 550 5.5.3 RESOLVER.ADR.RecipLimit
-			"RESOLVER.ADR.InvalidInSmtp":     "systemerror",   // 550 5.1.0 RESOLVER.ADR.InvalidInSmtp
-			"RESOLVER.ADR.Ambiguous":         "systemerror",   // 550 5.1.4 RESOLVER.ADR.Ambiguous, 420 4.2.0 RESOLVER.ADR.Ambiguous
-			"RESOLVER.RST.AuthRequired":      "securityerror", // 550 5.7.1 RESOLVER.RST.AuthRequired
-			"RESOLVER.RST.NotAuthorized":     "rejected",      // 550 5.7.1 RESOLVER.RST.NotAuthorized
-			"RESOLVER.RST.RecipSizeLimit":    "exceedlimit",   // 550 5.2.3 RESOLVER.RST.RecipSizeLimit
-			"QUEUE.Expired":                  "expired",       // 550 4.4.7 QUEUE.Expired
+			"SMTPSEND.DNS.NonExistentDomain": eb.ReHOST, // 554 5.4.4 SMTPSEND.DNS.NonExistentDomain
+			"SMTPSEND.DNS.MxLoopback":        eb.ReNETW, // 554 5.4.4 SMTPSEND.DNS.MxLoopback
+			"RESOLVER.ADR.BadPrimary":        eb.ReSYSE, // 550 5.2.0 RESOLVER.ADR.BadPrimary
+			"RESOLVER.ADR.RecipNotFound":     eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.RecipNotFound
+			"RESOLVER.ADR.RecipientNotFound": eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.RecipientNotFound
+			"RESOLVER.ADR.ExRecipNotFound":   eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.ExRecipNotFound
+			"RESOLVER.ADR.RecipLimit":        eb.ReCONN, // 550 5.5.3 RESOLVER.ADR.RecipLimit
+			"RESOLVER.ADR.InvalidInSmtp":     eb.ReSYSE, // 550 5.1.0 RESOLVER.ADR.InvalidInSmtp
+			"RESOLVER.ADR.Ambiguous":         eb.ReSYSE, // 550 5.1.4 RESOLVER.ADR.Ambiguous, 420 4.2.0 RESOLVER.ADR.Ambiguous
+			"RESOLVER.RST.AuthRequired":      eb.ReSECU, // 550 5.7.1 RESOLVER.RST.AuthRequired
+			"RESOLVER.RST.NotAuthorized":     eb.ReREJE, // 550 5.7.1 RESOLVER.RST.NotAuthorized
+			"RESOLVER.RST.RecipSizeLimit":    eb.ReXLIM, // 550 5.2.3 RESOLVER.RST.RecipSizeLimit
+			"QUEUE.Expired":                  eb.ReEXPR, // 550 4.4.7 QUEUE.Expired
 		}
 		if moji.ContainsAny(bf.Headers["subject"][0], emailtitle) { proceedsto++ }
 		if moji.ContainsAny(bf.Headers["from"][0], mailsender)    { proceedsto++ }
