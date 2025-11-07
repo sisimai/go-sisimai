@@ -12,8 +12,9 @@ import "time"
 import "slices"
 import "strings"
 import "net/mail"
-import "libsisimai.org/sisimai/v5/siba"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/lda"
+import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rhost"
 import "libsisimai.org/sisimai/v5/reason"
@@ -61,10 +62,10 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		// Create parameters for siba.Fact
 		// - Skip if the value of "recipient" length is 4 or shorter
 		// - Skip if the value of "deliverystatus" begins with "2." such as 2.1.5
-		// - Skip if the value of "reason" is "vacation"
+		// - Skip if the value of "reason" is Vacation
 		if rfc5322.IsEmailAddress(e.Recipient) == false                { continue RISEOF }
 		if args.Delivered != true && strings.HasPrefix(e.Status, "2.") { continue RISEOF }
-		if args.Vacation  != true && e.Reason == "vacation"            { continue RISEOF }
+		if args.Vacation  != true && e.Reason == eb.ReAWAY             { continue RISEOF }
 
 		addrs := map[string][3]string{} // Addresser, and Recipient
 		piece := map[string]string{}    // Each element except email addresses
@@ -244,8 +245,8 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		piece["diagnostictype"] = e.Spec
 
 		if e.Spec == "" {
-			if piece["reason"] == "mailererror"                               { piece["diagnostictype"] = "X-UNIX" }
-			if piece["reason"] != "feedback" && piece["reason"] != "vacation" { piece["diagnostictype"] = "SMTP"   }
+			if piece["reason"] == eb.ReUNIX                                 { piece["diagnostictype"] = "X-UNIX" }
+			if piece["reason"] != eb.ReFEED && piece["reason"] != eb.ReAWAY { piece["diagnostictype"] = "SMTP"   }
 		}
 
 		// Set other values returned from message.Rise()
@@ -311,19 +312,19 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		REASON: for reason.ShouldBeRetried(thing.Reason) == true {
 			// Decide the reason of the email bounce
 			// The value of thing.Reason is empty or is needed to check with other values again
-			re := thing.Reason;        if re == ""              { re = "undefined"                }
+			re := thing.Reason;        if re == ""              { re = eb.Re___0                  }
 			or := lda.Find(&thing);    if reason.IsExplicit(or) { thing.Reason = or; break REASON }
 			or  = rhost.Find(&thing);  if reason.IsExplicit(or) { thing.Reason = or; break REASON }
 			or  = reason.Find(&thing); if reason.IsExplicit(or) { thing.Reason = or; break REASON }
 
-			if thing.DiagnosticCode != "" { re = "onhold" }
+			if thing.DiagnosticCode != "" { re = eb.Re___1 }
 			thing.Reason = re; break REASON
 		}
 
 		{	// HARDBOUNCE: Set the value of "hardbounce", default value of "hardbounce" is false
-			if slices.Contains([]string{"delivered", "feedback", "vacation"}, thing.Reason) {
-				// Delete the value of ReplyCode when the Reason is "feedback" or "vacation"
-				if thing.Reason != "delivered" { thing.ReplyCode = "" }
+			if slices.Contains([]string{eb.ReSENT, eb.ReFEED, eb.ReAWAY}, thing.Reason) {
+				// Delete the value of ReplyCode when the Reason is Feedback or Vacation.
+				if thing.Reason != eb.ReSENT { thing.ReplyCode = "" }
 
 			} else {
 				// The Reason is not "delivered", or "feedback", or "vacation"
@@ -367,8 +368,8 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 { thing.Action = ox[2] }
 			}
 			switch thing.Reason {
-				case "delivered": thing.Action = "delivered"
-				case "expired":   thing.Action = "delayed"
+				case eb.ReSENT: thing.Action = "delivered"
+				case eb.ReEXPR: thing.Action = "delayed"
 			}
 			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed" }
 		}
@@ -384,6 +385,9 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 
 		// Feedback-ID: 1.us-west-2.QHuyeCQrGtIIMGKQfVdUhP9hCQR2LglVOrRamBc+Prk=:AmazonSES
 		if len(rfc822data["feedback-id"]) > 0 { thing.FeedbackID = rfc822data["feedback-id"][0] }
+
+		// Convert the value of Reason to the lower-cased name such as "mailboxfull".
+		thing.Reason = strings.ToLower(thing.Reason)
 
 		listoffact = append(listoffact, thing)
 	}
