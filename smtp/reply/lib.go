@@ -91,6 +91,7 @@ package reply
 //
 import "strconv"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/moji"
 
 var replycode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "334", "354"}
@@ -101,28 +102,28 @@ var replycode5 = []string{
 }
 var codeofsmtp = map[string][]string{"2": replycode2, "4": replycode4, "5": replycode5}
 var associated = map[string][]string{
-	"422": []string{"AUTH",     "4.7.12",  "securityerror"}, // RFC5238
-	"432": []string{"AUTH",     "4.7.12",  "securityerror"}, // RFC4954, RFC5321
-	"451": []string{"",         "",        "systemerror"},   // RFC2465, RFC5321
-	"452": []string{"",         "",        "systemfull"},    // RFC5321
-	"454": []string{"AUTH",     "4.7.0",   "securityerror"}, // RFC3207, 4954
-	"455": []string{"",         "",        "syntaxerror"},   // RFC5321
-	"500": []string{"",         "",        "syntaxerror"},   // RFC5321
-	"501": []string{"",         "",        "syntaxerror"},   // RFC5321
-	"502": []string{"",         "",        "syntaxerror"},   // RFC5321
-	"503": []string{"",         "",        "syntaxerror"},   // RFC5321
-	"504": []string{"",         "",        "syntaxerror"},   // RFC5321
-	"521": []string{"CONN",     "",        "notaccept"},     // RFC7504
-	"523": []string{"AUTH",     "5.7.10",  "securityerror"}, // RFC5248
-	"524": []string{"AUTH",     "5.7.11",  "securityerror"}, // RFC5248
-	"525": []string{"AUTH",     "5.7.13",  "securityerror"}, // RFC5248
-	"534": []string{"AUTH",     "5.7.9",   "securityerror"}, // RFC4954, RFC5248
-	"535": []string{"AUTH",     "5.7.8",   "securityerror"}, // RFC4954, RFC5248
-	"538": []string{"AUTH",     "5.7.11",  "securityerror"}, // RFC4954, RFC5248
-	"551": []string{"",         "",        "hasmoved"},      // RFC5321, RFC5336, RFC6531
-	"552": []string{"",         "",        "mailboxfull"},   // RFC5321
-	"555": []string{"",         "",        "syntaxerror"},   // RFC5321
-	"556": []string{"RCPT",     "",        "notaccept"},     // RFC7504
+	"422": []string{"AUTH",     "4.7.12",  eb.ReSECU}, // RFC5238
+	"432": []string{"AUTH",     "4.7.12",  eb.ReSECU}, // RFC4954, RFC5321
+	"451": []string{"",         "",        eb.ReSYSE}, // RFC2465, RFC5321
+	"452": []string{"",         "",        eb.ReSYSF}, // RFC5321
+	"454": []string{"AUTH",     "4.7.0",   eb.ReSECU}, // RFC3207, RFC4954
+	"455": []string{"",         "",        eb.ReSYNT}, // RFC5321
+	"500": []string{"",         "",        eb.ReSYNT}, // RFC5321
+	"501": []string{"",         "",        eb.ReSYNT}, // RFC5321
+	"502": []string{"",         "",        eb.ReSYNT}, // RFC5321
+	"503": []string{"",         "",        eb.ReSYNT}, // RFC5321
+	"504": []string{"",         "",        eb.ReSYNT}, // RFC5321
+	"521": []string{"CONN",     "",        eb.Re00MX}, // RFC7504
+	"523": []string{"AUTH",     "5.7.10",  eb.ReSECU}, // RFC5248
+	"524": []string{"AUTH",     "5.7.11",  eb.ReSECU}, // RFC5248
+	"525": []string{"AUTH",     "5.7.13",  eb.ReSECU}, // RFC5248
+	"534": []string{"AUTH",     "5.7.9",   eb.ReSECU}, // RFC4954, RFC5248
+	"535": []string{"AUTH",     "5.7.8",   eb.ReSECU}, // RFC4954, RFC5248
+	"538": []string{"AUTH",     "5.7.11",  eb.ReSECU}, // RFC4954, RFC5248
+	"551": []string{"",         "",        eb.ReMOVE}, // RFC5321, RFC5336, RFC6531
+	"552": []string{"",         "",        eb.ReFULL}, // RFC5321
+	"555": []string{"",         "",        eb.ReSYNT}, // RFC5321
+	"556": []string{"RCPT",     "",        eb.Re00MX}, // RFC7504
 }
 
 // AssociatedWith returns a slice associated with the SMTP reply code of the argument
