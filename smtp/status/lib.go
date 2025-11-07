@@ -10,7 +10,9 @@
 // Package "smtp/status" provides functions related to SMTP Status codes such as 4.2.2, 5.1.1.
 // http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
 package status
+
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 
 /* http://www.iana.org/assignments/smtp-enhanced-status-codes/smtp-enhanced-status-codes.xhtml
 ---------------------------------------------------------------------------------------------------
@@ -494,74 +496,74 @@ func Code(name string, temp bool) string {
 	if len(name) < 6 { return "" }
 
 	codetable0 := map[string]string{
-		"authfailure":     "5.0.926",
-		"badreputation":   "5.0.975",
-		"blocked":         "5.0.971",
-		"contenterror":    "5.0.960",
-		"exceedlimit":     "5.0.923",
-		"expired":         "5.0.947",
-		"failedstarttls":  "5.0.976",
-		"filtered":        "5.0.910",
-		"hasmoved":        "5.0.916",
-		"hostunknown":     "5.0.912",
-		"mailboxfull":     "5.0.922",
-		"mailererror":     "5.0.939",
-		"mesgtoobig":      "5.0.934",
-		"networkerror":    "5.0.944",
-		"norelaying":      "5.0.909",
-		"notaccept":       "5.0.932",
-		"notcompliantrfc": "5.0.974",
-		"onhold":          "5.0.901",
-		"policyviolation": "5.0.972",
-		"rejected":        "5.0.918",
-		"requireptr":      "5.0.973",
-		"securityerror":   "5.0.970",
-		"spamdetected":    "5.0.980",
-		"speeding":        "5.0.946",
-		"suppressed":      "5.0.903",
-		"suspend":         "5.0.921",
-		"systemerror":     "5.0.930",
-		"systemfull":      "5.0.931",
-		"syntaxerror":     "5.0.902",
-		"toomanyconn":     "5.0.945",
-		"userunknown":     "5.0.911",
-		"undefined":       "5.0.900",
-		"virusdetected":   "5.0.981",
+		eb.ReAUTH: "5.0.926",
+		eb.ReREPU: "5.0.975",
+		eb.ReBLOC: "5.0.971",
+		eb.ReBODY: "5.0.960",
+		eb.ReXLIM: "5.0.923",
+		eb.ReEXPR: "5.0.947",
+		eb.ReTTLS: "5.0.976",
+		eb.ReFILT: "5.0.910",
+		eb.ReMOVE: "5.0.916",
+		eb.ReHOST: "5.0.912",
+		eb.ReFULL: "5.0.922",
+		eb.ReUNIX: "5.0.939",
+		eb.ReSIZE: "5.0.934",
+		eb.ReNETW: "5.0.944",
+		eb.ReRELA: "5.0.909",
+		eb.Re00MX: "5.0.932",
+		eb.ReNRFC: "5.0.974",
+		eb.Re___1: "5.0.901",
+		eb.RePOLI: "5.0.972",
+		eb.ReREJE: "5.0.918",
+		eb.ReQPTR: "5.0.973",
+		eb.ReSECU: "5.0.970",
+		eb.ReSPAM: "5.0.980",
+		eb.ReFAST: "5.0.946",
+		eb.ReSUPP: "5.0.903",
+		eb.ReQUIT: "5.0.921",
+		eb.ReSYSE: "5.0.930",
+		eb.ReSYSF: "5.0.931",
+		eb.ReSYNT: "5.0.902",
+		eb.ReCONN: "5.0.945",
+		eb.ReUSER: "5.0.911",
+		eb.Re___0: "5.0.900",
+		eb.ReEXEC: "5.0.981",
 	}
 	codetable1 := map[string]string{
-		"authfailure":     "4.0.926",
-		"badreputation":   "4.0.975",
-		"blocked":         "4.0.971",
-		"contenterror":    "4.0.960",
-		"exceedlimit":     "4.0.923",
-		"expired":         "4.0.947",
-		"failedstarttls":  "4.0.976",
-		"filtered":        "4.0.924",
-	//	"hasmoved":        "4.0.916",
-	//	"hostunknown":     "4.0.912",
-		"mailboxfull":     "4.0.922",
-		"mailererror":     "4.0.939",
-		"mesgtoobig":      "4.0.934",
-		"networkerror":    "4.0.944",
-		"norelaying":      "4.0.909",
-		"notaccept":       "4.0.932",
-		"notcompliantrfc": "4.0.974",
-		"onhold":          "4.0.901",
-		"policyviolation": "4.0.972",
-		"rejected":        "4.0.918",
-		"requireptr":      "4.0.973",
-		"securityerror":   "4.0.970",
-		"spamdetected":    "4.0.980",
-		"speeding":        "4.0.946",
-		"suppressed":      "4.0.903",
-		"suspend":         "4.0.921",
-		"systemerror":     "4.0.930",
-		"systemfull":      "4.0.931",
-		"syntaxerror":     "4.0.902",
-		"toomanyconn":     "4.0.945",
-	//	"userunknown":     "4.0.911",
-		"undefined":       "4.0.900",
-		"virusdetected":   "4.0.981",
+		eb.ReAUTH: "4.0.926",
+		eb.ReREPU: "4.0.975",
+		eb.ReBLOC: "4.0.971",
+		eb.ReBODY: "4.0.960",
+		eb.ReXLIM: "4.0.923",
+		eb.ReEXPR: "4.0.947",
+		eb.ReTTLS: "4.0.976",
+		eb.ReFILT: "4.0.924",
+	//	eb.ReMOVE: "4.0.916",
+	//	eb.ReHOST: "4.0.912",
+		eb.ReFULL: "4.0.922",
+		eb.ReUNIX: "4.0.939",
+		eb.ReSIZE: "4.0.934",
+		eb.ReNETW: "4.0.944",
+		eb.ReRELA: "4.0.909",
+		eb.Re00MX: "4.0.932",
+		eb.ReNRFC: "4.0.974",
+		eb.Re___1: "4.0.901",
+		eb.RePOLI: "4.0.972",
+		eb.ReREJE: "4.0.918",
+		eb.ReQPTR: "4.0.973",
+		eb.ReSECU: "4.0.970",
+		eb.ReSPAM: "4.0.980",
+		eb.ReFAST: "4.0.946",
+		eb.ReSUPP: "4.0.903",
+		eb.ReQUIT: "4.0.921",
+		eb.ReSYSE: "4.0.930",
+		eb.ReSYSF: "4.0.931",
+		eb.ReSYNT: "4.0.902",
+		eb.ReCONN: "4.0.945",
+	//	eb.ReUSER: "4.0.911",
+		eb.Re___0: "4.0.900",
+		eb.ReEXEC: "4.0.981",
 	}
 
 	if temp == true { return codetable1[name] }
@@ -577,117 +579,117 @@ func Name(code string) string {
 	if len(code) < 5 || Test(code) == false { return "" }
 
 	standardcr := map[string]string{
-		"2.1.5":  "delivered",			// Successfully delivered
+		"2.1.5":  eb.ReSENT, // Successfully delivered
 	// --------------------------------------------------------------------------------------------
-		"4.1.6":  "hasmoved",			// Destination mailbox has moved, No forwarding address
-		"4.1.7":  "rejected",			// Bad sender"s mailbox address syntax
-		"4.1.8":  "rejected",			// Bad sender"s system address
-		"4.1.9":  "systemerror",		// Message relayed to non-compliant mailer
-		"4.2.1":  "blocked",			// Mailbox disabled, not accepting messages
-		"4.2.2":  "mailboxfull",		// Mailbox full
-		"4.2.3":  "exceedlimit",		// Message length exceeds administrative limit
-		"4.2.4":  "filtered",			// Mailing list expansion problem
-	//	"4.3.0":  "systemerror",		// Other or undefined mail system status
-		"4.3.1":  "systemfull",			// Mail system full
-		"4.3.2":  "notaccept",			// System not accepting network messages
-		"4.3.3":  "systemerror",		// System not capable of selected features
-		"4.3.5":  "systemerror",		// System incorrectly configured
-	//	"4.4.0":  "networkerror",		// Other or undefined network or routing status
-		"4.4.1":  "expired",			// No answer from host
-		"4.4.2":  "networkerror",		// Bad connection
-		"4.4.3":  "systemerror",		// Directory server failure
-		"4.4.4":  "networkerror",		// Unable to route
-		"4.4.5":  "systemfull",			// Mail system congestion
-		"4.4.6":  "networkerror",		// Routing loop detected
-		"4.4.7":  "expired",			// Delivery time expired
-		"4.4.8":  "networkerror",		// Retry on IPv4
-	//	"4.5.0":  "networkerror",		// Other or undefined protocol status
-		"4.5.3":  "systemerror",		// Too many recipients
-		"4.5.5":  "systemerror",		// Wrong protocol version
-		"4.6.0":  "contenterror",		// Other or undefined media error
-		"4.6.2":  "contenterror",		// Conversion required and prohibited
-		"4.6.5":  "contenterror",		// Conversion Failed
-	//	"4.7.0":  "securityerror",		// Other or undefined security status
-		"4.7.1":  "blocked",			// Delivery not authorized, message refused
-		"4.7.2":  "blocked",			// Mailing list expansion prohibited
-		"4.7.5":  "securityerror",		// Cryptographic failure
-		"4.7.6":  "securityerror",		// Cryptographic algorithm not supported
-		"4.7.7":  "securityerror",		// Message integrity failure
-		"4.7.12": "securityerror",		// A password transition is needed
-		"4.7.15": "securityerror",		// Priority Level is too low
-		"4.7.16": "mesgtoobig",			// Message is too big for the specified priority
-		"4.7.24": "authfailure",		// SPF validation error
-		"4.7.25": "requireptr",			// Reverse DNS validation failed
-		"4.7.26": "authfailure",		// Must pass either SPF or DKIM validation
+		"4.1.6":  eb.ReMOVE, // Destination mailbox has moved, No forwarding address
+		"4.1.7":  eb.ReREJE, // Bad sender"s mailbox address syntax
+		"4.1.8":  eb.ReREJE, // Bad sender"s system address
+		"4.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
+		"4.2.1":  eb.ReBLOC, // Mailbox disabled, not accepting messages
+		"4.2.2":  eb.ReFULL, // Mailbox full
+		"4.2.3":  eb.ReXLIM, // Message length exceeds administrative limit
+		"4.2.4":  eb.ReFILT, // Mailing list expansion problem
+	//	"4.3.0":  eb.ReSYSE, // Other or undefined mail system status
+		"4.3.1":  eb.ReSYSF, // Mail system full
+		"4.3.2":  eb.Re00MX, // System not accepting network messages
+		"4.3.3":  eb.ReSYSE, // System not capable of selected features
+		"4.3.5":  eb.ReSYSE, // System incorrectly configured
+	//	"4.4.0":  eb.ReNETW, // Other or undefined network or routing status
+		"4.4.1":  eb.ReEXPR, // No answer from host
+		"4.4.2":  eb.ReNETW, // Bad connection
+		"4.4.3":  eb.ReSYSE, // Directory server failure
+		"4.4.4":  eb.ReNETW, // Unable to route
+		"4.4.5":  eb.ReSYSF, // Mail system congestion
+		"4.4.6":  eb.ReNETW, // Routing loop detected
+		"4.4.7":  eb.ReEXPR, // Delivery time expired
+		"4.4.8":  eb.ReNETW, // Retry on IPv4
+	//	"4.5.0":  eb.ReNETW, // Other or undefined protocol status
+		"4.5.3":  eb.ReSYSE, // Too many recipients
+		"4.5.5":  eb.ReSYSE, // Wrong protocol version
+		"4.6.0":  eb.ReBODY, // Other or undefined media error
+		"4.6.2":  eb.ReBODY, // Conversion required and prohibited
+		"4.6.5":  eb.ReBODY, // Conversion Failed
+	//	"4.7.0":  eb.ReSECU, // Other or undefined security status
+		"4.7.1":  eb.ReBLOC, // Delivery not authorized, message refused
+		"4.7.2":  eb.ReBLOC, // Mailing list expansion prohibited
+		"4.7.5":  eb.ReSECU, // Cryptographic failure
+		"4.7.6":  eb.ReSECU, // Cryptographic algorithm not supported
+		"4.7.7":  eb.ReSECU, // Message integrity failure
+		"4.7.12": eb.ReSECU, // A password transition is needed
+		"4.7.15": eb.ReSECU, // Priority Level is too low
+		"4.7.16": eb.ReSIZE, // Message is too big for the specified priority
+		"4.7.24": eb.ReAUTH, // SPF validation error
+		"4.7.25": eb.ReQPTR, // Reverse DNS validation failed
+		"4.7.26": eb.ReAUTH, // Must pass either SPF or DKIM validation
 	// --------------------------------------------------------------------------------------------
-		"5.1.0":  "userunknown",		// Other address status
-		"5.1.1":  "userunknown",		// Bad destination mailbox address
-		"5.1.2":  "hostunknown",		// Bad destination system address
-		"5.1.3":  "userunknown",		// Bad destination mailbox address syntax
-		"5.1.4":  "filtered",			// Destination mailbox address ambiguous
-		"5.1.6":  "hasmoved",			// Destination mailbox has moved, No forwarding address
-		"5.1.7":  "rejected",			// Bad sender"s mailbox address syntax
-		"5.1.8":  "rejected",			// Bad sender"s system address
-		"5.1.9":  "systemerror",		// Message relayed to non-compliant mailer
-		"5.1.10": "notaccept",			// Recipient address has null MX
-		"5.2.0":  "filtered",			// Other or undefined mailbox status
-		"5.2.1":  "filtered",			// Mailbox disabled, not accepting messages
-		"5.2.2":  "mailboxfull",		// Mailbox full
-		"5.2.3":  "exceedlimit",		// Message length exceeds administrative limit
-		"5.2.4":  "filtered",			// Mailing list expansion problem
-		"5.3.0":  "systemerror",		// Other or undefined mail system status
-		"5.3.1":  "systemfull",			// Mail system full
-		"5.3.2":  "notaccept",			// System not accepting network messages
-		"5.3.3":  "systemerror",		// System not capable of selected features
-		"5.3.4":  "mesgtoobig",			// Message too big for system
-		"5.3.5":  "systemerror",		// System incorrectly configured
-		"5.4.0":  "networkerror",		// Other or undefined network or routing status
-		"5.4.3":  "systemerror",		// Directory server failure
-		"5.4.4":  "hostunknown",		// Unable to route
-		"5.5.2":  "syntaxerror",		// If the server cannot BASE64 decode any client response (AUTH)
-		"5.5.3":  "toomanyconn",		// Too many recipients
-		"5.5.4":  "systemerror",		// Invalid command arguments
-		"5.5.5":  "systemerror",		// Wrong protocol version
-		"5.5.6":  "syntaxerror",		// Authentication Exchange line is too long
-		"5.6.0":  "contenterror",		// Other or undefined media error
-		"5.6.1":  "contenterror",		// Media not supported
-		"5.6.2":  "contenterror",		// Conversion required and prohibited
-		"5.6.3":  "contenterror",		// Conversion required but not supported
-		"5.6.5":  "contenterror",		// Conversion Failed
-		"5.6.6":  "contenterror",		// Message content not available
-		"5.6.7":  "contenterror",		// Non-ASCII addresses not permitted for that sender/recipient
-		"5.6.8":  "contenterror",		// UTF-8 string reply is required, but not permitted by the SMTP client
-		"5.6.9":  "contenterror",		// UTF-8 header message cannot be transferred to one or more recipients
-		"5.7.0":  "securityerror",		// Other or undefined security status
-		"5.7.1":  "securityerror",		// Delivery not authorized, message refused
-		"5.7.2":  "securityerror",		// Mailing list expansion prohibited
-		"5.7.3":  "securityerror",		// Security conversion required but not possible
-		"5.7.4":  "securityerror",		//Security features not supported
-		"5.7.5":  "securityerror",		// Cryptographic failure
-		"5.7.6":  "securityerror",		// Cryptographic algorithm not supported
-		"5.7.7":  "securityerror",		// Message integrity failure
-		"5.7.8":  "securityerror",		// Authentication credentials invalid
-		"5.7.9":  "securityerror",		// Authentication mechanism is too weak
-		"5.7.10": "securityerror",		// Encryption Needed
-		"5.7.11": "securityerror",		// Encryption required for requested authentication mechanism
-		"5.7.13": "suspend",			// User Account Disabled
-		"5.7.14": "securityerror",		// Trust relationship required
-		"5.7.15": "securityerror",		// Priority Level is too low
-		"5.7.16": "mesgtoobig",			// Message is too big for the specified priority
-		"5.7.17": "hasmoved",			// Mailbox owner has changed
-		"5.7.18": "hasmoved",			// Domain owner has changed
-		"5.7.19": "securityerror",		// RRVS test cannot be completed
-		"5.7.20": "authfailure",		// No passing DKIM signature found
-		"5.7.21": "authfailure",		// No acceptable DKIM signature found
-		"5.7.22": "authfailure",		// No valid author-matched DKIM signature found
-		"5.7.23": "authfailure",		// SPF validation failed
-		"5.7.24": "authfailure",		// SPF validation error
-		"5.7.25": "requireptr",			// Reverse DNS validation failed
-		"5.7.26": "authfailure",		// Multiple authentication checks failed
-		"5.7.27": "notaccept",			// MX resource record of a destination host is Null MX: RFC7505
-		"5.7.28": "spamdetected",		// The message appears to be part of a mail flood of similar abusive messages.
-		"5.7.29": "authfailure",		// This status code may be returned when a message fails ARC validation.
-		"5.7.30": "failedstarttls",		// REQUIRETLS support required
+		"5.1.0":  eb.ReUSER, // Other address status
+		"5.1.1":  eb.ReUSER, // Bad destination mailbox address
+		"5.1.2":  eb.ReHOST, // Bad destination system address
+		"5.1.3":  eb.ReUSER, // Bad destination mailbox address syntax
+		"5.1.4":  eb.ReFILT, // Destination mailbox address ambiguous
+		"5.1.6":  eb.ReMOVE, // Destination mailbox has moved, No forwarding address
+		"5.1.7":  eb.ReREJE, // Bad sender"s mailbox address syntax
+		"5.1.8":  eb.ReREJE, // Bad sender"s system address
+		"5.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
+		"5.1.10": eb.Re00MX, // Recipient address has null MX
+		"5.2.0":  eb.ReFILT, // Other or undefined mailbox status
+		"5.2.1":  eb.ReFILT, // Mailbox disabled, not accepting messages
+		"5.2.2":  eb.ReFULL, // Mailbox full
+		"5.2.3":  eb.ReXLIM, // Message length exceeds administrative limit
+		"5.2.4":  eb.ReFILT, // Mailing list expansion problem
+		"5.3.0":  eb.ReSYSE, // Other or undefined mail system status
+		"5.3.1":  eb.ReSYSF, // Mail system full
+		"5.3.2":  eb.Re00MX, // System not accepting network messages
+		"5.3.3":  eb.ReSYSE, // System not capable of selected features
+		"5.3.4":  eb.ReSIZE, // Message too big for system
+		"5.3.5":  eb.ReSYSE, // System incorrectly configured
+		"5.4.0":  eb.ReNETW, // Other or undefined network or routing status
+		"5.4.3":  eb.ReSYSE, // Directory server failure
+		"5.4.4":  eb.ReHOST, // Unable to route
+		"5.5.2":  eb.ReSYNT, // If the server cannot BASE64 decode any client response (AUTH)
+		"5.5.3":  eb.ReCONN, // Too many recipients
+		"5.5.4":  eb.ReSYSE, // Invalid command arguments
+		"5.5.5":  eb.ReSYSE, // Wrong protocol version
+		"5.5.6":  eb.ReSYNT, // Authentication Exchange line is too long
+		"5.6.0":  eb.ReBODY, // Other or undefined media error
+		"5.6.1":  eb.ReBODY, // Media not supported
+		"5.6.2":  eb.ReBODY, // Conversion required and prohibited
+		"5.6.3":  eb.ReBODY, // Conversion required but not supported
+		"5.6.5":  eb.ReBODY, // Conversion Failed
+		"5.6.6":  eb.ReBODY, // Message content not available
+		"5.6.7":  eb.ReBODY, // Non-ASCII addresses not permitted for that sender/recipient
+		"5.6.8":  eb.ReBODY, // UTF-8 string reply is required, but not permitted by the SMTP client
+		"5.6.9":  eb.ReBODY, // UTF-8 header message cannot be transferred to one or more recipients
+		"5.7.0":  eb.ReSECU, // Other or undefined security status
+		"5.7.1":  eb.ReSECU, // Delivery not authorized, message refused
+		"5.7.2":  eb.ReSECU, // Mailing list expansion prohibited
+		"5.7.3":  eb.ReSECU, // Security conversion required but not possible
+		"5.7.4":  eb.ReSECU, //Security features not supported
+		"5.7.5":  eb.ReSECU, // Cryptographic failure
+		"5.7.6":  eb.ReSECU, // Cryptographic algorithm not supported
+		"5.7.7":  eb.ReSECU, // Message integrity failure
+		"5.7.8":  eb.ReSECU, // Authentication credentials invalid
+		"5.7.9":  eb.ReSECU, // Authentication mechanism is too weak
+		"5.7.10": eb.ReSECU, // Encryption Needed
+		"5.7.11": eb.ReSECU, // Encryption required for requested authentication mechanism
+		"5.7.13": eb.ReQUIT, // User Account Disabled
+		"5.7.14": eb.ReSECU, // Trust relationship required
+		"5.7.15": eb.ReSECU, // Priority Level is too low
+		"5.7.16": eb.ReSIZE, // Message is too big for the specified priority
+		"5.7.17": eb.ReMOVE, // Mailbox owner has changed
+		"5.7.18": eb.ReMOVE, // Domain owner has changed
+		"5.7.19": eb.ReSECU, // RRVS test cannot be completed
+		"5.7.20": eb.ReAUTH, // No passing DKIM signature found
+		"5.7.21": eb.ReAUTH, // No acceptable DKIM signature found
+		"5.7.22": eb.ReAUTH, // No valid author-matched DKIM signature found
+		"5.7.23": eb.ReAUTH, // SPF validation failed
+		"5.7.24": eb.ReAUTH, // SPF validation error
+		"5.7.25": eb.ReQPTR, // Reverse DNS validation failed
+		"5.7.26": eb.ReAUTH, // Multiple authentication checks failed
+		"5.7.27": eb.Re00MX, // MX resource record of a destination host is Null MX: RFC7505
+		"5.7.28": eb.ReSPAM, // The message appears to be part of a mail flood of similar abusive messages.
+		"5.7.29": eb.ReAUTH, // This status code may be returned when a message fails ARC validation.
+		"5.7.30": eb.ReTTLS, // REQUIRETLS support required
 	}
 	return standardcr[code]
 }
