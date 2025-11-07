@@ -25,7 +25,7 @@ type Fact struct {
 	DiagnosticCode  string       `json:"diagnosticcode"` // "Diagnostic-Code:" field value or error messages in the message body
 	DiagnosticType  string       `json:"diagnostictype"` // The subtype of "Diagnostic-Code:" field such as "SMTP", "X-UNIX"
 	FeedbackID      string       `json:"feedbackid"`     // The value of Feedback-ID: header of the original message
-	FeedbackType    string       `json:"feedbacktype"`   // Feedback Type, always empty except when the Reason is "feedback"
+	FeedbackType    string       `json:"feedbacktype"`   // Feedback Type, always empty except when the Reason is Feedback
 	HardBounce      bool         `json:"hardbounce"`     // Hard bounce or not: true, false
 	Lhost           string       `json:"lhost"`          // The hostname of the local mail server (the server attempting to send the email).
 	ListID          string       `json:"listid"`         // The value of "List-Id" field of the original message
