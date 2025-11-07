@@ -9,6 +9,7 @@
 // Package "arf" provides ARF: Abuse Report Format related functions.
 package arf
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/lhost"
@@ -221,7 +222,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 		e := &dscontents[j]
 		e.Diagnosis = moji.Sweep(e.Diagnosis + anotherone)
-		e.Reason    = "feedback"
+		e.Reason    = eb.ReFEED
 		e.Rhost     = remotehost
 		e.Lhost     = reportedby
 		e.Date      = timestamp0
