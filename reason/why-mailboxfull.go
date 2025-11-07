@@ -8,6 +8,7 @@
 
 package reason
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -18,7 +19,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["MailboxFull"] = func(mesg string) bool {
+	IncludedIn[eb.ReFULL] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -80,14 +81,14 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["MailboxFull"] = func(fo *siba.Fact) bool {
-		// Delivery status code points "mailboxfull".
+	ProbesInto[eb.ReFULL] = func(fo *siba.Fact) bool {
+		// Delivery status code points MailboxFull.
 		// Status: 4.2.2
 		// Diagnostic-Code: SMTP; 450 4.2.2 <***@example.jp>... Mailbox Full
-		if fo == nil                                       { return false }
-		if fo.Reason == "mailboxfull"                      { return true  }
-		if status.Name(fo.DeliveryStatus) == "mailboxfull" { return true  }
-		return IncludedIn["MailboxFull"](strings.ToLower(fo.DiagnosticCode))
+		if fo == nil                                   { return false }
+		if fo.Reason == eb.ReFULL                      { return true  }
+		if status.Name(fo.DeliveryStatus) == eb.ReFULL { return true  }
+		return IncludedIn[eb.ReFULL](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

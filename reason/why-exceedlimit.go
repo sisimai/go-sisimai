@@ -8,6 +8,7 @@
 
 package reason
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -18,7 +19,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["ExceedLimit"] = func(mesg string) bool {
+	IncludedIn[eb.ReXLIM] = func(mesg string) bool {
 		if mesg == "" { return false }
 		index := []string{"message header size exceeds limit", "message too large"}
 		return moji.ContainsAny(mesg, index)
@@ -29,13 +30,13 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["ExceedLimit"] = func(fo *siba.Fact) bool {
+	ProbesInto[eb.ReXLIM] = func(fo *siba.Fact) bool {
 		// Status: 5.2.3
 		// Diagnostic-Code: SMTP; 552 5.2.3 Message size exceeds fixed maximum message size
-		if fo == nil                                       { return false }
-		if fo.Reason == "exceedlimit"                      { return true  }
-		if status.Name(fo.DeliveryStatus) == "exceedlimit" { return true  }
-		return IncludedIn["ExceedLimit"](strings.ToLower(fo.DiagnosticCode))
+		if fo == nil                                   { return false }
+		if fo.Reason == eb.ReXLIM                      { return true  }
+		if status.Name(fo.DeliveryStatus) == eb.ReXLIM { return true  }
+		return IncludedIn[eb.ReXLIM](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

@@ -7,6 +7,7 @@
 //    \_/ \__,_|\___\__,_|\__|_|\___/|_| |_|
 
 package reason
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -16,7 +17,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["Vacation"] = func(mesg string) bool {
+	IncludedIn[eb.ReAWAY] = func(mesg string) bool {
 		if mesg == "" { return false }
 		index := []string{"i am away on vacation", "i am away until", "i am out of the office", "i will be traveling for work on"}
 		return moji.ContainsAny(mesg, index)
@@ -27,6 +28,6 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["Vacation"] = func(fo *siba.Fact) bool { return false }
+	ProbesInto[eb.ReAWAY] = func(fo *siba.Fact) bool { return false }
 }
 

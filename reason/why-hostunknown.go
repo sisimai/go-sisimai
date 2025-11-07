@@ -8,6 +8,7 @@
 
 package reason
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -18,7 +19,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["HostUnknown"] = func(mesg string) bool {
+	IncludedIn[eb.ReHOST] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -49,19 +50,19 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file
-	ProbesInto["HostUnknown"] = func(fo *siba.Fact) bool {
-		if fo        == nil           { return false }
-		if fo.Reason == "hostunknown" { return true  }
+	ProbesInto[eb.ReHOST] = func(fo *siba.Fact) bool {
+		if fo        == nil       { return false }
+		if fo.Reason == eb.ReHOST { return true  }
 
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
-		if status.Name(fo.DeliveryStatus) == "hostunknown" {
-			// To prevent classifying DNS errors as "HostUnknown"
-			if IncludedIn["NetworkError"](issuedcode) == false { return true }
+		if status.Name(fo.DeliveryStatus) == eb.ReHOST {
+			// To prevent classifying DNS errors as HostUnknown.
+			if IncludedIn[eb.ReNETW](issuedcode) == false { return true }
 
 		} else {
 			// Status: 5.1.2
 			// Diagnostic-Code: SMTP; 550 Host unknown
-			if IncludedIn["HostUnknown"](issuedcode)  == true  { return true }
+			if IncludedIn[eb.ReHOST](issuedcode)  == true { return true }
 		}
 		return false
 	}

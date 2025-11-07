@@ -7,6 +7,7 @@
 //  \___/|_| |_|_| |_|\___/|_|\__,_|
 
 package reason
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
@@ -16,17 +17,16 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["OnHold"] = func(mesg string) bool { return false }
+	IncludedIn[eb.Re___1] = func(mesg string) bool { return false }
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["OnHold"] = func(fo *siba.Fact) bool {
-		if fo        == nil                           { return false }
-		if fo.Reason == "onhold"                      { return true  }
-		if status.Name(fo.DeliveryStatus) == "onhold" { return true  }
+	ProbesInto[eb.Re___1] = func(fo *siba.Fact) bool {
+		if fo == nil { return false }
+		if fo.Reason == eb.Re___1 || status.Name(fo.DeliveryStatus) == eb.Re___1 { return true  }
 		return false
 	}
 }

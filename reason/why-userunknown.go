@@ -8,6 +8,7 @@
 
 package reason
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -18,7 +19,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["UserUnknown"] = func(mesg string) bool {
+	IncludedIn[eb.ReUSER] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -144,28 +145,28 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["UserUnknown"] = func(fo *siba.Fact) bool {
-		if fo        == nil           { return false }
-		if fo.Reason == "userunknown" { return true  }
+	ProbesInto[eb.ReUSER] = func(fo *siba.Fact) bool {
+		if fo        == nil       { return false }
+		if fo.Reason == eb.ReUSER { return true  }
 
-		tempreason := status.Name(fo.DeliveryStatus); if tempreason == "suspend" { return false }
+		tempreason := status.Name(fo.DeliveryStatus); if tempreason == eb.ReQUIT { return false }
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 
-		if tempreason == "userunknown" {
+		if tempreason == eb.ReUSER {
 			// *.1.1 = 'Bad destination mailbox address'
 			//   Status: 5.1.1
 			//   Diagnostic-Code: SMTP; 550 5.1.1 <***@example.jp>:
 			//     Recipient address rejected: User unknown in local recipient table
-			for _, e := range []string{"NoRelaying", "Blocked", "MailboxFull", "HasMoved", "Rejected", "NotAccept"} {
+			for _, e := range []string{eb.ReRELA, eb.ReBLOC, eb.ReFULL, eb.ReMOVE, eb.ReREJE, eb.Re00MX} {
 				// Check the value of "Diagnostic-Code" with other error patterns.
 				if IncludedIn[e](issuedcode) { return false }
 			}
 			return true
 
 		} else {
-			// The reason name found by fo.DeliveryStatus is not "userunknown", or is empty
+			// The reason name found by fo.DeliveryStatus is not UserUnknown, or is empty
 			// When the SMTP command is not "RCPT", the session rejected by other reason, maybe.
-			if fo.Command == "RCPT" && IncludedIn["UserUnknown"](issuedcode) { return true }
+			if fo.Command == "RCPT" && IncludedIn[eb.ReUSER](issuedcode) { return true }
 		}
 		return false
 	}

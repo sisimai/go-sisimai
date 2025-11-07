@@ -9,6 +9,7 @@
 
 package reason
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -18,7 +19,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["Suspend"] = func(mesg string) bool {
+	IncludedIn[eb.ReQUIT] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -55,10 +56,10 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["Suspend"] = func(fo *siba.Fact) bool {
+	ProbesInto[eb.ReQUIT] = func(fo *siba.Fact) bool {
 		if fo == nil                                       { return false }
-		if fo.Reason == "suspend" || fo.ReplyCode == "525" { return true  }
-		return IncludedIn["Suspend"](strings.ToLower(fo.DiagnosticCode))
+		if fo.Reason == eb.ReQUIT || fo.ReplyCode == "525" { return true  }
+		return IncludedIn[eb.ReQUIT](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 
