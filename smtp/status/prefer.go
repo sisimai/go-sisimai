@@ -57,7 +57,7 @@ func Prefer(argv0, argv1, argv2 string) string {
 	if strings.Index(statuscode, ".5.5") == 1 { return codeinmesg } // "X.5.5" indicates a wrong protocol version
 
 	if statuscode == "5.1.1" {
-		// "5.1.1" is a code of "userunknown"
+		// "5.1.1" is a code of UserUnknown
 		if zeroindex1[1] > 0 || strings.Index(codeinmesg, "5.5.") == 0 { return statuscode }
 		return codeinmesg
 
