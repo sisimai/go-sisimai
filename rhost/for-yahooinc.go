@@ -83,7 +83,7 @@ func init() {
 				" is no longer valid.",
 				"this mailbox is disabled",
 			},
-			eb.ReSYNT: []string{ // SyntaxError
+			eb.ReCOMM: []string{ // SyntaxError
 				// - 501 Syntax error in parameters or arguments
 				"syntax error in parameters or arguments",
 			},
