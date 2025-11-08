@@ -435,13 +435,13 @@ func init() {
 					}
 
 					if e.Reason == "" {
-						// The reason is "expired", or "mailererror"
+						// The reason is Expired, or MailerError
 						if moji.ContainsAny(e.Diagnosis, delayedfor) == true {
-							// The reason is "expired"
+							// The reason is Expired
 							e.Reason = eb.ReEXPR
 
 						} else {
-							// The reason is "mailererror"
+							// The reason is MailerError
 							if strings.Contains(e.Diagnosis, "pipe to |") { e.Reason = eb.ReUNIX }
 						}
 					}
@@ -463,7 +463,7 @@ func init() {
 			cs := status.Find(e.Diagnosis, cr)
 			cv := ""
 
-			if strings.HasPrefix(cr, "4") || e.Reason == eb.ReEXPR || e.Reason == eb.ReUNIX {
+			if strings.HasPrefix(cr, "4") || e.Reason == eb.ReEXPR || e.Reason == eb.ReFULL {
 				// Set the pseudo status code as a temporary error
 				cv = status.Code(e.Reason, true)
 
