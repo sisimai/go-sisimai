@@ -9,6 +9,7 @@
 
 package reason
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -19,7 +20,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["MesgTooBig"] = func(mesg string) bool {
+	IncludedIn[eb.ReSIZE] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -45,18 +46,18 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["MesgTooBig"] = func(fo *siba.Fact) bool {
-		// Delivery status code points "mesgtoobig".
+	ProbesInto[eb.ReSIZE] = func(fo *siba.Fact) bool {
+		// Delivery status code points MesgTooBig.
 		// Status: 5.3.4
 		// Diagnostic-Code: SMTP; 552 5.3.4 Error: message file too big
 		// Diagnostic-Code: SMTP; 552 5.2.3 Message length exceeds administrative limit
-		if fo        == nil          { return false }
-		if fo.Reason == "mesgtoobig" { return true  }
+		if fo        == nil       { return false }
+		if fo.Reason == eb.ReSIZE { return true  }
 
 		tempreason    := status.Name(fo.DeliveryStatus)
-		if tempreason == "mesgtoobig"                                  { return true  }
-		if tempreason == "exceedlimit" || fo.DeliveryStatus == "5.2.3" { return false }
-		return IncludedIn["MesgTooBig"](strings.ToLower(fo.DiagnosticCode))
+		if tempreason == eb.ReSIZE                                 { return true  }
+		if tempreason == eb.ReXLIM || fo.DeliveryStatus == "5.2.3" { return false }
+		return IncludedIn[eb.ReSIZE](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc791"
@@ -34,8 +35,10 @@ func init() {
 		}
 
 		boundaries := []string{"Content-Type: message/rfc822", "\nReturn-Path: "}
-		startingof := map[string][]string{"message": []string{"This report relates to a message you sent with the following header fields:"}}
-		messagesof := map[string][]string{"hostunknown": []string{"Illegal host/domain name found"}}
+		startingof := map[string][]string{
+			"message": []string{"This report relates to a message you sent with the following header fields:"},
+		}
+		messagesof := map[string][]string{eb.ReHOST: []string{"Illegal host/domain name found"}}
 		envelopeto := [][]string{[]string{"  Recipient address: ", "@", "."}, []string{"  Original address: ",  "@", "."}}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]

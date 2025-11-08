@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -41,9 +42,9 @@ func init() {
 			"message": []string{"Your mail sent on:", "Your mail attempted to be delivered on:"},
 		}
 		messagesof := map[string][]string{
-			"mailboxfull": []string{"As their mailbox is full"},
-			"norelaying":  []string{"Due to the following SMTP relay error"},
-			"hostunknown": []string{"As the remote domain doesnt exist"},
+			eb.ReFULL: []string{"As their mailbox is full"},
+			eb.ReRELA: []string{"Due to the following SMTP relay error"},
+			eb.ReHOST: []string{"As the remote domain doesnt exist"},
 		}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
@@ -88,11 +89,11 @@ func init() {
 			if len(bf.Headers["x-spasign"]) > 0 && bf.Headers["x-spasign"][0] == "NG" {
 				// Content-Type: text/plain; ..., X-SPASIGN: NG (spamghetti, au by KDDI)
 				// Filtered recipient returns message that include 'X-SPASIGN' header
-				e.Reason = "filtered"
+				e.Reason = eb.ReFILT
 
 			} else {
 				// There is no X-SPASIGN: header in the bounce message
-				if e.Command == "RCPT" { e.Reason = "userunkonwn"; continue }
+				if e.Command == "RCPT" { e.Reason = eb.ReUSER; continue }
 
 				for r := range messagesof {
 					// The key name is a bounce reason name

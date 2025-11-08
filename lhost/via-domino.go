@@ -9,6 +9,7 @@
 package lhost
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -35,9 +36,9 @@ func init() {
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{"message": []string{"Your message"}}
 		messagesof := map[string][]string{
-			"filtered":    []string{"Cannot route mail to user"},
-			"systemerror": []string{"Several matches found in Domino Directory"},
-			"userunknown": []string{
+			eb.ReFILT: []string{"Cannot route mail to user"},
+			eb.ReSYSE: []string{"Several matches found in Domino Directory"},
+			eb.ReUSER: []string{
 				"not listed in Domino Directory",
 				"not listed in public Name & Address Book",
 				"no se encuentra en el Directorio de Domino",
@@ -48,7 +49,7 @@ func init() {
 		exceptutf8 := map[string][][]string{
 			// Try to match with the order of each elements for non utf-8 encoded error message
 			// such as ISO-8859-1
-			"userunknown": [][]string{
+			eb.ReUSER: [][]string{
 				[]string{"non r", "pertori", "dans l'annuaire Domino"},   // ISO-8859-1:  "non répertorié dans l'annuaire Domino",
 				[]string{"%f!<%6!<", "%G%#%l%/%H%j$K$O8+$D$+$j$^$;$s!#"}, // ISO-2022-JP: "ユーザー", "ディレクトリには見つかりません"
 			},

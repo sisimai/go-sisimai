@@ -8,6 +8,7 @@
 //                      |___/                                          
 
 package reason
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -17,7 +18,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["PolicyViolation"] = func(mesg string) bool {
+	IncludedIn[eb.RePOLI] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -56,6 +57,6 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["PolicyViolation"] = func(fo *siba.Fact) bool { return false }
+	ProbesInto[eb.RePOLI] = func(fo *siba.Fact) bool { return false }
 }
 

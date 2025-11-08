@@ -11,6 +11,7 @@
 // Electronic Mail. https://datatracker.ietf.org/doc/html/rfc3834
 package rfc3834
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc2045"
@@ -72,7 +73,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 
 	recipients := uint8(0)            // The number of recipients
 	dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-	v.Reason    = "vacation"
+	v.Reason    = eb.ReAWAY
 
 	RECIPIENT_ADDRESS: for _, e := range []string{"reply-to", "from", "return-path"} {
 		// Try to get the recipient adddress from some headers
@@ -115,7 +116,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 
 	cv := strings.ToLower(v.Diagnosis); for _, e := range suspending {
 		// Check that the auto-replied message indicates the "Suspend" reason or not.
-		if moji.Aligned(cv, e) { v.Reason = "suspend"; break }
+		if moji.Aligned(cv, e) { v.Reason = eb.ReQUIT; break }
 	}
 
 	v.Date      = bf.Headers["date"][0]

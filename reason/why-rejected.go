@@ -10,6 +10,7 @@
 package reason
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -20,7 +21,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["Rejected"] = func(mesg string) bool {
+	IncludedIn[eb.ReREJE] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		isnot := []string{
@@ -95,27 +96,27 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["Rejected"] = func(fo *siba.Fact) bool {
-		if fo        == nil        { return false }
-		if fo.Reason == "rejected" { return true  }
+	ProbesInto[eb.ReREJE] = func(fo *siba.Fact) bool {
+		if fo         == nil       { return false }
+		if fo.Reason  == eb.ReREJE { return true  }
 
 		tempreason := status.Name(fo.DeliveryStatus)
-		if tempreason == "rejected" { return true } // Delivery status code points "rejected"
-		if tempreason == ""         { tempreason = "undefined" }
+		if tempreason == eb.ReREJE { return true } // Delivery status code points Rejected.
+		if tempreason == ""        { tempreason = eb.Re___0 }
 
 		// Check the value of Diagnosic-Code: field with patterns
 		if issuedcode := strings.ToLower(fo.DiagnosticCode); fo.Command == "MAIL" {
-			// The session was rejected at 'MAIL FROM' command
-			if IncludedIn["Rejected"](issuedcode) == true { return true }
+			// The session was Rejected at "MAIL FROM" command
+			if IncludedIn[eb.ReREJE](issuedcode) == true { return true }
 
-		} else if fo.Command == "DATA" && tempreason != "userunknown" {
-			// The session was rejected at 'DATA' command except "userunknown"
-			if IncludedIn["Rejected"](issuedcode) == true { return true }
+		} else if fo.Command == "DATA" && tempreason != eb.ReUSER {
+			// The session was rejected at "DATA" command except UserUnknown.
+			if IncludedIn[eb.ReREJE](issuedcode) == true { return true }
 
-		} else if IsExplicit(tempreason) == false || slices.Contains([]string{"securityerror", "systemerror"}, tempreason) {
-			// Try to match with message patterns when the temporary reason is "onhold", "undefined",
-			// "securityerror", or "systemerror"
-			if IncludedIn["Rejected"](issuedcode) == true { return true }
+		} else if IsExplicit(tempreason) == false || slices.Contains([]string{eb.ReSECU, eb.ReSYSE}, tempreason) {
+			// Try to match with message patterns when the temporary reason is OnHold, Undefined,
+			// SecurityError, or SystemError.
+			if IncludedIn[eb.ReREJE](issuedcode) == true { return true }
 		}
 		return false
 	}

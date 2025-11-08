@@ -18,6 +18,6 @@ type DecodingArgs struct {
 	Callback0 CfParameter0 // [0] The 1st callback function
 	Callback1 CfParameter1 // [1] The 2nd callback function
 	Delivered bool         // Include siba.Fact{}.Action = "delivered" records in the decoded data
-	Vacation  bool         // Include siba.Fact{}.Reason = "vacation" records in the decoded data
+	Vacation  bool         // Include siba.Fact{}.Reason = "Vacation" records in the decoded data
 }
 

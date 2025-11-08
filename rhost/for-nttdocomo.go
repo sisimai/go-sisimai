@@ -8,6 +8,7 @@
 
 package rhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -21,10 +22,10 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
-			"mailboxfull": []string{"552 too much mail data"},
-			"syntaxerror": []string{"503 bad sequence of commands", "504 command parameter not implemented"},
-			"toomanyconn": []string{"552 too many recipients"},
-			"userunknown": []string{"550 unknown user"},
+			eb.ReFULL: []string{"552 too much mail data"},
+			eb.ReSYNT: []string{"503 bad sequence of commands", "504 command parameter not implemented"},
+			eb.ReCONN: []string{"552 too many recipients"},
+			eb.ReUSER: []string{"550 unknown user"},
 		}
 		statuscode := fo.DeliveryStatus
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
@@ -39,7 +40,7 @@ func init() {
 			// 550 5.1.1 <***@docomo.ne.jp>... User unknown
 			// >>> DATA
 			// <<< 503 Bad sequence of commands
-			reasontext = "userunknown"
+			reasontext = eb.ReUSER
 
 		} else if statuscode == "5.2.0" {
 			//    ----- The following addresses had permanent fatal errors -----
@@ -55,7 +56,7 @@ func init() {
 			// Final-Recipient: RFC822; ***@docomo.ne.jp
 			// Action: failed
 			// Status: 5.2.0
-			reasontext = "filtered"
+			reasontext = eb.ReFILT
 
 		} else {
 			// The value of "Diagnostic-Code:" field is not empty
@@ -88,7 +89,7 @@ func init() {
 				// Status: 5.0.0
 				// Remote-MTA: dns; mfsmax.docomo.ne.jp [203.138.181.112]
 				// Diagnostic-Code: smtp; 550 Unknown user ***@docomo.ne.jp
-				reasontext = "userunknown"
+				reasontext = eb.ReUSER
 
 			} else if fo.Command == "DATA" {
 				// <***@docomo.ne.jp>: host mfsmax.docomo.ne.jp[203.138.181.240] said:
@@ -101,7 +102,7 @@ func init() {
 				// Status: 5.0.0
 				// Remote-MTA: dns; mfsmax.docomo.ne.jp
 				// Diagnostic-Code: smtp; 550 Unknown user ***@docomo.ne.jp
-				reasontext = "rejected"
+				reasontext = eb.ReREJE
 
 			// } else {
 				// Rejected by other SMTP commands: AUTH, MAIL,

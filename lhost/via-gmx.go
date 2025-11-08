@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -34,9 +35,7 @@ func init() {
 		startingof := map[string][]string{
 			"message": []string{"This message was created automatically by mail delivery software"},
 		}
-		messagesof := map[string][]string{
-			"expired": []string{"delivery retry timeout exceeded"},
-		}
+		messagesof := map[string][]string{eb.ReEXPR: []string{"delivery retry timeout exceeded"}}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		readcursor := uint8(0)            // Points the current cursor position

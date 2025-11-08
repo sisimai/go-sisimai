@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -36,9 +37,9 @@ func init() {
 			"error":   []string{"The response was:", "The response from the remote server was:"},
 		}
 		messagesof := map[string][]string{
-			"networkerror": []string{" had no relevant answers.", " responded with code NXDOMAIN"},
-			"notaccept":    []string{"Null MX"},
-			"userunknown":  []string{"because the address couldn't be found. Check for typos or unnecessary spaces and try again."},
+			eb.ReNETW: []string{" had no relevant answers.", " responded with code NXDOMAIN"},
+			eb.Re00MX: []string{"Null MX"},
+			eb.ReUSER: []string{"because the address couldn't be found. Check for typos or unnecessary spaces and try again."},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)

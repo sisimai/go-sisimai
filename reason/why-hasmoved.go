@@ -8,6 +8,7 @@
 
 package reason
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -17,7 +18,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern
-	IncludedIn["HasMoved"] = func(mesg string) bool {
+	IncludedIn[eb.ReMOVE] = func(mesg string) bool {
 		if mesg == "" { return false }
 		index := []string{" has been replaced by "}
 		return moji.ContainsAny(mesg, index)
@@ -28,10 +29,10 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["HasMoved"] = func(fo *siba.Fact) bool {
-		if fo        == nil        { return false }
-		if fo.Reason == "hasmoved" { return true  }
-		return IncludedIn["HasMoved"](strings.ToLower(fo.DiagnosticCode))
+	ProbesInto[eb.ReMOVE] = func(fo *siba.Fact) bool {
+		if fo        == nil       { return false }
+		if fo.Reason == eb.ReMOVE { return true  }
+		return IncludedIn[eb.ReMOVE](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

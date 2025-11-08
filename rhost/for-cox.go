@@ -8,6 +8,7 @@
 
 package rhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -22,78 +23,77 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := map[string]string{
-			// CXBL
+			// CXBL = Blocked
 			// - The sending IP address has been blocked by Cox due to exhibiting spam-like behavior.
 			// - Send an email request to Cox to ask for a sending IP address be unblocked.
 			//   Note: Cox has sole discretion whether to unblock the sending IP address.
-			"CXBL": "blocked",
+			"CXBL": eb.ReBLOC,
 
-			// CXDNS
+			// CXDNS = RequirePTR
 			// - There was an issue with the connecting IP address Domain Name System (DNS).
 			// - The Reverse DNS (rDNS) lookup for your IP address is failing. 
 			//   - Confirm the IP address that sends your email.
 			//   - Check the rDNS of that IP address. If it passes, then wait 24 hours and try resending
 			//     your email.
-			"CXDNS": "requireptr",
+			"CXDNS": eb.ReQPTR,
 
-			// CXSNDR
+			// CXSNDR = AuthFailure
 			// - There was a problem with the sender's domain.
 			// - Your email failed authentication checks against your sending domain's SPF, DomainKeys,
 			//   or DKIM policy.
-			"CXSNDR": "authfailure",
+			"CXSNDR": eb.ReAUTH,
 
-			// CXSMTP
+			// CXSMTP = Rejected
 			// - There was a violation of SMTP protocol.
 			// - Your email wasn't delivered because Cox was unable to verify that it came from a
 			//   legitimate email sender.
-			"CXSMTP": "rejected",
+			"CXSMTP": eb.ReREJE,
 
-			// CXCNCT
+			// CXCNCT = TooManyConn
 			// - There was a connection issue from the IP address.
 			// - There is a limit to the number of concurrent SMTP connections per IP address to
 			//   protect the systems against attack. Ensure that the sending email server is not
 			//   opening more than 10 concurrent connections to avoid reaching this limit.
-			"CXCNCT": "toomanyconn",
+			"CXCNCT": eb.ReCONN,
 
-			// CXMXRT
+			// CXMXRT = TooManyConn
 			//   - The sender has sent email to too many recipients and needs to wait before sending
 			//     more email.
 			//   - The email sender has exceeded the maximum number of sent email allowed.
-			"CXMXRT": "toomanyconn", 
+			"CXMXRT": eb.ReCONN,
 
-			// CDRBL
+			// CDRBL = Blocked
 			// - The sending IP address has been temporarily blocked by Cox due to exhibiting spam-like
 			//   behavior.
 			// - The block duration varies depending on reputation and other factors, but will not exceed
 			//   24 hours. Inspect email traffic for potential spam, and retry email delivery.
-			"CDRBL": "blocked",
+			"CDRBL": eb.ReBLOC,
 
-			"CXTHRT":    "securityerror", // Email sending limited due to suspicious account activity.
-			"CXMJ":      "securityerror", // Email sending blocked due to suspicious account activity on primary Cox account.
-			"IPBL0001":  "blocked",       // The sending IP address is listed in the Spamhaus Zen DNSBL.
-			"IPBL0010":  "blocked",       // The sending IP is listed in the Return Path DNSBL.
-			"IPBL0100":  "blocked",       // The sending IP is listed in the Invaluement ivmSIP DNSBL.
-			"IPBL0011":  "blocked",       // The sending IP is in the Spamhaus Zen and Return Path DNSBLs.
-			"IPBL0101":  "blocked",       // The sending IP is in the Spamhaus Zen and Invaluement ivmSIP DNSBLs.
-			"IPBL0110":  "blocked",       // The sending IP is in the Return Path and Invaluement ivmSIP DNSBLs.
-			"IPBL0111":  "blocked",       // The sending IP is in the Spamhaus Zen, Return Path and Invaluement ivmSIP DNSBLs.
-			"IPBL1000":  "blocked",       // The sending IP address is listed on a CSI blacklist. You can check your status on the CSI website.
-			"IPBL1001":  "blocked",       // The sending IP is listed in the Cloudmark CSI and Spamhaus Zen DNSBLs.
-			"IPBL1010":  "blocked",       // The sending IP is listed in the Cloudmark CSI and Return Path DNSBLs.
-			"IPBL1011":  "blocked",       // The sending IP is in the Cloudmark CSI, Spamhaus Zen and Return Path DNSBLs.
-			"IPBL1100":  "blocked",       // The sending IP is listed in the Cloudmark CSI and Invaluement ivmSIP DNSBLs.
-			"IPBL1101":  "blocked",       // The sending IP is in the Cloudmark CSI, Spamhaus Zen and Invaluement IVMsip DNSBLs.
-			"IPBL1110":  "blocked",       // The sending IP is in the Cloudmark CSI, Return Path and Invaluement ivmSIP DNSBLs.
-			"IPBL1111":  "blocked",       // The sending IP is in the Cloudmark CSI, Spamhaus Zen, Return Path and Invaluement ivmSIP DNSBLs.
-			"IPBL00001": "blocked",       // The sending IP address is listed on a Spamhaus blacklist. Check your status at Spamhaus.
-
-			"URLBL011" : "spamdetected",  // A URL within the body of the message was found on blocklists SURBL and Spamhaus DBL.
-			"URLBL101" : "spamdetected",  // A URL within the body of the message was found on blocklists SURBL and ivmURI.
-			"URLBL110" : "spamdetected",  // A URL within the body of the message was found on blocklists Spamhaus DBL and ivmURI.
-			"URLBL1001": "spamdetected",  // The URL is listed on a Spamhaus blacklist. Check your status at Spamhaus.
+			"CXTHRT":    eb.ReSECU, // Email sending limited due to suspicious account activity.
+			"CXMJ":      eb.ReSECU, // Email sending blocked due to suspicious account activity on primary Cox account.
+			"IPBL0001":  eb.ReBLOC, // The sending IP address is listed in the Spamhaus Zen DNSBL.
+			"IPBL0010":  eb.ReBLOC, // The sending IP is listed in the Return Path DNSBL.
+			"IPBL0100":  eb.ReBLOC, // The sending IP is listed in the Invaluement ivmSIP DNSBL.
+			"IPBL0011":  eb.ReBLOC, // The sending IP is in the Spamhaus Zen and Return Path DNSBLs.
+			"IPBL0101":  eb.ReBLOC, // The sending IP is in the Spamhaus Zen and Invaluement ivmSIP DNSBLs.
+			"IPBL0110":  eb.ReBLOC, // The sending IP is in the Return Path and Invaluement ivmSIP DNSBLs.
+			"IPBL0111":  eb.ReBLOC, // The sending IP is in the Spamhaus Zen, Return Path and Invaluement ivmSIP DNSBLs.
+			"IPBL1000":  eb.ReBLOC, // The sending IP address is listed on a CSI blacklist. You can check your status on the CSI website.
+			"IPBL1001":  eb.ReBLOC, // The sending IP is listed in the Cloudmark CSI and Spamhaus Zen DNSBLs.
+			"IPBL1010":  eb.ReBLOC, // The sending IP is listed in the Cloudmark CSI and Return Path DNSBLs.
+			"IPBL1011":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Spamhaus Zen and Return Path DNSBLs.
+			"IPBL1100":  eb.ReBLOC, // The sending IP is listed in the Cloudmark CSI and Invaluement ivmSIP DNSBLs.
+			"IPBL1101":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Spamhaus Zen and Invaluement IVMsip DNSBLs.
+			"IPBL1110":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Return Path and Invaluement ivmSIP DNSBLs.
+			"IPBL1111":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Spamhaus Zen, Return Path and Invaluement ivmSIP DNSBLs.
+			"IPBL00001": eb.ReBLOC, // The sending IP address is listed on a Spamhaus blacklist. Check your status at Spamhaus.
+			"URLBL011" : eb.ReSPAM, // A URL within the body of the message was found on blocklists SURBL and Spamhaus DBL.
+			"URLBL101" : eb.ReSPAM, // A URL within the body of the message was found on blocklists SURBL and ivmURI.
+			"URLBL110" : eb.ReSPAM, // A URL within the body of the message was found on blocklists Spamhaus DBL and ivmURI.
+			"URLBL1001": eb.ReSPAM, // The URL is listed on a Spamhaus blacklist. Check your status at Spamhaus.
 		}
 		messagesof := map[string][]string{
-			"blocked": []string{
+			eb.ReBLOC: []string{ // Blocked
 				// - An email client has repeatedly sent bad commands or invalid passwords resulting in
 				//   a three-hour block of the client's IP address.
 				// - The sending IP address has exceeded the threshold of invalid recipients and has
@@ -101,13 +101,13 @@ func init() {
 				"cox too many bad commands from",
 				"too many invalid recipients",
 			},
-			"requireptr": []string{
+			eb.ReQPTR: []string{ // RequirePTR
 				// - The reverse DNS check of the sending server IP address has failed.
 				// - Cox requires that all connecting email servers contain valid reverse DNS PTR records.
 				"dns check failure - try again later",
 				"rejected - no rdns",
 			},
-			"policyviolation": []string{
+			eb.RePOLI: []string{ // PolicyViolation
 				// - The sending server has attempted to communicate too soon within the SMTP transaction
 				// - The message has been rejected because it contains an attachment with one of the
 				//   following prohibited file types, which commonly contain viruses: .shb, .shs, .vbe,
@@ -116,16 +116,16 @@ func init() {
 				"esmtp no data before greeting",
 				"attachment extension is forbidden",
 			},
-			"rejected": []string{
+			eb.ReREJE: []string{ // Rejected
 				// Cox requires that all sender domains resolve to a valid MX or A-record within DNS.
 				"sender rejected",
 			},
-			"systemerror": []string{
+			eb.ReSYSE: []string{ // SystemError
 				// - Our systems are experiencing an issue which is causing a temporary inability to
 				//   accept new email.
 				"esmtp server temporarily not available",
 			},
-			"toomanyconn": []string{
+			eb.ReCONN: []string{ // TooManyConn
 				// - The sending IP address has exceeded the five maximum concurrent connection limit.
 				// - The SMTP connection has exceeded the 100 email message threshold and was disconnected.
 				// - The sending IP address has exceeded one of these rate limits and has been temporarily
@@ -134,7 +134,7 @@ func init() {
 				"requested action aborted: try again later",
 				"message threshold exceeded",
 			},
-			"userunknown": []string{
+			eb.ReUSER: []string{ // UserUnknown
 				// - The intended recipient is not a valid Cox Email account.
 				"recipient rejected",
 			},

@@ -9,6 +9,7 @@
 package reason
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -18,7 +19,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["FailedSTARTTLS"] = func(mesg string) bool {
+	IncludedIn[eb.ReTTLS] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -33,11 +34,11 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["FailedSTARTTLS"] = func(fo *siba.Fact) bool {
+	ProbesInto[eb.ReTTLS] = func(fo *siba.Fact) bool {
 		if fo == nil                                                    { return false }
-		if fo.Reason == "failedstarttls" || fo.Command == "STARTTLS"    { return true  }
+		if fo.Reason == eb.ReTTLS || fo.Command == "STARTTLS"           { return true  }
 		if slices.Contains([]string{"523", "524", "538"}, fo.ReplyCode) { return true  }
-		return IncludedIn["FailedSTARTTLS"](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn[eb.ReTTLS](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

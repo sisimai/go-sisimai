@@ -106,7 +106,7 @@ func Rise(path string, args *siba.DecodingArgs) ([]siba.Fact, []siba.NotDecoded)
 	}
 
 	// TODO: Add warning information of the decoding results into notdecoded as siba.NotDecoded{}
-	// when the reason is "onhold" or "undefined"
+	// when the reason is OnHold or Undefined.
 	return sisidigest, notdecoded
 }
 

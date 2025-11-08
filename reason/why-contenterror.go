@@ -8,6 +8,7 @@
 
 package reason
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -18,7 +19,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["ContentError"] = func(mesg string) bool {
+	IncludedIn[eb.ReBODY] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -40,12 +41,12 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file
-	ProbesInto["ContentError"] = func(fo *siba.Fact) bool {
-		if fo == nil                                        { return false }
-		if fo.Reason == "contenterror"                      { return true  }
-		if ProbesInto["SpamDetected"](fo) == true           { return false }
-		if status.Name(fo.DeliveryStatus) == "contenterror" { return true  }
-		return IncludedIn["ContentError"](strings.ToLower(fo.DiagnosticCode))
+	ProbesInto[eb.ReBODY] = func(fo *siba.Fact) bool {
+		if fo == nil                                   { return false }
+		if fo.Reason == eb.ReBODY                      { return true  }
+		if ProbesInto[eb.ReSPAM](fo) == true           { return false }
+		if status.Name(fo.DeliveryStatus) == eb.ReBODY { return true  }
+		return IncludedIn[eb.ReBODY](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

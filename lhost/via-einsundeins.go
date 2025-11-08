@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -32,7 +33,7 @@ func init() {
 			"message": []string{"This message was created automatically by mail delivery software"},
 			"error":   []string{"For the following reason:"},
 		}
-		messagesof := map[string][]string{"mesgtoobig": []string{"Mail size limit exceeded"}}
+		messagesof := map[string][]string{eb.ReSIZE: []string{"Mail size limit exceeded"}}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)

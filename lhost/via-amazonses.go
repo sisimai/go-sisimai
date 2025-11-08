@@ -11,6 +11,7 @@ import "fmt"
 import "errors"
 import "strings"
 import "encoding/json"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc1123"
@@ -120,13 +121,13 @@ func init() {
 		// Transient/ContentRejected -- message you sent contains content that the provider doesn't allow
 		// Transient/AttachmentRejected the message contained an unacceptable attachment
 		reasonpair := map[string]string {
-			"Supressed":                "suppressed",
-			"OnAccountSuppressionList": "suppressed",
-			"General":                  "onhold",
-			"MailboxFull":              "mailboxfull",
-			"MessageTooLarge":          "mesgtoobig",
-			"ContentRejected":          "contenterror",
-			"AttachmentRejected":       "securityerror",
+			"Suppressed":               eb.ReSUPP, // Suppressed
+			"OnAccountSuppressionList": eb.ReSUPP, // Suppressed
+			"General":                  eb.Re___1, // Onhold
+			"MailboxFull":              eb.ReFULL, // MailboxFull
+			"MessageTooLarge":          eb.ReSIZE, // MesgTooBig
+			"ContentRejected":          eb.ReBODY, // ContentError
+			"AttachmentRejected":       eb.ReSECU, // SecurityError
 		}
 		type failedRCPT struct {
 			EmailAddress   string     // "bounce@simulator.amazonses.com",
@@ -287,7 +288,7 @@ func init() {
 				if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
 
 				v.Recipient    = e.EmailAddress
-				v.Reason       = "feedback"
+				v.Reason       = eb.ReFEED
 				v.FeedbackType = (*o).ComplaintFeedbackType
 				v.Date         = (*o).Timestamp
 				v.Diagnosis    = fmt.Sprintf(`{"feedbackid":"%s", "useragent":"%s"}`, (*o).FeedbackID, (*o).UserAgent)
@@ -300,7 +301,7 @@ func init() {
 				if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
 
 				v.Recipient = e
-				v.Reason    = "delivered"
+				v.Reason    = eb.ReSENT
 				v.Action    = "delivered"
 				v.Date      = (*o).Timestamp
 				v.Lhost     = (*o).ReportingMTA

@@ -8,16 +8,15 @@ package reason
 //   | |  __/\__ \ |_ / /| | |  __/ (_| \__ \ (_) | | | |
 //   |_|\___||___/\__/_/ |_|  \___|\__,_|___/\___/|_| |_|
 import "testing"
-import "strings"
 import "slices"
+import "libsisimai.org/sisimai/v5/eb"
 
 var ae = []string{
-	"authfailure", "badreputation", "blocked", "contenterror", "exceedlimit", "expired", "failedstarttls",
-	"feedback", "filtered", "hasmoved", "hostunknown", "mailboxfull", "mailererror", "mesgtoobig",
-	"networkerror", "norelaying", "notaccept", "notcompliantrfc", "onhold", "policyviolation",
-	"rejected", "requireptr", "securityerror", "spamdetected", "speeding", "suppressed", "suspend",
-	"syntaxerror", "systemerror", "systemfull", "toomanyconn", "userunknown", "virusdetected",
-	"undefined", "delivered", "vacation",
+	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReXLIM, eb.ReEXPR, eb.ReTTLS, eb.ReFILT, eb.ReFULL,
+	eb.ReUNIX, eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReREJE, eb.ReQPTR, eb.ReSECU,
+	eb.ReSPAM, eb.ReFAST, eb.ReSUPP, eb.ReQUIT, eb.ReSYNT, eb.ReSYSE, eb.ReSYSF, eb.ReCONN, eb.ReEXEC,
+	eb.Re___0, eb.Re___1, eb.ReHOST, eb.ReUSER, eb.ReMOVE, eb.Re00MX,
+	eb.ReSENT, eb.ReAWAY, eb.ReFEED,
 }
 
 func TestAvailables(t *testing.T) {
@@ -30,7 +29,7 @@ func TestAvailables(t *testing.T) {
 	for e := range cv {
 		cx++; if e == ""     { t.Errorf("%s returned an empty key", fn) }
 		cx++; if cv[e] == "" { t.Errorf("%s[%s] is empty", fn, cv[e]) }
-		cx++; if slices.Contains(ae, strings.ToLower(e)) == false {
+		cx++; if slices.Contains(ae, e) == false {
 			t.Errorf("%s() returns invalid reason name: %s", fn, e)
 		}
 		cx++; if ProbesInto[e](nil) == true { t.Errorf("ProbesInto[%s](nil) returns true", e) }
@@ -45,19 +44,19 @@ func TestIsExplicit(t *testing.T) {
 	cx := 0
 
 	for _, e := range ae {
-		if e == "onhold" || e == "undefined" { continue }
+		if e == eb.Re___1 || e == eb.Re___0 { continue }
 		cx++; if cv := IsExplicit(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
-	cx++; if IsExplicit("")          == true { t.Errorf("%s() returns true", fn) }
-	cx++; if IsExplicit("onhold")    == true { t.Errorf("%s(onhold) returns true", fn) }
-	cx++; if IsExplicit("undefined") == true { t.Errorf("%s(undefined) returns true", fn) }
+	cx++; if IsExplicit("")        == true { t.Errorf("%s() returns true", fn) }
+	cx++; if IsExplicit(eb.Re___1) == true { t.Errorf("%s(OnHold) returns true", fn) }
+	cx++; if IsExplicit(eb.Re___0) == true { t.Errorf("%s(Undefined) returns true", fn) }
 
 	t.Logf("The number of tests = %d", cx)
 }
 
 func TestShouldBeRetried(t *testing.T) {
 	fn := "reason.ShouldBeRetried"
-	re := []string{"undefined", "onhold", "systemerror", "securityerror", "expired", "networkerror", "hostunknown", "userunknown"}
+	re := []string{eb.Re___0, eb.Re___1, eb.ReSYSE, eb.ReSECU, eb.ReEXPR, eb.ReNETW, eb.ReHOST, eb.ReUSER}
 	cx := 0
 
 	for _, e := range re {

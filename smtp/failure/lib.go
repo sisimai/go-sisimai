@@ -10,6 +10,7 @@
 // Package "smtp/failure" provides functions related to SMTP errors.
 package failure
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
@@ -22,7 +23,7 @@ func IsPermanent(text string) bool {
 	if text == "" { return false }
 
 	statuscode := status.Find(text, "");  if statuscode == "" { statuscode = reply.Find(text, "") }
-	if strings.HasPrefix(statuscode, "5")                      { return true }
+	if strings.HasPrefix(statuscode, "5")                     { return true }
 	if strings.Contains(strings.ToLower(text), " permanent ") { return true }
 	return false
 }
@@ -51,11 +52,11 @@ func IsTemporary(text string) bool {
 //   Returns:
 //     - (bool): true if it indicates hard bounce, false otherwise.
 func IsHardBounce (name, code string) bool {
-	if name == "undefined" || name == "onhold"      || name == ""            { return false }
-	if name == "deliverd"  || name == "feedback"    || name == "vacation"    { return false }
-	if name == "hasmoved"  || name == "userunknown" || name == "hostunknown" { return true  }
-	if name != "notaccept"                                                   { return false }
-	if code == ""                                                            { return true  }
+	if name == eb.Re___0 || name == eb.Re___1 || name == ""        { return false }
+	if name == eb.ReSENT || name == eb.ReFEED || name == eb.ReAWAY { return false }
+	if name == eb.ReMOVE || name == eb.ReUSER || name == eb.ReHOST { return true  }
+	if name != eb.Re00MX                                           { return false }
+	if code == ""                                                  { return true  }
 
 	// Check the 2nd argument(a status code or a reply code)
 	//   - The SMTP status code or the SMTP reply code starts with "5"
@@ -72,11 +73,11 @@ func IsHardBounce (name, code string) bool {
 //   Returns:
 //     - (bool): true if it indicates soft bounce, false otherwise.
 func IsSoftBounce (name, code string) bool {
-	if name == "deliverd"  || name == "feedback"    || name == "vacation"    { return false }
-	if name == "hasmoved"  || name == "userunknown" || name == "hostunknown" { return false }
-	if name == "undefined" || name == "onhold"                               { return true  }
-	if name != "notaccept"                                                   { return true  }
-	if code == ""                                                            { return false }
+	if name == eb.ReSENT || name == eb.ReFEED || name == eb.ReAWAY { return false }
+	if name == eb.ReMOVE || name == eb.ReUSER || name == eb.ReHOST { return false }
+	if name == eb.Re___0 || name == eb.Re___1                      { return true  }
+	if name != eb.Re00MX                                           { return true  }
+	if code == ""                                                  { return false }
 
 	// NotAccept: 5xx => hard bounce, 4xx => soft bounce
 	// Check the 2nd argument(a status code or a reply code)

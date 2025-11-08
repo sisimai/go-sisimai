@@ -9,6 +9,7 @@
 package reason
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -20,7 +21,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["Filtered"] = func(mesg string) bool {
+	IncludedIn[eb.ReFILT] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -49,23 +50,23 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["Filtered"] = func(fo *siba.Fact) bool {
-		if fo        == nil        { return false }
-		if fo.Reason == "filtered" { return true  }
+	ProbesInto[eb.ReFILT] = func(fo *siba.Fact) bool {
+		if fo        == nil       { return false }
+		if fo.Reason == eb.ReFILT { return true  }
 
-		tempreason := status.Name(fo.DeliveryStatus); if tempreason == "suspend" { return false }
+		tempreason := status.Name(fo.DeliveryStatus); if tempreason == eb.ReQUIT { return false }
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 
-		if tempreason == "filtered" {
-			// The value of delivery status code points "filtered".
-			if IncludedIn["UserUnknown"](issuedcode) || IncludedIn["Filtered"](issuedcode) { return true }
+		if tempreason == eb.ReFILT {
+			// The value of delivery status code points Filtered.
+			if IncludedIn[eb.ReUSER](issuedcode) || IncludedIn[eb.ReFILT](issuedcode) { return true }
 
 		} else {
-			// The value of "Reason" is not "filtered" when the value of "fo.Command" is an SMTP
+			// The value of "Reason" is not Filtered when the value of "fo.Command" is an SMTP
 			// command to be sent before the SMTP DATA command because all the MTAs read the headers
 			// and the entire message body after the DATA command.
 			if slices.Contains(command.ExceptDATA, fo.Command) { return false }
-			if IncludedIn["Filtered"](issuedcode) || IncludedIn["UserUnknown"](issuedcode) { return true }
+			if IncludedIn[eb.ReFILT](issuedcode) || IncludedIn[eb.ReUSER](issuedcode) { return true }
 		}
 		return false
 	}

@@ -7,6 +7,7 @@
 // |_|  |_| |_|\___/|___/\__/_/  \___/ \__,_|\__|_|\___/ \___/|_|\_\
 
 package rhost
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -21,8 +22,8 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
-			"hostunknown": []string{"The mail could not be delivered to the recipient because the domain is not reachable"},
-			"userunknown": []string{"Requested action not taken: mailbox unavailable"},
+			eb.ReHOST: []string{"The mail could not be delivered to the recipient because the domain is not reachable"},
+			eb.ReUSER: []string{"Requested action not taken: mailbox unavailable"},
 		}
 		for e := range messagesof {
 			// Each key is an error reason name

@@ -10,6 +10,7 @@
 package reason
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -19,7 +20,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["NoRelaying"] = func(mesg string) bool {
+	IncludedIn[eb.ReRELA] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -53,12 +54,12 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["NoRelaying"] = func(fo *siba.Fact) bool {
-		if fo         == nil          { return false }
-		if fo.Reason  == "norelaying" { return true  }
-		if slices.Contains([]string{"securityerror", "systemerror", "undefined"}, fo.Reason) { return false }
-		if slices.Contains([]string{"CONN", "EHLO", "HELO"}, fo.Command)                     { return false }
-		return IncludedIn["NoRelaying"](strings.ToLower(fo.DiagnosticCode))
+	ProbesInto[eb.ReRELA] = func(fo *siba.Fact) bool {
+		if fo         == nil       { return false }
+		if fo.Reason  == eb.ReRELA { return true  }
+		if slices.Contains([]string{eb.ReSECU, eb.ReSYSE, eb.Re___0}, fo.Reason) { return false }
+		if slices.Contains([]string{"CONN", "EHLO", "HELO"}, fo.Command)         { return false }
+		return IncludedIn[eb.ReRELA](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

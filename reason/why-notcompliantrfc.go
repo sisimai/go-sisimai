@@ -9,6 +9,7 @@
 
 package reason
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -18,7 +19,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["NotCompliantRFC"] = func(mesg string) bool {
+	IncludedIn[eb.ReNRFC] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -37,10 +38,10 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["NotCompliantRFC"] = func(fo *siba.Fact) bool {
-		if fo        == nil               { return false }
-		if fo.Reason == "notcompliantrfc" { return true  }
-		return IncludedIn["NotCompliantRFC"](strings.ToLower(fo.DiagnosticCode))
+	ProbesInto[eb.ReNRFC] = func(fo *siba.Fact) bool {
+		if fo        == nil       { return false }
+		if fo.Reason == eb.ReNRFC { return true  }
+		return IncludedIn[eb.ReNRFC](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

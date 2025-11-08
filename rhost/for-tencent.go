@@ -8,6 +8,7 @@
 
 package rhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -22,42 +23,42 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
-			"authfailure": []string{
+			eb.ReAUTH: []string{ // AuthFailure
 				"spf check failed",         // https://service.mail.qq.com/detail/122/72
 				"dmarc check failed",
 			},
-			"blocked": []string{
+			eb.ReBLOC: []string{ // Blocked
 				"suspected bounce attacks", // https://service.mail.qq.com/detail/122/57
 				"suspected spam ip",        // https://service.mail.qq.com/detail/122/66
 				"connection denied",        // https://service.mail.qq.com/detail/122/170
 			},
-			"mesgtoobig": []string{
+			eb.ReSIZE: []string{ // MesgTooBig
 				"message too large",        // https://service.mail.qq.com/detail/122/168
 			},
-			"rejected": []string{
+			eb.ReREJE: []string{ // Rejected
 				"suspected spam",                   // https://service.mail.qq.com/detail/122/71
 				"mail is rejected by recipients",   // https://service.mail.qq.com/detail/122/92
 			},
-			"spandetected": []string{
+			eb.ReSPAM: []string{ // SpamDetected
 				"spam is embedded in the email",    // https://service.mail.qq.com/detail/122/59
 				"mail content denied",              // https://service.mail.qq.com/detail/122/171
 			},
-			"speeding": []string{
+			eb.ReFAST: []string{ // Speeding
 				"mailbox unavailable or access denined", // https://service.mail.qq.com/detail/122/166
 			},
-			"suspend": []string{
+			eb.ReQUIT: []string{ // Suspend
 				"is a deactivated mailbox", // http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=20022&&no=1000742
 			},
-			"syntaxerror": []string{
+			eb.ReSYNT: []string{ // SyntaxError
 				"bad address syntax", // https://service.mail.qq.com/detail/122/167
 			},
-			"toomanyconn": []string{
+			eb.ReCONN: []string{ // TooManyConn
 				"ip frequency limited",         // https://service.mail.qq.com/detail/122/172
 				"domain frequency limited",     // https://service.mail.qq.com/detail/122/173
 				"sender frequency limited",     // https://service.mail.qq.com/detail/122/174
 				"connection frequency limited", // https://service.mail.qq.com/detail/122/175
 			},
-			"userunknown": []string{
+			eb.ReUSER: []string{ // UserUnknown
 				"mailbox not found",  // https://service.mail.qq.com/detail/122/169
 			},
 		}

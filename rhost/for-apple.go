@@ -9,6 +9,7 @@
 
 package rhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -23,7 +24,7 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
-			"authfailure": []string{
+			eb.ReAUTH: []string{ // AuthFailure
 				// - 554 5.7.1 Your message was rejected due to example.jp's DMARC policy.
 				//   See https://support.apple.com/en-us/HT204137 for
 				// - 554 5.7.1 [HME1] This message was blocked for failing both SPF and DKIM authentication
@@ -31,7 +32,7 @@ func init() {
 				"s dmarc policy",
 				"blocked for failing both spf and dkim autentication checks",
 			},
-			"blocked": []string{
+			eb.ReBLOC: []string{ // Blocked
 				// - 550 5.7.0 Blocked - see https://support.proofpoint.com/dnsbl-lookup.cgi?ip=192.0.1.2
 				// - 550 5.7.1 Your email was rejected due to having a domain present in the Spamhaus
 				//   DBL -- see https://www.spamhaus.org/dbl/
@@ -43,34 +44,34 @@ func init() {
 				"blocked - see https://support.proofpoint.com/dnsbl-lookup",
 				"not accepting connections",
 			},
-			"hasmoved": []string{
+			eb.ReMOVE: []string{ // HasMoved
 				// - 550 5.1.6 recipient no longer on server: *****@icloud.com
 				"recipient no longer on server",
 			},
-			"mailboxfull": []string{
+			eb.ReFULL: []string{ // MailboxFull
 				// - 552 5.2.2 <****@icloud.com>: user is over quota (in reply to RCPT TO command)
 				"user is over quota",
 			},
-			"norelaying": []string{
+			eb.ReRELA: []string{ // NoRelaying
 				// - 554 5.7.1 <*****@icloud.com>: Relay access denied
 				"relay access denied",
 			},
-			"notaccept": []string{"host/domain does not accept mail"},
-			"policyviolation": []string{
+			eb.Re00MX: []string{"host/domain does not accept mail"}, // NotAccept
+			eb.RePOLI: []string{ // PolicyViolation
 				// - 550 5.7.1 [CS01] Message rejected due to local policy.
 				//   Please visit https://support.apple.com/en-us/HT204137
 				"due to local policy",
 			},
-			"rejected": []string{
+			eb.ReREJE: []string{ // Rejected
 				// - 450 4.1.8 <kijitora@example.jp>: Sender address rejected: Domain not found
 				"sender address rejected",
 			},
-			"speeding": []string{
+			eb.ReFAST: []string{ // Speeding
 				// - 421 4.7.1 Messages to ****@icloud.com deferred due to excessive volume.
 				//   Try again later - https://support.apple.com/en-us/HT204137
 				"due to excessive volume",
 			},
-			"userunknown": []string{
+			eb.ReUSER: []string{ // UserUnknown
 				// - 550 5.1.1 <****@icloud.com>: inactive email address (in reply to RCPT TO command)
 				// - 550 5.1.1 unknown or illegal alias: ****@icloud.com
 				"inactive email address",

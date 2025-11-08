@@ -10,6 +10,7 @@
 package reason
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -21,7 +22,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn["SpamDetected"] = func(mesg string) bool {
+	IncludedIn[eb.ReSPAM] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -134,12 +135,12 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto["SpamDetected"] = func(fo *siba.Fact) bool {
-		if fo == nil || fo.DeliveryStatus == ""             { return false }
-		if fo.Reason == "spamdetected"                      { return true  }
-		if status.Name(fo.DeliveryStatus) == "spamdetected" { return true  }
-		if slices.Contains(command.ExceptDATA, fo.Command)  { return false }
-		return IncludedIn["SpamDetected"](strings.ToLower(fo.DiagnosticCode))
+	ProbesInto[eb.ReSPAM] = func(fo *siba.Fact) bool {
+		if fo == nil || fo.DeliveryStatus == ""           { return false }
+		if fo.Reason == eb.ReSPAM                         { return true  }
+		if status.Name(fo.DeliveryStatus) == eb.ReSPAM    { return true  }
+		if slices.Contains(command.ExceptDATA, fo.Command){ return false }
+		return IncludedIn[eb.ReSPAM](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

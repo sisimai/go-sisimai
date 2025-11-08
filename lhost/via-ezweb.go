@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -45,15 +46,15 @@ func init() {
 			"message": []string{"The user(s) ", "Your message ", "Each of the following", "<"},
 		}
 		messagesof := map[string][]string{
-			//"notaccept": []string{"The following recipients did not receive this message:"},
-			"expired": []string{
+			//eb.Re00MX: []string{"The following recipients did not receive this message:"},
+			eb.ReEXPR: []string{ // Expired
 				// Your message was not delivered within 0 days and 1 hours.
 				// Remote host is not responding.
 				"Your message was not delivered within ",
 			},
-			"mailboxfull": []string{"The user(s) account is temporarily over quota"},
-			"onhold":  []string{"Each of the following recipients was rejected by a remote mail server"},
-			"suspend": []string{
+			eb.ReFULL: []string{"The user(s) account is temporarily over quota"},
+			eb.Re___1: []string{"Each of the following recipients was rejected by a remote mail server"},
+			eb.ReQUIT: []string{
 				// http://www.naruhodo-au.kddi.com/qa3429203.html
 				// The recipient may be unpaid user...?
 				"The user(s) account is disabled.",
@@ -134,7 +135,7 @@ func init() {
 			if len(bf.Headers["x-spasign"]) > 0 && bf.Headers["x-spasign"][0] == "NG" {
 				// Content-Type: text/plain; ..., X-SPASIGN: NG (spamghetti, au by EZweb)
 				// Filtered recipient returns message that include 'X-SPASIGN' header
-				e.Reason = "filtered"
+				e.Reason = eb.ReFILT
 
 			} else {
 				// There is no X-SPASIGN header or the value of the header is not "NG"
@@ -147,7 +148,7 @@ func init() {
 			if e.Reason != ""                                { continue }
 			if strings.Contains(e.Recipient, "@ezweb.ne.jp") { continue }
 			if strings.Contains(e.Recipient, "@au.com")      { continue }
-			if strings.HasPrefix(e.Diagnosis, "<") { e.Reason = "userunknown" }
+			if strings.HasPrefix(e.Diagnosis, "<") { e.Reason = eb.ReUSER }
 		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}

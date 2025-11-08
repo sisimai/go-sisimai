@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -33,7 +34,7 @@ func init() {
 		nooriginal := false
 		startingof := map[string][]string{"message": []string{"Error: "}}
 		messagesof := map[string][]string{
-			"userunknown": []string{"550 - Requested action not taken: no such user here", "No valid recipients"},
+			eb.ReUSER: []string{"550 - Requested action not taken: no such user here", "No valid recipients"},
 		}
 
 		if strings.Contains(bf.Payload, boundaries[1]) {

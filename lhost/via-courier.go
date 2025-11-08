@@ -9,6 +9,7 @@
 package lhost
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc1894"
@@ -43,12 +44,12 @@ func init() {
 		}
 		messagesof := map[string][]string{
 			// courier/module.esmtp/esmtpclient.c:526| hard_error(del, ctf, "No such domain.");
-			"hostunknown":  []string{"No such domain."},
+			eb.ReHOST: []string{"No such domain."},
 			// courier/module.esmtp/esmtpclient.c:531| hard_error(del, ctf,
 			// courier/module.esmtp/esmtpclient.c:532|  "This domain's DNS violates RFC 1035.");
-			"systemerror":  []string{"This domain's DNS violates RFC 1035."},
+			eb.ReSYSE: []string{"This domain's DNS violates RFC 1035."},
 			// courier/module.esmtp/esmtpclient.c:535| soft_error(del, ctf, "DNS lookup failed.");
-			"networkerror": []string{"DNS lookup failed."},
+			eb.ReNETW: []string{"DNS lookup failed."},
 		}
 
 		permessage := map[string]string{}   // Store values of each Per-Message field

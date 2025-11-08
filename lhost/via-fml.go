@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -26,34 +27,34 @@ func init() {
 
 		boundaries := []string{"Original mail as follows:"}
 		errortitle := map[string][]string{
-			"rejected": []string{
+			eb.ReREJE: []string{ // Rejected
 				" are not member",
 				"NOT MEMBER article from ",
 				"reject mail ",
 				"Spam mail from a spammer is rejected",
 			},
-			"systemerror": []string{
+			eb.ReSYSE: []string{ // SystemError
 				"fml system error message",
 				"Loop Alert: ",
 				"Loop Back Warning: ",
 				"WARNING: UNIX FROM Loop",
 			},
-			"securityerror": []string{"Security Alert"},
+			eb.ReSECU: []string{"Security Alert"},
 		}
 		errortable := map[string][]string{
-			"rejected": []string{
+			eb.ReREJE: []string{ // Rejected
 				" header may cause mail loop",
 				"NOT MEMBER article from ",
 				"reject mail from ",
 				"reject spammers:",
 				"You are not a member of this mailing list",
 			},
-			"systemerror": []string{
+			eb.ReSYSE: []string{
 				" has detected a loop condition so that",
 				"Duplicated Message-ID",
 				"Loop Back Warning:",
 			},
-			"securityerror": []string{"Security alert:"},
+			eb.ReSECU: []string{"Security alert:"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
