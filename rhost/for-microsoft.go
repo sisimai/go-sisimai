@@ -411,7 +411,7 @@ func init() {
 				//   see Mail flow rule actions in Exchange Server.
 				[4]string{"5.7.", "900", "999", "delivery not authorized, message refused"},
 			},
-			eb.ReREJE: [][4]string{ // Rejected
+			eb.ReFROM: [][4]string{ // Rejected
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - There's a problem with the sender's email address. Verify the sender's email address.
 				[4]string{"5.1.7", "", "", "invalid address"},
