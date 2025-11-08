@@ -12,6 +12,7 @@ import "testing"
 import "strings"
 import "io"
 import "errors"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/rfc791"
 import "libsisimai.org/sisimai/v5/rfc1123"
@@ -129,7 +130,7 @@ func TestRise(t *testing.T) {
 				cx++; for e.Reason != "" {
 					cx++; if strings.HasPrefix(e.Reason, " ") { t.Errorf("%s.Digest.Reason starts with ` `", fs) }
 					cx++; if strings.HasSuffix(e.Reason, " ") { t.Errorf("%s.Digest.Reason ends with ` `", fs)   }
-					cx++; if e.Reason != "suspend" { t.Errorf("%s.Digest.Reason is %s", fs, e.Reason) }
+					cx++; if e.Reason != eb.ReQUIT            { t.Errorf("%s.Digest.Reason is %s", fs, e.Reason) }
 					break
 				}
 				cx++; if  e.Recipient == "" { t.Errorf("%s.Recipient is empty", fs) }
