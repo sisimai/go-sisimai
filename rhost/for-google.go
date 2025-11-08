@@ -455,7 +455,7 @@ func init() {
 				[3]string{"550", "5.2.1", "account that you tried to reach is disabled"},
 				[3]string{"550", "5.2.1", "account that you tried to reach is inactive"},
 			},
-			eb.ReSYNT: [][3]string{ // SyntaxERROR
+			eb.ReCOMM: [][3]string{ // SyntaxERROR
 				// - 523 5.7.10 SMTP protocol violation, no commands allowed to pipeline after STARTTLS.
 				//   For more information, go to About SMTP error messages and review RFC 3207
 				//   specifications.
