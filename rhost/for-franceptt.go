@@ -68,14 +68,14 @@ func init() {
 			"402": eb.ReSECU,
 
 			// - 5.0.1 Emetteur invalide. Invalid Sender.
-			"403": eb.ReREJE,
+			"403": eb.ReFROM,
 
 			// - 5.0.1 Emetteur invalide. Invalid Sender. LPN105_405
 			// - 501 5.1.0 Emetteur invalide. Invalid Sender. OFR004_405 [405] (in reply to MAIL FROM command))
-			"405": eb.ReREJE,
+			"405": eb.ReFROM,
 
 			// Emetteur invalide. Invalid Sender. OFR_415
-			"415": eb.ReREJE,
+			"415": eb.ReFROM,
 
 			// - 550 5.1.1 Adresse d au moins un destinataire invalide.
 			// - Invalid recipient. LPN416 (in reply to RCPT TO command)
@@ -93,7 +93,7 @@ func init() {
 			"420": eb.ReQUIT,
 
 			// - 5.5.3 Mail from not owned by user. LPN105_421.
-			"421": eb.ReREJE,
+			"421": eb.ReFROM,
 
 			"423": "", // Service refused, please try later. LPN105_423
 			"424": "", // Veuillez essayer plus tard. LPN105_424
