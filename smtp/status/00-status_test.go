@@ -10,13 +10,13 @@ package status
 //                                         |_|                                  
 import "testing"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 
 var ReasonList = []string{
-	"authfailure", "badreputation", "blocked", "contenterror", "exceedlimit", "expired", "failedstarttls",
-	"filtered", "hasmoved", "hostunknown", "mailboxfull", "mailererror", "mesgtoobig", "networkerror",
-	"notaccept", "onhold", "rejected", "norelaying", "spamdetected", "virusdetected",  "policyviolation",
-	"securityerror", "speeding", "suppressed", "suspend", "requireptr", "notcompliantrfc", "systemerror",
-	"systemfull", "toomanyconn", "userunknown", "syntaxerror",
+	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReXLIM, eb.ReEXPR, eb.ReTTLS, eb.ReFILT, eb.ReFULL,
+	eb.ReUNIX, eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReREJE, eb.ReQPTR, eb.ReSECU,
+	eb.ReSPAM, eb.ReFAST, eb.ReSUPP, eb.ReQUIT, eb.ReSYNT, eb.ReSYSE, eb.ReSYSF, eb.ReCONN, eb.ReEXEC,
+	eb.Re___0, eb.Re___1, eb.ReHOST, eb.ReUSER, eb.ReMOVE, 
 }
 var StatusList = []string{
 	"2.1.5",
@@ -61,7 +61,7 @@ func TestCode(t *testing.T) {
 	cx := 0
 
 	for _, e := range ReasonList {
-		if e == "hasmoved" || e == "hostunknown" || e == "userunknown" {
+		if e == eb.ReMOVE || e == eb.ReHOST || e == eb.ReUSER {
 			cx++; if cv := Code(e, true);  cv != "" { t.Errorf("%s(%s, true) returns (%s)", fn, e, cv) }
 			cx++; if cv := Code(e, false); strings.HasPrefix(cv, "5.0.9") == false {
 				t.Errorf("%s(%s, true) returns (%s)", fn, e, cv)
