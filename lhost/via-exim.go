@@ -134,7 +134,7 @@ func init() {
 			// parser.c:701| if(bracket_count++ > 5) FAILED(US"angle-brackets nested too deep");
 			// parser.c:738| FAILED(US"domain missing in source-routed address");
 			// parser.c:747| : string_sprintf("malformed address: %.32s may not follow %.*s",
-			eb.ReSYNT: []string{ // SyntaxError
+			eb.ReCOMM: []string{ // SyntaxError
 				"angle-brackets nested too deep",
 				`expected word or "<"`,
 				"domain missing in source-routed address",
