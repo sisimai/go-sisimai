@@ -28,7 +28,7 @@ func Find(fo *siba.Fact) string {
 		for _, e := range classorder[0] {
 			// Check the values of Diagnostic-Code: and Status: fields using reason.ProbesInto[*]()
 			// function of each child class in reason/why-*.go
-			if ProbesInto[e](fo) { reasontext = strings.ToLower(e); break }
+			if ProbesInto[e](fo) { reasontext = e; break }
 		}
 	}
 
@@ -65,7 +65,7 @@ func anotherone(fo *siba.Fact) string {
 		//   ShouldBeRetried(reasontext) returns true or fo.DiagnosticType is "SMTP".
 		for _, e := range classorder[1] {
 			// Trying to match with other patterns in reason/why-*.go
-			if IncludedIn[e](issuedcode) == true { return strings.ToLower(e) }
+			if IncludedIn[e](issuedcode) == true { return e }
 		}
 		if reasontext != "" { return reasontext }
 
