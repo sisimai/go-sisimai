@@ -6,11 +6,9 @@
 // |  __/ |_) / / |  _ <  __/ (_| \__ \ (_) | | | |
 //  \___|_.__/_/  |_| \_\___|\__,_|___/\___/|_| |_|
 
-
 package eb
-
-// bounce reason names
 const (
+	// bounce reason names
 	ReAUTH = "AuthFailure"
 	ReREPU = "BadReputation"
 	ReBLOC = "Blocked"
@@ -32,7 +30,7 @@ const (
 	ReNRFC = "NotCompliantRFC"
 	Re___1 = "OnHold"
 	RePOLI = "PolicyViolation"
-	ReREJE = "Rejected"
+	ReFROM = "Rejected"
 	ReQPTR = "RequirePTR"
 	ReSECU = "SecurityError"
 	ReSPAM = "SpamDetected"
