@@ -95,7 +95,7 @@ func TestIncludedIn(t *testing.T) {
 			"550 Denied by policy",
 			"554 email rejected due to security policies - MCSpamSignature.sa.2.2 (in reply to end of DATA command)",
 		},
-		eb.ReREJE: []string{
+		eb.ReFROM: []string{
 			"550 5.1.8 Domain of sender address example.org does not exist",
 			"5.7.1 Access denied (in reply to MAIL FROM command)",
 		},
