@@ -102,7 +102,7 @@ func init() {
 				// Status: 5.0.0
 				// Remote-MTA: dns; mfsmax.docomo.ne.jp
 				// Diagnostic-Code: smtp; 550 Unknown user ***@docomo.ne.jp
-				reasontext = eb.ReREJE
+				reasontext = eb.ReFROM
 
 			// } else {
 				// Rejected by other SMTP commands: AUTH, MAIL,
