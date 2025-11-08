@@ -50,7 +50,7 @@ func init() {
 			// - Verify that you're sending from a valid domain. Then verify that the domain has valid
 			//   DNS records by checking your zone file. If the DNS isn't valid, it must be fixed before
 			//   you resend the email.
-			"IB506": eb.ReREJE, // Rejected
+			"IB506": eb.ReFROM, // Rejected
 
 			// - 550 jane@coolexample.com Invalid SPF record. Inspect your SPF settings, and try again.
 			//   IB508
