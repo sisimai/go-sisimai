@@ -101,7 +101,7 @@ func(de *DeliveryMatter) Update(field string, value string) bool {
 		case "diagnosis":    de.Diagnosis = value                                  // Any value is accepted
 		case "feedbacktype": if slices.Contains(feedbacklo, value) { de.FeedbackType = value      } // Only valid values are accepted
 		case "lhost":        if rfc1123.IsInternetHost(value) { de.Lhost = strings.ToLower(value) } // Only valid hostnames are accepted
-		case "reason":       de.Reason = strings.ToLower(value)
+		case "reason":       de.Reason = value
 		case "recipient":    if rfc5322.IsEmailAddress(value) { de.Recipient = value } // Only valid email addresses are accepted
 		case "replycode":    if reply.Test(value) { de.ReplyCode = value }             // Only valid SMTP reply codes are accepted
 		case "rhost":        if rfc1123.IsInternetHost(value) { de.Rhost = strings.ToLower(value) } // Only valid hostnames are accepted
