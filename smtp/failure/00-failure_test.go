@@ -13,7 +13,7 @@ import "libsisimai.org/sisimai/v5/eb"
 
 var SoftBounce = []string{
 	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReXLIM, eb.ReEXPR, eb.ReTTLS, eb.ReFILT, eb.ReFULL,
-	eb.ReUNIX, eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReREJE, eb.ReQPTR, eb.ReSECU,
+	eb.ReUNIX, eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReFROM, eb.ReQPTR, eb.ReSECU,
 	eb.ReSPAM, eb.ReFAST, eb.ReSUPP, eb.ReQUIT, eb.ReSYNT, eb.ReSYSE, eb.ReSYSF, eb.ReCONN, eb.ReEXEC,
 	eb.Re___0, eb.Re___1,
 }
