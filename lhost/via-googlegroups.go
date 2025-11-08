@@ -71,8 +71,8 @@ func init() {
 			// * The owner of the group may have removed this group.
 			// * You may need to join the group before receiving permission to post.
 			// * This group may not be open to posting.
-			case strings.Count(emailparts[0], "\n *") == 4: recordwide[1] = eb.ReREJE
-			case strings.Count(emailparts[0], "\n*")  == 4: recordwide[1] = eb.ReREJE
+			case strings.Count(emailparts[0], "\n *") == 4: recordwide[1] = eb.ReFROM
+			case strings.Count(emailparts[0], "\n*")  == 4: recordwide[1] = eb.ReFROM
 		}
 
 		for _, e := range strings.Split(bf.Headers["x-failed-recipients"][0], ",") {
