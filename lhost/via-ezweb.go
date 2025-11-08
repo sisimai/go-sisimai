@@ -46,7 +46,7 @@ func init() {
 			"message": []string{"The user(s) ", "Your message ", "Each of the following", "<"},
 		}
 		messagesof := map[string][]string{
-			//"notaccept": []string{"The following recipients did not receive this message:"},
+			//eb.Re00MX: []string{"The following recipients did not receive this message:"},
 			eb.ReEXPR: []string{ // Expired
 				// Your message was not delivered within 0 days and 1 hours.
 				// Remote host is not responding.
