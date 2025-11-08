@@ -21,7 +21,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn[eb.ReREJE] = func(mesg string) bool {
+	IncludedIn[eb.ReFROM] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		isnot := []string{
@@ -96,27 +96,27 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto[eb.ReREJE] = func(fo *siba.Fact) bool {
+	ProbesInto[eb.ReFROM] = func(fo *siba.Fact) bool {
 		if fo         == nil       { return false }
-		if fo.Reason  == eb.ReREJE { return true  }
+		if fo.Reason  == eb.ReFROM { return true  }
 
 		tempreason := status.Name(fo.DeliveryStatus)
-		if tempreason == eb.ReREJE { return true } // Delivery status code points Rejected.
+		if tempreason == eb.ReFROM { return true } // Delivery status code points Rejected.
 		if tempreason == ""        { tempreason = eb.Re___0 }
 
 		// Check the value of Diagnosic-Code: field with patterns
 		if issuedcode := strings.ToLower(fo.DiagnosticCode); fo.Command == "MAIL" {
 			// The session was Rejected at "MAIL FROM" command
-			if IncludedIn[eb.ReREJE](issuedcode) == true { return true }
+			if IncludedIn[eb.ReFROM](issuedcode) == true { return true }
 
 		} else if fo.Command == "DATA" && tempreason != eb.ReUSER {
 			// The session was rejected at "DATA" command except UserUnknown.
-			if IncludedIn[eb.ReREJE](issuedcode) == true { return true }
+			if IncludedIn[eb.ReFROM](issuedcode) == true { return true }
 
 		} else if IsExplicit(tempreason) == false || slices.Contains([]string{eb.ReSECU, eb.ReSYSE}, tempreason) {
 			// Try to match with message patterns when the temporary reason is OnHold, Undefined,
 			// SecurityError, or SystemError.
-			if IncludedIn[eb.ReREJE](issuedcode) == true { return true }
+			if IncludedIn[eb.ReFROM](issuedcode) == true { return true }
 		}
 		return false
 	}

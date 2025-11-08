@@ -52,7 +52,7 @@ func init() {
 			eb.ReNRFC: []string{ // NotCompliantRFC
 				"MSG-P3", // The message contains multiple instances of a header field that can only be present once.
 			},
-			eb.ReREJE: []string{ // Rejected
+			eb.ReFROM: []string{ // Rejected
 				"DNS-P1", // Your SMTP MAIL FROM domain does not exist.
 				"DNS-P2", // Your SMTP MAIL FROM domain does not have an MX record.
 				"DNS-T1", // Your SMTP MAIL FROM domain exists but does not currently resolve.

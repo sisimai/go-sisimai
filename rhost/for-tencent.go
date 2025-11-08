@@ -35,7 +35,7 @@ func init() {
 			eb.ReSIZE: []string{ // MesgTooBig
 				"message too large",        // https://service.mail.qq.com/detail/122/168
 			},
-			eb.ReREJE: []string{ // Rejected
+			eb.ReFROM: []string{ // Rejected
 				"suspected spam",                   // https://service.mail.qq.com/detail/122/71
 				"mail is rejected by recipients",   // https://service.mail.qq.com/detail/122/92
 			},

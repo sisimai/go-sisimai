@@ -62,7 +62,7 @@ func init() {
 				//   Please visit https://support.apple.com/en-us/HT204137
 				"due to local policy",
 			},
-			eb.ReREJE: []string{ // Rejected
+			eb.ReFROM: []string{ // Rejected
 				// - 450 4.1.8 <kijitora@example.jp>: Sender address rejected: Domain not found
 				"sender address rejected",
 			},

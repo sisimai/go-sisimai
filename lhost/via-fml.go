@@ -27,7 +27,7 @@ func init() {
 
 		boundaries := []string{"Original mail as follows:"}
 		errortitle := map[string][]string{
-			eb.ReREJE: []string{ // Rejected
+			eb.ReFROM: []string{ // Rejected
 				" are not member",
 				"NOT MEMBER article from ",
 				"reject mail ",
@@ -42,7 +42,7 @@ func init() {
 			eb.ReSECU: []string{"Security Alert"},
 		}
 		errortable := map[string][]string{
-			eb.ReREJE: []string{ // Rejected
+			eb.ReFROM: []string{ // Rejected
 				" header may cause mail loop",
 				"NOT MEMBER article from ",
 				"reject mail from ",

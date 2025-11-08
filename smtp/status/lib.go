@@ -515,7 +515,7 @@ func Code(name string, temp bool) string {
 		eb.ReNRFC: "5.0.974",
 		eb.Re___1: "5.0.901",
 		eb.RePOLI: "5.0.972",
-		eb.ReREJE: "5.0.918",
+		eb.ReFROM: "5.0.918",
 		eb.ReQPTR: "5.0.973",
 		eb.ReSECU: "5.0.970",
 		eb.ReSPAM: "5.0.980",
@@ -550,7 +550,7 @@ func Code(name string, temp bool) string {
 		eb.ReNRFC: "4.0.974",
 		eb.Re___1: "4.0.901",
 		eb.RePOLI: "4.0.972",
-		eb.ReREJE: "4.0.918",
+		eb.ReFROM: "4.0.918",
 		eb.ReQPTR: "4.0.973",
 		eb.ReSECU: "4.0.970",
 		eb.ReSPAM: "4.0.980",
@@ -582,8 +582,8 @@ func Name(code string) string {
 		"2.1.5":  eb.ReSENT, // Successfully delivered
 	// --------------------------------------------------------------------------------------------
 		"4.1.6":  eb.ReMOVE, // Destination mailbox has moved, No forwarding address
-		"4.1.7":  eb.ReREJE, // Bad sender"s mailbox address syntax
-		"4.1.8":  eb.ReREJE, // Bad sender"s system address
+		"4.1.7":  eb.ReFROM, // Bad sender"s mailbox address syntax
+		"4.1.8":  eb.ReFROM, // Bad sender"s system address
 		"4.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
 		"4.2.1":  eb.ReBLOC, // Mailbox disabled, not accepting messages
 		"4.2.2":  eb.ReFULL, // Mailbox full
@@ -628,8 +628,8 @@ func Name(code string) string {
 		"5.1.3":  eb.ReUSER, // Bad destination mailbox address syntax
 		"5.1.4":  eb.ReFILT, // Destination mailbox address ambiguous
 		"5.1.6":  eb.ReMOVE, // Destination mailbox has moved, No forwarding address
-		"5.1.7":  eb.ReREJE, // Bad sender"s mailbox address syntax
-		"5.1.8":  eb.ReREJE, // Bad sender"s system address
+		"5.1.7":  eb.ReFROM, // Bad sender"s mailbox address syntax
+		"5.1.8":  eb.ReFROM, // Bad sender"s system address
 		"5.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
 		"5.1.10": eb.Re00MX, // Recipient address has null MX
 		"5.2.0":  eb.ReFILT, // Other or undefined mailbox status

@@ -31,7 +31,7 @@ func init() {
 			"5":  eb.ReCONN, // Letter sending limit is exceeded.
 			"6":  eb.ReRELA, // Use SMTP of your provider to send mail.
 			"7":  eb.ReBLOC, // Wrong value if command HELO/EHLO parameter.
-			"8":  eb.ReREJE, // Couldn't check sender address.
+			"8":  eb.ReFROM, // Couldn't check sender address.
 			"9":  eb.ReBLOC, // IP-address of the sender is blacklisted.
 			"10": eb.ReFILT, // Not in the list Mail address management.
 		}

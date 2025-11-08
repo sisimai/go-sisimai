@@ -336,7 +336,7 @@ func init() {
 				//   https://support.google.com/mail/answer/188131
 				[3]string{"421", "4.7.28", "sending messages with the same message-id:"},
 			},
-			eb.ReREJE: [][3]string{ // Rejected
+			eb.ReFROM: [][3]string{ // Rejected
 				// - 550 5.7.0, Mail Sending denied. This error occurs if the sender account is disabled
 				//   or not registered within your Google Workspace domain.
 				// - https://support.google.com/a/answer/6140680//maildenied

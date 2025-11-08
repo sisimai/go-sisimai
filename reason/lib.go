@@ -39,7 +39,7 @@ var Availables = map[string]string{
 	eb.ReNRFC: "Email rejected due to non-compliance with RFC",
 	eb.Re___1: "Sisimai could not decided the reason due to there is no (or less) detailed information for judging the reason",
 	eb.RePOLI: "Email rejected due to policy violation on a destination host",
-	eb.ReREJE: "Email rejected due to a senders email address (envelope from)",
+	eb.ReFROM: "Email rejected due to a senders email address (envelope from)",
 	eb.ReQPTR: "Email rejected due to missing PTR record or having invalid PTR record",
 	eb.ReSECU: "Email rejected due to security violation was detected on a destination host",
 	eb.ReSPAM: "Email rejected by spam filter running on the remote host",
@@ -58,7 +58,7 @@ var Availables = map[string]string{
 var classorder = [][]string{
 	[]string{
 		eb.ReFULL, eb.ReSIZE, eb.ReXLIM, eb.ReQUIT, eb.ReMOVE, eb.ReRELA, eb.ReAUTH, eb.ReUSER, eb.ReFILT,
-		eb.ReQPTR, eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReREJE, eb.ReHOST, eb.ReSPAM, eb.ReFAST, eb.ReCONN, eb.ReBLOC,
+		eb.ReQPTR, eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReFAST, eb.ReCONN, eb.ReBLOC,
 	},
 	[]string{
 		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReFAST, eb.ReSPAM, eb.ReEXEC, eb.RePOLI, eb.ReRELA, eb.ReSYSE,

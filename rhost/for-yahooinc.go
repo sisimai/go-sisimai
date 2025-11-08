@@ -50,7 +50,7 @@ func init() {
 				//   See https://postmaster.yahooinc.com/error-codes
 				"not accepted for policy reasons",
 			},
-			eb.ReREJE: []string{ // Rejected
+			eb.ReFROM: []string{ // Rejected
 				// Observed the following error message since around March 2024:
 				//
 				// - 421 4.7.0 [TSS04] Messages from 192.0.2.25 temporarily deferred due to unexpected

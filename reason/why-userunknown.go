@@ -157,7 +157,7 @@ func init() {
 			//   Status: 5.1.1
 			//   Diagnostic-Code: SMTP; 550 5.1.1 <***@example.jp>:
 			//     Recipient address rejected: User unknown in local recipient table
-			for _, e := range []string{eb.ReRELA, eb.ReBLOC, eb.ReFULL, eb.ReMOVE, eb.ReREJE, eb.Re00MX} {
+			for _, e := range []string{eb.ReRELA, eb.ReBLOC, eb.ReFULL, eb.ReMOVE, eb.ReFROM, eb.Re00MX} {
 				// Check the value of "Diagnostic-Code" with other error patterns.
 				if IncludedIn[e](issuedcode) { return false }
 			}

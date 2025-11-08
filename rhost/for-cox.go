@@ -47,7 +47,7 @@ func init() {
 			// - There was a violation of SMTP protocol.
 			// - Your email wasn't delivered because Cox was unable to verify that it came from a
 			//   legitimate email sender.
-			"CXSMTP": eb.ReREJE,
+			"CXSMTP": eb.ReFROM,
 
 			// CXCNCT = TooManyConn
 			// - There was a connection issue from the IP address.
@@ -116,7 +116,7 @@ func init() {
 				"esmtp no data before greeting",
 				"attachment extension is forbidden",
 			},
-			eb.ReREJE: []string{ // Rejected
+			eb.ReFROM: []string{ // Rejected
 				// Cox requires that all sender domains resolve to a valid MX or A-record within DNS.
 				"sender rejected",
 			},

@@ -41,12 +41,12 @@ func init() {
 			// 1010 This email account has been blocked from sending emails due to suspicious activity.
 			//      Blocks will expire based on the nature of the activity. If you're a Spectrum customer,
 			//      change all of your Spectrum passwords to secure your account and then contact us.
-			[3]string{"1010", "", eb.ReREJE},
+			[3]string{"1010", "", eb.ReFROM},
 
 			// 1020 This email account has limited access to send emails based on suspicious activity.
 			// 1080 Blocks will expire based on the nature of the activity.
 			//      If you're a Spectrum customer, contact us to remove the block.
-			[3]string{"1020", "1080", eb.ReREJE},
+			[3]string{"1020", "1080", eb.ReFROM},
 
 			// 1090 The email you're trying to send can't be processed. Try sending again at a later time.
 			[3]string{"1090", "", eb.ReSYSE},
@@ -88,11 +88,11 @@ func init() {
 			// 1500 Your email was rejected for attempting to send as a different email address than
 			//      you signed in under. Check that you're sending emails from the address you signed
 			//      in with.
-			[3]string{"1500", "", eb.ReREJE},
+			[3]string{"1500", "", eb.ReFROM},
 
 			// 1520 Your email was rejected for attempting to send as a different email address than
 			//      a domain that we host. Check the outgoing email address and try again.
-			[3]string{"1520", "", eb.ReREJE},
+			[3]string{"1520", "", eb.ReFROM},
 
 			// 1530 Your email was rejected because it's larger than the maximum size of 20MB.
 			[3]string{"1530", "", eb.ReSIZE},
