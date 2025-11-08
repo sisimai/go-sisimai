@@ -9,14 +9,16 @@ package failure
 //   |_|\___||___/\__/_/ |___/_| |_| |_|\__| .__/_/ |_|  \__,_|_|_|\__,_|_|  \___|
 //                                         |_|                                    
 import "testing"
+import "libsisimai.org/sisimai/v5/eb"
 
 var SoftBounce = []string{
-	"blocked", "contenterror", "exceedlimit", "expired", "failedstarttls", "filtered", "mailboxfull",
-	"mailererror", "mesgtoobig", "networkerror", "norelaying", "rejected", "securityerror", "spamdetected",
-	"suppressed", "suspend", "systemerror", "systemfull", "toomanyconn", "undefined", "onhold",
+	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReXLIM, eb.ReEXPR, eb.ReTTLS, eb.ReFILT, eb.ReFULL,
+	eb.ReUNIX, eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReREJE, eb.ReQPTR, eb.ReSECU,
+	eb.ReSPAM, eb.ReFAST, eb.ReSUPP, eb.ReQUIT, eb.ReSYNT, eb.ReSYSE, eb.ReSYSF, eb.ReCONN, eb.ReEXEC,
+	eb.Re___0, eb.Re___1,
 }
-var HardBounce = []string{"userunknown", "hostunknown", "hasmoved", "notaccept"}
-var IsntBounce = []string{"delivered", "feedback", "vacation"}
+var HardBounce = []string{eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX}
+var IsntBounce = []string{eb.ReSENT, eb.ReFEED, eb.ReAWAY}
 var IsntErrors = []string{"smtp; 2.1.5 250 OK"}
 var TempErrors = []string{
 	"smtp; 450 4.0.0 Temporary failure",
@@ -76,7 +78,7 @@ func TestIsHardBounce(t *testing.T) {
 	for _, e := range HardBounce {
 		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
-	cx++; if IsHardBounce("notaccept", "503 Not accept any email") == false { t.Errorf("%s(%s) returns false", fn, "notaccept") }
+	cx++; if IsHardBounce(eb.Re00MX, "503 Not accept any email") == false { t.Errorf("%s(%s) returns false", fn, eb.Re00MX) }
 
 	t.Logf("The number of tests = %d", cx)
 }
@@ -88,7 +90,7 @@ func TestIsSoftBounce(t *testing.T) {
 	for _, e := range SoftBounce {
 		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
-	cx++; if IsSoftBounce("notaccept", "458 Not accept any email") == false { t.Errorf("%s(%s) returns false", fn, "notaccept") }
+	cx++; if IsSoftBounce(eb.Re00MX, "458 Not accept any email") == false { t.Errorf("%s(%s) returns false", fn, eb.Re00MX) }
 
 	t.Logf("The number of tests = %d", cx)
 }
