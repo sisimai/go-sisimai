@@ -188,7 +188,7 @@ func init() {
 				[2]string{"554", "host network not allowed"},
 				[2]string{"554", "host network, not allowed"},
 			},
-			eb.ReREJE: [][2]string{ // Rejected
+			eb.ReFROM: [][2]string{ // Rejected
 				// - The sender's email address or domain has triggered a Blocked Senders Policy or
 				//   there's an SPF hard rejection.
 				// - Delete or modify the Blocked Senders policy to exclude the sender address.
