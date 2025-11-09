@@ -36,7 +36,7 @@ func Find(fo *siba.Fact) string {
 		// The bounce reason is not detected yet at the code block above
 		reasontext  = anotherone(fo) // Try to find a reason name using anotherone()
 		if reasontext == eb.Re___0                    { reasontext = ""        }
-		if reasontext == "" && fo.Action == "delayed" { reasontext = eb.ReEXPR }
+		if reasontext == "" && fo.Action == eb.AeSTAY { reasontext = eb.ReEXPR }
 		if reasontext != ""                           { return reasontext      }
 
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
@@ -77,7 +77,7 @@ func anotherone(fo *siba.Fact) string {
 		}
 		if strings.HasPrefix(fo.DiagnosticType, "X-UNIX")   { return eb.ReUNIX }
 		if ProbesInto[eb.ReCOMM](fo) == true                { return eb.ReCOMM }
-		if fo.Action == "delayed" || fo.Action == "expired" { return eb.ReEXPR }
+		if fo.Action == eb.AeSTAY /*|| fo.Action == "expired"*/ { return eb.ReEXPR }
 		if fo.Command == "EHLO"   || fo.Command == "HELO"   { return eb.ReBLOC }
 	}
 	return reasontext
