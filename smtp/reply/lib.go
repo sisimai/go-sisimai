@@ -107,12 +107,12 @@ var associated = map[string][]string{
 	"451": []string{"",         "",        eb.ReSYSE}, // RFC2465, RFC5321
 	"452": []string{"",         "",        eb.ReSYSF}, // RFC5321
 	"454": []string{"AUTH",     "4.7.0",   eb.ReSECU}, // RFC3207, RFC4954
-	"455": []string{"",         "",        eb.ReSYNT}, // RFC5321
-	"500": []string{"",         "",        eb.ReSYNT}, // RFC5321
-	"501": []string{"",         "",        eb.ReSYNT}, // RFC5321
-	"502": []string{"",         "",        eb.ReSYNT}, // RFC5321
-	"503": []string{"",         "",        eb.ReSYNT}, // RFC5321
-	"504": []string{"",         "",        eb.ReSYNT}, // RFC5321
+	"455": []string{"",         "",        eb.ReCOMM}, // RFC5321
+	"500": []string{"",         "",        eb.ReCOMM}, // RFC5321
+	"501": []string{"",         "",        eb.ReCOMM}, // RFC5321
+	"502": []string{"",         "",        eb.ReCOMM}, // RFC5321
+	"503": []string{"",         "",        eb.ReCOMM}, // RFC5321
+	"504": []string{"",         "",        eb.ReCOMM}, // RFC5321
 	"521": []string{"CONN",     "",        eb.Re00MX}, // RFC7504
 	"523": []string{"AUTH",     "5.7.10",  eb.ReSECU}, // RFC5248
 	"524": []string{"AUTH",     "5.7.11",  eb.ReSECU}, // RFC5248
@@ -122,7 +122,7 @@ var associated = map[string][]string{
 	"538": []string{"AUTH",     "5.7.11",  eb.ReSECU}, // RFC4954, RFC5248
 	"551": []string{"",         "",        eb.ReMOVE}, // RFC5321, RFC5336, RFC6531
 	"552": []string{"",         "",        eb.ReFULL}, // RFC5321
-	"555": []string{"",         "",        eb.ReSYNT}, // RFC5321
+	"555": []string{"",         "",        eb.ReCOMM}, // RFC5321
 	"556": []string{"RCPT",     "",        eb.Re00MX}, // RFC7504
 }
 
