@@ -302,7 +302,7 @@ func init() {
 
 				v.Recipient = e
 				v.Reason    = eb.ReSENT
-				v.Action    = "delivered"
+				v.Action    = eb.AeSENT
 				v.Date      = (*o).Timestamp
 				v.Lhost     = (*o).ReportingMTA
 				v.Diagnosis = (*o).SMTPResponse
