@@ -46,7 +46,7 @@ var Availables = map[string]string{
 	eb.ReFAST: "Rejected due to exceeding a rate limit or sending too fast",
 	eb.ReSUPP: "Email was not delivered due to being listed in suppression list on MTA",
 	eb.ReQUIT: "Email rejected due to a recipient account is being suspended",
-	eb.ReSYNT: "Email rejected due to syntax error at sent commands in SMTP session",
+	eb.ReCOMM: "Email rejected due to syntax error at sent commands in SMTP session",
 	eb.ReSYSE: "Email returned due to system error on the remote host",
 	eb.ReSYSF: "Email rejected due to a destination mail servers disk is full",
 	eb.ReCONN: "SMTP connection rejected temporarily due to too many concurrency connections to the remote host",

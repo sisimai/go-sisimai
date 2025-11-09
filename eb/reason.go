@@ -37,7 +37,7 @@ const (
 	ReFAST = "Speeding"
 	ReSUPP = "Suppressed"
 	ReQUIT = "Suspend"
-	ReSYNT = "SyntaxError"
+	ReCOMM = "SyntaxError"
 	ReSYSE = "SystemError"
 	ReSYSF = "SystemFull"
 	ReCONN = "TooManyConn"

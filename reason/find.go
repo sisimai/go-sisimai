@@ -76,7 +76,7 @@ func anotherone(fo *siba.Fact) string {
 			if forsubject == "5.7" || forsubject == "4.7"   { return eb.ReSECU }
 		}
 		if strings.HasPrefix(fo.DiagnosticType, "X-UNIX")   { return eb.ReUNIX }
-		if ProbesInto[eb.ReSYNT](fo) == true                { return eb.ReSYNT }
+		if ProbesInto[eb.ReCOMM](fo) == true                { return eb.ReCOMM }
 		if fo.Action == "delayed" || fo.Action == "expired" { return eb.ReEXPR }
 		if fo.Command == "EHLO"   || fo.Command == "HELO"   { return eb.ReBLOC }
 	}

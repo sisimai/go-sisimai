@@ -49,7 +49,7 @@ func init() {
 			eb.ReQUIT: []string{ // Suspend
 				"is a deactivated mailbox", // http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=20022&&no=1000742
 			},
-			eb.ReSYNT: []string{ // SyntaxError
+			eb.ReCOMM: []string{ // SyntaxError
 				"bad address syntax", // https://service.mail.qq.com/detail/122/167
 			},
 			eb.ReCONN: []string{ // TooManyConn

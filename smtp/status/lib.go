@@ -524,7 +524,7 @@ func Code(name string, temp bool) string {
 		eb.ReQUIT: "5.0.921",
 		eb.ReSYSE: "5.0.930",
 		eb.ReSYSF: "5.0.931",
-		eb.ReSYNT: "5.0.902",
+		eb.ReCOMM: "5.0.902",
 		eb.ReCONN: "5.0.945",
 		eb.ReUSER: "5.0.911",
 		eb.Re___0: "5.0.900",
@@ -559,7 +559,7 @@ func Code(name string, temp bool) string {
 		eb.ReQUIT: "4.0.921",
 		eb.ReSYSE: "4.0.930",
 		eb.ReSYSF: "4.0.931",
-		eb.ReSYNT: "4.0.902",
+		eb.ReCOMM: "4.0.902",
 		eb.ReCONN: "4.0.945",
 	//	eb.ReUSER: "4.0.911",
 		eb.Re___0: "4.0.900",
@@ -646,11 +646,11 @@ func Name(code string) string {
 		"5.4.0":  eb.ReNETW, // Other or undefined network or routing status
 		"5.4.3":  eb.ReSYSE, // Directory server failure
 		"5.4.4":  eb.ReHOST, // Unable to route
-		"5.5.2":  eb.ReSYNT, // If the server cannot BASE64 decode any client response (AUTH)
+		"5.5.2":  eb.ReSYSE, // If the server cannot BASE64 decode any client response (AUTH)
 		"5.5.3":  eb.ReCONN, // Too many recipients
 		"5.5.4":  eb.ReSYSE, // Invalid command arguments
 		"5.5.5":  eb.ReSYSE, // Wrong protocol version
-		"5.5.6":  eb.ReSYNT, // Authentication Exchange line is too long
+		"5.5.6":  eb.ReCOMM, // Authentication Exchange line is too long
 		"5.6.0":  eb.ReBODY, // Other or undefined media error
 		"5.6.1":  eb.ReBODY, // Media not supported
 		"5.6.2":  eb.ReBODY, // Conversion required and prohibited

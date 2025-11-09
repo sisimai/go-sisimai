@@ -588,7 +588,7 @@ func init() {
 				// Previous versions of Exchange Server ------------------------------------------------
 				[4]string{"5.2.1", "", "", "mailbox cannot be accessed"},
 			},
-			eb.ReSYNT: [][4]string{ // SyntaxError
+			eb.ReCOMM: [][4]string{ // SyntaxError
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - Receive connectors that are used for internal mail flow are missing the required
 				//   Exchange Server authentication mechanism. For more information about authentication
