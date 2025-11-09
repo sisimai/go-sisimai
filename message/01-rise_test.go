@@ -90,7 +90,7 @@ func TestRise(t *testing.T) {
 				cx++; for e.Action != "" {
 					cx++; if strings.HasPrefix(e.Action, " ") { t.Errorf("%s.Digest.Action starts with ` `", fs) }
 					cx++; if strings.HasSuffix(e.Action, " ") { t.Errorf("%s.Digest.Action ends with ` `", fs)   }
-					cx++; if e.Action != "failed"             { t.Errorf("%s.Digest.Action is %s", fs, e.Action) }
+					cx++; if e.Action != eb.AeFAIL            { t.Errorf("%s.Digest.Action is %s", fs, e.Action) }
 					break
 				}
 				cx++; if  e.Agent == "" { t.Errorf("%s.Digest.Agent is empty", fs) }
