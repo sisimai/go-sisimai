@@ -10,6 +10,7 @@ package siba
 //                                                                          |___/                               
 import "testing"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 
 // Action       string     // The value of Action header
 // Agent        string     // MTA name
@@ -118,7 +119,7 @@ func TestDeliveryMatter(t *testing.T) {
 		cx++; if ct == false { t.Errorf("%s(%s, %s) returns false", fn, e, cv.Select(e)) }
 	}
 
-	ct  = cv.Update("action", "delayed")
+	ct  = cv.Update("action", eb.AeSTAY)
 	cx++; if ct == false            { t.Errorf("%s(action, delayed) returns false", fn) }
 	cx++; if cv.Action != "delayed" { t.Errorf("%s(action, delayed) did not updated: %s", fn, cv.Action) }
 

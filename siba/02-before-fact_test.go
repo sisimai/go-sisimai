@@ -8,6 +8,7 @@ package siba
 //   | |  __/\__ \ |_ / /\__ \ | |_) | (_| |_| |_) |  __/  _| (_) | | |  __/  _| (_| | (__| |_ 
 //   |_|\___||___/\__/_/ |___/_|_.__/ \__,_(_)____/ \___|_|  \___/|_|  \___|_|  \__,_|\___|\__|
 import "testing"
+import "libsisimai.org/sisimai/v5/eb"
 
 // Sender  string              // Unix FROM line ("From ")
 // Headers map[string][]string // Email headers
@@ -23,7 +24,7 @@ func TestBeforeFact(t *testing.T) {
 		Headers: map[string][]string{"Subject": []string{"Delivery Failure"}},
 		Payload: "Sorry, the email delivery failed",
 		RFC822:  map[string][]string{"To": []string{"<postmaster@example.org>"}},
-		Digest:  []DeliveryMatter{DeliveryMatter{Action: "failed"}},
+		Digest:  []DeliveryMatter{DeliveryMatter{Action: eb.AeFAIL}},
 		Catch:   nil,
 		Errors:  []NotDecoded{*(MakeNotDecoded("Test message", true))},
 	}
