@@ -327,7 +327,7 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 				if thing.Reason != eb.ReSENT { thing.ReplyCode = "" }
 
 			} else {
-				// The Reason is not "delivered", or "feedback", or "vacation"
+				// The Reason is not Delivered, or Feedback, or Vacation.
 				cv := piece["deliverystatus"] + " " + piece["diagnosticcode"]; if len(cv) < 4 { cv = "" }
 				thing.HardBounce = failure.IsHardBounce(thing.Reason, cv)
 			}
@@ -368,10 +368,10 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 { thing.Action = ox[2] }
 			}
 			switch thing.Reason {
-				case eb.ReSENT: thing.Action = "delivered"
-				case eb.ReEXPR: thing.Action = "delayed"
+				case eb.ReSENT: thing.Action = eb.AeSENT // delivered
+				case eb.ReEXPR: thing.Action = eb.AeSTAY // delayed
 			}
-			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = "failed" }
+			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = eb.AeFAIL }
 		}
 
 		if thing.ReplyCode != "" {

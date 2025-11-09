@@ -11,6 +11,7 @@
 package rfc1894
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/moji"
 
 var FieldIndex = []string{
@@ -32,7 +33,7 @@ var FieldTable = map[string]string{
 	"x-actual-recipient": "alias",
 }
 var ActionList = map[string]bool{
-	"delayed": true, "delivered": true, "expanded": true, "failed": true, "relayed": true,
+	eb.AeSTAY: true, eb.AeSENT: true, eb.AeEXPN: true, eb.AeFAIL: true, eb.AeTRAN: true,
 }
 
 // Label returns a lower-cased field name.
@@ -127,11 +128,11 @@ func Field(line string) []string {
 		"x-original-message-id": "text",
     }
 	correction := map[string]string{
-		"deliverable": "delivered",
-		"expired":     "delayed",
-		"failure":     "failed",
+		"deliverable": eb.AeSENT,
+		"expired":     eb.AeFAIL,
+		"failure":     eb.AeFAIL,
     }
-	actionlist := []string{"failed", "delayed", "delivered", "relayed", "expanded"}
+	actionlist := []string{eb.AeFAIL, eb.AeSTAY, eb.AeSENT, eb.AeTRAN, eb.AeEXPN}
 	captureson := map[string][]string{
 		"addr": []string{"Final-Recipient", "Original-Recipient", "X-Actual-Recipient"},
 		"code": []string{"Diagnostic-Code"},

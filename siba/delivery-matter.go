@@ -88,7 +88,6 @@ func(de *DeliveryMatter) Select(field string) string {
 func(de *DeliveryMatter) Update(field string, value string) bool {
 	if field == "" || value == "" { return false }
 
-	//actionlist := []string{"delayed", "delivered", "expanded", "failed", "relayed"}
 	feedbacklo := []string{"abuse", "dkim", "fraud", "miscategorized", "not-spam", "opt-out", "virus", "other"}
 
 	switch field {

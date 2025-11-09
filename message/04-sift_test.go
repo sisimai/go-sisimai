@@ -13,6 +13,7 @@ import "strings"
 import "io"
 import "os"
 import "net/mail"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
@@ -26,13 +27,13 @@ func TestSift(t *testing.T) {
 		t.Fatalf("os.ReadFile(%s) returns an empty string", ae)
 	}
 	et := string(bx); em, _ := mail.ReadMessage(strings.NewReader(et))
-	eb, _ := io.ReadAll(em.Body); cx++; if len(eb) == 0 {
+	by, _ := io.ReadAll(em.Body); cx++; if len(by) == 0 {
 		t.Fatalf("io.ReadAll(%s) returns an empty string", ae)
 	}
 
 	bf.Sender  = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 	bf.Headers = rfc5322.Headers(&em.Header)
-	bf.Payload = string(eb)
+	bf.Payload = string(by)
 
 	cx++; if len(bf.Headers) == 0             { t.Errorf("rfc5322.Headers() returns empty headers") }
 	cx++; if cv := sift(nil, nil); cv == true { t.Errorf("%s(nil) returns true", fn) }
@@ -40,7 +41,7 @@ func TestSift(t *testing.T) {
 	cx++; if len(bf.Digest)  == 0             { t.Errorf("bf.Digest is empty") }
 
 	dx := bf.Digest[0]
-	cx++; if dx.Action       != "failed"      { t.Errorf("%s.Digest.Action is not `failed`: %s", fs, dx.Action) }
+	cx++; if dx.Action       != eb.AeFAIL     { t.Errorf("%s.Digest.Action is not `failed`: %s", fs, dx.Action) }
 	cx++; if dx.Agent        != "Postfix"     { t.Errorf("%s.Digest.Agent is not `Postfix`: %s", fs, dx.Agent) }
 	cx++; if dx.Alias        == ""            { t.Errorf("%s.Digest.Alias is empty", fs) }
 	cx++; if dx.Command      != "RCPT"        { t.Errorf("%s.Digest.Command is not `RCPT`: %s", fs, dx.Command) }
