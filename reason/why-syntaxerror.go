@@ -18,16 +18,16 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn[eb.ReSYNT] = func(mesg string) bool { return false }
+	IncludedIn[eb.ReCOMM] = func(mesg string) bool { return false }
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto[eb.ReSYNT] = func(fo *siba.Fact) bool {
+	ProbesInto[eb.ReCOMM] = func(fo *siba.Fact) bool {
 		if fo        == nil       { return false }
-		if fo.Reason == eb.ReSYNT { return true  }
+		if fo.Reason == eb.ReCOMM { return true  }
 
 		reply, nyaan := strconv.ParseUint(fo.ReplyCode, 10, 16); if nyaan != nil { return false }
 		if (reply > 400 && reply < 408) || (reply > 500 && reply < 508)          { return true  }

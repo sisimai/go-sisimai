@@ -155,7 +155,7 @@ func TestIncludedIn(t *testing.T) {
 			cx++; if IncludedIn[cr](strings.ToLower(re)) == false { t.Errorf("%s[%s](%s) returns false", fn, cr, re) }
 		}
 	}
-	for _, cr := range []string{eb.ReSUPP, eb.ReSYNT, eb.ReFEED, eb.ReSENT, eb.Re___0, eb.Re___1} {
+	for _, cr := range []string{eb.ReSUPP, eb.ReCOMM, eb.ReFEED, eb.ReSENT, eb.Re___0, eb.Re___1} {
 		cx++; if IncludedIn[cr]("")     == true  { t.Errorf("%s[%s]('') returns true", fn, cr) }
 		cx++; if IncludedIn[cr]("neko") == true  { t.Errorf("%s[%s](neko) returns true", fn, cr) }
 	}
