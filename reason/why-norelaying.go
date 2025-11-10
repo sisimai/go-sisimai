@@ -58,7 +58,7 @@ func init() {
 		if fo         == nil       { return false }
 		if fo.Reason  == eb.ReRELA { return true  }
 		if slices.Contains([]string{eb.ReSECU, eb.ReSYSE, eb.Re___0}, fo.Reason) { return false }
-		if slices.Contains([]string{"CONN", "EHLO", "HELO"}, fo.Command)         { return false }
+		if slices.Contains([]string{eb.CeCONN, eb.CeEHLO, eb.CeHELO}, fo.Command){ return false }
 		return IncludedIn[eb.ReRELA](strings.ToLower(fo.DiagnosticCode))
 	}
 }
