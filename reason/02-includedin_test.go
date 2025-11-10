@@ -31,7 +31,6 @@ func TestIncludedIn(t *testing.T) {
 		},
 		eb.ReBODY: []string{
 			"550 5.6.0 the headers in this message contain improperly-formatted binary content",
-			"554 Transaction failed: Duplicate header 'DKIM-Signature'. (in reply to end of DATA command)",
 		},
 		eb.ReXLIM: []string{
 			"5.2.3 Message too large",
@@ -88,6 +87,7 @@ func TestIncludedIn(t *testing.T) {
 		eb.ReNRFC: []string{
 			"550 5.7.1 This message is not RFC 5322 compliant. There are multiple Subject headers.",
 			"There are multiple Subject headers. Please visit https://support.google.com/mail/?p=RfcMessageNonCompliant",
+			"554 Transaction failed: Duplicate header 'DKIM-Signature'. (in reply to end of DATA command)",
 		},
 	//	eb.Re___1: []string{"5.0.901 error"},
 		eb.RePOLI: []string{

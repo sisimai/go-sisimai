@@ -49,12 +49,12 @@ func init() {
 				"reject spammers:",
 				"You are not a member of this mailing list",
 			},
+			eb.ReNRFC: []string{"Duplicated Message-ID"},
+			eb.ReSECU: []string{"Security alert:"},
 			eb.ReSYSE: []string{
 				" has detected a loop condition so that",
-				"Duplicated Message-ID",
 				"Loop Back Warning:",
 			},
-			eb.ReSECU: []string{"Security alert:"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
