@@ -10,6 +10,7 @@ package lhost
 import "slices"
 import "strings"
 import "strconv"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -69,11 +70,11 @@ func init() {
 				// Pick email addresses, error messages, and the last SMTP command.
 				v = siba.TailDeliveryMatter(dscontents)
 				switch e.Command {
-					case "EHLO", "HELO": v.Lhost = e.Argument // Use the argument of EHLO/HELO command as a value of "lhost"
-					case "MAIL":
+					case eb.CeEHLO, eb.CeHELO: v.Lhost = e.Argument // Use the argument of EHLO/HELO command as a value of "lhost"
+					case eb.CeMAIL:
 						// Set the argument of "MAIL" command to pseudo To: header of the original message
 						if len(emailparts[1]) == 0 { emailparts[1] += "To: " + e.Argument + "\n" }
-					case "RCPT":
+					case eb.CeRCPT:
 						// RCPT TO: <...>
 						if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
 						v.Recipient = e.Argument
@@ -280,7 +281,7 @@ func init() {
 				// There is no SMTP command
 				if e.Command = command.Find(e.Diagnosis); e.Command == "" {
 					// <kijitora@example.org>: host r2.example.org[198.51.100.18] refused to talk to me:
-					if strings.Contains(e.Diagnosis, "refused to talk to me:") { e.Command = "HELO" }
+					if strings.Contains(e.Diagnosis, "refused to talk to me:") { e.Command = eb.CeEHLO }
 				}
 			}
 			if e.Spec != "" { continue }
