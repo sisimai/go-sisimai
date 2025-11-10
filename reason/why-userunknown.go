@@ -166,7 +166,7 @@ func init() {
 		} else {
 			// The reason name found by fo.DeliveryStatus is not UserUnknown, or is empty
 			// When the SMTP command is not "RCPT", the session rejected by other reason, maybe.
-			if fo.Command == "RCPT" && IncludedIn[eb.ReUSER](issuedcode) { return true }
+			if fo.Command == eb.CeRCPT && IncludedIn[eb.ReUSER](issuedcode) { return true }
 		}
 		return false
 	}
