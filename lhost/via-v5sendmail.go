@@ -8,6 +8,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -83,7 +84,7 @@ func init() {
 				// Keep error messages before "While talking to ..." line
 				if remotehost == "" { anotherone[recipients] += " " + e; continue }
 
-				if cv == v.Recipient || (curcommand == "MAIL" && strings.HasPrefix(e, "<<< ")) {
+				if cv == v.Recipient || (curcommand == eb.CeMAIL && strings.HasPrefix(e, "<<< ")) {
 					// The recipient address is the same address with the last appeared address
 					// like "550 <mikeneko@example.co.jp>... User unknown"
 					// Append this line to the string which is keeping error messages
