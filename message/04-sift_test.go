@@ -44,7 +44,7 @@ func TestSift(t *testing.T) {
 	cx++; if dx.Action       != eb.AeFAIL     { t.Errorf("%s.Digest.Action is not `failed`: %s", fs, dx.Action) }
 	cx++; if dx.Agent        != "Postfix"     { t.Errorf("%s.Digest.Agent is not `Postfix`: %s", fs, dx.Agent) }
 	cx++; if dx.Alias        == ""            { t.Errorf("%s.Digest.Alias is empty", fs) }
-	cx++; if dx.Command      != "RCPT"        { t.Errorf("%s.Digest.Command is not `RCPT`: %s", fs, dx.Command) }
+	cx++; if dx.Command      != eb.CeRCPT     { t.Errorf("%s.Digest.Command is not `RCPT`: %s", fs, dx.Command) }
 	cx++; if dx.FeedbackType != ""            { t.Errorf("%s.Digest.FeedbackType is not empty: %s", fs, dx.FeedbackType) }
 	cx++; if dx.Date         == ""            { t.Errorf("%s.Digest.Date is empty", fs) }
 	cx++; if dx.Diagnosis    == ""            { t.Errorf("%s.Digest.Diagnosis is empty", fs) }
