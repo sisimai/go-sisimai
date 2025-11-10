@@ -9,6 +9,7 @@
 package lhost
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
@@ -194,7 +195,7 @@ func init() {
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			if e.Command == "" { e.Command = thecommand }
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
-			if e.Command == "" { if len(esmtpreply) > 0 { e.Command = "EHLO" }}
+			if e.Command == "" { if len(esmtpreply) > 0 { e.Command = eb.CeEHLO }}
 
 			// Check alternative status code and override it
 			if len(anotherset["status"]) > 0 && status.Test(e.Status) == false { e.Status = anotherset["status"] }
