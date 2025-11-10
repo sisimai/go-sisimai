@@ -105,11 +105,11 @@ func init() {
 		if tempreason == ""        { tempreason = eb.Re___0 }
 
 		// Check the value of Diagnosic-Code: field with patterns
-		if issuedcode := strings.ToLower(fo.DiagnosticCode); fo.Command == "MAIL" {
+		if issuedcode := strings.ToLower(fo.DiagnosticCode); fo.Command == eb.CeMAIL {
 			// The session was Rejected at "MAIL FROM" command
 			if IncludedIn[eb.ReFROM](issuedcode) == true { return true }
 
-		} else if fo.Command == "DATA" && tempreason != eb.ReUSER {
+		} else if fo.Command == eb.CeDATA && tempreason != eb.ReUSER {
 			// The session was rejected at "DATA" command except UserUnknown.
 			if IncludedIn[eb.ReFROM](issuedcode) == true { return true }
 
