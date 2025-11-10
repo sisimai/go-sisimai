@@ -425,8 +425,8 @@ func init() {
 
 				switch e.Command {
 					// Detect the bounce reason by using the SMTP command
-					case "EHLO", "HELO": e.Reason = eb.ReBLOC // HELO | Connected to 192.0.2.135 but my name was rejected.
-					case "MAIL":         e.Reason = eb.Re___1 // MAIL | Connected to 192.0.2.135 but sender was rejected.
+					case eb.CeEHLO, eb.CeHELO: e.Reason = eb.ReBLOC // HELO | Connected to 192.0.2.135 but my name was rejected.
+					case eb.CeMAIL:            e.Reason = eb.Re___1 // MAIL | Connected to 192.0.2.135 but sender was rejected.
 				default:
 					// Find any error message string defined in "messagesof" from e.Diagnosis
 					for r := range messagesof {
