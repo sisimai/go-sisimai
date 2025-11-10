@@ -13,13 +13,17 @@ import "strings"
 import "slices"
 import "os"
 import "path/filepath"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
 
 func TestRise(t *testing.T) {
 	fn := "smtp/transcript.Rise"
 	ef := filepath.Join("..", "..", "set-of-emails", "maildir", "bsd", "lhost-postfix-75.eml")
-	cc := []string{"CONN", "HELO", "EHLO", "AUTH", "MAIL", "RCPT", "DATA", "QUIT", "RSET", "XFORWARD"}
+	cc := []string{
+		eb.CeCONN, eb.CeHELO, eb.CeEHLO, eb.CeAUTH, eb.CeMAIL, eb.CeRCPT, eb.CeDATA, eb.CeQUIT,
+		eb.CeRSET, eb.CeXFWD,
+	}
 	cx := 0
 
 	bx, ce := os.ReadFile(ef); if len(bx) == 0 || ce != nil {
@@ -34,7 +38,7 @@ func TestRise(t *testing.T) {
 			t.Errorf("%s.Command(%s) is not listed in %v", fn, cv, cc)
 		}
 
-		if e.Command == "MAIL" || e.Command == "RCPT" {
+		if e.Command == eb.CeMAIL || e.Command == eb.CeRCPT {
 			cx++; if strings.Contains(e.Argument, "@") == false { t.Errorf("%s.Argument does not include @: %s", fn, e.Argument) }
 		} else {
 			cx++; if e.Argument != "" { t.Errorf("%s.Argument s not empty: %s", fn, e.Argument) }

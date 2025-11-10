@@ -20,8 +20,8 @@ import "libsisimai.org/sisimai/v5/moji"
 //   Returns:
 //     - (string): Bounce reason name or an empty string.
 func Find(fo *siba.Fact) string {
-	if fo == nil || fo.DiagnosticCode == ""     { return "" }
-	if fo.Command != "" && fo.Command != "DATA" { return "" }
+	if fo == nil || fo.DiagnosticCode == ""        { return "" }
+	if fo.Command != "" && fo.Command != eb.CeDATA { return "" }
 
 	localagent := map[string][]string{
 		// Each error message should be a lower-cased string

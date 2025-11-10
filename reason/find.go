@@ -72,13 +72,13 @@ func anotherone(fo *siba.Fact) string {
 		if forsubject := ""; len(fo.DeliveryStatus) > 3 {
 			// Check the first 3 characters of fo.DeliveryStatus
 			forsubject = fo.DeliveryStatus[0:3]
-			if forsubject == "5.6" || forsubject == "4.6" { return eb.ReBODY }
-			if forsubject == "5.7" || forsubject == "4.7" { return eb.ReSECU }
+			if forsubject == "5.6" || forsubject == "4.6"     { return eb.ReBODY }
+			if forsubject == "5.7" || forsubject == "4.7"     { return eb.ReSECU }
 		}
-		if strings.HasPrefix(fo.DiagnosticType, "X-UNIX") { return eb.ReUNIX }
-		if ProbesInto[eb.ReCOMM](fo) == true              { return eb.ReCOMM }
-		if fo.Action == eb.AeSTAY                         { return eb.ReEXPR }
-		if fo.Command == "EHLO" || fo.Command == "HELO"   { return eb.ReBLOC }
+		if strings.HasPrefix(fo.DiagnosticType, "X-UNIX")     { return eb.ReUNIX }
+		if ProbesInto[eb.ReCOMM](fo) == true                  { return eb.ReCOMM }
+		if fo.Action == eb.AeSTAY                             { return eb.ReEXPR }
+		if fo.Command == eb.CeEHLO || fo.Command == eb.CeHELO { return eb.ReBLOC }
 	}
 	return reasontext
 }

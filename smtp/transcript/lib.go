@@ -10,6 +10,7 @@
 // Package "smtp/transcript" provides functions related to SMTP transcript logs.
 package transcript
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/reply"
 import "libsisimai.org/sisimai/v5/smtp/status"
@@ -137,7 +138,7 @@ func Rise(log, rhs, lhs string) []TranscriptLog {
 			cursession.Command = strings.ToUpper(thecommand)
 			cursession.Parameter = map[string]string{}
 
-			if thecommand == "MAIL" || thecommand == "RCPT" || thecommand == "XFORWARD" {
+			if thecommand == eb.CeMAIL || thecommand == eb.CeRCPT || thecommand == eb.CeXFWD {
 				// "MAIL FROM" or "RCPT TO" or "XFORWARD"
 				if strings.HasPrefix(uppercased, "FROM:") || strings.HasPrefix(uppercased, "TO:") {
 					// >>> MAIL FROM: <neko@example.com> SIZE=65535
@@ -168,7 +169,7 @@ func Rise(log, rhs, lhs string) []TranscriptLog {
 				// Insert "CONN" as a pseudo SMTP command
 				transcript = append(transcript, *(new(TranscriptLog)))
 				cursession = &(transcript[len(transcript) - 1])
-				cursession.Command = "CONN"
+				cursession.Command = eb.CeCONN
 			}
 
 			// Out: 220 mx22.example.com ESMTP MAIL SYSTEM

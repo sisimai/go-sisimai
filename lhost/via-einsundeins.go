@@ -99,8 +99,8 @@ func init() {
 				e.Rhost  = moji.Sweep(moji.Select(e.Diagnosis, "host: ", " ", 0))
 				e.Status = status.Find(e.Diagnosis, "")
 
-				if strings.Contains(e.Diagnosis, "for TEXT command") { e.Command = "DATA" }
-				if strings.Contains(e.Diagnosis, "SMTP error")       { e.Spec    = "SMTP" }
+				if strings.Contains(e.Diagnosis, "for TEXT command") { e.Command = eb.CeDATA }
+				if strings.Contains(e.Diagnosis, "SMTP error")       { e.Spec    = "SMTP"    }
 			}
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
