@@ -78,25 +78,25 @@ func init() {
 		commandset := map[string][]string{
 			// Error text regular expressions which defined in qmail-remote.c
 			// qmail-remote.c:225|  if (smtpcode() != 220) quit("ZConnected to "," but greeting failed");
-			"CONN": []string{" but greeting failed."},
+			eb.CeCONN: []string{" but greeting failed."},
 
 			// qmail-remote.c:231|  if (smtpcode() != 250) quit("ZConnected to "," but my name was rejected");
-			"EHLO": []string{" but my name was rejected."},
+			eb.CeEHLO: []string{" but my name was rejected."},
 
 			// qmail-remote.c:238|  if (code >= 500) quit("DConnected to "," but sender was rejected");
 			// reason = rejected
-			"MAIL": []string{" but sender was rejected."},
+			eb.CeMAIL: []string{" but sender was rejected."},
 
 			// qmail-remote.c:249|  out("h"); outhost(); out(" does not like recipient.\n");
 			// qmail-remote.c:253|  out("s"); outhost(); out(" does not like recipient.\n");
 			// reason = userunknown
-			"RCPT": []string{" does not like recipient."},
+			eb.CeRCPT: []string{" does not like recipient."},
 
 			// qmail-remote.c:265|  if (code >= 500) quit("D"," failed on DATA command");
 			// qmail-remote.c:266|  if (code >= 400) quit("Z"," failed on DATA command");
 			// qmail-remote.c:271|  if (code >= 500) quit("D"," failed after I sent the message");
 			// qmail-remote.c:272|  if (code >= 400) quit("Z"," failed after I sent the message");
-			"DATA": []string{" failed on DATA command", " failed after I sent the message"},
+			eb.CeDATA: []string{" failed on DATA command", " failed after I sent the message"},
 		}
 
 		// qmail-send.c:922| ... (&dline[c],"I'm not going to try again; this message has been in the queue too long.\n")) nomem();
@@ -219,7 +219,7 @@ func init() {
 				e.Command = command.Find(e.Diagnosis)
 			}
 
-			if e.Command == "EHLO" || e.Command == "HELO" {
+			if e.Command == eb.CeEHLO || e.Command == eb.CeHELO {
 				// HELO | Connected to 192.0.2.135 but my name was rejected.
 				e.Reason = eb.ReBLOC
 
