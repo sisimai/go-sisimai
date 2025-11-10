@@ -93,7 +93,7 @@ func init() {
 
 			} else {
 				// There is no X-SPASIGN: header in the bounce message
-				if e.Command == "RCPT" { e.Reason = eb.ReUSER; continue }
+				if e.Command == eb.CeRCPT { e.Reason = eb.ReUSER; continue }
 
 				for r := range messagesof {
 					// The key name is a bounce reason name
