@@ -9,36 +9,37 @@ package command
 //   |_|\___||___/\__/_/ |___/_| |_| |_|\__| .__/_/ \___\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_|
 //                                         |_|                                                      
 import "testing"
+import "libsisimai.org/sisimai/v5/eb"
 
 var SMTPErrors = map[string][]string{
-	"HELO": []string{
+	eb.CeHELO: []string{
 		"lost connection with mx.example.jp[192.0.2.2] while performing the HELO handshake",
 		"SMTP error from remote mail server after HELO mx.example.co.jp:",
 	},
-	"EHLO": []string{
+	eb.CeEHLO: []string{
 		"SMTP error from remote mail server after EHLO neko.example.com:",
 	},
-	"MAIL": []string{
+	eb.CeMAIL: []string{
 		"452 4.3.2 Connection rate limit exceeded. (in reply to MAIL FROM command)",
 		"5.1.8 (Server rejected MAIL FROM address)",
 		"5.7.1 Access denied (in reply to MAIL FROM command)",
 		"SMTP error from remote mail server after MAIL FROM:<shironeko@example.jp> SIZE=1543:",
 	},
-	"RCPT": []string{
+	eb.CeRCPT: []string{
 		"550 5.1.1 <DATA@MAIL.EXAMPLE.JP>... User Unknown  in RCPT TO",
 		"550 user unknown (in reply to RCPT TO command)",
 		">>> RCPT To:<mikeneko@example.co.jp>",
 		"most progress was RCPT TO response; remote host 192.0.2.32 said: 550 Unknown user MAIL@example.ne.jp",
 		"SMTP error from remote mail server after RCPT TO:<kijitora@example.jp>:",
 	},
-	"DATA": []string{
+	eb.CeDATA: []string{
 		"Email rejected per DMARC policy for libsisimai.org (in reply to end of DATA command)",
 		"SMTP Server <192.0.2.223> refused to accept your message (DATA), with the following error message",
 	},
-	"STARTTLS": []string{
+	eb.CeTTLS: []string{
 		"Out: 250-STARTTLS",
 	},
-	"XFORWARD": []string{
+	eb.CeXFWD: []string{
 		"In:  XFORWARD PROTO=SMTP HELO=neko2-nyaan3.y.example.co.jp",
 	},
 }

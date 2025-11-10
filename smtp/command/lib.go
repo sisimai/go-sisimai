@@ -11,18 +11,19 @@
 package command
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/moji"
 
 var availables = []string{
-	"HELO", "EHLO", "MAIL", "RCPT", "DATA", "QUIT", "RSET", "NOOP", "VRFY", "ETRN",
-	"EXPN", "HELP", "AUTH", "STARTTLS", "XFORWARD",
-	"CONN", // CONN is a pseudo SMTP command used only in Sisimai
+	eb.CeHELO, eb.CeEHLO, eb.CeMAIL, eb.CeRCPT, eb.CeDATA, eb.CeQUIT, eb.CeRSET, eb.CeNOOP,
+	eb.CeVRFY, eb.CeETRN, eb.CeEXPN, eb.CeHELP, eb.CeAUTH, eb.CeTTLS, eb.CeXFWD, eb.CeCONN,
 }
 var detectable = []string{
-	"HELO", "EHLO", "STARTTLS", "AUTH PLAIN", "AUTH LOGIN", "AUTH CRAM-", "AUTH DIGEST-",
-	"MAIL F", "RCPT", "RCPT T", "DATA", "QUIT", "XFORWARD",
+	eb.CeHELO, eb.CeEHLO, eb.CeTTLS, eb.CeAUTH + "PLAIN", eb.CeAUTH + " LOGIN",
+	eb.CeAUTH + " CRAM-", eb.CeAUTH + " DIGEST-", eb.CeMAIL + " F", eb.CeRCPT, eb.CeRCPT + "T",
+	eb.CeDATA, eb.CeQUIT, eb.CeXFWD,
 }
-var ExceptDATA = []string{"CONN", "EHLO", "HELO", "MAIL", "RCPT"}
+var ExceptDATA = []string{eb.CeCONN, eb.CeEHLO, eb.CeHELO, eb.CeMAIL, eb.CeRCPT}
 
 // Test checks that an SMTP command in the argument is valid or not.
 //   Arguments:
@@ -44,7 +45,7 @@ func Find(text string) string {
 	if Test(text) == false { return "" }
 
 	commandset := make([]string, 0, 4)
-	commandmap := map[string]string{"STAR": "STARTTLS", "XFOR": "XFORWARD"}
+	commandmap := map[string]string{"STAR": eb.CeTTLS, "XFOR": eb.CeXFWD}
 	issuedcode := " " + text + " "
 
 	for _, e := range detectable {
