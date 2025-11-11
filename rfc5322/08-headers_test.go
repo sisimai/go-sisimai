@@ -20,6 +20,10 @@ func TestHeaders(t *testing.T) {
 	ae := []string{
 		filepath.Join("..", "set-of-emails", "maildir", "bsd", "lhost-opensmtpd-17.eml"),
 		filepath.Join("..", "set-of-emails", "maildir", "bsd", "lhost-postfix-78.eml"),
+		filepath.Join("..", "set-of-emails", "maildir", "bsd", "lhost-trendmicro-01.eml"),
+		filepath.Join("..", "set-of-emails", "maildir", "bsd", "lhost-googlegroups-01.eml"),
+		filepath.Join("..", "set-of-emails", "maildir", "bsd", "rhost-apple-05.eml"),
+		filepath.Join("..", "set-of-emails", "maildir", "bsd", "rhost-nttdocomo-02.eml"),
 	}
 	for _, ef := range ae {
 		bx, _ := os.ReadFile(ef); if len(bx) == 0 {
