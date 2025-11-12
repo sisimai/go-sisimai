@@ -201,6 +201,13 @@ func TestRise(t *testing.T) {
 	cx++; if ev.Payload != ""    { t.Errorf("%s.Payload is not empty: %s", fs, ev.Payload) }
 	cx++; if len(ev.Errors) > 0  { t.Errorf("%s.Errors is not empty: %v", fs, ev.Errors)   }
 
+	et  = "nekochan"
+	ev  = Rise(&et, nil)
+	cx++; if ev.HasDone()        { t.Errorf("%s.HasDone() returns true", fs) }
+	cx++; if ev.Sender  != ""    { t.Errorf("%s.Sender is not empty: %s", fs, ev.Sender)   }
+	cx++; if ev.Payload != ""    { t.Errorf("%s.Payload is not empty: %s", fs, ev.Payload) }
+	cx++; if len(ev.Errors) == 0 { t.Errorf("%s.Errors is empty: %v", fs, ev.Errors)       }
+
 	t.Logf("The number of tests = %d", cx)
 }
 
