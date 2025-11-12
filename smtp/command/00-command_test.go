@@ -49,6 +49,11 @@ var IsntErrors = []string{
 	"HELOWORLD!!!",
 	"Sendmail 8.17.1",
 	"Database Server",
+	"Oracle Exadata",
+	"charset=ISO-2022-JP",
+	"Connection refused",
+	"Authentication failure",
+	"2-Factor Authentication",
 	"",
 }
 
