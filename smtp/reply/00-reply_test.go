@@ -156,10 +156,11 @@ func TestTest(t *testing.T) {
 		}
 	}
 
-	cx++; if Test("")   == true { t.Errorf("%s(%s) returns true", fn, "") }
-	cx++; if Test("1")  == true { t.Errorf("%s(%s) returns true", fn, "1") }
-	cx++; if Test("22") == true { t.Errorf("%s(%s) returns true", fn, "22") }
-	cx++; if Test("ne") == true { t.Errorf("%s(%s) returns true", fn, "ne") }
+	cx++; if Test("")    == true  { t.Errorf("%s(%s) returns true", fn, "")    }
+	cx++; if Test("1")   == true  { t.Errorf("%s(%s) returns true", fn, "1")   }
+	cx++; if Test("22")  == true  { t.Errorf("%s(%s) returns true", fn, "22")  }
+	cx++; if Test("ne")  == true  { t.Errorf("%s(%s) returns true", fn, "ne")  }
+	cx++; if Test("cat") == true  { t.Errorf("%s(%s) returns true", fn, "cat") }
 
 	t.Logf("The number of tests = %d", cx)
 }
