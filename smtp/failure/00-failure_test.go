@@ -78,7 +78,13 @@ func TestIsHardBounce(t *testing.T) {
 	cx := 0
 
 	for _, e := range SoftBounce {
-		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == true  { t.Errorf("%s(%s) returns false", fn, e) }
+		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
+	}
+	for _, e := range IsntBounce {
+		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
+	}
+	for _, e := range IsntErrors {
+		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
 	}
 	for _, e := range HardBounce {
 		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
@@ -92,9 +98,15 @@ func TestIsSoftBounce(t *testing.T) {
 	fn := "smtp/failure.IsSoftBounce"
 	cx := 0
 
+	for _, e := range IsntBounce {
+		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
+	}
+	for _, e := range IsntErrors {
+		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
+	}
 	for _, e := range HardBounce {
 		if e == eb.Re00MX { continue }
-		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == true  { t.Errorf("%s(%s) returns false", fn, e) }
+		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
 	}
 	for _, e := range SoftBounce {
 		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
