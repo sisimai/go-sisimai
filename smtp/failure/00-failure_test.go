@@ -27,6 +27,7 @@ var TempErrors = []string{
 	"smtp; 451 4.7.650 The mail server [192.0.2.25] has been",
 	"4.4.1 (Persistent transient failure - routing/network: no answer from host)",
 	"SMTP; Persistent error: mailbox full",
+	"SMTP; Temporary failure",
 };
 var PermErrors = []string{
 	"smtp;550 5.2.2 <mikeneko@example.co.jp>... Mailbox Full",
