@@ -38,6 +38,7 @@ func TestRise(t *testing.T) {
 	cx++; if Rise(cw, "!!", "") != nil { t.Errorf("%s() returns slice", fn) }
 	cx++; if Rise("?? -- !! --", "", "!!") != nil { t.Errorf("%s() returns slice", fn) }
 	cx++; if Rise("?? -- !! --", "!!", "") != nil { t.Errorf("%s() returns slice", fn) }
+	cx++; if Rise("?? -- !! ", "??", "!!") == nil { t.Errorf("%s() returns nil", fn) }
 
 	fn = "TanscriptLog"; for _, e := range ct {
 		cx++; if cv := e.Command; slices.Contains(cc, cv) == false {
