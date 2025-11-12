@@ -26,7 +26,7 @@ var TempErrors = []string{
 	"SMTP; 450 4.7.1 Access denied. IP name lookup failed [192.0.2.222]",
 	"smtp; 451 4.7.650 The mail server [192.0.2.25] has been",
 	"4.4.1 (Persistent transient failure - routing/network: no answer from host)",
-	"SMTP; 421 4.2.2 Persistent error: mailbox full",
+	"SMTP; Persistent error: mailbox full",
 };
 var PermErrors = []string{
 	"smtp;550 5.2.2 <mikeneko@example.co.jp>... Mailbox Full",
@@ -40,7 +40,7 @@ var PermErrors = []string{
 	"SMTP; 552-5.7.0 This message was blocked because its content presents a potential",
 	"SMTP; 550 5.1.1 Requested action not taken: mailbox unavailable",
 	"SMTP; 550 5.7.1 IP address blacklisted by recipient",
-	"SMTP; 550 5.0.0 Permanent failure",
+	"SMTP; Permanent failure",
 };
 
 func TestIsPermanent(t *testing.T) {
