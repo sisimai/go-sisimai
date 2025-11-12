@@ -122,9 +122,15 @@ func TestFind(t *testing.T) {
 	cx++; if cv := Find("smtp; 2.1.5 250 OK", "2"); cv == "" { t.Errorf("%s(..., 2) returns empty", fn) }
 	cx++; if cv := Find("smtp; 2.1.5 250 OK", "4"); cv != "" { t.Errorf("%s(..., 4) returns %s", fn, cv) }
 	cx++; if cv := Find("smtp; 2.1.5 250 OK", "5"); cv != "" { t.Errorf("%s(..., 5) returns %s", fn, cv) }
+	cx++; if cv := Find("smtp; 4.B.13 421 ", "4");  cv != "" { t.Errorf("%s(..., 4) returns %s", fn, cv) }
+	cx++; if cv := Find("smtp; 5.1:10 550 ", "5");  cv != "" { t.Errorf("%s(..., 5) returns %s", fn, cv) }
+	cx++; if cv := Find("smtp; 5.7.XYZ ", "5");     cv != "" { t.Errorf("%s(..., 5) returns %s", fn, cv) }
 	cx++; if cv := Find("", "");                    cv != "" { t.Errorf("%s('', '') returns %s", fn, cv) }
 
-	cx++; if cv := Find("192.0.2.2: 4.1.2 ", "4"); cv == "" { t.Errorf("%s(..., 1) returns empty", fn) }
+	cx++; if cv := Find("192.0.2.2: 4.1.2 ", "4"); cv == "" { t.Errorf("%s(..., 4) returns empty", fn) }
+	cx++; if cv := Find("127.0.0.1: 5.1.1 ", "5"); cv == "" { t.Errorf("%s(..., 5) returns empty", fn) }
+	cx++; if cv := Find("smtp v5.1.1 5.2.2", "5"); cv == "" { t.Errorf("%s(..., 5) returns empty", fn) }
+	cx++; if cv := Find("smtp; 5.7.255", "5");     cv == "" { t.Errorf("%s(..., 5) returns empty", fn) }
 
 	for _, e := range p5issue574 {
 		// https://github.com/sisimai/p5-sisimai/issues/574
