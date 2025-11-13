@@ -128,7 +128,7 @@ func Find(text string) [3]string {
 						readcursor |= HereIsCommentBlock
 						if strings.HasSuffix(readbuffer[2].String(), ")") { readbuffer[2].WriteRune(' ') }
 						readbuffer[2].WriteRune(e)
-						groupindex = 2
+						groupindex = 3
 					}
 				} else if readcursor & HereIsCommentBlock > 0 {
 					// Comment at the outside of an email address (...(...)
@@ -171,11 +171,21 @@ func Find(text string) [3]string {
 					// Deal as a display name
 					readbuffer[1].WriteRune(e)
 					groupindex = 0
-				}
-				// End of if(")")
+				} // End of if(")")
 			} else if e == '"' {
-				// The beginning or the end of a quoted-string
-				if groupindex > 0 {
+				// '"': The beginning|end of the quoted string block or a part of an email address.
+				if groupindex == 0 {
+					// The beginning of the quoted-string block
+					readbuffer[1].WriteRune(e)
+					readcursor |= HereIsQuotedString
+					groupindex  = 2
+
+				} else if groupindex == 2 {
+					// The end of the quoted-string block
+					readcursor &= ^HereIsQuotedString
+					groupindex = 0
+
+				} else if groupindex > 0 {
 					// A part of the email address or the comment block
 					readbuffer[groupindex - 1].WriteRune(e)
 
