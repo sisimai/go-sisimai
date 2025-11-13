@@ -33,7 +33,7 @@ var TestEmailAddrs = []struct {testname string; argument string; expected string
 	{"", "8suke@example.gov (Mayuge-Neko)", "8suke@example.gov", "8suke@example.gov", "(Mayuge-Neko)"},
 	{"", "Shibainu, Hachibe. (Harima-no-kami) 8be@example.gov", "8be@example.gov", "Shibainu, Hachibe. 8be@example.gov", "(Harima-no-kami)"},
 	{"", "neko(nyaan.jp)chan@example.jp", "nekochan@example.jp", "nekochan@example.jp", "(nyaan.jp)"},
-	{"", `"neko(nyaan.jp)chan"@example.jp`, `"nekochan"@example.jp`, `"nekochan"@example.jp`, "(nyaan.jp)"},
+	{"", `<"neko(nyaan.jp)chan"@example.jp>`, `"nekochan"@example.jp`, "", "(nyaan.jp)"},
 	{"", "neko(miaow)chan@example.jp", "nekochan@example.jp", "nekochan@example.jp", "(miaow)"},
 	{"", "(miaow)neko@example.jp", "neko@example.jp", "neko@example.jp", "(miaow)"},
 	{"", "neko(miaow)@example.jp", "neko@example.jp", "neko@example.jp", "(miaow)"},
