@@ -13,13 +13,13 @@ import "strings"
 var TestEmailAddrs = []struct {testname string; argument string; expected string; displays string; comments string}{
 	//{"test name", "the argument", "email address", "display name", "comment"}
 	{"", `"Neko" <neko@example.jp>`, "neko@example.jp", "Neko", ""},
-	{"", `<neko@example.jp> "Neko, Nyaan"`, "neko@example.jp", "Neko Nyaan", ""},
+	{"", `<neko@example.jp> "Neko, Nyaan"`, "neko@example.jp", "Neko, Nyaan", ""},
 	{"", `<neko@example.jp> "Neko << NYAAN.JP >>"`, "neko@example.jp", "Neko << NYAAN.JP >>", ""},
 	{"", `<neko@example.jp> (NYAAN<.>JP) Nekochan`, "neko@example.jp", "<> Nekochan", "(NYAAN.JP)"},
 	{"", `"=?ISO-2022-JP?B?dummy?=" <nyan@example.jp>`, "nyan@example.jp", "=?ISO-2022-JP?B?dummy?=", ""},
 	{"", `"N Y A N K O" <nyanko@example.jp>`, "nyanko@example.jp", "N Y A N K O", ""},
 	{"", `"Shironeko Lui" <lui@example.jp>`, "lui@example.jp", "Shironeko Lui", ""},
-	{"", `<lui@example.jp> "Shirochaneko, Lui" (Nyaaa, Meow)`, "lui@example.jp", "Shirochaneko Lui", "(Nyaaa, Meow)"},
+	{"", `<lui@example.jp> "Shirochaneko, Lui" (Nyaaa, Meow)`, "lui@example.jp", "Shirochaneko, Lui", "(Nyaaa, Meow)"},
 	{"", "<aoi@example.jp>", "aoi@example.jp", "", ""},
 	{"", "<may@example.jp> may@example.jp", "may@example.jp", "may@example.jp", ""},
 	{"", "Odd-Eyes Aoki <aoki@example.jp>", "aoki@example.jp", "Odd-Eyes Aoki", ""},
@@ -45,21 +45,21 @@ var TestEmailAddrs = []struct {testname string; argument string; expected string
 	{"", "`neko@example.cat`", "neko@example.cat", "`neko@example.cat`", ""},
 	{"", "[neko@example.gov]", "neko@example.gov", "[neko@example.gov]", ""},
 	{"", "{neko@example.int}", "neko@example.int", "{neko@example.int}", ""},
-	{"", `"neko.."@example.jp`, `"neko.."@example.jp`, `"neko.."@example.jp`, ""},
+	{"", `<"neko.."@example.jp>`, `"neko.."@example.jp`, "", ""},
 	{"", "Mail Delivery Subsystem <MAILER-DAEMON>", "MAILER-DAEMON", "Mail Delivery Subsystem", ""},
 	{"", "postmaster", "postmaster", "postmaster", ""},
-	{"", "neko.miaow@example.com", "neko.miaow@example.com", "neko.miaow@example.com", ""},
+	{"", "<neko.miaow@example.com>", "neko.miaow@example.com", "", ""},
 	{"", "neko.miaow+nyan@example.com", "neko.miaow+nyan@example.com", "neko.miaow+nyan@example.com", ""},
 	{"", "<neko+miaow=nyaan.jp@example.com>", "neko+miaow=nyaan.jp@example.com", "", ""},
-	{"", "neko-miaow@example.com.", "neko-miaow@example.com", "neko-miaow@example.com.", ""},
+	{"", "<neko-miaow@example.com.>", "neko-miaow@example.com", "", ""},
 	{"", "neko-miaow@example.org.", "neko-miaow@example.org", "neko-miaow@example.org.", ""},
 	{"", "n@example.com", "n@example.com", "n@example.com", ""},
-	{"", `"neko.miaow.@.esmtp.jp"@example.com`, `"neko.miaow.@.esmtp.jp"@example.com`, `"neko.miaow.@.esmtp.jp"@example.com`, ""},
-	{"", `"neko miaow"@example.org`, `"neko miaow"@example.org`, `"neko miaow"@example.org`, ""},
+	{"", `<"neko.miaow.@.esmtp.jp"@example.com>`, `"neko.miaow.@.esmtp.jp"@example.com`, "", ""},
+	{"", `<"neko miaow"@example.org>`, `"neko miaow"@example.org`, "", ""},
 	{"", "neko@miaow", "", "neko@miaow", ""},
-	{"", "neko(1)-miaow(2)@exa(3)mp(4)le.j(5)p", "neko-miaow@example.jp", "neko-miaow@example.jp", "(1) (2) (3) (4) (5)"},
-	{"", "#!$%&'*-/=?^_`{}|~@example.org", "#!$%&'*-/=?^_`{}|~@example.org", "#!$%&'*-/=?^_`{}|~@example.org", ""},
-	{"", `" "@example.org`, `" "@example.org`, `" "@example.org`, ""},
+	{"", "<neko(1)-miaow(2)@exa(3)mp(4)le.j(5)p>", "neko-miaow@example.jp", "", "(1) (2) (3) (4) (5)"},
+	{"", "<#!$%&'*-/=?^_`{}|~@example.org>", "#!$%&'*-/=?^_`{}|~@example.org", "", ""},
+	{"", `<" "@example.org>`, `" "@example.org`, "", ""},
 	{"", "neko@localhost", "neko@localhost", "neko@localhost", ""},
 	{"", "neko@[IPv4:192.0.2.22]", "neko@[IPv4:192.0.2.22]", "neko@[IPv4:192.0.2.22]", ""},
 	{"", "neko@[IPv6:2001:DB8::1]", "neko@[IPv6:2001:DB8::1]", "neko@[IPv6:2001:DB8::1]", ""},
@@ -109,8 +109,8 @@ func TestRise(t *testing.T) {
 					if strings.Count(cv.Alias, "+")   > 0 { t.Errorf("[%6d]: %s.Alias includes '+' (%s)", cx, on, cv.Alias) }; cx++
 				}
 
-				if cv.Name    != e.displays { t.Errorf("[%6d]: %s.Name is (%s) not (%s)", cx, on, cv.Name, e.displays)    }; cx++
-				if cv.Comment != e.comments { t.Errorf("[%6d]: %s.Comment is (%s) not (%s)", cx, on, cv.Name, e.comments) }; cx++
+				if cv.Name    != e.displays { t.Errorf("[%6d]: %s.Name is (%s) not (%s)", cx, on, cv.Name, e.displays)       }; cx++
+				if cv.Comment != e.comments { t.Errorf("[%6d]: %s.Comment is (%s) not (%s)", cx, on, cv.Comment, e.comments) }; cx++
 			}
 		})
 	}
