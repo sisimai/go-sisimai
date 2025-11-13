@@ -18,13 +18,18 @@ func TestIsInternetHost(t *testing.T) {
 		"127.0.0.1",
 		"cat",
 		"neko",
+		".net",
+		"-273.15",
 		"nyaan.22",
 		"mx0.example.22",
 		"mx0.example.jp-",
 		"mx--0.example.jp",
+		"mx++0.example.jp",
+		"mx__0.example.jp",
 		"mx..0.example.jp",
 		"mx0.example.jp/neko",
 		"mx22.nyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan.jp",
+		"mx25.jpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
 	}
 	hostnames1 := []string{
 		"localhost",
