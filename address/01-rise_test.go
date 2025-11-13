@@ -13,6 +13,7 @@ import "strings"
 var TestEmailAddrs = []struct {testname string; argument string; expected string; displays string; comments string}{
 	//{"test name", "the argument", "email address", "display name", "comment"}
 	{"", `"Neko" <neko@example.jp>`, "neko@example.jp", "Neko", ""},
+	{"", `<neko@example.jp> "Neko, Nyaan"`, "neko@example.jp", "Neko Nyaan", ""},
 	{"", `"=?ISO-2022-JP?B?dummy?=" <nyan@example.jp>`, "nyan@example.jp", "=?ISO-2022-JP?B?dummy?=", ""},
 	{"", `"N Y A N K O" <nyanko@example.jp>`, "nyanko@example.jp", "N Y A N K O", ""},
 	{"", `"Shironeko Lui" <lui@example.jp>`, "lui@example.jp", "Shironeko Lui", ""},
