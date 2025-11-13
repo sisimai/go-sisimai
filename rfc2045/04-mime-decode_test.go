@@ -49,6 +49,7 @@ e Neko Nyaan (neko@example.org; +0-000-000-0000) for all other needs.`
 	}
 	cx++; if cv, _ := DecodeQ(cw); strings.Contains(cv, "=\n") { t.Errorf("%s(%s) returns %s", fn, cw[:10], cv) }
 	cx++; if cv, _ := DecodeQ(""); cv != ""                    { t.Errorf("%s('') returns %s", fn, cv) }
+	cx++; if cv, _ := DecodeQ("================="); cv != ""   { t.Errorf("%s(NEKOCHAN-CAT) returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }
