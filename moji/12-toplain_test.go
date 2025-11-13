@@ -38,6 +38,9 @@ func TestToPlain(t *testing.T) {
 	ce := "<html></html>"
 	cx++; if cv = ToPlain(&ce); *cv == "" { t.Errorf("%s(%s) returns %s", fn, ce, *cv) }
 
+	ce  = "<html><body style = ''></body></html>"
+	cx++; if cv = ToPlain(&ce); *cv != "" { t.Errorf("%s(%s) returns %s", fn, ce, *cv) }
+
 	ce  = ""
 	cx++; if cv = ToPlain(nil); cv != nil { t.Errorf("%s(nil) returns %s", fn, *cv) }
 	cx++; if cv = ToPlain(&ce); *cv != "" { t.Errorf("%s('') returns %s", fn, *cv) }
