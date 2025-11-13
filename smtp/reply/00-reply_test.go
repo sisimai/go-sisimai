@@ -111,6 +111,7 @@ func TestFind(t *testing.T) {
 
 	cx++; if Find("", "x-unix; 127") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "x-unix; 127") }
 	cx++; if Find("15506-44211", "") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "15506-44211") }
+	cx++; if Find("55060-50333", "") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "55060-50333") }
 
 	t.Logf("The number of tests = %d", cx)
 }
