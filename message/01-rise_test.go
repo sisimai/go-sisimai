@@ -208,6 +208,9 @@ func TestRise(t *testing.T) {
 	cx++; if ev.Payload != ""    { t.Errorf("%s.Payload is not empty: %s", fs, ev.Payload) }
 	cx++; if len(ev.Errors) == 0 { t.Errorf("%s.Errors is empty: %v", fs, ev.Errors)       }
 
+	eo, _  = sisimbox.Rise("../set-of-emails/maildir/bsd/rfc3464-37.eml")
+	cx++; if eo.Size == 0 { t.Errorf("mail.Rise(%s) returns empty string", "rfc3464-37.eml") }
+
 	t.Logf("The number of tests = %d", cx)
 }
 
