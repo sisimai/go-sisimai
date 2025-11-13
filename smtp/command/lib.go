@@ -19,8 +19,8 @@ var availables = []string{
 	eb.CeVRFY, eb.CeETRN, eb.CeEXPN, eb.CeHELP, eb.CeAUTH, eb.CeTTLS, eb.CeXFWD, eb.CeCONN,
 }
 var detectable = []string{
-	eb.CeHELO, eb.CeEHLO, eb.CeTTLS, eb.CeAUTH + "PLAIN", eb.CeAUTH + " LOGIN",
-	eb.CeAUTH + " CRAM-", eb.CeAUTH + " DIGEST-", eb.CeMAIL + " F", eb.CeRCPT, eb.CeRCPT + "T",
+	eb.CeHELO, eb.CeEHLO, eb.CeTTLS, eb.CeAUTH + " PLAIN", eb.CeAUTH + " LOGIN",
+	eb.CeAUTH + " CRAM-", eb.CeAUTH + " DIGEST-", eb.CeMAIL + " F", eb.CeRCPT, eb.CeRCPT + " T",
 	eb.CeDATA, eb.CeQUIT, eb.CeXFWD,
 }
 var ExceptDATA = []string{eb.CeCONN, eb.CeEHLO, eb.CeHELO, eb.CeMAIL, eb.CeRCPT}
