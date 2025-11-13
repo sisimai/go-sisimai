@@ -50,6 +50,7 @@ var TestEmailAddrs = []struct {testname string; argument string; expected string
 	{"", "postmaster", "postmaster", "postmaster", ""},
 	{"", "neko.miaow@example.com", "neko.miaow@example.com", "neko.miaow@example.com", ""},
 	{"", "neko.miaow+nyan@example.com", "neko.miaow+nyan@example.com", "neko.miaow+nyan@example.com", ""},
+	{"", "<neko+miaow=nyaan.jp@example.com>", "neko+miaow=nyaan.jp@example.com", "", ""},
 	{"", "neko-miaow@example.com.", "neko-miaow@example.com", "neko-miaow@example.com.", ""},
 	{"", "neko-miaow@example.org.", "neko-miaow@example.org", "neko-miaow@example.org.", ""},
 	{"", "n@example.com", "n@example.com", "n@example.com", ""},
