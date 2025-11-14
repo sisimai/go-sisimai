@@ -64,7 +64,7 @@ func Rise(path string) (*EmailEntity, error) {
 			// Read all strings from STDIN, and store them to ee.payload
 			// TODO: In the case of that the input data is a binary
 			stdin, nyaan  := io.ReadAll(os.Stdin); if nyaan != nil { return &ee, nyaan }
-			if textlength := len(stdin); textlength < 2 || textlength > maximumSize {
+			if textlength := len(stdin); textlength == 0 || textlength > maximumSize {
 				// The input text is empty or too large (2GB)
 				return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
 			}
@@ -72,7 +72,7 @@ func Rise(path string) (*EmailEntity, error) {
 
 		} else {
 			// Email data is in a string(memory)
-			if textlength := len(path); textlength == 0 || textlength > maximumSize {
+			if textlength := len(path); textlength < 3 || textlength > maximumSize {
 				// The input text is empty or too large (2GB)
 				return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
 			}

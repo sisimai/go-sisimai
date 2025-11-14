@@ -99,7 +99,7 @@ func TestRise(t *testing.T) {
 	by := "\n"
 	cf  = "EmailEntity(memory-3)"
 	_, ce := Rise(by)
-	cx++; if ce != nil { t.Errorf("%s(%s) returns empty errors", fn, by) }
+	cx++; if ce == nil { t.Errorf("%s(%s) returns empty errors", fn, by) }
 
 	cx++; if _, ce := Rise("/tmp/nekochan"); ce == nil { t.Errorf("%s(/tmp/nekochan) returns no errors", fn) }
 
