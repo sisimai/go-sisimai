@@ -124,6 +124,7 @@ func TestRead(t *testing.T) {
 			cx++; if eo.offset == 0      { t.Errorf("%s.offset is 0", cf) }
 			cx++; if eo.handle == nil    { t.Errorf("%s.handle is nil", cf) }
 			cx++; if eo.Size < eo.offset { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
+			cx++; eo.setNewLine()
 		}
 	}
 
@@ -137,6 +138,7 @@ func TestRead(t *testing.T) {
 			cx++; if eo.Size < eo.offset { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
 			cx++; if strings.HasSuffix(eo.Path, ".eml") == false { t.Errorf("%s.Path does not end with .eml", cf) }
 			cx++; if strings.HasSuffix(eo.File, ".eml") == false { t.Errorf("%s.File does not end with .eml", cf) }
+			cx++; eo.setNewLine()
 		}
 	}
 
@@ -152,6 +154,7 @@ func TestRead(t *testing.T) {
 		cx++; if eo.Size < eo.offset   { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
 		cx++; if eo.Path != "<MEMORY>" { t.Errorf("%s.Path is not <MEMORY>: %s", cf, eo.Path) }
 		cx++; if eo.File != ""         { t.Errorf("%s.File is not empty: %s", cf, eo.File) }
+		cx++; eo.setNewLine()
 	}
 
 	t.Logf("The number of tests = %d", cx)
