@@ -37,6 +37,10 @@ var Maildir = []string{
 	filepath.Join(RootDir, "maildir", "mac"),
 	filepath.Join(RootDir, "maildir", "err"),
 }
+var Size000 = []string{
+	filepath.Join("/tmp", "nekochan"),
+	filepath.Join(RootDir, "mailbox", "size-0"),
+}
 
 func TestRise(t *testing.T) {
 	fn := "Rise"
@@ -100,7 +104,9 @@ func TestRise(t *testing.T) {
 	_, ce := Rise(by)
 	cx++; if ce == nil { t.Errorf("%s(%s) returns empty errors", fn, by) }
 
-	cx++; if _, ce := Rise("/tmp/nekochan"); ce == nil { t.Errorf("%s(/tmp/nekochan) returns no errors", fn) }
+	for _, ef := range Size000 {
+		cx++; if _, ce := Rise(ef); ce == nil { t.Errorf("%s(%s) returns no errors", fn, ef) }
+	}
 
 	t.Logf("The number of tests = %d", cx)
 }
