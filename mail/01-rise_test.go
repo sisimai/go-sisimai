@@ -64,7 +64,7 @@ func TestRise(t *testing.T) {
 		cx++; if len(cv.payload) > 0  { t.Errorf("%s.payload is not 0: %d", cf, len(cv.payload)) }
 	}
 
-	cf = "EmailEntity(maildir)"; for _, e := range Maildir {
+	cf = "EmailEntity(maildir-1)"; for _, e := range Maildir {
 		cv, ce:= Rise(e)
 		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, e) }
 		cx++; if ce != nil            { t.Errorf("%s(%s) returns error: %s", fn, e, ce) }
@@ -75,6 +75,11 @@ func TestRise(t *testing.T) {
 		cx++; if cv.newline != 0      { t.Errorf("%s.newline is not 0: %d", cf, cv.newline) }
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
+	}
+	cf = "EmailEntity(maildir-2)"; if len(Size000[0]) > 0 {
+		e := Size000[0]; cv, ce:= Rise(e)
+		cx++; if cv != nil            { t.Fatalf("%s(%s) returns %+v", fn, e, cv) }
+		cx++; if ce == nil            { t.Errorf("%s(%s) returns no error", fn, e) }
 	}
 
 	b, _ := os.ReadFile(Mailtxt); if len(b) > 0 {
