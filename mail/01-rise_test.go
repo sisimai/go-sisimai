@@ -156,7 +156,7 @@ func TestRead(t *testing.T) {
 		cx++; if eo.File != ""         { t.Errorf("%s.File is not empty: %s", cf, eo.File) }
 		cx++; eo.setNewLine()
 	}
-	ff := "\nFrom \nFrom \n"
+	ff := "\nFrom \nFrom \nFrom \n"
 	if eo, _ := Rise(ff); eo != nil {
 		cv, ce := eo.Read()
 		cx++; if ce != nil             { t.Errorf("%s.%s(%s) returns error: %s", cf, fn, Mailtxt, ce) }
