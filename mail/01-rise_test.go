@@ -103,9 +103,10 @@ func TestRise(t *testing.T) {
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
 	}
-	by := "\n"
-	_, ce := Rise(by)
-	cx++; if ce == nil { t.Errorf("%s(%s) returns empty errors", fn, by) }
+	_, ce := Rise("\n")
+	cx++; if ce == nil { t.Errorf("%s(\n) returns empty errors", fn) }
+	_, ce  = Rise("\r")
+	cx++; if ce == nil { t.Errorf("%s(\r) returns empty errors", fn) }
 
 	for _, ef := range Size000 {
 		cx++; if _, ce := Rise(ef); ce == nil { t.Errorf("%s(%s) returns no errors", fn, ef) }
