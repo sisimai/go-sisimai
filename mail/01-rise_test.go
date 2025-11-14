@@ -40,6 +40,8 @@ var Maildir = []string{
 var Size000 = []string{
 	filepath.Join("/tmp", "nekochan"),
 	filepath.Join(RootDir, "mailbox", "size-0"),
+}
+var Size001 = []string{
 	filepath.Join(RootDir, "mailbox", "size-1"),
 }
 
@@ -107,6 +109,9 @@ func TestRise(t *testing.T) {
 
 	for _, ef := range Size000 {
 		cx++; if _, ce := Rise(ef); ce == nil { t.Errorf("%s(%s) returns no errors", fn, ef) }
+	}
+	for _, ef := range Size001 {
+		cx++; if _, ce := Rise(ef); ce != nil { t.Errorf("%s(%s) returns error %s", fn, ef, ce) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
