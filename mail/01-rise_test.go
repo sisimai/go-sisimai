@@ -97,7 +97,6 @@ func TestRise(t *testing.T) {
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
 	}
 	by := "\n"
-	cf  = "EmailEntity(memory-3)"
 	_, ce := Rise(by)
 	cx++; if ce == nil { t.Errorf("%s(%s) returns empty errors", fn, by) }
 
