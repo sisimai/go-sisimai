@@ -96,6 +96,10 @@ func TestRise(t *testing.T) {
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
 	}
+	by := "\n"
+	cf  = "EmailEntity(memory-3)"
+	_, ce := Rise(by)
+	cx++; if ce != nil { t.Errorf("%s(%s) returns empty errors", fn, by) }
 
 	cx++; if _, ce := Rise("/tmp/nekochan"); ce == nil { t.Errorf("%s(/tmp/nekochan) returns no errors", fn) }
 
