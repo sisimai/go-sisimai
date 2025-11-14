@@ -156,6 +156,17 @@ func TestRead(t *testing.T) {
 		cx++; if eo.File != ""         { t.Errorf("%s.File is not empty: %s", cf, eo.File) }
 		cx++; eo.setNewLine()
 	}
+	ff := "\nFrom "
+	if eo, _ := Rise(ff); eo != nil {
+		cv, ce := eo.Read()
+		cx++; if ce != nil             { t.Errorf("%s.%s(%s) returns error: %s", cf, fn, Mailtxt, ce) }
+		cx++; if len(*cv)  == 0        { t.Errorf("%s.%s(%s) returns empty", cf, fn, Mailtxt) }
+		cx++; if eo.offset == 0        { t.Errorf("%s.offset is 0", cf) }
+		cx++; if eo.handle != nil      { t.Errorf("%s.handle is not nil", cf) }
+		cx++; if eo.Size < eo.offset   { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
+		cx++; if eo.Path != "<MEMORY>" { t.Errorf("%s.Path is not <MEMORY>: %s", cf, eo.Path) }
+		cx++; if eo.File != ""         { t.Errorf("%s.File is not empty: %s", cf, eo.File) }
+	}
 
 	t.Logf("The number of tests = %d", cx)
 }
