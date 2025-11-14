@@ -79,7 +79,7 @@ func TestRise(t *testing.T) {
 	cf = "EmailEntity(maildir-2)"; if len(Size000[0]) > 0 {
 		e := Size000[0]; cv, ce:= Rise(e)
 		cx++; if cv != nil            { t.Fatalf("%s(%s) returns %+v", fn, e, cv) }
-		cx++; if ce == nil            { t.Errorf("%s(%s) returns no error", fn, e) }
+		cx++; if ce == nil            { t.Errorf("%s(%s) returns no error in %s", fn, e, cf) }
 	}
 
 	b, _ := os.ReadFile(Mailtxt); if len(b) > 0 {
