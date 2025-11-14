@@ -74,7 +74,7 @@ func TestRise(t *testing.T) {
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
 	}
 
-	b, _ := os.ReadFile(Mailtxt); if len(b) == 0 {
+	b, _ := os.ReadFile(Mailtxt); if len(b) > 0 {
 		cf = "EmailEntity(memory-1)"
 		cv, ce:= Rise(string(b))
 		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, Mailtxt) }
@@ -83,11 +83,11 @@ func TestRise(t *testing.T) {
 		cx++; if cv.Path == ""        { t.Errorf("%s.Path is empty: %s", cf, cv.Path) }
 		cx++; if cv.Dir  != ""        { t.Errorf("%s.Dir is not empty: %s", cf, cv.Dir) }
 		cx++; if cv.Size == 0         { t.Errorf("%s.Size is 0", cf) }
-		cx++; if cv.newline != 0      { t.Errorf("%s.newline is not 0: %d", cf, cv.newline) }
+		cx++; if cv.newline != 1      { t.Errorf("%s.newline is not 1: %d", cf, cv.newline) }
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
 	}
-	b, _  = os.ReadFile(Mailbox[0]); if len(b) == 0 {
+	b, _  = os.ReadFile(Mailbox[0]); if len(b) > 0 {
 		cf = "EmailEntity(memory-2)"
 		cv, ce:= Rise(string(b))
 		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, Mailtxt) }
@@ -96,7 +96,7 @@ func TestRise(t *testing.T) {
 		cx++; if cv.Path == ""        { t.Errorf("%s.Path is empty: %s", cf, cv.Path) }
 		cx++; if cv.Dir  != ""        { t.Errorf("%s.Dir is not empty: %s", cf, cv.Dir) }
 		cx++; if cv.Size == 0         { t.Errorf("%s.Size is 0", cf) }
-		cx++; if cv.newline != 0      { t.Errorf("%s.newline is not 0: %d", cf, cv.newline) }
+		cx++; if cv.newline != 3      { t.Errorf("%s.newline is not 3: %d", cf, cv.newline) }
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
 	}
