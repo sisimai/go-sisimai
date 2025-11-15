@@ -49,7 +49,7 @@ var Alternates = map[string][]string{
 
 var TestReturn = map[string]interface{}{"neko-dono": []string{"Michitsuna", "Suzu"}}
 var CallbackFn = func(arg *siba.CallbackArg0) (map[string]interface{}, error) { return TestReturn, nil }
-var ArgForRise = &siba.DecodingArgs{Delivered: true, Vacation: true, Callback0: CallbackFn}
+var ArgForRise = &siba.DecodingArgs{Delivered: false, Vacation: false, Callback0: CallbackFn}
 
 // EngineTest is called from lhost/*_test.go, rhost/*_test.go, rfc3464/lib_test.go, arf/lib_test.go.
 //   Arguments:
@@ -131,6 +131,11 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						// Read and decode each email file as a string
 						cx++; if emailthing.Size == 0 { t.Errorf("%s %s is empty", ee, ef); continue }
 
+						if moji.ContainsAny(ef, []string{"amazonses", "sendmail", "rfc3464", "rfc3834"}) {
+							// grep -E '(delivered|vacation)' fact/*_test.go
+							ArgForRise.Delivered = true
+							ArgForRise.Vacation  = true
+						}
 						moji.ToLF(mesg); facts, nyaan := Rise(mesg, emailthing.Path, ArgForRise)
 						cx++; if nyaan != nil && len(nyaan) > 0 { t.Logf("%s %s", ee, nyaan[0].Error()) }
 						if facts != nil && len(facts) != 0 { sisi = append(sisi, facts...) }
