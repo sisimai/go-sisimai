@@ -43,6 +43,7 @@ var Size000 = []string{
 }
 var Size001 = []string{
 	filepath.Join(RootDir, "mailbox", "size-1"),
+	filepath.Join(RootDir, "maildir", "not"),
 }
 
 func TestRise(t *testing.T) {
@@ -76,10 +77,15 @@ func TestRise(t *testing.T) {
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
 	}
-	cf = "EmailEntity(maildir-2)"; if len(Size000[0]) > 0 {
-		e := Size000[0]; cv, ce:= Rise(e)
-		cx++; if cv != nil            { t.Fatalf("%s(%s) returns %+v", fn, e, cv) }
+	cf = "EmailEntity(maildir-2)"; if len(Size000[1]) > 0 {
+		e := Size000[1]; cv, ce:= Rise(e)
+		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, e) }
 		cx++; if ce == nil            { t.Errorf("%s(%s) returns no error in %s", fn, e, cf) }
+		cx++; if cv.Path == ""        { t.Errorf("%s.Path is empty: %s", cf, cv.Path) }
+		cx++; if cv.Size != 0         { t.Errorf("%s.Size is %d", cf, cv.Size) }
+		cx++; if cv.newline != 0      { t.Errorf("%s.newline is not 0: %d", cf, cv.newline) }
+		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
+		cx++; if len(cv.payload) != 0 { t.Errorf("%s.payload is %d", cf, len(cv.payload)) }
 	}
 
 	b, _ := os.ReadFile(Mailtxt); if len(b) > 0 {
