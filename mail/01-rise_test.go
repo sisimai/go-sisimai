@@ -87,6 +87,11 @@ func TestRise(t *testing.T) {
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
 		cx++; if len(cv.payload) != 0 { t.Errorf("%s.payload is %d", cf, len(cv.payload)) }
 	}
+	cf = "EmailEntity(maildir-3)"; if len("/root") > 0 {
+		e := "/root"; cv, ce:= Rise(e)
+		cx++; if cv != nil            { t.Fatalf("%s(%s) returns %+v in %s", fn, e, cv, cf) }
+		cx++; if ce == nil            { t.Errorf("%s(%s) returns no error", fn, e) }
+	}
 
 	b, _ := os.ReadFile(Mailtxt); if len(b) > 0 {
 		cf = "EmailEntity(memory-1)"
