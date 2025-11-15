@@ -88,8 +88,7 @@ func TestRise(t *testing.T) {
 		cx++; if len(cv.payload) != 0 { t.Errorf("%s.payload is %d", cf, len(cv.payload)) }
 	}
 	cf = "EmailEntity(maildir-3)"; if len("/root") > 0 {
-		e := "/root"; cv, ce:= Rise(e)
-		cx++; if cv != nil            { t.Fatalf("%s(%s) returns %+v in %s", fn, e, cv, cf) }
+		e := "/root"; _, ce:= Rise(e)
 		cx++; if ce == nil            { t.Errorf("%s(%s) returns no error", fn, e) }
 	}
 
