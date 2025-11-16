@@ -81,7 +81,7 @@ func Rise(path string) (*EmailEntity, error) {
 			payload = path
 		}
 
-		if cw := countUnixMboxFrom(&payload); cw < 2 {
+		if countUnixMboxFrom(&payload) < 2 {
 			// There is 1 or 0 "From " line in the payload
 			ee.payload = append(ee.payload, payload)
 			ee.Size = len(payload)
