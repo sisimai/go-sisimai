@@ -64,22 +64,20 @@ func IsInternetHost(host string) bool {
 	// Allow the hostname starting with A-Label: "xn--" of IDN(Internationalized Domain Name)
 	if strings.Contains(host, "--") == true && strings.HasPrefix(host, "xn--") == false { return false }
 
-	hostnameok := true
 	for _, e := range strings.Split(strings.ToUpper(host), "") {
 		// Check each characater is a number or an alphabet
-		if e[0] <  45              { hostnameok = false; break } //  45 = '-'
-		if e[0] == 47              { hostnameok = false; break } //  47 = '/'
-		if e[0] >  57 && e[0] < 65 { hostnameok = false; break } //  57 = '9', 65 = 'A'
-		if e[0] >  90              { hostnameok = false; break } //  90 = 'Z'
+		if e[0] <  45              { return false } //  45 = '-'
+		if e[0] == 47              { return false } //  47 = '/'
+		if e[0] >  57 && e[0] < 65 { return false } //  57 = '9', 65 = 'A'
+		if e[0] >  90              { return false } //  90 = 'Z'
 	}
-	if hostnameok == false { return false }
 
 	cv := host[strings.LastIndex(host, ".") + 1:]; if len(cv) > 63 { return false }
 	for _, e := range strings.Split(cv, "") {
 		// The top level domain should not include a number
-		if e[0] > 47 && e[0] < 58  { hostnameok = false; break }
+		if e[0] > 47 && e[0] < 58  { return false }
 	}
-	return hostnameok
+	return true
 }
 
 // IsDomainLiteral returns true if the domain part is [IPv4:...] or [IPv6:...].
