@@ -83,9 +83,7 @@ how-many-engines:
 	@ echo `$(LS) lhost/via-* rhost/for-* | wc -l | tr -d ' '` + 4 | bc
 
 coverage:
-	@ $(GO) test -v ./... -coverprofile=$(COVERAGETO).tmp
-	@ grep -v $(ASSEMBLEIN) $(COVERAGETO).tmp > $(COVERAGETO)
-	@ $(RM) $(COVERAGETO).tmp
+	@ $(GO) test -v ./ $(addprefix ./, $(SISIMAIDIR)) -coverprofile=$(COVERAGETO)
 
 profile:
 	test -f bin/cpu-prof.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o cpu-sisid ./bin/cpu-prof.go
