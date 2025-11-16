@@ -108,7 +108,10 @@ func TestFind(t *testing.T) {
 	cx++; if Find("", "")   != "" { t.Errorf("%s(%s) does not return an empty string", fn, "") }
 	cx++; if Find("", "1")  != "" { t.Errorf("%s(%s) does not return an empty string", fn, "1") }
 	cx++; if Find("", "22") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "22") }
+
 	cx++; if Find("", "x-unix; 127") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "x-unix; 127") }
+	cx++; if Find("15506-44211", "") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "15506-44211") }
+	cx++; if Find("55060-50333", "") != "" { t.Errorf("%s(%s) does not return an empty string", fn, "55060-50333") }
 
 	t.Logf("The number of tests = %d", cx)
 }
@@ -156,10 +159,11 @@ func TestTest(t *testing.T) {
 		}
 	}
 
-	cx++; if Test("")   == true { t.Errorf("%s(%s) returns true", fn, "") }
-	cx++; if Test("1")  == true { t.Errorf("%s(%s) returns true", fn, "1") }
-	cx++; if Test("22") == true { t.Errorf("%s(%s) returns true", fn, "22") }
-	cx++; if Test("ne") == true { t.Errorf("%s(%s) returns true", fn, "ne") }
+	cx++; if Test("")    == true  { t.Errorf("%s(%s) returns true", fn, "")    }
+	cx++; if Test("1")   == true  { t.Errorf("%s(%s) returns true", fn, "1")   }
+	cx++; if Test("22")  == true  { t.Errorf("%s(%s) returns true", fn, "22")  }
+	cx++; if Test("ne")  == true  { t.Errorf("%s(%s) returns true", fn, "ne")  }
+	cx++; if Test("cat") == true  { t.Errorf("%s(%s) returns true", fn, "cat") }
 
 	t.Logf("The number of tests = %d", cx)
 }

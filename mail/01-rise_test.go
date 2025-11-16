@@ -37,6 +37,14 @@ var Maildir = []string{
 	filepath.Join(RootDir, "maildir", "mac"),
 	filepath.Join(RootDir, "maildir", "err"),
 }
+var Size000 = []string{
+	filepath.Join("/tmp", "nekochan"),
+	filepath.Join(RootDir, "mailbox", "size-0"),
+}
+var Size001 = []string{
+	filepath.Join(RootDir, "mailbox", "size-1"),
+	filepath.Join(RootDir, "maildir", "not"),
+}
 
 func TestRise(t *testing.T) {
 	fn := "Rise"
@@ -57,7 +65,7 @@ func TestRise(t *testing.T) {
 		cx++; if len(cv.payload) > 0  { t.Errorf("%s.payload is not 0: %d", cf, len(cv.payload)) }
 	}
 
-	cf = "EmailEntity(maildir)"; for _, e := range Maildir {
+	cf = "EmailEntity(maildir-1)"; for _, e := range Maildir {
 		cv, ce:= Rise(e)
 		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, e) }
 		cx++; if ce != nil            { t.Errorf("%s(%s) returns error: %s", fn, e, ce) }
@@ -69,9 +77,19 @@ func TestRise(t *testing.T) {
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
 	}
+	cf = "EmailEntity(maildir-2)"; if len(Size000[1]) > 0 {
+		e := Size000[1]; cv, ce:= Rise(e)
+		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, e) }
+		cx++; if ce == nil            { t.Errorf("%s(%s) returns no error in %s", fn, e, cf) }
+		cx++; if cv.Path == ""        { t.Errorf("%s.Path is empty: %s", cf, cv.Path) }
+		cx++; if cv.Size != 0         { t.Errorf("%s.Size is %d", cf, cv.Size) }
+		cx++; if cv.newline != 0      { t.Errorf("%s.newline is not 0: %d", cf, cv.newline) }
+		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
+		cx++; if len(cv.payload) != 0 { t.Errorf("%s.payload is %d", cf, len(cv.payload)) }
+	}
 
-	b, _ := os.ReadFile(Mailtxt); if len(b) == 0 {
-		cf = "EmailEntity(memory)"
+	b, _ := os.ReadFile(Mailtxt); if len(b) > 0 {
+		cf = "EmailEntity(memory-1)"
 		cv, ce:= Rise(string(b))
 		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, Mailtxt) }
 		cx++; if ce != nil            { t.Errorf("%s(%s) returns error: %s", fn, Mailtxt, ce) }
@@ -79,9 +97,33 @@ func TestRise(t *testing.T) {
 		cx++; if cv.Path == ""        { t.Errorf("%s.Path is empty: %s", cf, cv.Path) }
 		cx++; if cv.Dir  != ""        { t.Errorf("%s.Dir is not empty: %s", cf, cv.Dir) }
 		cx++; if cv.Size == 0         { t.Errorf("%s.Size is 0", cf) }
-		cx++; if cv.newline != 0      { t.Errorf("%s.newline is not 0: %d", cf, cv.newline) }
+		cx++; if cv.newline != 1      { t.Errorf("%s.newline is not 1: %d", cf, cv.newline) }
 		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
 		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
+	}
+	b, _  = os.ReadFile(Mailbox[0]); if len(b) > 0 {
+		cf = "EmailEntity(memory-2)"
+		cv, ce:= Rise(string(b))
+		cx++; if cv == nil            { t.Fatalf("%s(%s) returns nil", fn, Mailtxt) }
+		cx++; if ce != nil            { t.Errorf("%s(%s) returns error: %s", fn, Mailtxt, ce) }
+		cx++; if cv.Kind != "memory"  { t.Errorf("%s.Kind is not memory: %s", cf, cv.Kind) }
+		cx++; if cv.Path == ""        { t.Errorf("%s.Path is empty: %s", cf, cv.Path) }
+		cx++; if cv.Dir  != ""        { t.Errorf("%s.Dir is not empty: %s", cf, cv.Dir) }
+		cx++; if cv.Size == 0         { t.Errorf("%s.Size is 0", cf) }
+		cx++; if cv.newline != 3      { t.Errorf("%s.newline is not 3: %d", cf, cv.newline) }
+		cx++; if cv.offset > 0        { t.Errorf("%s.offset is not 0: %d", cf, cv.offset) }
+		cx++; if len(cv.payload) == 0 { t.Errorf("%s.payload is 0", cf) }
+	}
+	_, ce := Rise("\n")
+	cx++; if ce == nil { t.Errorf("%s(\n) returns empty errors", fn) }
+	_, ce  = Rise("\r")
+	cx++; if ce == nil { t.Errorf("%s(\r) returns empty errors", fn) }
+
+	for _, ef := range Size000 {
+		cx++; if _, ce := Rise(ef); ce == nil { t.Errorf("%s(%s) returns no errors", fn, ef) }
+	}
+	for _, ef := range Size001 {
+		cx++; if _, ce := Rise(ef); ce != nil { t.Errorf("%s(%s) returns error %s", fn, ef, ce) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
@@ -100,6 +142,7 @@ func TestRead(t *testing.T) {
 			cx++; if eo.offset == 0      { t.Errorf("%s.offset is 0", cf) }
 			cx++; if eo.handle == nil    { t.Errorf("%s.handle is nil", cf) }
 			cx++; if eo.Size < eo.offset { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
+			cx++; eo.setNewLine()
 		}
 	}
 
@@ -113,6 +156,7 @@ func TestRead(t *testing.T) {
 			cx++; if eo.Size < eo.offset { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
 			cx++; if strings.HasSuffix(eo.Path, ".eml") == false { t.Errorf("%s.Path does not end with .eml", cf) }
 			cx++; if strings.HasSuffix(eo.File, ".eml") == false { t.Errorf("%s.File does not end with .eml", cf) }
+			cx++; eo.setNewLine()
 		}
 	}
 
@@ -128,6 +172,7 @@ func TestRead(t *testing.T) {
 		cx++; if eo.Size < eo.offset   { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
 		cx++; if eo.Path != "<MEMORY>" { t.Errorf("%s.Path is not <MEMORY>: %s", cf, eo.Path) }
 		cx++; if eo.File != ""         { t.Errorf("%s.File is not empty: %s", cf, eo.File) }
+		cx++; eo.setNewLine()
 	}
 
 	t.Logf("The number of tests = %d", cx)

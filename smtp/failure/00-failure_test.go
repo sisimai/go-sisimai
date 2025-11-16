@@ -26,6 +26,8 @@ var TempErrors = []string{
 	"SMTP; 450 4.7.1 Access denied. IP name lookup failed [192.0.2.222]",
 	"smtp; 451 4.7.650 The mail server [192.0.2.25] has been",
 	"4.4.1 (Persistent transient failure - routing/network: no answer from host)",
+	"SMTP; Persistent error: mailbox full",
+	"SMTP; Temporary failure",
 };
 var PermErrors = []string{
 	"smtp;550 5.2.2 <mikeneko@example.co.jp>... Mailbox Full",
@@ -39,6 +41,7 @@ var PermErrors = []string{
 	"SMTP; 552-5.7.0 This message was blocked because its content presents a potential",
 	"SMTP; 550 5.1.1 Requested action not taken: mailbox unavailable",
 	"SMTP; 550 5.7.1 IP address blacklisted by recipient",
+	"SMTP; Permanent failure",
 };
 
 func TestIsPermanent(t *testing.T) {
@@ -75,10 +78,24 @@ func TestIsHardBounce(t *testing.T) {
 	fn := "smtp/failure.IsHardBounce"
 	cx := 0
 
+	for _, e := range SoftBounce {
+		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
+	}
+	for _, e := range IsntBounce {
+		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
+	}
+	for _, e := range IsntErrors {
+		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
+	}
 	for _, e := range HardBounce {
 		cx++; if cv := IsHardBounce(e, PermErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
+	cx++; if IsHardBounce(eb.Re00MX, "421")                      == true  { t.Errorf("%s(%s) returns true",  fn, eb.Re00MX) }
+	cx++; if IsHardBounce(eb.Re00MX, "")                         == false { t.Errorf("%s(%s) returns false", fn, eb.Re00MX) }
 	cx++; if IsHardBounce(eb.Re00MX, "503 Not accept any email") == false { t.Errorf("%s(%s) returns false", fn, eb.Re00MX) }
+	cx++; if IsHardBounce(eb.ReAUTH, "5.7.26 DMARC failure")     == true  { t.Errorf("%s(%s) returns true",  fn, eb.ReAUTH) }
+	cx++; if IsHardBounce(eb.ReFULL, "4.2.2 mailbox full")       == true  { t.Errorf("%s(%s) returns true",  fn, eb.ReAUTH) }
+	cx++; if IsHardBounce(eb.ReAUTH, "")                         == true  { t.Errorf("%s(%s) returns true",  fn, eb.ReAUTH) }
 
 	t.Logf("The number of tests = %d", cx)
 }
@@ -87,10 +104,24 @@ func TestIsSoftBounce(t *testing.T) {
 	fn := "smtp/failure.IsSoftBounce"
 	cx := 0
 
+	for _, e := range IsntBounce {
+		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
+	}
+	for _, e := range IsntErrors {
+		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
+	}
+	for _, e := range HardBounce {
+		if e == eb.Re00MX { continue }
+		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == true  { t.Errorf("%s(%s) returns true", fn, e) }
+	}
 	for _, e := range SoftBounce {
 		cx++; if cv := IsSoftBounce(e, TempErrors[0]); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
+	cx++; if IsSoftBounce(eb.Re00MX, "")                         == true  { t.Errorf("%s(%s) returns true ", fn, eb.Re00MX) }
+	cx++; if IsSoftBounce(eb.Re00MX, "550")                      == true  { t.Errorf("%s(%s) returns true ", fn, eb.Re00MX) }
 	cx++; if IsSoftBounce(eb.Re00MX, "458 Not accept any email") == false { t.Errorf("%s(%s) returns false", fn, eb.Re00MX) }
+	cx++; if IsSoftBounce(eb.ReAUTH, "550 DMARC failure")        == false { t.Errorf("%s(%s) returns false", fn, eb.ReAUTH) }
+	cx++; if IsSoftBounce(eb.ReFULL, "5.2.2 Mailbox Full")       == false { t.Errorf("%s(%s) returns false", fn, eb.ReFULL) }
 
 	t.Logf("The number of tests = %d", cx)
 }

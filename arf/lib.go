@@ -195,7 +195,6 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		// There is no recipient address in the message
 		if len(bf.Headers["x-apple-unsubscribe"]) > 0 {
 			// X-Apple-Unsubscribe: true
-			if bf.Headers["x-apple-unsubscribe"][0] != "true"    { break }
 			if strings.IndexByte(bf.Headers["from"][0], '@') < 0 { break }
 			dscontents[0].Recipient    = bf.Headers["from"][0]
 			dscontents[0].Diagnosis    = moji.Sweep(emailparts[0])

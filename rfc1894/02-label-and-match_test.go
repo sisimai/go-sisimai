@@ -25,6 +25,11 @@ var FieldList = []string{
 	"Original-Recipient: rfc822;michitsuna@example.org",
 	"X-Actual-Recipient: X-Unix; |/var/adm/sm.bin/neko",
 }
+var BrokenSet = []string{
+	"Final-Recipient: kijitora@example.com",
+	"Diagnostic-Code: 553 5.1.8 <httpd@host1.mx.example.jp>... Domain of sender address httpd@host1.mx.example.jp does not exist",
+	"Reporting-MTA: mx.example.jp",
+}
 var LowerList = []string{
 	"reporting-mta",
 	"received-from-mta",
@@ -46,6 +51,8 @@ func TestLabel(t *testing.T) {
 	for j, e := range FieldList {
 		cx++; if cv := Label(e); cv != LowerList[j] { t.Errorf("%s(%s) returns %s", fn, e, cv) }
 	}
+	cx++; if cv := Label("");    cv != ""  { t.Errorf("%s() returns %s", fn, cv)     }
+	cx++; if cv := Label("Neko");cv != ""  { t.Errorf("%s(Neko) returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }
@@ -86,9 +93,20 @@ func TestField(t *testing.T) {
 			cx++; if cv[4] != "" { t.Errorf("%s(%s)[4] is not empty: %s", fn, e, cv[4]) }
 		}
 	}
+	for _, e := range BrokenSet {
+		cv := Field(e)
+		cx++; if len(cv) == 0 { t.Errorf("%s(%s) returns an empty list", fn, e) }
+		cx++; if len(cv) != 5 { t.Errorf("%s(%s) did not return 5 elements", fn, e) }
+		cx++; if slices.Contains(LowerList, cv[0]) == false { t.Errorf("%s(%s)[0] is %s", fn, e, cv[0]) }
+	}
+
 	for _, e := range []string{"Subject: neko", "From: postmaster", "Return-Path: <>", "To: root"} {
 		cx++; if cv := Field(e); len(cv) != 0 { t.Errorf("%s(%s) returns %v", fn, e, cv) }
 	}
+	cx++; if cv := Field("neko:2");        len(cv) != 0 { t.Errorf("%s(neko: 2) returns %v", fn, cv)       }
+	cx++; if cv := Field("cat: nekochan"); len(cv) != 0 { t.Errorf("%s(cat: nekochan) returns %v", fn, cv) }
+
+
 
 	t.Logf("The number of tests = %d", cx)
 }

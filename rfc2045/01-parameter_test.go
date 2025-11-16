@@ -33,6 +33,7 @@ func TestParameter(t *testing.T) {
 	if cv := Parameter("", "");    cv != "" { t.Errorf("%s('', '') returns %s", fn, cv) }
 	if cv := Parameter("cat", ""); cv == "" { t.Errorf("%s('cat', '') returns %s", fn, cv) }
 	if cv := Parameter("", "cat"); cv != "" { t.Errorf("%s('', 'cat') returns %s", fn, cv) }
+	if cv := Parameter("ca", "t"); cv != "" { t.Errorf("%s('ca', 't') returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }

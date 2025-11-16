@@ -23,7 +23,8 @@ func TestDecodeB(t *testing.T) {
 			cx++; if ce != nil   { t.Errorf("%s(%s, %s) returns error: %s", fn, e, f, ce) }
 		}
 	}
-	if cv, _ := DecodeB(""); cv != "" { t.Errorf("%s('') returns %s", fn, cv) }
+	cx++; if cv, _ := DecodeB(""); cv != "" { t.Errorf("%s('') returns %s", fn, cv)  }
+	cx++; if cv, _ := DecodeB("NEKOCHAN-CAT"); cv != "" { t.Errorf("%s(NEKOCHAN-CAT) returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }
@@ -46,8 +47,9 @@ e Neko Nyaan (neko@example.org; +0-000-000-0000) for all other needs.`
 		cx++; if cv != jp[j] { t.Errorf("%s(%s) returns %s", fn, e, cv) }
 		cx++; if ce != nil   { t.Errorf("%s(%s) returns error: %s", fn, e, ce) }
 	}
-	if cv, _ := DecodeQ(cw); strings.Contains(cv, "=\n") { t.Errorf("%s(%s) returns %s", fn, cw[:10], cv) }
-	if cv, _ := DecodeQ(""); cv != ""                    { t.Errorf("%s('') returns %s", fn, cv) }
+	cx++; if cv, _ := DecodeQ(cw); strings.Contains(cv, "=\n") { t.Errorf("%s(%s) returns %s", fn, cw[:10], cv) }
+	cx++; if cv, _ := DecodeQ(""); cv != ""                    { t.Errorf("%s('') returns %s", fn, cv) }
+	cx++; if cv, _ := DecodeQ("================="); cv != ""   { t.Errorf("%s(NEKOCHAN-CAT) returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }

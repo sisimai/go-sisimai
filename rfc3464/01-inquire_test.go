@@ -67,3 +67,21 @@ func TestInquire(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestReturnedBy(t *testing.T) {
+	fn := "rfc3464.returnedby"
+	cx := 0
+
+	cx++; if cv := returnedby("");  cv != "" { t.Errorf("%s(%s) returns %s", fn, "", cv)  }
+	cx++; if cv := returnedby("2"); cv != "" { t.Errorf("%s(%s) returns %s", fn, "1", cv) }
+	t.Logf("The number of tests = %d", cx)
+}
+
+func TestXfield(t *testing.T) {
+	fn := "rfc3464.xfield"
+	cx := 0
+
+	cx++; if cv := xfield("");  len(cv) != 0 { t.Errorf("%s(%s) returns %+v", fn, "", cv)  }
+	cx++; if cv := xfield("2"); len(cv) != 0 { t.Errorf("%s(%s) returns %+v", fn, "2", cv) }
+	t.Logf("The number of tests = %d", cx)
+}
+

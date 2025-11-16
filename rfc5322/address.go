@@ -29,8 +29,8 @@ func IsEmailAddress(email string) bool {
 	//                                     ;  "]", or "\"
 	if len(email) < 5 { return false } // n@e.e
 
-	email = strings.Trim(email, " \t")
-	lasta, lastd := strings.LastIndex(email, "@"), strings.LastIndex(email, ".")
+	email  = strings.Trim(email, " \t")
+	lasta := strings.LastIndex(email, "@")
 
 	if len(email)         > 254 { return false } // The maximum length of an email address is 254
 	if lasta < 1 || lasta >  64 { return false } // The maximum length of a local part is 64
@@ -50,77 +50,60 @@ func IsEmailAddress(email string) bool {
 		// if strings.Contains(email, "..") { return false }
 		// if strings.Contains(email, ".@") { return false }
 	}
-	upper := strings.ToUpper(email)
 	ipv46 := rfc1123.IsDomainLiteral(email)
-	match := true
 
 	for j, e := range(strings.Split(email, "")) {
 		// 31 < The ASCII code of each character < 127
 		if j < lasta {
 			// A local part of the email address: string before the last "@"
-			if email[j]  <  32 { match = false; break } // Before ' '
-			if email[j]  > 126 { match = false; break } // After  '~'
-			if j        ==   0 {             continue } // The character is the first character
+			if email[j]  <  32 { return false } // Before ' '
+			if email[j]  > 126 { return false } // After  '~'
+			if j        ==   0 { continue     } // The character is the first character
 
 			if jp := email[j - 1]; quote == true {
 				// The email address has quoted local part like "neko@cat"@example.org
 				if jp == 92 { // 92 = '\'
 					// When the previous character IS '\', only the followings are allowed: '\', '"'
-					if email[j] != 92 && email[j] != 34 { match = false; break }
+					if email[j] != 92 && email[j] != 34 { return false }
 
 				} else {
-					// When the previous character IS NOT '\', `"` is allowed only immediately
-					// before the `@`.
-					if email[j] == 34 && j + 1 < lasta  { match = false; break }
+					// When the previous character IS NOT '\', `"` is allowed only immediately before the `@`.
+					if email[j] == 34 && j + 1 < lasta  { return false }
 				}
 			} else {
 				// The local part is not quoted
 				// ".." is not allowed in a local part when the local part is not quoted by "" but
 				// Non-RFC compliant email addresses still persist in the world.
-				// if e == "." && email[j-1] == 46 { match = false; break }
+				// if e == "." && email[j-1] == 46 { return false }
 
 				// The following characters are not allowed in a local part without "..."@example.jp
-				if e == "," || e == "@" || e == ":" || e == ";" || e == "(" { match = false; break }
-				if e == ")" || e == "<" || e == ">" || e == "[" || e == "]" { match = false; break }
+				if e == "," || e == "@" || e == ":" || e == ";" || e == "(" { return false }
+				if e == ")" || e == "<" || e == ">" || e == "[" || e == "]" { return false }
 			}
 		} else {
 			// A domain part of the email address: string after the last "@"
-			if email[j] ==  64 { // '@'
-				// Not needed to check the domain part when the local part is not valid.
-				if match == false { return false }
-				continue
-			}
-			if email[j] <   45 { match = false; break } // Before '-'
-			if email[j] ==  47 { match = false; break } // Equals '/'
-			if email[j] ==  92 { match = false; break } // Equals '\'
-			if email[j] >  122 { match = false; break } // After  'z'
+			if email[j] ==  64 { continue     } // 64 = '@' 
+			if email[j] <   45 { return false } // Before '-'
+			if email[j] ==  47 { return false } // Equals '/'
+			if email[j] ==  92 { return false } // Equals '\'
+			if email[j] >  122 { return false } // After  'z'
 
 			if ipv46 == false {
 				// Such as "example.jp", "neko.example.org"
-				if email[j] > 57 && email[j] < 64 { match = false; break } // ':' to '?'
-				if email[j] > 90 && email[j] < 97 { match = false; break } // '[' to '`'
+				if email[j] > 57 && email[j] < 64 { return false } // ':' to '?'
+				if email[j] > 90 && email[j] < 97 { return false } // '[' to '`'
 
 			} else {
 				// Such as "[IPv4:192.0.2.25]"
-				if email[j] > 59 && email[j] < 64 { match = false; break } // ';' to '?'
-				if email[j] > 93 && email[j] < 97 { match = false; break } // '^' to '`'
-			}
-
-			if j > lastd && ipv46 == false {
-				// *TLD of the domain part: string after the last '.'
-				if upper[j] < 65 { match = false; break } // Before 'A'
-				if upper[j] > 90 { match = false; break } // After  'Z'
+				if email[j] > 59 && email[j] < 64 { return false } // ';' to '?'
+				if email[j] > 93 && email[j] < 97 { return false } // '^' to '`'
 			}
 		}
 	}
+	if ipv46 { return true }
 
-	// Check that the domain part is a valid internet host or not
-	cv := email[lasta + 1:]; if match == false {
-		// The domain part is not valid except "localhost6".
-		if cv == "localhost6" { return true }
-	}
-	if ipv46 == false { match = rfc1123.IsInternetHost(cv) }
-	return match
+	// Check that the domain part is a valid internet host or not.
+	return rfc1123.IsInternetHost(email[lasta + 1:])
 }
 
 // IsQuotedAddress checks that the local part of the argument is quoted address or not.

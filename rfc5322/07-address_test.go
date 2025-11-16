@@ -51,11 +51,40 @@ var TestEmailAddrs = []struct {testname string; argument string; expected string
 	{"", "#!$%&'*-/=?^_`{}|~@example.org", "#!$%&'*-/=?^_`{}|~@example.org", "#!$%&'*-/=?^_`{}|~@example.org", ""},
 	{"", `" "@example.org`, `" "@example.org`, `" "@example.org`, ""},
 	{"", "neko@localhost", "neko@localhost", "neko@localhost", ""},
+	{"", "neko@localhost6", "neko@localhost6", "neko@localhost6", ""},
 	{"", "neko@xn--cesupi09d.jp", "neko@xn--cesupi09d.jp", "neko@xn--cesupi09d.jp", ""},
 	{"", "neko@[IPv4:192.0.2.22]", "neko@[IPv4:192.0.2.22]", "neko@[IPv4:192.0.2.22]", ""},
 	{"", "neko@[IPv6:2001:DB8::1]", "", "neko@[IPv6:2001:DB8::1]", ""},
 	{"", "neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]", "neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]",
 		 "neko@[IPv6:2001:0DB8:0000:0000:0000:0000:0000:0001]", ""},
+}
+var FailEmailAddrs = []string{
+	"neko\x1Echan@example.jp",
+	"neko\x7fchan@example.jp",
+	`"neko\achan"@example.jp`,
+	`"neko""chan"@example.jp`,
+	"neko,chan@example.jp",
+	"neko@chan@example.jp",
+	"neko:chan@example.jp",
+	"neko(chan@example.jp",
+	"neko)chan@example.jp",
+	"neko<chan@example.jp",
+	"neko>chan@example.jp",
+	"neko[chan@example.jp",
+	"neko]chan@example.jp",
+	"nekochan@example+com.jp",
+	"nekochan@example/.jp",
+	"nekochan@\a.example.jp",
+	"nekochan@\x00.example.jp",
+	"nekochan@example.jp:",
+	"nekochan@example~.jp",
+	"nekochan@cat_example.jp",
+	"nekochan@[IPv4:192.0.2.1=1]",
+	"nekochan@[IPv4:192.0.2.1?1]",
+	"nekochan@[IPv6:2001:__0__:]",
+	"nekochan@[IPv6:2001:_^0^_:]",
+	"nekocahn@example.jp6",
+	"nekocahn@example.j~p",
 }
 
 func TestIsEmailAddress(t *testing.T) {
@@ -87,6 +116,12 @@ func TestIsEmailAddress(t *testing.T) {
 
 	cw  = "neko example.jp@example.org"
 	cx++; if IsEmailAddress(cw) == true { t.Errorf("%s(%s) returns true", fn, cw[0:25]) }
+
+	for _, e := range FailEmailAddrs {
+		t.Run("Invalid address", func(t *testing.T) {
+			cx++; if cv := IsEmailAddress(e); cv == true { t.Errorf("%s(%s) returns true", fn, e) }
+		})
+	}
 
 	t.Logf("The number of tests = %d", cx)
 }

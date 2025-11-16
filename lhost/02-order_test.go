@@ -86,6 +86,10 @@ func TestOrderBySubject(t *testing.T) {
 		cv = OrderBySubject(e)
 		cx++; if len(cv) == 0 { t.Errorf("%s(%s) is empty", fn, e) }
 	}
+
+	cv  = OrderBySubject("nekochan")
+	cx++; if len(cv) == 0 { t.Errorf("%s(nekochan) is empty", fn) }
+
 	t.Logf("The number of tests = %d", cx)
 }
 

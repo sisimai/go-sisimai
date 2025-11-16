@@ -43,7 +43,9 @@ func TestBoundary(t *testing.T) {
 			}
 		}
 	}
-	if cv := Boundary("", 22); cv != "" { t.Errorf("%s('', 22) returns %s", fn, cv) }
+	cx++; if cv := Boundary("", 22); cv != "" { t.Errorf("%s('', 22) returns %s", fn, cv) }
+	cx++; if cv := Boundary("", 22); cv != "" { t.Errorf("%s('', 22) returns %s", fn, cv) }
+	cx++; if cv := Boundary(`multipart/mixed; Boundary=`, 0); cv != "" { t.Errorf("%s(empty boundary) returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }

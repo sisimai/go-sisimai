@@ -47,8 +47,13 @@ var IsntErrors = []string{
 	"nekochan",
 	"ニャーン?",
 	"HELOWORLD!!!",
-	"Sendmail 8.17.1",
-	"Database Server",
+	"APHELOPS",
+	"DATABASE SERVER",
+	"CHORDATA",
+	"RCPT0@EXAMPLE.JP",
+	"1RCPT@EXAMPLE.JP",
+	"RCPTz@EXAMPLE.JP",
+	"aRCPTz@EXAMPLE.JP",
 	"",
 }
 

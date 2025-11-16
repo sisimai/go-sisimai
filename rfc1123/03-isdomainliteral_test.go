@@ -15,6 +15,7 @@ func TestIsDomainLiteral(t *testing.T) {
 	ae := []struct {testname string; argument string; expected bool}{
 		{"", "", false},
 		{"", "<neko@example.jp>", false},
+		{"", "<nekochan@example.org>", false},
 		{"", "<neko@[IPv4:192.0.2.25]>", true},
 		{"", "neko@[IPv4:192.0.2.25]", true},
 		{"", "neko@[Neko:192.0.2.25]", false},
