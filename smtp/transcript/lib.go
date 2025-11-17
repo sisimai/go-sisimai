@@ -65,18 +65,18 @@ type TranscriptLog struct {
 // Rise returns the decoded transcript of the SMTP session and makes the structured data.
 //   Arguments:
 //     - log (string): Transcript text MTA returned.
-//     - rhs (string): Label string of the SMTP cilent such as ">>>".
-//     - lhs (string): Label string of the SMTP server such as "<<<".
+//     - lhs (string): Label string of the SMTP cilent such as ">>>".
+//     - rhs (string): Label string of the SMTP server such as "<<<".
 //   Returns:
 //     - ([]TranscriptLog):  List of structured transcript logs.
-func Rise(log, rhs, lhs string) []TranscriptLog {
+func Rise(log, lhs, rhs string) []TranscriptLog {
 	if log == "" { return nil    }
-	if rhs == "" { rhs = ">>>" } // Label for an SMTP client
-	if lhs == "" { lhs = "<<<" } // Label for an SMTP server
+	if lhs == "" { lhs = ">>>" } // Label for an SMTP client
+	if rhs == "" { rhs = "<<<" } // Label for an SMTP server
 
 	// 1. Get the position of ">>>" and "<<<"
-	p1 := strings.Index(log, rhs); if p1 < 0 { return nil }
-	p2 := strings.Index(log, lhs); if p2 < 0 { return nil }
+	p1 := strings.Index(log, lhs); if p1 < 0 { return nil }
+	p2 := strings.Index(log, rhs); if p2 < 0 { return nil }
 
 	// 2. Remove the head of the "log" to the first "<<<" or ">>>"
 	sessionlog := make([]string, 0, 32)       // Each line of the SMTP transcript log
@@ -98,17 +98,17 @@ func Rise(log, rhs, lhs string) []TranscriptLog {
 	for e := range strings.Lines(log) {
 		// Replace the following labels
 		e  = strings.Trim(e, "\n\r ")
-		if strings.HasPrefix(e, rhs) || strings.HasPrefix(e, lhs) {
-			// - The line starts with ">>>" or the specified label in rhs
-			// - The line starts with "<<<" or the specified label in lhs
-			if strings.HasPrefix(e, rhs) {
-				// 1. rhs => ">>> " (leading a single space character)
-				e = strings.Replace(e, rhs, ">>>", 1)
+		if strings.HasPrefix(e, lhs) || strings.HasPrefix(e, rhs) {
+			// - The line starts with ">>>" or the specified label in lhs
+			// - The line starts with "<<<" or the specified label in rhs
+			if strings.HasPrefix(e, lhs) {
+				// 1. lhs => ">>> " (leading a single space character)
+				e = strings.Replace(e, lhs, ">>>", 1)
 				for strings.HasPrefix(e, ">>>  ") { e = strings.Replace(e, ">>>  ", ">>> ", 1) }
 
 			} else {
-				// 2. lhs => "<<< " (leading a single space character)
-				e = strings.Replace(e, lhs, "<<<", 1)
+				// 2. rhs => "<<< " (leading a single space character)
+				e = strings.Replace(e, rhs, "<<<", 1)
 				for strings.HasPrefix(e, "<<<  ") { e = strings.Replace(e, "<<<  ", "<<< ", 1) }
 			}
 			sessionlog = append(sessionlog, e)
