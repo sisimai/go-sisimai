@@ -81,7 +81,7 @@ func Rise(path string) (*EmailEntity, error) {
 			payload = path
 		}
 
-		if cw := countUnixMboxFrom(&payload); cw < 2 {
+		if countUnixMboxFrom(&payload) < 2 {
 			// There is 1 or 0 "From " line in the payload
 			ee.payload = append(ee.payload, payload)
 			ee.Size = len(payload)
@@ -138,8 +138,7 @@ func Rise(path string) (*EmailEntity, error) {
 //     - (uint): The number of "From " lines.
 func countUnixMboxFrom(mesg *string) uint {
 	if len(*mesg) < 5 || strings.HasPrefix(*mesg, "From ") == false { return 0 }
-	cw := strings.Count(*mesg, "\nFrom ")
-	return uint(cw)
+	return uint(strings.Count(*mesg, "\nFrom "))
 }
 
 // *EmailEntity.Read is an email reader, works like an iterator.
