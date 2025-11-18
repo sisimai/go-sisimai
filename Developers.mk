@@ -22,6 +22,8 @@ GOPATH := $(shell echo $$GOPATH)
 LIBSISIMAI := libsisimai.org
 SISIMAIDIR := address arf eb fact lda lhost mail message moji reason rfc1123 rfc1894 rfc2045 \
 			  rfc3464 rfc3834 rfc5322 rfc5965 rfc791 rhost siba smtp/*/
+MTAMODULES := $(shell grep -h InquireFor lhost/*.go | grep ' = func' | cut -d '"' -f2 | sort) ARF RFC3464 RFC3834
+REASONLIST := $(shell grep ' = ' eb/reason.go | cut -d ' ' -f3 | tr -d '"')
 COVERAGETO := coverage.txt
 MAILSUFFIX := eml
 PUBLICFILE := set-of-emails
@@ -143,6 +145,27 @@ private-sample:
 		break; \
 	done
 
+reason-table:
+	@test -f bin/reason-table.go
+	@$(GO) run bin/reason-table.go $(PROFILESET)/ > _reason-table.txt
+	@printf " \t%s" `echo $(REASONLIST) | tr '\n' '\t'`; echo
+	@for v in $(MTAMODULES); do \
+		printf "%s\t" $$v ;\
+		for r in $(REASONLIST); do \
+			rn=`echo $$r | tr '[A-Z]' '[a-z]'` ;\
+			if [ "$$v" = "ARF" -a "$$r" != "Feedback" ]; then \
+				printf "\t" ;\
+			elif [ "$$v" = "RFC3834" -a "$$r" != "Vacation" -a "$$r" != "Suspend" ]; then \
+				printf "\t" ;\
+			elif [ "$$r" = "Vacation" ]; then \
+				printf "\t" ;\
+			else \
+				printf "%d\t" `grep "^$$v $$rn" ./_reason-table.txt | wc -l` ;\
+			fi ;\
+		done ;\
+		echo ;\
+	done
+
 find:
 	find . -type f -name '*.go' -not -name '*_test.go' -not -path '*/bin/*' -not -path '*/sbin/*' \
 		-not -path '*/stash/*' -not -path '*/tmp/*' -exec grep '$(K)' {} +
@@ -179,6 +202,7 @@ start-godoc-server:
 	godoc -http=$(LISTENADDR)
 
 clean:
+	$(RM)    ./_reason-table.txt
 	$(RM)    ./$(EXECUTABLE)
 	$(RM)    ./$(COVERAGETO)
 	$(RM) -r ./$(ASSEMBLEIN)
