@@ -28,6 +28,7 @@ v5.4.1p1
     `vacation` option was specified.
   - #242 #247 #248 #250 #251 #255 Fix wrong reason names and Action values.
   - #244 #245 #257 Use constants to define SMTP commands and bounce reason names, and Action values.
+  - #249 Message-ID related errors are classified as `NotCompliantRFC`.
   - #261 #262 #264 Code and coverage improvements.
   - #263 Fix bug in `IsEmailAddress()` function of `rfc5322/address.go`.
   - #265 Fix bug: wrong `groupindex` value in `address/find.go`.
