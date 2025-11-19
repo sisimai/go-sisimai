@@ -26,6 +26,11 @@ v5.4.1p1
   - #202 #243 Detect `Suspend` reason from a auto replied message by `rfc3834/lib.go`.
   - #242 Fixed an issue where auto-reply messages were not decoded by `Rise()` function when the
     `vacation` option was specified.
+  - #242 #247 #248 #250 #251 #255 Fix wrong reason names and Action values.
+  - #244 #245 #257 Use constants to define SMTP commands and bounce reason names, and Action values.
+  - #261 #262 #264 Code and coverage improvements.
+  - #263 Fix bug in `IsEmailAddress()` function of `rfc5322/address.go`.
+  - #265 Fix bug: wrong `groupindex` value in `address/find.go`.
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
