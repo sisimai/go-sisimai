@@ -9,6 +9,7 @@ package siba
 //   |_|\___||___/\__/_/ |___/_|_.__/ \__,_(_)_| \_\_|___/_|_| |_|\__, |\___/|_| |_|\__,_|\___|_|    \_/\_/ \__,_|\__, |
 //                                                                |___/                                           |___/ 
 import "testing"
+import "libsisimai.org/sisimai/v5/eb"
 
 // Digest []DeliveryMatter // List of DeliveryMatter structs
 // RFC822 string           // The original message
@@ -19,7 +20,7 @@ func TestRisingUnderWay(t *testing.T) {
 		RFC822: "Dummy message",
 		Digest: []DeliveryMatter{
 			DeliveryMatter{
-				Action:    "failed",
+				Action:    eb.AeFAIL,
 				Agent:     "Test",
 				Alias:     "neko@example.jp",
 				Command:   "RCPT",
