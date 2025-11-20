@@ -57,10 +57,10 @@ func NextTailDeliveryMatter(t *testing.T) {
 func TestDeliveryMatter(t *testing.T) {
 	fn := "DeliveryMatter"
 	cv := &DeliveryMatter{
-		Action:    "failed",
+		Action:    eb.AeFAIL,
 		Agent:     "Test",
 		Alias:     "neko@example.jp",
-		Command:   "RCPT",
+		Command:   eb.CeRCPT,
 		Date:      "Sat, 25 Jan 2025 22:22:22 +0900 (JST)",
 		Diagnosis: "User unknown: neko@example.jp",
 		FeedbackType: "dummy",
@@ -121,7 +121,7 @@ func TestDeliveryMatter(t *testing.T) {
 
 	ct  = cv.Update("action", eb.AeSTAY)
 	cx++; if ct == false            { t.Errorf("%s(action, delayed) returns false", fn) }
-	cx++; if cv.Action != "delayed" { t.Errorf("%s(action, delayed) did not updated: %s", fn, cv.Action) }
+	cx++; if cv.Action != eb.AeSTAY { t.Errorf("%s(action, delayed) did not updated: %s", fn, cv.Action) }
 
 	ct  = cv.Update("agent", "OpenSMTPD")
 	cx++; if ct == false             { t.Errorf("%s(agent, OpenSMTPD) returns false", fn) }

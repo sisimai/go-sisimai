@@ -8,12 +8,13 @@ package siba
 //   | |  __/\__ \ |_ / /\__ \ | |_) | (_| |_|  _| (_| | (__| |_ 
 //   |_|\___||___/\__/_/ |___/_|_.__/ \__,_(_)_|  \__,_|\___|\__|
 import "testing"
+import "libsisimai.org/sisimai/v5/eb"
 
 func TestFact(t *testing.T) {
 	cc := "Fact"
 	cx := 0
 	cv := &Fact{
-		Action: "failed",
+		Action: eb.AeFAIL,
 		Addresser: EmailAddress{Address: "neko@example.jp"},
 		Alias: "meumeu@example.org",
 		DecodedBy: "Test",
@@ -29,7 +30,7 @@ func TestFact(t *testing.T) {
 		Rhost: "",
 		Recipient: EmailAddress{Address: "cat@example.org"},
 		ReplyCode: "550",
-		Command: "QUIT",
+		Command: eb.CeQUIT,
 		SenderDomain: "example.jp",
 		Token: "",
 	}
