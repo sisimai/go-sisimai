@@ -23,7 +23,7 @@ func TestRisingUnderWay(t *testing.T) {
 				Action:    eb.AeFAIL,
 				Agent:     "Test",
 				Alias:     "neko@example.jp",
-				Command:   "RCPT",
+				Command:   eb.CeRCPT,
 				Date:      "Sat, 25 Jan 2025 22:22:22 +0900 (JST)",
 				Diagnosis: "User unknown: neko@example.jp",
 				FeedbackType: "dummy",
