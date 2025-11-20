@@ -10,6 +10,7 @@ package message
 //                                                      |___/      
 import "testing"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 
 func TestTidy(t *testing.T) {
 	fn := "message.tidy"
@@ -68,7 +69,7 @@ Nyaaan
 	cx++; if strings.Contains(*cv, "Content-Type: text/plain") == false { t.Errorf("%s() does not contain Content-Type heaader", fn) }
 
 	we := []struct {tidied string; examples []string}{
-		{"Action: failed", []string{"Action: FAILED", "ACTION:   Failed"}},
+		{"Action: " + eb.AeFAIL, []string{"Action: FAILED", "ACTION:   Failed"}},
 		{"Arrival-Date: Sat, 3 Oct 2020 20:11:48 +0900", []string{"Arrival-DATE: Sat,      3 Oct 2020 20:11:48 +0900"}},
 		{"Diagnostic-Code: smtp; 550 Host does not accept mail", []string{"Diagnostic-code:SMTP;550 Host does not accept mail"}},
 		{"Final-Recipient: rfc822; neko@libsisimai.org", []string{"Final-recipient: RFC822;NEKO@libsisimai.org"}},
