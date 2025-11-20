@@ -8,6 +8,7 @@ package rhost
 //   | |  __/\__ \ |_ / /| |  | | | | (_) \__ \ |_ 
 //   |_|\___||___/\__/_/ |_|  |_| |_|\___/|___/\__|
 import "testing"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 
 var TestRhosts = []struct {lhost string; rhost string; destination string; expected string}{
@@ -121,7 +122,7 @@ func TestFind(t *testing.T) {
 			DiagnosticCode: "nekochan-nyaan",
 			DeliveryStatus: "5.0.0",
 			ReplyCode: "550",
-			Command: "MAIL",
+			Command: eb.CeMAIL,
 			Reason: "",
 		}
 		cx++; if cv = Find(ae); cv != "" { t.Errorf("%s(%s) returns %s", fn, e.destination, e.expected)  }
