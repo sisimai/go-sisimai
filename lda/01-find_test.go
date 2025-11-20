@@ -8,17 +8,18 @@ package lda
 //   | |  __/\__ \ |_ / / | |___| |_| / ___ \ 
 //   |_|\___||___/\__/_/  |_____|____/_/   \_\
 import "testing"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 
 func TestFind(t *testing.T) {
 	fn := "lda.Find"
 	cx := 0
 	ae := [][]string{
-		[]string{`x-unix; procmail: Couldn't create "/var/spool/mail/neko" id:`, "DATA"},
-		[]string{"vdelivermail: account is locked email bounced kijitora@neko2.example.co.jp", "DATA"},
+		[]string{`x-unix; procmail: Couldn't create "/var/spool/mail/neko" id:`, eb.CeDATA},
+		[]string{"vdelivermail: account is locked email bounced kijitora@neko2.example.co.jp", eb.CeDATA},
 		[]string{"maildrop: maildir over quota.", ""},
-		[]string{`"|IFS=' ' && exec /usr/local/bin/procmail -f- || exit 75 #kijitora"`, "DATA"},
-		[]string{`554 "|IFS=' ' && exec /usr/local/bin/procmail -f- || exit 75 #kijitora"... Service unavailable`, "DATA"},
+		[]string{`"|IFS=' ' && exec /usr/local/bin/procmail -f- || exit 75 #kijitora"`, eb.CeDATA},
+		[]string{`554 "|IFS=' ' && exec /usr/local/bin/procmail -f- || exit 75 #kijitora"... Service unavailable`, eb.CeDATA},
 		[]string{"mail.local: unknown user: kijitora", ""},
 	}
 	cv := &siba.Fact{}
