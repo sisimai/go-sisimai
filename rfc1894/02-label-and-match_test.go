@@ -10,6 +10,7 @@ package rfc1894
 import "testing"
 import "strings"
 import "slices"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/moji"
 
 var FieldList = []string{
@@ -18,7 +19,7 @@ var FieldList = []string{
 	"Remote-MTA: dns; mail.neko.example.org",
 	"Arrival-Date: Thu, 29 Apr 2009 23:45:00 +0900",
 	"Final-Recipient: RFC822; kijitora@example.com",
-	"Action: failed",
+	"Action: " + eb.AeFAIL,
 	"Status: 5.1.8",
 	"Diagnostic-Code: SMTP; 553 5.1.8 <httpd@host1.mx.example.jp>... Domain of sender address httpd@host1.mx.example.jp does not exist",
 	"Last-Attempt-Date: Thu, 29 Apr 2009 23:45:00 +0900",
