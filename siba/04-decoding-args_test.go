@@ -15,7 +15,7 @@ import "testing"
 // Callback0 CfParameter0 // [0] The 1st callback function
 // Callback1 CfParameter1 // [1] The 2nd callback function
 func TestDecodingArgs(t *testing.T) {
-	fn := "isba.DecodingArgs"
+	fn := "siba.DecodingArgs"
 	c1 := func(arg *CallbackArg0) (map[string]interface{}, error) {
 		data := make(map[string]interface{}); data["nekochan"] = []string{"kijitora", "nyaaaan"}
 		return data, nil
