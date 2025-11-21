@@ -16,6 +16,7 @@ import "fmt"
 import "bufio"
 import "strings"
 import "path/filepath"
+import "libsisimai.org/sisimai/v5/eb"
 
 /* EmailEntity struct keeps each parameter of UNIX mbox, Maildir/.
  | FIELD      | UNIX mbox | Maildir/  | Memory    | <STDIN>    |
@@ -41,7 +42,6 @@ type EmailEntity struct {
 	offset  int      // Offset position
 	newline uint8    // 0 = undefined, 1 = LF, 2 = CR, 3 = CRLF
 }
-const maximumSize = 2000 * 1024 * 1024 * 1024
 
 // Rise is a constructor of EmailEntity struct.
 //   Arguments:
@@ -64,7 +64,7 @@ func Rise(path string) (*EmailEntity, error) {
 			// Read all strings from STDIN, and store them to ee.payload
 			// TODO: In the case of that the input data is a binary
 			stdin, nyaan  := io.ReadAll(os.Stdin); if nyaan != nil { return &ee, nyaan }
-			if textlength := len(stdin); textlength == 0 || textlength > maximumSize {
+			if textlength := len(stdin); textlength == 0 || textlength > eb.XeBYTE {
 				// The input text is empty or too large (2GB)
 				return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
 			}
@@ -72,7 +72,7 @@ func Rise(path string) (*EmailEntity, error) {
 
 		} else {
 			// Email data is in a string(memory)
-			if textlength := len(path); textlength < 3 || textlength > maximumSize {
+			if textlength := len(path); textlength < 3 || textlength > eb.XeBYTE {
 				// The input text is empty or too large (2GB)
 				return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
 			}
@@ -113,7 +113,7 @@ func Rise(path string) (*EmailEntity, error) {
 
 			} else {
 				// UNIX mbox
-				cw := filestatus.Size(); if cw == 0 || cw > maximumSize {
+				cw := filestatus.Size(); if cw == 0 || cw > eb.XeBYTE {
 					// The mbox is empty or too large (2GB)
 					return &ee, fmt.Errorf("%s is empty or too large: %d bytes", path, ee.Size)
 				}
