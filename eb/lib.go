@@ -8,4 +8,5 @@
 
 // Package "eb" provides constants for the email bounce.
 package eb
+const XeBYTE = 2000 * 1024 * 1024 * 1024 // 2GB: The maximum bytes of the email size in mail/lib.go
 
