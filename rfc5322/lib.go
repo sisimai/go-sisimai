@@ -9,6 +9,7 @@
 // Package "rfc5322" provides functions for email addresses, Date: header, Received: headers, and
 // other headers and messages related to RFC5322. https://datatracker.ietf.org/doc/html/rfc5322
 package rfc5322
+import "libsisimai.org/sisimai/v5/moji"
 
 var FieldIndex = []string{
 	// The following fields are not referred in Sisimai
@@ -36,4 +37,24 @@ var HeaderTable = map[string][]string{
 // Do not exclude the following strings:
 //   - Received: (qmail 2204 invoked for bounce); 29 Apr 2010 00:00:00 -000
 var woReceived = []string{" invoked by uid", " invoked from network"}
+
+// LooksLikeEmail checks that the text looks like an email.
+//   Arguments:
+//     - mesg (*string):  String to be checked that the text looks like an email.
+//   Returns:
+//     - (bool): true if the text may be an email.
+func LooksLikeEmail(mesg *string) bool {
+	if mesg == nil || len(*mesg) == 0 { return false }
+
+	// - The first 1000 bytes should be a plain text.
+	// - LF or CR or CRLF should be included in the first 1000 bytes.
+	// - LFLF or CRLFCRLF or CRCR should be included in the email text.
+	cw, cx := len(*mesg), 1000; if cw < cx { cx = cw - 1 }
+	cv     := (*mesg)[:cw]
+
+	if moji.IsText(mesg)                                             == false { return false }
+	if moji.ContainsAny(cv, []string{"\n", "\r", "\r\n"})            == false { return false }
+	if moji.ContainsAny(*mesg, []string{"\n\n", "\r\n\r\n", "\r\r"}) == false { return false }
+	return true
+}
 
