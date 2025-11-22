@@ -38,9 +38,9 @@ import "libsisimai.org/sisimai/v5/smtp/failure"
 //     - ([]siba.Fact):       List of successfully decoded bounce messages.
 //     - ([]siba.NotDecoded): List of occurred errors.
 func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, []siba.NotDecoded) {
-	if email == nil || len(*email) < 1 {
-		// The email message is empty
-		ce := *siba.MakeNotDecoded("email file is empty", true); ce.Email(origin)
+	if email == nil || len(*email) < 1 || (*email)[0] > 127 {
+		// The email message is empty or is a binary
+		ce := *siba.MakeNotDecoded("the file may not be a text file", true); ce.Email(origin)
 		return nil, []siba.NotDecoded{ce}
 	}
 
