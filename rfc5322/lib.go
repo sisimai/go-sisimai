@@ -40,7 +40,7 @@ var woReceived = []string{" invoked by uid", " invoked from network"}
 
 // LooksLikeEmail checks that the text looks like an email.
 //   Arguments:
-//     - mesg (*string):  String to be checked that the text looks like an email.
+//     - mesg (*string): String to be checked that the text looks like an email.
 //   Returns:
 //     - (bool): true if the text may be an email.
 func LooksLikeEmail(mesg *string) bool {
@@ -48,7 +48,7 @@ func LooksLikeEmail(mesg *string) bool {
 
 	// - The first 1000 bytes should be a plain text.
 	// - LF or CR or CRLF should be included in the first 1000 bytes.
-	// - LFLF or CRLFCRLF or CRCR should be included in the email text.
+	// - The header and body must be separated by a double line break: "\n\n", "\r\n\r\n", or "\r\r".
 	cw, cx := len(*mesg), 1000; if cw < cx { cx = cw - 1 }
 	cv     := (*mesg)[:cx]
 
