@@ -49,8 +49,8 @@ func LooksLikeEmail(mesg *string) bool {
 	// - The first 1000 bytes should be a plain text.
 	// - LF or CR or CRLF should be included in the first 1000 bytes.
 	// - The header and body must be separated by a double line break: "\n\n", "\r\n\r\n", or "\r\r".
-	cw, cx := len(*mesg), 1000; if cw < cx { cx = cw - 1 }
-	cv     := (*mesg)[:cx]
+	le, cw := len(*mesg), 1000; if le < cw { cw = le - 1 }
+	cv     := (*mesg)[:cw]
 
 	if moji.IsText(mesg)                                             == false { return false }
 	if moji.ContainsAny(cv, []string{"\n", "\r", "\r\n"})            == false { return false }
