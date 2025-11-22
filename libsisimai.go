@@ -78,7 +78,7 @@ func Rise(path string, args *siba.DecodingArgs) ([]siba.Fact, []siba.NotDecoded)
 			}
 		} else {
 			// Read and decode each email file as a string
-			if emailthing.Size == 0 || (*mesg)[0] > 127 {
+			if emailthing.Size == 0 || moji.IsText(mesg) == false {
 				// Reason for this check:
 				//   While mail.Rise() already validates the overall size of the input source, this
 				//   specific condition addresses the case where an individual email message extracted
