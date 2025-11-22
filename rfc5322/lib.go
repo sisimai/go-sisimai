@@ -50,7 +50,7 @@ func LooksLikeEmail(mesg *string) bool {
 	// - LF or CR or CRLF should be included in the first 1000 bytes.
 	// - LFLF or CRLFCRLF or CRCR should be included in the email text.
 	cw, cx := len(*mesg), 1000; if cw < cx { cx = cw - 1 }
-	cv     := (*mesg)[:cw]
+	cv     := (*mesg)[:cx]
 
 	if moji.IsText(mesg)                                             == false { return false }
 	if moji.ContainsAny(cv, []string{"\n", "\r", "\r\n"})            == false { return false }
