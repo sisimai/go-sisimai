@@ -18,6 +18,7 @@ import "errors"
 import "strings"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/rfc5322"
 import sisimbox "libsisimai.org/sisimai/v5/mail"
 import sisifact "libsisimai.org/sisimai/v5/fact"
 
@@ -78,14 +79,14 @@ func Rise(path string, args *siba.DecodingArgs) ([]siba.Fact, []siba.NotDecoded)
 			}
 		} else {
 			// Read and decode each email file as a string
-			if emailthing.Size == 0 {
+			if emailthing.Size == 0 || rfc5322.LooksLikeEmail(mesg) == false {
 				// Reason for this check:
 				//   While mail.Rise() already validates the overall size of the input source, this
 				//   specific condition addresses the case where an individual email message extracted
 				//   from a multi-message source (like a UNIX mbox) might be empty.
 				//   This acts as a necessary secondary validation to prevent issues during further
 				//   processing of empty messages.
-				ce := *siba.MakeNotDecoded("the email file is empty", true); ce.Email(emailthing.Path)
+				ce := *siba.MakeNotDecoded("the file may not be a text file", true); ce.Email(emailthing.Path)
 				notdecoded = append(notdecoded, ce)
 				continue
 			}

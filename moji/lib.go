@@ -87,6 +87,23 @@ func IsContained(text string, list []string) bool {
 	return false
 }
 
+// IsText checks that the text is a plain text or not.
+//   Arguments:
+//     - text (*string):  String to be checked that the text is a plain text or not.
+//   Returns:
+//     - (bool): true if the first 10 bytes indicates that the text is a text.
+func IsText(text *string) bool {
+	if text == nil || len(*text) == 0 { return false }
+	cw := len(*text); for j := 0; j < 10; j++ {
+		// - Disallow DEL(0x7F:127) or later.
+		// - Allow HT(0x09:9), LF(0x0A:10), VT(0x0B:11), FF(0x0C:12), CR(0x0D:13)
+		if j >= cw                        { break        }
+		cv := (*text)[j]; if cv > 126     { return false }
+		if cv < 32 && (cv < 9 || cv > 13) { return false }
+	}
+	return true
+}
+
 // Aligned checks if each element of the 2nd argument is aligned in the 1st argument or not.
 //   Arguments:
 //     - text (string):   String to be checked such as "I am a cat. I have, as yet, no name.".

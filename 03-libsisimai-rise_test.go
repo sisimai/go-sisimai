@@ -25,7 +25,10 @@ func TestRise(t *testing.T) {
 		filepath.Join("mailbox", "mbox-1"),
 		filepath.Join("maildir", "bsd"),
 	}
-	normals := []string{filepath.Join("maildir", "not")}
+	normals := []string{
+		filepath.Join("maildir", "not"),
+		filepath.Join("mailbox", "size-1"),
+	}
 	sisiarg := Args(); sisiarg.Delivered = true; sisiarg.Vacation = true
 	errorat := []string{"lhost-office365-13.eml"}
 	notfile := []string{"/dev/null", "/dev/neko"}
