@@ -147,7 +147,7 @@ func levelout(ctype string, mpart *string) ([][3]string, []siba.NotDecoded) {
 //     - ctype (string):  Value of Content-Type header.
 //     - mpart (*string): Pointer to multipart/* message blocks.
 //   Returns:
-//     - (*string):          Message body.
+//     - (*string):           Message body.
 //     - ([]siba.NotDecoded): Occurred errors.
 func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 	lhead := strings.ToLower(ctype)
@@ -165,7 +165,7 @@ func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 		mediatypev := Parameter(e[0], ""); if len(e[0]) == 0 { mediatypev = "text/plain" }
 
 		// The value of Content-Type: is neither "text/*" nor "message/*"
-		if strings.Index(mediatypev, "text/") + strings.Index(mediatypev, "message/") == -2 { continue }
+		if moji.ContainsAny(mediatypev, []string{"text/", "message/"}) == false { continue }
 		if mediatypev == "text/html" {
 			// Skip text/html part when the value of Content-Type: header in an internal part of
 			// multipart/* includes multipart/alternative;
