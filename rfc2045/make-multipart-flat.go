@@ -173,7 +173,7 @@ func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 		}
 		bodyinside, bodystring := e[2], "" // Message body of the part, keeps decoded MIME part.
 
-		if ctencoding := e[1]; len(ctencoding) > 0 {
+		if ctencoding := e[1]; ctencoding != "" {
 			// Check the value of Content-Transfer-Encoding: header.
 			var nyaan error; switch ctencoding {
 				// - Content-Transfer-Encoding: 8bit, binary, and so on.
@@ -186,9 +186,18 @@ func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 			}
 			if nyaan != nil { notdecoded = append(notdecoded, *siba.MakeNotDecoded(nyaan.Error(), false)) }
 
-			// - Decoded MIME part is not a plain text.
-			// - Try to delete HTML tags inside of text/html part whenever possible.
-			if ctencoding == "base64" && moji.IsText(&bodystring) == false { continue }
+			switch {
+				// Don't pick the decoded part as an error message when the part is
+				// - BASE64 encoded.
+				// - the value of the charset is not utf-8.
+				// - NOT a plain text.
+				case ctencoding != "base64":
+				case moji.Aligned(e[0], []string{"charset", "=", "utf-8"}):
+				case moji.IsText(&bodystring):
+				default: continue
+			}
+
+			// Try to delete HTML tags inside of text/html part whenever possible.
 			if istexthtml { bodystring = *moji.ToPlain(&bodystring) }
 			if bodystring == "" { continue }
 
