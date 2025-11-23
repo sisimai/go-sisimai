@@ -9,7 +9,6 @@ package rfc5322
 //   |_|\___||___/\__/_/  |_| \_\_|   \____|____/____/_____|_____|
 import "testing"
 import "os"
-import "strings"
 import "path/filepath"
 
 func TestLooksLikeEmail(t *testing.T) {
@@ -24,21 +23,18 @@ func TestLooksLikeEmail(t *testing.T) {
 
 	for _, e := range ae {
 		fe    := filepath.Join("..", "set-of-emails", "maildir", "bsd", e)
-		by, _ := os.ReadFile(fe)
-		sy    := string(by)
+		by, _ := os.ReadFile(fe); sy := string(by)
 
-		cx++; if len(by) == 0 { t.Errorf("rfc5322.%s(%s) is empty", fn, e) }
-
-		if strings.HasSuffix(e, ".eml") {
-			cx++; if LooksLikeEmail(&sy) == false { t.Errorf("rfc5322.%s(%s) returns false", fn, e) }
-
-		} else {
-			cx++; if LooksLikeEmail(&sy) == true  { t.Errorf("rfc5322.%s(%s) returns true ", fn, e) }
-		}
+		cx++; if len(by) == 0                 { t.Errorf("rfc5322.%s(%s) is empty", fn, e)      }
+		cx++; if LooksLikeEmail(&sy) == false { t.Errorf("rfc5322.%s(%s) returns false", fn, e) }
 	}
 	
 	for _, e := range xe {
-		cx++; if LooksLikeEmail(&e) == true  { t.Errorf("rfc5322.%s(%s) returns true ", fn, e) }
+		cx++; if LooksLikeEmail(&e) == true   { t.Errorf("rfc5322.%s(%s) returns true ", fn, e) }
+	}
+	for _, e := range []string{filepath.Join("..", ".gitignore"), filepath.Join("..", "set-of-emails", "mailbox", "size-2")} {
+		by, _ := os.ReadFile(e); sy := string(by)
+		cx++; if LooksLikeEmail(&sy) == true  { t.Errorf("rfc5322.%s(%s) returns true ", fn, e) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
