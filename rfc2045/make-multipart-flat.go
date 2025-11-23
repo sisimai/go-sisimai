@@ -147,7 +147,7 @@ func levelout(ctype string, mpart *string) ([][3]string, []siba.NotDecoded) {
 //     - ctype (string):  Value of Content-Type header.
 //     - mpart (*string): Pointer to multipart/* message blocks.
 //   Returns:
-//     - (*string):          Message body.
+//     - (*string):           Message body.
 //     - ([]siba.NotDecoded): Occurred errors.
 func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 	lhead := strings.ToLower(ctype)
@@ -165,21 +165,19 @@ func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 		mediatypev := Parameter(e[0], ""); if len(e[0]) == 0 { mediatypev = "text/plain" }
 
 		// The value of Content-Type: is neither "text/*" nor "message/*"
-		if strings.Index(mediatypev, "text/") + strings.Index(mediatypev, "message/") == -2 { continue }
+		if moji.ContainsAny(mediatypev, []string{"text/", "message/"}) == false { continue }
 		if mediatypev == "text/html" {
 			// Skip text/html part when the value of Content-Type: header in an internal part of
 			// multipart/* includes multipart/alternative;
 			if strings.Contains(lhead, "multipart/alternative") == false { istexthtml = true }
 		}
-		bodyinside := e[2] // Message body of the part
-		bodystring := ""
+		bodyinside, bodystring := e[2], "" // Message body of the part, keeps decoded MIME part.
 
-		if ctencoding := e[1]; len(ctencoding) > 0 {
-			// Check the value of Content-Transfer-Encoding: header
-			var nyaan error
-			switch ctencoding {
-				// - Content-Transfer-Encoding: 8bit, binary, and so on
-				// - sisimai no longer supports multibyte characters except UTF-8
+		if ctencoding := e[1]; ctencoding != "" {
+			// Check the value of Content-Transfer-Encoding: header.
+			var nyaan error; switch ctencoding {
+				// - Content-Transfer-Encoding: 8bit, binary, and so on.
+				// - sisimai no longer supports multibyte characters except UTF-8.
 				// - https://github.com/sisimai/go-sisimai/issues/42
 				default: bodystring = bodyinside
 
@@ -188,28 +186,39 @@ func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 			}
 			if nyaan != nil { notdecoded = append(notdecoded, *siba.MakeNotDecoded(nyaan.Error(), false)) }
 
-			// Try to delete HTML tags inside of text/html part whenever possible
-			if istexthtml { bodystring = *moji.ToPlain(&bodystring) }
-			if len(bodystring) == 0 { continue }
+			switch {
+				// Don't pick the decoded part as an error message when the part is
+				// - BASE64 encoded.
+				// - the value of the charset is not utf-8.
+				// - NOT a plain text.
+				case ctencoding != "base64":
+				case moji.Aligned(e[0], []string{"charset", "=", "utf-8"}):
+				case moji.IsText(&bodystring):
+				default: continue
+			}
 
-			// The new-line code in the converted string is CRLF
+			// Try to delete HTML tags inside of text/html part whenever possible.
+			if istexthtml { bodystring = *moji.ToPlain(&bodystring) }
+			if bodystring == "" { continue }
+
+			// The new-line code in the converted string is CRLF.
 			moji.ToLF(&bodystring)
 
 		} else {
-			// There is no Content-Transfer-Encoding header in the part 
+			// There is no Content-Transfer-Encoding header in the part.
 			bodystring += bodyinside
 		}
 
-		// There is no Content-Transfer-Encoding header in the part 
+		// There is no Content-Transfer-Encoding header in the part.
 		if moji.ContainsAny(mediatypev, delimiters) {
 			// Add Content-Type: header of each part (will be used as a delimiter at Sisimai::Lhost)
 			// into the body inside when the value of Content-Type: is message/delivery-status, or
-			// message/rfc822, or text/rfc822-headers
+			// message/rfc822, or text/rfc822-headers.
 			bodystring = "Content-Type: " + mediatypev + "\n" + bodystring
 		}
 
 		if cw := len(bodystring); cw > 1 && bodystring[cw - 2:] != "\n\n" {
-			// Append "\n" when the last character of "bodystring" is not LF
+			// Append "\n" when the last character of "bodystring" is not LF.
 			bodystring += "\n\n"
 		}
 		flatbuffer.WriteString(bodystring)
