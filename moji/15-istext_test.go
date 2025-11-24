@@ -23,6 +23,7 @@ func TestIsText(t *testing.T) {
 		{"neko    cat",  true},
 		{"neko\x7ecat",  true},
 		{"neko\xffcat", false},
+		{"ネコちゃん!", false},
 	}
 
 	for _, e := range ae {
