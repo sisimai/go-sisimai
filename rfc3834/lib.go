@@ -71,8 +71,8 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	}
 	if proceedsto == false { return nil }
 
-	recipients := uint8(0)            // The number of recipients
 	dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
+	recipients := uint8(0)
 	v.Reason    = eb.ReAWAY
 
 	RECIPIENT_ADDRESS: for _, e := range []string{"reply-to", "from", "return-path"} {
