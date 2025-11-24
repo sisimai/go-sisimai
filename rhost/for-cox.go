@@ -79,7 +79,7 @@ func init() {
 			"IPBL0101":  eb.ReBLOC, // The sending IP is in the Spamhaus Zen and Invaluement ivmSIP DNSBLs.
 			"IPBL0110":  eb.ReBLOC, // The sending IP is in the Return Path and Invaluement ivmSIP DNSBLs.
 			"IPBL0111":  eb.ReBLOC, // The sending IP is in the Spamhaus Zen, Return Path and Invaluement ivmSIP DNSBLs.
-			"IPBL1000":  eb.ReBLOC, // The sending IP address is listed on a CSI blacklist. You can check your status on the CSI website.
+			"IPBL1000":  eb.ReBLOC, // The sending IP address is listed on a CSI blacklist.
 			"IPBL1001":  eb.ReBLOC, // The sending IP is listed in the Cloudmark CSI and Spamhaus Zen DNSBLs.
 			"IPBL1010":  eb.ReBLOC, // The sending IP is listed in the Cloudmark CSI and Return Path DNSBLs.
 			"IPBL1011":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Spamhaus Zen and Return Path DNSBLs.
@@ -87,11 +87,11 @@ func init() {
 			"IPBL1101":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Spamhaus Zen and Invaluement IVMsip DNSBLs.
 			"IPBL1110":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Return Path and Invaluement ivmSIP DNSBLs.
 			"IPBL1111":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Spamhaus Zen, Return Path and Invaluement ivmSIP DNSBLs.
-			"IPBL00001": eb.ReBLOC, // The sending IP address is listed on a Spamhaus blacklist. Check your status at Spamhaus.
+			"IPBL00001": eb.ReBLOC, // The sending IP address is listed on a Spamhaus blacklist.
 			"URLBL011" : eb.ReSPAM, // A URL within the body of the message was found on blocklists SURBL and Spamhaus DBL.
 			"URLBL101" : eb.ReSPAM, // A URL within the body of the message was found on blocklists SURBL and ivmURI.
 			"URLBL110" : eb.ReSPAM, // A URL within the body of the message was found on blocklists Spamhaus DBL and ivmURI.
-			"URLBL1001": eb.ReSPAM, // The URL is listed on a Spamhaus blacklist. Check your status at Spamhaus.
+			"URLBL1001": eb.ReSPAM, // The URL is listed on a Spamhaus blacklist.
 		}
 		messagesof := map[string][]string{
 			eb.ReBLOC: []string{ // Blocked
@@ -131,6 +131,8 @@ func init() {
 				// - The SMTP connection has exceeded the 100 email message threshold and was disconnected.
 				// - The sending IP address has exceeded one of these rate limits and has been temporarily
 				//   blocked.
+				// - Cox enforces various rate limits to protect our platform. The sending IP address
+				//   has exceeded one of these rate limits and has been temporarily blocked.
 				"too many sessions from",
 				"requested action aborted: try again later",
 				"message threshold exceeded",
