@@ -24,7 +24,7 @@ func init() {
 		if strings.IndexByte(fo.DiagnosticCode, '-') < 0 { return "" }
 
 		errorcodes := map[string][]string{
-			// http://postmaster.facebook.com/response_codes
+			// https://www.facebook.com/postmaster/response_codes
 			// NOT TESTED EXCEPT RCP-P2
 			eb.ReAUTH: []string{ // AuthFailure
 				"POL-P7",   // The message does not comply with Facebook's Domain Authentication requirements.
@@ -45,12 +45,18 @@ func init() {
 				"RCP-P2", // The attempted recipient's preferences prevent messages from being delivered.
 				"RCP-P3", // The attempted recipient's privacy settings blocked the delivery.
 			},
+			eb.ReFULL: []string{ // MailboxFull
+				"INT-P7", // The attempted recipient has exceeded their storage quota.
+			},
 			eb.ReSIZE: []string{ // MesgTooBig
 				"MSG-P1", // The message exceeds Facebook's maximum allowed size.
 				"INT-P2", // The message exceeds Facebook's maximum allowed size.
 			},
 			eb.ReNRFC: []string{ // NotCompliantRFC
 				"MSG-P3", // The message contains multiple instances of a header field that can only be present once.
+			},
+			eb.RePOLI: []string{ // PolicyViolation
+				"POL-P8", // The message does not comply with Facebook's abuse policies and will not be accepted.
 			},
 			eb.ReFROM: []string{ // Rejected
 				"DNS-P1", // Your SMTP MAIL FROM domain does not exist.
@@ -63,13 +69,13 @@ func init() {
 			},
 			eb.ReSPAM: []string{ // SpamDetected
 				"POL-P6", // The message contains a url that has been blocked by Facebook.
-				"POL-P7", // The message does not comply with Facebook's abuse policies and will not be accepted.
 			},
 			eb.ReQUIT: []string{ // Suspend
 				"RCP-T4", // The attempted recipient address is currently deactivated. The user may or may not reactivate it.
 			},
 			eb.ReSYSE: []string{ // SystemError
-				"RCP-T1", // The attempted recipient address is not currently available due to an internal system issue. This is a temporary condition.
+				"RCP-T1", // The attempted recipient address is not currently available due to an internal system issue. 
+				"INT-Tx", // These codes indicate a temporary issue internal to Facebook's system.
 			},
 			eb.ReCONN: []string{ // TooManyConn
 				"CON-T1", // Facebook's mail server currently has too many connections open to allow another one.
