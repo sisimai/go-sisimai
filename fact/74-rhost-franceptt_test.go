@@ -21,7 +21,7 @@ func TestRhostFrancePTT(t *testing.T) {
 		{{"07",   1, "4.0.0",   "421", "blocked",         false, ""}},
 		{{"08",   1, "4.2.0",   "421", "systemerror",     false, ""}},
 		{{"10",   1, "5.5.0",   "550", "blocked",         false, ""}},
-		{{"11",   1, "4.2.1",   "421", "blocked",         false, ""}},
+		{{"11",   1, "4.2.1",   "421", "requireptr",      false, ""}},
 		{{"12",   1, "5.7.1",   "554", "policyviolation", false, ""}},
 	}; EngineTest(t, "FrancePTT", publiclist, true)
 
