@@ -182,7 +182,6 @@ func init() {
 			"513": "",        // Mail rejete. Mail rejected. OUK_513
 			"514": eb.ReSIZE, // Taille limite du message atteinte
 			"630": eb.RePOLI, // 554 5.7.1 Client host rejected LPN000_630
-			"999": eb.ReBLOC,
 		}
 		messagesof := map[string][]string{
 			eb.ReAUTH: []string{
