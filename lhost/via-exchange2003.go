@@ -78,15 +78,14 @@ func init() {
 		}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		rightindex := uint8(0)      // The last index number of dscontents
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)      // Points the current cursor position
-		recipients := uint8(0)      // The number of 'Final-Recipient' header
+		rightindex := uint8(0)      // The last index number of dscontents
 		statuspart := false         // Flag, true if it has read the delivery status part
 		connvalues := 0             // Counter, 3 if it has got the all values of connheader
 		connheader := [3]string{}   // [To:, Subject:, Date:]
 		anotherone := []string{""}  // Keeping another error messages
 		msexchange := []bool{false} // Flag, true if "MSEXCH:" text has been appeared
+		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the

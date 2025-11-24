@@ -55,7 +55,7 @@ func init() {
 		boundaries := []string{"----- Original message -----", "Content-Type: message/rfc822"}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
+		recipients := uint8(0)
 
 		entiremesg := strings.SplitN(emailparts[0], "\n\n", 5); entiremesg[len(entiremesg) - 1] = ""
 		issuedcode := strings.ReplaceAll(strings.Join(entiremesg, " "), "\n", " ")
