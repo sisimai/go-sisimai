@@ -59,9 +59,8 @@ func Find(text string) [3]string {
 						readbuffer[1].WriteRune(e)
 
 					} else {
-						// The cursor is not in neither the quoted-string nor the comment block
-						readcursor = 0 // Reset the current position
-						groupindex = 0
+						// The cursor is not in neither the quoted-string nor the comment block.
+						readcursor, groupindex = 0, 0
 					}
 				} else {
 					// "," is in the display name or the quoted local part of the email address

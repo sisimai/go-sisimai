@@ -23,8 +23,9 @@ func Rise(addrs [3]string) *siba.EmailAddress {
 
 	if lasta := strings.LastIndex(email, "@"); lasta > 0 {
 		// Get the local part and the domain part from the email address
-		lpart := email[:lasta]     // Local part of the address:  "neko"
-		dpart := email[lasta + 1:] // Domain part of the address: "example.jp"
+		// - Local part of the address:  "neko"
+		// - Domain part of the address: "example.jp"
+		lpart, dpart := email[:lasta], email[lasta + 1:]
 
 		if other := ExpandVERP(email); other != "" {
 			// The email address is a VERP address such as "neko+cat=example.jp@example.org"
