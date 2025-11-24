@@ -19,6 +19,8 @@ func init() {
 	//     - (string): Bounce reason name or an empty string.
 	ReturnedBy["Aol"] = func(fo *siba.Fact) string {
 		// - Aol Mail: https://www.aol.com
+		// - Y!Sender Hub/SMTP Error Codes: https://senders.yahooinc.com/smtp-error-codes/
+		// - The MX record of Aol points "mx-aol.mail.gm0.yahoodns.net".
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
