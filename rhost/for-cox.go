@@ -19,7 +19,8 @@ func init() {
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
 	ReturnedBy["Cox"] = func(fo *siba.Fact) string {
-		// - Cox: https://www.cox.com/residential/support/cox-postmaster-email-administration.html
+		// - Email Error Codes: https://www.cox.com/business/support/email-error-codes.html
+		// - Feedback Loop Service https://www.cox.com/business/support/feedback-loop-service.html
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		errorcodes := map[string]string{
