@@ -27,9 +27,8 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 func sift(bf *siba.BeforeFact, hook siba.CfParameter0) bool {
 	if bf == nil || bf.IsEmpty() == true { return false }
 
-	bf.Payload  = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
-	mesgformat := ""
-	ctencoding := ""
+	bf.Payload = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
+	mesgformat, ctencoding := "", ""
 
 	if len(bf.Headers["content-type"])              > 0 { mesgformat = strings.ToLower(bf.Headers["content-type"][0])              }
 	if len(bf.Headers["content-transfer-encoding"]) > 0 { ctencoding = strings.ToLower(bf.Headers["content-transfer-encoding"][0]) }
@@ -79,7 +78,7 @@ func sift(bf *siba.BeforeFact, hook siba.CfParameter0) bool {
 		// 4. rfc3834.Inqquire()
 		for _, r := range orders {
 			// 1. MTA Module candidates to be tried on first, and other lhost.InquireFor[*]
-			if called[r] || r == "ARF" || r == "RFC3834" { continue }
+			if called[r] == true || r == "ARF" || r == "RFC3834" { continue }
 			called[r] = true
 			if rising = lhost.InquireFor[r](bf); rising != nil { module = r; break DECODER }
 		}
