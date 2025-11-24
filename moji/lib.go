@@ -94,6 +94,7 @@ func IsContained(text string, list []string) bool {
 //     - (bool): true if the first 10 bytes indicates that the text is a text.
 func IsText(text *string) bool {
 	if text == nil || len(*text) == 0 { return false }
+
 	cw := len(*text); for j := 0; j < 10; j++ {
 		// - Disallow DEL(0x7F:127) or later.
 		// - Allow HT(0x09:9), LF(0x0A:10), VT(0x0B:11), FF(0x0C:12), CR(0x0D:13)
@@ -148,24 +149,18 @@ func IndexOnTheWay(whole, parts string, start int) int {
 //     - (string): Selected string such as "neko@example.jp".
 func Select(whole, begin, until string, start int) string {
 	if whole == "" || start < 0 { return ""   }
+	if start > (len(whole) - 2) { return ""   }
 	if begin == "" /* <@> */    { begin = LHS }
 	if until == "" /* <$> */    { until = RHS }
 
-	textlength := [3]int{len(whole), len(begin), len(until)}
-	sourcetext := whole
+	cv := whole[start:]
+	cw := [3]int{len(cv), len(begin), len(until)}
+	if cw[0] < 3 || cw[0] <= (cw[1] + cw[2]) { return "" }
 
-	if start > 0 {
-		if start > textlength[0] - 2 { return "" }
-		sourcetext = whole[start:]
-		textlength[0] = len(sourcetext)
-	}
-
-	if textlength[0] < 3 || textlength[0] <= (textlength[1] + textlength[2]) { return "" }
-	indextable   := [3]int{0, -1, -1}
-	indextable[1] = strings.Index(sourcetext, begin); if indextable[1] == -1 { return "" }
-	indextable[2] = strings.Index(sourcetext[indextable[1] + textlength[1] + 1:], until)
-
-	if indextable[2] < 0 { return "" }; indextable[2] += indextable[1] + textlength[1] + 1
-	return sourcetext[indextable[1] + textlength[1]:indextable[2]]
+	ci    := [3]int{0, -1, -1}
+	ci[1]  = strings.Index(cv, begin);                     if ci[1] < 0 { return "" }
+	ci[2]  = strings.Index(cv[ci[1] + cw[1] + 1:], until); if ci[2] < 0 { return "" }
+	ci[2] += ci[1] + cw[1] + 1
+	return cv[ci[1] + cw[1]:ci[2]]
 }
 

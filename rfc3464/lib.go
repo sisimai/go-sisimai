@@ -58,13 +58,12 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 	alternates := new(siba.DeliveryMatter)
 	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-	readcursor := uint8(0)              // Points the current cursor position
 	readslices := make([]string, 1, 32) // Copy each line for later reference
-	recipients := uint8(0)              // The number of 'Final-Recipient' header
 	goestonext := false                 // Flag: do not append the line into "leadinbuff"
 	leadinbuff := strings.Builder{}; leadinbuff.Grow(len(emailparts[0]) / 2)
 	eachbuffer := []strings.Builder{{}}; b := &eachbuffer[0]; b.Grow(128)
 	isboundary := []string{rfc2045.Boundary(bf.Headers["content-type"][0], 0)}
+	recipients, readcursor := uint8(0), uint8(0)
 
 	for strings.IndexByte(emailparts[0], '@') == -1 {
 		// There is no email address in the first element of emailparts
@@ -255,8 +254,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		if recipients == 1 {
 			// Do not mix the error message of each recipient with "beforemesg" when there is
 			// multiple recipient addresses in the bounce message
-			lowercased := strings.ToLower(e.Diagnosis)
-			if strings.Contains(issuedcode, lowercased) == true {
+			if strings.Contains(issuedcode, strings.ToLower(e.Diagnosis)) == true {
 				// "beforemesg" contains the entire strings of e.Diagnosis
 				e.Diagnosis = beforemesg
 

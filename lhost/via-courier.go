@@ -56,10 +56,9 @@ func init() {
 		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)              // Points the current cursor position
 		readslices := make([]string, 1, 32) // Copy each line for later reference
-		recipients := uint8(0)              // The number of 'Final-Recipient' header
 		thecommand := ""                    // An SMTP command name begins with the string ">>>"
+		recipients, readcursor := uint8(0), uint8(0)
 
 		j := -1; for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the

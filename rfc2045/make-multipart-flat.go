@@ -179,8 +179,7 @@ func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 				// - Content-Transfer-Encoding: 8bit, binary, and so on.
 				// - sisimai no longer supports multibyte characters except UTF-8.
 				// - https://github.com/sisimai/go-sisimai/issues/42
-				default: bodystring = bodyinside
-
+				default:                 bodystring        = bodyinside
 				case "base64":           bodystring, nyaan = DecodeB(bodyinside)
 				case "quoted-printable": bodystring, nyaan = DecodeQ(bodyinside)
 			}
@@ -191,9 +190,9 @@ func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 				// - BASE64 encoded.
 				// - the value of the charset is not utf-8.
 				// - NOT a plain text.
-				case ctencoding != "base64":
-				case moji.Aligned(e[0], []string{"charset", "=", "utf-8"}):
-				case moji.IsText(&bodystring):
+				case     ctencoding != "base64":
+				case     moji.Aligned(e[0], []string{"charset", "=", "utf-8"}):
+				case     moji.IsText(&bodystring):
 				default: continue
 			}
 

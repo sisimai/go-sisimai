@@ -126,10 +126,9 @@ func init() {
 			if e < 48 || e > 57 { codestring = ""; continue }
 			codestring += string(e)
 		}
-		if len(codestring) != 4                          { return "" }
-		if moji.ContainsOnlyNumbers(codestring) == false { return "" }
-
+		if len(codestring) != 4 || moji.ContainsOnlyNumbers(codestring) == false    { return "" }
 		codenumber, nyaan := strconv.ParseUint(codestring, 10, 16); if nyaan != nil { return "" }
+
 		for _, e := range errorcodes {
 			// Try to find an error code matches with the code in the value of fo.DiagnosticCode
 			if codestring == e[0] { return e[2] } // ["1500", "", "reason"] or ["1500", "1550", "reason"]

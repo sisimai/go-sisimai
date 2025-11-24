@@ -97,8 +97,7 @@ func Rise(log, lhs, rhs string) []TranscriptLog {
 	// 4. Replace label strings of SMTP client/server at the each line
 	for e := range strings.Lines(log) {
 		// Replace the following labels
-		e  = strings.Trim(e, "\n\r ")
-		if strings.HasPrefix(e, lhs) || strings.HasPrefix(e, rhs) {
+		e = strings.Trim(e, "\n\r "); if strings.HasPrefix(e, lhs) || strings.HasPrefix(e, rhs) {
 			// - The line starts with ">>>" or the specified label in lhs
 			// - The line starts with "<<<" or the specified label in rhs
 			if strings.HasPrefix(e, lhs) {

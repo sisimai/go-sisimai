@@ -55,13 +55,12 @@ func init() {
 		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)              // Points the current cursor position
 		readslices := make([]string, 1, 32) // Copy each line for later reference
-		recipients := uint8(0)              // The number of 'Final-Recipient' header
-		thecommand := ""                    // An SMTP command name begins with the string ">>>"
 		esmtpreply := make([]string, 0, 2)  // Reply messages from the remote server on an SMTP session
-		sessionerr := false                 // Flag, true if it is an SMTP session error
 		anotherset := map[string]string{}   // Another error information
+		sessionerr := false                 // Flag, true if it is an SMTP session error
+		thecommand := ""                    // An SMTP command name begins with the string ">>>"
+		recipients, readcursor := uint8(0), uint8(0)
 
 		j := -1; for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -180,11 +179,12 @@ func init() {
 				e.Update(z, permessage[z])
 			}
 
-			if len(anotherset["diagnosis"]) > 0 {
+			switch {
 				// Copy alternative error message to e.Diagnosis
-				if strings.HasPrefix(e.Diagnosis, " ")   { e.Diagnosis = anotherset["diagnosis"] }
-				if moji.ContainsOnlyNumbers(e.Diagnosis) { e.Diagnosis = anotherset["diagnosis"] } 
-				if len(e.Diagnosis) == 0                 { e.Diagnosis = anotherset["diagnosis"] } 
+				case len(anotherset["diagnosis"]) == 0: 
+				case strings.HasPrefix(e.Diagnosis, " "):   e.Diagnosis = anotherset["diagnosis"]
+				case moji.ContainsOnlyNumbers(e.Diagnosis): e.Diagnosis = anotherset["diagnosis"]
+				case len(e.Diagnosis) == 0:                 e.Diagnosis = anotherset["diagnosis"]
 			}
 
 			if len(esmtpreply) > 0 && recipients == 1 {

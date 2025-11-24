@@ -38,8 +38,7 @@ func Find(text string, code string) string {
 	for _, e := range ip4address { esmtperror = strings.ReplaceAll(esmtperror, e, "***.***.***.***") }
 	for _, e := range eestatuses {
 		// Count the number of "5.", "4.", and "2." in the error message
-		p0, p1 := 0, 0
-		for p0 > -1 {
+		p0, p1 := 0, 0; for p0 > -1 {
 			// Find all of the "5." and "4." string and store its postion
 			p0 = moji.IndexOnTheWay(esmtperror, e, p1); if p0 < 0 { break }
 			p1 = p0 + 5

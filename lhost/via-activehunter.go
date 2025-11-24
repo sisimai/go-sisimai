@@ -29,8 +29,7 @@ func init() {
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		recipients := uint8(0)     // The number of 'Final-Recipient' header
-		readcursor := uint8(0)     // Points the current cursor position
+		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the

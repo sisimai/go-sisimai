@@ -158,15 +158,16 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 				if _, rhs, cut := strings.Cut(*v, "="); cut == true  { *v = rhs }
 				if strings.IndexByte(*v, ' ') > -1 {
 					// Check a space character in each value and get the first hostname
-					ee := strings.Split(*v, " ")
-					for _, w := range ee {
+					ee := strings.Split(*v, " "); for _, w := range ee {
 						// Get a hostname from the string like "127.0.0.1 x109-20.example.com 192.0.2.20"
 						// or "mx.sp.example.jp 192.0.2.135"
 						if rfc791.IsIPv4Address(w) == false { *v = w; break }
 					}
 					if strings.IndexByte(*v, ' ') > 0 { *v = ee[0] }
 				}
-				if strings.HasSuffix(*v, ".") { *v = strings.TrimRight(*v, ".") } // Remove "." at the end of the value
+
+				// Remove "." at the end of the hostname.
+				if strings.HasSuffix(*v, ".") { *v = strings.TrimRight(*v, ".") }
 			}
 		}
 
@@ -336,10 +337,9 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		if thing.DeliveryStatus == "" {
 			// Set a pseudo status code
 			ce := thing.ReplyCode + " " + piece["diagnosticcode"]; if len(ce) < 4 { ce = "" }
-			permanent0 := failure.IsPermanent(ce)
-			temporary0 := failure.IsTemporary(ce)
-			temporary1 := temporary0; if !permanent0 && !temporary0 { temporary1 = false }
-			thing.DeliveryStatus = status.Code(thing.Reason, temporary1)
+			et := failure.IsTemporary(ce); eu := et
+			if failure.IsPermanent(ce) == false && et == false { eu = false }
+			thing.DeliveryStatus = status.Code(thing.Reason, eu)
 		}
 
 		{	// REPLYCODE: Check both of the first digit of "DeliveryStatus" and "ReplyCode"
