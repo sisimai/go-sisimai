@@ -35,9 +35,9 @@ func init() {
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		readcursor := uint8(0)            // Points the current cursor position
-		recipients := uint8(0)            // The number of 'Final-Recipient' header
-		endoferror := false               // Flag for the end of error messages
+		endoferror := false // Flag for the end of error messages
+		recipients, readcursor := uint8(0), uint8(0)
+		
 
 		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
@@ -94,14 +94,14 @@ func init() {
 						case strings.HasPrefix(e, "Original Sender: "): emailparts[1] += "From: " + moji.Select(e, "<", ">", 0) + "\n"
 						case strings.HasPrefix(e, "Sender-MTA: "):      v.Lhost = moji.Select(e, "<", ">", 0)
 						case strings.HasPrefix(e, "Reporting-MTA: "):   v.Rhost = moji.Select(e, "<", ">", 0)
-					default:
-						if moji.ContainsAny(e, []string{" From:", " Subject:"}) {
-							//    From:    originalsender@example.com
-							//    Subject: ...
-							p1 := strings.Index(e, " From:"); if p1 < 0 { p1 = strings.Index(e, " Subject:") }
-							p2 := strings.IndexByte(e, ':')
-							emailparts[1] += e[p1 + 1:p2] + ": " + moji.Sweep(e[p2 + 1:]) + "\n"
-						}
+						default:
+							if moji.ContainsAny(e, []string{" From:", " Subject:"}) {
+								//    From:    originalsender@example.com
+								//    Subject: ...
+								p1 := strings.Index(e, " From:"); if p1 < 0 { p1 = strings.Index(e, " Subject:") }
+								p2 := strings.IndexByte(e, ':')
+								emailparts[1] += e[p1 + 1:p2] + ": " + moji.Sweep(e[p2 + 1:]) + "\n"
+							}
 					}
 				}
 			}
