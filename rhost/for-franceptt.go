@@ -19,6 +19,7 @@ func init() {
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
 	ReturnedBy["FrancePTT"] = func(fo *siba.Fact) string {
+		// - Orange Postmaster Page: https://postmaster.orange.fr/index.html
 		// - https://www.postmastery.com/orange-postmaster-smtp-error-codes-ofr/
 		// - https://smtpfieldmanual.com/provider/orange
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
