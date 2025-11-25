@@ -32,6 +32,13 @@ v5.5.0
   - #261 #262 #264 #273 Code, test and coverage improvements.
   - #263 Fix bug in `IsEmailAddress()` function of `rfc5322/address.go`.
   - #265 Fix bug: wrong `groupindex` value in `address/find.go`.
+  - #279 #28 Check that the input file or MIME decoded part is a binary or not.
+  - #283 Update SMTP error codes and messages in the following `rhost` packages:
+    - `for-facebook.go` Update `AuthFailure` and `MailboxFull`
+    - `for-franceptt.go` Update `AuthFailure`, `Blocked`, `Rejected`, and `TooManyConn`
+    - `for-godaddy.go` Add `TooManyConn`
+    - `for-messagelabs.go` Add many error message patterns
+    - `for-tencent.go` Add `Speeding`
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
