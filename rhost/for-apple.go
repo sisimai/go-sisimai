@@ -20,7 +20,7 @@ func init() {
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
 	ReturnedBy["Apple"] = func(fo *siba.Fact) string {
-		// - Apple iCloud Mail: https://support.apple.com/en-us/102322
+		// - Postmaster information for iCloud Mail: https://support.apple.com/en-us/102322
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{

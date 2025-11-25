@@ -15,7 +15,7 @@ func TestRhostMessageLabs(t *testing.T) {
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
 		{{"01",   1, "5.0.0",   "550", "securityerror",   false, ""}},
 		{{"02",   1, "5.0.0",   "550", "userunknown",      true, ""}},
-		{{"03",   1, "5.0.0",   "",    "userunknown",      true, ""}},
+		{{"03",   1, "5.0.0",   "",    "onhold",          false, ""}},
 	}; EngineTest(t, "MessageLabs", publiclist, true)
 
 	secretlist := [][]IsExpected{
