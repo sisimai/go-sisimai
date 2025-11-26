@@ -235,9 +235,9 @@ func init() {
 				// - A valid X.509 certificate that isn't expired must be presented. X.509 certificates
 				//   must be renewed after their expiration, commonly annually.
 				[4]string{"5.7.51",  "", "", "restrictdomainstoipaddresses or restrictdomainstocertificate"},
-				[4]string{"4.7.321", "", "", "starttls-not-supported: destination mail server must support tls to receive mail"},
-				[4]string{"5.7.321", "", "", "starttls-not-supported: destination mail server must support tls to receive mail"},
-				[4]string{"5.7.322", "", "", "certificate-expired: destination mail server's certificate is expired"},
+				[4]string{"4.7.321", "", "", "starttls-not-supported:"},
+				[4]string{"5.7.321", "", "", "starttls-not-supported:"},
+				[4]string{"5.7.322", "", "", "certificate-expired:"},
 
 				// - Records are DNSSEC authentic, but one or multiple of these scenarios occurred:
 				//   - The destination mail server's certificate doesn't match with what is expected
@@ -249,13 +249,13 @@ func init() {
 				//    the validity of recipient address and determine if the destination server is
 				//    configured correctly to receive messages. 
 				// - For more information about DANE, see: https://datatracker.ietf.org/doc/html/rfc7671
-				[4]string{"4.7.323", "", "", "tlsa-invalid: The domain failed dane validation"},
-				[4]string{"5.7.323", "", "", "tlsa-invalid: The domain failed dane validation"},
+				[4]string{"4.7.323", "", "", "tlsa-invalid:"},
+				[4]string{"5.7.323", "", "", "tlsa-invalid:"},
 
 				// - The destination domain indicated it was DNSSEC-authentic, but Exchange Online
 				//   was not able to verify it as DNSSEC-authentic.
-				[4]string{"4.7.324", "", "", "dnssec-invalid: destination domain returned invalid dnssec records"},
-				[4]string{"5.7.324", "", "", "dnssec-invalid: destination domain returned invalid dnssec records"},
+				[4]string{"4.7.324", "", "", "dnssec-invalid:"},
+				[4]string{"5.7.324", "", "", "dnssec-invalid:"},
 
 				// - This happens when the presented certificate identities (CN and SAN) of a destination
 				//   SMTP target host don't match any of the domains or MX host.
@@ -263,10 +263,8 @@ func init() {
 				//   the validity of recipient address and determine if the destination server is
 				//   configured correctly to receive messages. For more information, see How SMTP
 				//   DNS-based Authentication of Named Entities (DANE) works to secure email communications.
-				[4]string{"4.7.325", "", "",
-					"certificate-host-mismatch: remote certificate must have a common name or subject alternative name matching the hostname (dane)"},
-				[4]string{"5.7.325", "", "",
-					"certificate-host-mismatch: remote certificate must have a common name or subject alternative name matching the hostname (dane)"},
+				[4]string{"4.7.325", "", "", "certificate-host-mismatch:"},
+				[4]string{"5.7.325", "", "", "certificate-host-mismatch:"},
 			},
 			eb.ReFULL: [][4]string{ // MailboxFull
 				// Exchange Server 2019 ----------------------------------------------------------------
@@ -539,7 +537,7 @@ func init() {
 				// - The sender has exceeded the recipient rate limit as described in Sending limits.
 				// - This could indicate the account has been compromised and is being used to send
 				//   spam.
-				[4]string{"5.1.90", "", "", "your message can't be sent because you've reached your daily limit for message recipients"},
+				[4]string{"5.1.90", "", "", "reached your daily limit for message recipients"},
 
 				// - The sender has exceeded the recipient rate limit or the message rate limit as
 				//   described in Sending limits.
@@ -554,7 +552,7 @@ func init() {
 				//   Microsoft 365 or Office 365 users from rapidly filling their inboxes with a large
 				//   number of messages from errant automated notification systems or other single-send-
 				//   er mail storms.
-				[4]string{"5.2.121", "", "", "recipient's per hour message receive limit from specific sender exceeded"},
+				[4]string{"5.2.121", "", "", "recipient's per hour message receive limit"},
 
 				// - The Microsoft 365 or Office 365 recipient has exceeded the number of messages
 				//   they can receive per hour from all senders.
@@ -562,7 +560,7 @@ func init() {
 				//   messages they send per hour to a specific recipient. This limit helps protect
 				//   Microsoft 365 and Office 365 users from rapidly filling their inboxes with a large
 				//   number of messages from errant automated notification systems or other mail storms.
-				[4]string{"5.2.122", "", "", "recipient's per hour message receive limit exceeded"},
+				[4]string{"5.2.122", "", "", "recipient's per hour message receive limit"},
 
 				// - Access denied, [$SenderIPAddress] has exceeded permitted limits within $range range
 				// - The sender's IPv6 range has attempted to send too many messages in too short a
@@ -574,8 +572,8 @@ func init() {
 				// - Ensure that any compromises or open relays have been resolved, and then contact
 				//   support through your regular channel. For more information, see Fix email delivery
 				//   issues for error codes 5.7.700 through 5.7.750 in Exchange Online.
-				[4]string{"5.7.", "700", "749", "access denied, tenant has exceeded threshold"},
-				[4]string{"5.7.", "700", "749", "access denied, traffic not accepted from this ip"},
+				[4]string{"5.7.", "700", "749", "tenant has exceeded threshold"},
+				[4]string{"5.7.", "700", "749", "traffic not accepted from this ip"},
 			},
 			eb.ReQUIT: [][4]string{ // Suspend
 				// Exchange Online ---------------------------------------------------------------------
@@ -633,7 +631,7 @@ func init() {
 				//   Archive is disabled. For this scenario to work, the organization's Office 365
 				//   administrator should either enable Journaling Archive or change the journaling
 				//   rule to journal messages to a different location.
-				[4]string{"5.3.190", "", "", "journaling on-premises messages to microsoft 365 or office 365 not supported when journaling archive is disabled"},
+				[4]string{"5.3.190", "", "", "when journaling archive is disabled"},
 
 				// Previous versions of Exchange Server ------------------------------------------------
 				[4]string{"5.0.0",  "", "", "helo / ehlo requires domain address"},
