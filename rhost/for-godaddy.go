@@ -211,7 +211,7 @@ func init() {
 				//   recipient rate limit)
 				// - 550 5.7.233 - Your message can't be sent because your tenant exceeded its daily
 				//   limit for sending email to external recipients (tenant external recipient rate
-				///  limit)
+				//   limit)
 				"exceeded its daily limit",
 			},
 			eb.ReUSER: []string{ // UserUnknown
