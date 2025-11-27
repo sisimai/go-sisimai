@@ -216,6 +216,19 @@ func init() {
 				[2]string{"550", "submitter failed to disabled"},
 				[2]string{"550", "submitter failed to authenticate"},
 			},
+			eb.ReSPAM: [][2]string{ // SpamDetected
+				// - A signature was detected that could either be a virus, or a spam score over the
+				//   maximum threshold. The spam score isn't available in the Administration Console.
+				//   If you aren't a Mimecast customer but have emails rejected with this error code,
+				//   contact the recipient to adjust their configuration and permit your address.
+				//   If unsuccessful, your IT department can submit a request to review these email
+				//   rejections via our Sender Feedback form.
+				// - Anti-virus checks cannot be bypassed. Contact the sender to see if they can stop
+				//   these messages from being blocked. Anti-spam checks can be bypassed using a Per-
+				//   mitted Senders or Auto Allow policy. Rejected emails can be viewed in your Outbound
+				//   Activity and searching for the required email address.
+				[2]string{"554", "email rejected due to security policies"},
+			},
 			eb.ReSYSE: [][2]string{ // SystemError
 				// - The Mimecast server is under maximum load.
 				// - No action is required from the end-user. The message will retry 30 times and
@@ -279,19 +292,6 @@ func init() {
 				//   returned a valid internal user.
 				// - The sender must resend the message to a valid internal recipient address.
 				[2]string{"550", "invalid recipient"},
-			},
-			eb.ReEXEC: [][2]string{ // VirusDetected
-				// - A signature was detected that could either be a virus, or a spam score over the
-				//   maximum threshold. The spam score isn't available in the Administration Console.
-				//   If you aren't a Mimecast customer but have emails rejected with this error code,
-				//   contact the recipient to adjust their configuration and permit your address.
-				//   If unsuccessful, your IT department can submit a request to review these email
-				//   rejections via our Sender Feedback form.
-				// - Anti-virus checks cannot be bypassed. Contact the sender to see if they can stop
-				//   these messages from being blocked. Anti-spam checks can be bypassed using a Per-
-				//   mitted Senders or Auto Allow policy. Rejected emails can be viewed in your Outbound
-				//   Activity and searching for the required email address.
-				[2]string{"554", "email rejected due to security policies"},
 			},
 		}
 
