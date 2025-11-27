@@ -63,7 +63,9 @@ func init() {
 				[2]string{"550", "local ct ip reputation - (reject)"},
 			},
 			eb.ReBLOC: [][2]string{ // Blocked
-				// - The sender"s IP address has been blocked by a Blocked Senders Policy.
+				// - Sender address blocked.
+				//   A Blocked Senders Policy has blocked the sender's IP address.
+				// - The sender's IP address has been blocked by a Blocked Senders Policy.
 				// - Remove the entry from the policy.
 				[2]string{"421", "sender address blocked"},
 
@@ -91,9 +93,17 @@ func init() {
 				//   if rejected, causing the journal queue to grow.
 				// - Check to confirm there are no significant time discrepancies on the mail server.
 				//   Discontinue journaling old messages past the expiry threshold.
-				[2]string{"550", "Journal messages past the expiration"},
+				[2]string{"550", "journal messages past the expiration"},
 			},
 			eb.ReTTLS: [][2]string{ // FailedSTARTTLS
+				// - SMTP inbound TLS has been enabled but no SSL certificate (or no valid certificate)
+				//   has been selected to be used. 
+				// - Delete or change the Secure Receipt or Secure Delivery policy enforcing TLS.
+				//   Alternatively, ensure the certificates on the mail server haven't expired.
+				//   If using a proxy server, ensure it isn't intercepting the traffic and modifying
+				//   encryption parameters.
+				[2]string{"454", "tls not available due to temporary reason"},
+
 				// - This email has been sent using SMTP, but TLS is required by policy.
 				// - Delete or change the Secure Receipt or Secure Delivery policy enforcing TLS.
 				//   Alternatively, ensure the certificates on the mail server haven't expired.
