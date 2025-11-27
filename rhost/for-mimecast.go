@@ -19,8 +19,8 @@ func init() {
 	//   Returns:
 	//     - (string): Bounce reason name or an empty string.
 	ReturnedBy["Mimecast"] = func(fo *siba.Fact) string {
-		// https://community.mimecast.com/s/article/Mimecast-SMTP-Error-Codes-842605754
-		// https://community.mimecast.com/s/article/email-security-cloud-gateway-mimecast-smtp-error-codes
+		// - https://community.mimecast.com/s/article/email-security-cloud-gateway-mimecast-smtp-error-codes
+		// - https://mimecastsupport.zendesk.com/hc/en-us/articles/34000709564691-Policies-Mimecast-SMTP-Error-Codes
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 		if reply.Test(fo.ReplyCode) == false    { return "" }
 
