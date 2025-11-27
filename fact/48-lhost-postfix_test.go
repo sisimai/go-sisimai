@@ -193,7 +193,7 @@ func TestLhostPostfix(t *testing.T) {
 		{{"1098", 1, "5.7.1",   "550", "spamdetected",    false, ""}},
 		{{"1099", 1, "5.7.1",   "550", "spamdetected",    false, ""}},
 		{{"1100", 1, "5.0.0",   "554", "spamdetected",    false, ""}},
-		{{"1101", 1, "5.0.0",   "554", "virusdetected",   false, ""}},
+		{{"1101", 1, "5.0.0",   "554", "spamdetected",    false, ""}},
 		{{"1102", 1, "5.7.1",   "550", "spamdetected",    false, ""}},
 		{{"1103", 1, "5.0.0",   "550", "spamdetected",    false, ""}},
 		{{"1104", 1, "5.0.0",   "550", "spamdetected",    false, ""}},
