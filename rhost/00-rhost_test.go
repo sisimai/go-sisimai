@@ -88,6 +88,10 @@ var TestRhosts = []struct {lhost string; rhost string; destination string; expec
 	{"mx.example.com", "mx.yahoodns.net", "example.com", "YahooInc"},
 	{"mx.yahoodns.net", "mx0.example.com", "example.org", "YahooInc"},
 	{"mx.example.com", "mx.example.org", "yahoodns.net", "YahooInc"},
+
+	{"mx.zoho.com", "mx.zoho.com", "zoho.example.com", "Zoho"},
+	{"smtpin.zoho.com", "smtpout.zoho.com", "example.org", "Zoho"},
+	{"mx.example.com", "mx.example.org", "zoho.com", "Zoho"},
 }
 
 func TestName(t *testing.T) {

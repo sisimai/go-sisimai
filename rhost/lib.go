@@ -13,7 +13,7 @@ package rhost
 import "strings"
 import "libsisimai.org/sisimai/v5/siba"
 
-var ReturnedBy = make(map[string]func(*siba.Fact) string, 19) // grep '^func init' ./rhost/for-*.go | wc -l
+var ReturnedBy = make(map[string]func(*siba.Fact) string, 20) // grep '^func init' ./rhost/for-*.go | wc -l
 var RhostClass = map[string][]string{
 	"Aol":         []string{".mail.aol.com", ".mx.aol.com"},
 	"Apple":       []string{".mail.icloud.com", ".apple.com", ".me.com", "privaterelay.appleid.com"},
@@ -34,6 +34,7 @@ var RhostClass = map[string][]string{
 	"Spectrum":    []string{"charter.net"},
 	"Tencent":     []string{".qq.com"},
 	"YahooInc":    []string{".yahoodns.net"},
+	"Zoho":        []string{".zoho.com", ".zoho.eu"},
 }
 
 // Name returns the rhost class name.
