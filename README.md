@@ -96,15 +96,15 @@ $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
 $ go get -u libsisimai.org/sisimai/v5@latest
-go: added libsisimai.org/sisimai/v5 v5.3.0
+go: added libsisimai.org/sisimai/v5 v5.5.0
 
 $ cat ./go.mod
 module example.com/sisimaicli
 
-go 1.20
+go 1.25
 
 require (
-	libsisimai.org/sisimai/v5 v5.3.0 // indirect
+	libsisimai.org/sisimai/v5 v5.5.0 // indirect
 )
 ```
 
