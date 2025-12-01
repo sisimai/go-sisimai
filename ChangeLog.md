@@ -33,7 +33,8 @@ v5.5.0
   - #263 Fix bug in `IsEmailAddress()` function of `rfc5322/address.go`.
   - #265 Fix bug: wrong `groupindex` value in `address/find.go`.
   - #279 #28 Check that the input file or MIME decoded part is a binary or not.
-  - #283 #285 #288 Update SMTP error codes and messages in the following `rhost` packages:
+  - #283 #285 #288 #291 Update SMTP error codes and messages in the following `rhost` packages:
+    - `for-apple.go` `inactive email address` indicates `Suspend`
     - `for-facebook.go` Update `AuthFailure` and `MailboxFull`
     - `for-franceptt.go` Update `AuthFailure`, `Blocked`, `Rejected`, and `TooManyConn`
     - `for-godaddy.go` Add `TooManyConn`
