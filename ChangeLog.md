@@ -26,7 +26,7 @@ v5.5.0
   - #202 #243 Detect `Suspend` reason from a auto replied message by `rfc3834/lib.go`.
   - #242 Fixed an issue where auto-reply messages were not decoded by `Rise()` function when the
     `vacation` option was specified.
-  - #242 #247 #248 #250 #251 #255 Fix wrong reason names and Action values.
+  - #247 #248 #250 #251 #255 Fix wrong reason names and Action values.
   - #244 #245 #257 Use constants to define SMTP commands and bounce reason names, and Action values.
   - #249 Message-ID related errors are classified as `NotCompliantRFC`.
   - #261 #262 #264 #273 Code, test and coverage improvements.
