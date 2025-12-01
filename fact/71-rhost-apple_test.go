@@ -16,7 +16,7 @@ func TestRhostApple(t *testing.T) {
 		{{"01",   1, "5.1.6",   "550", "hasmoved",         true, ""}},
 		{{"02",   1, "5.7.1",   "554", "authfailure",     false, ""}},
 		{{"03",   1, "5.2.2",   "552", "mailboxfull",     false, ""}},
-		{{"04",   1, "5.1.1",   "550", "userunknown",      true, ""}},
+		{{"04",   1, "5.1.1",   "550", "suspend",         false, ""}},
 		{{"05",   1, "5.1.1",   "550", "userunknown",      true, ""}},
 	}; EngineTest(t, "Apple", publiclist, true)
 
