@@ -9,7 +9,7 @@ v5.5.0
 - release: ""
 - version: ""
   - #173 Add some SMTP reply codes that uniquely identify a bounce reason at `smtp/reply/lib.go`.
-  - #174 #186 Implement `is_ambiguous()` function at `smtp/status/lib.go`.
+  - #174 #186 Implement `IsAmbiguous()` function at `smtp/status/lib.go`.
   - #185 Sisimai partially supports the media types described in RFC6533 such as `message/global`.
   - #189 #190 Refactor: Remove redundant header normalization code blocks in rfc2045 package.
   - #153 #200 #201 Implement `lhost/via-mimecast.go` for decoding bounce mails from Mimecast.
