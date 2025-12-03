@@ -40,6 +40,7 @@ type Fact struct {
 	Timestamp       time.Time    `json:"timestamp"`      // Unix machine time(int64) of that the email bounced
 	TimezoneOffset  string       `json:"timezoneoffset"` // Time zone offset of "Timestamp", such as "+0900"
 	Token           string       `json:"token"`          // The Message token(MD5 Hex digest value)
+	Toxic           bool         `json:"toxic"`          // (EXPERIMENTAL)
 }
 
 // Fact.MarshalJSON returns a lower-cased member name converted from a field name defined in RFC1894.
