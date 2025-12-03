@@ -11,25 +11,25 @@ v5.5.0
   - #173 Add some SMTP reply codes that uniquely identify a bounce reason at `smtp/reply/lib.go`.
   - #174 #186 Implement `IsAmbiguous()` function at `smtp/status/lib.go`.
   - #185 Sisimai partially supports the media types described in RFC6533 such as `message/global`.
-  - #189 #190 Refactor: Remove redundant header normalization code blocks in rfc2045 package.
-  - #153 #200 #201 Implement `lhost/via-mimecast.go` for decoding bounce mails from Mimecast.
+  - #189 #190 Refactor: Remove redundant header normalization code blocks in `rfc2045` package.
   - #203 #204 Fix the index out of range bug in multipart blocks.
-  - #211 #216 `lhost/via-interscanmss.go` has been renamed to `lhost/via-trendmicro.go`. #233
   - #223 #226 The following MTA modules have been updated for decoding more bounce emails:
+    - #153 #200 `lhost/via-mimecast.go` for decoding bounce mails from Mimecast.
     - #209 #214 `lhost/via-mfilter.go`
+    - #211 #216 `lhost/via-interscanmss.go` has been renamed to `lhost/via-trendmicro.go`. #233
     - #217 #218 `lhost/via-postfix.go`
     - #210 #215 `lhost/via-x1.go`
     - #219 #222 `lhost/via-x2.go`
-  - #229 Add new error message pattern for Spamhaus (Blocked).
+    - #234 #241 `lhost/via-mailmarshalsmtp.go` has been renamed to `via-mailmarshal.go`.
+  - #229 Add new error message pattern for Spamhaus in `reason/why-blocked.go`.
   - #230 #238 Package `sis` has been renamed to `siba`: Sisimai Internal Bounce Abstraction.
-  - #234 #241 MTA module `MailMarshalSMTP` has been renamed to `MailMarshal`.
   - #202 #243 Detect `Suspend` reason from a auto replied message by `rfc3834/lib.go`.
   - #242 Fixed an issue where auto-reply messages were not decoded by `Rise()` function when the
     `vacation` option was specified.
-  - #247 #248 #250 #251 #255 Fix wrong reason names and Action values.
+  - #247 #248 #250 #251 #255 Fix wrong reason names and values of the `Action:` field.
   - #244 #245 #257 Use constants to define SMTP commands and bounce reason names, and Action values.
-  - #249 Message-ID related errors are classified as `NotCompliantRFC`.
-  - #261 #262 #264 #273 Code, test and coverage improvements.
+  - #249 `Message-ID` related errors are classified as `NotCompliantRFC`.
+  - #261 #262 #264 #273 Code, test, and coverages improved.
   - #263 Fix bug in `IsEmailAddress()` function of `rfc5322/address.go`.
   - #265 Fix bug: wrong `groupindex` value in `address/find.go`.
   - #279 #28 Check that the input file or MIME decoded part is a binary or not.
@@ -42,6 +42,7 @@ v5.5.0
     - `for-tencent.go` Add `Speeding`
     - `for-microsoft.go` Implement SMTP error codes described in Outlook Postmaster/Troubleshooting
     - `for-zoho.go` Impelment as a new module
+  - #293 Sisimai can be built with Go 1.25.4.
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------
