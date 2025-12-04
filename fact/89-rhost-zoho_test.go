@@ -11,15 +11,15 @@ import "testing"
 
 func TestRhostZoho(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"02",   1, "5.7.7",   "554", "policyviolation", false, ""}},
-		{{"03",   1, "5.7.1",   "554", "rejected",        false, ""}},
-		{{"04",   1, "5.4.1",   "",    "rejected",        false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"02",   1, "5.7.7",   "554", "policyviolation", false, false, ""}},
+		{{"03",   1, "5.7.1",   "554", "rejected",        false, false, ""}},
+		{{"04",   1, "5.4.1",   "",    "rejected",        false, false, ""}},
 	}; EngineTest(t, "Zoho", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "Zoho", secretlist, false)
 }
 
