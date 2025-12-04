@@ -11,21 +11,21 @@ import "testing"
 
 func TestLhostMimecast(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.4.1",   "",    "userunknown",      true, ""}},
-		{{"02",   1, "5.7.54",  "550", "norelaying",      false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.4.1",   "",    "userunknown",      true,  true, ""}},
+		{{"02",   1, "5.7.54",  "550", "norelaying",      false,  true, ""}},
 	}; EngineTest(t, "Mimecast", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.4.1",   "",    "userunknown",      true, ""}},
-		{{"1002", 1, "4.4.4",   "",    "networkerror",    false, ""}},
-		{{"1003", 1, "5.1.1",   "",    "userunknown",      true, ""}},
-		{{"1004", 1, "5.4.14",  "554", "networkerror",    false, ""}},
-		{{"1005", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1006", 1, "5.7.54",  "550", "norelaying",      false, ""}},
-		{{"1007", 1, "5.7.1",   "550", "blocked",         false, ""}},
-		{{"1008", 1, "5.2.1",   "550", "suspend",         false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.4.1",   "",    "userunknown",      true,  true, ""}},
+		{{"1002", 1, "4.4.4",   "",    "networkerror",    false, false, ""}},
+		{{"1003", 1, "5.1.1",   "",    "userunknown",      true,  true, ""}},
+		{{"1004", 1, "5.4.14",  "554", "networkerror",    false, false, ""}},
+		{{"1005", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1006", 1, "5.7.54",  "550", "norelaying",      false,  true, ""}},
+		{{"1007", 1, "5.7.1",   "550", "blocked",         false, false, ""}},
+		{{"1008", 1, "5.2.1",   "550", "suspend",         false,  true, ""}},
 	}; EngineTest(t, "Mimecast", secretlist, false)
 }
 
