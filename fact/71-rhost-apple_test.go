@@ -12,16 +12,16 @@ import "testing"
 
 func TestRhostApple(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.1.6",   "550", "hasmoved",         true, ""}},
-		{{"02",   1, "5.7.1",   "554", "authfailure",     false, ""}},
-		{{"03",   1, "5.2.2",   "552", "mailboxfull",     false, ""}},
-		{{"04",   1, "5.1.1",   "550", "suspend",         false, ""}},
-		{{"05",   1, "5.1.1",   "550", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.1.6",   "550", "hasmoved",         true,  true, ""}},
+		{{"02",   1, "5.7.1",   "554", "authfailure",     false, false, ""}},
+		{{"03",   1, "5.2.2",   "552", "mailboxfull",     false,  true, ""}},
+		{{"04",   1, "5.1.1",   "550", "suspend",         false,  true, ""}},
+		{{"05",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "Apple", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "Apple", secretlist, false)
 }
 
