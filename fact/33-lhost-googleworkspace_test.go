@@ -12,13 +12,13 @@ import "testing"
 
 func TestLhostGoogleWorkspace(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.918", "",    "rejected",        false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.918", "",    "rejected",        false, false, ""}},
 	}; EngineTest(t, "GoogleWorkspace", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.918", "",    "rejected",        false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.918", "",    "rejected",        false, false, ""}},
 	}; EngineTest(t, "GoogleWorkspace", secretlist, false)
 }
 
