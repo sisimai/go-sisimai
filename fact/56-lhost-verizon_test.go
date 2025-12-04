@@ -11,15 +11,15 @@ import "testing"
 
 func TestLhostVerizon(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"02",   1, "5.0.911", "550", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"02",   1, "5.0.911", "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "Verizon", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"1002", 1, "5.0.911", "550", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1002", 1, "5.0.911", "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "Verizon", secretlist, false)
 }
 
