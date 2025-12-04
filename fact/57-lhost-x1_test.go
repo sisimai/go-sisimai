@@ -12,24 +12,24 @@ import "testing"
 
 func TestLhostX1(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.910", "",    "filtered",        false, ""}},
-		{{"02",   1, "5.0.910", "",    "filtered",        false, ""}},
-		{{"03",   1, "5.0.910", "",    "filtered",        false, ""}},
-		{{"04",   1, "5.0.947", "",    "expired",         false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.910", "",    "filtered",        false, false, ""}},
+		{{"02",   1, "5.0.910", "",    "filtered",        false, false, ""}},
+		{{"03",   1, "5.0.910", "",    "filtered",        false, false, ""}},
+		{{"04",   1, "5.0.947", "",    "expired",         false, false, ""}},
 	}; EngineTest(t, "X1", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.910", "",    "filtered",        false, ""}},
-		{{"1002", 1, "5.0.910", "",    "filtered",        false, ""},
-		 {"1002", 2, "5.0.910", "",    "filtered",        false, ""}},
-		{{"1003", 1, "5.0.910", "",    "filtered",        false, ""}},
-		{{"1004", 1, "5.0.910", "",    "filtered",        false, ""}},
-		{{"1005", 1, "5.0.910", "",    "filtered",        false, ""}},
-		{{"1006", 1, "5.0.910", "",    "filtered",        false, ""}},
-		{{"1007", 1, "5.0.947", "",    "expired",         false, ""}},
-		{{"1008", 1, "5.0.921", "",    "suspend",         false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.910", "",    "filtered",        false, false, ""}},
+		{{"1002", 1, "5.0.910", "",    "filtered",        false, false, ""},
+		 {"1002", 2, "5.0.910", "",    "filtered",        false, false, ""}},
+		{{"1003", 1, "5.0.910", "",    "filtered",        false, false, ""}},
+		{{"1004", 1, "5.0.910", "",    "filtered",        false, false, ""}},
+		{{"1005", 1, "5.0.910", "",    "filtered",        false, false, ""}},
+		{{"1006", 1, "5.0.910", "",    "filtered",        false, false, ""}},
+		{{"1007", 1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"1008", 1, "5.0.921", "",    "suspend",         false,  true, ""}},
 	}; EngineTest(t, "X1", secretlist, false)
 }
 
