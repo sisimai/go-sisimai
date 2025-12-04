@@ -11,14 +11,14 @@ import "testing"
 
 func TestRhostNTTDOCOMO(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.2.0",   "550", "filtered",        false, ""}},
-		{{"02",   1, "5.0.0",   "550", "userunknown",      true, ""}},
-		{{"03",   1, "5.0.0",   "550", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.2.0",   "550", "filtered",        false,  true, ""}},
+		{{"02",   1, "5.0.0",   "550", "userunknown",      true,  true, ""}},
+		{{"03",   1, "5.0.0",   "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "NTTDOCOMO", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "NTTDOCOMO", secretlist, false)
 }
 
