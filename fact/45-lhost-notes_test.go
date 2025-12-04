@@ -11,24 +11,24 @@ import "testing"
 
 func TestLhostNotes(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.901", "",    "onhold",          false, ""}},
-		{{"02",   1, "5.0.901", "",    "onhold",          false, ""}},
-		{{"03",   1, "5.0.911", "",    "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.901", "",    "onhold",          false, false, ""}},
+		{{"02",   1, "5.0.901", "",    "onhold",          false, false, ""}},
+		{{"03",   1, "5.0.911", "",    "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "Notes", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"1002", 1, "5.0.901", "",    "onhold",          false, ""}},
-		{{"1003", 1, "5.0.901", "",    "onhold",          false, ""}},
-		{{"1004", 1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"1005", 1, "5.0.901", "",    "onhold",          false, ""}},
-		{{"1006", 1, "5.0.901", "",    "onhold",          false, ""}},
-		{{"1007", 1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"1008", 1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"1009", 1, "5.0.911", "",    "userunknown",      true, ""}},
-		{{"1010", 1, "5.0.944", "",    "networkerror",    false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1002", 1, "5.0.901", "",    "onhold",          false, false, ""}},
+		{{"1003", 1, "5.0.901", "",    "onhold",          false, false, ""}},
+		{{"1004", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1005", 1, "5.0.901", "",    "onhold",          false, false, ""}},
+		{{"1006", 1, "5.0.901", "",    "onhold",          false, false, ""}},
+		{{"1007", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1008", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1009", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1010", 1, "5.0.944", "",    "networkerror",    false, false, ""}},
 	}; EngineTest(t, "Notes", secretlist, false)
 }
 
