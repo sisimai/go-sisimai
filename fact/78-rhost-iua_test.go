@@ -11,12 +11,12 @@ import "testing"
 
 func TestRhostIUA(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.0",   "550", "suspend",         false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.0",   "550", "suspend",         false,  true, ""}},
 	}; EngineTest(t, "IUA", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "IUA", secretlist, false)
 }
 
