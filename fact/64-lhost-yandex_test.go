@@ -12,18 +12,18 @@ import "testing"
 
 func TestLhostYandex(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"02",   1, "5.2.1",   "550", "userunknown",      true, ""},
-		 {"02",   2, "5.2.2",   "550", "mailboxfull",     false, ""}},
-		{{"03",   1, "4.4.1",   "",    "expired",         false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"02",   1, "5.2.1",   "550", "userunknown",      true,  true, ""},
+		 {"02",   2, "5.2.2",   "550", "mailboxfull",     false,  true, ""}},
+		{{"03",   1, "4.4.1",   "",    "expired",         false, false, ""}},
 	}; EngineTest(t, "Yandex", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1002", 1, "5.2.1",   "550", "userunknown",      true, ""},
-		 {"1002", 2, "5.2.2",   "550", "mailboxfull",     false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1002", 1, "5.2.1",   "550", "userunknown",      true,  true, ""},
+		 {"1002", 2, "5.2.2",   "550", "mailboxfull",     false,  true, ""}},
 	}; EngineTest(t, "Yandex", secretlist, false)
 }
 
