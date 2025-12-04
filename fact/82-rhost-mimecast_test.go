@@ -11,13 +11,13 @@ import "testing"
 
 func TestRhostMimecast(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.0",   "554", "policyviolation", false, ""}},
-		{{"02",   1, "5.0.0",   "554", "spamdetected",    false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.0",   "554", "policyviolation", false, false, ""}},
+		{{"02",   1, "5.0.0",   "554", "spamdetected",    false, false, ""}},
 	}; EngineTest(t, "Mimecast", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "Mimecast", secretlist, false)
 }
 
