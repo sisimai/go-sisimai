@@ -12,25 +12,25 @@ import "testing"
 
 func TestLhostMcAfee(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.910", "550", "filtered",        false, ""}},
-		{{"02",   1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"03",   1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"04",   1, "5.0.910", "550", "filtered",        false, ""}},
-		{{"05",   1, "5.0.910", "550", "filtered",        false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"02",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"03",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"04",   1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"05",   1, "5.0.910", "550", "filtered",        false,  true, ""}},
 	}; EngineTest(t, "McAfee", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.911", "550", "userunknown",      true, ""}},
-		{{"1002", 1, "5.0.910", "550", "filtered",        false, ""}},
-		{{"1003", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1004", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1005", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1006", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1007", 1, "5.0.911", "550", "userunknown",      true, ""}},
-		{{"1008", 1, "5.0.910", "550", "filtered",        false, ""}},
-		{{"1009", 1, "5.0.910", "550", "filtered",        false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.911", "550", "userunknown",      true,  true, ""}},
+		{{"1002", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1003", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1004", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1005", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1006", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1007", 1, "5.0.911", "550", "userunknown",      true,  true, ""}},
+		{{"1008", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1009", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
 	}; EngineTest(t, "McAfee", secretlist, false)
 }
 
