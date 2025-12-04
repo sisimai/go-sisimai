@@ -11,14 +11,14 @@ import "testing"
 
 func TestRhostYahooInc(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.7.9",   "554", "policyviolation", false, ""}},
-		{{"02",   1, "4.7.0",   "421", "rejected",        false, ""}},
-		{{"03",   1, "5.0.0",   "554", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.7.9",   "554", "policyviolation", false, false, ""}},
+		{{"02",   1, "4.7.0",   "421", "rejected",        false, false, ""}},
+		{{"03",   1, "5.0.0",   "554", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "YahooInc", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "YahooInc", secretlist, false)
 }
 
