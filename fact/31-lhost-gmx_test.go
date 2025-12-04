@@ -11,21 +11,21 @@ import "testing"
 
 func TestLhostGMX(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01", 1, "5.2.2",   "",    "mailboxfull",     false, ""}},
-		{{"02", 1, "5.1.1",   "",    "userunknown",      true, ""}},
-		{{"03", 1, "5.2.1",   "",    "userunknown",      true, ""},
-		 {"03", 2, "5.2.2",   "",    "mailboxfull",     false, ""}},
-		{{"04", 1, "5.0.947", "",    "expired",         false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01", 1, "5.2.2",   "",    "mailboxfull",     false,  true, ""}},
+		{{"02", 1, "5.1.1",   "",    "userunknown",      true,  true, ""}},
+		{{"03", 1, "5.2.1",   "",    "userunknown",      true,  true, ""},
+		 {"03", 2, "5.2.2",   "",    "mailboxfull",     false,  true, ""}},
+		{{"04", 1, "5.0.947", "",    "expired",         false, false, ""}},
 	}; EngineTest(t, "GMX", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.947", "",    "expired",         false, ""}},
-		{{"1002", 1, "5.1.1",   "",    "userunknown",      true, ""}},
-		{{"1003", 1, "5.2.2",   "",    "mailboxfull",     false, ""}},
-		{{"1004", 1, "5.2.1",   "",    "userunknown",      true, ""},
-		 {"1004", 2, "5.2.2",   "",    "mailboxfull",     false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"1002", 1, "5.1.1",   "",    "userunknown",      true,  true, ""}},
+		{{"1003", 1, "5.2.2",   "",    "mailboxfull",     false,  true, ""}},
+		{{"1004", 1, "5.2.1",   "",    "userunknown",      true,  true, ""},
+		 {"1004", 2, "5.2.2",   "",    "mailboxfull",     false,  true, ""}},
 	}; EngineTest(t, "GMX", secretlist, false)
 }
 
