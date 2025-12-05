@@ -6,8 +6,8 @@ RELEASE NOTES for the Go version of Sisimai
 
 v5.5.0
 ---------------------------------------------------------------------------------------------------
-- release: ""
-- version: ""
+- release: "Fri,  5 Dec 2025 17:25:22 +0900 (JST)"
+- version: "5.5.0"
   - #173 Add some SMTP reply codes that uniquely identify a bounce reason at `smtp/reply/lib.go`.
   - #174 #186 Implement `IsAmbiguous()` function at `smtp/status/lib.go`.
   - #185 Sisimai partially supports the media types described in RFC6533 such as `message/global`.
