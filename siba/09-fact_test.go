@@ -79,6 +79,7 @@ func TestIsToxic(t *testing.T) {
 		Fact{DeliveryStatus: "5.0.0", ReplyCode: "550", Reason: eb.Re___0, Command: eb.CeCONN},
 		Fact{DeliveryStatus: "4.0.0", ReplyCode: "421", Reason: eb.Re___1, Command: eb.CeCONN},
 		Fact{DeliveryStatus: "4.2.2", ReplyCode: "450", Reason: eb.ReFULL, Command: eb.CeRCPT},
+		Fact{DeliveryStatus: "5.0.999", ReplyCode: "",  Reason: eb.ReRELA, Command: eb.CeMAIL},
 		Fact{DeliveryStatus: "", ReplyCode: "", Reason: eb.ReFEED, Command: "", FeedbackType: "auth-failure"},
 	}
 	cv := []Fact{
@@ -91,6 +92,7 @@ func TestIsToxic(t *testing.T) {
 		Fact{DeliveryStatus: "5.1.2", ReplyCode: "501", Reason: eb.ReFILT, Command: eb.CeRCPT},
 		Fact{DeliveryStatus: "5.2.2", ReplyCode: "552", Reason: eb.ReFULL, Command: eb.CeRCPT},
 		Fact{DeliveryStatus: "5.7.3", ReplyCode: "550", Reason: eb.ReRELA, Command: eb.CeRCPT},
+		Fact{DeliveryStatus: "5.7.4", ReplyCode: "",    Reason: eb.ReRELA, Command: eb.CeMAIL},
 		Fact{DeliveryStatus: "", ReplyCode: "", Reason: eb.ReFEED, Command: "", FeedbackType: "abuse"},
 	}
 
