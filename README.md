@@ -47,14 +47,14 @@ and the recipient email address, in structured data. It is also possible to outp
 The key features of Sisimai
 ---------------------------------------------------------------------------------------------------
 * __Decode email bounces to structured data__
-  * Sisimai provides detailed insights into bounce emails by extracting 26 key data points.[^1]
+  * Sisimai provides detailed insights into bounce emails by extracting 27 key data points.[^1]
     * __Essential information__: `Timestamp`, `Origin`
     * __Sender information__: `Addresser`, `SenderDomain`, 
     * __Recipient information__: `Recipient`, `Destination`, `Alias`
     * __Delivery information__: `Action`, `ReplyCode`, `DeliveryStatus`, `Command`
     * __Bounce details__: `Reason`, `DiagnosticCode`, `DiagnosticType`, `FeedbackType`, `FeedbackID`, `HardBounce`
     * __Message details__: `Subject`, `MessageID`, `ListID`,
-    * __Additional information__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`
+    * __Additional information__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`, `Toxic`
   * Output formats
     * struct ([sisimai/siba.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/siba/fact.go))
     * JSON (by using [`encoding/json`](https://pkg.go.dev/encoding/json))
@@ -171,7 +171,8 @@ $ ./sisid ./path/to/bounce-mail.eml | jq
   "senderdomain": "google.example.com",
   "subject": "Nyaan",
   "timezoneoffset": "+0900",
-  "token": "5253e9da9dd67573851b057a89cbcf41293e99bf"
+  "token": "5253e9da9dd67573851b057a89cbcf41293e99bf",
+  "toxic": false
 }
 ```
 
@@ -370,7 +371,8 @@ Output example
     "senderdomain": "google.example.com",
     "subject": "Nyaan",
     "timezoneoffset": "+0900",
-    "token": "5253e9da9dd67573851b057a89cbcf41293e99bf"
+    "token": "5253e9da9dd67573851b057a89cbcf41293e99bf",
+    "toxic": false
   }
 ]
 ```
@@ -388,8 +390,8 @@ Features
 | System requirements                          | 1.24 -         | 5.26 -          | 2.4 - / 9.2 - |
 | Dependencies (Except standard libs)          | **0 packages** | 2 modules       | 1 gem         |
 | Supported character sets                     | **UTF-8 only** | UTF-8,etc. [^2] | UTF-8,etc.[^3]|
-| Source lines of code                         | 9,100 lines    | 9,900 lines     | 9,900 lines   |
-| The number of tests                          | 253,000 tests  | 330,000 tests   | 234,000 tests |
+| Source lines of code                         | 9,200 lines    | 9,990 lines     | 9,970 lines   |
+| The number of tests                          | 255,000 tests  | 340,000 tests   | 240,000 tests |
 | The number of bounce emails decoded/sec [^4] | 2900 emails    | 750 emails      | 620 emails    |
 | License                                      | 2 Clause BSD   | 2 Clause BSD    | 2 Clause BSD  |
 | Commercial support                           | Available      | Available       | Available     |

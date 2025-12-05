@@ -44,6 +44,7 @@ v5.5.0
     - `for-zoho.go` Impelment as a new module
   - #293 Sisimai can be built with Go 1.25.4.
   - #296 Some error message patterns in `PolicyViolation` have been moved to `Rejected`.
+  - #299 EXPERIMENTAL: Implement `Toxic` field in the decoded results.
 
 v5.4.1
 ---------------------------------------------------------------------------------------------------

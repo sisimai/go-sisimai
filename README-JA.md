@@ -44,14 +44,14 @@ Sisimai(シシマイ)は複雑で多種多様なバウンスメールを解析�
 The key features of Sisimai
 ---------------------------------------------------------------------------------------------------
 * __バウンスメールを構造化したデータに変換__
-  * 以下26項目の情報を含むデータ構造[^1]
+  * 以下27項目の情報を含むデータ構造[^1]
     * __基本的情報__: `Timestamp`, `Origin`
     * __発信者情報__: `Addresser`, `SenderDomain`, 
     * __受信者情報__: `Recipient`, `Destination`, `Alias`
     * __配信の情報__: `Action`, `ReplyCode`, `DeliveryStatus`, `Command`
     * __エラー情報__: `Reason`, `DiagnosticCode`, `DiagnosticType`, `FeedbackType`, `FeedbacID`, `HardBounce`
     * __メール情報__: `Subject`, `MessageID`, `ListID`,
-    * __その他情報__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`
+    * __その他情報__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`, `Toxic`
   * __出力可能な形式__
     * struct ([sisimai/siba.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/siba/fact.go))
     * JSON ([`encoding/json`](https://pkg.go.dev/encoding/json)を使用)
@@ -165,7 +165,8 @@ $ ./sisid ./path/to/bounce-mail.eml | jq
   "senderdomain": "google.example.com",
   "subject": "Nyaan",
   "timezoneoffset": "+0900",
-  "token": "5253e9da9dd67573851b057a89cbcf41293e99bf"
+  "token": "5253e9da9dd67573851b057a89cbcf41293e99bf",
+  "toxic": false
 }
 ```
 
@@ -359,7 +360,8 @@ Output example
     "senderdomain": "google.example.com",
     "subject": "Nyaan",
     "timezoneoffset": "+0900",
-    "token": "5253e9da9dd67573851b057a89cbcf41293e99bf"
+    "token": "5253e9da9dd67573851b057a89cbcf41293e99bf",
+    "toxic": false
   }
 ]
 ```
@@ -377,8 +379,8 @@ Features
 | 動作環境                                | 1.24 -          | 5.26 -            | 2.4 - / 9.2 -   |
 | 依存モジュール数(標準パッケージを除く)  | **0**           | 2 モジュール      | 1 gem           |
 | 対応している文字コード                  | **UTF-8のみ**   | UTF-8と他[^2]     | UTF-8と他[^3]   |
-| ソースコードの行数                      | 9,100 行        | 9,900 行          | 9,900 行        |
-| テスト件数                              | 253,000 件      | 330,000 件        | 234,000 件      |
+| ソースコードの行数                      | 9,200 行        | 9,990 行          | 9,970 行        |
+| テスト件数                              | 255,000 件      | 340,000 件        | 240,000 件      |
 | 1秒間に解析できるバウンスメール数[^4]   | 2900 通         | 750 通            | 620 通          |
 | ライセンス                              | 二条項BSD       | 二条項BSD         | 二条項BSD       |
 | 開発会社による商用サポート              | 提供中          | 提供中            | 提供中          |
