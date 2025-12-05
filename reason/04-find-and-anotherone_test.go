@@ -8,13 +8,29 @@ package reason
 //   | |  __/\__ \ |_ / /| | |  __/ (_| \__ \ (_) | | | |
 //   |_|\___||___/\__/_/ |_|  \___|\__,_|___/\___/|_| |_|
 import "testing"
+import "libsisimai.org/sisimai/v5/eb"
+import "libsisimai.org/sisimai/v5/siba"
 
 func TestFind(t *testing.T) {
 	fn := "reason.Find"
 	cx := 0
-	cv := Find(nil)
+	cw := []siba.Fact{
+		siba.Fact{},
+		siba.Fact{Reason: eb.Re___0},
+		siba.Fact{Reason: eb.ReUSER},
+		siba.Fact{DeliveryStatus: "2.2.2", ReplyCode: "250"},
 
-	cx++; if cv != "" { t.Errorf("%s(nil) returns %s", fn, cv) }
+		// MailboxFull
+		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReFULL},
+		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "4.2.2"},
+		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Full Mailbox"},
+	}
+
+	for j, e := range cw {
+		cx++; if cr := Find(&e); cr == "" { t.Errorf("%s(%d) returns %s", fn, j, cr) }
+	}
+	cx++; if cr := Find(nil); cr != "" { t.Errorf("%s(nil) returns %s", fn, cr) }
+
 	t.Logf("The number of tests = %d", cx)
 }
 
