@@ -71,3 +71,40 @@ func TestFact(t *testing.T) {
 	t.Logf("The number of tests = %d", cx)
 }
 
+func TestIsToxic(t *testing.T) {
+	fn := "IsToxic"
+	cx := 0
+	cw := []Fact{
+		Fact{},
+		Fact{DeliveryStatus: "5.0.0", ReplyCode: "550", Reason: eb.Re___0, Command: eb.CeCONN},
+		Fact{DeliveryStatus: "4.0.0", ReplyCode: "421", Reason: eb.Re___1, Command: eb.CeCONN},
+		Fact{DeliveryStatus: "4.2.2", ReplyCode: "450", Reason: eb.ReFULL, Command: eb.CeRCPT},
+		Fact{DeliveryStatus: "5.0.999", ReplyCode: "",  Reason: eb.ReRELA, Command: eb.CeMAIL},
+		Fact{DeliveryStatus: "", ReplyCode: "", Reason: eb.ReFEED, Command: "", FeedbackType: "auth-failure"},
+	}
+	cv := []Fact{
+		Fact{DeliveryStatus: "5.1.0", ReplyCode: "550", Reason: eb.ReHOST, Command: eb.CeCONN},
+		Fact{DeliveryStatus: "5.1.1", ReplyCode: "550", Reason: eb.ReUSER, Command: eb.CeRCPT},
+		Fact{DeliveryStatus: "5.1.6", ReplyCode: "556", Reason: eb.ReMOVE, Command: eb.CeRCPT},
+		Fact{DeliveryStatus: "5.0.1", ReplyCode: "500", Reason: eb.Re00MX, Command: eb.CeCONN},
+		Fact{DeliveryStatus: "5.7.0", ReplyCode: "550", Reason: eb.ReQUIT, Command: eb.CeDATA},
+		Fact{DeliveryStatus: "5.7.1", ReplyCode: "550", Reason: eb.ReSUPP, Command: eb.CeCONN},
+		Fact{DeliveryStatus: "5.1.2", ReplyCode: "501", Reason: eb.ReFILT, Command: eb.CeRCPT},
+		Fact{DeliveryStatus: "5.2.2", ReplyCode: "552", Reason: eb.ReFULL, Command: eb.CeRCPT},
+		Fact{DeliveryStatus: "5.7.3", ReplyCode: "550", Reason: eb.ReRELA, Command: eb.CeRCPT},
+		Fact{DeliveryStatus: "5.7.4", ReplyCode: "",    Reason: eb.ReRELA, Command: eb.CeMAIL},
+		Fact{DeliveryStatus: "", ReplyCode: "", Reason: eb.ReFEED, Command: "", FeedbackType: "abuse"},
+	}
+
+	for _, e := range cw {
+		cx++; if e.IsToxic() == true  { t.Errorf("%s(%s) returns true",  fn, e.DeliveryStatus) }
+	}
+	for _, e := range cv {
+		cx++; if e.IsToxic() == false { t.Errorf("%s(%s) returns false", fn, e.DeliveryStatus) }
+	}
+	t.Logf("The number of tests = %d", cx)
+}
+
+
+
+
