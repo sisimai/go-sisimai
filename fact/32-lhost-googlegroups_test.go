@@ -12,39 +12,39 @@ import "testing"
 
 func TestLhostGoogleGroups(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"02",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"03",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"04",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"05",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"06",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"07",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"08",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"09",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"10",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"11",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"12",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"13",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"14",   1, "5.0.918", "",    "rejected",        false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"02",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"03",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"04",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"05",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"06",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"07",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"08",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"09",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"10",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"11",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"12",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"13",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"14",   1, "5.0.918", "",    "rejected",        false, false, ""}},
 	}; EngineTest(t, "GoogleGroups", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1002", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1003", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1004", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1005", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1006", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1007", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1008", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1009", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1010", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1011", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1012", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1013", 1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"1014", 1, "5.0.918", "",    "rejected",        false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1002", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1003", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1004", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1005", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1006", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1007", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1008", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1009", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1010", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1011", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1012", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1013", 1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"1014", 1, "5.0.918", "",    "rejected",        false, false, ""}},
 	}; EngineTest(t, "GoogleGroups", secretlist, false)
 }
 

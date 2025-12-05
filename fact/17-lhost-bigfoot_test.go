@@ -12,14 +12,14 @@ import "testing"
 
 func TestLhostBigfoot(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"02",   1, "5.7.1",   "553", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"02",   1, "5.7.1",   "553", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "Bigfoot", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.0",   "554", "spamdetected",    false, ""}},
-		{{"1002", 1, "5.7.1",   "553", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.0",   "554", "spamdetected",    false, false, ""}},
+		{{"1002", 1, "5.7.1",   "553", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "Bigfoot", secretlist, false)
 }
 

@@ -11,13 +11,13 @@ import "testing"
 
 func TestRhostKDDI(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.2.0",   "550", "filtered",        false, ""}},
-		{{"02",   1, "5.1.1",   "550", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.2.0",   "550", "filtered",        false,  true, ""}},
+		{{"02",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "KDDI", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "KDDI", secretlist, false)
 }
 

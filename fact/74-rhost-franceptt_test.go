@@ -11,22 +11,22 @@ import "testing"
 
 func TestRhostFrancePTT(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"02",   1, "5.5.0",   "550", "userunknown",      true, ""}},
-		{{"03",   1, "5.2.0",   "550", "spamdetected",    false, ""}},
-		{{"04",   1, "5.2.0",   "550", "spamdetected",    false, ""}},
-		{{"05",   1, "5.5.0",   "550", "suspend",         false, ""}},
-		{{"06",   1, "4.0.0",   "",    "blocked",         false, ""}},
-		{{"07",   1, "4.0.0",   "421", "toomanyconn",     false, ""}},
-		{{"08",   1, "4.2.0",   "421", "systemerror",     false, ""}},
-		{{"10",   1, "5.5.0",   "550", "blocked",         false, ""}},
-		{{"11",   1, "4.2.1",   "421", "requireptr",      false, ""}},
-		{{"12",   1, "5.7.1",   "554", "policyviolation", false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"02",   1, "5.5.0",   "550", "userunknown",      true,  true, ""}},
+		{{"03",   1, "5.2.0",   "550", "spamdetected",    false, false, ""}},
+		{{"04",   1, "5.2.0",   "550", "spamdetected",    false, false, ""}},
+		{{"05",   1, "5.5.0",   "550", "suspend",         false,  true, ""}},
+		{{"06",   1, "4.0.0",   "",    "blocked",         false, false, ""}},
+		{{"07",   1, "4.0.0",   "421", "toomanyconn",     false, false, ""}},
+		{{"08",   1, "4.2.0",   "421", "systemerror",     false, false, ""}},
+		{{"10",   1, "5.5.0",   "550", "blocked",         false, false, ""}},
+		{{"11",   1, "4.2.1",   "421", "requireptr",      false, false, ""}},
+		{{"12",   1, "5.7.1",   "554", "policyviolation", false, false, ""}},
 	}; EngineTest(t, "FrancePTT", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "FrancePTT", secretlist, false)
 }
 

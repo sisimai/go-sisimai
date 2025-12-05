@@ -11,13 +11,13 @@ import "testing"
 
 func TestRhostCox(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.1.0",   "550", "blocked",         false, ""},
-		 {"01",   2, "5.1.0",   "550", "blocked",         false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.1.0",   "550", "blocked",         false, false, ""},
+		 {"01",   2, "5.1.0",   "550", "blocked",         false, false, ""}},
 	}; EngineTest(t, "Cox", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "Cox", secretlist, false)
 }
 

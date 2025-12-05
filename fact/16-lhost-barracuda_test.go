@@ -12,14 +12,14 @@ import "testing"
 func TestLhostBarracuda(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.7.1",   "550", "spamdetected",    false, ""}},
-		{{"02",   1, "5.7.1",   "550", "spamdetected",    false, ""}},
+		{{"01",   1, "5.7.1",   "550", "spamdetected",    false,  false, ""}},
+		{{"02",   1, "5.7.1",   "550", "spamdetected",    false,  false, ""}},
 	}; EngineTest(t, "Barracuda", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001" ,1, "5.7.1",   "550", "spamdetected",    false, ""}},
-		{{"1002" ,1, "5.7.1",   "550", "spamdetected",    false, ""}},
+		{{"1001" ,1, "5.7.1",   "550", "spamdetected",    false, false, ""}},
+		{{"1002" ,1, "5.7.1",   "550", "spamdetected",    false, false, ""}},
 	}; EngineTest(t, "Barracuda", secretlist, false)
 }
 

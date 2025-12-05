@@ -32,6 +32,7 @@ type DeliveryMatter struct {
 	Rhost        string     // The value of Remote-MTA header
 	Spec         string     // Protocl specification
 	Status       string     // The value of Status header
+	Toxic        bool       // EXPERIMENTAL
 }
 
 // TailDeliveryMatter returns the last element pointer of DeliveryMatter struct.

@@ -12,14 +12,14 @@ import "testing"
 
 func TestLhostFacebook(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "Facebook", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1002", 1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"1003", 1, "5.1.1",   "550", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1002", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1003", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "Facebook", secretlist, false)
 }
 

@@ -11,25 +11,25 @@ import "testing"
 
 func TestRhostGSuite(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.1.0",   "550", "userunknown",      true, ""}},
-		{{"02",   1, "5.0.0",   "",    "userunknown",      true, ""}},
-		{{"03",   1, "4.0.0",   "",    "notaccept",       false, ""}},
-		{{"04",   1, "4.0.0",   "",    "networkerror",    false, ""}},
-		{{"05",   1, "4.0.0",   "",    "networkerror",    false, ""}},
-		{{"06",   1, "4.4.1",   "",    "expired",         false, ""}},
-		{{"07",   1, "4.4.1",   "",    "expired",         false, ""}},
-		{{"08",   1, "5.0.0",   "550", "filtered",        false, ""}},
-		{{"09",   1, "5.0.0",   "550", "userunknown",      true, ""}},
-		{{"10",   1, "4.0.0",   "",    "notaccept",       false, ""}},
-		{{"11",   1, "5.1.8",   "501", "rejected",        false, ""}},
-		{{"12",   1, "5.0.0",   "",    "spamdetected",    false, ""}},
-		{{"13",   1, "4.0.0",   "",    "networkerror",    false, ""}},
-		{{"14",   1, "5.1.1",   "550", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.1.0",   "550", "userunknown",      true,  true, ""}},
+		{{"02",   1, "5.0.0",   "",    "userunknown",      true,  true, ""}},
+		{{"03",   1, "4.0.0",   "",    "notaccept",       false, false, ""}},
+		{{"04",   1, "4.0.0",   "",    "networkerror",    false, false, ""}},
+		{{"05",   1, "4.0.0",   "",    "networkerror",    false, false, ""}},
+		{{"06",   1, "4.4.1",   "",    "expired",         false, false, ""}},
+		{{"07",   1, "4.4.1",   "",    "expired",         false, false, ""}},
+		{{"08",   1, "5.0.0",   "550", "filtered",        false,  true, ""}},
+		{{"09",   1, "5.0.0",   "550", "userunknown",      true,  true, ""}},
+		{{"10",   1, "4.0.0",   "",    "notaccept",       false, false, ""}},
+		{{"11",   1, "5.1.8",   "501", "rejected",        false, false, ""}},
+		{{"12",   1, "5.0.0",   "",    "spamdetected",    false, false, ""}},
+		{{"13",   1, "4.0.0",   "",    "networkerror",    false, false, ""}},
+		{{"14",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "GSuite", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "GSuite", secretlist, false)
 }
 

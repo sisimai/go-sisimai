@@ -11,15 +11,15 @@ import "testing"
 
 func TestLhostFML(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"02",   1, "5.0.918", "",    "rejected",        false, ""}},
-		{{"03",   1, "5.0.974", "",    "notcompliantrfc", false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"02",   1, "5.0.918", "",    "rejected",        false, false, ""}},
+		{{"03",   1, "5.0.974", "",    "notcompliantrfc", false, false, ""}},
 	}; EngineTest(t, "FML", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.974", "",    "notcompliantrfc", false, ""}},
-		{{"1002", 1, "5.0.918", "",    "rejected",        false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.974", "",    "notcompliantrfc", false, false, ""}},
+		{{"1002", 1, "5.0.918", "",    "rejected",        false, false, ""}},
 	}; EngineTest(t, "FML", secretlist, false)
 }
 

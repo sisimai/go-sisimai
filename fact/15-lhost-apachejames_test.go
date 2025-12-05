@@ -11,17 +11,17 @@ import "testing"
 
 func TestLhostApacheJames(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.910", "550", "filtered",        false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.910", "550", "filtered",        false,  true, ""}},
 	}; EngineTest(t, "ApacheJames", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.910", "550", "filtered",        false, ""}},
-		{{"1002", 1, "5.0.910", "550", "filtered",        false, ""}},
-		{{"1003", 1, "5.0.910", "550", "filtered",        false, ""}},
-		{{"1004", 1, "5.0.901", "",    "onhold",          false, ""}},
-		{{"1005", 1, "5.0.901", "",    "onhold",          false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1002", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1003", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1004", 1, "5.0.901", "",    "onhold",          false, false, ""}},
+		{{"1005", 1, "5.0.901", "",    "onhold",          false, false, ""}},
 	}; EngineTest(t, "ApacheJames", secretlist, false)
 }
 

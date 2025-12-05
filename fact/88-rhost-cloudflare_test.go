@@ -11,12 +11,12 @@ import "testing"
 
 func TestRhostCloudflare(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "4.3.0",   "421", "systemerror",     false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "4.3.0",   "421", "systemerror",     false, false, ""}},
 	}; EngineTest(t, "Cloudflare", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "Cloudflare", secretlist, false)
 }
 

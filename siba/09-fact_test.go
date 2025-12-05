@@ -26,22 +26,25 @@ func TestFact(t *testing.T) {
 		FeedbackType: "",
 		HardBounce: true,
 		Lhost: "localhost",
-		Reason: "userunknown",
+		Reason: eb.ReUSER,
 		Rhost: "",
 		Recipient: EmailAddress{Address: "cat@example.org"},
 		ReplyCode: "550",
 		Command: eb.CeQUIT,
 		SenderDomain: "example.jp",
 		Token: "",
+		Toxic: true,
 	}
 
-	cx++; if cv == nil           { t.Fatalf("%s{} = nil", cc) }
-	cx++; if cv.Action    == ""  { t.Errorf("%s.Action is empty", cc) }
-	cx++; if cv.Alias     == ""  { t.Errorf("%s.Alias is empty", cc) }
-	cx++; if cv.DecodedBy == ""  { t.Errorf("%s.DecodedBy is empty", cc) }
-	cx++; if cv.Lhost     == ""  { t.Errorf("%s.Lhost is empty", cc) }
-	cx++; if cv.Reason    == ""  { t.Errorf("%s.Reason is empty", cc) }
-	cx++; if cv.Command   == ""  { t.Errorf("%s.Command is empty", cc) }
+	cx++; if cv == nil             { t.Fatalf("%s{} = nil", cc) }
+	cx++; if cv.Action    == ""    { t.Errorf("%s.Action is empty", cc) }
+	cx++; if cv.Alias     == ""    { t.Errorf("%s.Alias is empty", cc) }
+	cx++; if cv.DecodedBy == ""    { t.Errorf("%s.DecodedBy is empty", cc) }
+	cx++; if cv.Lhost     == ""    { t.Errorf("%s.Lhost is empty", cc) }
+	cx++; if cv.Reason    == ""    { t.Errorf("%s.Reason is empty", cc) }
+	cx++; if cv.Command   == ""    { t.Errorf("%s.Command is empty", cc) }
+	cx++; if cv.Toxic     == false { t.Errorf("%s.Toxic is false", cc) }
+	cx++; if cv.IsToxic() == false { t.Errorf("%s.IsToxic() returns false", cc) }
 
 	if cv != nil {
 		dj, de := cv.MarshalJSON()
@@ -55,6 +58,8 @@ func TestFact(t *testing.T) {
 
 	cv  = &Fact{}
 	if cv != nil {
+		cx++; if cv.IsToxic() == true { t.Errorf("%s.IsToxic() returns true", cc) }
+
 		dj, de := cv.MarshalJSON()
 		cx++; if string(dj) == ""    { t.Errorf("%s.MarshalJSON() returns empty", cc) }
 		cx++; if de         != nil   { t.Errorf("%s.MarshalJSON() returns error: %s", cc, de) }
@@ -62,7 +67,6 @@ func TestFact(t *testing.T) {
 		dx, de := cv.Dump()
 		cx++; if dx == ""  { t.Errorf("%s.Dump() returns empty", cc) }
 		cx++; if de != nil { t.Errorf("%s.Dump() returns error: %s", cc, de) }
-
 	}
 	t.Logf("The number of tests = %d", cx)
 }

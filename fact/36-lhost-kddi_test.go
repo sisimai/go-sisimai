@@ -11,17 +11,17 @@ import "testing"
 
 func TestLhostKDDI(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.922", "",    "mailboxfull",     false, ""}},
-		{{"02",   1, "5.0.922", "",    "mailboxfull",     false, ""}},
-		{{"03",   1, "5.0.922", "",    "mailboxfull",     false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
+		{{"02",   1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
+		{{"03",   1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
 	}; EngineTest(t, "KDDI", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.922", "",    "mailboxfull",     false, ""}},
-		{{"1002", 1, "5.0.922", "",    "mailboxfull",     false, ""}},
-		{{"1003", 1, "5.0.922", "",    "mailboxfull",     false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
+		{{"1002", 1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
+		{{"1003", 1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
 	}; EngineTest(t, "KDDI", secretlist, false)
 }
 

@@ -11,15 +11,15 @@ import "testing"
 
 func TestLhostMailMarshal(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"02",   1, "5.1.1",   "550", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"02",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "MailMarshal", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.3.0",   "553", "filtered",        false, ""},
-		 {"1001", 2, "5.3.0",   "553", "filtered",        false, ""}},
-		{{"1002", 1, "5.1.1",   "550", "userunknown",      true, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.3.0",   "553", "filtered",        false,  true, ""},
+		 {"1001", 2, "5.3.0",   "553", "filtered",        false,  true, ""}},
+		{{"1002", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "MailMarshal", secretlist, false)
 }
 

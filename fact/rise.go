@@ -286,6 +286,7 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 			thing.Timestamp      = clock
 			thing.TimezoneOffset = clock.Format("+0900")
 			thing.Token          = moji.Token(as.Address, ar.Address, int(thing.Timestamp.Unix()))
+			thing.Toxic          = e.Toxic
 		}
 
 		ALIAS: for thing.Recipient.Address == thing.Alias {
@@ -385,6 +386,9 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 
 		// Feedback-ID: 1.us-west-2.QHuyeCQrGtIIMGKQfVdUhP9hCQR2LglVOrRamBc+Prk=:AmazonSES
 		if len(rfc822data["feedback-id"]) > 0 { thing.FeedbackID = rfc822data["feedback-id"][0] }
+
+		// EXPERIMENTAL:
+		if thing.Toxic == false { thing.Toxic = thing.IsToxic() }
 
 		// Convert the value of Reason to the lower-cased name such as "mailboxfull".
 		thing.Reason = strings.ToLower(thing.Reason)

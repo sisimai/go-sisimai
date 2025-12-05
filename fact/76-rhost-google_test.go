@@ -12,19 +12,19 @@ import "testing"
 
 func TestRhostGoogle(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.2.1",   "550", "suspend",         false, ""}},
-		{{"02",   1, "5.1.1",   "550", "userunknown",      true, ""}},
-		{{"03",   1, "5.7.26",  "550", "authfailure",     false, ""}},
-		{{"04",   1, "5.7.26",  "550", "authfailure",     false, ""}},
-		{{"05",   1, "5.2.2",   "552", "mailboxfull",     false, ""}},
-		{{"06",   1, "5.7.25",  "550", "requireptr",      false, ""}},
-		{{"07",   1, "5.2.1",   "550", "suspend",         false, ""}},
-		{{"08",   1, "5.7.1",   "550", "notcompliantrfc", false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.2.1",   "550", "suspend",         false,  true, ""}},
+		{{"02",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"03",   1, "5.7.26",  "550", "authfailure",     false, false, ""}},
+		{{"04",   1, "5.7.26",  "550", "authfailure",     false, false, ""}},
+		{{"05",   1, "5.2.2",   "552", "mailboxfull",     false,  true, ""}},
+		{{"06",   1, "5.7.25",  "550", "requireptr",      false, false, ""}},
+		{{"07",   1, "5.2.1",   "550", "suspend",         false,  true, ""}},
+		{{"08",   1, "5.7.1",   "550", "notcompliantrfc", false, false, ""}},
 	}; EngineTest(t, "Google", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 	}; EngineTest(t, "Google", secretlist, false)
 }
 

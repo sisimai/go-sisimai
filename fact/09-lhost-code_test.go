@@ -31,6 +31,7 @@ type IsExpected struct {
 	ReplyCode  string // "550" or empty
 	Reason     string // "userunknown"
 	HardBounce bool   // true or false
+	Toxic      bool   // true or false
 	AnotherOne string // "Feedback-Type" or other value
 }
 var SampleRoot = "set-of-emails"
@@ -173,6 +174,11 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 						cx++; if fs.HardBounce != ev.HardBounce {
 							// HardBounce
 							t.Errorf("%s HardBounce is (%t) but (%t)", ee, fs.HardBounce, ev.HardBounce)
+						}
+
+						cx++; if fs.Toxic != ev.Toxic {
+							// Toxic
+							t.Errorf("%s Toxic is (%t) but (%t)", ee, fs.Toxic, ev.Toxic)
 						}
 
 						cx++; if ev.AnotherOne != "" {

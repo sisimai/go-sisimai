@@ -12,19 +12,19 @@ import "testing"
 
 func TestLhostSurfControl(t *testing.T) {
 	publiclist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.0.0",   "550", "filtered",        false, ""}},
-		{{"02",   1, "5.0.0",   "554", "systemerror",     false, ""}},
-		{{"03",   1, "5.0.0",   "554", "systemerror",     false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"01",   1, "5.0.0",   "550", "filtered",        false,  true, ""}},
+		{{"02",   1, "5.0.0",   "554", "systemerror",     false, false, ""}},
+		{{"03",   1, "5.0.0",   "554", "systemerror",     false, false, ""}},
 	}; EngineTest(t, "SurfControl", publiclist, true)
 
 	secretlist := [][]IsExpected{
-		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001", 1, "5.0.0",   "550", "filtered",      false, ""}},
-		{{"1002", 1, "5.0.0",   "550", "filtered",      false, ""}},
-		{{"1003", 1, "5.0.0",   "550", "filtered",      false, ""}},
-		{{"1004", 1, "5.0.0",   "554", "systemerror",   false, ""}},
-		{{"1005", 1, "5.0.0",   "554", "systemerror",   false, ""}},
+		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
+		{{"1001", 1, "5.0.0",   "550", "filtered",      false,  true, ""}},
+		{{"1002", 1, "5.0.0",   "550", "filtered",      false,  true, ""}},
+		{{"1003", 1, "5.0.0",   "550", "filtered",      false,  true, ""}},
+		{{"1004", 1, "5.0.0",   "554", "systemerror",   false, false, ""}},
+		{{"1005", 1, "5.0.0",   "554", "systemerror",   false, false, ""}},
 	}; EngineTest(t, "SurfControl", secretlist, false)
 }
 
