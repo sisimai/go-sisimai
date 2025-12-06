@@ -38,7 +38,7 @@ func TestFind(t *testing.T) {
 		// MailerError
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReUNIX},
 		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.0.0"},
-		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "X-Unix: 127;"}
+		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "X-Unix: 127;"},
 
 		// Undefined
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.Re___0},
