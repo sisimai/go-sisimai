@@ -21,6 +21,10 @@ func TestFind(t *testing.T) {
 		// Delivered
 		siba.Fact{DeliveryStatus: "2.2.2", ReplyCode: "250"},
 
+		// Blocked
+		siba.Fact{DiagnosticCode: "", Action: eb.CeEHLO},
+		siba.Fact{DiagnosticCode: "", Action: eb.CeHELO},
+
 		// MailboxFull
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReFULL},
 		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "4.2.2"},
@@ -68,7 +72,6 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "5.6.0"},
 
 		// SecurityError
-		siba.Fact{Reason: eb.ReSECU},
 		siba.Fact{Reason: eb.ReSECU, DeliveryStatus: "4.7.0"},
 		siba.Fact{Reason: eb.ReSECU, DeliveryStatus: "5.7.0"},
 		siba.Fact{DiagnosticCode: "Verification failure"},
@@ -82,12 +85,10 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: ""},
 		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.AeSTAY},
 		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.AeFAIL},
-		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.CeEHLO},
-		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.CeHELO},
 
 		// OnHold
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___1},
-		siba.Fact{DiagnosticType: "NEKO", DeliveryStatus: "5.0.0"},
+		siba.Fact{DiagnosticType: "NEKO", DeliveryStatus: "5.0.901"},
 		siba.Fact{DiagnosticType: "NEKO", Action: eb.AeSTAY},
 		siba.Fact{DiagnosticCode: "Nyaaaaaan?"},
 
