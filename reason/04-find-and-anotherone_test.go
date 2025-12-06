@@ -41,10 +41,10 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "X-UNIX", DiagnosticCode: "X-Unix: 127;"},
 
 		// FailedSTARTTLS
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReTTLS},
-		siba.Fact{DiagnosticType: "SMTP", Command: eb.CeTTLS},
-		siba.Fact{DiagnosticType: "SMTP", ReplyCode: "523"},
-		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "STARTTLS is required to send mail"},
+		siba.Fact{DiagnosticType: "", Reason: eb.ReTTLS},
+		siba.Fact{DiagnosticType: "", Command: eb.CeTTLS},
+		siba.Fact{DiagnosticType: "", ReplyCode: "523"},
+		siba.Fact{DiagnosticType: "", DiagnosticCode: "STARTTLS is required to send mail"},
 
 		// ContentError
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReBODY},
