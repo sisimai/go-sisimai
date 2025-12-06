@@ -67,7 +67,6 @@ func anotherone(fo *siba.Fact) string {
 			// Trying to match with other patterns in reason/why-*.go
 			if IncludedIn[e](issuedcode) == true { return e }
 		}
-		if reasontext != "" { return reasontext }
 
 		if forsubject := ""; len(fo.DeliveryStatus) > 3 {
 			// Check the first 3 characters of fo.DeliveryStatus

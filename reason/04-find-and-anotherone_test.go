@@ -48,17 +48,17 @@ func TestFind(t *testing.T) {
 
 		// ContentError
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE},
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE, DeliveryStatus: "4.6.0"},
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE, DeliveryStatus: "5.6.0"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "4.6.0"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "5.6.0"},
 
 		// SecurityError
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE},
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE, DeliveryStatus: "4.7.0"},
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE, DeliveryStatus: "5.7.0"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "4.7.0"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "5.7.0"},
 
 		// SyntaxError
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE},
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE, DeliveryStatus: "5.0.3"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, ReplyCode: "503"},
 
 		// Undefined
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0},
@@ -66,6 +66,8 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: ""},
 		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.AeSTAY},
 		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.AeFAIL},
+		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.CeEHLO},
+		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.CeHELO},
 
 		// OnHold
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___1},
