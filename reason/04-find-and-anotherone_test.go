@@ -17,7 +17,8 @@ func TestFind(t *testing.T) {
 	cw := []siba.Fact{
 		siba.Fact{},
 		siba.Fact{Reason: eb.Re___0},
-		siba.Fact{Reason: eb.ReUSER},
+
+		// Delivered
 		siba.Fact{DeliveryStatus: "2.2.2", ReplyCode: "250"},
 
 		// MailboxFull
@@ -26,38 +27,53 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Full Mailbox"},
 
 		// MesgTooBig
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSIZE},
 		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.2.3"},
 		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Message too big"},
 
 		// ExceedLimit
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReXLIM},
 		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.3.4"},
 		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Message too large"},
 
 		// MailerError
-		siba.Fact{DiagnosticType: "X-UNIX", Reason: eb.ReUNIX},
 		siba.Fact{DiagnosticType: "X-UNIX", DeliveryStatus: "5.0.0"},
 		siba.Fact{DiagnosticType: "X-UNIX", DiagnosticCode: "X-Unix: 127;"},
 
+		// SystemError
+		siba.Fact{DiagnosticType: "X-UNIX", Reason: eb.Re___1},
+		siba.Fact{DiagnosticType: "", DiagnosticCode: "local configuration error"},
+
+		// Expired
+		siba.Fact{Reason: eb.ReEXPR},
+		siba.Fact{DiagnosticCode: "Message timed out"},
+
+		// NetworkError
+		siba.Fact{Reason: eb.ReNETW},
+		siba.Fact{DiagnosticCode: "No route to host"},
+
+		// UserUnknown, Filtered
+		siba.Fact{Reason: eb.ReUSER, DiagnosticCode: "User unknown", DeliveryStatus: "5.1.1"},
+		siba.Fact{Reason: eb.ReUSER, DiagnosticCode: "User unknown", DeliveryStatus: "5.1.2"},
+
+		// HostUnknown
+		siba.Fact{Reason: eb.ReHOST, DiagnosticCode: "Unknown Host", DeliveryStatus: "5.1.0"},
+
 		// FailedSTARTTLS
-		siba.Fact{DiagnosticType: "", Reason: eb.ReTTLS},
-		siba.Fact{DiagnosticType: "", Reason: eb.Re___1, Command: eb.CeTTLS},
-		siba.Fact{DiagnosticType: "", ReplyCode: "523"},
-		siba.Fact{DiagnosticType: "", DiagnosticCode: "STARTTLS is required to send mail"},
+		siba.Fact{Reason: eb.Re___1, Command: eb.CeTTLS},
+		siba.Fact{ReplyCode: "523"},
+		siba.Fact{DiagnosticCode: "STARTTLS is required to send mail"},
 
 		// ContentError
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReBODY},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0},
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "4.6.0"},
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "5.6.0"},
 
 		// SecurityError
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE},
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "4.7.0"},
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "5.7.0"},
+		siba.Fact{DiagnosticType: "", Reason: eb.ReSECU},
+		siba.Fact{DiagnosticType: "", Reason: eb.ReSECU, DeliveryStatus: "4.7.0"},
+		siba.Fact{DiagnosticType: "", Reason: eb.ReSECU, DeliveryStatus: "5.7.0"},
+		siba.Fact{DiagnosticType: "", DiagnosticCode: "Verification failure"},
 
 		// SyntaxError
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReCOMM},
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, ReplyCode: "503"},
 
 		// Undefined
