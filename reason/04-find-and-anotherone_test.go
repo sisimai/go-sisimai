@@ -42,7 +42,7 @@ func TestFind(t *testing.T) {
 
 		// FailedSTARTTLS
 		siba.Fact{DiagnosticType: "", Reason: eb.ReTTLS},
-		siba.Fact{DiagnosticType: "", Command: eb.CeTTLS},
+		siba.Fact{DiagnosticType: "", Reason: eb.Re___1, Command: eb.CeTTLS},
 		siba.Fact{DiagnosticType: "", ReplyCode: "523"},
 		siba.Fact{DiagnosticType: "", DiagnosticCode: "STARTTLS is required to send mail"},
 
