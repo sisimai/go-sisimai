@@ -34,7 +34,7 @@ func Find(fo *siba.Fact) string {
 
 	if reasontext == "" || reasontext == eb.Re___0 {
 		// The bounce reason is not detected yet at the code block above
-		reasontext  = anotherone(fo) // Try to find a reason name using anotherone()
+		reasontext = anotherone(fo) // Try to find a reason name using anotherone()
 		if reasontext == eb.Re___0                    { reasontext = ""        }
 		if reasontext == "" && fo.Action == eb.AeSTAY { reasontext = eb.ReEXPR }
 		if reasontext != ""                           { return reasontext      }
