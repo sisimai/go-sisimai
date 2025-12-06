@@ -588,7 +588,7 @@ func Name(code string) string {
 		"4.2.1":  eb.ReQUIT, // Mailbox disabled, not accepting messages
 		"4.2.2":  eb.ReFULL, // Mailbox full
 		"4.2.3":  eb.ReXLIM, // Message length exceeds administrative limit
-		"4.2.4":  eb.ReFILT, // Mailing list expansion problem
+		"4.2.4":  eb.ReSYSE, // Mailing list expansion problem
 	//	"4.3.0":  eb.ReSYSE, // Other or undefined mail system status
 		"4.3.1":  eb.ReSYSF, // Mail system full
 		"4.3.2":  eb.Re00MX, // System not accepting network messages
