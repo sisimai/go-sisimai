@@ -47,18 +47,18 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "STARTTLS is required to send mail"},
 
 		// Undefined
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.Re___0},
-		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.0.0"},
-		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Nyaan?"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0},
+		siba.Fact{DiagnosticType: "NEKO", DeliveryStatus: "5.0.0"},
+		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "Nyaan?"},
 
 		// OnHold
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.Re___1},
-		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.0.0"},
-		siba.Fact{DiagnosticType: "SMTP", Action: eb.AeSTAY},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___1},
+		siba.Fact{DiagnosticType: "NEKO", DeliveryStatus: "5.0.0"},
+		siba.Fact{DiagnosticType: "NEKO", Action: eb.AeSTAY},
 
 		// Vacation
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReAWAY},
-		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "out of office"},
+		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "I am out of the office today"},
 	}
 
 	for j, e := range cw {
