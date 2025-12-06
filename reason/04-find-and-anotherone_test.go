@@ -47,17 +47,17 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "STARTTLS is required to send mail"},
 
 		// ContentError
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE},
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "4.6.0"},
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "5.6.0"},
 
 		// SecurityError
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE},
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "4.7.0"},
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "5.7.0"},
 
 		// SyntaxError
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE},
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, ReplyCode: "503"},
 
 		// Undefined
