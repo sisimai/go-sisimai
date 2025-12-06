@@ -678,7 +678,7 @@ func Name(code string) string {
 		"5.7.16": eb.ReSIZE, // Message is too big for the specified priority
 		"5.7.17": eb.ReMOVE, // Mailbox owner has changed
 		"5.7.18": eb.ReMOVE, // Domain owner has changed
-		"5.7.19": eb.ReSECU, // RRVS test cannot be completed
+		"5.7.19": eb.ReSYSE, // RRVS test cannot be completed
 		"5.7.20": eb.ReAUTH, // No passing DKIM signature found
 		"5.7.21": eb.ReAUTH, // No acceptable DKIM signature found
 		"5.7.22": eb.ReAUTH, // No valid author-matched DKIM signature found
