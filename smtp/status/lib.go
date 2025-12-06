@@ -611,7 +611,7 @@ func Name(code string) string {
 		"4.6.5":  eb.ReBODY, // Conversion Failed
 	//	"4.7.0":  eb.ReSECU, // Other or undefined security status
 		"4.7.1":  eb.ReBLOC, // Delivery not authorized, message refused
-		"4.7.2":  eb.ReBLOC, // Mailing list expansion prohibited
+		"4.7.2":  eb.ReFROM, // Mailing list expansion prohibited
 		"4.7.5":  eb.ReSECU, // Cryptographic failure
 		"4.7.6":  eb.ReSECU, // Cryptographic algorithm not supported
 		"4.7.7":  eb.ReSECU, // Message integrity failure
