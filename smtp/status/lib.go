@@ -585,10 +585,10 @@ func Name(code string) string {
 		"4.1.7":  eb.ReFROM, // Bad sender"s mailbox address syntax
 		"4.1.8":  eb.ReFROM, // Bad sender"s system address
 		"4.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
-		"4.2.1":  eb.ReBLOC, // Mailbox disabled, not accepting messages
+		"4.2.1":  eb.ReQUIT, // Mailbox disabled, not accepting messages
 		"4.2.2":  eb.ReFULL, // Mailbox full
 		"4.2.3":  eb.ReXLIM, // Message length exceeds administrative limit
-		"4.2.4":  eb.ReFILT, // Mailing list expansion problem
+		"4.2.4":  eb.ReSYSE, // Mailing list expansion problem
 	//	"4.3.0":  eb.ReSYSE, // Other or undefined mail system status
 		"4.3.1":  eb.ReSYSF, // Mail system full
 		"4.3.2":  eb.Re00MX, // System not accepting network messages
@@ -604,14 +604,14 @@ func Name(code string) string {
 		"4.4.7":  eb.ReEXPR, // Delivery time expired
 		"4.4.8":  eb.ReNETW, // Retry on IPv4
 	//	"4.5.0":  eb.ReNETW, // Other or undefined protocol status
-		"4.5.3":  eb.ReSYSE, // Too many recipients
+		"4.5.3":  eb.ReCONN, // Too many recipients
 		"4.5.5":  eb.ReSYSE, // Wrong protocol version
 		"4.6.0":  eb.ReBODY, // Other or undefined media error
 		"4.6.2":  eb.ReBODY, // Conversion required and prohibited
 		"4.6.5":  eb.ReBODY, // Conversion Failed
 	//	"4.7.0":  eb.ReSECU, // Other or undefined security status
 		"4.7.1":  eb.ReBLOC, // Delivery not authorized, message refused
-		"4.7.2":  eb.ReBLOC, // Mailing list expansion prohibited
+		"4.7.2":  eb.ReFROM, // Mailing list expansion prohibited
 		"4.7.5":  eb.ReSECU, // Cryptographic failure
 		"4.7.6":  eb.ReSECU, // Cryptographic algorithm not supported
 		"4.7.7":  eb.ReSECU, // Message integrity failure
@@ -636,7 +636,7 @@ func Name(code string) string {
 		"5.2.1":  eb.ReFILT, // Mailbox disabled, not accepting messages
 		"5.2.2":  eb.ReFULL, // Mailbox full
 		"5.2.3":  eb.ReXLIM, // Message length exceeds administrative limit
-		"5.2.4":  eb.ReFILT, // Mailing list expansion problem
+		"5.2.4":  eb.ReSYSE, // Mailing list expansion problem
 		"5.3.0":  eb.ReSYSE, // Other or undefined mail system status
 		"5.3.1":  eb.ReSYSF, // Mail system full
 		"5.3.2":  eb.Re00MX, // System not accepting network messages
@@ -657,7 +657,7 @@ func Name(code string) string {
 		"5.6.3":  eb.ReBODY, // Conversion required but not supported
 		"5.6.5":  eb.ReBODY, // Conversion Failed
 		"5.6.6":  eb.ReBODY, // Message content not available
-		"5.6.7":  eb.ReBODY, // Non-ASCII addresses not permitted for that sender/recipient
+		"5.6.7":  eb.ReFROM, // Non-ASCII addresses not permitted for that sender/recipient
 		"5.6.8":  eb.ReBODY, // UTF-8 string reply is required, but not permitted by the SMTP client
 		"5.6.9":  eb.ReBODY, // UTF-8 header message cannot be transferred to one or more recipients
 		"5.7.0":  eb.ReSECU, // Other or undefined security status
@@ -678,7 +678,7 @@ func Name(code string) string {
 		"5.7.16": eb.ReSIZE, // Message is too big for the specified priority
 		"5.7.17": eb.ReMOVE, // Mailbox owner has changed
 		"5.7.18": eb.ReMOVE, // Domain owner has changed
-		"5.7.19": eb.ReSECU, // RRVS test cannot be completed
+		"5.7.19": eb.ReSYSE, // RRVS test cannot be completed
 		"5.7.20": eb.ReAUTH, // No passing DKIM signature found
 		"5.7.21": eb.ReAUTH, // No acceptable DKIM signature found
 		"5.7.22": eb.ReAUTH, // No valid author-matched DKIM signature found
