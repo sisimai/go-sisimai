@@ -56,6 +56,10 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE, DeliveryStatus: "4.7.0"},
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE, DeliveryStatus: "5.7.0"},
 
+		// SyntaxError
+		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE},
+		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSYSE, DeliveryStatus: "5.0.3"},
+
 		// Undefined
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0},
 		siba.Fact{DiagnosticType: "NEKO", DeliveryStatus: "5.0.0"},
