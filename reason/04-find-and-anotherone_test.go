@@ -47,18 +47,18 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "STARTTLS is required to send mail"},
 
 		// ContentError
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE},
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "4.6.0"},
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "5.6.0"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReBODY},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "4.6.0"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "5.6.0"},
 
 		// SecurityError
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE},
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "4.7.0"},
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, DeliveryStatus: "5.7.0"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "4.7.0"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "5.7.0"},
 
 		// SyntaxError
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE},
-		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReSYSE, ReplyCode: "503"},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.ReCOMM},
+		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, ReplyCode: "503"},
 
 		// Undefined
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0},
