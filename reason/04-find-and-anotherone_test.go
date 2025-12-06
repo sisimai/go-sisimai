@@ -49,7 +49,9 @@ func TestFind(t *testing.T) {
 		// Undefined
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0},
 		siba.Fact{DiagnosticType: "NEKO", DeliveryStatus: "5.0.0"},
-		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "Nyaan?"},
+		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: ""},
+		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.AeSTAY},
+		siba.Fact{DiagnosticType: "NEKO", DiagnosticCode: "", Action: eb.AeFAIL},
 
 		// OnHold
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___1},
