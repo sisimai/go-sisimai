@@ -36,9 +36,9 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Message too large"},
 
 		// MailerError
-		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReUNIX},
-		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.0.0"},
-		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "X-Unix: 127;"},
+		siba.Fact{DiagnosticType: "X-UNIX", Reason: eb.ReUNIX},
+		siba.Fact{DiagnosticType: "X-UNIX", DeliveryStatus: "5.0.0"},
+		siba.Fact{DiagnosticType: "X-UNIX", DiagnosticCode: "X-Unix: 127;"},
 
 		// FailedSTARTTLS
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReTTLS},
