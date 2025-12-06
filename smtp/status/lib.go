@@ -585,7 +585,7 @@ func Name(code string) string {
 		"4.1.7":  eb.ReFROM, // Bad sender"s mailbox address syntax
 		"4.1.8":  eb.ReFROM, // Bad sender"s system address
 		"4.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
-		"4.2.1":  eb.ReBLOC, // Mailbox disabled, not accepting messages
+		"4.2.1":  eb.ReQUIT, // Mailbox disabled, not accepting messages
 		"4.2.2":  eb.ReFULL, // Mailbox full
 		"4.2.3":  eb.ReXLIM, // Message length exceeds administrative limit
 		"4.2.4":  eb.ReFILT, // Mailing list expansion problem
