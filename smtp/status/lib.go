@@ -657,7 +657,7 @@ func Name(code string) string {
 		"5.6.3":  eb.ReBODY, // Conversion required but not supported
 		"5.6.5":  eb.ReBODY, // Conversion Failed
 		"5.6.6":  eb.ReBODY, // Message content not available
-		"5.6.7":  eb.ReBODY, // Non-ASCII addresses not permitted for that sender/recipient
+		"5.6.7":  eb.ReFROM, // Non-ASCII addresses not permitted for that sender/recipient
 		"5.6.8":  eb.ReBODY, // UTF-8 string reply is required, but not permitted by the SMTP client
 		"5.6.9":  eb.ReBODY, // UTF-8 header message cannot be transferred to one or more recipients
 		"5.7.0":  eb.ReSECU, // Other or undefined security status
