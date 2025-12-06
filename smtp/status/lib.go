@@ -104,12 +104,12 @@ import "libsisimai.org/sisimai/v5/eb"
                  The mailbox address provided was at one time valid, but mail is no longer being
                  accepted for that address. This code is only useful for permanent failures.
 
- X.1.7  ---    Bad sender"s mailbox address syntax:(RFC 3463)
-                 The sender"s address was syntactically invalid. This can apply to any field in
+ X.1.7  ---    Bad sender's mailbox address syntax:(RFC 3463)
+                 The sender's address was syntactically invalid. This can apply to any field in
                  the address.
 
- X.1.8  451    Bad sender"s system address:(RFC 3463)
-        501      The sender"s system specified in the address does not exist or is incapable of
+ X.1.8  451    Bad sender's system address:(RFC 3463)
+        501      The sender's system specified in the address does not exist or is incapable of
                  accepting return mail. For domain names, this means the address portion to the
                  right of the "@" is invalid for mail.
 
@@ -378,12 +378,12 @@ import "libsisimai.org/sisimai/v5/eb"
                  then work for authentications in subsequent sessions.
 
  X.7.13 525    User Account Disabled:(RFC 5248)
-                 Sometimes a system administrator will have to disable a user"s account (e.g., due
+                 Sometimes a system administrator will have to disable a user's account (e.g., due
                  to lack of payment, abuse, evidence of a break-in attempt, etc). This error code
                  occurs after a successful authentication to a disabled account. This informs the
                  client that the failure is permanent until the user contacts their system
                  administrator to get the account re-enabled. It differs from a generic
-                 authentication failure where the client"s best option is to present the passphrase
+                 authentication failure where the client's best option is to present the passphrase
                  entry dialog in case the user simply mistyped their passphrase.
 
  X.7.14 535    Trust relationship required:(RFC 5248)
@@ -447,7 +447,7 @@ import "libsisimai.org/sisimai/v5/eb"
                  Sections 8.6 and 8.7 of [RFC7208].
 
  X.7.25 550    Reverse DNS validation failed:(RFC 7372, 7601)
-                 This status code is returned when an SMTP client"s IP address failed a reverse
+                 This status code is returned when an SMTP client's IP address failed a reverse
                  DNS validation check, contrary to local policy requirements.
 
  X.7.26 550    Multiple authentication checks failed:(RFC 7372)
@@ -582,8 +582,8 @@ func Name(code string) string {
 		"2.1.5":  eb.ReSENT, // Successfully delivered
 	// --------------------------------------------------------------------------------------------
 		"4.1.6":  eb.ReMOVE, // Destination mailbox has moved, No forwarding address
-		"4.1.7":  eb.ReFROM, // Bad sender"s mailbox address syntax
-		"4.1.8":  eb.ReFROM, // Bad sender"s system address
+		"4.1.7":  eb.ReFROM, // Bad sender's mailbox address syntax
+		"4.1.8":  eb.ReFROM, // Bad sender's system address
 		"4.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
 		"4.2.1":  eb.ReQUIT, // Mailbox disabled, not accepting messages
 		"4.2.2":  eb.ReFULL, // Mailbox full
@@ -628,8 +628,8 @@ func Name(code string) string {
 		"5.1.3":  eb.ReUSER, // Bad destination mailbox address syntax
 		"5.1.4":  eb.ReFILT, // Destination mailbox address ambiguous
 		"5.1.6":  eb.ReMOVE, // Destination mailbox has moved, No forwarding address
-		"5.1.7":  eb.ReFROM, // Bad sender"s mailbox address syntax
-		"5.1.8":  eb.ReFROM, // Bad sender"s system address
+		"5.1.7":  eb.ReFROM, // Bad sender's mailbox address syntax
+		"5.1.8":  eb.ReFROM, // Bad sender's system address
 		"5.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
 		"5.1.10": eb.Re00MX, // Recipient address has null MX
 		"5.2.0":  eb.ReFILT, // Other or undefined mailbox status
@@ -664,7 +664,7 @@ func Name(code string) string {
 		"5.7.1":  eb.ReSECU, // Delivery not authorized, message refused
 		"5.7.2":  eb.ReSECU, // Mailing list expansion prohibited
 		"5.7.3":  eb.ReSECU, // Security conversion required but not possible
-		"5.7.4":  eb.ReSECU, //Security features not supported
+		"5.7.4":  eb.ReSECU, // Security features not supported
 		"5.7.5":  eb.ReSECU, // Cryptographic failure
 		"5.7.6":  eb.ReSECU, // Cryptographic algorithm not supported
 		"5.7.7":  eb.ReSECU, // Message integrity failure
