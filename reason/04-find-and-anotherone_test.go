@@ -24,6 +24,17 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReFULL},
 		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "4.2.2"},
 		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Full Mailbox"},
+
+		// MesgTooBig
+		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReSIZE},
+		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.2.3"},
+		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Message too big"},
+
+		// ExceedLimit
+		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReXLIM},
+		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.3.4"},
+		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Message too large"},
+
 	}
 
 	for j, e := range cw {
