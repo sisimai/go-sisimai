@@ -604,7 +604,7 @@ func Name(code string) string {
 		"4.4.7":  eb.ReEXPR, // Delivery time expired
 		"4.4.8":  eb.ReNETW, // Retry on IPv4
 	//	"4.5.0":  eb.ReNETW, // Other or undefined protocol status
-		"4.5.3":  eb.ReSYSE, // Too many recipients
+		"4.5.3":  eb.ReCONN, // Too many recipients
 		"4.5.5":  eb.ReSYSE, // Wrong protocol version
 		"4.6.0":  eb.ReBODY, // Other or undefined media error
 		"4.6.2":  eb.ReBODY, // Conversion required and prohibited
