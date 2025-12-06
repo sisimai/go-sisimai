@@ -35,6 +35,24 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.3.4"},
 		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Message too large"},
 
+		// MailerError
+		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReUNIX},
+		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.0.0"},
+		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "X-Unix: 127;"}
+
+		// Undefined
+		siba.Fact{DiagnosticType: "SMTP", Reason: eb.Re___0},
+		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.0.0"},
+		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "Nyaan?"},
+
+		// OnHold
+		siba.Fact{DiagnosticType: "SMTP", Reason: eb.Re___1},
+		siba.Fact{DiagnosticType: "SMTP", DeliveryStatus: "5.0.0"},
+		siba.Fact{DiagnosticType: "SMTP", Action: eb.AeSTAY},
+
+		// Vacation
+		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReAWAY},
+		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "out of office"}
 	}
 
 	for j, e := range cw {
