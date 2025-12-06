@@ -52,7 +52,7 @@ func TestFind(t *testing.T) {
 
 		// Vacation
 		siba.Fact{DiagnosticType: "SMTP", Reason: eb.ReAWAY},
-		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "out of office"}
+		siba.Fact{DiagnosticType: "SMTP", DiagnosticCode: "out of office"},
 	}
 
 	for j, e := range cw {
