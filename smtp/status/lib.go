@@ -664,7 +664,7 @@ func Name(code string) string {
 		"5.7.1":  eb.ReSECU, // Delivery not authorized, message refused
 		"5.7.2":  eb.ReSECU, // Mailing list expansion prohibited
 		"5.7.3":  eb.ReSECU, // Security conversion required but not possible
-		"5.7.4":  eb.ReSECU, //Security features not supported
+		"5.7.4":  eb.ReSECU, // Security features not supported
 		"5.7.5":  eb.ReSECU, // Cryptographic failure
 		"5.7.6":  eb.ReSECU, // Cryptographic algorithm not supported
 		"5.7.7":  eb.ReSECU, // Message integrity failure
