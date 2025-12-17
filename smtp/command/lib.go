@@ -31,8 +31,8 @@ var ExceptDATA = []string{eb.CeCONN, eb.CeEHLO, eb.CeHELO, eb.CeMAIL, eb.CeRCPT}
 //   Returns:
 //     - (bool): true if the argument is a valid SMTP command.
 func Test(comm string) bool {
-	if len(comm) < 4                      { return false }
-	if moji.ContainsAny(comm, availables) { return true  }
+	if len(comm) < 4                                       { return false }
+	if moji.ContainsAny(strings.ToUpper(comm), availables) { return true  }
 	return false
 }
 
