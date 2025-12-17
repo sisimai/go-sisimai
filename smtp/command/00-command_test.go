@@ -9,6 +9,7 @@ package command
 //   |_|\___||___/\__/_/ |___/_| |_| |_|\__| .__/_/ \___\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_|
 //                                         |_|                                                      
 import "testing"
+import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 
 var SMTPErrors = map[string][]string{
@@ -63,7 +64,8 @@ func TestTest(t *testing.T) {
 
 	for e := range SMTPErrors {
 		for _, f := range SMTPErrors[e] {
-			cx++; if cv := Test(f); cv == false { t.Errorf("%s(%s) returns false", fn, f) }
+			cx++; if cv := Test(f);                  cv == false { t.Errorf("%s(%s) returns false", fn, f) }
+			cx++; if cv := Test(strings.ToLower(f)); cv == false { t.Errorf("%s(%s) returns false", fn, f) }
 		}
 	}
 	cx++; if cv := Test("");    cv == true { t.Errorf("%s(%s) returns true", fn, "") }
