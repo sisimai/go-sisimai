@@ -8,6 +8,7 @@ v5.5.0
 ---------------------------------------------------------------------------------------------------
 - release: "Fri,  5 Dec 2025 17:25:22 +0900 (JST)"
 - version: "5.5.0"
+- changes:
   - #173 Add some SMTP reply codes that uniquely identify a bounce reason at `smtp/reply/lib.go`.
   - #174 #186 Implement `IsAmbiguous()` function at `smtp/status/lib.go`.
   - #185 Sisimai partially supports the media types described in RFC6533 such as `message/global`.
@@ -50,6 +51,7 @@ v5.4.1
 ---------------------------------------------------------------------------------------------------
 - release: "Sun, 31 Aug 2025 09:22:25 +0900 (JST)"
 - version: "5.4.1"
+- changes:
   - #155 #161 Support a bounce mail returned from `privaterelay.appleid.com`.
   - #158 #160 Update SMTP error and status codes of Gmail updated in August 2025.
     - Gmail SMTP errors and codes https://support.google.com/a/answer/3726730
