@@ -4,6 +4,13 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
+v5.X.X
+---------------------------------------------------------------------------------------------------
+- release: ""
+- version: ""
+- changes:
+  - #303 Update some bounce reasons in `smtp/status/lib.go`.
+
 v5.5.0
 ---------------------------------------------------------------------------------------------------
 - release: "Fri,  5 Dec 2025 17:25:22 +0900 (JST)"
