@@ -118,11 +118,11 @@ func IsDomainLiteral(email string) bool {
 	return false
 }
 
-// Find returns a valid internet hostname found from the argument.
+// Find returns a valid internet hostname found from error messages.
 //   Arguments:
 //     - text (string): String including hostnames.
 //   Returns:
-//     - (string): Valid internet hostname found in the argument.
+//     - (string): Valid internet hostname found in the error messages.
 func Find(text string) string {
 	if text == "" { return "" }
 
