@@ -125,7 +125,7 @@ func init() {
 			"OnAccountSuppressionList": eb.ReSUPP, // Suppressed
 			"General":                  eb.Re___1, // Onhold
 			"MailboxFull":              eb.ReFULL, // MailboxFull
-			"MessageTooLarge":          eb.ReSIZE, // MesgTooBig
+			"MessageTooLarge":          eb.ReSIZE, // EmailTooLarge
 			"ContentRejected":          eb.ReBODY, // ContentError
 			"AttachmentRejected":       eb.ReSECU, // SecurityError
 		}
