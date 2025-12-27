@@ -198,6 +198,31 @@ func init() {
 				[2]string{"554", "host network not allowed"},
 				[2]string{"554", "host network, not allowed"},
 			},
+			eb.ReRATE: [][2]string{ // RateLimited
+				// - There are too many concurrent inbound connections for the account. The default is 20.
+				// - The IP address is automatically removed from the block list after five minutes.
+				//   Continued invalid connections result in the IP being readded to the block list.
+				//   Ensure you don't route outbound or journal messages to Mimecast from an IP address
+				//   that hasn't been authorized to do so.
+				[2]string{"451", "account service is temporarily unavailable"},
+
+				// - The sending server issues more than 100 RCPT TO entries. By default, Mimecast
+				//   only accepts 100 RCPT TO entries per message body (DATA). The error triggers
+				//   the sending mail server to provide the DATA for the first 100 recipients before
+				//   it provides the next batch of RCPT TO entries.
+				// - Most mail servers respect the transient error and treat it as a "truncation request".
+				//   If your mail server, firewall, or on-site solution doesn't respect the error,
+				//   you must ensure that no more than 100 recipients are submitted.
+				//   Note:
+				//       Solutions like SMTP Fix-Up / MailGuard and ESMTP inspection on Cisco Pix
+				//       and ASA Firewalls are known not to respect the transient error. We advise
+				//       you to disable this functionality.
+				[2]string{"452", "too many recipients"},
+
+				// - There are too many concurrent outbound connections for the account.
+				// - Send the messages in smaller chunks to recipients.
+				[2]string{"550", "exceeding outbound thread limit"},
+			},
 			eb.ReFROM: [][2]string{ // Rejected
 				// - The sender's email address or domain has triggered a Blocked Senders Policy or
 				//   there's an SPF hard rejection.
@@ -261,31 +286,6 @@ func init() {
 				// - Generic error if the reason is unknown
 				// - Contact Mimecast Support.
 				[2]string{"451", "unable to process an email at this time"},
-			},
-			eb.ReCONN: [][2]string{ // TooManyConn
-				// - There are too many concurrent inbound connections for the account. The default is 20.
-				// - The IP address is automatically removed from the block list after five minutes.
-				//   Continued invalid connections result in the IP being readded to the block list.
-				//   Ensure you don't route outbound or journal messages to Mimecast from an IP address
-				//   that hasn't been authorized to do so.
-				[2]string{"451", "account service is temporarily unavailable"},
-
-				// - The sending server issues more than 100 RCPT TO entries. By default, Mimecast
-				//   only accepts 100 RCPT TO entries per message body (DATA). The error triggers
-				//   the sending mail server to provide the DATA for the first 100 recipients before
-				//   it provides the next batch of RCPT TO entries.
-				// - Most mail servers respect the transient error and treat it as a "truncation request".
-				//   If your mail server, firewall, or on-site solution doesn't respect the error,
-				//   you must ensure that no more than 100 recipients are submitted.
-				//   Note:
-				//       Solutions like SMTP Fix-Up / MailGuard and ESMTP inspection on Cisco Pix
-				//       and ASA Firewalls are known not to respect the transient error. We advise
-				//       you to disable this functionality.
-				[2]string{"452", "too many recipients"},
-
-				// - There are too many concurrent outbound connections for the account.
-				// - Send the messages in smaller chunks to recipients.
-				[2]string{"550", "exceeding outbound thread limit"},
 			},
 			eb.ReUSER: [][2]string{ // UserUnknown
 				// - The email address isn't a valid SMTP address.

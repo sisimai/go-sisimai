@@ -28,7 +28,7 @@ func init() {
 			"2":  eb.ReUSER, // User is not found.
 			"3":  eb.ReQUIT, // Mailbox was not used for more than 3 months
 			"4":  eb.ReFULL, // Mailbox is full.
-			"5":  eb.ReCONN, // Letter sending limit is exceeded.
+			"5":  eb.ReRATE, // Letter sending limit is exceeded.
 			"6":  eb.ReRELA, // Use SMTP of your provider to send mail.
 			"7":  eb.ReBLOC, // Wrong value if command HELO/EHLO parameter.
 			"8":  eb.ReFROM, // Couldn't check sender address.

@@ -79,11 +79,11 @@ func init() {
 			// 1300 Spectrum limits the number of concurrent connections from a sender, as well as
 			// 1340 the total number of connections allowed. Limits vary based on the reputation of
 			//      the IP address. Reduce your number of connections and try again later.
-			[3]string{"1300", "1340", eb.ReCONN},
+			[3]string{"1300", "1340", eb.ReRATE},
 
 			// 1350 Spectrum limits emails by the number of messages sent, amount of recipients,
 			// 1490 potential for spam and invalid recipients.
-			[3]string{"1350", "1490", eb.ReFAST},
+			[3]string{"1350", "1490", eb.ReRATE},
 
 			// 1500 Your email was rejected for attempting to send as a different email address than
 			//      you signed in under. Check that you're sending emails from the address you signed
@@ -99,11 +99,11 @@ func init() {
 
 			// 1540 Your emails were deferred for attempting to send too many in a single session.
 			//      Reconnect and try reducing the number of emails you send at one time.
-			[3]string{"1540", "", eb.ReFAST},
+			[3]string{"1540", "", eb.ReRATE},
 
 			// 1550 Your email was rejected for having too many recipients in one message. Reduce
 			//      the number of recipients and try again later.
-			[3]string{"1550", "", eb.ReFAST},
+			[3]string{"1550", "", eb.ReRATE},
 
 			// 1560 Your email was rejected for having too many invalid recipients. Check your outgoing
 			//      email addresses and try again later.
@@ -111,7 +111,7 @@ func init() {
 
 			// 1580 You've tried to send messages to too many recipients in a short period of time.
 			//      Wait a little while and try again later.
-			[3]string{"1580", "", eb.ReFAST},
+			[3]string{"1580", "", eb.ReRATE},
 		}
 
 		issuedcode := fo.DiagnosticCode

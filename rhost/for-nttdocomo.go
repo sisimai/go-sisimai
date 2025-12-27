@@ -24,7 +24,7 @@ func init() {
 		messagesof := map[string][]string{
 			eb.ReFULL: []string{"552 too much mail data"},
 			eb.ReCOMM: []string{"503 bad sequence of commands", "504 command parameter not implemented"},
-			eb.ReCONN: []string{"552 too many recipients"},
+			eb.ReRATE: []string{"552 too many recipients"},
 			eb.ReUSER: []string{"550 unknown user"},
 		}
 		statuscode, issuedcode := fo.DeliveryStatus, strings.ToLower(fo.DiagnosticCode)

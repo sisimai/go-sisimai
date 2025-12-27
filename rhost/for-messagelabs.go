@@ -155,7 +155,7 @@ func init() {
 				"Message Filtered",
 				"filtered by Outbound scanning",
 			},
-			eb.ReCONN: []string{
+			eb.ReRATE: []string{
 				// - https://knowledge.broadcom.com/external/article/385809
 				//   Email Security Cloud is attempting to deliver the email and recipient MTA is
 				//   responding "452 Too many recipients received this hour".

@@ -62,14 +62,14 @@ func init() {
 				//   Please visit https://support.apple.com/en-us/HT204137
 				"due to local policy",
 			},
-			eb.ReFROM: []string{ // Rejected
-				// - 450 4.1.8 <kijitora@example.jp>: Sender address rejected: Domain not found
-				"sender address rejected",
-			},
-			eb.ReFAST: []string{ // Speeding
+			eb.ReRATE: []string{ // RateLimited
 				// - 421 4.7.1 Messages to ****@icloud.com deferred due to excessive volume.
 				//   Try again later - https://support.apple.com/en-us/HT204137
 				"due to excessive volume",
+			},
+			eb.ReFROM: []string{ // Rejected
+				// - 450 4.1.8 <kijitora@example.jp>: Sender address rejected: Domain not found
+				"sender address rejected",
 			},
 			eb.ReQUIT: []string{ // Suspend
 				// - https://support.apple.com/guide/icloud/stop-using-or-reactivate-addresses-mm3adb030cbf/icloud

@@ -50,18 +50,18 @@ func init() {
 			//   legitimate email sender.
 			"CXSMTP": eb.ReFROM,
 
-			// CXCNCT = TooManyConn
+			// CXCNCT = RateLimited
 			// - There was a connection issue from the IP address.
 			// - There is a limit to the number of concurrent SMTP connections per IP address to
 			//   protect the systems against attack. Ensure that the sending email server is not
 			//   opening more than 10 concurrent connections to avoid reaching this limit.
-			"CXCNCT": eb.ReCONN,
+			"CXCNCT": eb.ReRATE,
 
-			// CXMXRT = TooManyConn
+			// CXMXRT = RateLimited
 			//   - The sender has sent email to too many recipients and needs to wait before sending
 			//     more email.
 			//   - The email sender has exceeded the maximum number of sent email allowed.
-			"CXMXRT": eb.ReCONN,
+			"CXMXRT": eb.ReRATE,
 
 			// CDRBL = Blocked
 			// - The sending IP address has been temporarily blocked by Cox due to exhibiting spam-like
@@ -126,7 +126,7 @@ func init() {
 				//   accept new email.
 				"esmtp server temporarily not available",
 			},
-			eb.ReCONN: []string{ // TooManyConn
+			eb.ReRATE: []string{ // RateLimited
 				// - The sending IP address has exceeded the five maximum concurrent connection limit.
 				// - The SMTP connection has exceeded the 100 email message threshold and was disconnected.
 				// - The sending IP address has exceeded one of these rate limits and has been temporarily
