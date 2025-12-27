@@ -12,7 +12,7 @@ import "testing"
 func TestLhostEinsUndEins(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"02",   1, "5.0.934", "",    "mesgtoobig",      false, false, ""}},
+		{{"02",   1, "5.0.934", "",    "emailtoolarge",   false, false, ""}},
 		{{"03",   1, "5.2.0",   "550", "spamdetected",    false, false, ""}},
 	}; EngineTest(t, "EinsUndEins", publiclist, true)
 
@@ -20,7 +20,7 @@ func TestLhostEinsUndEins(t *testing.T) {
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 		{{"1001", 1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
 		{{"1002", 1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
-		{{"1003", 1, "5.0.934", "",    "mesgtoobig",      false, false, ""}},
+		{{"1003", 1, "5.0.934", "",    "emailtoolarge",   false, false, ""}},
 		{{"1004", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1005", 1, "5.4.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1006", 1, "5.4.1",   "550", "userunknown",      true,  true, ""}},

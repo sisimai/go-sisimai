@@ -17,15 +17,15 @@ func TestLhostReceivingSES(t *testing.T) {
 		{{"02",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"03",   1, "4.0.0",   "450", "onhold",          false, false, ""}},
 		{{"04",   1, "5.2.2",   "552", "mailboxfull",     false,  true, ""}},
-		{{"05",   1, "5.3.4",   "552", "mesgtoobig",      false, false, ""}},
+		{{"05",   1, "5.3.4",   "552", "emailtoolarge",   false, false, ""}},
 		{{"06",   1, "5.6.1",   "500", "spamdetected",    false, false, ""}},
 		{{"07",   1, "5.2.0",   "550", "filtered",        false,  true, ""}},
-		{{"08",   1, "5.2.3",   "552", "exceedlimit",     false, false, ""}},
+		{{"08",   1, "5.2.3",   "552", "emailtoolarge",   false, false, ""}},
 	}; EngineTest(t, "ReceivingSES", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.2.3",   "552", "exceedlimit",     false, false, ""}},
+		{{"1001", 1, "5.2.3",   "552", "emailtoolarge",   false, false, ""}},
 	}; EngineTest(t, "ReceivingSES", secretlist, false)
 }
 

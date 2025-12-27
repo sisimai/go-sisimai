@@ -71,7 +71,7 @@ func TestLhostqmail(t *testing.T) {
 		{{"1024", 1, "5.0.911", "550", "userunknown",      true,  true, ""}},
 		{{"1025", 1, "5.1.1",   "550", "userunknown",      true,  true, ""},
 		 {"1025", 2, "5.2.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1026", 1, "5.0.934", "552", "mesgtoobig",      false, false, ""}},
+		{{"1026", 1, "5.0.934", "552", "emailtoolarge",   false, false, ""}},
 		{{"1027", 1, "5.2.2",   "550", "mailboxfull",     false,  true, ""}},
 		{{"1028", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1029", 1, "5.0.911", "550", "userunknown",      true,  true, ""}},
