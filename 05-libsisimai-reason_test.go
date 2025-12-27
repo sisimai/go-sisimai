@@ -15,7 +15,7 @@ func TestReason(t *testing.T) {
 	cv := Reason()
 
 	cx++; if len(cv) ==  0 { t.Errorf("%s() returned an empty list", fn) }
-	cx++; if len(cv) != 36 { t.Errorf("%s() returned invalid elements: %d", fn, len(cv)) }
+	cx++; if len(cv) != 35 { t.Errorf("%s() returned invalid elements: %d", fn, len(cv)) }
 	for e := range cv {
 		cx++; if e == ""     { t.Errorf("%s returns an empty key", fn) }
 		cx++; if cv[e] == "" { t.Errorf("%s[%s] is empty", fn, cv[e])  }
