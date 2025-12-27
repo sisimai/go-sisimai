@@ -13,7 +13,7 @@ import "testing"
 func TestRhostSpectrum(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.1.0",   "550", "toomanyconn",     false, false, ""}},
+		{{"01",   1, "5.1.0",   "550", "ratelimited",     false, false, ""}},
 	}; EngineTest(t, "Spectrum", publiclist, true)
 
 	secretlist := [][]IsExpected{
