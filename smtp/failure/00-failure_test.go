@@ -12,10 +12,9 @@ import "testing"
 import "libsisimai.org/sisimai/v5/eb"
 
 var SoftBounce = []string{
-	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReXLIM, eb.ReEXPR, eb.ReTTLS, eb.ReFILT, eb.ReFULL,
-	eb.ReUNIX, eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReFROM, eb.ReQPTR, eb.ReSECU,
-	eb.ReSPAM, eb.ReRATE, eb.ReSUPP, eb.ReQUIT, eb.ReCOMM, eb.ReSYSE, eb.ReSYSF, eb.ReEXEC,
-	eb.Re___0, eb.Re___1,
+	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReEXPR, eb.ReTTLS, eb.ReFILT, eb.ReFULL, eb.ReUNIX,
+	eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReFROM, eb.ReQPTR, eb.ReSECU, eb.ReSPAM,
+	eb.ReRATE, eb.ReSUPP, eb.ReQUIT, eb.ReCOMM, eb.ReSYSE, eb.ReSYSF, eb.ReEXEC, eb.Re___0, eb.Re___1,
 }
 var HardBounce = []string{eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX}
 var IsntBounce = []string{eb.ReSENT, eb.ReFEED, eb.ReAWAY}
