@@ -129,7 +129,7 @@ func init() {
 				// - Check you DNS has the required umbrella accounts listed as comma-separated values.
 				[2]string{"554", "configuration is invalid for this certificate"},
 			},
-			eb.ReSIZE: [][2]string{ // MesgTooBig
+			eb.ReSIZE: [][2]string{ // EmailTooLarge
 				// - The email size either exceeds an Email Size Limit policy or is larger than the
 				//   Mimecast service limit. The default is 100 MB for the Legacy MTA, and 200 MB
 				//   for "the Latest MTA".

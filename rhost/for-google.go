@@ -229,7 +229,7 @@ func init() {
 				[3]string{"552", "5.2.2", "is over quota"},
 				[3]string{"550", "5.7.1", "email quota exceeded"},
 			},
-			eb.ReSIZE: [][3]string{ // MesgTooBig
+			eb.ReSIZE: [][3]string{ // EmailTooLarge
 				// - 552 5.3.4 Your message exceeded Google"s message size limits. To view our message
 				//   size guidelines, go to Send attachments with your Gmail message.
 				// - https://support.google.com/mail/?p=MaxSizeError
