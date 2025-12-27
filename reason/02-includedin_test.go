@@ -112,12 +112,16 @@ func TestIncludedIn(t *testing.T) {
 			"570 5.7.7 Spam Detected",
 			"554 5.7.1 Mail Score (59) over MessageScoringUpperLimit (50) - send error reports to postmaster@example.net",
 		},
-		eb.ReFAST: []string{"451 4.7.1 <smtp.example.jp[192.0.2.3]>: Client host rejected: Please try again slower"},
 	//  eb.ReSUPP: []string{"There is no sample email which is returned due to being listed in the suppression list"},
 		eb.ReQUIT: []string{
 			"550 5.0.0 Recipient suspend the service",
 			"550 The domain meangel.net is currently suspended. Try later.",
 			"550 5.7.1 <kijitora@example.com>: Recipient address rejected: User kijitora@example.com temporary locked. Please try again later!",
+		},
+		eb.ReRATE: []string{
+			"421 Too many connections",
+			"451 4.7.1 <smtp.example.jp[192.0.2.3]>: Client host rejected: Please try again slower",
+			"452 4.3.2 Connection rate limit exceeded. (in reply to MAIL FROM command)",
 		},
 		eb.ReSYSE: []string{
 			"500 5.3.5 System config error",
@@ -125,10 +129,6 @@ func TestIncludedIn(t *testing.T) {
 			"X-Postfix; mail for example.jp loops back to myself",
 		},
 		eb.ReSYSF: []string{"550 5.0.0 Mail system full"},
-		eb.ReCONN: []string{
-			"421 Too many connections",
-			"452 4.3.2 Connection rate limit exceeded. (in reply to MAIL FROM command)",
-		},
 		eb.ReUSER: []string{
 			"550 5.1.1 Unknown User",
 			"550 kijitora@example.com... No such user",
