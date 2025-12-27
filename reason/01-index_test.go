@@ -14,9 +14,8 @@ import "libsisimai.org/sisimai/v5/eb"
 var ae = []string{
 	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReXLIM, eb.ReEXPR, eb.ReTTLS, eb.ReFILT, eb.ReFULL,
 	eb.ReUNIX, eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReFROM, eb.ReQPTR, eb.ReSECU,
-	eb.ReSPAM, eb.ReFAST, eb.ReSUPP, eb.ReQUIT, eb.ReCOMM, eb.ReSYSE, eb.ReSYSF, eb.ReCONN, eb.ReEXEC,
-	eb.Re___0, eb.Re___1, eb.ReHOST, eb.ReUSER, eb.ReMOVE, eb.Re00MX,
-	eb.ReSENT, eb.ReAWAY, eb.ReFEED,
+	eb.ReSPAM, eb.ReRATE, eb.ReSUPP, eb.ReQUIT, eb.ReCOMM, eb.ReSYSE, eb.ReSYSF, eb.ReEXEC, eb.Re___0,
+	eb.Re___1, eb.ReHOST, eb.ReUSER, eb.ReMOVE, eb.Re00MX, eb.ReSENT, eb.ReAWAY, eb.ReFEED,
 }
 
 func TestAvailables(t *testing.T) {
@@ -25,7 +24,7 @@ func TestAvailables(t *testing.T) {
 	cv := Availables
 
 	cx++; if len(cv) ==  0 { t.Errorf("%s is empty", fn) }
-	cx++; if len(cv) != 36 { t.Errorf("%s includes invalid elements: %d", fn, len(cv)) }
+	cx++; if len(cv) != 35 { t.Errorf("%s includes invalid elements: %d", fn, len(cv)) }
 	for e := range cv {
 		cx++; if e == ""     { t.Errorf("%s returned an empty key", fn) }
 		cx++; if cv[e] == "" { t.Errorf("%s[%s] is empty", fn, cv[e]) }

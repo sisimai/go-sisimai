@@ -72,10 +72,6 @@ func init() {
 				//   Retrying will NOT succeed. See https://postmaster.yahooinc.com/error-codes
 				" will be permanently deferred",
 			},
-			eb.ReFAST: []string{ // Speeding
-				// - 450 User is receiving mail too quickly
-				"user is receiving mail too quickly",
-			},
 			eb.ReQUIT: []string{ // Suspend
 				// - 554 delivery error: dd ****@yahoo.com is no longer valid.
 				// - 554 30 Sorry, your message to *****@aol.jp cannot be delivered.
@@ -83,13 +79,15 @@ func init() {
 				" is no longer valid.",
 				"this mailbox is disabled",
 			},
+			eb.ReRATE: []string{ // RateLimited
+				// - 421 Max message per connection reached, closing transmission channel
+				// - 450 User is receiving mail too quickly
+				"max message per connection reached",
+				"user is receiving mail too quickly",
+			},
 			eb.ReCOMM: []string{ // SyntaxError
 				// - 501 Syntax error in parameters or arguments
 				"syntax error in parameters or arguments",
-			},
-			eb.ReCONN: []string{ // TooManyConn
-				// - 421 Max message per connection reached, closing transmission channel
-				"max message per connection reached",
 			},
 			eb.ReUSER: []string{ // UserUnknown
 				// - 554 delivery error: dd This user doesn't have a yahoo.com account (***@yahoo.com)

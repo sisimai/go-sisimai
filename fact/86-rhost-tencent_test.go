@@ -12,8 +12,8 @@ import "testing"
 func TestRhostTencent(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.0.0",   "550", "toomanyconn",     false, false, ""}},
-		{{"02",   1, "5.0.0",   "550", "toomanyconn",     false, false, ""}},
+		{{"01",   1, "5.0.0",   "550", "ratelimited",     false, false, ""}},
+		{{"02",   1, "5.0.0",   "550", "ratelimited",     false, false, ""}},
 		{{"03",   1, "5.0.0",   "550", "authfailure",     false, false, ""}},
 	}; EngineTest(t, "Tencent", publiclist, true)
 

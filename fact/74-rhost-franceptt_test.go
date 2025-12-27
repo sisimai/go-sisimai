@@ -18,7 +18,7 @@ func TestRhostFrancePTT(t *testing.T) {
 		{{"04",   1, "5.2.0",   "550", "spamdetected",    false, false, ""}},
 		{{"05",   1, "5.5.0",   "550", "suspend",         false,  true, ""}},
 		{{"06",   1, "4.0.0",   "",    "blocked",         false, false, ""}},
-		{{"07",   1, "4.0.0",   "421", "toomanyconn",     false, false, ""}},
+		{{"07",   1, "4.0.0",   "421", "ratelimited",     false, false, ""}},
 		{{"08",   1, "4.2.0",   "421", "systemerror",     false, false, ""}},
 		{{"10",   1, "5.5.0",   "550", "blocked",         false, false, ""}},
 		{{"11",   1, "4.2.1",   "421", "requireptr",      false, false, ""}},

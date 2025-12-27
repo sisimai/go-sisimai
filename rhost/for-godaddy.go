@@ -86,19 +86,19 @@ func init() {
 			//   retry. IB605
 			// - The message has attempted to mail too many recipients.
 			// - Reduce the number of recipients and try again.
-			"IB605": eb.ReCONN, // TooManyConn
+			"IB605": eb.ReRATE, // RateLimited
 
 			// - 421 Connection refused, too many sessions from This IP. Lower the number of concurrent
 			//   sessions. IB007
 			// - This IP address currently has too many sessions open.
 			// - Check with your email provider to reduce the number of open sessions on your IP address
 			//   and then try again.
-			"IB007": eb.ReCONN, // TooManyConn
+			"IB007": eb.ReRATE, // RateLimited
 
 			// - 421 Server temporarily unavailable. Try again later. IB101
 			// - The email queue is experiencing higher than normal email volume.
 			// - Try again later.
-			"IB101": eb.ReFAST, // Speeding
+			"IB101": eb.ReRATE, // RateLimited
 
 			// - 554 This IP has been temporarily blocked for attempting to send too many messages
 			//   containing content judged to be spam by the Internet community. IB110
@@ -129,16 +129,16 @@ func init() {
 
 			// - 550 This IP has sent too many messages this hour. IB504
 			// - This IP address has reached the maximum allowed messages for that hour.
-			"IB504": eb.ReFAST, // Speeding
+			"IB504": eb.ReRATE, // RateLimited
 
 			// - 550 This message has exceeded the max number of messages per session. Open a new session
 			//   and try again. IB510
 			// - This IP address has reached the maximum allowed messages for that session.
-			"IB510": eb.ReFAST, // Speeding
+			"IB510": eb.ReRATE, // RateLimited
 
 			// - 550 This IP has sent too many to too many recipients this hour. IB607
 			// - This IP address has reached the maximum allowed recipients for that hour.
-			"IB607": eb.ReFAST, // Speeding
+			"IB607": eb.ReRATE, // RateLimited
 
 			// Remote block list (RBL) bounces
 			// -----------------------------------------------------------------------------------------
@@ -205,7 +205,7 @@ func init() {
 				//   other. They need to correct their forwarding settings.
 				"message is looping",
 			},
-			eb.ReCONN: []string{ // TooManyConn
+			eb.ReRATE: []string{ // RateLimited
 				// - 550 5.7.232 Your message can't be sent because your trial tenant has exceeded
 				//   its daily limit for sending email to external recipients (tenant external
 				//   recipient rate limit)

@@ -417,7 +417,7 @@ func init() {
 				// - https://support.google.com/mail/?p=UnsolicitedMessageError
 				[3]string{"550", "5.7.1", "likely unsolicited mail"},
 			},
-			eb.ReFAST: [][3]string{ // Speeding
+			eb.ReRATE: [][3]string{ // RateLimited
 				// - 450 4.2.1 The user you are trying to contact is receiving mail too quickly. Please
 				//   resend your message at a later time. If the user is able to receive mail at that
 				//   time, your message will be delivered. 
@@ -436,6 +436,12 @@ func init() {
 				// - https://support.google.com/mail/?p=ReceivingRatePerm
 				[3]string{"450", "4.2.1", "rate that prevents additional messages from being delivered"},
 				[3]string{"550", "5.2.1", "rate that prevents additional messages from being delivered"},
+
+				// - 452 4.5.3 Your message has too many recipients. For more information regarding
+				//   Google's sending limits, visit https://support.google.com/mail/answer/6592
+				//   https://support.google.com/mail/?p=TooManyRecipientsError
+				[3]string{"452", "4.5.3", "your message has too many recipients"},
+				[3]string{"550", "5.5.3", "too many recipients for this sender"},
 
 				// - 550 5.4.5 Daily SMTP relay limit exceeded for user. For more information on SMTP
 				//   relay sending limits please contact your administrator or visit SMTP relay service
@@ -516,13 +522,6 @@ func init() {
 				//   For more information, go to About SMTP error messages.
 				//   https://support.google.com/a/answer/3221692
 				[3]string{"454", "4.7.0", "cannot authenticate due to temporary system problem"},
-			},
-			eb.ReCONN: [][3]string{ // TooManyConn
-				// - 452 4.5.3 Your message has too many recipients. For more information regarding
-				//   Google's sending limits, visit https://support.google.com/mail/answer/6592
-				//   https://support.google.com/mail/?p=TooManyRecipientsError
-				[3]string{"452", "4.5.3", "your message has too many recipients"},
-				[3]string{"550", "5.5.3", "too many recipients for this sender"},
 			},
 			eb.ReUSER: [][3]string{ // UserUnknown
 				// - 550 5.1.1 The email account that you tried to reach does not exist. Please try

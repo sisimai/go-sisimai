@@ -526,13 +526,35 @@ func init() {
 				//   exceptions for content filtering.
 				[4]string{"5.2.1", "", "", "content filter agent quarantined this message"},
 			},
-			eb.ReFAST: [][4]string{ // Speeding
+			eb.ReRATE: [][4]string{ // RateLimited
+				// Exchange Server 2019 ----------------------------------------------------------------
+				// - The combined total of recipients on the To, Cc, and Bcc lines of the message exceeds
+				//   the total number of recipients allowed in a single message for the organization,
+				//   Receive connector, or sender. For more information, see Message size and recipient
+				//   limits in Exchange Server.
+				[4]string{"5.5.3", "", "", "too many recipients"},
+
 				// Exchange Online ---------------------------------------------------------------------
 				// - The recipient mailbox's ability to accept messages is being throttled because
 				//   it's receiving too many messages too quickly. This is done so a single recipient's
 				//   mail processing doesn't unfairly impact other recipients sharing the same mailbox
 				//   database.
 				[4]string{"4.3.2", "", "", "storedrv.deliver; recipient thread limit exceeded"},
+
+				// - The message has more than 200 SMTP envelope recipients from the same domain.
+				// - An envelope recipient is the original, unexpanded recipient that's used in the
+				//   RCPT TO command to transmit the message between SMTP servers. When this error
+				//   is returned by Microsoft 365 or Office 365, the sending server must break up
+				//   the number of envelope recipients into smaller chunks (chunking) and resend the
+				//   message.
+				[4]string{"4.5.3", "", "", "too many recipients"},
+
+				// - 451 4.7.652 The mail server [192.0.2.251] has exceeded the maximum number of
+				//   connections. (S3115) [Name=Protocol Filter Agent][AGT=PFA][MxId=11BA9B3FA168ABBF]
+				//   [BN3PEPF0000B370.namprd21.prod.outlook.com 2025-02-20T14:30:32.425Z 08DD4D9FD5AFF45C]
+				//   (in reply to MAIL FROM command))
+				[4]string{"4.7.652", "", "", "has exceeded the maximum number of connections"},
+
 
 				// - The sender has exceeded the recipient rate limit as described in Sending limits.
 				// - This could indicate the account has been compromised and is being used to send
@@ -561,6 +583,7 @@ func init() {
 				//   Microsoft 365 and Office 365 users from rapidly filling their inboxes with a large
 				//   number of messages from errant automated notification systems or other mail storms.
 				[4]string{"5.2.122", "", "", "recipient's per hour message receive limit"},
+				[4]string{"5.2.122", "", "", "the recipient has exceeded their limit for"},
 
 				// - Access denied, [$SenderIPAddress] has exceeded permitted limits within $range range
 				// - The sender's IPv6 range has attempted to send too many messages in too short a
@@ -678,32 +701,6 @@ func init() {
 				//   that is configured to use dynamic memory). Always use static memory on Exchange
 				//   virtual machines.
 				[4]string{"4.3.1", "", "", "insufficient system resources"},
-			},
-			eb.ReCONN: [][4]string{ // TooManyConn
-				// Exchange Server 2019 ----------------------------------------------------------------
-				// - The combined total of recipients on the To, Cc, and Bcc lines of the message exceeds
-				//   the total number of recipients allowed in a single message for the organization,
-				//   Receive connector, or sender. For more information, see Message size and recipient
-				//   limits in Exchange Server.
-				[4]string{"5.5.3", "", "", "too many recipients"},
-				
-				// Exchange Online ---------------------------------------------------------------------
-				// - The message has more than 200 SMTP envelope recipients from the same domain.
-				// - An envelope recipient is the original, unexpanded recipient that's used in the
-				//   RCPT TO command to transmit the message between SMTP servers. When this error
-				//   is returned by Microsoft 365 or Office 365, the sending server must break up
-				//   the number of envelope recipients into smaller chunks (chunking) and resend the
-				//   message.
-				[4]string{"4.5.3", "", "", "too many recipients"},
-
-				// - 451 4.7.652 The mail server [192.0.2.251] has exceeded the maximum number of
-				//   connections. (S3115) [Name=Protocol Filter Agent][AGT=PFA][MxId=11BA9B3FA168ABBF]
-				//   [BN3PEPF0000B370.namprd21.prod.outlook.com 2025-02-20T14:30:32.425Z 08DD4D9FD5AFF45C]
-				//   (in reply to MAIL FROM command))
-				[4]string{"4.7.652", "", "", "has exceeded the maximum number of connections"},
-
-				// Previous versions of Exchange Server ------------------------------------------------
-				[4]string{"5.2.122", "", "", "the recipient has exceeded their limit for"},
 			},
 			eb.ReUSER: [][4]string{ // UserUnknown
 				// Exchange Server 2019 ----------------------------------------------------------------

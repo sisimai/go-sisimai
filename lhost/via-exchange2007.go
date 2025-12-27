@@ -69,7 +69,7 @@ func init() {
 			"RESOLVER.ADR.RecipNotFound":     eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.RecipNotFound
 			"RESOLVER.ADR.RecipientNotFound": eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.RecipientNotFound
 			"RESOLVER.ADR.ExRecipNotFound":   eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.ExRecipNotFound
-			"RESOLVER.ADR.RecipLimit":        eb.ReCONN, // 550 5.5.3 RESOLVER.ADR.RecipLimit
+			"RESOLVER.ADR.RecipLimit":        eb.ReRATE, // 550 5.5.3 RESOLVER.ADR.RecipLimit
 			"RESOLVER.ADR.InvalidInSmtp":     eb.ReSYSE, // 550 5.1.0 RESOLVER.ADR.InvalidInSmtp
 			"RESOLVER.ADR.Ambiguous":         eb.ReSYSE, // 550 5.1.4 RESOLVER.ADR.Ambiguous, 420 4.2.0 RESOLVER.ADR.Ambiguous
 			"RESOLVER.RST.AuthRequired":      eb.ReSECU, // 550 5.7.1 RESOLVER.RST.AuthRequired

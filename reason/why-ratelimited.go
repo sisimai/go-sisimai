@@ -1,11 +1,10 @@
 // Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-//  _____           __  __                    ____                  
-// |_   _|__   ___ |  \/  | __ _ _ __  _   _ / ___|___  _ __  _ __  
-//   | |/ _ \ / _ \| |\/| |/ _` | '_ \| | | | |   / _ \| '_ \| '_ \ 
-//   | | (_) | (_) | |  | | (_| | | | | |_| | |__| (_) | | | | | | |
-//   |_|\___/ \___/|_|  |_|\__,_|_| |_|\__, |\____\___/|_| |_|_| |_|
-//                                     |___/                        
+//  ____       _       _     _           _ _           _ 
+// |  _ \ __ _| |_ ___| |   (_)_ __ ___ (_) |_ ___  __| |
+// | |_) / _` | __/ _ \ |   | | '_ ` _ \| | __/ _ \/ _` |
+// |  _ < (_| | ||  __/ |___| | | | | | | | ||  __/ (_| |
+// |_| \_\__,_|\__\___|_____|_|_| |_| |_|_|\__\___|\__,_|
 
 package reason
 import "strings"
@@ -20,7 +19,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn[eb.ReCONN] = func(mesg string) bool {
+	IncludedIn[eb.ReRATE] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -28,10 +27,12 @@ func init() {
 			"connection rate limit exceeded",
 			"exceeds per-domain connection limit for",
 			"has exceeded the max emails per hour ",
+			"mail sent from your IP address has been temporarily rate limited",
+			"please try again slower",
+			"receiving mail at a rate that prevents additional messages from being delivered",
 			"throttling failure: daily message quota exceeded",
 			"throttling failure: maximum sending rate exceeded",
 			"too many connections",
-			"too many connections from your host.", // Microsoft
 			"too many concurrent smtp connections", // Microsoft
 			"too many errors from your ip",         // Free.fr
 			"too many recipients",                  // ntt docomo
@@ -47,11 +48,11 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto[eb.ReCONN] = func(fo *siba.Fact) bool {
+	ProbesInto[eb.ReRATE] = func(fo *siba.Fact) bool {
 		if fo == nil                                   { return false }
-		if fo.Reason == eb.ReCONN                      { return true  }
-		if status.Name(fo.DeliveryStatus) == eb.ReCONN { return true  }
-		return IncludedIn[eb.ReCONN](strings.ToLower(fo.DiagnosticCode))
+		if fo.Reason == eb.ReRATE                      { return true  }
+		if status.Name(fo.DeliveryStatus) == eb.ReRATE { return true  }
+		return IncludedIn[eb.ReRATE](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

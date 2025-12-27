@@ -516,16 +516,15 @@ func Code(name string, temp bool) string {
 		eb.Re___1: "5.0.901",
 		eb.RePOLI: "5.0.972",
 		eb.ReFROM: "5.0.918",
+		eb.ReRATE: "5.0.945",
 		eb.ReQPTR: "5.0.973",
 		eb.ReSECU: "5.0.970",
 		eb.ReSPAM: "5.0.980",
-		eb.ReFAST: "5.0.946",
 		eb.ReSUPP: "5.0.903",
 		eb.ReQUIT: "5.0.921",
 		eb.ReSYSE: "5.0.930",
 		eb.ReSYSF: "5.0.931",
 		eb.ReCOMM: "5.0.902",
-		eb.ReCONN: "5.0.945",
 		eb.ReUSER: "5.0.911",
 		eb.Re___0: "5.0.900",
 		eb.ReEXEC: "5.0.981",
@@ -551,16 +550,15 @@ func Code(name string, temp bool) string {
 		eb.Re___1: "4.0.901",
 		eb.RePOLI: "4.0.972",
 		eb.ReFROM: "4.0.918",
+		eb.ReRATE: "4.0.945",
 		eb.ReQPTR: "4.0.973",
 		eb.ReSECU: "4.0.970",
 		eb.ReSPAM: "4.0.980",
-		eb.ReFAST: "4.0.946",
 		eb.ReSUPP: "4.0.903",
 		eb.ReQUIT: "4.0.921",
 		eb.ReSYSE: "4.0.930",
 		eb.ReSYSF: "4.0.931",
 		eb.ReCOMM: "4.0.902",
-		eb.ReCONN: "4.0.945",
 	//	eb.ReUSER: "4.0.911",
 		eb.Re___0: "4.0.900",
 		eb.ReEXEC: "4.0.981",
@@ -604,7 +602,7 @@ func Name(code string) string {
 		"4.4.7":  eb.ReEXPR, // Delivery time expired
 		"4.4.8":  eb.ReNETW, // Retry on IPv4
 	//	"4.5.0":  eb.ReNETW, // Other or undefined protocol status
-		"4.5.3":  eb.ReCONN, // Too many recipients
+		"4.5.3":  eb.ReRATE, // Too many recipients
 		"4.5.5":  eb.ReSYSE, // Wrong protocol version
 		"4.6.0":  eb.ReBODY, // Other or undefined media error
 		"4.6.2":  eb.ReBODY, // Conversion required and prohibited
@@ -647,7 +645,7 @@ func Name(code string) string {
 		"5.4.3":  eb.ReSYSE, // Directory server failure
 		"5.4.4":  eb.ReHOST, // Unable to route
 		"5.5.2":  eb.ReSYSE, // If the server cannot BASE64 decode any client response (AUTH)
-		"5.5.3":  eb.ReCONN, // Too many recipients
+		"5.5.3":  eb.ReRATE, // Too many recipients
 		"5.5.4":  eb.ReSYSE, // Invalid command arguments
 		"5.5.5":  eb.ReSYSE, // Wrong protocol version
 		"5.5.6":  eb.ReCOMM, // Authentication Exchange line is too long

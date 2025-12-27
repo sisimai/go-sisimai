@@ -15,8 +15,8 @@ import "libsisimai.org/sisimai/v5/siba"
 
 // Keep each function (pointer) defined in reason/why-*.go to check/detect the bounce reason.
 // % grep '^func init' ./reason/why-*.go | wc -l
-var IncludedIn = make(map[string]func(string) bool, 36)
-var ProbesInto = make(map[string]func(*siba.Fact) bool, 36)
+var IncludedIn = make(map[string]func(string) bool, 35)
+var ProbesInto = make(map[string]func(*siba.Fact) bool, 35)
 var Availables = map[string]string{
 	eb.ReAUTH: "Email rejected due to SPF, DKIM, DMARC failure",
 	eb.ReREPU: "Email rejected due to an IP address reputation",
@@ -41,15 +41,14 @@ var Availables = map[string]string{
 	eb.RePOLI: "Email rejected due to policy violation on a destination host",
 	eb.ReFROM: "Email rejected due to a senders email address (envelope from)",
 	eb.ReQPTR: "Email rejected due to missing PTR record or having invalid PTR record",
+	eb.ReRATE: "Rejected due to exceeding a rate limit: sending too fast or too many concurrency connections",
 	eb.ReSECU: "Email rejected due to security violation was detected on a destination host",
 	eb.ReSPAM: "Email rejected by spam filter running on the remote host",
-	eb.ReFAST: "Rejected due to exceeding a rate limit or sending too fast",
 	eb.ReSUPP: "Email was not delivered due to being listed in suppression list on MTA",
 	eb.ReQUIT: "Email rejected due to a recipient account is being suspended",
 	eb.ReCOMM: "Email rejected due to syntax error at sent commands in SMTP session",
 	eb.ReSYSE: "Email returned due to system error on the remote host",
 	eb.ReSYSF: "Email rejected due to a destination mail servers disk is full",
-	eb.ReCONN: "SMTP connection rejected temporarily due to too many concurrency connections to the remote host",
 	eb.Re___0: "Sisimai could not detect an error reason",
 	eb.ReUSER: "Email rejected due to a local part of a recipients email address does not exist",
 	eb.ReAWAY: "Email replied automatically due to a recipient is out of office",
@@ -58,11 +57,11 @@ var Availables = map[string]string{
 var classorder = [][]string{
 	[]string{
 		eb.ReFULL, eb.ReSIZE, eb.ReXLIM, eb.ReQUIT, eb.ReMOVE, eb.ReRELA, eb.ReAUTH, eb.ReUSER, eb.ReFILT,
-		eb.ReQPTR, eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReFAST, eb.ReCONN, eb.ReBLOC,
+		eb.ReQPTR, eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
 	},
 	[]string{
-		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReFAST, eb.ReSPAM, eb.ReEXEC, eb.RePOLI, eb.ReRELA, eb.ReSYSE,
-		eb.ReNETW, eb.ReQUIT, eb.ReBODY, eb.ReSYSF, eb.Re00MX, eb.ReEXPR, eb.ReTTLS, eb.ReSECU, eb.ReSUPP, eb.ReUNIX,
+		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.RePOLI, eb.ReRELA, eb.ReSYSE, eb.ReNETW,
+		eb.ReQUIT, eb.ReBODY, eb.ReSYSF, eb.Re00MX, eb.ReEXPR, eb.ReTTLS, eb.ReSECU, eb.ReSUPP, eb.ReUNIX,
 	},
 }
 
