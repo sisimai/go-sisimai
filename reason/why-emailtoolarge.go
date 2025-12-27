@@ -48,7 +48,7 @@ func init() {
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
 	ProbesInto[eb.ReSIZE] = func(fo *siba.Fact) bool {
-		// Delivery status code points MesgTooBig.
+		// Delivery status code points EmailTooLarge.
 		// Status: 5.3.4
 		// Diagnostic-Code: SMTP; 552 5.3.4 Error: message file too big
 		// Diagnostic-Code: SMTP; 552 5.2.3 Message length exceeds administrative limit
