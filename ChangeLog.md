@@ -10,6 +10,9 @@ v5.X.X
 - version: ""
 - changes:
   - #303 Update some bounce reasons in `smtp/status/lib.go`.
+  - #307 Cosolidate 4 bounce reasons into the following 2 reasons:
+    - #308 `TooManyConn` and `Speeding` are consolidated into `RateLimited`.
+    - #309 `ExceedLimit` and `MesgTooBig` are consolidated into `EmailTooLarge`.
 
 v5.5.0
 ---------------------------------------------------------------------------------------------------
