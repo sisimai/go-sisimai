@@ -64,7 +64,7 @@ The key features of Sisimai
 * __High Precision of Analysis__
   * Support [60 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
   * Support Feedback Loop Message(ARF)
-  * Can detect [36 bounce reasons](https://libsisimai.org/en/reason/)
+  * Can detect [34 bounce reasons](https://libsisimai.org/en/reason/)
 
 [^1]: The callback function allows you to add your own data under the `Catch` field.
 

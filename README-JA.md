@@ -61,7 +61,7 @@ The key features of Sisimai
 * __高い解析精度__
   * [60種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
   * Feedback Loop(ARF)にも対応
-  * [36種類のバウンス理由](https://libsisimai.org/en/reason/)を検出
+  * [34種類のバウンス理由](https://libsisimai.org/en/reason/)を検出
 
 [^1]: コールバック機能を使用すると`Catch`フィールドの下に独自のデータを追加できます
 
