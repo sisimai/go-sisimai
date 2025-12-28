@@ -173,10 +173,15 @@ func init() {
 				[3]string{"550", "5.7.1",  "an unusual rate of unsolicited mail"},
 				[3]string{"550", "5.7.28", "an unusual rate of unsolicited mail"},
 			},
-			eb.ReXLIM: [][3]string{ // ExceedLimit
+			eb.ReSIZE: [][3]string{ // EmailTooLarge
 				// - 552 5.2.3 Your message exceeded Google's message size limits. For more information,
 				//   visit https://support.google.com/mail/answer/6584
 				[3]string{"552", "5.2.3", "exceeded google's message size limits"},
+
+				// - 552 5.3.4 Your message exceeded Google"s message size limits. To view our message
+				//   size guidelines, go to Send attachments with your Gmail message.
+				// - https://support.google.com/mail/?p=MaxSizeError
+				[3]string{"552", "5.3.4", "exceeded google's message size limits"},
 
 				// - 552 5.3.4 The number of attachments (num-attachments) exceeds Google's limit of
 				//   limit attachments. To view our attachment size guidelines, go to Gmail receiving
@@ -190,6 +195,12 @@ func init() {
 				[3]string{"552", "5.3.4", "bytes per individual header size"},
 				[3]string{"552", "5.3.4", "exceeds google's header name limit of"},
 				[3]string{"552", "5.3.4", "exceeds google's message header size limit"},
+
+				// - 552 5.3.4 The size of your message (size bytes) exceeded Google's message size
+				//   limits of limit bytes. To view our message size guidelines, go to Gmail receiving
+				//   limits in Google Workspace.
+				// - https://support.google.com/mail/?p=MaxSizeError
+				[3]string{"552", "5.3.4", "exceeds google's message size limit of"},
 			},
 			eb.ReEXPR: [][3]string{ // Expired
 				// - 421 4.7.0 Connection expired, try reconnecting. For more information, go to About
@@ -228,18 +239,6 @@ func init() {
 				[3]string{"452", "4.2.2", "is over quota"},
 				[3]string{"552", "5.2.2", "is over quota"},
 				[3]string{"550", "5.7.1", "email quota exceeded"},
-			},
-			eb.ReSIZE: [][3]string{ // MesgTooBig
-				// - 552 5.3.4 Your message exceeded Google"s message size limits. To view our message
-				//   size guidelines, go to Send attachments with your Gmail message.
-				// - https://support.google.com/mail/?p=MaxSizeError
-				[3]string{"552", "5.3.4", "exceeded google's message size limits"},
-
-				// - 552 5.3.4 The size of your message (size bytes) exceeded Google's message size
-				//   limits of limit bytes. To view our message size guidelines, go to Gmail receiving
-				//   limits in Google Workspace.
-				// - https://support.google.com/mail/?p=MaxSizeError
-				[3]string{"552", "5.3.4", "exceeds google's message size limit of"},
 			},
 			eb.ReNETW: [][3]string{ // NetworkError
 				// - 554 5.4.6 Message exceeded 50 hops, this may indicate a mail loop.

@@ -500,7 +500,6 @@ func Code(name string, temp bool) string {
 		eb.ReREPU: "5.0.975",
 		eb.ReBLOC: "5.0.971",
 		eb.ReBODY: "5.0.960",
-		eb.ReXLIM: "5.0.923",
 		eb.ReEXPR: "5.0.947",
 		eb.ReTTLS: "5.0.976",
 		eb.ReFILT: "5.0.910",
@@ -534,7 +533,6 @@ func Code(name string, temp bool) string {
 		eb.ReREPU: "4.0.975",
 		eb.ReBLOC: "4.0.971",
 		eb.ReBODY: "4.0.960",
-		eb.ReXLIM: "4.0.923",
 		eb.ReEXPR: "4.0.947",
 		eb.ReTTLS: "4.0.976",
 		eb.ReFILT: "4.0.924",
@@ -585,7 +583,7 @@ func Name(code string) string {
 		"4.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
 		"4.2.1":  eb.ReQUIT, // Mailbox disabled, not accepting messages
 		"4.2.2":  eb.ReFULL, // Mailbox full
-		"4.2.3":  eb.ReXLIM, // Message length exceeds administrative limit
+		"4.2.3":  eb.ReSIZE, // Message length exceeds administrative limit
 		"4.2.4":  eb.ReSYSE, // Mailing list expansion problem
 	//	"4.3.0":  eb.ReSYSE, // Other or undefined mail system status
 		"4.3.1":  eb.ReSYSF, // Mail system full
@@ -633,7 +631,7 @@ func Name(code string) string {
 		"5.2.0":  eb.ReFILT, // Other or undefined mailbox status
 		"5.2.1":  eb.ReFILT, // Mailbox disabled, not accepting messages
 		"5.2.2":  eb.ReFULL, // Mailbox full
-		"5.2.3":  eb.ReXLIM, // Message length exceeds administrative limit
+		"5.2.3":  eb.ReSIZE, // Message length exceeds administrative limit
 		"5.2.4":  eb.ReSYSE, // Mailing list expansion problem
 		"5.3.0":  eb.ReSYSE, // Other or undefined mail system status
 		"5.3.1":  eb.ReSYSF, // Mail system full

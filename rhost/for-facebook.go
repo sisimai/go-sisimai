@@ -48,7 +48,7 @@ func init() {
 			eb.ReFULL: []string{ // MailboxFull
 				"INT-P7", // The attempted recipient has exceeded their storage quota.
 			},
-			eb.ReSIZE: []string{ // MesgTooBig
+			eb.ReSIZE: []string{ // EmailTooLarge
 				"MSG-P1", // The message exceeds Facebook's maximum allowed size.
 				"INT-P2", // The message exceeds Facebook's maximum allowed size.
 			},

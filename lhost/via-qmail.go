@@ -105,7 +105,7 @@ func init() {
 		onholdpair := []string{" does not like recipient.", "this message has been in the queue too long."}
 		failonldap := map[string][]string{
 			// qmail-ldap-1.03-20040101.patch:19817 - 19866
-			eb.ReXLIM: []string{"The message exeeded the maximum size the user accepts"}, // 5.2.3
+			eb.ReSIZE: []string{"The message exeeded the maximum size the user accepts"}, // 5.2.3
 			eb.ReQUIT: []string{
 				"Mailaddress is administrativly disabled",
 				"Mailaddress is administrativley disabled",

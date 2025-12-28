@@ -74,7 +74,7 @@ func init() {
 			"RESOLVER.ADR.Ambiguous":         eb.ReSYSE, // 550 5.1.4 RESOLVER.ADR.Ambiguous, 420 4.2.0 RESOLVER.ADR.Ambiguous
 			"RESOLVER.RST.AuthRequired":      eb.ReSECU, // 550 5.7.1 RESOLVER.RST.AuthRequired
 			"RESOLVER.RST.NotAuthorized":     eb.ReFROM, // 550 5.7.1 RESOLVER.RST.NotAuthorized
-			"RESOLVER.RST.RecipSizeLimit":    eb.ReXLIM, // 550 5.2.3 RESOLVER.RST.RecipSizeLimit
+			"RESOLVER.RST.RecipSizeLimit":    eb.ReSIZE, // 550 5.2.3 RESOLVER.RST.RecipSizeLimit
 			"QUEUE.Expired":                  eb.ReEXPR, // 550 4.4.7 QUEUE.Expired
 		}
 		if moji.ContainsAny(bf.Headers["subject"][0], emailtitle) { proceedsto++ }

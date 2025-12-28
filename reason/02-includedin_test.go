@@ -32,7 +32,10 @@ func TestIncludedIn(t *testing.T) {
 		eb.ReBODY: []string{
 			"550 5.6.0 the headers in this message contain improperly-formatted binary content",
 		},
-		eb.ReXLIM: []string{
+		eb.ReSIZE: []string{
+			"400 4.2.3 Message too big",
+			"#550 5.2.3 RESOLVER.RST.RecipSizeLimit; message too large for this recipient ##",
+			"552 5.2.3 Message size exceeds fixed maximum message size (10485760)",
 			"5.2.3 Message too large",
 			"permanent failure 5.3.0 - Other mail system problem #5.3.4 message header size exceeds limit",
 		},
@@ -63,11 +66,6 @@ func TestIncludedIn(t *testing.T) {
 			"X-Unix; 255",
 			`554 "|IFS=' ' && exec /usr/local/bin/procmail -f- || exit 75 #kijitora"... Service unavailable`,
 			"pipe to |/usr/local/neko/bin/cat kijitora@example.com /home/neko/.cat",
-		},
-		eb.ReSIZE: []string{
-			"400 4.2.3 Message too big",
-			"#550 5.2.3 RESOLVER.RST.RecipSizeLimit; message too large for this recipient ##",
-			"552 5.2.3 Message size exceeds fixed maximum message size (10485760)",
 		},
 		eb.ReNETW: []string{
 			"554 5.4.6 Too many hops",

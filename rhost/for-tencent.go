@@ -32,7 +32,7 @@ func init() {
 				"suspected spam ip",        // https://service.mail.qq.com/detail/122/66
 				"connection denied",        // https://service.mail.qq.com/detail/122/170
 			},
-			eb.ReSIZE: []string{ // MesgTooBig
+			eb.ReSIZE: []string{ // EmailTooLarge
 				"message too large",        // https://service.mail.qq.com/detail/122/168
 			},
 			eb.ReRATE: []string{ // RateLimited

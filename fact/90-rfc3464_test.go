@@ -53,7 +53,7 @@ func TestRFC3464(t *testing.T) {
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1003", 1, "5.0.934", "553", "mesgtoobig",      false, false, ""}},
+		{{"1003", 1, "5.0.934", "553", "emailtoolarge",   false, false, ""}},
 		{{"1009", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1011", 1, "5.1.2",   "550", "hostunknown",      true,  true, ""}},
 		{{"1013", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
@@ -122,7 +122,7 @@ func TestRFC3464(t *testing.T) {
 		{{"1111", 1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
 		{{"1112", 1, "5.1.0",   "550", "userunknown",      true,  true, ""}},
 		{{"1113", 1, "5.2.0",   "",    "filtered",        false,  true, ""}},
-		{{"1117", 1, "5.0.934", "553", "mesgtoobig",      false, false, ""}},
+		{{"1117", 1, "5.0.934", "553", "emailtoolarge",   false, false, ""}},
 		{{"1118", 1, "4.4.1",   "",    "expired",         false, false, ""}},
 		{{"1120", 1, "5.2.0",   "",    "filtered",        false,  true, ""}},
 		{{"1121", 1, "4.4.0",   "",    "expired",         false, false, ""}},
@@ -166,7 +166,7 @@ func TestRFC3464(t *testing.T) {
 		 {"1156",21, "5.7.1",   "550", "spamdetected",    false, false, ""}},
 		{{"1157", 1, "5.3.0",   "",    "filtered",        false,  true, ""}},
 		{{"1159", 1, "5.1.1",   "550", "mailboxfull",     false,  true, ""}},
-		{{"1163", 1, "5.1.1",   "550", "mesgtoobig",      false, false, ""}},
+		{{"1163", 1, "5.1.1",   "550", "emailtoolarge",   false, false, ""}},
 		{{"1164", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1183", 1, "5.0.922", "",    "mailboxfull",     false, false, ""}},
 		{{"1212", 1, "4.2.2",   "",    "mailboxfull",     false, false, ""}},
@@ -215,7 +215,7 @@ func TestRFC3464(t *testing.T) {
 		{{"1282", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1285", 1, "5.7.0",   "554", "spamdetected",    false, false, ""}},
 		{{"1287", 1, "5.0.0",   "550", "filtered",        false,  true, ""}},
-		{{"1288", 1, "5.3.4",   "552", "mesgtoobig",      false, false, ""}},
+		{{"1288", 1, "5.3.4",   "552", "emailtoolarge",   false, false, ""}},
 		{{"1289", 1, "4.0.0",   "",    "notaccept",       false, false, ""}},
 		{{"1290", 1, "4.3.0",   "451", "systemerror",     false, false, ""}},
 		{{"1300", 1, "5.1.0",   "550", "userunknown",      true,  true, ""}},

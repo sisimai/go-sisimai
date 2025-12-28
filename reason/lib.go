@@ -23,7 +23,7 @@ var Availables = map[string]string{
 	eb.ReBLOC: "Email rejected due to client IP address or a hostname",
 	eb.ReBODY: "Email rejected due to a header format of the email",
 	eb.ReSENT: "Email delivered successfully",
-	eb.ReXLIM: "Email rejected due to an email exceeded the limit",
+	eb.ReSIZE: "Email rejected due to an email size is too big for a destination mail server",
 	eb.ReEXPR: "Delivery time has expired due to a connection failure",
 	eb.ReTTLS: "Email delivery failed due to STARTTLS related problem",
 	eb.ReFEED: "Email forwarded to the sender as a complaint message from your mailbox provider",
@@ -32,7 +32,6 @@ var Availables = map[string]string{
 	eb.ReHOST: "Delivery failed due to a domain part of a recipients email address does not exist",
 	eb.ReFULL: "Email rejected due to a recipients mailbox is full",
 	eb.ReUNIX: "Email returned due to a mailer program has not exited successfully",
-	eb.ReSIZE: "Email rejected due to an email size is too big for a destination mail server",
 	eb.ReNETW: "SMTP connection failed due to DNS look up failure or other network problems",
 	eb.ReRELA: "Email rejected due to a connected host did not accept relaying",
 	eb.Re00MX: "Delivery failed due to a destination mail server does not accept any email",
@@ -56,8 +55,8 @@ var Availables = map[string]string{
 }
 var classorder = [][]string{
 	[]string{
-		eb.ReFULL, eb.ReSIZE, eb.ReXLIM, eb.ReQUIT, eb.ReMOVE, eb.ReRELA, eb.ReAUTH, eb.ReUSER, eb.ReFILT,
-		eb.ReQPTR, eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
+		eb.ReFULL, eb.ReSIZE, eb.ReQUIT, eb.ReMOVE, eb.ReRELA, eb.ReAUTH, eb.ReUSER, eb.ReFILT, eb.ReQPTR,
+		eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
 	},
 	[]string{
 		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.RePOLI, eb.ReRELA, eb.ReSYSE, eb.ReNETW,
