@@ -340,7 +340,7 @@ func init() {
 				[4]string{"4.4.312", "", "", "dns query failed"},  // [Message=InfoNoRecords]
 				[4]string{"5.4.312", "", "", "dns query failed"},  // [Message=InfoNoRecords]
 			},
-			eb.ReRELA: [][4]string{
+			eb.ReRELA: [][4]string{ // NoRelaying
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - You have an application server or device that's trying to relay messages through
 				//   Exchange. For more information, see Allow anonymous relay on Exchange servers.
