@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                  _ _ 
 //  _ __ ___   ___ (_|_)
@@ -9,29 +9,10 @@
 
 // Package "moji" provides functions for dealing strings. "moji" stands for "character" or "string" in Japanese.
 package moji
-import "fmt"
 import "strings"
-import "crypto/sha1"
 
 const LHS string = "<@>" // The LHS string for Select() function
 const RHS string = "<$>" // The RHS string for Select() function
-
-// Token creates a message token string from the given arguments: addresser, recipient, unix time.
-//   Arguments:
-//     - addre (string): Email address of the sender.
-//     - recip (string): Email address of the recipient.
-//     - epoch (int):    Machine time of the bounce.
-//   Returns:
-//     - (string): Message token(SHA1 hex digest) or empty string.
-func Token(addre string, recip string, epoch int) string {
-	// - http://en.wikipedia.org/wiki/ASCII
-	if addre == "" || len(recip) == 0 { return "" }
-
-	// Format: STX(0x02) Sender-Address RS(0x1e) Recipient-Address ETX(0x03)
-	plain := fmt.Sprintf("\x02%s\x1e%s\x1e%d\x03", strings.ToLower(addre), strings.ToLower(recip), epoch)
-	crypt := sha1.New(); crypt.Write([]byte(plain))
-	return fmt.Sprintf("%x", crypt.Sum(nil))
-}
 
 // Squeeze remove redundant characters from the given string.
 //   Arguments:

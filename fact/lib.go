@@ -1,17 +1,20 @@
-// Copyright (C) 2020-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
-//   __            _     ____  _          
-//  / _| __ _  ___| |_  |  _ \(_)___  ___ 
-// | |_ / _` |/ __| __| | |_) | / __|/ _ \
-// |  _| (_| | (__| |_ _|  _ <| \__ \  __/
-// |_|  \__,_|\___|\__(_)_| \_\_|___/\___|
+//   __            _   
+//  / _| __ _  ___| |_ 
+// | |_ / _` |/ __| __|
+// |  _| (_| | (__| |_ 
+// |_|  \__,_|\___|\__|
+//                     
 
 // Package "fact" provide a function for generating structs keeping decoded bounce mail data.
 package fact
+import "fmt"
 import "time"
 import "slices"
 import "strings"
 import "net/mail"
+import "crypto/sha1"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/lda"
 import "libsisimai.org/sisimai/v5/siba"
@@ -285,7 +288,7 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 			thing.Subject        = piece["subject"]
 			thing.Timestamp      = clock
 			thing.TimezoneOffset = clock.Format("+0900")
-			thing.Token          = moji.Token(as.Address, ar.Address, int(thing.Timestamp.Unix()))
+			thing.Token          = token(as.Address, ar.Address, int(thing.Timestamp.Unix()))
 			thing.Toxic          = e.Toxic
 		}
 
@@ -402,5 +405,22 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		for j := range (*beforefact).Errors { (*beforefact).Errors[j].Email(origin) }
 	}
 	return listoffact, beforefact.Errors
+}
+
+// token creates a message token string from the given arguments: addresser, recipient, unix time.
+//   Arguments:
+//     - addre (string): Email address of the sender.
+//     - recip (string): Email address of the recipient.
+//     - epoch (int):    Machine time of the bounce.
+//   Returns:
+//     - (string): Message token(SHA1 hex digest) or empty string.
+func token(addre string, recip string, epoch int) string {
+	// - http://en.wikipedia.org/wiki/ASCII
+	if addre == "" || len(recip) == 0 { return "" }
+
+	// Format: STX(0x02) Sender-Address RS(0x1e) Recipient-Address ETX(0x03)
+	plain := fmt.Sprintf("\x02%s\x1e%s\x1e%d\x03", strings.ToLower(addre), strings.ToLower(recip), epoch)
+	crypt := sha1.New(); crypt.Write([]byte(plain))
+	return fmt.Sprintf("%x", crypt.Sum(nil))
 }
 
