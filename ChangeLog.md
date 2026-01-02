@@ -13,6 +13,7 @@ v5.X.X
   - #307 Cosolidate 4 bounce reasons into the following 2 reasons:
     - #308 `TooManyConn` and `Speeding` are consolidated into `RateLimited`.
     - #309 `ExceedLimit` and `MesgTooBig` are consolidated into `EmailTooLarge`.
+  - #319 `moji.Token()` has been moved to `fact/lib.go`.
 
 v5.5.0
 ---------------------------------------------------------------------------------------------------
