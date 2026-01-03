@@ -430,7 +430,7 @@ Author
 
 Copyright
 ===================================================================================================
-Copyright (C) 2014-2025 azumakuniyuki and sisimai development team, All Rights Reserved.
+Copyright (C) 2014-2026 azumakuniyuki and sisimai development team, All Rights Reserved.
 
 License
 ===================================================================================================
