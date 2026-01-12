@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package status
 
@@ -13,7 +13,7 @@ import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 
 var ReasonList = []string{
-	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReEXPR, eb.ReTTLS, eb.ReFILT, eb.ReFULL, eb.ReUNIX,
+	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReTIME, eb.ReTTLS, eb.ReFILT, eb.ReFULL, eb.ReUNIX,
 	eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReFROM, eb.ReQPTR, eb.ReSECU, eb.ReSPAM,
 	eb.ReRATE, eb.ReSUPP, eb.ReQUIT, eb.ReCOMM, eb.ReSYSE, eb.ReSYSF, eb.ReEXEC,
 	eb.Re___0, eb.Re___1, eb.ReHOST, eb.ReUSER, eb.ReMOVE, 
