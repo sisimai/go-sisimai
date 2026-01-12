@@ -373,7 +373,7 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 			}
 			switch thing.Reason {
 				case eb.ReSENT: thing.Action = eb.AeSENT // delivered
-				case eb.ReEXPR: thing.Action = eb.AeSTAY // delayed
+				case eb.ReTIME: thing.Action = eb.AeSTAY // delayed
 			}
 			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = eb.AeFAIL }
 		}
