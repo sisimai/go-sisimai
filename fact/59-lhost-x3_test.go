@@ -13,21 +13,21 @@ func TestLhostX3(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 		{{"01",   1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"02",   1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"02",   1, "5.9.340", "",    "expired",         false, false, ""}},
 		{{"03",   1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"05",   1, "5.0.900", "",    "undefined",       false, false, ""}},
+		{{"05",   1, "5.9.300", "",    "undefined",       false, false, ""}},
 		{{"06",   1, "5.2.2",   "552", "mailboxfull",     false,  true, ""}},
 	}; EngineTest(t, "X3", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 		{{"1001", 1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"1002", 1, "5.0.900", "",    "undefined",       false, false, ""}},
-		{{"1003", 1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"1002", 1, "5.9.300", "",    "undefined",       false, false, ""}},
+		{{"1003", 1, "5.9.340", "",    "expired",         false, false, ""}},
 		{{"1004", 1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"1005", 1, "5.0.900", "",    "undefined",       false, false, ""}},
+		{{"1005", 1, "5.9.300", "",    "undefined",       false, false, ""}},
 		{{"1006", 1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"1007", 1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"1007", 1, "5.9.340", "",    "expired",         false, false, ""}},
 		{{"1008", 1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "X3", secretlist, false)
 }
