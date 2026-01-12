@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _____            _              _ 
 // | ____|_  ___ __ (_)_ __ ___  __| |
@@ -18,7 +18,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn[eb.ReEXPR] = func(mesg string) bool {
+	IncludedIn[eb.ReTIME] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -54,6 +54,6 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto[eb.ReEXPR] = func(fo *siba.Fact) bool { return false }
+	ProbesInto[eb.ReTIME] = func(fo *siba.Fact) bool { return false }
 }
 

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      _______          _                            ____   ___   ___ _____ 
 // | | |__   ___  ___| |_   / / ____|_  _____| |__   __ _ _ __   __ _  ___|___ \ / _ \ / _ \___  |
@@ -75,7 +75,7 @@ func init() {
 			"RESOLVER.RST.AuthRequired":      eb.ReSECU, // 550 5.7.1 RESOLVER.RST.AuthRequired
 			"RESOLVER.RST.NotAuthorized":     eb.ReFROM, // 550 5.7.1 RESOLVER.RST.NotAuthorized
 			"RESOLVER.RST.RecipSizeLimit":    eb.ReSIZE, // 550 5.2.3 RESOLVER.RST.RecipSizeLimit
-			"QUEUE.Expired":                  eb.ReEXPR, // 550 4.4.7 QUEUE.Expired
+			"QUEUE.Expired":                  eb.ReTIME, // 550 4.4.7 QUEUE.Expired
 		}
 		if moji.ContainsAny(bf.Headers["subject"][0], emailtitle) { proceedsto++ }
 		if moji.ContainsAny(bf.Headers["from"][0], mailsender)    { proceedsto++ }

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      _____ __  __       _ _ ____                           
 // | | |__   ___  ___| |_   / /_ _|  \/  | __ _(_) / ___|  ___ _ ____   _____ _ __ 
@@ -40,7 +40,7 @@ func init() {
 			eb.ReFULL: []string{"User mailbox exceeds allowed size"},
 			eb.ReEXEC: []string{"Requested action not taken: virus detected"},
 			eb.ReSPAM: []string{"Blacklisted URL in message"},
-			eb.ReEXPR: []string{"Delivery failed "},
+			eb.ReTIME: []string{"Delivery failed "},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)

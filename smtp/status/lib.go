@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                _           __   _        _             
 //  ___ _ __ ___ | |_ _ __   / /__| |_ __ _| |_ _   _ ___ 
@@ -501,7 +501,7 @@ func Code(name string, temp bool) string {
 		eb.ReBLOC: "5.0.971",
 		eb.ReBODY: "5.0.960",
 		eb.ReSIZE: "5.0.934",
-		eb.ReEXPR: "5.0.947",
+		eb.ReTIME: "5.0.947",
 		eb.ReTTLS: "5.0.976",
 		eb.ReFILT: "5.0.910",
 		eb.ReMOVE: "5.0.916",
@@ -534,7 +534,7 @@ func Code(name string, temp bool) string {
 		eb.ReBLOC: "4.0.971",
 		eb.ReBODY: "4.0.960",
 		eb.ReSIZE: "4.0.934",
-		eb.ReEXPR: "4.0.947",
+		eb.ReTIME: "4.0.947",
 		eb.ReTTLS: "4.0.976",
 		eb.ReFILT: "4.0.924",
 	//	eb.ReMOVE: "4.0.916",
@@ -591,13 +591,13 @@ func Name(code string) string {
 		"4.3.3":  eb.ReSYSE, // System not capable of selected features
 		"4.3.5":  eb.ReSYSE, // System incorrectly configured
 	//	"4.4.0":  eb.ReNETW, // Other or undefined network or routing status
-		"4.4.1":  eb.ReEXPR, // No answer from host
+		"4.4.1":  eb.ReTIME, // No answer from host
 		"4.4.2":  eb.ReNETW, // Bad connection
 		"4.4.3":  eb.ReSYSE, // Directory server failure
 		"4.4.4":  eb.ReNETW, // Unable to route
 		"4.4.5":  eb.ReSYSF, // Mail system congestion
 		"4.4.6":  eb.ReNETW, // Routing loop detected
-		"4.4.7":  eb.ReEXPR, // Delivery time expired
+		"4.4.7":  eb.ReTIME, // Delivery time expired
 		"4.4.8":  eb.ReNETW, // Retry on IPv4
 	//	"4.5.0":  eb.ReNETW, // Other or undefined protocol status
 		"4.5.3":  eb.ReRATE, // Too many recipients

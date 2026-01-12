@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ __ ___  __ _ ___  ___  _ __  
 // | '__/ _ \/ _` / __|/ _ \| '_ \ 
@@ -36,7 +36,7 @@ func Find(fo *siba.Fact) string {
 		// The bounce reason is not detected yet at the code block above
 		reasontext = anotherone(fo) // Try to find a reason name using anotherone()
 		if reasontext == eb.Re___0                    { reasontext = ""        }
-		if reasontext == "" && fo.Action == eb.AeSTAY { reasontext = eb.ReEXPR }
+		if reasontext == "" && fo.Action == eb.AeSTAY { reasontext = eb.ReTIME }
 		if reasontext != ""                           { return reasontext      }
 
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
@@ -77,7 +77,7 @@ func anotherone(fo *siba.Fact) string {
 		}
 		if strings.HasPrefix(fo.DiagnosticType, "X-UNIX")     { return eb.ReUNIX }
 		if ProbesInto[eb.ReCOMM](fo) == true                  { return eb.ReCOMM }
-		if fo.Action == eb.AeSTAY                             { return eb.ReEXPR }
+		if fo.Action == eb.AeSTAY                             { return eb.ReTIME }
 		if fo.Command == eb.CeEHLO || fo.Command == eb.CeHELO { return eb.ReBLOC }
 	}
 	return reasontext

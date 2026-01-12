@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
 
@@ -39,7 +39,7 @@ func TestIncludedIn(t *testing.T) {
 			"5.2.3 Message too large",
 			"permanent failure 5.3.0 - Other mail system problem #5.3.4 message header size exceeds limit",
 		},
-		eb.ReEXPR: []string{
+		eb.ReTIME: []string{
 			"421 4.4.7 Delivery time expired",
 			"Delivery to the following recipient has been delayed: Message will be retried for 2 more day(s)",
 		},

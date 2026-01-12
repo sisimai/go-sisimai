@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ __ ___  __ _ ___  ___  _ __  
 // | '__/ _ \/ _` / __|/ _ \| '_ \ 
@@ -24,7 +24,7 @@ var Availables = map[string]string{
 	eb.ReBODY: "Email rejected due to a header format of the email",
 	eb.ReSENT: "Email delivered successfully",
 	eb.ReSIZE: "Email rejected due to an email size is too big for a destination mail server",
-	eb.ReEXPR: "Delivery time has expired due to a connection failure",
+	eb.ReTIME: "Delivery time has expired due to a connection failure",
 	eb.ReTTLS: "Email delivery failed due to STARTTLS related problem",
 	eb.ReFEED: "Email forwarded to the sender as a complaint message from your mailbox provider",
 	eb.ReFILT: "Email rejected due to a header content after SMTP DATA command",
@@ -60,7 +60,7 @@ var classorder = [][]string{
 	},
 	[]string{
 		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.RePOLI, eb.ReRELA, eb.ReSYSE, eb.ReNETW,
-		eb.ReQUIT, eb.ReBODY, eb.ReSYSF, eb.Re00MX, eb.ReEXPR, eb.ReTTLS, eb.ReSECU, eb.ReSUPP, eb.ReUNIX,
+		eb.ReQUIT, eb.ReBODY, eb.ReSYSF, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSECU, eb.ReSUPP, eb.ReUNIX,
 	},
 }
 
@@ -79,7 +79,7 @@ func IsExplicit(name string) bool {
 //   Returns:
 //     - (bool): true if the reason is listed in the table.
 func ShouldBeRetried(name string) bool {
-	cv := []string{eb.Re___0, eb.Re___1, eb.ReSYSE, eb.ReSECU, eb.ReEXPR, eb.ReNETW, eb.ReHOST, eb.ReUSER}
+	cv := []string{eb.Re___0, eb.Re___1, eb.ReSYSE, eb.ReSECU, eb.ReTIME, eb.ReNETW, eb.ReHOST, eb.ReUSER}
 	return slices.Contains(cv, name) || name == ""
 }
 

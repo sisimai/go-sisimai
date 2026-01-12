@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _       ______                            
 //   ___| |__   / /  _ \ ___  __ _ ___  ___  _ __  
@@ -15,7 +15,7 @@ const (
 	ReBODY = "ContentError"
 	ReSENT = "Delivered"
 	ReSIZE = "EmailTooLarge"
-	ReEXPR = "Expired"
+	ReTIME = "Expired"
 	ReTTLS = "FailedSTARTTLS"
 	ReFEED = "Feedback"
 	ReFILT = "Filtered"

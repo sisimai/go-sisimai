@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      _____                   ____  __  __ _____ ____  ____  
 // | | |__   ___  ___| |_   / / _ \ _ __   ___ _ __ / ___||  \/  |_   _|  _ \|  _ \ 
@@ -66,7 +66,7 @@ func init() {
 		messagesof := map[string][]string{
 			// smtpd/queue.c:221|  envelope_set_errormsg(&evp, "Envelope expired");
 			// smtpd/mta.c:1013|  relay->failstr = "Could not retrieve credentials";
-			eb.ReEXPR: []string{"Envelope expired"},
+			eb.ReTIME: []string{"Envelope expired"},
 			eb.ReSECU: []string{"Could not retrieve credentials"},
 			eb.ReHOST: []string{
 				// smtpd/mta.c:976|  relay->failstr = "Invalid domain name";

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ______                              _____ _       
 // | | |__   ___  ___| |_   / /  _ \ _ __ __ _  __ _  ___  _ __ |  ___| |_   _ 
@@ -44,7 +44,7 @@ func init() {
 			"message": []string{"This is the DragonFly Mail Agent "},
 		}
 		messagesof := map[string][]string{
-			eb.ReEXPR: []string{
+			eb.ReTIME: []string{
 				// https://github.com/corecode/dma/blob/master/dma.c#L370C1-L374C19
 				// dma.c:370| if (gettimeofday(&now, NULL) == 0 &&
 				// dma.c:371|     (now.tv_sec - st.st_mtim.tv_sec > MAX_TIMEOUT)) {

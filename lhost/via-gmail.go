@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ______                 _ _ 
 // | | |__   ___  ___| |_   / / ___|_ __ ___   __ _(_) |
@@ -81,7 +81,7 @@ func init() {
 			"error":   []string{"The error that the other server returned was:"},
 		}
 		messagesof := map[string][]string{
-			eb.ReEXPR: []string{
+			eb.ReTIME: []string{
 				"DNS Error: Could not contact DNS servers",
 				"Delivery to the following recipient has been delayed",
 				"The recipient server did not accept our requests to connect",
