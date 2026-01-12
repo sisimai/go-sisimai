@@ -698,7 +698,7 @@ func Name(code string) string {
 //   Since:
 //     - v5.2.2
 func IsExplicit(code string) bool {
-	if code == "" || len(code) == 7 && strings.Index(code, ".0.9") == 1 { return false }
+	if code == "" || len(code) == 7 && strings.Index(code, ".9.") == 1 { return false }
 	return true
 }
 
