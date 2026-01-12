@@ -15,20 +15,20 @@ func TestLhostSendGrid(t *testing.T) {
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"02",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"03",   1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"03",   1, "5.9.340", "",    "expired",         false, false, ""}},
 	}; EngineTest(t, "SendGrid", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 		{{"1001", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1002", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1003", 1, "5.0.947", "",    "expired",         false, false, ""}},
-		{{"1004", 1, "5.0.911", "550", "userunknown",      true,  true, ""}},
+		{{"1003", 1, "5.9.340", "",    "expired",         false, false, ""}},
+		{{"1004", 1, "5.9.213", "550", "userunknown",      true,  true, ""}},
 		{{"1005", 1, "5.2.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1006", 1, "5.2.2",   "550", "mailboxfull",     false,  true, ""}},
 		{{"1007", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1008", 1, "5.0.911", "554", "userunknown",      true,  true, ""}},
-		{{"1009", 1, "5.0.911", "550", "userunknown",      true,  true, ""}},
+		{{"1008", 1, "5.9.213", "554", "userunknown",      true,  true, ""}},
+		{{"1009", 1, "5.9.213", "550", "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "SendGrid", secretlist, false)
 }
 
