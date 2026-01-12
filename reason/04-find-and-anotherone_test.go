@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package reason
 
@@ -45,7 +45,7 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "", DiagnosticCode: "local configuration error"},
 
 		// Expired
-		siba.Fact{Reason: eb.ReEXPR},
+		siba.Fact{Reason: eb.ReTIME},
 		siba.Fact{DiagnosticCode: "Message timed out"},
 
 		// NetworkError
