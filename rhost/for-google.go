@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ______                   _      
 //  _ __| |__   ___  ___| |_   / / ___| ___   ___   __ _| | ___ 
@@ -202,7 +202,7 @@ func init() {
 				// - https://support.google.com/mail/?p=MaxSizeError
 				[3]string{"552", "5.3.4", "exceeds google's message size limit of"},
 			},
-			eb.ReEXPR: [][3]string{ // Expired
+			eb.ReTIME: [][3]string{ // Expired
 				// - 421 4.7.0 Connection expired, try reconnecting. For more information, go to About
 				// SMTP error messages. https://support.google.com/a/answer/3221692
 				[3]string{"421", "4.7.0", "connection expired"},

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ______       ____            _     _       
 //  _ __| |__   ___  ___| |_   / / ___| ___ |  _ \  __ _  __| | __| |_   _ 
@@ -167,7 +167,7 @@ func init() {
 				"rbl reject",
 				"www.spamhaus.org/query/bl?ip=",
 			},
-			eb.ReEXPR: []string{ // Expired
+			eb.ReTIME: []string{ // Expired
 				// - 451 Sorry, I wasn't able to establish an SMTP connection. I'm not going to try again;
 				//   this message has been in the queue too long.
 				// - The recipient's email address has been misspelled or the recipient's email provider
