@@ -13,20 +13,20 @@ func TestLhostActivehunter(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"02",   1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"02",   1, "5.9.210", "550", "filtered",        false,  true, ""}},
 	}
 	EngineTest(t, "Activehunter", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1001", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
 		{{"1002", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1003", 1, "5.3.0"  , "553", "filtered",        false,  true, ""}},
 		{{"1004", 1, "5.7.17",  "550", "filtered",        false,  true, ""}},
 		{{"1005", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1006", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1007", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
-		{{"1008", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1007", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
+		{{"1008", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
 		{{"1009", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1010", 1, "5.3.0",   "553", "filtered",        false,  true, ""}},
 		{{"1011", 1, "5.7.17",  "550", "filtered",        false,  true, ""}},
