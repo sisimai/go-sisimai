@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      _______      _           
 // | | |__   ___  ___| |_   / / ____|_  _(_)_ __ ___  
@@ -437,7 +437,7 @@ func init() {
 						// The reason is Expired, or MailerError
 						if moji.ContainsAny(e.Diagnosis, delayedfor) == true {
 							// The reason is Expired
-							e.Reason = eb.ReEXPR
+							e.Reason = eb.ReTIME
 
 						} else {
 							// The reason is MailerError
@@ -462,7 +462,7 @@ func init() {
 			cs := status.Find(e.Diagnosis, cr)
 			cv := ""
 
-			if strings.HasPrefix(cr, "4") || e.Reason == eb.ReEXPR || e.Reason == eb.ReFULL {
+			if strings.HasPrefix(cr, "4") || e.Reason == eb.ReTIME || e.Reason == eb.ReFULL {
 				// Set the pseudo status code as a temporary error
 				cv = status.Code(e.Reason, true)
 
