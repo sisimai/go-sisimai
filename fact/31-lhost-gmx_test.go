@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -16,12 +16,12 @@ func TestLhostGMX(t *testing.T) {
 		{{"02", 1, "5.1.1",   "",    "userunknown",      true,  true, ""}},
 		{{"03", 1, "5.2.1",   "",    "userunknown",      true,  true, ""},
 		 {"03", 2, "5.2.2",   "",    "mailboxfull",     false,  true, ""}},
-		{{"04", 1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"04", 1, "5.9.340", "",    "expired",         false, false, ""}},
 	}; EngineTest(t, "GMX", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"1001", 1, "5.9.340", "",    "expired",         false, false, ""}},
 		{{"1002", 1, "5.1.1",   "",    "userunknown",      true,  true, ""}},
 		{{"1003", 1, "5.2.2",   "",    "mailboxfull",     false,  true, ""}},
 		{{"1004", 1, "5.2.1",   "",    "userunknown",      true,  true, ""},
