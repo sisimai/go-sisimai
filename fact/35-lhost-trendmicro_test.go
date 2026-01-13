@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -13,8 +13,8 @@ func TestLhostTrendMicro(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"02",   1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"03",   1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"02",   1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"03",   1, "5.9.213", "",    "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "TrendMicro", publiclist, true)
 
 	secretlist := [][]IsExpected{
@@ -23,20 +23,20 @@ func TestLhostTrendMicro(t *testing.T) {
 		{{"1002", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1003", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1004", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1005", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1005", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
 		{{"1006", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1007", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1008", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1009", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1010", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1011", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1012", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1013", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1014", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1015", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1016", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1017", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1018", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1008", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1009", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1010", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1011", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1012", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1013", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1014", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1015", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1016", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1017", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1018", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
 	}; EngineTest(t, "TrendMicro", secretlist, false)
 }
 
