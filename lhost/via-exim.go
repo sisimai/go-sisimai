@@ -471,7 +471,7 @@ func init() {
 				cv = status.Code(e.Reason, false)
 			}
 			if e.ReplyCode == "" { e.ReplyCode = cr }
-			if e.Status    == "" { e.Status = status.Prefer(cs, cv, cr) }
+			if e.Status    == "" { e.Status = status.Prefer(cv, cs, cr) }
 		}
 
 		for emailparts[1] == "" {
