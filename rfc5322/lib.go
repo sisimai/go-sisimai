@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ ____ _________  ____  
 // |  _ \|  ___/ ___| ___|___ /___ \|___ \ 
@@ -14,13 +14,13 @@ import "libsisimai.org/sisimai/v5/moji"
 var FieldIndex = []string{
 	// The following fields are not referred in Sisimai
 	// Resent-From Resent-Sender Resent-Cc Cc Bcc Resent-Bcc In-Reply-To References Comments Keywords
-	"Resent-Date", "From", "Sender", "Reply-To", "To", "Message-ID", "Subject", "Return-Path",
-	"Received", "Date", "X-Mailer", "Content-Type", "Content-Transfer-Encoding", "Content-Description",
-	"Content-Disposition",
+	"Resent-Date", "From", "Sender", "Reply-To", "To", "Message-ID", "Subject", "Return-Path", "Received",
+	"Date", "X-Mailer", "Content-Type", "Content-Transfer-Encoding", "Content-Description", "Content-Disposition",
 }
 var HeaderTable = map[string][]string{
 	"messageid": []string{"message-id"},
-	"subject":   []string{"subject"}, "listid":    []string{"list-id"},
+	"subject":   []string{"subject"},
+	"listid":    []string{"list-id"},
 	"date":      []string{"date", "osted-date", "posted", "resent-date"},
 	"addresser": []string{
 		"from", "return-path", "reply-to", "errors-to", "reverse-path", "x-postfix-sender",
