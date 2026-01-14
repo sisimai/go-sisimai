@@ -495,75 +495,41 @@ import "libsisimai.org/sisimai/v5/eb"
 func Code(name string, temp bool) string {
 	if len(name) < 6 { return "" }
 
-	codetable0 := map[string]string{
-		eb.ReAUTH: "5.9.130",
-		eb.ReREPU: "5.9.132",
-		eb.ReBLOC: "5.9.134",
-		eb.ReBODY: "5.9.160",
-		eb.ReSIZE: "5.9.161",
-		eb.ReTIME: "5.9.340",
-		eb.ReTTLS: "5.9.350",
-		eb.ReFILT: "5.9.210",
-		eb.ReMOVE: "5.9.211",
-		eb.ReHOST: "5.9.212",
-		eb.ReFULL: "5.9.220",
-		eb.ReUNIX: "5.9.230",
-		eb.ReNETW: "5.9.341",
-		eb.ReRELA: "5.9.214",
-		eb.Re00MX: "5.9.215",
-		eb.ReNRFC: "5.9.162",
-		eb.Re___1: "5.9.301",
-		eb.RePOLI: "5.9.371",
-		eb.ReRATE: "5.9.131",
-		eb.ReFROM: "5.9.110",
-		eb.ReQPTR: "5.9.133",
-		eb.ReSECU: "5.9.370",
-		eb.ReSPAM: "5.9.164",
-		eb.ReSUPP: "5.9.310",
-		eb.ReQUIT: "5.9.221",
-		eb.ReCOMM: "5.9.351",
-		eb.ReSYSE: "5.9.231",
-		eb.ReSYSF: "5.9.232",
-		eb.Re___0: "5.9.300",
-		eb.ReUSER: "5.9.213",
-		eb.ReEXEC: "5.9.165",
+	codetables := map[string][2]string{
+		eb.ReAUTH: [2]string{"5.9.130", "4.9.130"}, // AuthFailure
+		eb.ReREPU: [2]string{"5.9.132", "4.9.132"}, // BadReputation
+		eb.ReBLOC: [2]string{"5.9.134", "4.9.134"}, // Blocked
+		eb.ReBODY: [2]string{"5.9.160", "4.9.160"}, // ContentError
+		eb.ReSIZE: [2]string{"5.9.161", "4.9.161"}, // EmailTooLarge
+		eb.ReTIME: [2]string{"5.9.340", "4.9.340"}, // Expired
+		eb.ReTTLS: [2]string{"5.9.350", "4.9.350"}, // FailedSTARTTLS
+		eb.ReFILT: [2]string{"5.9.210", "4.9.210"}, // Filtered
+		eb.ReMOVE: [2]string{"5.9.211", ""},        // HasMoved
+		eb.ReHOST: [2]string{"5.9.212", ""},        // HostUnknown
+		eb.ReFULL: [2]string{"5.9.220", "4.9.220"}, // MailboxFull
+		eb.ReUNIX: [2]string{"5.9.230", "4.9.230"}, // MailerError
+		eb.ReNETW: [2]string{"5.9.341", "4.9.341"}, // NetworkError
+		eb.ReRELA: [2]string{"5.9.214", "4.9.214"}, // NoRelaying
+		eb.Re00MX: [2]string{"5.9.215", "4.9.215"}, // NotAccept
+		eb.ReNRFC: [2]string{"5.9.162", "4.9.162"}, // NotCompliantRFC
+		eb.Re___1: [2]string{"5.9.301", "4.9.301"}, // OnHold
+		eb.RePOLI: [2]string{"5.9.371", "4.9.371"}, // PolicyViolation
+		eb.ReRATE: [2]string{"5.9.131", "4.9.131"}, // RateLimited
+		eb.ReFROM: [2]string{"5.9.110", "4.9.110"}, // Rejected
+		eb.ReQPTR: [2]string{"5.9.133", "4.9.133"}, // RequirePTR
+		eb.ReSECU: [2]string{"5.9.370", "4.9.370"}, // SecurityError
+		eb.ReSPAM: [2]string{"5.9.164", "4.9.164"}, // SpamDetected
+		eb.ReSUPP: [2]string{"5.9.310", "4.9.310"}, // Suppressed
+		eb.ReQUIT: [2]string{"5.9.221", "4.9.221"}, // Suspend
+		eb.ReCOMM: [2]string{"5.9.351", "4.9.351"}, // SyntaxError
+		eb.ReSYSE: [2]string{"5.9.231", "4.9.231"}, // SystemError
+		eb.ReSYSF: [2]string{"5.9.232", "4.9.232"}, // SystemFull
+		eb.Re___0: [2]string{"5.9.300", "4.9.300"}, // Undefined
+		eb.ReUSER: [2]string{"5.9.213", ""},        // UserUnknown
+		eb.ReEXEC: [2]string{"5.9.165", "4.9.165"}, // VirusDetected
 	}
-	codetable1 := map[string]string{
-		eb.ReAUTH: "4.0.926",
-		eb.ReREPU: "4.0.975",
-		eb.ReBLOC: "4.0.971",
-		eb.ReBODY: "4.0.960",
-		eb.ReSIZE: "4.0.934",
-		eb.ReTIME: "4.0.947",
-		eb.ReTTLS: "4.0.976",
-		eb.ReFILT: "4.0.924",
-	//	eb.ReMOVE: "4.0.916",
-	//	eb.ReHOST: "4.0.912",
-		eb.ReFULL: "4.0.922",
-		eb.ReUNIX: "4.0.939",
-		eb.ReNETW: "4.0.944",
-		eb.ReRELA: "4.0.909",
-		eb.Re00MX: "4.0.932",
-		eb.ReNRFC: "4.0.974",
-		eb.Re___1: "4.0.901",
-		eb.RePOLI: "4.0.972",
-		eb.ReRATE: "4.0.945",
-		eb.ReFROM: "4.0.918",
-		eb.ReQPTR: "4.0.973",
-		eb.ReSECU: "4.0.970",
-		eb.ReSPAM: "4.0.980",
-		eb.ReSUPP: "4.0.903",
-		eb.ReQUIT: "4.0.921",
-		eb.ReSYSE: "4.0.930",
-		eb.ReSYSF: "4.0.931",
-		eb.ReCOMM: "4.0.902",
-	//	eb.ReUSER: "4.0.911",
-		eb.Re___0: "4.0.900",
-		eb.ReEXEC: "4.0.981",
-	}
-
-	if temp == true { return codetable1[name] }
-	return codetable0[name]
+	if temp == true { return codetables[name][1] }
+	return codetables[name][0]
 }
 
 // Name returns a reason string matched with the given delivery status code.
