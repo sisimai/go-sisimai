@@ -67,7 +67,7 @@ func TestCode(t *testing.T) {
 				t.Errorf("%s(%s, true) returns (%s)", fn, e, cv)
 			}
 		} else {
-			cx++; if cv := Code(e, true);  strings.HasPrefix(cv, "4.0.9") == false {
+			cx++; if cv := Code(e, true);  strings.HasPrefix(cv, "4.9.") == false {
 				t.Errorf("%s(%s, true) returns (%s)", fn, e, cv)
 			}
 			cx++; if cv := Code(e, false); strings.HasPrefix(cv, "5.9.") == false {
