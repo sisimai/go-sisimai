@@ -16,8 +16,8 @@ func TestLhostZoho(t *testing.T) {
 		{{"02",   1, "5.2.1",   "550", "filtered",        false,  true, ""},
 		 {"02",   2, "5.2.2",   "550", "mailboxfull",     false,  true, ""}},
 		{{"03",   1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"04",   1, "4.0.947", "421", "expired",         false, false, ""}},
-		{{"05",   1, "4.0.947", "421", "expired",         false, false, ""}},
+		{{"04",   1, "4.9.340", "421", "expired",         false, false, ""}},
+		{{"05",   1, "4.9.340", "421", "expired",         false, false, ""}},
 	}; EngineTest(t, "Zoho", publiclist, true)
 
 	secretlist := [][]IsExpected{
@@ -26,7 +26,7 @@ func TestLhostZoho(t *testing.T) {
 		{{"1002", 1, "5.2.1",   "550", "filtered",        false,  true, ""},
 		 {"1002", 2, "5.2.2",   "550", "mailboxfull",     false,  true, ""}},
 		{{"1003", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"1004", 1, "4.0.947", "421", "expired",         false, false, ""}},
+		{{"1004", 1, "4.9.340", "421", "expired",         false, false, ""}},
 	}; EngineTest(t, "Zoho", secretlist, false)
 }
 
