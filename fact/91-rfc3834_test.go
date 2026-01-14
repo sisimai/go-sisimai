@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -17,7 +17,7 @@ func TestRFC3834(t *testing.T) {
 		{{"03",   1, "",        "",    "vacation",        false, false, ""}},
 		{{"04",   1, "",        "",    "vacation",        false, false, ""}},
 		{{"05",   1, "",        "",    "vacation",        false, false, ""}},
-		{{"06",   1, "5.0.921", "",    "suspend",         false,  true, ""}},
+		{{"06",   1, "5.9.221", "",    "suspend",         false,  true, ""}},
 	}; EngineTest(t, "RFC3834", publiclist, true)
 
 	secretlist := [][]IsExpected{
@@ -35,7 +35,7 @@ func TestRFC3834(t *testing.T) {
 		{{"1011", 1, "",        "",    "vacation",        false, false, ""}},
 		{{"1012", 1, "",        "",    "vacation",        false, false, ""}},
 		{{"1013", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1014", 1, "5.0.921", "",    "suspend",         false,  true, ""}},
+		{{"1014", 1, "5.9.221", "",    "suspend",         false,  true, ""}},
 	}; EngineTest(t, "RFC3834", secretlist, false)
 }
 

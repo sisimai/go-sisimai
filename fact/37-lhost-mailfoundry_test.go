@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -13,16 +13,16 @@ import "testing"
 func TestLhostMailFoundry(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"01",   1, "5.9.210", "550", "filtered",        false,  true, ""}},
 		{{"02",   1, "5.1.1",   "552", "mailboxfull",     false,  true, ""}},
 	}; EngineTest(t, "MailFoundry", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1001", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
 		{{"1002", 1, "5.1.1",   "552", "mailboxfull",     false,  true, ""}},
 		{{"1003", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1004", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1004", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
 		{{"1005", 1, "5.1.1",   "552", "mailboxfull",     false,  true, ""}},
 	}; EngineTest(t, "MailFoundry", secretlist, false)
 }

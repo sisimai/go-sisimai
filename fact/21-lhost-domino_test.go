@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,7 +12,7 @@ import "testing"
 func TestLhostDomino(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"01",   1, "5.9.213", "",    "userunknown",      true,  true, ""}},
 		{{"02",   1, "5.0.0",   "",    "userunknown",      true,  true, ""}}, // #50
 		{{"03",   1, "5.0.0",   "",    "networkerror",    false, false, ""}},
 	}; EngineTest(t, "Domino", publiclist, true)
@@ -24,15 +24,15 @@ func TestLhostDomino(t *testing.T) {
 		{{"1003", 1, "5.0.0",   "",    "onhold",          false, false, ""}},
 		{{"1004", 1, "5.0.0",   "",    "onhold",          false, false, ""}},
 		{{"1005", 1, "5.0.0",   "",    "onhold",          false, false, ""}},
-		{{"1006", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1006", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
 		{{"1007", 1, "5.0.0",   "",    "userunknown",      true,  true, ""}},
-		{{"1008", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1009", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1010", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1008", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1009", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1010", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
 		{{"1011", 1, "5.1.1",   "",    "userunknown",      true,  true, ""}},
-		{{"1012", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1013", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
-		{{"1014", 1, "5.0.911", "",    "userunknown",      true,  true, ""}},
+		{{"1012", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1013", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
+		{{"1014", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
 		{{"1015", 1, "5.0.0",   "",    "networkerror",    false, false, ""}},
 		{{"1016", 1, "5.0.0",   "",    "systemerror",     false, false, ""}},
 		{{"1017", 1, "5.0.0",   "",    "userunknown",      true,  true, ""}},

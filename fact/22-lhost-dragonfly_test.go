@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -16,7 +16,7 @@ func TestLhostDragonFly(t *testing.T) {
 		{{"01",   1, "5.7.26",  "550", "authfailure",     false, false, ""}},
 		{{"02",   1, "5.7.509", "550", "authfailure",     false, false, ""}},
 		{{"03",   1, "5.7.9",   "554", "policyviolation", false, false, ""}},
-		{{"04",   1, "5.0.912", "",    "hostunknown",      true,  true, ""}},
+		{{"04",   1, "5.9.212", "",    "hostunknown",      true,  true, ""}},
 		{{"05",   1, "5.7.26",  "550", "authfailure",     false, false, ""}},
 		{{"06",   1, "5.7.25",  "550", "requireptr",      false, false, ""}},
 		{{"07",   1, "5.6.0",   "550", "contenterror",    false, false, ""}},
@@ -41,14 +41,14 @@ func TestLhostDragonFly(t *testing.T) {
 		{{"26",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"27",   1, "5.7.13",  "525", "suspend",         false,  true, ""}},
 		{{"28",   1, "5.2.2",   "552", "mailboxfull",     false,  true, ""}},
-		{{"29",   1, "5.0.947", "",    "expired",         false, false, ""}},
-		{{"30",   1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"29",   1, "5.9.340", "",    "expired",         false, false, ""}},
+		{{"30",   1, "5.9.340", "",    "expired",         false, false, ""}},
 	}; EngineTest(t, "DragonFly", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 		{{"1001", 1, "5.7.26",  "550", "authfailure",     false, false, ""}},
-		{{"1002", 1, "5.0.947", "",    "expired",         false, false, ""}},
+		{{"1002", 1, "5.9.340", "",    "expired",         false, false, ""}},
 	}; EngineTest(t, "DragonFly", secretlist, false)
 }
 

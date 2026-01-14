@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                _           __   _        _             
 //  ___ _ __ ___ | |_ _ __   / /__| |_ __ _| |_ _   _ ___ 
@@ -21,9 +21,10 @@ func Prefer(argv0, argv1, argv2 string) string {
 	if argv0 == "" { return argv1 }
 	if argv1 == "" { return argv0 }
 
-	statuscode := argv0; if len(statuscode) < 5 { return argv1     }
-	codeinmesg := argv1; if len(codeinmesg) < 5 { return argv0     }
-	esmtpreply := argv2; if len(esmtpreply) < 1 { esmtpreply = "0" }
+	statuscode := argv0; if len(statuscode) < 5 { return argv1      }
+	codeinmesg := argv1; if len(codeinmesg) < 5 { return argv0      }
+	esmtpreply := argv2; if len(esmtpreply) < 1 { esmtpreply = "0"  }
+	if strings.Index(statuscode, ".9.")    == 1 { return codeinmesg }
 
 	if the1stchar := [3]byte{
 		[]byte(statuscode[0:1])[0], // argv0: The "Status:" field

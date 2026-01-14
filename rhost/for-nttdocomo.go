@@ -52,7 +52,7 @@ func init() {
 		// Final-Recipient: RFC822; ***@docomo.ne.jp
 		// Action: failed
 		// Status: 5.2.0
-		if statuscode == "5.1.1" || statuscode == "5.0.911" { return eb.ReUSER }
+		if statuscode == "5.1.1" || statuscode == "5.9.213" { return eb.ReUSER }
 		if statuscode == "5.2.0"                            { return eb.ReFILT }
 
 		for e := range messagesof {

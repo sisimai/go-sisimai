@@ -15,7 +15,7 @@ func TestLhostMXLogic(t *testing.T) {
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
 		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"02",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"03",   1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"03",   1, "5.9.210", "550", "filtered",        false,  true, ""}},
 	}; EngineTest(t, "MXLogic", publiclist, true)
 
 	secretlist := [][]IsExpected{
@@ -29,8 +29,8 @@ func TestLhostMXLogic(t *testing.T) {
 		{{"1007", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1008", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1009", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1010", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
-		{{"1011", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1010", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
+		{{"1011", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
 	}; EngineTest(t, "MXLogic", secretlist, false)
 }
 

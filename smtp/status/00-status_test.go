@@ -63,14 +63,14 @@ func TestCode(t *testing.T) {
 	for _, e := range ReasonList {
 		if e == eb.ReMOVE || e == eb.ReHOST || e == eb.ReUSER {
 			cx++; if cv := Code(e, true);  cv != "" { t.Errorf("%s(%s, true) returns (%s)", fn, e, cv) }
-			cx++; if cv := Code(e, false); strings.HasPrefix(cv, "5.0.9") == false {
+			cx++; if cv := Code(e, false); strings.HasPrefix(cv, "5.9.") == false {
 				t.Errorf("%s(%s, true) returns (%s)", fn, e, cv)
 			}
 		} else {
-			cx++; if cv := Code(e, true);  strings.HasPrefix(cv, "4.0.9") == false {
+			cx++; if cv := Code(e, true);  strings.HasPrefix(cv, "4.9.") == false {
 				t.Errorf("%s(%s, true) returns (%s)", fn, e, cv)
 			}
-			cx++; if cv := Code(e, false); strings.HasPrefix(cv, "5.0.9") == false {
+			cx++; if cv := Code(e, false); strings.HasPrefix(cv, "5.9.") == false {
 				t.Errorf("%s(%s, true) returns (%s)", fn, e, cv)
 			}
 		}
@@ -184,7 +184,7 @@ func TestIsExplicit(t *testing.T) {
 	for _, e := range StatusList {
 		cx++; if cv := IsExplicit(e); cv == false { t.Errorf("%s(%s) returns false", fn, e) }
 	}
-	for _, e := range []string{"", "4.0.900", "5.0.900"} {
+	for _, e := range []string{"", "4.9.100", "5.9.100"} {
 		cx++; if cv := IsExplicit(e); cv == true  { t.Errorf("%s(%s) returns true", fn, e)  }
 	}
 

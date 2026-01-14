@@ -36,7 +36,7 @@ func TestLhostExchange2007(t *testing.T) {
 		{{"1010", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1011", 1, "5.2.3",   "550", "emailtoolarge",   false, false, ""}},
 		{{"1012", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1013", 1, "5.0.910", "550", "filtered",        false,  true, ""}},
+		{{"1013", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
 		{{"1014", 1, "4.2.0",   "",    "systemerror",     false, false, ""}},
 		{{"1015", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1016", 1, "5.2.3",   "550", "emailtoolarge",   false, false, ""}},
