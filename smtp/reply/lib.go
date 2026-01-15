@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                _           __              _       
 //  ___ _ __ ___ | |_ _ __   / / __ ___ _ __ | |_   _ 
@@ -105,7 +105,7 @@ var associated = map[string][]string{
 	"422": []string{eb.CeAUTH,  "4.7.12",  eb.ReSECU}, // RFC5238
 	"432": []string{eb.CeAUTH,  "4.7.12",  eb.ReSECU}, // RFC4954, RFC5321
 	"451": []string{"",         "",        eb.ReSYSE}, // RFC2465, RFC5321
-	"452": []string{"",         "",        eb.ReSYSF}, // RFC5321
+	"452": []string{"",         "",        eb.ReDISK}, // RFC5321
 	"454": []string{eb.CeAUTH,  "4.7.0",   eb.ReSECU}, // RFC3207, RFC4954
 	"455": []string{"",         "",        eb.ReCOMM}, // RFC5321
 	"500": []string{"",         "",        eb.ReCOMM}, // RFC5321

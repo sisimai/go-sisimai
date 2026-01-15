@@ -151,7 +151,7 @@ func init() {
 				"system error",
 				"Unable to",
 			},
-			eb.ReSYSF: []string{"Requested action not taken: mailbox unavailable (not enough free space)"},
+			eb.ReDISK: []string{"Requested action not taken: mailbox unavailable (not enough free space)"},
 			eb.ReUSER: []string{"no mailbox here by that name"},
 		}
 

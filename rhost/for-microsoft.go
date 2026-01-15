@@ -689,7 +689,7 @@ func init() {
 				//   (in reply to MAIL FROM command))
 				[4]string{"4.7.700", "", "", "pfa agent busy, please try again."},
 			},
-			eb.ReSYSF: [][4]string{ // SystemFull
+			eb.ReDISK: [][4]string{ // SystemFull
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - Free disk space is low (for example, the disk that holds the queue database doesn't
 				//   have the required amount of free space). For more information, see Understanding

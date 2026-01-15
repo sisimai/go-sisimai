@@ -38,7 +38,7 @@ const (
 	ReQUIT = "Suspend"
 	ReCOMM = "SyntaxError"
 	ReSYSE = "SystemError"
-	ReSYSF = "SystemFull"
+	ReDISK = "SystemFull"
 	Re___0 = "Undefined"
 	ReUSER = "UserUnknown"
 	ReAWAY = "Vacation"

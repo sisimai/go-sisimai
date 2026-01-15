@@ -523,7 +523,7 @@ func Code(name string, temp bool) string {
 		eb.ReQUIT: [2]string{"5.9.221", "4.9.221"}, // Suspend
 		eb.ReCOMM: [2]string{"5.9.351", "4.9.351"}, // SyntaxError
 		eb.ReSYSE: [2]string{"5.9.231", "4.9.231"}, // SystemError
-		eb.ReSYSF: [2]string{"5.9.232", "4.9.232"}, // SystemFull
+		eb.ReDISK: [2]string{"5.9.232", "4.9.232"}, // SystemFull
 		eb.Re___0: [2]string{"5.9.300", "4.9.300"}, // Undefined
 		eb.ReUSER: [2]string{"5.9.213", ""},        // UserUnknown
 		eb.ReEXEC: [2]string{"5.9.165", "4.9.165"}, // VirusDetected
@@ -552,7 +552,7 @@ func Name(code string) string {
 		"4.2.3":  eb.ReSIZE, // Message length exceeds administrative limit
 		"4.2.4":  eb.ReSYSE, // Mailing list expansion problem
 	//	"4.3.0":  eb.ReSYSE, // Other or undefined mail system status
-		"4.3.1":  eb.ReSYSF, // Mail system full
+		"4.3.1":  eb.ReDISK, // Mail system full
 		"4.3.2":  eb.Re00MX, // System not accepting network messages
 		"4.3.3":  eb.ReSYSE, // System not capable of selected features
 		"4.3.5":  eb.ReSYSE, // System incorrectly configured
@@ -561,7 +561,7 @@ func Name(code string) string {
 		"4.4.2":  eb.ReNETW, // Bad connection
 		"4.4.3":  eb.ReSYSE, // Directory server failure
 		"4.4.4":  eb.ReNETW, // Unable to route
-		"4.4.5":  eb.ReSYSF, // Mail system congestion
+		"4.4.5":  eb.ReDISK, // Mail system congestion
 		"4.4.6":  eb.ReNETW, // Routing loop detected
 		"4.4.7":  eb.ReTIME, // Delivery time expired
 		"4.4.8":  eb.ReNETW, // Retry on IPv4
@@ -600,7 +600,7 @@ func Name(code string) string {
 		"5.2.3":  eb.ReSIZE, // Message length exceeds administrative limit
 		"5.2.4":  eb.ReSYSE, // Mailing list expansion problem
 		"5.3.0":  eb.ReSYSE, // Other or undefined mail system status
-		"5.3.1":  eb.ReSYSF, // Mail system full
+		"5.3.1":  eb.ReDISK, // Mail system full
 		"5.3.2":  eb.Re00MX, // System not accepting network messages
 		"5.3.3":  eb.ReSYSE, // System not capable of selected features
 		"5.3.4":  eb.ReSIZE, // Message too big for system
