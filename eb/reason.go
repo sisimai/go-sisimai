@@ -28,7 +28,7 @@ const (
 	Re00MX = "NotAccept"
 	ReNRFC = "NotCompliantRFC"
 	Re___1 = "OnHold"
-	RePOLI = "PolicyViolation"
+	ReWONT = "PolicyViolation"
 	ReFROM = "Rejected"
 	ReQPTR = "RequirePTR"
 	ReRATE = "RateLimited"

@@ -513,7 +513,7 @@ func Code(name string, temp bool) string {
 		eb.Re00MX: [2]string{"5.9.215", "4.9.215"}, // NotAccept
 		eb.ReNRFC: [2]string{"5.9.162", "4.9.162"}, // NotCompliantRFC
 		eb.Re___1: [2]string{"5.9.301", "4.9.301"}, // OnHold
-		eb.RePOLI: [2]string{"5.9.371", "4.9.371"}, // PolicyViolation
+		eb.ReWONT: [2]string{"5.9.371", "4.9.371"}, // PolicyViolation
 		eb.ReRATE: [2]string{"5.9.131", "4.9.131"}, // RateLimited
 		eb.ReFROM: [2]string{"5.9.110", "4.9.110"}, // Rejected
 		eb.ReQPTR: [2]string{"5.9.133", "4.9.133"}, // RequirePTR

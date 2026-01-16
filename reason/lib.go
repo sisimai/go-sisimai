@@ -37,7 +37,7 @@ var Availables = map[string]string{
 	eb.Re00MX: "Delivery failed due to a destination mail server does not accept any email",
 	eb.ReNRFC: "Email rejected due to non-compliance with RFC",
 	eb.Re___1: "Sisimai could not decided the reason due to there is no (or less) detailed information for judging the reason",
-	eb.RePOLI: "Email rejected due to policy violation on a destination host",
+	eb.ReWONT: "Email rejected due to policy violation on a destination host",
 	eb.ReFROM: "Email rejected due to a senders email address (envelope from)",
 	eb.ReQPTR: "Email rejected due to missing PTR record or having invalid PTR record",
 	eb.ReRATE: "Rejected due to exceeding a rate limit: sending too fast or too many concurrency connections",
@@ -59,7 +59,7 @@ var classorder = [][]string{
 		eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
 	},
 	[]string{
-		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.RePOLI, eb.ReRELA, eb.ReSYSE, eb.ReINET,
+		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.ReRELA, eb.ReSYSE, eb.ReINET,
 		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSECU, eb.ReSUPP, eb.ReUNIX,
 	},
 }

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ___                _      
 //  _ __| |__   ___  ___| |_   / / \   _ __  _ __ | | ___ 
@@ -57,7 +57,7 @@ func init() {
 				"relay access denied",
 			},
 			eb.Re00MX: []string{"host/domain does not accept mail"}, // NotAccept
-			eb.RePOLI: []string{ // PolicyViolation
+			eb.ReWONT: []string{ // PolicyViolation
 				// - 550 5.7.1 [CS01] Message rejected due to local policy.
 				//   Please visit https://support.apple.com/en-us/HT204137
 				"due to local policy",

@@ -31,7 +31,7 @@ func init() {
 			"inactive-mailbox":    eb.ReQUIT, // Suspend
 			"message-expired":     eb.ReTIME, // Expired
 			"no-answer-from-host": eb.ReINET, // NetworkError
-			"policy-related":      eb.RePOLI, // PolicyViolation
+			"policy-related":      eb.ReWONT, // PolicyViolation
 			"quota-issues":        eb.ReFULL, // MailboxFull
 			"routing-errors":      eb.ReSYSE, // SystemError
 			"spam-related":        eb.ReSPAM, // SpamDetected

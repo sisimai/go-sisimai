@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      _______                         ____ _____ _____ 
 //  _ __| |__   ___  ___| |_   / /  ___| __ __ _ _ __   ___ ___|  _ \_   _|_   _|
@@ -181,7 +181,7 @@ func init() {
 			"424": "",        // Veuillez essayer plus tard. LPN105_424
 			"513": "",        // Mail rejete. Mail rejected. OUK_513
 			"514": eb.ReSIZE, // Taille limite du message atteinte
-			"630": eb.RePOLI, // 554 5.7.1 Client host rejected LPN000_630
+			"630": eb.ReWONT, // 554 5.7.1 Client host rejected LPN000_630
 		}
 		messagesof := map[string][]string{
 			eb.ReAUTH: []string{

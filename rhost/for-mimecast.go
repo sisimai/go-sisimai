@@ -181,7 +181,7 @@ func init() {
 				//   Discontinue journaling old messages past the expiry threshold.
 				[2]string{"550", "journal message past expiration"},
 			},
-			eb.RePOLI: [][2]string{ // PolicyViolation
+			eb.ReWONT: [][2]string{ // PolicyViolation
 				// - The message has triggered an Anti-Spoofing policy.
 				// - Create an Anti-Spoofing policy to take no action for the sender's address or
 				//   IP address.

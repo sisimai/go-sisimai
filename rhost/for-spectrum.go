@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ______                  _                        
 //  _ __| |__   ___  ___| |_   / / ___| _ __   ___  ___| |_ _ __ _   _ _ __ ___  
@@ -59,7 +59,7 @@ func init() {
 
 			// 1160 The email you tried to send goes against your domain's security policies. 
 			// 1190 Please contact the email administrators of your domain.
-			[3]string{"1160", "1190", eb.RePOLI},
+			[3]string{"1160", "1190", eb.ReWONT},
 
 			// 1200 The IP address you're trying to send from has been flagged by Cloudmark CSI as
 			// 1210 potential spam. Have your IP administrator request a reset. 
@@ -107,7 +107,7 @@ func init() {
 
 			// 1560 Your email was rejected for having too many invalid recipients. Check your outgoing
 			//      email addresses and try again later.
-			[3]string{"1560", "", eb.RePOLI},
+			[3]string{"1560", "", eb.ReWONT},
 
 			// 1580 You've tried to send messages to too many recipients in a short period of time.
 			//      Wait a little while and try again later.

@@ -392,7 +392,7 @@ func init() {
 				//   Policy Routing Agent and Address book policies in Exchange Server.
 				[4]string{"5.3.2", "", "", "storedrv.deliver: missing or bad storedriver mdb properties"},
 			},
-			eb.RePOLI: [][4]string{ // PoklicyViolation
+			eb.ReWONT: [][4]string{ // PolicyViolation
 				// - 5.0.350 is a generic catch-all error code for a wide variety of non-specific errors
 				//   lfrom the recipient's email organization. The specific x-dg-ref header is too long
 				//   message is related to Rich Text formatted messages. The specific Requested action
@@ -784,7 +784,7 @@ func init() {
 
 			// Mail rejected by Outlook.com for policy reasons. The mail server IP connecting to
 			// Outlook.com has exhibited namespace mining behavior.
-			"SC-002": [2]string{"550", eb.RePOLI},
+			"SC-002": [2]string{"550", eb.ReWONT},
 
 			// Mail rejected by Outlook.com for policy reasons. Your IP address appears to be an
 			// open proxy/relay.

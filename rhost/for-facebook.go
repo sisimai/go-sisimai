@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ____                _                 _    
 //  _ __| |__   ___  ___| |_   / / _| __ _  ___ ___| |__   ___   ___ | | __
@@ -55,7 +55,7 @@ func init() {
 			eb.ReNRFC: []string{ // NotCompliantRFC
 				"MSG-P3", // The message contains multiple instances of a header field that can only be present once.
 			},
-			eb.RePOLI: []string{ // PolicyViolation
+			eb.ReWONT: []string{ // PolicyViolation
 				"POL-P8", // The message does not comply with Facebook's abuse policies and will not be accepted.
 			},
 			eb.ReFROM: []string{ // Rejected

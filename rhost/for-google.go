@@ -312,7 +312,7 @@ func init() {
 				// - https://support.google.com/mail/?p=RfcMessageNonCompliant
 				[3]string{"554", "5.6.0", "mail message is malformed"},
 			},
-			eb.RePOLI: [][3]string{ // PolicyViolation
+			eb.ReWONT: [][3]string{ // PolicyViolation
 				// - 552 5.7.0 Our system detected an illegal attachment on your message. Please visit
 				//   http://mail.google.com/support/bin/answer.py?answer=6590 to review our attachment
 				//   guidelines.

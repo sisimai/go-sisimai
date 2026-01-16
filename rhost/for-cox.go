@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ______          
 //  _ __| |__   ___  ___| |_   / / ___|_____  __
@@ -108,7 +108,7 @@ func init() {
 				"dns check failure - try again later",
 				"rejected - no rdns",
 			},
-			eb.RePOLI: []string{ // PolicyViolation
+			eb.ReWONT: []string{ // PolicyViolation
 				// - The sending server has attempted to communicate too soon within the SMTP transaction
 				// - The message has been rejected because it contains an attachment with one of the
 				//   following prohibited file types, which commonly contain viruses: .shb, .shs, .vbe,

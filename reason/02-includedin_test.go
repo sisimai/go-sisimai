@@ -88,7 +88,7 @@ func TestIncludedIn(t *testing.T) {
 			"554 Transaction failed: Duplicate header 'DKIM-Signature'. (in reply to end of DATA command)",
 		},
 	//	eb.Re___1: []string{"5.0.901 error"},
-		eb.RePOLI: []string{
+		eb.ReWONT: []string{
 			"570 5.7.7 Email not accepted for policy reasons",
 			"550 Denied by policy",
 			"554 email rejected due to security policies - MCSpamSignature.sa.2.2 (in reply to end of DATA command)",
