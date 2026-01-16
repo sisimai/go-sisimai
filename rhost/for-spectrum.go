@@ -74,7 +74,7 @@ func init() {
 			[3]string{"1220", "1250", eb.ReBLOC},
 
 			// 1260 Spectrum doesn't process IPV6 addresses. Connect with an IPv4 address and try again.
-			[3]string{"1260", "", eb.ReNETW},
+			[3]string{"1260", "", eb.ReINET},
 
 			// 1300 Spectrum limits the number of concurrent connections from a sender, as well as
 			// 1340 the total number of connections allowed. Limits vary based on the reputation of

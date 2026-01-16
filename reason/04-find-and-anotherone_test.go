@@ -49,7 +49,7 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticCode: "Message timed out"},
 
 		// NetworkError
-		siba.Fact{Reason: eb.ReNETW},
+		siba.Fact{Reason: eb.ReINET},
 		siba.Fact{DiagnosticCode: "No route to host"},
 
 		// UserUnknown, Filtered

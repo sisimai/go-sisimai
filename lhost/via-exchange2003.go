@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      _______          _                            ____   ___   ___ _____ 
 // | | |__   ___  ___| |_   / / ____|_  _____| |__   __ _ _ __   __ _  ___|___ \ / _ \ / _ \___ / 
@@ -60,7 +60,7 @@ func init() {
 				"00010256", // Too many recipients.
 				"000D06B5", // No proxy for recipient (non-smtp mail?)
 			},
-			eb.ReNETW: []string{ // NetworkError
+			eb.ReINET: []string{ // NetworkError
 				"00120270", // Too Many Hops
 			},
 			eb.ReBODY: []string{ // ContentError

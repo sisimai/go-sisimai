@@ -138,7 +138,7 @@ func init() {
 				//   message with a 70 MB attachment, can have an overall size larger than 100 MB).
 				[2]string{"554", "maximum email size exceeded"},
 			},
-			eb.ReNETW: [][2]string{ // NetworkError
+			eb.ReINET: [][2]string{ // NetworkError
 				// - The recipients' domains have MX records configured incorrectly
 				// - Check and remove any MX records that point to hostnames with outbound references.
 				//   Only Inbound smart hosts are supported on MX records.

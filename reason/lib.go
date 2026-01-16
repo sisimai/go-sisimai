@@ -32,7 +32,7 @@ var Availables = map[string]string{
 	eb.ReHOST: "Delivery failed due to a domain part of a recipients email address does not exist",
 	eb.ReFULL: "Email rejected due to a recipients mailbox is full",
 	eb.ReUNIX: "Email returned due to a mailer program has not exited successfully",
-	eb.ReNETW: "SMTP connection failed due to DNS look up failure or other network problems",
+	eb.ReINET: "SMTP connection failed due to DNS look up failure or other network problems",
 	eb.ReRELA: "Email rejected due to a connected host did not accept relaying",
 	eb.Re00MX: "Delivery failed due to a destination mail server does not accept any email",
 	eb.ReNRFC: "Email rejected due to non-compliance with RFC",
@@ -59,7 +59,7 @@ var classorder = [][]string{
 		eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
 	},
 	[]string{
-		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.RePOLI, eb.ReRELA, eb.ReSYSE, eb.ReNETW,
+		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.RePOLI, eb.ReRELA, eb.ReSYSE, eb.ReINET,
 		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSECU, eb.ReSUPP, eb.ReUNIX,
 	},
 }
@@ -79,7 +79,7 @@ func IsExplicit(name string) bool {
 //   Returns:
 //     - (bool): true if the reason is listed in the table.
 func ShouldBeRetried(name string) bool {
-	cv := []string{eb.Re___0, eb.Re___1, eb.ReSYSE, eb.ReSECU, eb.ReTIME, eb.ReNETW, eb.ReHOST, eb.ReUSER}
+	cv := []string{eb.Re___0, eb.Re___1, eb.ReSYSE, eb.ReSECU, eb.ReTIME, eb.ReINET, eb.ReHOST, eb.ReUSER}
 	return slices.Contains(cv, name) || name == ""
 }
 

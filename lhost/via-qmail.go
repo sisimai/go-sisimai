@@ -138,7 +138,7 @@ func init() {
 			eb.ReSIZE: []string{"Message size exceeds fixed maximum message size:"},
 			// qmail-remote.c:68|  Sorry, I couldn't find any host by that name. (#4.1.2)\n"); zerodie();
 			// qmail-remote.c:78|  Sorry, I couldn't find any host named ");
-			eb.ReNETW: []string{
+			eb.ReINET: []string{
 				"Sorry, I wasn't able to establish an SMTP connection",
 				"Sorry. Although I'm listed as a best-preference MX or A for that host",
 			},

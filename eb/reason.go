@@ -23,7 +23,7 @@ const (
 	ReHOST = "HostUnknown"
 	ReFULL = "MailboxFull"
 	ReUNIX = "MailerError"
-	ReNETW = "NetworkError"
+	ReINET = "NetworkError"
 	ReRELA = "NoRelaying"
 	Re00MX = "NotAccept"
 	ReNRFC = "NotCompliantRFC"

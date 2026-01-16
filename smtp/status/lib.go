@@ -508,7 +508,7 @@ func Code(name string, temp bool) string {
 		eb.ReHOST: [2]string{"5.9.212", ""},        // HostUnknown
 		eb.ReFULL: [2]string{"5.9.220", "4.9.220"}, // MailboxFull
 		eb.ReUNIX: [2]string{"5.9.230", "4.9.230"}, // MailerError
-		eb.ReNETW: [2]string{"5.9.341", "4.9.341"}, // NetworkError
+		eb.ReINET: [2]string{"5.9.341", "4.9.341"}, // NetworkError
 		eb.ReRELA: [2]string{"5.9.214", "4.9.214"}, // NoRelaying
 		eb.Re00MX: [2]string{"5.9.215", "4.9.215"}, // NotAccept
 		eb.ReNRFC: [2]string{"5.9.162", "4.9.162"}, // NotCompliantRFC
@@ -556,16 +556,16 @@ func Name(code string) string {
 		"4.3.2":  eb.Re00MX, // System not accepting network messages
 		"4.3.3":  eb.ReSYSE, // System not capable of selected features
 		"4.3.5":  eb.ReSYSE, // System incorrectly configured
-	//	"4.4.0":  eb.ReNETW, // Other or undefined network or routing status
+	//	"4.4.0":  eb.ReINET, // Other or undefined network or routing status
 		"4.4.1":  eb.ReTIME, // No answer from host
-		"4.4.2":  eb.ReNETW, // Bad connection
+		"4.4.2":  eb.ReINET, // Bad connection
 		"4.4.3":  eb.ReSYSE, // Directory server failure
-		"4.4.4":  eb.ReNETW, // Unable to route
+		"4.4.4":  eb.ReINET, // Unable to route
 		"4.4.5":  eb.ReDISK, // Mail system congestion
-		"4.4.6":  eb.ReNETW, // Routing loop detected
+		"4.4.6":  eb.ReINET, // Routing loop detected
 		"4.4.7":  eb.ReTIME, // Delivery time expired
-		"4.4.8":  eb.ReNETW, // Retry on IPv4
-	//	"4.5.0":  eb.ReNETW, // Other or undefined protocol status
+		"4.4.8":  eb.ReINET, // Retry on IPv4
+	//	"4.5.0":  eb.ReINET, // Other or undefined protocol status
 		"4.5.3":  eb.ReRATE, // Too many recipients
 		"4.5.5":  eb.ReSYSE, // Wrong protocol version
 		"4.6.0":  eb.ReBODY, // Other or undefined media error
@@ -605,7 +605,7 @@ func Name(code string) string {
 		"5.3.3":  eb.ReSYSE, // System not capable of selected features
 		"5.3.4":  eb.ReSIZE, // Message too big for system
 		"5.3.5":  eb.ReSYSE, // System incorrectly configured
-		"5.4.0":  eb.ReNETW, // Other or undefined network or routing status
+		"5.4.0":  eb.ReINET, // Other or undefined network or routing status
 		"5.4.3":  eb.ReSYSE, // Directory server failure
 		"5.4.4":  eb.ReHOST, // Unable to route
 		"5.5.2":  eb.ReSYSE, // If the server cannot BASE64 decode any client response (AUTH)

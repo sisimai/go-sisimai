@@ -30,7 +30,7 @@ func init() {
 			"bad-mailbox":         eb.ReUSER, // UserUnknown
 			"inactive-mailbox":    eb.ReQUIT, // Suspend
 			"message-expired":     eb.ReTIME, // Expired
-			"no-answer-from-host": eb.ReNETW, // NetworkError
+			"no-answer-from-host": eb.ReINET, // NetworkError
 			"policy-related":      eb.RePOLI, // PolicyViolation
 			"quota-issues":        eb.ReFULL, // MailboxFull
 			"routing-errors":      eb.ReSYSE, // SystemError

@@ -64,7 +64,7 @@ func init() {
 		}
 		ndrsubject := map[string]string{
 			"SMTPSEND.DNS.NonExistentDomain": eb.ReHOST, // 554 5.4.4 SMTPSEND.DNS.NonExistentDomain
-			"SMTPSEND.DNS.MxLoopback":        eb.ReNETW, // 554 5.4.4 SMTPSEND.DNS.MxLoopback
+			"SMTPSEND.DNS.MxLoopback":        eb.ReINET, // 554 5.4.4 SMTPSEND.DNS.MxLoopback
 			"RESOLVER.ADR.BadPrimary":        eb.ReSYSE, // 550 5.2.0 RESOLVER.ADR.BadPrimary
 			"RESOLVER.ADR.RecipNotFound":     eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.RecipNotFound
 			"RESOLVER.ADR.RecipientNotFound": eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.RecipientNotFound

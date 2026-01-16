@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ______ ____        _ _       
 //  _ __| |__   ___  ___| |_   / / ___/ ___| _   _(_) |_ ___ 
@@ -24,7 +24,7 @@ func init() {
 
 		messagesof := map[string][]string{
 			eb.ReHOST: []string{" responded with code NXDOMAIN", "Domain name not found"},
-			eb.ReNETW: []string{" had no relevant answers.", "responded with code NXDOMAIN", "Domain name not found"},
+			eb.ReINET: []string{" had no relevant answers.", "responded with code NXDOMAIN", "Domain name not found"},
 			eb.Re00MX: []string{"Null MX"},
 			eb.ReUSER: []string{"because the address couldn't be found. Check for typos or unnecessary spaces and try again."},
 		}
@@ -34,7 +34,7 @@ func init() {
 		for e := range messagesof {
 			// The key is a bounce reason name
 			if moji.ContainsAny(fo.DiagnosticCode, messagesof[e]) == false { continue }
-			if e == eb.ReNETW && (statuscode == "5" || esmtpreply == "5")  { continue }
+			if e == eb.ReINET && (statuscode == "5" || esmtpreply == "5")  { continue }
 			if e == eb.ReHOST && (statuscode == "4" || statuscode == "")   { continue }
 			if e == eb.ReHOST && (esmtpreply == "4" || esmtpreply == "")   { continue }
 			return e

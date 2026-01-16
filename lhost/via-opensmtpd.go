@@ -74,7 +74,7 @@ func init() {
 				"Invalid domain name",
 				"Domain does not exist",
 			},
-			eb.ReNETW: []string{
+			eb.ReINET: []string{
 				//  smtpd/mta.c:972|  relay->failstr = "Temporary failure in MX lookup";
 				"Address family mismatch on destination MXs",
 				"All routes to destination blocked",

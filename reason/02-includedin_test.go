@@ -67,7 +67,7 @@ func TestIncludedIn(t *testing.T) {
 			`554 "|IFS=' ' && exec /usr/local/bin/procmail -f- || exit 75 #kijitora"... Service unavailable`,
 			"pipe to |/usr/local/neko/bin/cat kijitora@example.com /home/neko/.cat",
 		},
-		eb.ReNETW: []string{
+		eb.ReINET: []string{
 			"554 5.4.6 Too many hops",
 			"554 5.4.6 Hop count exceeded - possible mail loop",
 			"neko.example.com[192.0.2.2]:25: No route to host",

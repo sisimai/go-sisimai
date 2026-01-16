@@ -282,7 +282,7 @@ func init() {
 				//   Configure storage quotas for a mailbox.
 				[4]string{"5.2.2", "", "", "mailbox full"},
 			},
-			eb.ReNETW: [][4]string{ // NetworkError
+			eb.ReINET: [][4]string{ // NetworkError
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - There's a DNS or network adapter configuration issue on the Exchange server.
 				//   Verify the internal and external DNS lookup settings for the Exchange by running
