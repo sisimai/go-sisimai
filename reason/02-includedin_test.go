@@ -126,7 +126,7 @@ func TestIncludedIn(t *testing.T) {
 			"554 5.3.5 Local configuration error",
 			"X-Postfix; mail for example.jp loops back to myself",
 		},
-		eb.ReSYSF: []string{"550 5.0.0 Mail system full"},
+		eb.ReDISK: []string{"550 5.0.0 Mail system full"},
 		eb.ReUSER: []string{
 			"550 5.1.1 Unknown User",
 			"550 kijitora@example.com... No such user",
