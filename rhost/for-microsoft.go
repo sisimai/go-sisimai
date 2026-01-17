@@ -46,7 +46,7 @@ func init() {
 				//   Spf= Fail , Dkim= Pass , DMARC= Pass ...
 				[4]string{"5.7.515", "", "", "doesn't meet the required authentication level"},
 			},
-			eb.ReREPU: [][4]string{ // BadReputation
+			eb.ReFAMA: [][4]string{ // BadReputation
 				// Undocumented error messages ---------------------------------------------------------
 				// - status=deferred (host outlook-com.olc.protection.outlook.com[192.0.2.255] said:
 				//   451 4.7.650 The mail server [192.0.2.5] has been temporarily rate limited due
@@ -768,19 +768,19 @@ func init() {
 		errorcodes := map[string][2]string{
 			// The mail server IP connecting to Outlook.com server has exceeded the rate limit allowed.
 			// Reason for rate limitation is related to IP/domain reputation.
-			"RP-001": [2]string{"421", eb.ReREPU},
+			"RP-001": [2]string{"421", eb.ReFAMA},
 
 			// The mail server IP connecting to Outlook.com server has exceeded the rate limit allowed
 			// on this connection. Reason for rate limitation is related to IP/domain reputation.
-			"RP-002": [2]string{"421", eb.ReREPU},
+			"RP-002": [2]string{"421", eb.ReFAMA},
 
 			// The mail server IP connecting to Outlook.com server has exceeded the connection limit
 			// allowed. Reason for limitation is related to IP/domain reputation.
-			"RP-003": [2]string{"421", eb.ReREPU},
+			"RP-003": [2]string{"421", eb.ReFAMA},
 
 			// Mail rejected by Outlook.com for policy reasons. Reasons for rejection may be related
 			// to content with spam-like characteristics or IP/domain reputation. 
-			"SC-001": [2]string{"550", eb.ReREPU},
+			"SC-001": [2]string{"550", eb.ReFAMA},
 
 			// Mail rejected by Outlook.com for policy reasons. The mail server IP connecting to
 			// Outlook.com has exhibited namespace mining behavior.
@@ -812,7 +812,7 @@ func init() {
 
 			// Mail rejected by Outlook.com for policy reasons. Reasons for rejection may be related
 			// to content with spam-like characteristics or IP/domain reputation.
-			"OU-002": [2]string{"550", eb.ReREPU},
+			"OU-002": [2]string{"550", eb.ReFAMA},
 		}
 
 		statuscode := fo.DeliveryStatus
