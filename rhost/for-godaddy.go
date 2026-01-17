@@ -145,7 +145,7 @@ func init() {
 			// - 554 Connection refused. This IP has a poor reputation on Cloudmark Sender Intelligence
 			//   (CSI). IB103
 			// - This IP address has a poor reputation on Cloudmark Sender Intelligence (CSI).
-			"IB103": eb.ReREPU, // BadReputation
+			"IB103": eb.ReFAMA, // BadReputation
 
 			// - 554 Connection refused. This IP address is listed on the Spamhaus Block List (SBL). IB104
 			// - This IP address is listed on the Spamhaus Block List.

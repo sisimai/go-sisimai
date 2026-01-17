@@ -118,7 +118,7 @@ func init() {
 				[3]string{"421", "4.7.40", "to add a dmarc record to "},
 				[3]string{"550", "5.7.40", "to add a dmarc record to "},
 			},
-			eb.ReREPU: [][3]string{ // BadReputation
+			eb.ReFAMA: [][3]string{ // BadReputation
 				// - 421 4.7.0 This message is suspicious due to the very low reputation of the sending
 				//   IP address/domain. To protect our users from spam, mail sent from your IP address
 				//   has been temporarily rate limited. For more information, go to Why has Gmail blocked

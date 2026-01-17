@@ -47,7 +47,7 @@ func init() {
 				// - Ensure all the IP addresses for your mail servers are listed in your SPF records.
 				[2]string{"550", "dmarc sender invalid - envelope rejected"},
 			},
-			eb.ReREPU: [][2]string{ // BadReputation
+			eb.ReFAMA: [][2]string{ // BadReputation
 				// - The sending mail server is subjected to Greylisting. This requires the server
 				//   to retry the connection, between one minute and 12 hours. Alternatively, the
 				//   sender's IP address has a poor reputation.
