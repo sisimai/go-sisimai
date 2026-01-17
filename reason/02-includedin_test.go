@@ -110,7 +110,7 @@ func TestIncludedIn(t *testing.T) {
 			"570 5.7.7 Spam Detected",
 			"554 5.7.1 Mail Score (59) over MessageScoringUpperLimit (50) - send error reports to postmaster@example.net",
 		},
-	//  eb.ReSUPP: []string{"There is no sample email which is returned due to being listed in the suppression list"},
+	//  eb.ReSTOP: []string{"There is no sample email which is returned due to being listed in the suppression list"},
 		eb.ReQUIT: []string{
 			"550 5.0.0 Recipient suspend the service",
 			"550 The domain meangel.net is currently suspended. Try later.",
@@ -153,7 +153,7 @@ func TestIncludedIn(t *testing.T) {
 			cx++; if IncludedIn[cr](strings.ToLower(re)) == false { t.Errorf("%s[%s](%s) returns false", fn, cr, re) }
 		}
 	}
-	for _, cr := range []string{eb.ReSUPP, eb.ReCOMM, eb.ReFEED, eb.ReSENT, eb.Re___0, eb.Re___1} {
+	for _, cr := range []string{eb.ReSTOP, eb.ReCOMM, eb.ReFEED, eb.ReSENT, eb.Re___0, eb.Re___1} {
 		cx++; if IncludedIn[cr]("")     == true  { t.Errorf("%s[%s]('') returns true", fn, cr) }
 		cx++; if IncludedIn[cr]("neko") == true  { t.Errorf("%s[%s](neko) returns true", fn, cr) }
 	}

@@ -88,7 +88,7 @@ func TestIsToxic(t *testing.T) {
 		Fact{DeliveryStatus: "5.1.6", ReplyCode: "556", Reason: eb.ReMOVE, Command: eb.CeRCPT},
 		Fact{DeliveryStatus: "5.0.1", ReplyCode: "500", Reason: eb.Re00MX, Command: eb.CeCONN},
 		Fact{DeliveryStatus: "5.7.0", ReplyCode: "550", Reason: eb.ReQUIT, Command: eb.CeDATA},
-		Fact{DeliveryStatus: "5.7.1", ReplyCode: "550", Reason: eb.ReSUPP, Command: eb.CeCONN},
+		Fact{DeliveryStatus: "5.7.1", ReplyCode: "550", Reason: eb.ReSTOP, Command: eb.CeCONN},
 		Fact{DeliveryStatus: "5.1.2", ReplyCode: "501", Reason: eb.ReFILT, Command: eb.CeRCPT},
 		Fact{DeliveryStatus: "5.2.2", ReplyCode: "552", Reason: eb.ReFULL, Command: eb.CeRCPT},
 		Fact{DeliveryStatus: "5.7.3", ReplyCode: "550", Reason: eb.ReRELA, Command: eb.CeRCPT},

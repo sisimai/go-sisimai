@@ -519,7 +519,7 @@ func Code(name string, temp bool) string {
 		eb.ReQPTR: [2]string{"5.9.133", "4.9.133"}, // RequirePTR
 		eb.ReSECU: [2]string{"5.9.370", "4.9.370"}, // SecurityError
 		eb.ReSPAM: [2]string{"5.9.164", "4.9.164"}, // SpamDetected
-		eb.ReSUPP: [2]string{"5.9.310", "4.9.310"}, // Suppressed
+		eb.ReSTOP: [2]string{"5.9.310", "4.9.310"}, // Suppressed
 		eb.ReQUIT: [2]string{"5.9.221", "4.9.221"}, // Suspend
 		eb.ReCOMM: [2]string{"5.9.351", "4.9.351"}, // SyntaxError
 		eb.ReSYSE: [2]string{"5.9.231", "4.9.231"}, // SystemError

@@ -121,8 +121,8 @@ func init() {
 		// Transient/ContentRejected -- message you sent contains content that the provider doesn't allow
 		// Transient/AttachmentRejected the message contained an unacceptable attachment
 		reasonpair := map[string]string {
-			"Suppressed":               eb.ReSUPP, // Suppressed
-			"OnAccountSuppressionList": eb.ReSUPP, // Suppressed
+			"Suppressed":               eb.ReSTOP, // Suppressed
+			"OnAccountSuppressionList": eb.ReSTOP, // Suppressed
 			"General":                  eb.Re___1, // Onhold
 			"MailboxFull":              eb.ReFULL, // MailboxFull
 			"MessageTooLarge":          eb.ReSIZE, // EmailTooLarge

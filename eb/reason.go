@@ -34,7 +34,7 @@ const (
 	ReRATE = "RateLimited"
 	ReSECU = "SecurityError"
 	ReSPAM = "SpamDetected"
-	ReSUPP = "Suppressed"
+	ReSTOP = "Suppressed"
 	ReQUIT = "Suspend"
 	ReCOMM = "SyntaxError"
 	ReSYSE = "SystemError"

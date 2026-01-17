@@ -43,7 +43,7 @@ var Availables = map[string]string{
 	eb.ReRATE: "Rejected due to exceeding a rate limit: sending too fast or too many concurrency connections",
 	eb.ReSECU: "Email rejected due to security violation was detected on a destination host",
 	eb.ReSPAM: "Email rejected by spam filter running on the remote host",
-	eb.ReSUPP: "Email was not delivered due to being listed in suppression list on MTA",
+	eb.ReSTOP: "Email was not delivered due to being listed in suppression list on MTA",
 	eb.ReQUIT: "Email rejected due to a recipient account is being suspended",
 	eb.ReCOMM: "Email rejected due to syntax error at sent commands in SMTP session",
 	eb.ReSYSE: "Email returned due to system error on the remote host",
@@ -60,7 +60,7 @@ var classorder = [][]string{
 	},
 	[]string{
 		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.ReRELA, eb.ReSYSE, eb.ReINET,
-		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSECU, eb.ReSUPP, eb.ReUNIX,
+		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSECU, eb.ReSTOP, eb.ReUNIX,
 	},
 }
 

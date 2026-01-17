@@ -67,7 +67,7 @@ func(fo Fact) IsToxic() bool {
 		//   2-4. The SMTP status code begins with "5." such as "5.1.1".
 		// 3. Feedback Loop
 		//   3-1. The Feedback Type is any of "abuse", "fraud", "opt-out"
-		case eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX, eb.ReQUIT, eb.ReSUPP: return true
+		case eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX, eb.ReQUIT, eb.ReSTOP: return true
 		case eb.ReFULL, eb.ReFILT, eb.ReRELA:
 			// MailboxFull, Filtered, and NoRelaying.
 			if fo.Reason != eb.ReFULL && fo.Command == eb.CeRCPT { return true  }
