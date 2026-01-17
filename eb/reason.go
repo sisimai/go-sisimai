@@ -10,7 +10,7 @@ package eb
 const (
 	// bounce reason names
 	ReAUTH = "AuthFailure"
-	ReREPU = "BadReputation"
+	ReFAMA = "BadReputation"
 	ReBLOC = "Blocked"
 	ReBODY = "ContentError"
 	ReSENT = "Delivered"
