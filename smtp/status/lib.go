@@ -522,7 +522,7 @@ func Code(name string, temp bool) string {
 		eb.ReSTOP: [2]string{"5.9.310", "4.9.310"}, // Suppressed
 		eb.ReQUIT: [2]string{"5.9.221", "4.9.221"}, // Suspend
 		eb.ReCOMM: [2]string{"5.9.351", "4.9.351"}, // SyntaxError
-		eb.ReSYSE: [2]string{"5.9.231", "4.9.231"}, // SystemError
+		eb.RePROC: [2]string{"5.9.231", "4.9.231"}, // SystemError
 		eb.ReDISK: [2]string{"5.9.232", "4.9.232"}, // SystemFull
 		eb.Re___0: [2]string{"5.9.300", "4.9.300"}, // Undefined
 		eb.ReUSER: [2]string{"5.9.213", ""},        // UserUnknown
@@ -546,20 +546,20 @@ func Name(code string) string {
 		"4.1.6":  eb.ReMOVE, // Destination mailbox has moved, No forwarding address
 		"4.1.7":  eb.ReFROM, // Bad sender's mailbox address syntax
 		"4.1.8":  eb.ReFROM, // Bad sender's system address
-		"4.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
+		"4.1.9":  eb.RePROC, // Message relayed to non-compliant mailer
 		"4.2.1":  eb.ReQUIT, // Mailbox disabled, not accepting messages
 		"4.2.2":  eb.ReFULL, // Mailbox full
 		"4.2.3":  eb.ReSIZE, // Message length exceeds administrative limit
-		"4.2.4":  eb.ReSYSE, // Mailing list expansion problem
-	//	"4.3.0":  eb.ReSYSE, // Other or undefined mail system status
+		"4.2.4":  eb.RePROC, // Mailing list expansion problem
+	//	"4.3.0":  eb.RePROC, // Other or undefined mail system status
 		"4.3.1":  eb.ReDISK, // Mail system full
 		"4.3.2":  eb.Re00MX, // System not accepting network messages
-		"4.3.3":  eb.ReSYSE, // System not capable of selected features
-		"4.3.5":  eb.ReSYSE, // System incorrectly configured
+		"4.3.3":  eb.RePROC, // System not capable of selected features
+		"4.3.5":  eb.RePROC, // System incorrectly configured
 	//	"4.4.0":  eb.ReINET, // Other or undefined network or routing status
 		"4.4.1":  eb.ReTIME, // No answer from host
 		"4.4.2":  eb.ReINET, // Bad connection
-		"4.4.3":  eb.ReSYSE, // Directory server failure
+		"4.4.3":  eb.RePROC, // Directory server failure
 		"4.4.4":  eb.ReINET, // Unable to route
 		"4.4.5":  eb.ReDISK, // Mail system congestion
 		"4.4.6":  eb.ReINET, // Routing loop detected
@@ -567,7 +567,7 @@ func Name(code string) string {
 		"4.4.8":  eb.ReINET, // Retry on IPv4
 	//	"4.5.0":  eb.ReINET, // Other or undefined protocol status
 		"4.5.3":  eb.ReRATE, // Too many recipients
-		"4.5.5":  eb.ReSYSE, // Wrong protocol version
+		"4.5.5":  eb.RePROC, // Wrong protocol version
 		"4.6.0":  eb.ReBODY, // Other or undefined media error
 		"4.6.2":  eb.ReBODY, // Conversion required and prohibited
 		"4.6.5":  eb.ReBODY, // Conversion Failed
@@ -592,26 +592,26 @@ func Name(code string) string {
 		"5.1.6":  eb.ReMOVE, // Destination mailbox has moved, No forwarding address
 		"5.1.7":  eb.ReFROM, // Bad sender's mailbox address syntax
 		"5.1.8":  eb.ReFROM, // Bad sender's system address
-		"5.1.9":  eb.ReSYSE, // Message relayed to non-compliant mailer
+		"5.1.9":  eb.RePROC, // Message relayed to non-compliant mailer
 		"5.1.10": eb.Re00MX, // Recipient address has null MX
 		"5.2.0":  eb.ReFILT, // Other or undefined mailbox status
 		"5.2.1":  eb.ReFILT, // Mailbox disabled, not accepting messages
 		"5.2.2":  eb.ReFULL, // Mailbox full
 		"5.2.3":  eb.ReSIZE, // Message length exceeds administrative limit
-		"5.2.4":  eb.ReSYSE, // Mailing list expansion problem
-		"5.3.0":  eb.ReSYSE, // Other or undefined mail system status
+		"5.2.4":  eb.RePROC, // Mailing list expansion problem
+		"5.3.0":  eb.RePROC, // Other or undefined mail system status
 		"5.3.1":  eb.ReDISK, // Mail system full
 		"5.3.2":  eb.Re00MX, // System not accepting network messages
-		"5.3.3":  eb.ReSYSE, // System not capable of selected features
+		"5.3.3":  eb.RePROC, // System not capable of selected features
 		"5.3.4":  eb.ReSIZE, // Message too big for system
-		"5.3.5":  eb.ReSYSE, // System incorrectly configured
+		"5.3.5":  eb.RePROC, // System incorrectly configured
 		"5.4.0":  eb.ReINET, // Other or undefined network or routing status
-		"5.4.3":  eb.ReSYSE, // Directory server failure
+		"5.4.3":  eb.RePROC, // Directory server failure
 		"5.4.4":  eb.ReHOST, // Unable to route
-		"5.5.2":  eb.ReSYSE, // If the server cannot BASE64 decode any client response (AUTH)
+		"5.5.2":  eb.RePROC, // If the server cannot BASE64 decode any client response (AUTH)
 		"5.5.3":  eb.ReRATE, // Too many recipients
-		"5.5.4":  eb.ReSYSE, // Invalid command arguments
-		"5.5.5":  eb.ReSYSE, // Wrong protocol version
+		"5.5.4":  eb.RePROC, // Invalid command arguments
+		"5.5.5":  eb.RePROC, // Wrong protocol version
 		"5.5.6":  eb.ReCOMM, // Authentication Exchange line is too long
 		"5.6.0":  eb.ReBODY, // Other or undefined media error
 		"5.6.1":  eb.ReBODY, // Media not supported
@@ -640,7 +640,7 @@ func Name(code string) string {
 		"5.7.16": eb.ReSIZE, // Message is too big for the specified priority
 		"5.7.17": eb.ReMOVE, // Mailbox owner has changed
 		"5.7.18": eb.ReMOVE, // Domain owner has changed
-		"5.7.19": eb.ReSYSE, // RRVS test cannot be completed
+		"5.7.19": eb.RePROC, // RRVS test cannot be completed
 		"5.7.20": eb.ReAUTH, // No passing DKIM signature found
 		"5.7.21": eb.ReAUTH, // No acceptable DKIM signature found
 		"5.7.22": eb.ReAUTH, // No valid author-matched DKIM signature found

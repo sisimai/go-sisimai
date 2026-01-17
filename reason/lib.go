@@ -46,7 +46,7 @@ var Availables = map[string]string{
 	eb.ReSTOP: "Email was not delivered due to being listed in suppression list on MTA",
 	eb.ReQUIT: "Email rejected due to a recipient account is being suspended",
 	eb.ReCOMM: "Email rejected due to syntax error at sent commands in SMTP session",
-	eb.ReSYSE: "Email returned due to system error on the remote host",
+	eb.RePROC: "Email returned due to system error on the remote host",
 	eb.ReDISK: "Email rejected due to a destination mail servers disk is full",
 	eb.Re___0: "Sisimai could not detect an error reason",
 	eb.ReUSER: "Email rejected due to a local part of a recipients email address does not exist",
@@ -59,7 +59,7 @@ var classorder = [][]string{
 		eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
 	},
 	[]string{
-		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.ReRELA, eb.ReSYSE, eb.ReINET,
+		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.ReRELA, eb.RePROC, eb.ReINET,
 		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSECU, eb.ReSTOP, eb.ReUNIX,
 	},
 }
@@ -79,7 +79,7 @@ func IsExplicit(name string) bool {
 //   Returns:
 //     - (bool): true if the reason is listed in the table.
 func ShouldBeRetried(name string) bool {
-	cv := []string{eb.Re___0, eb.Re___1, eb.ReSYSE, eb.ReSECU, eb.ReTIME, eb.ReINET, eb.ReHOST, eb.ReUSER}
+	cv := []string{eb.Re___0, eb.Re___1, eb.RePROC, eb.ReSECU, eb.ReTIME, eb.ReINET, eb.ReHOST, eb.ReUSER}
 	return slices.Contains(cv, name) || name == ""
 }
 

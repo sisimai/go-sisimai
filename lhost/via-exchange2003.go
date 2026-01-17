@@ -56,7 +56,7 @@ func init() {
 		errorcodes := map[string][]string{
 			eb.ReUSER: []string{"000C05A6", /* Unknown Recipient   */ }, // UserUnknown
 			eb.ReFILT: []string{"000C0595", /* Ambiguous Recipient */ }, // Filtered
-			eb.ReSYSE: []string{ // SystemError
+			eb.RePROC: []string{ // SystemError
 				"00010256", // Too many recipients.
 				"000D06B5", // No proxy for recipient (non-smtp mail?)
 			},

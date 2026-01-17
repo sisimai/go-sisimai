@@ -620,7 +620,7 @@ func init() {
 				//   be EHLO or HELO.
 				[4]string{"5.5.2", "", "", "send hello first"},
 			},
-			eb.ReSYSE: [][4]string{ // SystemError
+			eb.RePROC: [][4]string{ // SystemError
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - You've configured a custom Receive connector in the Transport (Hub) service on
 				//   a Mailbox server that listens on port 25. Typically, custom Receive connectors

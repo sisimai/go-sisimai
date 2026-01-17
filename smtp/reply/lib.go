@@ -104,7 +104,7 @@ var codeofsmtp = map[string][]string{"2": replycode2, "4": replycode4, "5": repl
 var associated = map[string][]string{
 	"422": []string{eb.CeAUTH,  "4.7.12",  eb.ReSECU}, // RFC5238
 	"432": []string{eb.CeAUTH,  "4.7.12",  eb.ReSECU}, // RFC4954, RFC5321
-	"451": []string{"",         "",        eb.ReSYSE}, // RFC2465, RFC5321
+	"451": []string{"",         "",        eb.RePROC}, // RFC2465, RFC5321
 	"452": []string{"",         "",        eb.ReDISK}, // RFC5321
 	"454": []string{eb.CeAUTH,  "4.7.0",   eb.ReSECU}, // RFC3207, RFC4954
 	"455": []string{"",         "",        eb.ReCOMM}, // RFC5321

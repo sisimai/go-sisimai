@@ -133,7 +133,7 @@ func init() {
 			//   OFR005_505 [505] (in reply to end of DATA command)
 			// - 421 4.2.1 Service refuse. Veuillez essayer plus tard. Service refused, please try later.
 			//   LPN007_505 (in reply to end of DATA command)
-			"505": eb.ReSYSE,
+			"505": eb.RePROC,
 
 			// - Your message has been blocked by Orange, suspected spam
 			//   Please contact Orange by using our contact form and select option

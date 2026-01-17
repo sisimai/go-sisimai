@@ -121,7 +121,7 @@ func TestIncludedIn(t *testing.T) {
 			"451 4.7.1 <smtp.example.jp[192.0.2.3]>: Client host rejected: Please try again slower",
 			"452 4.3.2 Connection rate limit exceeded. (in reply to MAIL FROM command)",
 		},
-		eb.ReSYSE: []string{
+		eb.RePROC: []string{
 			"500 5.3.5 System config error",
 			"554 5.3.5 Local configuration error",
 			"X-Postfix; mail for example.jp loops back to myself",

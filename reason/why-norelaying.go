@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _   _       ____      _             _             
 // | \ | | ___ |  _ \ ___| | __ _ _   _(_)_ __   __ _ 
@@ -57,7 +57,7 @@ func init() {
 	ProbesInto[eb.ReRELA] = func(fo *siba.Fact) bool {
 		if fo         == nil       { return false }
 		if fo.Reason  == eb.ReRELA { return true  }
-		if slices.Contains([]string{eb.ReSECU, eb.ReSYSE, eb.Re___0}, fo.Reason) { return false }
+		if slices.Contains([]string{eb.ReSECU, eb.RePROC, eb.Re___0}, fo.Reason) { return false }
 		if slices.Contains([]string{eb.CeCONN, eb.CeEHLO, eb.CeHELO}, fo.Command){ return false }
 		return IncludedIn[eb.ReRELA](strings.ToLower(fo.DiagnosticCode))
 	}

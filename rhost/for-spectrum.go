@@ -49,7 +49,7 @@ func init() {
 			[3]string{"1020", "1080", eb.ReFROM},
 
 			// 1090 The email you're trying to send can't be processed. Try sending again at a later time.
-			[3]string{"1090", "", eb.ReSYSE},
+			[3]string{"1090", "", eb.RePROC},
 
 			// 1100 The IP address you're trying to connect from has an issue with the Domain Name System.
 			// 1150 Spectrum requires a full circle DNS for emails to be allowed through. Verify the

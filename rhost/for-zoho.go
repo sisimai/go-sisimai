@@ -50,7 +50,7 @@ func init() {
 				"Email policy violation detected",
 				"Mailbox delivery restricted by policy error",
 			},
-			eb.ReSYSE: []string{
+			eb.RePROC: []string{
 				// - https://github.com/zoho/zohodesk-oas/blob/main/v1.0/EmailFailureAlert.json#L168
 				//   452 4.3.1 Temporary System Error
 				"Temporary System Error",

@@ -198,7 +198,7 @@ func init() {
 				//   email again later.
 				"account disabled",
 			},
-			eb.ReSYSE: []string{ // SystemError
+			eb.RePROC: []string{ // SystemError
 				// - This message is looping: it already has my Delivered-To line. (//5.4.6)
 				// - The recipient account is forwarding the message in a loop.
 				// - This is oftentimes because the receiver has two addresses that forward to each

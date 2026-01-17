@@ -50,7 +50,7 @@ func Find(fo *siba.Fact) string {
 				"disc quota exceeded",
 				"mailbox full or quota exceeded",
 			},
-			eb.ReSYSE: []string{"temporary file write error"},
+			eb.RePROC: []string{"temporary file write error"},
 			eb.ReUSER: []string{
 				": invalid mailbox path",
 				": unknown user:",
@@ -60,7 +60,7 @@ func Find(fo *siba.Fact) string {
 		},
 		"procmail": map[string][]string{
 			eb.ReFULL: []string{"quota exceeded while writing", "user over quota"},
-			eb.ReSYSE: []string{"service unavailable"},
+			eb.RePROC: []string{"service unavailable"},
 			eb.ReDISK: []string{"no space left to finish writing"},
 		},
 		"maildrop": map[string][]string{

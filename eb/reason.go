@@ -37,7 +37,7 @@ const (
 	ReSTOP = "Suppressed"
 	ReQUIT = "Suspend"
 	ReCOMM = "SyntaxError"
-	ReSYSE = "SystemError"
+	RePROC = "SystemError"
 	ReDISK = "SystemFull"
 	Re___0 = "Undefined"
 	ReUSER = "UserUnknown"

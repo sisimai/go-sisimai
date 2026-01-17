@@ -112,7 +112,7 @@ func init() {
 				"Mailaddress is administratively disabled",
 				"Mailaddress is administrativeley disabled",
 			},  // 5.2.1
-			eb.ReSYSE: []string{
+			eb.RePROC: []string{
 				"Automatic homedir creator crashed",                // 4.3.0
 				"Illegal value in LDAP attribute",                  // 5.3.5
 				"LDAP attribute is not given but mandatory",        // 5.3.5
@@ -146,7 +146,7 @@ func init() {
 				// notqmail 1.08 returns the following error message when the destination MX is NullMX
 				"Sorry, I couldn't find a mail exchanger or IP address",
 			},
-			eb.ReSYSE: []string{
+			eb.RePROC: []string{
 				"bad interpreter: No such file or directory",
 				"system error",
 				"Unable to",

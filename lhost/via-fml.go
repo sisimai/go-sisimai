@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      _______ __  __ _     
 // | | |__   ___  ___| |_   / /  ___|  \/  | |    
@@ -33,7 +33,7 @@ func init() {
 				"reject mail ",
 				"Spam mail from a spammer is rejected",
 			},
-			eb.ReSYSE: []string{ // SystemError
+			eb.RePROC: []string{ // SystemError
 				"fml system error message",
 				"Loop Alert: ",
 				"Loop Back Warning: ",
@@ -51,7 +51,7 @@ func init() {
 			},
 			eb.ReNRFC: []string{"Duplicated Message-ID"},
 			eb.ReSECU: []string{"Security alert:"},
-			eb.ReSYSE: []string{
+			eb.RePROC: []string{
 				" has detected a loop condition so that",
 				"Loop Back Warning:",
 			},

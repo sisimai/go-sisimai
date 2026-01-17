@@ -47,7 +47,7 @@ func init() {
 			eb.ReHOST: []string{"No such domain."},
 			// courier/module.esmtp/esmtpclient.c:531| hard_error(del, ctf,
 			// courier/module.esmtp/esmtpclient.c:532|  "This domain's DNS violates RFC 1035.");
-			eb.ReSYSE: []string{"This domain's DNS violates RFC 1035."},
+			eb.RePROC: []string{"This domain's DNS violates RFC 1035."},
 			// courier/module.esmtp/esmtpclient.c:535| soft_error(del, ctf, "DNS lookup failed.");
 			eb.ReINET: []string{"DNS lookup failed."},
 		}

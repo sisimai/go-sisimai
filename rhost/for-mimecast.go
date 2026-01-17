@@ -264,7 +264,7 @@ func init() {
 				//   Activity and searching for the required email address.
 				[2]string{"554", "email rejected due to security policies"},
 			},
-			eb.ReSYSE: [][2]string{ // SystemError
+			eb.RePROC: [][2]string{ // SystemError
 				// - The Mimecast server is under maximum load.
 				// - No action is required from the end-user. The message will retry 30 times and
 				//   when server resources are available, the message is processed.

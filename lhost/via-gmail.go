@@ -105,7 +105,7 @@ func init() {
 			// We recommend contacting the other email provider for further information about the
 			// cause of this error. The error that the other server returned was:
 			// 535 SMTP AUTH failed with the remote server. (state 8).
-			"8":  [2]string{eb.CeAUTH, eb.ReSYSE},
+			"8":  [2]string{eb.CeAUTH, eb.RePROC},
 
 			// https://www.google.co.nz/support/forum/p/gmail/thread?tid=45208164dbca9d24&hl=en
 			// Technical details of temporary failure:

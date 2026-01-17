@@ -121,7 +121,7 @@ func init() {
 				// Cox requires that all sender domains resolve to a valid MX or A-record within DNS.
 				"sender rejected",
 			},
-			eb.ReSYSE: []string{ // SystemError
+			eb.RePROC: []string{ // SystemError
 				// - Our systems are experiencing an issue which is causing a temporary inability to
 				//   accept new email.
 				"esmtp server temporarily not available",

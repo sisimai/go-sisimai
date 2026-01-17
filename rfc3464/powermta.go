@@ -33,7 +33,7 @@ func init() {
 			"no-answer-from-host": eb.ReINET, // NetworkError
 			"policy-related":      eb.ReWONT, // PolicyViolation
 			"quota-issues":        eb.ReFULL, // MailboxFull
-			"routing-errors":      eb.ReSYSE, // SystemError
+			"routing-errors":      eb.RePROC, // SystemError
 			"spam-related":        eb.ReSPAM, // SpamDetected
 		}
 		lhs,rhs, _ := strings.Cut(mesg, ":") // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}

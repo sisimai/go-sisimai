@@ -498,7 +498,7 @@ func init() {
 				[3]string{"504", "5.7.40", "xoauth is no longer supported"},
 				[3]string{"554", "5.7.0",  "too many unauthenticated commands"},
 			},
-			eb.ReSYSE: [][3]string{ // SystemError
+			eb.RePROC: [][3]string{ // SystemError
 				// About SMTP error messages, https://support.google.com/a/answer/3221692
 				[3]string{"421", "4.3.0", "temporary system problem"},
 				[3]string{"421", "4.7.0", "temporary system problem"},

@@ -145,7 +145,7 @@ func init() {
 			// deliver.c:5614|  addr->message = US"delivery to file forbidden";
 			// deliver.c:5624|  addr->message = US"delivery to pipe forbidden";
 			// transports/pipe.c:1156|  addr->user_message = US"local delivery failed";
-			eb.ReSYSE: []string{ // SystemError
+			eb.RePROC: []string{ // SystemError
 				"delivery to file forbidden",
 				"delivery to pipe forbidden",
 				"local delivery failed",
