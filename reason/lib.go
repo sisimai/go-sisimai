@@ -19,7 +19,7 @@ var IncludedIn = make(map[string]func(string) bool, 35)
 var ProbesInto = make(map[string]func(*siba.Fact) bool, 35)
 var Availables = map[string]string{
 	eb.ReAUTH: "Email rejected due to SPF, DKIM, DMARC failure",
-	eb.ReREPU: "Email rejected due to an IP address reputation",
+	eb.ReFAMA: "Email rejected due to an IP address reputation",
 	eb.ReBLOC: "Email rejected due to client IP address or a hostname",
 	eb.ReBODY: "Email rejected due to a header format of the email",
 	eb.ReSENT: "Email delivered successfully",
@@ -56,10 +56,10 @@ var Availables = map[string]string{
 var classorder = [][]string{
 	[]string{
 		eb.ReFULL, eb.ReSIZE, eb.ReQUIT, eb.ReMOVE, eb.ReRELA, eb.ReAUTH, eb.ReUSER, eb.ReFILT, eb.ReQPTR,
-		eb.ReNRFC, eb.ReREPU, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
+		eb.ReNRFC, eb.ReFAMA, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
 	},
 	[]string{
-		eb.ReFULL, eb.ReAUTH, eb.ReREPU, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.ReRELA, eb.RePROC, eb.ReINET,
+		eb.ReFULL, eb.ReAUTH, eb.ReFAMA, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.ReRELA, eb.RePROC, eb.ReINET,
 		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSECU, eb.ReSTOP, eb.ReUNIX,
 	},
 }

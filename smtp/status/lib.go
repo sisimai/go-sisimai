@@ -497,7 +497,7 @@ func Code(name string, temp bool) string {
 
 	codetables := map[string][2]string{
 		eb.ReAUTH: [2]string{"5.9.130", "4.9.130"}, // AuthFailure
-		eb.ReREPU: [2]string{"5.9.132", "4.9.132"}, // BadReputation
+		eb.ReFAMA: [2]string{"5.9.132", "4.9.132"}, // BadReputation
 		eb.ReBLOC: [2]string{"5.9.134", "4.9.134"}, // Blocked
 		eb.ReBODY: [2]string{"5.9.160", "4.9.160"}, // ContentError
 		eb.ReSIZE: [2]string{"5.9.161", "4.9.161"}, // EmailTooLarge

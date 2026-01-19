@@ -18,7 +18,7 @@ func TestIncludedIn(t *testing.T) {
 			`550 5.1.0 192.0.2.222 is not allowed to send from <example.net> per it's SPF Record`,
 			`Unauthenticated email from libsisimai.org is not accepted due to domain's DMARC policy`,
 		},
-		eb.ReREPU: []string{
+		eb.ReFAMA: []string{
 			"451 4.7.650 The mail server [192.0.2.2] has been temporarily rate limited due to IP reputation.",
 			"550 Connections from mx.example.jp (192.0.2.2) are being rejected due to a poor email reputation score.",
 			"421 4.7.0 [TSS04] Messages from 192.0.2.25 temporarily deferred due to unexpected volume or user complaints",
