@@ -171,9 +171,9 @@ func init() {
 			// Other undocumented or old error codes
 			"105": "",        // Veuillez essayer plus tard.
 			"108": "",        // service refused, please try later. LPN001_108
-			"305": eb.ReSECU, // - 550 5.7.0 Code d'authentification invalide OFR_305
+			"305": eb.ReSAFE, // - 550 5.7.0 Code d'authentification invalide OFR_305
 			"401": eb.ReAUTH, // 550 5.5.0 SPF: *** is not allowed to send mail. LPN004_401
-			"402": eb.ReSECU, // 550 5.5.0 Authentification requise. Authentication Required. LPN105_402
+			"402": eb.ReSAFE, // 550 5.5.0 Authentification requise. Authentication Required. LPN105_402
 			"403": eb.ReFROM, // 5.0.1 Emetteur invalide. Invalid Sender.
 			"415": eb.ReFROM, // Emetteur invalide. Invalid Sender. OFR_415
 			"421": eb.ReFROM, // 5.5.3 Mail from not owned by user. LPN105_421.

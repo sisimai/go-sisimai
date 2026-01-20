@@ -41,7 +41,7 @@ var Availables = map[string]string{
 	eb.ReFROM: "Email rejected due to a senders email address (envelope from)",
 	eb.ReQPTR: "Email rejected due to missing PTR record or having invalid PTR record",
 	eb.ReRATE: "Rejected due to exceeding a rate limit: sending too fast or too many concurrency connections",
-	eb.ReSECU: "Email rejected due to security violation was detected on a destination host",
+	eb.ReSAFE: "Email rejected due to security violation was detected on a destination host",
 	eb.ReSPAM: "Email rejected by spam filter running on the remote host",
 	eb.ReSTOP: "Email was not delivered due to being listed in suppression list on MTA",
 	eb.ReQUIT: "Email rejected due to a recipient account is being suspended",
@@ -60,7 +60,7 @@ var classorder = [][]string{
 	},
 	[]string{
 		eb.ReFULL, eb.ReAUTH, eb.ReFAMA, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.ReRELA, eb.RePROC, eb.ReINET,
-		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSECU, eb.ReSTOP, eb.ReUNIX,
+		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSAFE, eb.ReSTOP, eb.ReUNIX,
 	},
 }
 
@@ -79,7 +79,7 @@ func IsExplicit(name string) bool {
 //   Returns:
 //     - (bool): true if the reason is listed in the table.
 func ShouldBeRetried(name string) bool {
-	cv := []string{eb.Re___0, eb.Re___1, eb.RePROC, eb.ReSECU, eb.ReTIME, eb.ReINET, eb.ReHOST, eb.ReUSER}
+	cv := []string{eb.Re___0, eb.Re___1, eb.RePROC, eb.ReSAFE, eb.ReTIME, eb.ReINET, eb.ReHOST, eb.ReUSER}
 	return slices.Contains(cv, name) || name == ""
 }
 

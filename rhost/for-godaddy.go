@@ -30,7 +30,7 @@ func init() {
 			// - Authentication is not allowed on inbound mail. This happens when you have incorrect
 			//   outgoing SMTP server settings set up in your email client, like Outlook or Gmail.
 			// - Set up your email client using the SMTP server setting smtpout.secureserver.net.
-			"IB401": eb.ReSECU, // SecurityError
+			"IB401": eb.ReSAFE, // SecurityError
 
 			// - 550 jane@coolexample.com Blank From: addresses are not allowed. Provide a valid From.
 			//   IB501

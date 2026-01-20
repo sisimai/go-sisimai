@@ -145,7 +145,7 @@ func init() {
 				"your email address has been blacklisted",
 				"your domain has been blacklisted",
 			},
-			eb.ReSECU: []string{"Please turn on SMTP Authentication in your mail client"},
+			eb.ReSAFE: []string{"Please turn on SMTP Authentication in your mail client"},
 			eb.ReSPAM: []string{
 				// - https://knowledge.broadcom.com/external/article/173867
 				//   Legitimate email, either outbound or inbound, is incorrectly flagged as spam

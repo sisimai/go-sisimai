@@ -57,7 +57,7 @@ func init() {
 	ProbesInto[eb.ReRELA] = func(fo *siba.Fact) bool {
 		if fo         == nil       { return false }
 		if fo.Reason  == eb.ReRELA { return true  }
-		if slices.Contains([]string{eb.ReSECU, eb.RePROC, eb.Re___0}, fo.Reason) { return false }
+		if slices.Contains([]string{eb.ReSAFE, eb.RePROC, eb.Re___0}, fo.Reason) { return false }
 		if slices.Contains([]string{eb.CeCONN, eb.CeEHLO, eb.CeHELO}, fo.Command){ return false }
 		return IncludedIn[eb.ReRELA](strings.ToLower(fo.DiagnosticCode))
 	}

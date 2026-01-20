@@ -102,7 +102,7 @@ func TestIncludedIn(t *testing.T) {
 			"571 No PTR Record found. Reverse DNS required:",
 			"550 5.7.1 Connections not accepted from servers without a valid sender domain. Fix reverse DNS for 203.0.113.2",
 		},
-		eb.ReSECU: []string{
+		eb.ReSAFE: []string{
 			"570 5.7.0 Authentication failure",
 			"#550 5.7.1 RESOLVER.RST.AuthRequired; authentication required ##rfc822;neko-nyaan@cat.example.jp",
 		},

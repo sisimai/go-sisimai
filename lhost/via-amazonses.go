@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ___                                   ____  _____ ____  
 // | | |__   ___  ___| |_   / / \   _ __ ___   __ _ _______  _ __ / ___|| ____/ ___| 
@@ -127,7 +127,7 @@ func init() {
 			"MailboxFull":              eb.ReFULL, // MailboxFull
 			"MessageTooLarge":          eb.ReSIZE, // EmailTooLarge
 			"ContentRejected":          eb.ReBODY, // ContentError
-			"AttachmentRejected":       eb.ReSECU, // SecurityError
+			"AttachmentRejected":       eb.ReSAFE, // SecurityError
 		}
 		type failedRCPT struct {
 			EmailAddress   string     // "bounce@simulator.amazonses.com",

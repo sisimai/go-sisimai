@@ -70,8 +70,8 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "5.6.0"},
 
 		// SecurityError
-		siba.Fact{Reason: eb.ReSECU, DeliveryStatus: "4.7.0"},
-		siba.Fact{Reason: eb.ReSECU, DeliveryStatus: "5.7.0"},
+		siba.Fact{Reason: eb.ReSAFE, DeliveryStatus: "4.7.0"},
+		siba.Fact{Reason: eb.ReSAFE, DeliveryStatus: "5.7.0"},
 		siba.Fact{DiagnosticCode: "Verification failure"},
 
 		// SyntaxError

@@ -517,7 +517,7 @@ func Code(name string, temp bool) string {
 		eb.ReRATE: [2]string{"5.9.131", "4.9.131"}, // RateLimited
 		eb.ReFROM: [2]string{"5.9.110", "4.9.110"}, // Rejected
 		eb.ReQPTR: [2]string{"5.9.133", "4.9.133"}, // RequirePTR
-		eb.ReSECU: [2]string{"5.9.370", "4.9.370"}, // SecurityError
+		eb.ReSAFE: [2]string{"5.9.370", "4.9.370"}, // SecurityError
 		eb.ReSPAM: [2]string{"5.9.164", "4.9.164"}, // SpamDetected
 		eb.ReSTOP: [2]string{"5.9.310", "4.9.310"}, // Suppressed
 		eb.ReQUIT: [2]string{"5.9.221", "4.9.221"}, // Suspend
@@ -571,14 +571,14 @@ func Name(code string) string {
 		"4.6.0":  eb.ReBODY, // Other or undefined media error
 		"4.6.2":  eb.ReBODY, // Conversion required and prohibited
 		"4.6.5":  eb.ReBODY, // Conversion Failed
-	//	"4.7.0":  eb.ReSECU, // Other or undefined security status
+	//	"4.7.0":  eb.ReSAFE, // Other or undefined security status
 		"4.7.1":  eb.ReBLOC, // Delivery not authorized, message refused
 		"4.7.2":  eb.ReFROM, // Mailing list expansion prohibited
-		"4.7.5":  eb.ReSECU, // Cryptographic failure
-		"4.7.6":  eb.ReSECU, // Cryptographic algorithm not supported
-		"4.7.7":  eb.ReSECU, // Message integrity failure
-		"4.7.12": eb.ReSECU, // A password transition is needed
-		"4.7.15": eb.ReSECU, // Priority Level is too low
+		"4.7.5":  eb.ReSAFE, // Cryptographic failure
+		"4.7.6":  eb.ReSAFE, // Cryptographic algorithm not supported
+		"4.7.7":  eb.ReSAFE, // Message integrity failure
+		"4.7.12": eb.ReSAFE, // A password transition is needed
+		"4.7.15": eb.ReSAFE, // Priority Level is too low
 		"4.7.16": eb.ReSIZE, // Message is too big for the specified priority
 		"4.7.24": eb.ReAUTH, // SPF validation error
 		"4.7.25": eb.ReQPTR, // Reverse DNS validation failed
@@ -622,21 +622,21 @@ func Name(code string) string {
 		"5.6.7":  eb.ReFROM, // Non-ASCII addresses not permitted for that sender/recipient
 		"5.6.8":  eb.ReBODY, // UTF-8 string reply is required, but not permitted by the SMTP client
 		"5.6.9":  eb.ReBODY, // UTF-8 header message cannot be transferred to one or more recipients
-		"5.7.0":  eb.ReSECU, // Other or undefined security status
-		"5.7.1":  eb.ReSECU, // Delivery not authorized, message refused
-		"5.7.2":  eb.ReSECU, // Mailing list expansion prohibited
-		"5.7.3":  eb.ReSECU, // Security conversion required but not possible
-		"5.7.4":  eb.ReSECU, // Security features not supported
-		"5.7.5":  eb.ReSECU, // Cryptographic failure
-		"5.7.6":  eb.ReSECU, // Cryptographic algorithm not supported
-		"5.7.7":  eb.ReSECU, // Message integrity failure
-		"5.7.8":  eb.ReSECU, // Authentication credentials invalid
-		"5.7.9":  eb.ReSECU, // Authentication mechanism is too weak
-		"5.7.10": eb.ReSECU, // Encryption Needed
-		"5.7.11": eb.ReSECU, // Encryption required for requested authentication mechanism
+		"5.7.0":  eb.ReSAFE, // Other or undefined security status
+		"5.7.1":  eb.ReSAFE, // Delivery not authorized, message refused
+		"5.7.2":  eb.ReSAFE, // Mailing list expansion prohibited
+		"5.7.3":  eb.ReSAFE, // Security conversion required but not possible
+		"5.7.4":  eb.ReSAFE, // Security features not supported
+		"5.7.5":  eb.ReSAFE, // Cryptographic failure
+		"5.7.6":  eb.ReSAFE, // Cryptographic algorithm not supported
+		"5.7.7":  eb.ReSAFE, // Message integrity failure
+		"5.7.8":  eb.ReSAFE, // Authentication credentials invalid
+		"5.7.9":  eb.ReSAFE, // Authentication mechanism is too weak
+		"5.7.10": eb.ReSAFE, // Encryption Needed
+		"5.7.11": eb.ReSAFE, // Encryption required for requested authentication mechanism
 		"5.7.13": eb.ReQUIT, // User Account Disabled
-		"5.7.14": eb.ReSECU, // Trust relationship required
-		"5.7.15": eb.ReSECU, // Priority Level is too low
+		"5.7.14": eb.ReSAFE, // Trust relationship required
+		"5.7.15": eb.ReSAFE, // Priority Level is too low
 		"5.7.16": eb.ReSIZE, // Message is too big for the specified priority
 		"5.7.17": eb.ReMOVE, // Mailbox owner has changed
 		"5.7.18": eb.ReMOVE, // Domain owner has changed

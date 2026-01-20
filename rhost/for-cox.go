@@ -70,8 +70,8 @@ func init() {
 			//   24 hours. Inspect email traffic for potential spam, and retry email delivery.
 			"CDRBL": eb.ReBLOC,
 
-			"CXTHRT":    eb.ReSECU, // Email sending limited due to suspicious account activity.
-			"CXMJ":      eb.ReSECU, // Email sending blocked due to suspicious account activity on primary Cox account.
+			"CXTHRT":    eb.ReSAFE, // Email sending limited due to suspicious account activity.
+			"CXMJ":      eb.ReSAFE, // Email sending blocked due to suspicious account activity on primary Cox account.
 			"IPBL0001":  eb.ReBLOC, // The sending IP address is listed in the Spamhaus Zen DNSBL.
 			"IPBL0010":  eb.ReBLOC, // The sending IP is listed in the Return Path DNSBL.
 			"IPBL0100":  eb.ReBLOC, // The sending IP is listed in the Invaluement ivmSIP DNSBL.

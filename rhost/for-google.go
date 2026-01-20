@@ -371,7 +371,7 @@ func init() {
 				[3]string{"550", "5.7.25", "does not have a ptr record"},
 				[3]string{"550", "5.7.25", "does not match the ip address of the hostname"},
 			},
-			eb.ReSECU: [][3]string{ // SecurityError
+			eb.ReSAFE: [][3]string{ // SecurityError
 				// - 454 4.7.0 Too many login attempts, please try again later. For more information,
 				//   go to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
 				[3]string{"454", "4.7.0", "too many login attempts"},

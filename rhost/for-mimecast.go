@@ -241,7 +241,7 @@ func init() {
 				[2]string{"550", "rejected by header-based blocked senders - block policy for header from"},
 				[2]string{"550", "envelope rejected - block policy for envelope from address"},
 			},
-			eb.ReSECU: [][2]string{ // SecurityError
+			eb.ReSAFE: [][2]string{ // SecurityError
 				// - Messages submitted to SMTP port 587 require authentication. This error indicates
 				//   the authentication details provided were incorrect.
 				// - Check your authentication details match an internal email address in Mimecast,

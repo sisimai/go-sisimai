@@ -32,7 +32,7 @@ const (
 	ReFROM = "Rejected"
 	ReQPTR = "RequirePTR"
 	ReRATE = "RateLimited"
-	ReSECU = "SecurityError"
+	ReSAFE = "SecurityError"
 	ReSPAM = "SpamDetected"
 	ReSTOP = "Suppressed"
 	ReQUIT = "Suspend"

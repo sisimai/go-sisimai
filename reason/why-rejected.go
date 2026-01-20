@@ -115,7 +115,7 @@ func init() {
 			// The session was rejected at "DATA" command except UserUnknown.
 			if IncludedIn[eb.ReFROM](issuedcode) == true { return true }
 
-		} else if IsExplicit(tempreason) == false || slices.Contains([]string{eb.ReSECU, eb.RePROC}, tempreason) {
+		} else if IsExplicit(tempreason) == false || slices.Contains([]string{eb.ReSAFE, eb.RePROC}, tempreason) {
 			// Try to match with message patterns when the temporary reason is OnHold, Undefined,
 			// SecurityError, or SystemError.
 			if IncludedIn[eb.ReFROM](issuedcode) == true { return true }

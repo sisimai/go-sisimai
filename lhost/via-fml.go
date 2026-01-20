@@ -39,7 +39,7 @@ func init() {
 				"Loop Back Warning: ",
 				"WARNING: UNIX FROM Loop",
 			},
-			eb.ReSECU: []string{"Security Alert"},
+			eb.ReSAFE: []string{"Security Alert"},
 		}
 		errortable := map[string][]string{
 			eb.ReFROM: []string{ // Rejected
@@ -50,7 +50,7 @@ func init() {
 				"You are not a member of this mailing list",
 			},
 			eb.ReNRFC: []string{"Duplicated Message-ID"},
-			eb.ReSECU: []string{"Security alert:"},
+			eb.ReSAFE: []string{"Security alert:"},
 			eb.RePROC: []string{
 				" has detected a loop condition so that",
 				"Loop Back Warning:",

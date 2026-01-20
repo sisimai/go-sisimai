@@ -494,7 +494,7 @@ func init() {
 				// Previous versions of Exchange Server ------------------------------------------------
 				[4]string{"5.7.", "501", "503", "access denied, banned sender"},
 			},
-			eb.ReSECU: [][4]string{ // SecurityError
+			eb.ReSAFE: [][4]string{ // SecurityError
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - A firewall or other device is blocking the Extended SMTP command that's required
 				//   for Exchange Server authentication (X-EXPS). Internal email traffic is flowing

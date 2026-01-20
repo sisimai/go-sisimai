@@ -67,10 +67,10 @@ func init() {
 				"00050311", // Conversion to Internet format failed
 				"000502CC", // Conversion to Internet format failed
 			},
-			eb.ReSECU: []string{ // SecurityError
+			eb.ReSAFE: []string{ // SecurityError
 				"000B0981", // 502 Server does not support AUTH
 			},
-			eb.Re___1:       []string{ // OnHold
+			eb.Re___1: []string{ // OnHold
 				"000B099C", // Host Unknown, Message exceeds size limit, ...
 				"000B09AA", // Unable to relay for, Message exceeds size limit,...
 				"000B09B6", // Error messages by remote MTA
