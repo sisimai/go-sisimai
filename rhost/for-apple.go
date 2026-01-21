@@ -52,7 +52,7 @@ func init() {
 				// - 552 5.2.2 <****@icloud.com>: user is over quota (in reply to RCPT TO command)
 				"user is over quota",
 			},
-			eb.ReRELA: []string{ // NoRelaying
+			eb.RePASS: []string{ // NoRelaying
 				// - 554 5.7.1 <*****@icloud.com>: Relay access denied
 				"relay access denied",
 			},

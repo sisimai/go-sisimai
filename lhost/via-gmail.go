@@ -121,7 +121,7 @@ func init() {
 			// We recommend contacting the other email provider for further information about the
 			// cause of this error. The error that the other server returned was:
 			// 500 Remote server does not support SMTP Authenticated Relay (state 12).
-			"12": [2]string{eb.CeAUTH, eb.ReRELA},
+			"12": [2]string{eb.CeAUTH, eb.RePASS},
 
 			// Technical details of permanent failure:
 			// Google tried to deliver your message, but it was rejected by the recipient domain.

@@ -91,7 +91,7 @@ func init() {
 				//     in the Delivered column and "Boundary Encryption" in the "Service" column.
 				"TLS/SSLv3 Connection required",
 			},
-			eb.ReRELA: []string{
+			eb.RePASS: []string{
 				// - https://knowledge.broadcom.com/external/article/162137
 				//   You received a Non-Delivery Report (NDR) for email sent through the Symantec
 				//   Email Security.cloud infrastructure, with the message "You are trying to use

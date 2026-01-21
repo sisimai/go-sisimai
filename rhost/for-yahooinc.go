@@ -38,7 +38,7 @@ func init() {
 				" because the ip is in spamhaus's list;",
 				"not accepted from ip addresses on spamhaus xbl",
 			},
-			eb.ReRELA: []string{ // NoRelaying
+			eb.RePASS: []string{ // NoRelaying
 				// - 550 relaying denied for <***@yahoo.com>
 				"relaying denied for ",
 			},

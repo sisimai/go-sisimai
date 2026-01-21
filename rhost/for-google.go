@@ -246,7 +246,7 @@ func init() {
 				[3]string{"554", "5.4.6", "message exceeded 50 hops"},
 				[3]string{"554", "5.6.0", "message exceeded 50 hops"},
 			},
-			eb.ReRELA: [][3]string{ // NoRelaying
+			eb.RePASS: [][3]string{ // NoRelaying
 				// - 550 5.7.0 Mail relay denied <ip-address>. Invalid credentials for relay for one
 				//   of the domains in: <domain-name> (as obtained from HELO and MAIL FROM). Email
 				//   is being sent from a domain or IP address which isn't registered in your Workspace

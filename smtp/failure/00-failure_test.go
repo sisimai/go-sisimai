@@ -13,7 +13,7 @@ import "libsisimai.org/sisimai/v5/eb"
 
 var SoftBounce = []string{
 	eb.ReAUTH, eb.ReFAMA, eb.ReBLOC, eb.ReBODY, eb.ReTIME, eb.ReTTLS, eb.ReFILT, eb.ReFULL, eb.ReUNIX,
-	eb.ReSIZE, eb.ReINET, eb.ReNRFC, eb.ReWONT, eb.ReRELA, eb.ReFROM, eb.ReQPTR, eb.ReSAFE, eb.ReSPAM,
+	eb.ReSIZE, eb.ReINET, eb.ReNRFC, eb.ReWONT, eb.RePASS, eb.ReFROM, eb.ReQPTR, eb.ReSAFE, eb.ReSPAM,
 	eb.ReRATE, eb.ReSTOP, eb.ReQUIT, eb.ReCOMM, eb.RePROC, eb.ReDISK, eb.ReEXEC, eb.Re___0, eb.Re___1,
 }
 var HardBounce = []string{eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX}

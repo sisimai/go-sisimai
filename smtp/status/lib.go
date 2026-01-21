@@ -509,7 +509,7 @@ func Code(name string, temp bool) string {
 		eb.ReFULL: [2]string{"5.9.220", "4.9.220"}, // MailboxFull
 		eb.ReUNIX: [2]string{"5.9.230", "4.9.230"}, // MailerError
 		eb.ReINET: [2]string{"5.9.341", "4.9.341"}, // NetworkError
-		eb.ReRELA: [2]string{"5.9.214", "4.9.214"}, // NoRelaying
+		eb.RePASS: [2]string{"5.9.214", "4.9.214"}, // NoRelaying
 		eb.Re00MX: [2]string{"5.9.215", "4.9.215"}, // NotAccept
 		eb.ReNRFC: [2]string{"5.9.162", "4.9.162"}, // NotCompliantRFC
 		eb.Re___1: [2]string{"5.9.301", "4.9.301"}, // OnHold

@@ -24,7 +24,7 @@ const (
 	ReFULL = "MailboxFull"
 	ReUNIX = "MailerError"
 	ReINET = "NetworkError"
-	ReRELA = "NoRelaying"
+	RePASS = "NoRelaying"
 	Re00MX = "NotAccept"
 	ReNRFC = "NotCompliantRFC"
 	Re___1 = "OnHold"

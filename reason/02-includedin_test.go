@@ -73,7 +73,7 @@ func TestIncludedIn(t *testing.T) {
 			"neko.example.com[192.0.2.2]:25: No route to host",
 			"Error transferring to neko22.example.org; Maximum hop count exceeded. Message probably in a routing loop.",
 		},
-		eb.ReRELA: []string{
+		eb.RePASS: []string{
 			"550 5.0.0 Relaying Denied",
 			"550 relay not permitted",
 			"550 5.7.1 Unable to relay for neko@example.com",

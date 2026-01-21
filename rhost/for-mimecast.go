@@ -151,7 +151,7 @@ func init() {
 				//   are configured on the mail servers.
 				[2]string{"554", "mail loop detected"},
 			},
-			eb.ReRELA: [][2]string{ // NoRelaying
+			eb.RePASS: [][2]string{ // NoRelaying
 				// - Both the sender and recipient domains specified in the transmission are external
 				//   to Mimecast, and aren't allowed to relay through the Mimecast service and/or the
 				//   connecting IP address isn't recognized as authorized.

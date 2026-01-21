@@ -20,7 +20,7 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn[eb.ReRELA] = func(mesg string) bool {
+	IncludedIn[eb.RePASS] = func(mesg string) bool {
 		if mesg == "" { return false }
 
 		index := []string{
@@ -54,12 +54,12 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto[eb.ReRELA] = func(fo *siba.Fact) bool {
+	ProbesInto[eb.RePASS] = func(fo *siba.Fact) bool {
 		if fo         == nil       { return false }
-		if fo.Reason  == eb.ReRELA { return true  }
+		if fo.Reason  == eb.RePASS { return true  }
 		if slices.Contains([]string{eb.ReSAFE, eb.RePROC, eb.Re___0}, fo.Reason) { return false }
 		if slices.Contains([]string{eb.CeCONN, eb.CeEHLO, eb.CeHELO}, fo.Command){ return false }
-		return IncludedIn[eb.ReRELA](strings.ToLower(fo.DiagnosticCode))
+		return IncludedIn[eb.RePASS](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

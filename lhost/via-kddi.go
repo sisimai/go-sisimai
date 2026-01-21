@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ___  ______  ____ ___ 
 // | | |__   ___  ___| |_   / / |/ /  _ \|  _ \_ _|
@@ -43,7 +43,7 @@ func init() {
 		}
 		messagesof := map[string][]string{
 			eb.ReFULL: []string{"As their mailbox is full"},
-			eb.ReRELA: []string{"Due to the following SMTP relay error"},
+			eb.RePASS: []string{"Due to the following SMTP relay error"},
 			eb.ReHOST: []string{"As the remote domain doesnt exist"},
 		}
 

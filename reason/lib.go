@@ -33,7 +33,7 @@ var Availables = map[string]string{
 	eb.ReFULL: "Email rejected due to a recipients mailbox is full",
 	eb.ReUNIX: "Email returned due to a mailer program has not exited successfully",
 	eb.ReINET: "SMTP connection failed due to DNS look up failure or other network problems",
-	eb.ReRELA: "Email rejected due to a connected host did not accept relaying",
+	eb.RePASS: "Email rejected due to a connected host did not accept relaying",
 	eb.Re00MX: "Delivery failed due to a destination mail server does not accept any email",
 	eb.ReNRFC: "Email rejected due to non-compliance with RFC",
 	eb.Re___1: "Sisimai could not decided the reason due to there is no (or less) detailed information for judging the reason",
@@ -55,11 +55,11 @@ var Availables = map[string]string{
 }
 var classorder = [][]string{
 	[]string{
-		eb.ReFULL, eb.ReSIZE, eb.ReQUIT, eb.ReMOVE, eb.ReRELA, eb.ReAUTH, eb.ReUSER, eb.ReFILT, eb.ReQPTR,
+		eb.ReFULL, eb.ReSIZE, eb.ReQUIT, eb.ReMOVE, eb.RePASS, eb.ReAUTH, eb.ReUSER, eb.ReFILT, eb.ReQPTR,
 		eb.ReNRFC, eb.ReFAMA, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
 	},
 	[]string{
-		eb.ReFULL, eb.ReAUTH, eb.ReFAMA, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.ReRELA, eb.RePROC, eb.ReINET,
+		eb.ReFULL, eb.ReAUTH, eb.ReFAMA, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.RePASS, eb.RePROC, eb.ReINET,
 		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSAFE, eb.ReSTOP, eb.ReUNIX,
 	},
 }
