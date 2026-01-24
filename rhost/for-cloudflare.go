@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 
 //       _               _      ______ _                 _  __ _                
@@ -24,7 +24,7 @@ func init() {
 
 		messagesof := map[string][]string{
 			eb.ReBLOC: []string{"found on one or more DNSBLs"}, // Blocked
-			eb.ReSYSE: []string{"Upstream error"}, // SystemError
+			eb.RePROC: []string{"Upstream error"},              // SystemError
 		}
 
 		for e := range messagesof {

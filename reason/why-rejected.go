@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____       _           _           _ 
 // |  _ \ ___ (_) ___  ___| |_ ___  __| |
@@ -115,7 +115,7 @@ func init() {
 			// The session was rejected at "DATA" command except UserUnknown.
 			if IncludedIn[eb.ReFROM](issuedcode) == true { return true }
 
-		} else if IsExplicit(tempreason) == false || slices.Contains([]string{eb.ReSECU, eb.ReSYSE}, tempreason) {
+		} else if IsExplicit(tempreason) == false || slices.Contains([]string{eb.ReSAFE, eb.RePROC}, tempreason) {
 			// Try to match with message patterns when the temporary reason is OnHold, Undefined,
 			// SecurityError, or SystemError.
 			if IncludedIn[eb.ReFROM](issuedcode) == true { return true }

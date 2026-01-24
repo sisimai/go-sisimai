@@ -30,10 +30,10 @@ func init() {
 			"bad-mailbox":         eb.ReUSER, // UserUnknown
 			"inactive-mailbox":    eb.ReQUIT, // Suspend
 			"message-expired":     eb.ReTIME, // Expired
-			"no-answer-from-host": eb.ReNETW, // NetworkError
-			"policy-related":      eb.RePOLI, // PolicyViolation
+			"no-answer-from-host": eb.ReINET, // NetworkError
+			"policy-related":      eb.ReWONT, // PolicyViolation
 			"quota-issues":        eb.ReFULL, // MailboxFull
-			"routing-errors":      eb.ReSYSE, // SystemError
+			"routing-errors":      eb.RePROC, // SystemError
 			"spam-related":        eb.ReSPAM, // SpamDetected
 		}
 		lhs,rhs, _ := strings.Cut(mesg, ":") // []string{"Final-Recipient", " rfc822; <neko@example.jp>"}

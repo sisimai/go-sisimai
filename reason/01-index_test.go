@@ -12,9 +12,9 @@ import "slices"
 import "libsisimai.org/sisimai/v5/eb"
 
 var ae = []string{
-	eb.ReAUTH, eb.ReREPU, eb.ReBLOC, eb.ReBODY, eb.ReTIME, eb.ReTTLS, eb.ReFILT, eb.ReFULL, eb.ReUNIX,
-	eb.ReSIZE, eb.ReNETW, eb.ReNRFC, eb.RePOLI, eb.ReRELA, eb.ReFROM, eb.ReQPTR, eb.ReSECU, eb.ReSPAM,
-	eb.ReRATE, eb.ReSUPP, eb.ReQUIT, eb.ReCOMM, eb.ReSYSE, eb.ReSYSF, eb.ReEXEC, eb.Re___0, eb.Re___1,
+	eb.ReAUTH, eb.ReFAMA, eb.ReBLOC, eb.ReBODY, eb.ReTIME, eb.ReTTLS, eb.ReFILT, eb.ReFULL, eb.ReUNIX,
+	eb.ReSIZE, eb.ReINET, eb.ReNRFC, eb.ReWONT, eb.RePASS, eb.ReFROM, eb.ReQPTR, eb.ReSAFE, eb.ReSPAM,
+	eb.ReRATE, eb.ReSTOP, eb.ReQUIT, eb.ReCOMM, eb.RePROC, eb.ReDISK, eb.ReEXEC, eb.Re___0, eb.Re___1,
 	eb.ReHOST, eb.ReUSER, eb.ReMOVE, eb.Re00MX, eb.ReSENT, eb.ReAWAY, eb.ReFEED,
 }
 
@@ -55,7 +55,7 @@ func TestIsExplicit(t *testing.T) {
 
 func TestShouldBeRetried(t *testing.T) {
 	fn := "reason.ShouldBeRetried"
-	re := []string{eb.Re___0, eb.Re___1, eb.ReSYSE, eb.ReSECU, eb.ReTIME, eb.ReNETW, eb.ReHOST, eb.ReUSER}
+	re := []string{eb.Re___0, eb.Re___1, eb.RePROC, eb.ReSAFE, eb.ReTIME, eb.ReINET, eb.ReHOST, eb.ReUSER}
 	cx := 0
 
 	for _, e := range re {

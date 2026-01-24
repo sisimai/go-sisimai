@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ____   __    _                ___            
 //  _ __| |__   ___  ___| |_   / /\ \ / /_ _| |__   ___   ___|_ _|_ __   ___ 
@@ -38,12 +38,12 @@ func init() {
 				" because the ip is in spamhaus's list;",
 				"not accepted from ip addresses on spamhaus xbl",
 			},
-			eb.ReRELA: []string{ // NoRelaying
+			eb.RePASS: []string{ // NoRelaying
 				// - 550 relaying denied for <***@yahoo.com>
 				"relaying denied for ",
 			},
 			eb.ReNRFC: []string{"headers are not rfc compliant"},
-			eb.RePOLI: []string{ // PolicyViolation
+			eb.ReWONT: []string{ // PolicyViolation
 				// - 554 Message not allowed - [PH01] Email not accepted for policy reasons.
 				//   Please visit https://postmaster.yahooinc.com/error-codes
 				// - 554 5.7.9 Message not accepted for policy reasons. 

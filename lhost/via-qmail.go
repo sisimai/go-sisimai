@@ -112,7 +112,7 @@ func init() {
 				"Mailaddress is administratively disabled",
 				"Mailaddress is administrativeley disabled",
 			},  // 5.2.1
-			eb.ReSYSE: []string{
+			eb.RePROC: []string{
 				"Automatic homedir creator crashed",                // 4.3.0
 				"Illegal value in LDAP attribute",                  // 5.3.5
 				"LDAP attribute is not given but mandatory",        // 5.3.5
@@ -138,7 +138,7 @@ func init() {
 			eb.ReSIZE: []string{"Message size exceeds fixed maximum message size:"},
 			// qmail-remote.c:68|  Sorry, I couldn't find any host by that name. (#4.1.2)\n"); zerodie();
 			// qmail-remote.c:78|  Sorry, I couldn't find any host named ");
-			eb.ReNETW: []string{
+			eb.ReINET: []string{
 				"Sorry, I wasn't able to establish an SMTP connection",
 				"Sorry. Although I'm listed as a best-preference MX or A for that host",
 			},
@@ -146,12 +146,12 @@ func init() {
 				// notqmail 1.08 returns the following error message when the destination MX is NullMX
 				"Sorry, I couldn't find a mail exchanger or IP address",
 			},
-			eb.ReSYSE: []string{
+			eb.RePROC: []string{
 				"bad interpreter: No such file or directory",
 				"system error",
 				"Unable to",
 			},
-			eb.ReSYSF: []string{"Requested action not taken: mailbox unavailable (not enough free space)"},
+			eb.ReDISK: []string{"Requested action not taken: mailbox unavailable (not enough free space)"},
 			eb.ReUSER: []string{"no mailbox here by that name"},
 		}
 

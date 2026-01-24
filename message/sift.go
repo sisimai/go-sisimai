@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
 // | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
@@ -30,8 +30,8 @@ func sift(bf *siba.BeforeFact, hook siba.CfParameter0) bool {
 	bf.Payload = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
 	mesgformat, ctencoding := "", ""
 
-	if len(bf.Headers["content-type"])              > 0 { mesgformat = strings.ToLower(bf.Headers["content-type"][0])              }
-	if len(bf.Headers["content-transfer-encoding"]) > 0 { ctencoding = strings.ToLower(bf.Headers["content-transfer-encoding"][0]) }
+	if ct := "content-type"; len(bf.Headers[ct])              > 0 { mesgformat = strings.ToLower(bf.Headers[ct][0]) }
+	if ct := "content-transfer-encoding"; len(bf.Headers[ct]) > 0 { ctencoding = strings.ToLower(bf.Headers[ct][0]) }
 
 	if moji.HasPrefixAny(mesgformat, []string{"text/plain", "text/html"}) {
 		// Content-Type: text/plain; charset=UTF-8

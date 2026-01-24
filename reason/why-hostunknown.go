@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _   _           _   _   _       _                              
 // | | | | ___  ___| |_| | | |_ __ | | ___ __   _____      ___ __  
@@ -57,7 +57,7 @@ func init() {
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 		if status.Name(fo.DeliveryStatus) == eb.ReHOST {
 			// To prevent classifying DNS errors as HostUnknown.
-			if IncludedIn[eb.ReNETW](issuedcode) == false { return true }
+			if IncludedIn[eb.ReINET](issuedcode) == false { return true }
 
 		} else {
 			// Status: 5.1.2

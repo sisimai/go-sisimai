@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _     ____    _    
 // | |   |  _ \  / \   
@@ -50,7 +50,7 @@ func Find(fo *siba.Fact) string {
 				"disc quota exceeded",
 				"mailbox full or quota exceeded",
 			},
-			eb.ReSYSE: []string{"temporary file write error"},
+			eb.RePROC: []string{"temporary file write error"},
 			eb.ReUSER: []string{
 				": invalid mailbox path",
 				": unknown user:",
@@ -60,8 +60,8 @@ func Find(fo *siba.Fact) string {
 		},
 		"procmail": map[string][]string{
 			eb.ReFULL: []string{"quota exceeded while writing", "user over quota"},
-			eb.ReSYSE: []string{"service unavailable"},
-			eb.ReSYSF: []string{"no space left to finish writing"},
+			eb.RePROC: []string{"service unavailable"},
+			eb.ReDISK: []string{"no space left to finish writing"},
 		},
 		"maildrop": map[string][]string{
 			eb.ReFULL: []string{"maildir over quota."},

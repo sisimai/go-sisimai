@@ -67,14 +67,14 @@ func init() {
 			// smtpd/queue.c:221|  envelope_set_errormsg(&evp, "Envelope expired");
 			// smtpd/mta.c:1013|  relay->failstr = "Could not retrieve credentials";
 			eb.ReTIME: []string{"Envelope expired"},
-			eb.ReSECU: []string{"Could not retrieve credentials"},
+			eb.ReSAFE: []string{"Could not retrieve credentials"},
 			eb.ReHOST: []string{
 				// smtpd/mta.c:976|  relay->failstr = "Invalid domain name";
 				// smtpd/mta.c:980|  relay->failstr = "Domain does not exist";
 				"Invalid domain name",
 				"Domain does not exist",
 			},
-			eb.ReNETW: []string{
+			eb.ReINET: []string{
 				//  smtpd/mta.c:972|  relay->failstr = "Temporary failure in MX lookup";
 				"Address family mismatch on destination MXs",
 				"All routes to destination blocked",

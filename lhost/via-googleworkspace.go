@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ______                   _    __        __         _                             
 // | | |__   ___  ___| |_   / / ___| ___   ___   __ _| | __\ \      / /__  _ __| | _____ _ __   __ _  ___ ___ 
@@ -37,7 +37,7 @@ func init() {
 			"error":   []string{"The response was:", "The response from the remote server was:"},
 		}
 		messagesof := map[string][]string{
-			eb.ReNETW: []string{" had no relevant answers.", " responded with code NXDOMAIN"},
+			eb.ReINET: []string{" had no relevant answers.", " responded with code NXDOMAIN"},
 			eb.Re00MX: []string{"Null MX"},
 			eb.ReUSER: []string{"because the address couldn't be found. Check for typos or unnecessary spaces and try again."},
 		}

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      _______                         ____ _____ _____ 
 //  _ __| |__   ___  ___| |_   / /  ___| __ __ _ _ __   ___ ___|  _ \_   _|_   _|
@@ -133,7 +133,7 @@ func init() {
 			//   OFR005_505 [505] (in reply to end of DATA command)
 			// - 421 4.2.1 Service refuse. Veuillez essayer plus tard. Service refused, please try later.
 			//   LPN007_505 (in reply to end of DATA command)
-			"505": eb.ReSYSE,
+			"505": eb.RePROC,
 
 			// - Your message has been blocked by Orange, suspected spam
 			//   Please contact Orange by using our contact form and select option
@@ -171,9 +171,9 @@ func init() {
 			// Other undocumented or old error codes
 			"105": "",        // Veuillez essayer plus tard.
 			"108": "",        // service refused, please try later. LPN001_108
-			"305": eb.ReSECU, // - 550 5.7.0 Code d'authentification invalide OFR_305
+			"305": eb.ReSAFE, // - 550 5.7.0 Code d'authentification invalide OFR_305
 			"401": eb.ReAUTH, // 550 5.5.0 SPF: *** is not allowed to send mail. LPN004_401
-			"402": eb.ReSECU, // 550 5.5.0 Authentification requise. Authentication Required. LPN105_402
+			"402": eb.ReSAFE, // 550 5.5.0 Authentification requise. Authentication Required. LPN105_402
 			"403": eb.ReFROM, // 5.0.1 Emetteur invalide. Invalid Sender.
 			"415": eb.ReFROM, // Emetteur invalide. Invalid Sender. OFR_415
 			"421": eb.ReFROM, // 5.5.3 Mail from not owned by user. LPN105_421.
@@ -181,7 +181,7 @@ func init() {
 			"424": "",        // Veuillez essayer plus tard. LPN105_424
 			"513": "",        // Mail rejete. Mail rejected. OUK_513
 			"514": eb.ReSIZE, // Taille limite du message atteinte
-			"630": eb.RePOLI, // 554 5.7.1 Client host rejected LPN000_630
+			"630": eb.ReWONT, // 554 5.7.1 Client host rejected LPN000_630
 		}
 		messagesof := map[string][]string{
 			eb.ReAUTH: []string{

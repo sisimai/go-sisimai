@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ______                 _           
 // | | |__   ___  ___| |_   / / ___|___  _   _ _ __(_) ___ _ __ 
@@ -47,9 +47,9 @@ func init() {
 			eb.ReHOST: []string{"No such domain."},
 			// courier/module.esmtp/esmtpclient.c:531| hard_error(del, ctf,
 			// courier/module.esmtp/esmtpclient.c:532|  "This domain's DNS violates RFC 1035.");
-			eb.ReSYSE: []string{"This domain's DNS violates RFC 1035."},
+			eb.RePROC: []string{"This domain's DNS violates RFC 1035."},
 			// courier/module.esmtp/esmtpclient.c:535| soft_error(del, ctf, "DNS lookup failed.");
-			eb.ReNETW: []string{"DNS lookup failed."},
+			eb.ReINET: []string{"DNS lookup failed."},
 		}
 
 		permessage := map[string]string{}   // Store values of each Per-Message field

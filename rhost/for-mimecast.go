@@ -47,7 +47,7 @@ func init() {
 				// - Ensure all the IP addresses for your mail servers are listed in your SPF records.
 				[2]string{"550", "dmarc sender invalid - envelope rejected"},
 			},
-			eb.ReREPU: [][2]string{ // BadReputation
+			eb.ReFAMA: [][2]string{ // BadReputation
 				// - The sending mail server is subjected to Greylisting. This requires the server
 				//   to retry the connection, between one minute and 12 hours. Alternatively, the
 				//   sender's IP address has a poor reputation.
@@ -138,7 +138,7 @@ func init() {
 				//   message with a 70 MB attachment, can have an overall size larger than 100 MB).
 				[2]string{"554", "maximum email size exceeded"},
 			},
-			eb.ReNETW: [][2]string{ // NetworkError
+			eb.ReINET: [][2]string{ // NetworkError
 				// - The recipients' domains have MX records configured incorrectly
 				// - Check and remove any MX records that point to hostnames with outbound references.
 				//   Only Inbound smart hosts are supported on MX records.
@@ -151,7 +151,7 @@ func init() {
 				//   are configured on the mail servers.
 				[2]string{"554", "mail loop detected"},
 			},
-			eb.ReRELA: [][2]string{ // NoRelaying
+			eb.RePASS: [][2]string{ // NoRelaying
 				// - Both the sender and recipient domains specified in the transmission are external
 				//   to Mimecast, and aren't allowed to relay through the Mimecast service and/or the
 				//   connecting IP address isn't recognized as authorized.
@@ -181,7 +181,7 @@ func init() {
 				//   Discontinue journaling old messages past the expiry threshold.
 				[2]string{"550", "journal message past expiration"},
 			},
-			eb.RePOLI: [][2]string{ // PolicyViolation
+			eb.ReWONT: [][2]string{ // PolicyViolation
 				// - The message has triggered an Anti-Spoofing policy.
 				// - Create an Anti-Spoofing policy to take no action for the sender's address or
 				//   IP address.
@@ -241,7 +241,7 @@ func init() {
 				[2]string{"550", "rejected by header-based blocked senders - block policy for header from"},
 				[2]string{"550", "envelope rejected - block policy for envelope from address"},
 			},
-			eb.ReSECU: [][2]string{ // SecurityError
+			eb.ReSAFE: [][2]string{ // SecurityError
 				// - Messages submitted to SMTP port 587 require authentication. This error indicates
 				//   the authentication details provided were incorrect.
 				// - Check your authentication details match an internal email address in Mimecast,
@@ -264,7 +264,7 @@ func init() {
 				//   Activity and searching for the required email address.
 				[2]string{"554", "email rejected due to security policies"},
 			},
-			eb.ReSYSE: [][2]string{ // SystemError
+			eb.RePROC: [][2]string{ // SystemError
 				// - The Mimecast server is under maximum load.
 				// - No action is required from the end-user. The message will retry 30 times and
 				//   when server resources are available, the message is processed.

@@ -18,7 +18,7 @@ func TestIncludedIn(t *testing.T) {
 			`550 5.1.0 192.0.2.222 is not allowed to send from <example.net> per it's SPF Record`,
 			`Unauthenticated email from libsisimai.org is not accepted due to domain's DMARC policy`,
 		},
-		eb.ReREPU: []string{
+		eb.ReFAMA: []string{
 			"451 4.7.650 The mail server [192.0.2.2] has been temporarily rate limited due to IP reputation.",
 			"550 Connections from mx.example.jp (192.0.2.2) are being rejected due to a poor email reputation score.",
 			"421 4.7.0 [TSS04] Messages from 192.0.2.25 temporarily deferred due to unexpected volume or user complaints",
@@ -67,13 +67,13 @@ func TestIncludedIn(t *testing.T) {
 			`554 "|IFS=' ' && exec /usr/local/bin/procmail -f- || exit 75 #kijitora"... Service unavailable`,
 			"pipe to |/usr/local/neko/bin/cat kijitora@example.com /home/neko/.cat",
 		},
-		eb.ReNETW: []string{
+		eb.ReINET: []string{
 			"554 5.4.6 Too many hops",
 			"554 5.4.6 Hop count exceeded - possible mail loop",
 			"neko.example.com[192.0.2.2]:25: No route to host",
 			"Error transferring to neko22.example.org; Maximum hop count exceeded. Message probably in a routing loop.",
 		},
-		eb.ReRELA: []string{
+		eb.RePASS: []string{
 			"550 5.0.0 Relaying Denied",
 			"550 relay not permitted",
 			"550 5.7.1 Unable to relay for neko@example.com",
@@ -88,7 +88,7 @@ func TestIncludedIn(t *testing.T) {
 			"554 Transaction failed: Duplicate header 'DKIM-Signature'. (in reply to end of DATA command)",
 		},
 	//	eb.Re___1: []string{"5.0.901 error"},
-		eb.RePOLI: []string{
+		eb.ReWONT: []string{
 			"570 5.7.7 Email not accepted for policy reasons",
 			"550 Denied by policy",
 			"554 email rejected due to security policies - MCSpamSignature.sa.2.2 (in reply to end of DATA command)",
@@ -102,7 +102,7 @@ func TestIncludedIn(t *testing.T) {
 			"571 No PTR Record found. Reverse DNS required:",
 			"550 5.7.1 Connections not accepted from servers without a valid sender domain. Fix reverse DNS for 203.0.113.2",
 		},
-		eb.ReSECU: []string{
+		eb.ReSAFE: []string{
 			"570 5.7.0 Authentication failure",
 			"#550 5.7.1 RESOLVER.RST.AuthRequired; authentication required ##rfc822;neko-nyaan@cat.example.jp",
 		},
@@ -110,7 +110,7 @@ func TestIncludedIn(t *testing.T) {
 			"570 5.7.7 Spam Detected",
 			"554 5.7.1 Mail Score (59) over MessageScoringUpperLimit (50) - send error reports to postmaster@example.net",
 		},
-	//  eb.ReSUPP: []string{"There is no sample email which is returned due to being listed in the suppression list"},
+	//  eb.ReSTOP: []string{"There is no sample email which is returned due to being listed in the suppression list"},
 		eb.ReQUIT: []string{
 			"550 5.0.0 Recipient suspend the service",
 			"550 The domain meangel.net is currently suspended. Try later.",
@@ -121,12 +121,12 @@ func TestIncludedIn(t *testing.T) {
 			"451 4.7.1 <smtp.example.jp[192.0.2.3]>: Client host rejected: Please try again slower",
 			"452 4.3.2 Connection rate limit exceeded. (in reply to MAIL FROM command)",
 		},
-		eb.ReSYSE: []string{
+		eb.RePROC: []string{
 			"500 5.3.5 System config error",
 			"554 5.3.5 Local configuration error",
 			"X-Postfix; mail for example.jp loops back to myself",
 		},
-		eb.ReSYSF: []string{"550 5.0.0 Mail system full"},
+		eb.ReDISK: []string{"550 5.0.0 Mail system full"},
 		eb.ReUSER: []string{
 			"550 5.1.1 Unknown User",
 			"550 kijitora@example.com... No such user",
@@ -153,7 +153,7 @@ func TestIncludedIn(t *testing.T) {
 			cx++; if IncludedIn[cr](strings.ToLower(re)) == false { t.Errorf("%s[%s](%s) returns false", fn, cr, re) }
 		}
 	}
-	for _, cr := range []string{eb.ReSUPP, eb.ReCOMM, eb.ReFEED, eb.ReSENT, eb.Re___0, eb.Re___1} {
+	for _, cr := range []string{eb.ReSTOP, eb.ReCOMM, eb.ReFEED, eb.ReSENT, eb.Re___0, eb.Re___1} {
 		cx++; if IncludedIn[cr]("")     == true  { t.Errorf("%s[%s]('') returns true", fn, cr) }
 		cx++; if IncludedIn[cr]("neko") == true  { t.Errorf("%s[%s](neko) returns true", fn, cr) }
 	}

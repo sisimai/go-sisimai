@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      _______     _           
 //  _ __| |__   ___  ___| |_   / /__  /___ | |__   ___  
@@ -44,13 +44,13 @@ func init() {
 				"Email cannot be delivered. Reason: Email flagged as Spam",
 				"Mail rejected by destination domain",
 			},
-			eb.RePOLI: []string{
+			eb.ReWONT: []string{
 				// - <*******@zoho.com>: host smtpin.zoho.com[204.141.33.23] said: 554 5.7.7 Email
 				//   policy violation detected (in reply to end of DATA command)
 				"Email policy violation detected",
 				"Mailbox delivery restricted by policy error",
 			},
-			eb.ReSYSE: []string{
+			eb.RePROC: []string{
 				// - https://github.com/zoho/zohodesk-oas/blob/main/v1.0/EmailFailureAlert.json#L168
 				//   452 4.3.1 Temporary System Error
 				"Temporary System Error",

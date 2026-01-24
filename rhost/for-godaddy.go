@@ -30,7 +30,7 @@ func init() {
 			// - Authentication is not allowed on inbound mail. This happens when you have incorrect
 			//   outgoing SMTP server settings set up in your email client, like Outlook or Gmail.
 			// - Set up your email client using the SMTP server setting smtpout.secureserver.net.
-			"IB401": eb.ReSECU, // SecurityError
+			"IB401": eb.ReSAFE, // SecurityError
 
 			// - 550 jane@coolexample.com Blank From: addresses are not allowed. Provide a valid From.
 			//   IB501
@@ -145,7 +145,7 @@ func init() {
 			// - 554 Connection refused. This IP has a poor reputation on Cloudmark Sender Intelligence
 			//   (CSI). IB103
 			// - This IP address has a poor reputation on Cloudmark Sender Intelligence (CSI).
-			"IB103": eb.ReREPU, // BadReputation
+			"IB103": eb.ReFAMA, // BadReputation
 
 			// - 554 Connection refused. This IP address is listed on the Spamhaus Block List (SBL). IB104
 			// - This IP address is listed on the Spamhaus Block List.
@@ -198,7 +198,7 @@ func init() {
 				//   email again later.
 				"account disabled",
 			},
-			eb.ReSYSE: []string{ // SystemError
+			eb.RePROC: []string{ // SystemError
 				// - This message is looping: it already has my Delivered-To line. (//5.4.6)
 				// - The recipient account is forwarding the message in a loop.
 				// - This is oftentimes because the receiver has two addresses that forward to each

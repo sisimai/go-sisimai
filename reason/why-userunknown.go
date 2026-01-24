@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _   _               _   _       _                              
 // | | | |___  ___ _ __| | | |_ __ | | ___ __   _____      ___ __  
@@ -157,7 +157,7 @@ func init() {
 			//   Status: 5.1.1
 			//   Diagnostic-Code: SMTP; 550 5.1.1 <***@example.jp>:
 			//     Recipient address rejected: User unknown in local recipient table
-			for _, e := range []string{eb.ReRELA, eb.ReBLOC, eb.ReFULL, eb.ReMOVE, eb.ReFROM, eb.Re00MX} {
+			for _, e := range []string{eb.RePASS, eb.ReBLOC, eb.ReFULL, eb.ReMOVE, eb.ReFROM, eb.Re00MX} {
 				// Check the value of "Diagnostic-Code" with other error patterns.
 				if IncludedIn[e](issuedcode) { return false }
 			}

@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _____          _   
 // |  ___|_ _  ___| |_ 
@@ -67,8 +67,8 @@ func(fo Fact) IsToxic() bool {
 		//   2-4. The SMTP status code begins with "5." such as "5.1.1".
 		// 3. Feedback Loop
 		//   3-1. The Feedback Type is any of "abuse", "fraud", "opt-out"
-		case eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX, eb.ReQUIT, eb.ReSUPP: return true
-		case eb.ReFULL, eb.ReFILT, eb.ReRELA:
+		case eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX, eb.ReQUIT, eb.ReSTOP: return true
+		case eb.ReFULL, eb.ReFILT, eb.RePASS:
 			// MailboxFull, Filtered, and NoRelaying.
 			if fo.Reason != eb.ReFULL && fo.Command == eb.CeRCPT { return true  }
 			if strings.HasPrefix(cv, "5")           == true      { return true  }

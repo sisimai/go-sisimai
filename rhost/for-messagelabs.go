@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ____  __                                _          _         
 //  _ __| |__   ___  ___| |_   / /  \/  | ___  ___ ___  __ _  __ _  ___| |    __ _| |__  ___ 
@@ -31,7 +31,7 @@ func init() {
 				//   to SPF Record. 553-SPF (Sender Policy Framework) domain authentication fail.
 				"domain authentication fail",
 			},
-			eb.ReREPU: []string{
+			eb.ReFAMA: []string{
 				// - https://knowledge.broadcom.com/external/article/164955
 				//   "501 Connection rejected by policy [7.7]" 20805, please visit www.messagelabs.com/support
 				//   for more details about this error message.
@@ -91,7 +91,7 @@ func init() {
 				//     in the Delivered column and "Boundary Encryption" in the "Service" column.
 				"TLS/SSLv3 Connection required",
 			},
-			eb.ReRELA: []string{
+			eb.RePASS: []string{
 				// - https://knowledge.broadcom.com/external/article/162137
 				//   You received a Non-Delivery Report (NDR) for email sent through the Symantec
 				//   Email Security.cloud infrastructure, with the message "You are trying to use
@@ -145,7 +145,7 @@ func init() {
 				"your email address has been blacklisted",
 				"your domain has been blacklisted",
 			},
-			eb.ReSECU: []string{"Please turn on SMTP Authentication in your mail client"},
+			eb.ReSAFE: []string{"Please turn on SMTP Authentication in your mail client"},
 			eb.ReSPAM: []string{
 				// - https://knowledge.broadcom.com/external/article/173867
 				//   Legitimate email, either outbound or inbound, is incorrectly flagged as spam

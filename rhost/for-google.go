@@ -118,7 +118,7 @@ func init() {
 				[3]string{"421", "4.7.40", "to add a dmarc record to "},
 				[3]string{"550", "5.7.40", "to add a dmarc record to "},
 			},
-			eb.ReREPU: [][3]string{ // BadReputation
+			eb.ReFAMA: [][3]string{ // BadReputation
 				// - 421 4.7.0 This message is suspicious due to the very low reputation of the sending
 				//   IP address/domain. To protect our users from spam, mail sent from your IP address
 				//   has been temporarily rate limited. For more information, go to Why has Gmail blocked
@@ -240,13 +240,13 @@ func init() {
 				[3]string{"552", "5.2.2", "is over quota"},
 				[3]string{"550", "5.7.1", "email quota exceeded"},
 			},
-			eb.ReNETW: [][3]string{ // NetworkError
+			eb.ReINET: [][3]string{ // NetworkError
 				// - 554 5.4.6 Message exceeded 50 hops, this may indicate a mail loop.
 				//   For more information, go to Gmail Help. https://support.google.com/mail/?p=MailLoop
 				[3]string{"554", "5.4.6", "message exceeded 50 hops"},
 				[3]string{"554", "5.6.0", "message exceeded 50 hops"},
 			},
-			eb.ReRELA: [][3]string{ // NoRelaying
+			eb.RePASS: [][3]string{ // NoRelaying
 				// - 550 5.7.0 Mail relay denied <ip-address>. Invalid credentials for relay for one
 				//   of the domains in: <domain-name> (as obtained from HELO and MAIL FROM). Email
 				//   is being sent from a domain or IP address which isn't registered in your Workspace
@@ -312,7 +312,7 @@ func init() {
 				// - https://support.google.com/mail/?p=RfcMessageNonCompliant
 				[3]string{"554", "5.6.0", "mail message is malformed"},
 			},
-			eb.RePOLI: [][3]string{ // PolicyViolation
+			eb.ReWONT: [][3]string{ // PolicyViolation
 				// - 552 5.7.0 Our system detected an illegal attachment on your message. Please visit
 				//   http://mail.google.com/support/bin/answer.py?answer=6590 to review our attachment
 				//   guidelines.
@@ -371,7 +371,7 @@ func init() {
 				[3]string{"550", "5.7.25", "does not have a ptr record"},
 				[3]string{"550", "5.7.25", "does not match the ip address of the hostname"},
 			},
-			eb.ReSECU: [][3]string{ // SecurityError
+			eb.ReSAFE: [][3]string{ // SecurityError
 				// - 454 4.7.0 Too many login attempts, please try again later. For more information,
 				//   go to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
 				[3]string{"454", "4.7.0", "too many login attempts"},
@@ -498,7 +498,7 @@ func init() {
 				[3]string{"504", "5.7.40", "xoauth is no longer supported"},
 				[3]string{"554", "5.7.0",  "too many unauthenticated commands"},
 			},
-			eb.ReSYSE: [][3]string{ // SystemError
+			eb.RePROC: [][3]string{ // SystemError
 				// About SMTP error messages, https://support.google.com/a/answer/3221692
 				[3]string{"421", "4.3.0", "temporary system problem"},
 				[3]string{"421", "4.7.0", "temporary system problem"},

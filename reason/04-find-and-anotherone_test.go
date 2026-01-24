@@ -49,7 +49,7 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticCode: "Message timed out"},
 
 		// NetworkError
-		siba.Fact{Reason: eb.ReNETW},
+		siba.Fact{Reason: eb.ReINET},
 		siba.Fact{DiagnosticCode: "No route to host"},
 
 		// UserUnknown, Filtered
@@ -70,8 +70,8 @@ func TestFind(t *testing.T) {
 		siba.Fact{DiagnosticType: "NEKO", Reason: eb.Re___0, DeliveryStatus: "5.6.0"},
 
 		// SecurityError
-		siba.Fact{Reason: eb.ReSECU, DeliveryStatus: "4.7.0"},
-		siba.Fact{Reason: eb.ReSECU, DeliveryStatus: "5.7.0"},
+		siba.Fact{Reason: eb.ReSAFE, DeliveryStatus: "4.7.0"},
+		siba.Fact{Reason: eb.ReSAFE, DeliveryStatus: "5.7.0"},
 		siba.Fact{DiagnosticCode: "Verification failure"},
 
 		// SyntaxError

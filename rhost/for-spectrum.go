@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ______                  _                        
 //  _ __| |__   ___  ___| |_   / / ___| _ __   ___  ___| |_ _ __ _   _ _ __ ___  
@@ -49,7 +49,7 @@ func init() {
 			[3]string{"1020", "1080", eb.ReFROM},
 
 			// 1090 The email you're trying to send can't be processed. Try sending again at a later time.
-			[3]string{"1090", "", eb.ReSYSE},
+			[3]string{"1090", "", eb.RePROC},
 
 			// 1100 The IP address you're trying to connect from has an issue with the Domain Name System.
 			// 1150 Spectrum requires a full circle DNS for emails to be allowed through. Verify the
@@ -59,7 +59,7 @@ func init() {
 
 			// 1160 The email you tried to send goes against your domain's security policies. 
 			// 1190 Please contact the email administrators of your domain.
-			[3]string{"1160", "1190", eb.RePOLI},
+			[3]string{"1160", "1190", eb.ReWONT},
 
 			// 1200 The IP address you're trying to send from has been flagged by Cloudmark CSI as
 			// 1210 potential spam. Have your IP administrator request a reset. 
@@ -74,7 +74,7 @@ func init() {
 			[3]string{"1220", "1250", eb.ReBLOC},
 
 			// 1260 Spectrum doesn't process IPV6 addresses. Connect with an IPv4 address and try again.
-			[3]string{"1260", "", eb.ReNETW},
+			[3]string{"1260", "", eb.ReINET},
 
 			// 1300 Spectrum limits the number of concurrent connections from a sender, as well as
 			// 1340 the total number of connections allowed. Limits vary based on the reputation of
@@ -107,7 +107,7 @@ func init() {
 
 			// 1560 Your email was rejected for having too many invalid recipients. Check your outgoing
 			//      email addresses and try again later.
-			[3]string{"1560", "", eb.RePOLI},
+			[3]string{"1560", "", eb.ReWONT},
 
 			// 1580 You've tried to send messages to too many recipients in a short period of time.
 			//      Wait a little while and try again later.

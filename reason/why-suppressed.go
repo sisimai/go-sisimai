@@ -18,17 +18,17 @@ func init() {
 	//     - mesg (string): Does the string include any of the strings listed in the pattern?
 	//   Returns:
 	//     - (bool): true if the argument includes one or more error message pattern.
-	IncludedIn[eb.ReSUPP] = func(mesg string) bool { return false }
+	IncludedIn[eb.ReSTOP] = func(mesg string) bool { return false }
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
 	//   Arguments:
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto[eb.ReSUPP] = func(fo *siba.Fact) bool {
+	ProbesInto[eb.ReSTOP] = func(fo *siba.Fact) bool {
 		if fo        == nil       { return false }
-		if fo.Reason == eb.ReSUPP { return true  }
-		return IncludedIn[eb.ReSUPP](strings.ToLower(fo.DiagnosticCode))
+		if fo.Reason == eb.ReSTOP { return true  }
+		return IncludedIn[eb.ReSTOP](strings.ToLower(fo.DiagnosticCode))
 	}
 }
 

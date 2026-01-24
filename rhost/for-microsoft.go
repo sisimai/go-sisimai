@@ -46,7 +46,7 @@ func init() {
 				//   Spf= Fail , Dkim= Pass , DMARC= Pass ...
 				[4]string{"5.7.515", "", "", "doesn't meet the required authentication level"},
 			},
-			eb.ReREPU: [][4]string{ // BadReputation
+			eb.ReFAMA: [][4]string{ // BadReputation
 				// Undocumented error messages ---------------------------------------------------------
 				// - status=deferred (host outlook-com.olc.protection.outlook.com[192.0.2.255] said:
 				//   451 4.7.650 The mail server [192.0.2.5] has been temporarily rate limited due
@@ -282,7 +282,7 @@ func init() {
 				//   Configure storage quotas for a mailbox.
 				[4]string{"5.2.2", "", "", "mailbox full"},
 			},
-			eb.ReNETW: [][4]string{ // NetworkError
+			eb.ReINET: [][4]string{ // NetworkError
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - There's a DNS or network adapter configuration issue on the Exchange server.
 				//   Verify the internal and external DNS lookup settings for the Exchange by running
@@ -340,7 +340,7 @@ func init() {
 				[4]string{"4.4.312", "", "", "dns query failed"},  // [Message=InfoNoRecords]
 				[4]string{"5.4.312", "", "", "dns query failed"},  // [Message=InfoNoRecords]
 			},
-			eb.ReRELA: [][4]string{ // NoRelaying
+			eb.RePASS: [][4]string{ // NoRelaying
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - You have an application server or device that's trying to relay messages through
 				//   Exchange. For more information, see Allow anonymous relay on Exchange servers.
@@ -392,7 +392,7 @@ func init() {
 				//   Policy Routing Agent and Address book policies in Exchange Server.
 				[4]string{"5.3.2", "", "", "storedrv.deliver: missing or bad storedriver mdb properties"},
 			},
-			eb.RePOLI: [][4]string{ // PoklicyViolation
+			eb.ReWONT: [][4]string{ // PolicyViolation
 				// - 5.0.350 is a generic catch-all error code for a wide variety of non-specific errors
 				//   lfrom the recipient's email organization. The specific x-dg-ref header is too long
 				//   message is related to Rich Text formatted messages. The specific Requested action
@@ -494,7 +494,7 @@ func init() {
 				// Previous versions of Exchange Server ------------------------------------------------
 				[4]string{"5.7.", "501", "503", "access denied, banned sender"},
 			},
-			eb.ReSECU: [][4]string{ // SecurityError
+			eb.ReSAFE: [][4]string{ // SecurityError
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - A firewall or other device is blocking the Extended SMTP command that's required
 				//   for Exchange Server authentication (X-EXPS). Internal email traffic is flowing
@@ -620,7 +620,7 @@ func init() {
 				//   be EHLO or HELO.
 				[4]string{"5.5.2", "", "", "send hello first"},
 			},
-			eb.ReSYSE: [][4]string{ // SystemError
+			eb.RePROC: [][4]string{ // SystemError
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - You've configured a custom Receive connector in the Transport (Hub) service on
 				//   a Mailbox server that listens on port 25. Typically, custom Receive connectors
@@ -689,7 +689,7 @@ func init() {
 				//   (in reply to MAIL FROM command))
 				[4]string{"4.7.700", "", "", "pfa agent busy, please try again."},
 			},
-			eb.ReSYSF: [][4]string{ // SystemFull
+			eb.ReDISK: [][4]string{ // SystemFull
 				// Exchange Server 2019 ----------------------------------------------------------------
 				// - Free disk space is low (for example, the disk that holds the queue database doesn't
 				//   have the required amount of free space). For more information, see Understanding
@@ -768,23 +768,23 @@ func init() {
 		errorcodes := map[string][2]string{
 			// The mail server IP connecting to Outlook.com server has exceeded the rate limit allowed.
 			// Reason for rate limitation is related to IP/domain reputation.
-			"RP-001": [2]string{"421", eb.ReREPU},
+			"RP-001": [2]string{"421", eb.ReFAMA},
 
 			// The mail server IP connecting to Outlook.com server has exceeded the rate limit allowed
 			// on this connection. Reason for rate limitation is related to IP/domain reputation.
-			"RP-002": [2]string{"421", eb.ReREPU},
+			"RP-002": [2]string{"421", eb.ReFAMA},
 
 			// The mail server IP connecting to Outlook.com server has exceeded the connection limit
 			// allowed. Reason for limitation is related to IP/domain reputation.
-			"RP-003": [2]string{"421", eb.ReREPU},
+			"RP-003": [2]string{"421", eb.ReFAMA},
 
 			// Mail rejected by Outlook.com for policy reasons. Reasons for rejection may be related
 			// to content with spam-like characteristics or IP/domain reputation. 
-			"SC-001": [2]string{"550", eb.ReREPU},
+			"SC-001": [2]string{"550", eb.ReFAMA},
 
 			// Mail rejected by Outlook.com for policy reasons. The mail server IP connecting to
 			// Outlook.com has exhibited namespace mining behavior.
-			"SC-002": [2]string{"550", eb.RePOLI},
+			"SC-002": [2]string{"550", eb.ReWONT},
 
 			// Mail rejected by Outlook.com for policy reasons. Your IP address appears to be an
 			// open proxy/relay.
@@ -812,7 +812,7 @@ func init() {
 
 			// Mail rejected by Outlook.com for policy reasons. Reasons for rejection may be related
 			// to content with spam-like characteristics or IP/domain reputation.
-			"OU-002": [2]string{"550", eb.ReREPU},
+			"OU-002": [2]string{"550", eb.ReFAMA},
 		}
 
 		statuscode := fo.DeliveryStatus

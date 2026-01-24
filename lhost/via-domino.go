@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ______                  _             
 // | | |__   ___  ___| |_   / /  _ \  ___  _ __ ___ (_)_ __   ___  
@@ -37,7 +37,7 @@ func init() {
 		startingof := map[string][]string{"message": []string{"Your message"}}
 		messagesof := map[string][]string{
 			eb.ReFILT: []string{"Cannot route mail to user"},
-			eb.ReSYSE: []string{"Several matches found in Domino Directory"},
+			eb.RePROC: []string{"Several matches found in Domino Directory"},
 			eb.ReUSER: []string{
 				"not listed in Domino Directory",
 				"not listed in public Name & Address Book",

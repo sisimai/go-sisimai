@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ___   _       _            
 // | | |__   ___  ___| |_   / / \ | | ___ | |_ ___  ___ 
@@ -29,7 +29,7 @@ func init() {
 		boundaries := []string{"------- Returned Message --------"}
 		startingof := map[string][]string{"message": []string{"------- Failure Reasons "} }
 		messagesof := map[string][]string{
-			eb.ReNETW: []string{"Message has exceeded maximum hop count"},
+			eb.ReINET: []string{"Message has exceeded maximum hop count"},
 			eb.ReUSER: []string{
 				"User not listed in public Name & Address Book",
 				"ディレクトリのリストにありません",

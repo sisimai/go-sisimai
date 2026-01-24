@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      _______          _                            ____   ___   ___ _____ 
 // | | |__   ___  ___| |_   / / ____|_  _____| |__   __ _ _ __   __ _  ___|___ \ / _ \ / _ \___ / 
@@ -56,21 +56,21 @@ func init() {
 		errorcodes := map[string][]string{
 			eb.ReUSER: []string{"000C05A6", /* Unknown Recipient   */ }, // UserUnknown
 			eb.ReFILT: []string{"000C0595", /* Ambiguous Recipient */ }, // Filtered
-			eb.ReSYSE: []string{ // SystemError
+			eb.RePROC: []string{ // SystemError
 				"00010256", // Too many recipients.
 				"000D06B5", // No proxy for recipient (non-smtp mail?)
 			},
-			eb.ReNETW: []string{ // NetworkError
+			eb.ReINET: []string{ // NetworkError
 				"00120270", // Too Many Hops
 			},
 			eb.ReBODY: []string{ // ContentError
 				"00050311", // Conversion to Internet format failed
 				"000502CC", // Conversion to Internet format failed
 			},
-			eb.ReSECU: []string{ // SecurityError
+			eb.ReSAFE: []string{ // SecurityError
 				"000B0981", // 502 Server does not support AUTH
 			},
-			eb.Re___1:       []string{ // OnHold
+			eb.Re___1: []string{ // OnHold
 				"000B099C", // Host Unknown, Message exceeds size limit, ...
 				"000B09AA", // Unable to relay for, Message exceeds size limit,...
 				"000B09B6", // Error messages by remote MTA

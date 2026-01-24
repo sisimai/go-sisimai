@@ -64,15 +64,15 @@ func init() {
 		}
 		ndrsubject := map[string]string{
 			"SMTPSEND.DNS.NonExistentDomain": eb.ReHOST, // 554 5.4.4 SMTPSEND.DNS.NonExistentDomain
-			"SMTPSEND.DNS.MxLoopback":        eb.ReNETW, // 554 5.4.4 SMTPSEND.DNS.MxLoopback
-			"RESOLVER.ADR.BadPrimary":        eb.ReSYSE, // 550 5.2.0 RESOLVER.ADR.BadPrimary
+			"SMTPSEND.DNS.MxLoopback":        eb.ReINET, // 554 5.4.4 SMTPSEND.DNS.MxLoopback
+			"RESOLVER.ADR.BadPrimary":        eb.RePROC, // 550 5.2.0 RESOLVER.ADR.BadPrimary
 			"RESOLVER.ADR.RecipNotFound":     eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.RecipNotFound
 			"RESOLVER.ADR.RecipientNotFound": eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.RecipientNotFound
 			"RESOLVER.ADR.ExRecipNotFound":   eb.ReUSER, // 550 5.1.1 RESOLVER.ADR.ExRecipNotFound
 			"RESOLVER.ADR.RecipLimit":        eb.ReRATE, // 550 5.5.3 RESOLVER.ADR.RecipLimit
-			"RESOLVER.ADR.InvalidInSmtp":     eb.ReSYSE, // 550 5.1.0 RESOLVER.ADR.InvalidInSmtp
-			"RESOLVER.ADR.Ambiguous":         eb.ReSYSE, // 550 5.1.4 RESOLVER.ADR.Ambiguous, 420 4.2.0 RESOLVER.ADR.Ambiguous
-			"RESOLVER.RST.AuthRequired":      eb.ReSECU, // 550 5.7.1 RESOLVER.RST.AuthRequired
+			"RESOLVER.ADR.InvalidInSmtp":     eb.RePROC, // 550 5.1.0 RESOLVER.ADR.InvalidInSmtp
+			"RESOLVER.ADR.Ambiguous":         eb.RePROC, // 550 5.1.4 RESOLVER.ADR.Ambiguous, 420 4.2.0 RESOLVER.ADR.Ambiguous
+			"RESOLVER.RST.AuthRequired":      eb.ReSAFE, // 550 5.7.1 RESOLVER.RST.AuthRequired
 			"RESOLVER.RST.NotAuthorized":     eb.ReFROM, // 550 5.7.1 RESOLVER.RST.NotAuthorized
 			"RESOLVER.RST.RecipSizeLimit":    eb.ReSIZE, // 550 5.2.3 RESOLVER.RST.RecipSizeLimit
 			"QUEUE.Expired":                  eb.ReTIME, // 550 4.4.7 QUEUE.Expired

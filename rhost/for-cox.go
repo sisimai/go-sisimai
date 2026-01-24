@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _      ______          
 //  _ __| |__   ___  ___| |_   / / ___|_____  __
@@ -70,8 +70,8 @@ func init() {
 			//   24 hours. Inspect email traffic for potential spam, and retry email delivery.
 			"CDRBL": eb.ReBLOC,
 
-			"CXTHRT":    eb.ReSECU, // Email sending limited due to suspicious account activity.
-			"CXMJ":      eb.ReSECU, // Email sending blocked due to suspicious account activity on primary Cox account.
+			"CXTHRT":    eb.ReSAFE, // Email sending limited due to suspicious account activity.
+			"CXMJ":      eb.ReSAFE, // Email sending blocked due to suspicious account activity on primary Cox account.
 			"IPBL0001":  eb.ReBLOC, // The sending IP address is listed in the Spamhaus Zen DNSBL.
 			"IPBL0010":  eb.ReBLOC, // The sending IP is listed in the Return Path DNSBL.
 			"IPBL0100":  eb.ReBLOC, // The sending IP is listed in the Invaluement ivmSIP DNSBL.
@@ -108,7 +108,7 @@ func init() {
 				"dns check failure - try again later",
 				"rejected - no rdns",
 			},
-			eb.RePOLI: []string{ // PolicyViolation
+			eb.ReWONT: []string{ // PolicyViolation
 				// - The sending server has attempted to communicate too soon within the SMTP transaction
 				// - The message has been rejected because it contains an attachment with one of the
 				//   following prohibited file types, which commonly contain viruses: .shb, .shs, .vbe,
@@ -121,7 +121,7 @@ func init() {
 				// Cox requires that all sender domains resolve to a valid MX or A-record within DNS.
 				"sender rejected",
 			},
-			eb.ReSYSE: []string{ // SystemError
+			eb.RePROC: []string{ // SystemError
 				// - Our systems are experiencing an issue which is causing a temporary inability to
 				//   accept new email.
 				"esmtp server temporarily not available",
