@@ -15,6 +15,7 @@ v5.X.X
     - #309 `ExceedLimit` and `MesgTooBig` are consolidated into `EmailTooLarge`.
   - #319 `moji.Token()` has been moved to `fact/lib.go`.
   - #322 Reorganize the internal status codes in `smtp/status/lib.go`: `5.0.9**` to `5.9.***`.
+  - #325 Update the internal constant name for some reason names.
 
 v5.5.0
 ---------------------------------------------------------------------------------------------------
