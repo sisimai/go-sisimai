@@ -36,7 +36,6 @@ func init() {
 			"not local host",
 			"relay access denied",
 			"relay denied",
-			"relaying mail to ",
 			"relay not permitted",
 			"relaying denied", // Sendmail
 			"relaying mail to ",
