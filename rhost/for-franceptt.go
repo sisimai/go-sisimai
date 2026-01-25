@@ -104,6 +104,11 @@ func init() {
 			// - 501 5.1.0 Emetteur invalide. Invalid Sender. OFR004_405 [405] (in reply to MAIL FROM command))
 			"405": eb.ReFROM,
 
+			// - Your Sender has been rejected
+			//   Please contact Orange by using our contact form and select option
+			//   "Un problème d'envoi d'emails vers les adresses Orange ou Wanadoo (deliverability issue)"
+			"406": eb.ReFROM,
+
 			// - User doesn't exist here
 			//   Please remove this email address from your distribution list, it does not exist
 			// - 550 5.1.1 Adresse d au moins un destinataire invalide.
