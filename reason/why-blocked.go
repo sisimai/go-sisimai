@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _            _            _ 
 // | __ )| | ___   ___| | _____  __| |
@@ -94,15 +94,12 @@ func init() {
 			[]string{"ip ", " is blocked by earthlink"}, // Earthlink
 			[]string{"is in an ", "rbl on "},
 			[]string{"mail server at ", " is blocked"},
-			[]string{"mail from "," refused:"},
-			[]string{"mail from "," refused, see ", "orbs"},
+			[]string{"mail from "," refused"},
 			[]string{"message from ", " rejected based on blacklist"},
 			[]string{"messages from ", " temporarily deferred due to user complaints"}, // Yahoo!
 			[]string{"server ip ", " listed as abusive"},
 			[]string{"sorry! your ip address", " is blocked by rbl"}, // junkemailfilter.com
-			[]string{"the domain ", " is blacklisted"},
-			[]string{"the email ", " is blacklisted"},
-			[]string{"the ip", " is blacklisted"},
+			[]string{"the ", " is blacklisted"}, // the email, the domain, the ip
 			[]string{"veuillez essayer plus tard. service refused, please try later. ", "103"},
 			[]string{"veuillez essayer plus tard. service refused, please try later. ", "510"},
 			[]string{"your access ip", " has been rejected"},
