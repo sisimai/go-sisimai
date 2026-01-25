@@ -160,6 +160,10 @@ func init() {
 			"IB106": eb.ReBLOC, // Blocked
 		}
 		messagesof := map[string][]string{
+			eb.ReAUTH: []string{ // AuthFailure
+				// - 550 SPF Sender Invalid - envelope rejected
+				"550 spf sender Invalid - envelope rejected",
+			},
 			eb.ReBLOC: []string{ // Blocked
 				// - 554 RBL Reject.
 				// - This IP address was blocked from our internal RBL.
