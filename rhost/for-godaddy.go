@@ -162,7 +162,11 @@ func init() {
 		messagesof := map[string][]string{
 			eb.ReAUTH: []string{ // AuthFailure
 				// - 550 SPF Sender Invalid - envelope rejected
-				"550 spf sender Invalid - envelope rejected",
+				// - 550 5.7.9: This mail has been blocked because the sender is unauthenticated
+				// - 550-5.7.26 DKIM = did not pass
+				"spf sender invalid - envelope rejected",
+				"this mail has been blocked because the sender is unauthenticated",
+				"dkim = did not pass",
 			},
 			eb.ReBLOC: []string{ // Blocked
 				// - 554 RBL Reject.
