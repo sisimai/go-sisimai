@@ -190,6 +190,19 @@ func init() {
 				//   make space for more email.
 				"account storage limit",
 			},
+			eb.ReRATE: []string{ // RateLimited
+				// - 550 5.7.232 Your message can't be sent because your trial tenant has exceeded
+				//   its daily limit for sending email to external recipients (tenant external
+				//   recipient rate limit)
+				// - 550 5.7.233 - Your message can't be sent because your tenant exceeded its daily
+				//   limit for sending email to external recipients (tenant external recipient rate
+				//   limit)
+				"exceeded its daily limit",
+			},
+			eb.ReSAFE: []string{ // SecurityError
+				// - 550 Please turn on SMTP Authentication in your mail client
+				"turn on smtp authentication in your mail client",
+			},
 			eb.ReSPAM: []string{ // SpamDetected
 				// - 552 Message rejected for spam or virus content
 				// - The email message contains a link, attachment, or pattern caught by our filters as spam.
@@ -208,19 +221,6 @@ func init() {
 				// - This is oftentimes because the receiver has two addresses that forward to each
 				//   other. They need to correct their forwarding settings.
 				"message is looping",
-			},
-			eb.ReRATE: []string{ // RateLimited
-				// - 550 5.7.232 Your message can't be sent because your trial tenant has exceeded
-				//   its daily limit for sending email to external recipients (tenant external
-				//   recipient rate limit)
-				// - 550 5.7.233 - Your message can't be sent because your tenant exceeded its daily
-				//   limit for sending email to external recipients (tenant external recipient rate
-				//   limit)
-				"exceeded its daily limit",
-			},
-			eb.ReSAFE: []string{ // SecurityError
-				// - 550 Please turn on SMTP Authentication in your mail client
-				"turn on smtp authentication in your mail client",
 			},
 			eb.ReUSER: []string{ // UserUnknown
 				// - 550 Recipient not found
