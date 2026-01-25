@@ -190,6 +190,10 @@ func init() {
 				//   make space for more email.
 				"account storage limit",
 			},
+			eb.RePASS: []string{ // NoRelaying
+				// - 550 5.7.1: Relay access denied
+				"relay access denied",
+			},
 			eb.ReRATE: []string{ // RateLimited
 				// - 550 5.7.232 Your message can't be sent because your trial tenant has exceeded
 				//   its daily limit for sending email to external recipients (tenant external
