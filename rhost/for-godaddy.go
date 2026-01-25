@@ -218,6 +218,10 @@ func init() {
 				//   limit)
 				"exceeded its daily limit",
 			},
+			eb.ReSAFE: []string{ // SecurityError
+				// - 550 Please turn on SMTP Authentication in your mail client
+				"turn on smtp authentication in your mail client",
+			},
 			eb.ReUSER: []string{ // UserUnknown
 				// - 550 Recipient not found
 				// - The recipient is not a valid email address.
