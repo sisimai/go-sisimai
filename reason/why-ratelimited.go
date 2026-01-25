@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____       _       _     _           _ _           _ 
 // |  _ \ __ _| |_ ___| |   (_)_ __ ___ (_) |_ ___  __| |
@@ -30,8 +30,7 @@ func init() {
 			"mail sent from your IP address has been temporarily rate limited",
 			"please try again slower",
 			"receiving mail at a rate that prevents additional messages from being delivered",
-			"throttling failure: daily message quota exceeded",
-			"throttling failure: maximum sending rate exceeded",
+			"throttling failure: ",
 			"too many connections",
 			"too many concurrent smtp connections", // Microsoft
 			"too many errors from your ip",         // Free.fr
