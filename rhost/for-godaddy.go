@@ -207,6 +207,10 @@ func init() {
 				//   limit)
 				"exceeded its daily limit",
 			},
+			eb.ReFROM: []string{ // Rejected
+				// - 550 5.1.8 Access denied, bad outbound sender AS (42004)
+				"bad outbound sender as (42004)",
+			},
 			eb.ReSAFE: []string{ // SecurityError
 				// - 550 Please turn on SMTP Authentication in your mail client
 				"turn on smtp authentication in your mail client",
