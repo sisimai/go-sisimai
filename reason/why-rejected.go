@@ -26,12 +26,11 @@ func init() {
 
 		isnot := []string{
 			"5.1.0 address rejected",
+			"ip address ",
 			"recipient address rejected",
-			"sender ip address rejected",
 		}
 		index := []string{
 			"access denied (in reply to mail from command)",
-			"access denied (sender blacklisted)",
 			"address rejected",
 			"administrative prohibition",
 			"batv failed to verify",   // SonicWall
@@ -67,15 +66,11 @@ func init() {
 			"rfc 1035 violation: recursive cname records for",
 			"rule imposed mailbox access for",  // MailMarshal
 			"sending this from a different address or alias using the ",
-			"sender address has been blacklisted",
-			"sender email address rejected",
 			"sender is in my black list",
 			"sender is spammer",
 			"sender not pre-approved",
-			"sender rejected",
 			"sender domain is empty",
 			"sender verify failed",     // Exim callout
-			"sender was rejected",      // qmail
 			"spam reporting address",   // SendGrid|a message to an address has previously been marked as Spam by the recipient.
 			"syntax error: empty email address",
 			"the email address used to send your message is not subscribed to this group",
@@ -84,13 +79,15 @@ func init() {
 			"transaction failed unsigned dsn for",
 			"unroutable sender address",
 			"you are not allowed to post to this mailing list",
-			"you are sending to/from an address that has been blacklisted",
 			"your access to submit messages to this e-mail system has been rejected",
 			"your email address has been blacklisted",  // MessageLabs
 		}
+		pairs := [][]string{
+			[]string{"send", "blacklisted"},
+			[]string{"sender", " rejected"},
+		}
 		if moji.ContainsAny(mesg, isnot) { return false }
-		if moji.ContainsAny(mesg, index) { return true  }
-		return false
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
