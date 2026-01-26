@@ -70,6 +70,7 @@ func init() {
 			"sender is spammer",
 			"sender not pre-approved",
 			"sender domain is empty",
+			"sender domain listed at ",
 			"sender verify failed",     // Exim callout
 			"spam reporting address",   // SendGrid|a message to an address has previously been marked as Spam by the recipient.
 			"syntax error: empty email address",

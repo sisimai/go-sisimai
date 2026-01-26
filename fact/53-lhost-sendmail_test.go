@@ -196,7 +196,7 @@ func TestLhostSendmail(t *testing.T) {
 		{{"1113", 1, "5.6.0",   "550", "contenterror",    false, false, ""}},
 		{{"1114", 1, "5.7.0",   "552", "policyviolation", false, false, ""}},
 		{{"1115", 1, "5.7.0",   "554", "policyviolation", false, false, ""}},
-		{{"1116", 1, "5.7.0",   "550", "spamdetected",    false, false, ""}},
+		{{"1116", 1, "5.7.0",   "550", "rejected",        false, false, ""}},
 		{{"1117", 1, "5.7.1",   "550", "spamdetected",    false, false, ""}},
 		{{"1118", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1119", 1, "5.2.0",   "550", "filtered",        false,  true, ""}},

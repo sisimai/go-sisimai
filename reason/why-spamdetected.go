@@ -54,7 +54,6 @@ func init() {
 			"reject bulk.advertising",
 			"rejecting banned content",
 			"rejecting mail content",
-			"sender domain listed at ",
 			"spam check",
 			"spam content",
 			"spam detected",
