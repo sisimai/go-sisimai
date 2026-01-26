@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____                        ____       _            _           _ 
 // / ___| _ __   __ _ _ __ ___ |  _ \  ___| |_ ___  ___| |_ ___  __| |
@@ -46,7 +46,6 @@ func init() {
 			"is classified as spam and is rejected",
 			"listed in work.drbl.imedia.ru",
 			"the mail server detected your message as spam and has prevented delivery.", // CPanel/Exim with SA rejections on
-			"mail appears to be unsolicited", // rejected due to spam
 			"mail content denied",            // http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=20022&&no=1000726
 			"may consider spam",
 			"message considered as spam or virus",
@@ -81,7 +80,6 @@ func init() {
 			"spam content matched",
 			"spam detected",
 			"spam email",
-			"spam email not accepted",
 			"spam message rejected.", // mail.ru
 			"spam not accepted",
 			"spam refused",
