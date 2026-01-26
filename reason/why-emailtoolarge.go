@@ -24,20 +24,16 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"exceeded maximum inbound message size",
-			"exceeded the maximum incoming message size",
 			"line limit exceeded",
-			"max message size exceeded",
-			"message file too big",
-			"message size exceeds fixed ",
-			"message size exceeds maximum value",
-			"message too big",
 			"message too large",
 			"size limit",
 			"taille limite du message atteinte",
 		}
 		pairs := [][]string{
-			[]string{"message ", " exceeds ", "limit"},
+			[]string{"exceeded", "message size"},
+			[]string{"message ", "exceeds ", "limit"},
+			[]string{"message ", "size", "exceed"},
+			[]string{"message ", "too", "big"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
