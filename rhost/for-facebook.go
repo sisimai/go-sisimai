@@ -27,7 +27,7 @@ func init() {
 			// https://www.facebook.com/postmaster/response_codes
 			// NOT TESTED EXCEPT RCP-P2
 			eb.ReAUTH: []string{ // AuthFailure
-				"POL-P7",   // The message does not comply with Facebook's Domain Authentication requirements.
+				"POL-P7", // The message does not comply with Facebook's Domain Authentication requirements.
 			},
 			eb.ReBLOC: []string{
 				"POL-P1", // Your mail server's IP Address is listed on the Spamhaus PBL.
@@ -87,7 +87,7 @@ func init() {
 			eb.ReUSER: []string{ // UserUnknown
 				"RCP-P1", // The attempted recipient address does not exist.
 				"INT-P1", // The attempted recipient address does not exist.
-				"INT-P3", // The attempted recpient group address does not exist.
+				"INT-P3", // The attempted recipient group address does not exist.
 				"INT-P4", // The attempted recipient address does not exist.
 			},
 			eb.ReEXEC: []string{ // VirusDetected

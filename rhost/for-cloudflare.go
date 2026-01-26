@@ -23,6 +23,8 @@ func init() {
 		if fo == nil || fo.DiagnosticCode == "" { return "" }
 
 		messagesof := map[string][]string{
+			// - 554 <YOUR_IP_ADDRESS> found on one or more RBLs (abusixip). Refer to
+			//   https://developers.cloudflare.com/email-routing/postmaster/#spam-and-abusive-traffic/
 			eb.ReBLOC: []string{"found on one or more DNSBLs"}, // Blocked
 			eb.RePROC: []string{"Upstream error"},              // SystemError
 		}

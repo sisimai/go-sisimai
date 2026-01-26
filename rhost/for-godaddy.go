@@ -160,6 +160,14 @@ func init() {
 			"IB106": eb.ReBLOC, // Blocked
 		}
 		messagesof := map[string][]string{
+			eb.ReAUTH: []string{ // AuthFailure
+				// - 550 SPF Sender Invalid - envelope rejected
+				// - 550 5.7.9: This mail has been blocked because the sender is unauthenticated
+				// - 550-5.7.26 DKIM = did not pass
+				"spf sender invalid - envelope rejected",
+				"this mail has been blocked because the sender is unauthenticated",
+				"dkim = did not pass",
+			},
 			eb.ReBLOC: []string{ // Blocked
 				// - 554 RBL Reject.
 				// - This IP address was blocked from our internal RBL.
@@ -186,6 +194,27 @@ func init() {
 				//   make space for more email.
 				"account storage limit",
 			},
+			eb.RePASS: []string{ // NoRelaying
+				// - 550 5.7.1: Relay access denied
+				"relay access denied",
+			},
+			eb.ReRATE: []string{ // RateLimited
+				// - 550 5.7.232 Your message can't be sent because your trial tenant has exceeded
+				//   its daily limit for sending email to external recipients (tenant external
+				//   recipient rate limit)
+				// - 550 5.7.233 - Your message can't be sent because your tenant exceeded its daily
+				//   limit for sending email to external recipients (tenant external recipient rate
+				//   limit)
+				"exceeded its daily limit",
+			},
+			eb.ReFROM: []string{ // Rejected
+				// - 550 5.1.8 Access denied, bad outbound sender AS (42004)
+				"bad outbound sender as (42004)",
+			},
+			eb.ReSAFE: []string{ // SecurityError
+				// - 550 Please turn on SMTP Authentication in your mail client
+				"turn on smtp authentication in your mail client",
+			},
 			eb.ReSPAM: []string{ // SpamDetected
 				// - 552 Message rejected for spam or virus content
 				// - The email message contains a link, attachment, or pattern caught by our filters as spam.
@@ -204,15 +233,6 @@ func init() {
 				// - This is oftentimes because the receiver has two addresses that forward to each
 				//   other. They need to correct their forwarding settings.
 				"message is looping",
-			},
-			eb.ReRATE: []string{ // RateLimited
-				// - 550 5.7.232 Your message can't be sent because your trial tenant has exceeded
-				//   its daily limit for sending email to external recipients (tenant external
-				//   recipient rate limit)
-				// - 550 5.7.233 - Your message can't be sent because your tenant exceeded its daily
-				//   limit for sending email to external recipients (tenant external recipient rate
-				//   limit)
-				"exceeded its daily limit",
 			},
 			eb.ReUSER: []string{ // UserUnknown
 				// - 550 Recipient not found

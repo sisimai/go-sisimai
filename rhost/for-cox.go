@@ -88,15 +88,15 @@ func init() {
 			"IPBL1110":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Return Path and Invaluement ivmSIP DNSBLs.
 			"IPBL1111":  eb.ReBLOC, // The sending IP is in the Cloudmark CSI, Spamhaus Zen, Return Path and Invaluement ivmSIP DNSBLs.
 			"IPBL00001": eb.ReBLOC, // The sending IP address is listed on a Spamhaus blacklist.
-			"URLBL011" : eb.ReSPAM, // A URL within the body of the message was found on blocklists SURBL and Spamhaus DBL.
-			"URLBL101" : eb.ReSPAM, // A URL within the body of the message was found on blocklists SURBL and ivmURI.
-			"URLBL110" : eb.ReSPAM, // A URL within the body of the message was found on blocklists Spamhaus DBL and ivmURI.
+			"URLBL011":  eb.ReSPAM, // A URL within the body of the message was found on blocklists SURBL and Spamhaus DBL.
+			"URLBL101":  eb.ReSPAM, // A URL within the body of the message was found on blocklists SURBL and ivmURI.
+			"URLBL110":  eb.ReSPAM, // A URL within the body of the message was found on blocklists Spamhaus DBL and ivmURI.
 			"URLBL1001": eb.ReSPAM, // The URL is listed on a Spamhaus blacklist.
 		}
 		messagesof := map[string][]string{
 			eb.ReBLOC: []string{ // Blocked
-				// - An email client has repeatedly sent bad commands or invalid passwords resulting in
-				//   a three-hour block of the client's IP address.
+				// - An email client has repeatedly sent bad commands or invalid passwords resulting
+				//   in a three-hour block of the client's IP address.
 				// - The sending IP address has exceeded the threshold of invalid recipients and has
 				//   been blocked.
 				"cox too many bad commands from",
