@@ -34,8 +34,6 @@ func init() {
 			"not allowed to relay through this machine",
 			"not an open relay, so get lost",
 			"not local host",
-			"relay access denied",
-			"relay denied",
 			"relay not permitted",
 			"relaying denied", // Sendmail
 			"relaying mail to ",
@@ -45,7 +43,10 @@ func init() {
 			"unable to relay ",
 			"we don't handle mail for",
 		}
-		return moji.ContainsAny(mesg, index)
+		pairs := [][]string{
+			[]string{"relay ", "denied"},
+		}
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
