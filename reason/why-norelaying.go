@@ -25,6 +25,7 @@ func init() {
 
 		index := []string{
 			"as a relay",
+			"domain isn't in my list of allowed rcpthost",
 			"email address is not verified.",
 			"insecure mail relay",
 			"is not permitted to relay through this server without authentication",
@@ -38,8 +39,7 @@ func init() {
 			"relaying denied", // Sendmail
 			"relaying mail to ",
 			"specified domain is not allowed",
-			"that domain isn't in my list of allowed rcpthost",
-			"this system is not configured to relay mail",
+			"system is not configured to relay mail",
 			"unable to relay ",
 			"we don't handle mail for",
 		}

@@ -27,8 +27,8 @@ func init() {
 			"access denied. ip name lookup failed",
 			"cannot find your hostname",
 			"cannot resolve your address.",
+			"corresponding forward dns entry does not point to the sending ip", // Google
 			"sender ip reverse lookup rejected",
-			"the corresponding forward dns entry does not point to the sending ip", // Google
 			"unresolvable relay host name",
 		}
 		pairs := [][]string{

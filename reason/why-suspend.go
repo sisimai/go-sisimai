@@ -25,19 +25,19 @@ func init() {
 		index := []string{
 			" currently suspended",
 			" temporary locked",
+			"address no longer accepts mail",
 			"archived recipient",
 			"boite du destinataire archivee",
+			"email account that you tried to reach is inactive",
 			"inactive account",
 			"invalid/inactive user",
 			"is a deactivated mailbox", // http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=20022&&no=1000742
-			"mailbox is inactive",
 			"is unavailable: user is terminated",
 			"mailbox is frozen",
+			"mailbox is inactive",
 			"mailbox unavailable or access denied",
 			"recipient rejected: temporarily inactive",
 			"recipient suspend the service",
-			"the email account that you tried to reach is inactive",
-			"this address no longer accepts mail",
 			"user or domain is disabled",
 			"user suspended", // http://mail.163.com/help/help_spam_16.htm
 			"vdelivermail: account is locked email bounced",

@@ -22,7 +22,6 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"an illegal attachment on your message",
 			"because the recipient is not accepting mail with ", // AOL Phoenix
 			"closed mailing list",
 			"denied by policy",
@@ -32,6 +31,7 @@ func init() {
 			"for policy reasons",
 			"header are not accepted",
 			"header error",
+			"illegal attachment on your message",
 			"local policy",
 			"message bounced due to organizational settings",
 			"message given low priority",
