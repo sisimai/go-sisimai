@@ -30,12 +30,12 @@ func init() {
 			"have been failing for a long time",
 			"has been delayed",
 			"it has not been collected after",
+			"message could not be delivered for more than",
 			"message expired, ",
+			"message has been in the queue too long",
 			"message timed out",
 			"server did not respond",
-			"this message has been in the queue too long",
 			"unable to deliver message after multiple retries",
-			"your message could not be delivered for more than",
 		}
 		pairs := [][]string{
 			[]string{"could not be delivered for", " days"},

@@ -35,10 +35,10 @@ func init() {
 			"no space left on device",
 			"not sufficient disk space",
 			"quota violation for",
-			"the user's space has been used up",
 			"too much mail data", // @docomo.ne.jp
 			"user has exceeded quota, bouncing mail",
 			"user has too many messages on the server",
+			"user's space has been used up",
 		}
 		pairs := [][]string{
 			[]string{"account is ", " quota"},

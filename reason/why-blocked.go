@@ -43,6 +43,7 @@ func init() {
 			"connections not accepted from ip addresses on spamhaus xbl",
 			"currently sending spam see: ",
 			"domain does not exist:",
+			"domain isn't in my list of allowed rcpthosts",
 			"error: no valid recipients from ",
 			"esmtp not accepting connections", // icloud.com
 			"extreme bad ip profile",
@@ -66,7 +67,6 @@ func init() {
 			"service not available, closing transmission channel",
 			"smtp error from remote mail server after initial connection:", // Exim
 			"temporarily deferred due to unexpected volume or user complaints",
-			"that domain isn't in my list of allowed rcpthosts",
 			"to submit messages to this e-mail system has been rejected",
 			"too many spams from your ip", // free.fr
 			"too many unwanted messages have been sent from the following ip address above",

@@ -24,11 +24,11 @@ func init() {
 
 		index := []string{
 			"domain is not reachable",
+			"domain mentioned in email address is unknown",
 			"domain must exist",
 			"host or domain name not found",
 			"host unknown",
 			"host unreachable",
-			"mail domain mentioned in email address is unknown",
 			"name or service not known",
 			"no such domain",
 			"recipient address rejected: unknown domain name",
