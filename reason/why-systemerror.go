@@ -25,27 +25,23 @@ func init() {
 			"aliasing/forwarding loop broken",
 			"can't create user output file",
 			"could not load drd for domain",
-			"internal error reading data", // Microsoft
-			"internal server error: operation now in progress", // Microsoft
 			"interrupted system call",
 			"it encountered an error while being processed",
 			"it would create a mail loop",
-			"local configuration error",
-			"local error in processing",
 			"loop was found in the mail exchanger",
 			"loops back to myself",
-			"mail system configuration error",
 			"queue file write error",
 			"recipient deferred because there is no mdb",
 			"remote server is misconfigured",
-			"server configuration error",
 			"service currently unavailable",
-			"system config error",
 			"temporary local problem",
 			"timeout waiting for input",
 			"transaction failed ",
 		}
 		pairs := [][]string{
+			[]string{"config", " error"},
+			[]string{"internal ", "error"},
+			[]string{"local ", "error"},
 			[]string{"unable to connect ", "daemon"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
