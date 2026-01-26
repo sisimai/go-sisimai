@@ -25,12 +25,12 @@ func init() {
 		index := []string{
 			"header size exceeds maximum permitted",
 			"improper use of 8-bit data in message header",
+			"message contain invalid mime headers",
+			"message contain improperly-formatted binary content",
+			"message contain text that uses unnecessary base64 encoding",
 			"message header size, or recipient list, exceeds policy limit",
 			"message mime complexity exceeds the policy maximum",
 			"routing loop detected -- too many received: headers",
-			"this message contain invalid mime headers",
-			"this message contain improperly-formatted binary content",
-			"this message contain text that uses unnecessary base64 encoding",
 		}
 		return moji.ContainsAny(mesg, index)
 	}

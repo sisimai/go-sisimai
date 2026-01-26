@@ -65,9 +65,8 @@ func init() {
 			"server access forbidden by your ip ",
 			"service not available, closing transmission channel",
 			"smtp error from remote mail server after initial connection:", // Exim
-			"sorry, that domain isn't in my list of allowed rcpthosts",
-			"sorry, your remotehost looks suspiciously like spammer",
 			"temporarily deferred due to unexpected volume or user complaints",
+			"that domain isn't in my list of allowed rcpthosts",
 			"to submit messages to this e-mail system has been rejected",
 			"too many spams from your ip", // free.fr
 			"too many unwanted messages have been sent from the following ip address above",
@@ -76,6 +75,7 @@ func init() {
 			"you are sending spam",
 			"your ip address is listed in the rbl",
 			"your network is temporary blacklisted",
+			"your remotehost looks suspiciously like spammer",
 			"your server requires confirmation",
 		}
 		pairs := [][]string{
