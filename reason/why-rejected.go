@@ -83,6 +83,7 @@ func init() {
 			"your email address has been blacklisted",  // MessageLabs
 		}
 		pairs := [][]string{
+			[]string{"domain ", " is a dead domain"},
 			[]string{"send", "blacklisted"},
 			[]string{"sender", " rejected"},
 		}

@@ -39,7 +39,6 @@ func init() {
 			[]string{"authentication failed; server ", " said: "}, // Postfix
 			[]string{"authentification invalide", "305"},
 			[]string{"authentification requise", "402"},
-			[]string{"domain ", " is a dead domain"},
 			[]string{"user ", " is not authorized to perform ses:sendrawemail on resource"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
