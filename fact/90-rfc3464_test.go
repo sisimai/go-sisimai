@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -216,7 +216,7 @@ func TestRFC3464(t *testing.T) {
 		{{"1285", 1, "5.7.0",   "554", "spamdetected",    false, false, ""}},
 		{{"1287", 1, "5.0.0",   "550", "filtered",        false,  true, ""}},
 		{{"1288", 1, "5.3.4",   "552", "emailtoolarge",   false, false, ""}},
-		{{"1289", 1, "4.0.0",   "",    "notaccept",       false, false, ""}},
+		{{"1289", 1, "4.0.0",   "",    "suspend",         false, false, ""}},
 		{{"1290", 1, "4.3.0",   "451", "systemerror",     false, false, ""}},
 		{{"1300", 1, "5.1.0",   "550", "userunknown",      true,  true, ""}},
 		{{"1301", 1, "5.0.0",   "",    "spamdetected",    false, false, ""}},
