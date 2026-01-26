@@ -30,11 +30,11 @@ func init() {
 			"full mailbox",
 			"mail file size exceeds the maximum size allowed for mail delivery",
 			"mailbox size limit exceeded",
+			"mailbox would exceed maximum allowed storage",
 			"mailfolder is full",
 			"no space left on device",
 			"not sufficient disk space",
 			"quota violation for",
-			"recipient rejected: mailbox would exceed maximum allowed storage",
 			"the user's space has been used up",
 			"too much mail data", // @docomo.ne.jp
 			"user has exceeded quota, bouncing mail",
