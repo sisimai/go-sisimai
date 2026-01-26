@@ -27,13 +27,13 @@ func init() {
 			"access denied. ip name lookup failed",
 			"cannot find your hostname",
 			"cannot resolve your address.",
-			"client host rejected: cannot find your hostname", // Yahoo!
 			"sender ip reverse lookup rejected",
 			"the corresponding forward dns entry does not point to the sending ip", // Google
 			"unresolvable relay host name",
 		}
 		pairs := [][]string{
 			[]string{"domain "," mismatches client ip"},
+			[]string{"domain name verification on your ip address ", "failed"},
 			[]string{"dns lookup failure: ", " try again later"},
 			[]string{"ptr", "record"},
 			[]string{"reverse", " dns"},
