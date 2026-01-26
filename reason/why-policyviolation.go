@@ -29,6 +29,7 @@ func init() {
 			"email not accepted for policy reasons",
 			// http://kb.mimecast.com/Mimecast_Knowledge_Base/Administration_Console/Monitoring/Mimecast_SMTP_Error_Codes#554
 			"email rejected due to security policies",
+			"executable files are not allowed in compressed files",
 			"header are not accepted",
 			"header error",
 			"local policy violation",
