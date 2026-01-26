@@ -24,15 +24,13 @@ func init() {
 
 		index := []string{
 			"//spf.pobox.com",
+			"5322.From address doesn't meet the authentication requirements",
 			"bad spf records for",
 			"dmarc policy",
 			"doesn't meet the required authentication level",
 			"please inspect your spf settings",
-			"sender policy framework (spf) fail",
-			"sender policy framework violation",
-			"spf (sender policy framework) domain authentication fail",
+			"sender policy framework",
 			"spf check: fail",
-			"the 5322.From address doesn't meet the authentication requirements defined for the sender",
 		}
 		pairs := [][]string{
 			[]string{" is not allowed to send mail.", "_401"},
