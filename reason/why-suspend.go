@@ -30,6 +30,7 @@ func init() {
 			"inactive account",
 			"invalid/inactive user",
 			"is a deactivated mailbox", // http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=20022&&no=1000742
+			"mailbox is inactive",
 			"is unavailable: user is terminated",
 			"mailbox is frozen",
 			"mailbox unavailable or access denied",
@@ -45,6 +46,7 @@ func init() {
 			[]string{"account ", "disabled"},
 			[]string{"has been ", "suspended"},
 			[]string{"mailbox ", "disabled"},
+			[]string{"not ", "active"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
