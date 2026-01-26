@@ -23,23 +23,22 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"all available ips are at maximum connection limit", // SendGrid
-			"connection rate limit exceeded",
-			"exceeds per-domain connection limit for",
 			"has exceeded the max emails per hour ",
 			"mail sent from your IP address has been temporarily rate limited",
 			"please try again slower",
 			"receiving mail at a rate that prevents additional messages from being delivered",
 			"throttling failure: ",
-			"too many connections",
-			"too many concurrent smtp connections", // Microsoft
 			"too many errors from your ip",         // Free.fr
 			"too many recipients",                  // ntt docomo
 			"too many smtp sessions for this host", // Sendmail(daemon.c)
 			"trop de connexions, ",
 			"we have already made numerous attempts to deliver this message",
 		}
-		return moji.ContainsAny(mesg, index)
+		pairs := [][]string{
+			[]string{"connection ", "limit"},
+			[]string{"too many con", "s"},
+		}
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
