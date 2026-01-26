@@ -23,24 +23,21 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"domain does not exist",
 			"domain is not reachable",
+			"domain mentioned in email address is unknown",
 			"domain must exist",
 			"host or domain name not found",
 			"host unknown",
 			"host unreachable",
-			"mail domain mentioned in email address is unknown",
 			"name or service not known",
 			"no such domain",
 			"recipient address rejected: unknown domain name",
-			"recipient domain must exist",
-			"the account or domain may not exist",
 			"unknown host",
-			"unroutable address",
-			"unrouteable address",
 		}
 		pairs := [][]string{
 			[]string{"553 ", " does not exist"},
+			[]string{"domain ", "not exist"},
+			[]string{"unrout", "able ", "address"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}

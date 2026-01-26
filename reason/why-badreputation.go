@@ -23,13 +23,13 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"a poor email reputation score",
 			"has been temporarily rate limited due to ip reputation",
 			"ip/domain reputation problems",
 			"likely suspicious due to the very low reputation",
 			"none/bad reputation", // t-online.de
+			"poor email reputation score",
+			"sending mta's poor reputation",
 			"temporarily deferred due to unexpected volume or user complaints", // Yahoo Inc.
-			"the sending mta's poor reputation",
 		}
 		return moji.ContainsAny(mesg, index)
 	}

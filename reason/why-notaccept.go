@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _   _       _      _                      _   
 // | \ | | ___ | |_   / \   ___ ___ ___ _ __ | |_ 
@@ -24,8 +24,7 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"does not accept mail",             // Sendmail
-			"host/domain does not accept mail", // iCloud
+			"does not accept mail",             // Sendmail, iCloud
 			"mail receiving disabled",
 			"name server: .: host not found",   // Sendmail
 			"no mx record found for domain=",   // Oath(Yahoo!)

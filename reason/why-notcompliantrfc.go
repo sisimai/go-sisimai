@@ -24,7 +24,8 @@ func init() {
 
 		index := []string{
 			"duplicate header",
-			"this message is not rfc 5322 compliant",
+			"message is not rfc 5322 compliant",
+			"rfc 1035 violation: recursive cname records for",
 			"https://support.google.com/mail/?p=rfcmessagenoncompliant",
 		}
 		pairs := [][]string{

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _____                 _ _ _____           _                         
 // | ____|_ __ ___   __ _(_) |_   _|__   ___ | |    __ _ _ __ __ _  ___ 
@@ -24,22 +24,18 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"exceeded maximum inbound message size",
-			"exceeded the maximum incoming message size",
 			"line limit exceeded",
-			"max message size exceeded",
-			"message file too big",
-			"message header size exceeds limit",
-			"message length exceeds administrative limit",
-			"message size exceeds fixed limit",
-			"message size exceeds fixed maximum message size",
-			"message size exceeds maximum value",
-			"message too big",
 			"message too large",
 			"size limit",
 			"taille limite du message atteinte",
 		}
-		return moji.ContainsAny(mesg, index)
+		pairs := [][]string{
+			[]string{"exceeded", "message size"},
+			[]string{"message ", "exceeds ", "limit"},
+			[]string{"message ", "size", "exceed"},
+			[]string{"message ", "too", "big"},
+		}
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.

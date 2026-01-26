@@ -27,7 +27,6 @@ func init() {
 			"authentication failure",
 			"authentication required",
 			"authentication turned on in your email client",
-			"executable files are not allowed in compressed files",
 			"insecure mail relay",
 			"recipient address rejected: access denied",
 			"sorry, you don't authenticate or the domain isn't in my list of allowed rcpthosts",
@@ -39,7 +38,6 @@ func init() {
 			[]string{"authentication failed; server ", " said: "}, // Postfix
 			[]string{"authentification invalide", "305"},
 			[]string{"authentification requise", "402"},
-			[]string{"domain ", " is a dead domain"},
 			[]string{"user ", " is not authorized to perform ses:sendrawemail on resource"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____                  _          ____ _____ ____  
 // |  _ \ ___  __ _ _   _(_)_ __ ___|  _ \_   _|  _ \ 
@@ -25,29 +25,18 @@ func init() {
 
 		index := []string{
 			"access denied. ip name lookup failed",
-			"all mail servers must have a ptr record with a valid reverse dns entry",
-			"bad dns ptr resource record",
 			"cannot find your hostname",
 			"cannot resolve your address.",
-			"client host rejected: cannot find your hostname", // Yahoo!
-			"fix reverse dns for ",
-			"ips with missing ptr records",
-			"no ptr record found.",
-			"please get a custom reverse dns name from your isp for your host",
-			"ptr record setup",
-			"reverse dns failed",
-			"reverse dns required",
+			"corresponding forward dns entry does not point to the sending ip", // Google
 			"sender ip reverse lookup rejected",
-			"the ip address sending this message does not have a ptr record setup", // Google
-			"the corresponding forward dns entry does not point to the sending ip", // Google
-			"this system will not accept messages from servers/devices with no reverse dns",
 			"unresolvable relay host name",
-			"we do not accept mail from hosts with dynamic ip or generic dns ptr-records",
 		}
 		pairs := [][]string{
 			[]string{"domain "," mismatches client ip"},
+			[]string{"domain name verification on your ip address ", "failed"},
 			[]string{"dns lookup failure: ", " try again later"},
-			[]string{"reverse dns lookup for host ", " failed permanently"},
+			[]string{"ptr", "record"},
+			[]string{"reverse", " dns"},
 			[]string{"server access ", " forbidden by invalid rdns record of your mail server"},
 			[]string{"service permits ", " unverifyable sending ips"},
 		}

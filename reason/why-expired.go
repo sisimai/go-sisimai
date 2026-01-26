@@ -25,26 +25,22 @@ func init() {
 			"connection timed out",
 			"could not find a gateway for",
 			"delivery attempts will continue to be",
-			"delivery expired",
-			"delivery time expired",
 			"failed to deliver to domain ",
 			"giving up on",
 			"have been failing for a long time",
 			"has been delayed",
 			"it has not been collected after",
-			"message expired after sitting in queue for",
-			"message expired, cannot connect to remote server",
-			"message expired, connection refulsed",
+			"message could not be delivered for more than",
+			"message expired, ",
+			"message has been in the queue too long",
 			"message timed out",
-			"retry time not reached for any host after a long failure period",
 			"server did not respond",
-			"this message has been in the queue too long",
 			"unable to deliver message after multiple retries",
-			"was not reachable within the allowed queue period",
-			"your message could not be delivered for more than",
 		}
 		pairs := [][]string{
 			[]string{"could not be delivered for", " days"},
+			[]string{"delivery ", "expired"},
+			[]string{"not", "reach", "period"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}

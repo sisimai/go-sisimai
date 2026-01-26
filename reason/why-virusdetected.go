@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 // __     ___                ____       _            _           _ 
 // \ \   / (_)_ __ _   _ ___|  _ \  ___| |_ ___  ___| |_ ___  __| |
@@ -24,14 +24,15 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
+			"form of attachment has been used by recent viruses or other malware",
 			"it has a potentially executable attachment",
-			"the message was rejected because it contains prohibited virus or spam content",
-			"this form of attachment has been used by recent viruses or other malware",
 			"virus detected",
 			"virus phishing/malicious_url detected",
-			"your message was infected with a virus",
 		}
-		return moji.ContainsAny(mesg, index)
+		pairs := [][]string{
+			[]string{"message was ", "ected", " virus"},
+		}
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.

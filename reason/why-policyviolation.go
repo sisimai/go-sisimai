@@ -22,25 +22,23 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"an illegal attachment on your message",
 			"because the recipient is not accepting mail with ", // AOL Phoenix
 			"closed mailing list",
 			"denied by policy",
-			"email not accepted for policy reasons",
 			// http://kb.mimecast.com/Mimecast_Knowledge_Base/Administration_Console/Monitoring/Mimecast_SMTP_Error_Codes#554
 			"email rejected due to security policies",
+			"executable files are not allowed in compressed files",
+			"for policy reasons",
 			"header are not accepted",
 			"header error",
-			"local policy violation",
+			"illegal attachment on your message",
+			"local policy",
 			"message bounced due to organizational settings",
 			"message given low priority",
-			"message not accepted for policy reasons",
-			"message rejected due to local policy",
+			"message was rejected by organization policy",
+			"message was blocked because its content presents a potential", // https://support.google.com/mail/answer/6590
 			"messages with multiple addresses",
-			"rejected for policy reasons",
 			"protocol violation",
-			"the message was rejected by organization policy",
-			"this message was blocked because its content presents a potential", // https://support.google.com/mail/answer/6590
 			"we do not accept messages containing images or other attachments",
 			"you're using a mass mailer",
 		}

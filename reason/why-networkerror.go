@@ -28,8 +28,6 @@ func init() {
 			"host name lookup failure",
 			"host not found, try again",
 			"mail forwarding loop for ",
-			"malformed name server reply",
-			"malformed or unexpected name server reply",
 			"maximum forwarding loop count exceeded",
 			"message looping",
 			"message probably in a routing loop",
@@ -38,7 +36,10 @@ func init() {
 			"unable to resolve route ",
 			"unrouteable mail domain",
 		}
-		return moji.ContainsAny(mesg, index)
+		pairs := [][]string{
+			[]string{"malformed", "name server reply"},
+		}
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____                                 _ 
 // / ___| _   _ ___ _ __   ___ _ __   __| |
@@ -23,32 +23,32 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			" is currently suspended",
+			" currently suspended",
 			" temporary locked",
+			"address no longer accepts mail",
 			"archived recipient",
 			"boite du destinataire archivee",
-			"email account that you tried to reach is disabled",
-			"has been suspended",
+			"email account that you tried to reach is inactive",
 			"inactive account",
 			"invalid/inactive user",
 			"is a deactivated mailbox", // http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=20022&&no=1000742
 			"is unavailable: user is terminated",
-			"mailbox currently suspended",
-			"mailbox disabled",
 			"mailbox is frozen",
+			"mailbox is inactive",
 			"mailbox unavailable or access denied",
 			"recipient rejected: temporarily inactive",
 			"recipient suspend the service",
-			"the email account that you tried to reach is inactive",
-			"this account has been disabled or discontinued",
-			"this account has been temporarily suspended",
-			"this address no longer accepts mail",
-			"this mailbox is disabled",
 			"user or domain is disabled",
 			"user suspended", // http://mail.163.com/help/help_spam_16.htm
 			"vdelivermail: account is locked email bounced",
 		}
-		return moji.ContainsAny(mesg, index)
+		pairs := [][]string{
+			[]string{"account ", "disabled"},
+			[]string{"has been ", "suspended"},
+			[]string{"mailbox ", "disabled"},
+			[]string{"not ", "active"},
+		}
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
