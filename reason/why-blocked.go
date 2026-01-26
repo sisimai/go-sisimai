@@ -43,18 +43,15 @@ func init() {
 			"connections not accepted from ip addresses on spamhaus xbl",
 			"currently sending spam see: ",
 			"domain does not exist:",
-			"dynamic/zombied/spam ips blocked",
 			"error: no valid recipients from ",
 			"esmtp not accepting connections", // icloud.com
 			"extreme bad ip profile",
 			"go away",
 			"helo command rejected:",
 			"host network not allowed",
-			"hosts with dynamic ip",
 			"invalid ip for sending mail of domain",
 			"is in a black list",
 			"is not allowed to send mail from",
-			"mailfrom domain is listed in spamhaus",
 			"no access from mail server",
 			"no matches to nameserver query",
 			"not currently accepting mail from your ip", // Microsoft
@@ -75,7 +72,6 @@ func init() {
 			"too many spams from your ip", // free.fr
 			"too many unwanted messages have been sent from the following ip address above",
 			"was blocked by ",
-			"we do not accept mail from dynamic ips", // @mail.ru
 			"you are not allowed to connect",
 			"you are sending spam",
 			"your ip address is listed in the rbl",
@@ -88,6 +84,7 @@ func init() {
 			[]string{"client host ", " blocked using"},
 			[]string{"connections will not be accepted from ", " because the ip is in spamhaus's list"},
 			[]string{"dnsbl:rbl ", ">_is_blocked"},
+			[]string{"dynamic", " ip"},
 			[]string{"email blocked by ", ".barracudacentral.org"},
 			[]string{"email blocked by ", "spamhaus"},
 			[]string{"host ", " refused to talk to me: ", " blocked"},

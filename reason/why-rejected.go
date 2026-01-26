@@ -57,6 +57,7 @@ func init() {
 			"invalid sender",
 			"is not a registered gateway user",
 			"mail from not owned by user",
+			"mailfrom domain is listed in spamhaus",
 			"message rejected: email address is not verified",
 			"mx records for ",
 			"null sender is not allowed",
