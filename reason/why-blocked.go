@@ -36,17 +36,15 @@ func init() {
 			"client host rejected: may not be mail exchanger",
 			"client host rejected: was not authenticated",  // Microsoft
 			"confirm this mail server",
-			"connection dropped",
 			"connection refused by",
 			"connection reset by peer",
-			"connection was dropped by remote host",
-			"connections not accepted from ip addresses on spamhaus xbl",
 			"currently sending spam see: ",
 			"domain does not exist:",
 			"domain isn't in my list of allowed rcpthosts",
 			"error: no valid recipients from ",
 			"esmtp not accepting connections", // icloud.com
 			"extreme bad ip profile",
+			"from your ip",
 			"go away",
 			"helo command rejected:",
 			"host network not allowed",
@@ -55,7 +53,6 @@ func init() {
 			"is not allowed to send mail from",
 			"no access from mail server",
 			"no matches to nameserver query",
-			"not currently accepting mail from your ip", // Microsoft
 			"part of their network is on our block list",
 			"please use the smtp server of your isp",
 			"refused - see http",
@@ -68,8 +65,6 @@ func init() {
 			"smtp error from remote mail server after initial connection:", // Exim
 			"temporarily deferred due to unexpected volume or user complaints",
 			"to submit messages to this e-mail system has been rejected",
-			"too many spams from your ip", // free.fr
-			"too many unwanted messages have been sent from the following ip address above",
 			"was blocked by ",
 			"you are not allowed to connect",
 			"you are sending spam",
@@ -82,11 +77,13 @@ func init() {
 			[]string{"(", "@", ":blocked)"},
 			[]string{"access from ip address ", " blocked"},
 			[]string{"client host ", " blocked using"},
+			[]string{"connection ", "dropped"},
 			[]string{"connections will not be accepted from ", " because the ip is in spamhaus's list"},
 			[]string{"dnsbl:rbl ", ">_is_blocked"},
 			[]string{"dynamic", " ip"},
 			[]string{"email blocked by ", ".barracudacentral.org"},
 			[]string{"email blocked by ", "spamhaus"},
+			[]string{"from ", " ip address"},
 			[]string{"host ", " refused to talk to me: ", " blocked"},
 			[]string{"ip ", " is blocked by earthlink"}, // Earthlink
 			[]string{"is in an ", "rbl on "},
@@ -117,5 +114,4 @@ func init() {
 		return IncludedIn[eb.ReBLOC](strings.ToLower(fo.DiagnosticCode))
 	}
 }
-
 
