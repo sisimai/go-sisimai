@@ -42,9 +42,7 @@ func init() {
 			"we do not accept messages containing images or other attachments",
 			"you're using a mass mailer",
 		}
-		pairs := [][]string{
-			[]string{"you have exceeded the", "allowable number of posts without solving a captcha"},
-		}
+		pairs := [][]string{[]string{"you have exceeded the", "allowable number of posts without solving a captcha"}}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 

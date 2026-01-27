@@ -29,9 +29,7 @@ func init() {
 			"virus detected",
 			"virus phishing/malicious_url detected",
 		}
-		pairs := [][]string{
-			[]string{"message was ", "ected", " virus"},
-		}
+		pairs := [][]string{[]string{"message was ", "ected", " virus"}}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 

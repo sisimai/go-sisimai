@@ -28,9 +28,7 @@ func init() {
 			"rfc 1035 violation: recursive cname records for",
 			"https://support.google.com/mail/?p=rfcmessagenoncompliant",
 		}
-		pairs := [][]string{
-			[]string{" multiple ", " header"},
-		}
+		pairs := [][]string{[]string{" multiple ", " header"}}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 

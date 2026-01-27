@@ -36,9 +36,7 @@ func init() {
 			"unable to resolve route ",
 			"unrouteable mail domain",
 		}
-		pairs := [][]string{
-			[]string{"malformed", "name server reply"},
-		}
+		pairs := [][]string{[]string{"malformed", "name server reply"}}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 

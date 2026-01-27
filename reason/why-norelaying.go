@@ -43,9 +43,7 @@ func init() {
 			"unable to relay ",
 			"we don't handle mail for",
 		}
-		pairs := [][]string{
-			[]string{"relay ", "denied"},
-		}
+		pairs := [][]string{[]string{"relay ", "denied"}}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
