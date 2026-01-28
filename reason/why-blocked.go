@@ -23,29 +23,20 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			" said: 550 blocked",
-			"//www.spamcop.net/bl.",
 			"bad sender ip address",
 			"banned sending ip", // Office365
 			"blacklisted by",
-			"blocked using ",
-			"blocked - see http",
 			"dnsbl:attrbl",
 			"client host rejected: abus detecte gu_eib_02", // SFR
 			"client host rejected: abus detecte gu_eib_04", // SFR
 			"client host rejected: may not be mail exchanger",
-			"client host rejected: was not authenticated",  // Microsoft
-			"confirm this mail server",
 			"connection refused by",
-			"connection reset by peer",
 			"currently sending spam see: ",
 			"domain does not exist:",
 			"domain isn't in my list of allowed rcpthosts",
 			"error: no valid recipients from ",
 			"esmtp not accepting connections", // icloud.com
 			"extreme bad ip profile",
-			"from your ip",
-			"go away",
 			"helo command rejected:",
 			"host network not allowed",
 			"invalid ip for sending mail of domain",
@@ -55,7 +46,6 @@ func init() {
 			"no matches to nameserver query",
 			"part of their network is on our block list",
 			"please use the smtp server of your isp",
-			"refused - see http",
 			"rejected - multi-blacklist", // junkemailfilter.com
 			"rejected because the sending mta or the sender has not passed validation",
 			"rejecting open proxy", // Sendmail(srvrsmtp.c)
@@ -64,7 +54,6 @@ func init() {
 			"service not available, closing transmission channel",
 			"smtp error from remote mail server after initial connection:", // Exim
 			"temporarily deferred due to unexpected volume or user complaints",
-			"was blocked by ",
 			"you are not allowed to connect",
 			"you are sending spam",
 			"your ip address is listed in the rbl",
@@ -75,7 +64,8 @@ func init() {
 		pairs := [][]string{
 			[]string{"(", "@", ":blocked)"},
 			[]string{"access from ip address ", " blocked"},
-			[]string{"client host ", " blocked using"},
+			[]string{"blocked by ", " dnsbl"},
+			[]string{"client ", " blocked using"},
 			[]string{"connection ", "dropped"},
 			[]string{"connections will not be accepted from ", " because the ip is in spamhaus's list"},
 			[]string{"dnsbl:rbl ", ">_is_blocked"},
@@ -83,6 +73,7 @@ func init() {
 			[]string{"email blocked by ", ".barracudacentral.org"},
 			[]string{"email blocked by ", "spamhaus"},
 			[]string{"from ", " ip address"},
+			[]string{"host ", " said: ", "550 blocked"},
 			[]string{"host ", " refused to talk to me: ", " blocked"},
 			[]string{"ip ", " is blocked by earthlink"}, // Earthlink
 			[]string{"is in an ", "rbl on "},

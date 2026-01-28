@@ -24,6 +24,7 @@ func init() {
 		index := []string{
 			"aliasing/forwarding loop broken",
 			"can't create user output file",
+			"cannot send e-mail to yourself",
 			"could not load drd for domain",
 			"interrupted system call",
 			"it encountered an error while being processed",
