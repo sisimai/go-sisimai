@@ -23,20 +23,20 @@ func init() {
 		index := []string{
 			"could not connect and send the mail to",
 			"dns records for the destination computer could not be found",
-			"hop count exceeded - possible mail loop",
 			"host is unreachable",
 			"host name lookup failure",
 			"host not found, try again",
-			"mail forwarding loop for ",
 			"maximum forwarding loop count exceeded",
-			"message looping",
-			"message probably in a routing loop",
 			"no route to host",
 			"too many hops",
 			"unable to resolve route ",
 			"unrouteable mail domain",
 		}
-		pairs := [][]string{[]string{"malformed", "name server reply"}}
+		pairs := [][]string{
+			[]string{"malformed", "name server reply"},
+			[]string{"mail ", "loop"},
+			[]string{"message ", "loop"},
+		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
