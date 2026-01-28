@@ -38,6 +38,7 @@ func init() {
 			[]string{"connection ", "limit"},
 			[]string{"too many con", "s"},
 			[]string{"temporarily", "rate limited"},
+			[]string{"exceeded ", "allowable number of posts without solving a captcha"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
