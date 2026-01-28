@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
 // | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
@@ -120,8 +120,11 @@ func tidy(head *string) *string {
 		}
 		bu.WriteString(fn + ": " + strings.Join(ab, " ") + "\n")
 	}
-
 	email := bu.String();
+
+	// 5. Convert the lower-cased SMTP command to the upper-cased.
+	email = strings.ReplaceAll(email, "after end of data:", "after end of DATA:")
+
 	if email[len(email) - 2:] != "\n\n" { email += "\n\n" }
 	return &email
 }
