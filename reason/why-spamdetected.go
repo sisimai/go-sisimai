@@ -44,7 +44,6 @@ func init() {
 			"mail content denied",            // http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=20022&&no=1000726
 			"may consider spam",
 			"message content rejected",
-			"message filtered",
 			"message has been temporarily blocked by our filter",
 			"message is being rejected as it seems to be a spam",
 			"message rejected for policy reasons",
