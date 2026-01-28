@@ -102,29 +102,16 @@ func init() {
 				"cox too many bad commands from",
 				"too many invalid recipients",
 			},
-			eb.ReQPTR: []string{ // RequirePTR
-				// - The reverse DNS check of the sending server IP address has failed.
-				// - Cox requires that all connecting email servers contain valid reverse DNS PTR records.
-				"dns check failure - try again later",
-				"rejected - no rdns",
-			},
-			eb.ReWONT: []string{ // PolicyViolation
-				// - The sending server has attempted to communicate too soon within the SMTP transaction
+			eb.ReBODY: []string{ // ContentError
 				// - The message has been rejected because it contains an attachment with one of the
 				//   following prohibited file types, which commonly contain viruses: .shb, .shs, .vbe,
 				//   .vbs, .wsc, .wsf, .wsh, .pif, .msc, .msi, .msp, .reg, .sct, .bat, .chm, .isp, .cpl,
 				//   .js, .jse, .scr, .exe.
-				"esmtp no data before greeting",
 				"attachment extension is forbidden",
 			},
-			eb.ReFROM: []string{ // Rejected
-				// Cox requires that all sender domains resolve to a valid MX or A-record within DNS.
-				"sender rejected",
-			},
-			eb.RePROC: []string{ // SystemError
-				// - Our systems are experiencing an issue which is causing a temporary inability to
-				//   accept new email.
-				"esmtp server temporarily not available",
+			eb.ReWONT: []string{ // PolicyViolation
+				// - The sending server has attempted to communicate too soon within the SMTP transaction
+				"esmtp no data before greeting",
 			},
 			eb.ReRATE: []string{ // RateLimited
 				// - The sending IP address has exceeded the five maximum concurrent connection limit.
@@ -136,6 +123,21 @@ func init() {
 				"too many sessions from",
 				"requested action aborted: try again later",
 				"message threshold exceeded",
+			},
+			eb.ReFROM: []string{ // Rejected
+				// Cox requires that all sender domains resolve to a valid MX or A-record within DNS.
+				"sender rejected",
+			},
+			eb.ReQPTR: []string{ // RequirePTR
+				// - The reverse DNS check of the sending server IP address has failed.
+				// - Cox requires that all connecting email servers contain valid reverse DNS PTR records.
+				"dns check failure - try again later",
+				"rejected - no rdns",
+			},
+			eb.RePROC: []string{ // SystemError
+				// - Our systems are experiencing an issue which is causing a temporary inability to
+				//   accept new email.
+				"esmtp server temporarily not available",
 			},
 			eb.ReUSER: []string{ // UserUnknown
 				// - The intended recipient is not a valid Cox Email account.

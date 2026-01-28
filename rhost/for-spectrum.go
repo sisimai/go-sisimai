@@ -105,9 +105,9 @@ func init() {
 			//      the number of recipients and try again later.
 			[3]string{"1550", "", eb.ReRATE},
 
-			// 1560 Your email was rejected for having too many invalid recipients. Check your outgoing
-			//      email addresses and try again later.
-			[3]string{"1560", "", eb.ReWONT},
+			// 1560 Your email was rejected for having too many invalid recipients.
+			//      Check your outgoing email addresses and try again later.
+			[3]string{"1560", "", eb.ReRATE},
 
 			// 1580 You've tried to send messages to too many recipients in a short period of time.
 			//      Wait a little while and try again later.
