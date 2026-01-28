@@ -26,7 +26,6 @@ func init() {
 
 		index := []string{
 			"account is protected by",
-			"bounced address", // SendGrid|a message to an address has previously been Bounced.
 			"has restricted sms e-mail", // AT&T
 			"is not accepting any mail",
 			"message filtered",
@@ -35,7 +34,6 @@ func init() {
 			"recipient id refuse to receive mail", // Willcom
 			"recipient is only accepting mail from specific email addresses", // AOL Phoenix
 			"refused due to recipient preferences", // Facebook
-			"user not found", // Filter on MAIL.RU
 			"user refuses to receive this mail",
 			"user reject",
 			"you have been blocked by the recipient",
