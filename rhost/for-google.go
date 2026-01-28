@@ -173,6 +173,17 @@ func init() {
 				[3]string{"550", "5.7.1",  "an unusual rate of unsolicited mail"},
 				[3]string{"550", "5.7.28", "an unusual rate of unsolicited mail"},
 			},
+			eb.ReBODY: [][3]string{ // ContentError
+				// - 552 5.7.0 Our system detected an illegal attachment on your message. Please visit
+				//   http://mail.google.com/support/bin/answer.py?answer=6590 to review our attachment
+				//   guidelines.
+				[3]string{"552", "5.7.0", "illegal attachment on your message"},
+
+				// - 552 5.7.0 This message was blocked because its content presents a potential securi-
+				//   ty issue. Please visit https://support.google.com/mail/?p=BlockedMessage to review
+				//   our message content and attachment content guidelines.
+				[3]string{"552", "5.7.0", "blocked because its content presents a potential security issue"},
+			},
 			eb.ReSIZE: [][3]string{ // EmailTooLarge
 				// - 552 5.2.3 Your message exceeded Google's message size limits. For more information,
 				//   visit https://support.google.com/mail/answer/6584
@@ -311,17 +322,6 @@ func init() {
 				//   Email sender guidelines and review RFC 5322 specifications.
 				// - https://support.google.com/mail/?p=RfcMessageNonCompliant
 				[3]string{"554", "5.6.0", "mail message is malformed"},
-			},
-			eb.ReBODY: [][3]string{ // ContentError
-				// - 552 5.7.0 Our system detected an illegal attachment on your message. Please visit
-				//   http://mail.google.com/support/bin/answer.py?answer=6590 to review our attachment
-				//   guidelines.
-				[3]string{"552", "5.7.0", "illegal attachment on your message"},
-
-				// - 552 5.7.0 This message was blocked because its content presents a potential securi-
-				//   ty issue. Please visit https://support.google.com/mail/?p=BlockedMessage to review
-				//   our message content and attachment content guidelines.
-				[3]string{"552", "5.7.0", "blocked because its content presents a potential security issue"},
 			},
 			eb.ReWONT: [][3]string{ // PolicyViolation
 				// - 550 5.7.1 The user or domain that you are sending to (or from) has a policy that
