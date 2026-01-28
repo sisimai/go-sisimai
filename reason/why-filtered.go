@@ -35,7 +35,6 @@ func init() {
 			"recipient id refuse to receive mail", // Willcom
 			"recipient is only accepting mail from specific email addresses", // AOL Phoenix
 			"refused due to recipient preferences", // Facebook
-			"resolver.rst.notauthorized", // Microsoft Exchange
 			"user not found", // Filter on MAIL.RU
 			"user refuses to receive this mail",
 			"user reject",
