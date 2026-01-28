@@ -25,11 +25,11 @@ func init() {
 		index := []string{
 			"duplicate header",
 			"message is not rfc 5322 compliant",
-			"rfc 1035 violation: recursive cname records for",
+			"multiple addresses in from: header are not accepted",
+			"rfc 1035 violation",
 			"https://support.google.com/mail/?p=rfcmessagenoncompliant",
 		}
-		pairs := [][]string{[]string{" multiple ", " header"}}
-		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
+		return moji.ContainsAny(mesg, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
