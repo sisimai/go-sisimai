@@ -22,8 +22,8 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
+			"exceeded storage allocation", // MS Exchange
 			"mail system full",
-			"requested mail action aborted: exceeded storage allocation", // MS Exchange
 		}
 		return moji.ContainsAny(mesg, index)
 	}

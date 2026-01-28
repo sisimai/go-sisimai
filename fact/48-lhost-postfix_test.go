@@ -260,7 +260,7 @@ func TestLhostPostfix(t *testing.T) {
 		{{"1165", 1, "5.5.0",   "550", "userunknown",      true,  true, ""}},
 		{{"1166", 1, "5.0.0",   "550", "userunknown",      true,  true, ""}},
 		{{"1167", 1, "4.0.0",   "",    "blocked",         false, false, ""}},
-		{{"1168", 1, "5.0.0",   "",    "rejected",        false, false, ""}},
+		{{"1168", 1, "5.0.0",   "",    "policyviolation", false, false, ""}},
 		{{"1169", 1, "5.0.0",   "550", "userunknown",      true,  true, ""}},
 		{{"1170", 1, "5.0.0",   "550", "requireptr",      false, false, ""}},
 		{{"1171", 1, "5.2.0",   "",    "mailboxfull",     false,  true, ""}},

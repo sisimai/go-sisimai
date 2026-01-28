@@ -7,11 +7,13 @@
 //  \___/|___/\___|_|   \___/|_| |_|_|\_\_| |_|\___/ \_/\_/ |_| |_|
 
 package reason
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
+import "libsisimai.org/sisimai/v5/smtp/command"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -66,7 +68,6 @@ func init() {
 			"recipient refuses to accept your mail",
 			"recipient unknown",
 			"recipients was undeliverable",
-			"sorry, your envelope recipient has been denied",
 			"spectator does not exist",
 			"there is no one at this address",
 			"unknown mailbox",
@@ -77,6 +78,7 @@ func init() {
 			"user unknown",
 			"utilisateur inconnu !",
 			"weil die adresse nicht gefunden wurde oder keine e-mails empfangen kann",
+			"your envelope recipient has been denied",
 		}
 		pairs := [][]string{
 			[]string{"<", "> not found"},
@@ -114,8 +116,9 @@ func init() {
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
 	ProbesInto[eb.ReUSER] = func(fo *siba.Fact) bool {
-		if fo        == nil       { return false }
-		if fo.Reason == eb.ReUSER { return true  }
+		if fo == nil                                       { return false }
+		if fo.Reason == eb.ReUSER                          { return true  }
+		if slices.Contains(command.BeforeRCPT, fo.Command) { return false }
 
 		tempreason := status.Name(fo.DeliveryStatus); if tempreason == eb.ReQUIT { return false }
 		issuedcode := strings.ToLower(fo.DiagnosticCode)

@@ -26,11 +26,10 @@ func init() {
 		index := []string{
 			"form of attachment has been used by recent viruses or other malware",
 			"it has a potentially executable attachment",
-			"virus detected",
-			"virus phishing/malicious_url detected",
 		}
 		pairs := [][]string{
 			[]string{"message was ", "ected", " virus"},
+			[]string{"virus", " detected"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}

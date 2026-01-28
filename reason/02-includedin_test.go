@@ -27,7 +27,7 @@ func TestIncludedIn(t *testing.T) {
 			"550 Access from ip address 192.0.2.1 blocked.",
 			"Remote host said: 554 INVALID IP FOR SENDING MAIL OF DOMAIN amazonses.com [RCPT_TO]",
 			"551 Server access forbidden by your IP 192.0.2.2 websites spamcop.net, mailspike.net for removal",
-			"blocked using dnsbl.sorbs.net Please see http://support.mailhostbox.com/email-administrators-guide-error-codes/",
+			"client [192.0.2.1] blocked using dnsbl.sorbs.net Please see http://support.mailhostbox.com/",
 		},
 		eb.ReBODY: []string{
 			"550 5.6.0 the headers in this message contain improperly-formatted binary content",
@@ -79,7 +79,7 @@ func TestIncludedIn(t *testing.T) {
 			"550 5.7.1 Unable to relay for neko@example.com",
 		},
 		eb.Re00MX: []string{
-			"556 SMTP protocol returned a permanent error",
+			"556 this server does not accept mail",
 			"550 5.1.2 <nekochan@libsisimai.org>... Host unknown (Name server: .: host not found)",
 		},
 		eb.ReNRFC: []string{

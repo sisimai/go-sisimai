@@ -24,9 +24,9 @@ func init() {
 
 		index := []string{
 			"has exceeded the max emails per hour ",
-			"mail sent from your IP address has been temporarily rate limited",
 			"please try again slower",
 			"receiving mail at a rate that prevents additional messages from being delivered",
+			"temporarily deferred due to unexpected volume or user complaints",
 			"throttling failure: ",
 			"too many errors from your ip",         // Free.fr
 			"too many recipients",                  // ntt docomo
@@ -37,6 +37,8 @@ func init() {
 		pairs := [][]string{
 			[]string{"connection ", "limit"},
 			[]string{"too many con", "s"},
+			[]string{"temporarily", "rate limited"},
+			[]string{"exceeded ", "allowable number of posts without solving a captcha"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _____ _ _ _                    _ 
 // |  ___(_) | |_ ___ _ __ ___  __| |
@@ -26,8 +26,6 @@ func init() {
 
 		index := []string{
 			"account is protected by",
-			"bounced address", // SendGrid|a message to an address has previously been Bounced.
-			"due to extended inactivity new mail is not currently being accepted for this mailbox",
 			"has restricted sms e-mail", // AT&T
 			"is not accepting any mail",
 			"message filtered",
@@ -36,8 +34,6 @@ func init() {
 			"recipient id refuse to receive mail", // Willcom
 			"recipient is only accepting mail from specific email addresses", // AOL Phoenix
 			"refused due to recipient preferences", // Facebook
-			"resolver.rst.notauthorized", // Microsoft Exchange
-			"user not found", // Filter on MAIL.RU
 			"user refuses to receive this mail",
 			"user reject",
 			"you have been blocked by the recipient",

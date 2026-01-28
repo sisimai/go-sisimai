@@ -74,7 +74,7 @@ func TestLhostGmail(t *testing.T) {
 		{{"1041", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1042", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1043", 1, "5.9.213", "550", "userunknown",      true,  true, ""}},
-		{{"1044", 1, "5.9.371", "",    "policyviolation", false, false, ""}},
+		{{"1044", 1, "5.9.131", "",    "ratelimited",     false, false, ""}},
 		{{"1045", 1, "5.9.340", "",    "expired",         false, false, ""}},
 		{{"1046", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1047", 1, "5.1.1",   "550", "userunknown",      true,  true, ""},

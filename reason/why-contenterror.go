@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //   ____            _             _   _____                     
 //  / ___|___  _ __ | |_ ___ _ __ | |_| ____|_ __ _ __ ___  _ __ 
@@ -23,6 +23,7 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
+			"header error",
 			"header size exceeds maximum permitted",
 			"improper use of 8-bit data in message header",
 			"message contain invalid mime headers",
