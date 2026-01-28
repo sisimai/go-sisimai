@@ -312,7 +312,7 @@ func init() {
 				// - https://support.google.com/mail/?p=RfcMessageNonCompliant
 				[3]string{"554", "5.6.0", "mail message is malformed"},
 			},
-			eb.ReWONT: [][3]string{ // PolicyViolation
+			eb.ReBODY: [][3]string{ // ContentError
 				// - 552 5.7.0 Our system detected an illegal attachment on your message. Please visit
 				//   http://mail.google.com/support/bin/answer.py?answer=6590 to review our attachment
 				//   guidelines.
@@ -322,7 +322,8 @@ func init() {
 				//   ty issue. Please visit https://support.google.com/mail/?p=BlockedMessage to review
 				//   our message content and attachment content guidelines.
 				[3]string{"552", "5.7.0", "blocked because its content presents a potential security issue"},
-
+			},
+			eb.ReWONT: [][3]string{ // PolicyViolation
 				// - 550 5.7.1 The user or domain that you are sending to (or from) has a policy that
 				//   prohibited the mail that you sent. Please contact your domain administrator for
 				//   further details.
