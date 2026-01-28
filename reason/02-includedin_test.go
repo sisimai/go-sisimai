@@ -79,7 +79,7 @@ func TestIncludedIn(t *testing.T) {
 			"550 5.7.1 Unable to relay for neko@example.com",
 		},
 		eb.Re00MX: []string{
-			"556 SMTP protocol returned a permanent error",
+			"556 this server does not accept mail",
 			"550 5.1.2 <nekochan@libsisimai.org>... Host unknown (Name server: .: host not found)",
 		},
 		eb.ReNRFC: []string{
