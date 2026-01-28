@@ -53,7 +53,6 @@ func init() {
 			"server access forbidden by your ip ",
 			"service not available, closing transmission channel",
 			"smtp error from remote mail server after initial connection:", // Exim
-			"temporarily deferred due to unexpected volume or user complaints",
 			"you are not allowed to connect",
 			"you are sending spam",
 			"your ip address is listed in the rbl",
@@ -68,7 +67,6 @@ func init() {
 			[]string{"client ", " blocked using"},
 			[]string{"connection ", "dropped"},
 			[]string{"connections will not be accepted from ", " because the ip is in spamhaus's list"},
-			[]string{"dnsbl:rbl ", ">_is_blocked"},
 			[]string{"dynamic", " ip"},
 			[]string{"email blocked by ", ".barracudacentral.org"},
 			[]string{"email blocked by ", "spamhaus"},

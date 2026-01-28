@@ -26,6 +26,7 @@ func init() {
 			"has exceeded the max emails per hour ",
 			"please try again slower",
 			"receiving mail at a rate that prevents additional messages from being delivered",
+			"temporarily deferred due to unexpected volume or user complaints",
 			"throttling failure: ",
 			"too many errors from your ip",         // Free.fr
 			"too many recipients",                  // ntt docomo
