@@ -25,6 +25,7 @@ func init() {
 
 		index := []string{
 			"line limit exceeded",
+			"mail file size exceeds the maximum size allowed for mail delivery",
 			"message too large",
 			"size limit",
 			"taille limite du message atteinte",
