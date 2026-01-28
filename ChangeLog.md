@@ -4,18 +4,24 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
-v5.X.X
+v5.6.0
 ---------------------------------------------------------------------------------------------------
 - release: ""
 - version: ""
 - changes:
-  - #303 Update some bounce reasons in `smtp/status/lib.go`.
-  - #307 Cosolidate 4 bounce reasons into the following 2 reasons:
-    - #308 `TooManyConn` and `Speeding` are consolidated into `RateLimited`.
-    - #309 `ExceedLimit` and `MesgTooBig` are consolidated into `EmailTooLarge`.
+  - **Changes in Bounce Reason Categorization**
+    - #303 Update bounce status mappings in `smtp/status/lib.go`.
+    - #307 Consolidate four bounce reasons into two:
+      - #308 Merge `TooManyConn` and `Speeding` into `RateLimited`.
+      - #309 Merge `ExceedLimit` and `MesgTooBig` into `EmailTooLarge`.
+    - #325 Update the internal constant name for some reason names.
+    - #327 Update assigned reasons in `rhost/for-*.go`.
+    - #329 Merge similar error message patterns and remove ambiguous ones.
+    - #333 Attachment-related errors have been moved from `PolicyViolation` to `ContentError`.
+  - **Reorganize the internal status code** #322 
+    - Temporary error `4.0.9**` has been changed to `4.9.***`.
+    - Permanent error `5.0.9**` has been changed to `5.9.***`.
   - #319 `moji.Token()` has been moved to `fact/lib.go`.
-  - #322 Reorganize the internal status codes in `smtp/status/lib.go`: `5.0.9**` to `5.9.***`.
-  - #325 Update the internal constant name for some reason names.
 
 v5.5.0
 ---------------------------------------------------------------------------------------------------
