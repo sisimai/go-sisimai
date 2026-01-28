@@ -43,18 +43,14 @@ func init() {
 			"is in a black list",
 			"is not allowed to send mail from",
 			"no access from mail server",
-			"no matches to nameserver query",
 			"part of their network is on our block list",
 			"please use the smtp server of your isp",
-			"rejected - multi-blacklist", // junkemailfilter.com
 			"rejected because the sending mta or the sender has not passed validation",
 			"rejecting open proxy", // Sendmail(srvrsmtp.c)
 			"sender ip address rejected",
 			"server access forbidden by your ip ",
-			"service not available, closing transmission channel",
 			"smtp error from remote mail server after initial connection:", // Exim
 			"you are not allowed to connect",
-			"you are sending spam",
 			"your ip address is listed in the rbl",
 			"your network is temporary blacklisted",
 			"your remotehost looks suspiciously like spammer",
