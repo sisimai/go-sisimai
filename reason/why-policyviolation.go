@@ -24,26 +24,23 @@ func init() {
 		index := []string{
 			"because the recipient is not accepting mail with ", // AOL Phoenix
 			"closed mailing list",
+			"delivery not authorized, message refused",
 			"denied by policy",
 			// http://kb.mimecast.com/Mimecast_Knowledge_Base/Administration_Console/Monitoring/Mimecast_SMTP_Error_Codes#554
 			"email rejected due to security policies",
 			"executable files are not allowed in compressed files",
 			"for policy reasons",
-			"header are not accepted",
-			"header error",
 			"illegal attachment on your message",
-			"local policy",
+			"local policy violation",
 			"message bounced due to organizational settings",
 			"message given low priority",
 			"message was rejected by organization policy",
 			"message was blocked because its content presents a potential", // https://support.google.com/mail/answer/6590
-			"messages with multiple addresses",
 			"protocol violation",
 			"we do not accept messages containing images or other attachments",
 			"you're using a mass mailer",
 		}
-		pairs := [][]string{[]string{"you have exceeded the", "allowable number of posts without solving a captcha"}}
-		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
+		return moji.ContainsAny(mesg, index)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
