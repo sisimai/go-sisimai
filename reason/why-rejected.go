@@ -31,11 +31,9 @@ func init() {
 		}
 		index := []string{
 			"access denied (in reply to mail from command)",
-			"address rejected",
 			"administrative prohibition",
-			"batv failed to verify",   // SonicWall
-			"batv validation failure", // SonicWall
 			"backscatter protection detected an invalid or expired email address", // MDaemon
+			"batv ",                    // SonicWALL/BATV:Bounce-Address-Tag-Validation
 			"bogus mail from",          // IMail - block empty sender
 			"by non-member to a members-only list",
 			"can't determine purported responsible address",
@@ -57,11 +55,9 @@ func init() {
 			"is not a registered gateway user",
 			"mail from not owned by user",
 			"mailfrom domain is listed in spamhaus",
-			"message has been rejected by batv defense",
 			"mx records for ",
 			"null sender is not allowed",
 			"recipient addresses rejected : access denied",
-			"recipient not accepted. (batv: no tag",
 			"returned mail not accepted here",
 			"rule imposed mailbox access for",  // MailMarshal
 			"sending this from a different address or alias using the ",
