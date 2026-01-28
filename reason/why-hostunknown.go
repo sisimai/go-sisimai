@@ -7,11 +7,13 @@
 // |_| |_|\___/|___/\__|\___/|_| |_|_|\_\_| |_|\___/ \_/\_/ |_| |_|
 
 package reason
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/smtp/status"
+import "libsisimai.org/sisimai/v5/smtp/command"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -35,7 +37,6 @@ func init() {
 			"unknown host",
 		}
 		pairs := [][]string{
-			[]string{"553 ", " does not exist"},
 			[]string{"domain ", "not exist"},
 			[]string{"unrout", "able ", "address"},
 		}
@@ -48,8 +49,9 @@ func init() {
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file
 	ProbesInto[eb.ReHOST] = func(fo *siba.Fact) bool {
-		if fo        == nil       { return false }
-		if fo.Reason == eb.ReHOST { return true  }
+		if fo        == nil                                { return false }
+		if fo.Reason == eb.ReHOST                          { return true  }
+		if slices.Contains(command.BeforeRCPT, fo.Command) { return false }
 
 		issuedcode := strings.ToLower(fo.DiagnosticCode)
 		if status.Name(fo.DeliveryStatus) == eb.ReHOST {
