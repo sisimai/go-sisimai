@@ -36,7 +36,6 @@ func init() {
 			"batv failed to verify",   // SonicWall
 			"batv validation failure", // SonicWall
 			"backscatter protection detected an invalid or expired email address", // MDaemon
-			"because the sender isn't on the recipient's list of senders to accept mail from",
 			"bogus mail from",          // IMail - block empty sender
 			"by non-member to a members-only list",
 			"can't determine purported responsible address",
@@ -47,7 +46,6 @@ func init() {
 			"does not exist e2110",
 			"domain of sender address ",
 			"email address is on senderfilterconfig list",
-			"email address used to send your message is not subscribed to this group",
 			"emetteur invalide",
 			"empty envelope senders not allowed",
 			"envelope blocked - ",
@@ -60,7 +58,6 @@ func init() {
 			"mail from not owned by user",
 			"mailfrom domain is listed in spamhaus",
 			"message has been rejected by batv defense",
-			"message rejected: email address is not verified",
 			"mx records for ",
 			"null sender is not allowed",
 			"recipient addresses rejected : access denied",
@@ -68,7 +65,6 @@ func init() {
 			"returned mail not accepted here",
 			"rule imposed mailbox access for",  // MailMarshal
 			"sending this from a different address or alias using the ",
-			"sender is in my black list",
 			"sender is spammer",
 			"sender not pre-approved",
 			"sender domain is empty",
@@ -85,8 +81,10 @@ func init() {
 		}
 		pairs := [][]string{
 			[]string{"domain ", " is a dead domain"},
+			[]string{"email address ", "is not "},
 			[]string{"send", "blacklisted"},
 			[]string{"sender", " rejected"},
+			[]string{"sender is", " list"},
 		}
 		if moji.ContainsAny(mesg, isnot) { return false }
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
