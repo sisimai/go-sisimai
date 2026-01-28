@@ -64,7 +64,6 @@ func init() {
 			"service not available, closing transmission channel",
 			"smtp error from remote mail server after initial connection:", // Exim
 			"temporarily deferred due to unexpected volume or user complaints",
-			"to submit messages to this e-mail system has been rejected",
 			"was blocked by ",
 			"you are not allowed to connect",
 			"you are sending spam",
