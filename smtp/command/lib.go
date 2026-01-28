@@ -1,4 +1,4 @@
-// Copyright (C) 2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                _           __                                            _ 
 //  ___ _ __ ___ | |_ _ __   / /__ ___  _ __ ___  _ __ ___   __ _ _ __   __| |
@@ -24,6 +24,7 @@ var detectable = []string{
 	eb.CeDATA, eb.CeQUIT, eb.CeXFWD,
 }
 var ExceptDATA = []string{eb.CeCONN, eb.CeEHLO, eb.CeHELO, eb.CeMAIL, eb.CeRCPT}
+var BeforeRCPT = []string{eb.CeCONN, eb.CeHELO, eb.CeHELO, eb.CeMAIL, eb.CeAUTH, eb.CeTTLS}
 
 // Test checks that an SMTP command in the argument is valid or not.
 //   Arguments:
