@@ -13,6 +13,7 @@ import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/smtp/command"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -39,9 +40,10 @@ func init() {
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
 	ProbesInto[eb.Re00MX] = func(fo *siba.Fact) bool {
-		if fo        == nil                                     { return false }
-		if fo.Reason == eb.Re00MX                               { return true  }
-		if slices.Contains([]string{"521", "556"}, fo.ReplyCode){ return true  }
+		if fo        == nil                                      { return false }
+		if fo.Reason == eb.Re00MX                                { return true  }
+		if slices.Contains([]string{"521", "556"}, fo.ReplyCode) { return true  }
+		if slices.Contains(command.BeforeRCPT, fo.Command)       { return false }
 		return IncludedIn[eb.Re00MX](strings.ToLower(fo.DiagnosticCode))
 	}
 }
