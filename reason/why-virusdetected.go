@@ -23,10 +23,7 @@ func init() {
 	IncludedIn[eb.ReEXEC] = func(mesg string) bool {
 		if mesg == "" { return false }
 
-		index := []string{
-			"form of attachment has been used by recent viruses or other malware",
-			"it has a potentially executable attachment",
-		}
+		index := []string{"form of attachment has been used by recent viruses or other malware"}
 		pairs := [][]string{
 			[]string{"message was ", "ected", " virus"},
 			[]string{"virus", " detected"},

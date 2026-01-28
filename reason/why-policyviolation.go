@@ -28,16 +28,12 @@ func init() {
 			"denied by policy",
 			// http://kb.mimecast.com/Mimecast_Knowledge_Base/Administration_Console/Monitoring/Mimecast_SMTP_Error_Codes#554
 			"email rejected due to security policies",
-			"executable files are not allowed in compressed files",
 			"for policy reasons",
-			"illegal attachment on your message",
 			"local policy violation",
 			"message bounced due to organizational settings",
 			"message given low priority",
 			"message was rejected by organization policy",
-			"message was blocked because its content presents a potential", // https://support.google.com/mail/answer/6590
 			"protocol violation",
-			"we do not accept messages containing images or other attachments",
 			"you're using a mass mailer",
 		}
 		return moji.ContainsAny(mesg, index)
