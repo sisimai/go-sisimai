@@ -96,7 +96,7 @@ $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
 $ go get -u libsisimai.org/sisimai/v5@latest
-go: added libsisimai.org/sisimai/v5 v5.5.0
+go: added libsisimai.org/sisimai/v5 v5.6.0
 
 $ cat ./go.mod
 module example.com/sisimaicli
@@ -104,7 +104,7 @@ module example.com/sisimaicli
 go 1.25
 
 require (
-	libsisimai.org/sisimai/v5 v5.5.0 // indirect
+	libsisimai.org/sisimai/v5 v5.6.0 // indirect
 )
 ```
 
@@ -390,7 +390,7 @@ Features
 | System requirements                          | 1.24 -         | 5.26 -          | 2.4 - / 9.2 - |
 | Dependencies (Except standard libs)          | **0 packages** | 2 modules       | 1 gem         |
 | Supported character sets                     | **UTF-8 only** | UTF-8,etc. [^2] | UTF-8,etc.[^3]|
-| Source lines of code                         | 8,900 lines    | 9,750 lines     | 9,970 lines   |
+| Source lines of code                         | 8,900 lines    | 9,750 lines     | 9,700 lines   |
 | The number of tests                          | 255,000 tests  | 340,000 tests   | 240,000 tests |
 | The number of bounce emails decoded/sec [^4] | 2900 emails    | 750 emails      | 620 emails    |
 | License                                      | 2 Clause BSD   | 2 Clause BSD    | 2 Clause BSD  |
