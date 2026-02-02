@@ -6,8 +6,8 @@ RELEASE NOTES for the Go version of Sisimai
 
 v5.6.0
 ---------------------------------------------------------------------------------------------------
-- release: ""
-- version: ""
+- release: "Mon,  2 Feb 2026 18:30:22 +0900 (JST)"
+- version: "5.6.0"
 - changes:
   - **Changes in Bounce Reason Categorization**
     - #303 Update bounce status mappings in `smtp/status/lib.go`.
@@ -22,6 +22,7 @@ v5.6.0
     - Temporary error `4.0.9**` has been changed to `4.9.***`.
     - Permanent error `5.0.9**` has been changed to `5.9.***`.
   - #319 `moji.Token()` has been moved to `fact/lib.go`.
+  - Happy Birthday to Suzu (formerly known as "Neko-dono" Michitsuna).
 
 v5.5.0
 ---------------------------------------------------------------------------------------------------
