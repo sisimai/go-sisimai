@@ -3,6 +3,7 @@ usage-of-*
 *pprof*
 *sisid*
 *.txt
+*.eml
 sbin/
 stash/
 set-of-emails/private
