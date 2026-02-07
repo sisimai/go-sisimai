@@ -419,6 +419,7 @@ func TestLhostPostfix(t *testing.T) {
 		{{"1321", 1, "5.7.1",   "554", "rejected",        false, false, ""}},
 		{{"1322", 1, "5.4.1",   "",    "rejected",        false, false, ""}},
 		{{"1323", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1324", 1, "5.0.0",   "550", "authfailure",     false, false, ""}},
 	}; EngineTest(t, "Postfix", secretlist, false)
 }
 
