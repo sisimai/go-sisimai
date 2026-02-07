@@ -55,6 +55,8 @@ func TestLhostExchange2007(t *testing.T) {
 		{{"1029", 1, "5.7.1",   "550", "policyviolation", false, false, ""}},
 		{{"1030", 1, "5.4.317", "550", "expired",         false, false, ""}},
 		{{"1031", 1, "5.1.351", "550", "filtered",        false,  true, ""}},
+		{{"1032", 1, "5.0.350", "550", "norelaying",      false,  true, ""}},
+		{{"1033", 1, "5.0.350", "550", "norelaying",      false,  true, ""}},
 	}; EngineTest(t, "Exchange2007", secretlist, false)
 }
 
