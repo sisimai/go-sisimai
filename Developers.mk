@@ -20,6 +20,7 @@ GOROOT := $(shell echo $$GOROOT)
 GOPATH := $(shell echo $$GOPATH)
 
 LIBSISIMAI := libsisimai.org
+SISIMAIVER := $(shell grep '^const version string' libsisimai.go | cut -d' ' -f5 | tr -d '"')
 SISIMAIDIR := address arf eb fact lda lhost mail message moji reason rfc1123 rfc1894 rfc2045 \
 			  rfc3464 rfc3834 rfc5322 rfc5965 rfc791 rhost siba smtp/*/
 MTAMODULES := $(shell grep -h InquireFor lhost/*.go | grep ' = func' | cut -d '"' -f2 | sort) ARF RFC3464 RFC3834
@@ -43,7 +44,7 @@ K          := neko
 $(EXECUTABLE):
 	CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o $@ $@.go
 
-$(EXECUTABLE).$(GO_SYSNAME)-$(GO_CPUARCH):
+$(EXECUTABLE)-$(SISIMAIVER).$(GO_SYSNAME)-$(GO_CPUARCH):
 	GOOS=$(GO_SYSNAME) GOARCH=$(GO_CPUARCH) CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o $@ $(EXECUTABLE).go
 
 build:
@@ -52,10 +53,12 @@ build:
 
 cross-build:
 	# https://go.dev/doc/install/source#environment
+	# GOARCH=amd64 GOOS=openbsd make -f Developers.mk cross-build
+	# GOARCH=amd64 GOOS=linux   make -f Developers.mk cross-build
 	test -n "$(GO_SYSNAME)"
 	test -n "$(GO_CPUARCH)"
 	$(RM) $(EXECUTABLE).$(GO_SYSNAME)-$(GO_CPUARCH)
-	$(MAKE) -f $(FILE) $(EXECUTABLE).$(GO_SYSNAME)-$(GO_CPUARCH)
+	$(MAKE) -f $(FILE) $(EXECUTABLE)-$(SISIMAIVER).$(GO_SYSNAME)-$(GO_CPUARCH)
 
 test:
 	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
