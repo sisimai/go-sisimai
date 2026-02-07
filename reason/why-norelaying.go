@@ -13,6 +13,7 @@ import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
+import "libsisimai.org/sisimai/v5/smtp/command"
 
 func init() {
 	// IncludedIn[*] Try to check the argument string includes any of the strings in the error message pattern.
@@ -30,9 +31,10 @@ func init() {
 			"insecure mail relay",
 			"no relaying",
 			"not a gateway",
-			"not an open relay, so get lost",
 			"not local host",
+			"open relay",
 			"relay not permitted",
+			"relay prohibition",
 			"relaying denied", // Sendmail
 			"relaying mail to ",
 			"send to a non-local e-mail address", // MailEnable
@@ -42,7 +44,7 @@ func init() {
 		}
 		pairs := [][]string{
 			[]string{"relay ", "denied"},
-			[]string{" not ", " to relay"},
+			[]string{"n", "t ", "to relay"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
@@ -55,8 +57,8 @@ func init() {
 	ProbesInto[eb.RePASS] = func(fo *siba.Fact) bool {
 		if fo         == nil       { return false }
 		if fo.Reason  == eb.RePASS { return true  }
+		if slices.Contains(command.BeforeRCPT, fo.Command) == true               { return false }
 		if slices.Contains([]string{eb.ReSAFE, eb.RePROC, eb.Re___0}, fo.Reason) { return false }
-		if slices.Contains([]string{eb.CeCONN, eb.CeEHLO, eb.CeHELO}, fo.Command){ return false }
 		return IncludedIn[eb.RePASS](strings.ToLower(fo.DiagnosticCode))
 	}
 }
