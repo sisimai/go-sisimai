@@ -264,6 +264,7 @@ func TestLhostExim(t *testing.T) {
 		{{"1189", 1, "5.0.0",   "",    "expired",         false, false, ""}},
 		{{"1190", 1, "5.0.0",   "",    "hostunknown",      true,  true, ""}},
 		{{"1191", 1, "5.0.0",   "550", "suspend",         false,  true, ""}},
+		{{"1192", 1, "5.0.0",   "",    "rejected",        false, false, ""}},
 	}; EngineTest(t, "Exim", secretlist, false)
 }
 
