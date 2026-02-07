@@ -104,8 +104,10 @@ func init() {
 			[]string{"unknown e", "mail address"},
 			[]string{"unknown local", "part"},
 			[]string{"user ", " not exist"},
+			[]string{"user ", "doesn't exist"},
 			[]string{"user ", "not found"},
 			[]string{"user (", ") unknown"},
+			[]string{"user <", "> unknown"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
