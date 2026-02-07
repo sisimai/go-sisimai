@@ -23,6 +23,7 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
+			"charset not supported",
 			"executable files are not allowed in compressed files",
 			"header error",
 			"header size exceeds maximum permitted",
