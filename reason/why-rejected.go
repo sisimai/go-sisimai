@@ -34,6 +34,7 @@ func init() {
 			"administrative prohibition",
 			"all recipient addresses rejected : access denied",
 			"backscatter protection detected an invalid or expired email address", // MDaemon
+			"badsendermx", // BadSenderMX
 			"by non-member to a members-only list",
 			"can't determine purported responsible address",
 			"connections not accepted from servers without a valid sender domain",
@@ -46,6 +47,7 @@ func init() {
 			"from: domain is invalid. please provide a valid from:",
 			"fully qualified email address required",   // McAfee
 			"invalid sender",
+			"has an outgoing mail suspension",
 			"is not a registered gateway user",
 			"mail from not owned by user",
 			"mailfrom domain is listed in spamhaus",
@@ -57,8 +59,10 @@ func init() {
 			"sender domain is empty",
 			"sender domain listed at ",
 			"sender verify failed",     // Exim callout
+			"sendernoa",                // SenderNoA
 			"server does not accept mail from",
 			"spam reporting address",   // SendGrid|a message to an address has previously been marked as Spam by the recipient.
+			"too many spam complaints",
 			"unroutable sender address",
 			"you are not allowed to post to this mailing list",
 			"your access to submit messages to this e-mail system has been rejected",
