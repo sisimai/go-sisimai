@@ -243,11 +243,12 @@ func TestRFC3464(t *testing.T) {
 		{{"1326", 1, "5.7.0",   "554", "spamdetected",    false, false, ""}},
 		{{"1327", 1, "4.4.7",   "",    "expired",         false, false, ""}},
 		{{"1328", 1, "5.4.4",   "",    "hostunknown",      true,  true, ""}},
-		{{"1329", 1, "5.7.1",   "",    "securityerror",   false, false, ""}},
+		{{"1329", 1, "5.7.1",   "",    "policyviolation", false, false, ""}},
 		{{"1330", 1, "5.9.213", "550", "userunknown",      true,  true, ""}},
 		{{"1331", 1, "5.4.7",   "",    "expired",         false, false, ""}},
 		{{"1332", 1, "5.3.0",   "550", "filtered",        false,  true, ""}},
 		{{"1333", 1, "4.4.1",   "",    "expired",         false, false, ""}},
+		{{"1334", 1, "5.0.0",   "",    "systemerror",     false, false, ""}},
 	}; EngineTest(t, "RFC3464", secretlist, false)
 }
 

@@ -26,11 +26,13 @@ func init() {
 			"can't create user output file",
 			"cannot send e-mail to yourself",
 			"could not load ",
+			"input/output error",
 			"interrupted system call",
 			"it encountered an error while being processed",
 			"it would create a mail loop",
 			"loop was found in the mail exchanger",
 			"loops back to myself",
+			"mail transport unavailable",
 			"queue file write error",
 			"recipient deferred because there is no mdb",
 			"remote server is misconfigured",
@@ -43,6 +45,7 @@ func init() {
 			[]string{"config", " error"},
 			[]string{"internal ", "error"},
 			[]string{"local ", "error"},
+			[]string{"proxy", "broken pipe"},
 			[]string{"unable to connect ", "daemon"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
