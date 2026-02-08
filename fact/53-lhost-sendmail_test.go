@@ -316,6 +316,8 @@ func TestLhostSendmail(t *testing.T) {
 		{{"1234", 1, "5.7.1",   "554", "authfailure",     false, false, ""}},
 		{{"1235", 1, "5.7.509", "550", "authfailure",     false, false, ""}},
 		{{"1236", 1, "5.4.12",  "554", "networkerror",    false, false, ""}},
+		{{"1237", 1, "5.3.0",   "550", "systemerror",     false, false, ""}},
+		{{"1238", 1, "5.3.0",   "550", "systemerror",     false, false, ""}},
 	}; EngineTest(t, "Sendmail", secretlist, false)
 }
 
