@@ -249,6 +249,7 @@ func TestRFC3464(t *testing.T) {
 		{{"1332", 1, "5.3.0",   "550", "filtered",        false,  true, ""}},
 		{{"1333", 1, "4.4.1",   "",    "expired",         false, false, ""}},
 		{{"1334", 1, "5.0.0",   "",    "systemerror",     false, false, ""}},
+		{{"1335", 1, "5.0.0",   "550", "suspend",         false,  true, ""}},
 	}; EngineTest(t, "RFC3464", secretlist, false)
 }
 
