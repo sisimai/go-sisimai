@@ -8,6 +8,7 @@
 //                      |___/                                          
 
 package reason
+import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
@@ -34,6 +35,7 @@ func init() {
 			"message given low priority",
 			"message was rejected by organization policy",
 			"protocol violation",
+			"support.google.com/a/answer/172179",
 			"you're using a mass mailer",
 		}
 		return moji.ContainsAny(mesg, index)
@@ -44,6 +46,11 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto[eb.ReWONT] = func(fo *siba.Fact) bool { return false }
+	ProbesInto[eb.ReWONT] = func(fo *siba.Fact) bool {
+		if fo        == nil                         { return false }
+		if fo.Reason == eb.ReWONT                   { return true  }
+		if fo.Command != "" && fo.Command != "DATA" { return false }
+		return IncludedIn[eb.ReWONT](strings.ToLower(fo.DiagnosticCode))
+	}
 }
 

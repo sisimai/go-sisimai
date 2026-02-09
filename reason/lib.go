@@ -54,13 +54,14 @@ var Availables = map[string]string{
 	eb.ReEXEC: "Email rejected due to a virus scanner on a destination host",
 }
 var classorder = [][]string{
-	[]string{
+	[]string{ // 0. ProbesInto[*]() function in the following reasons are called from reason.Find()
 		eb.ReFULL, eb.ReSIZE, eb.ReQUIT, eb.ReMOVE, eb.RePASS, eb.ReAUTH, eb.ReUSER, eb.ReFILT, eb.ReQPTR,
-		eb.ReNRFC, eb.ReFAMA, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC,
+		eb.ReNRFC, eb.ReFAMA, eb.ReBODY, eb.ReFROM, eb.ReHOST, eb.ReSPAM, eb.ReRATE, eb.ReBLOC, eb.ReTTLS,
+		eb.Re00MX, eb.ReEXEC, eb.ReWONT,
 	},
-	[]string{
-		eb.ReFULL, eb.ReAUTH, eb.ReFAMA, eb.ReSPAM, eb.ReEXEC, eb.ReWONT, eb.RePASS, eb.RePROC, eb.ReINET,
-		eb.ReQUIT, eb.ReBODY, eb.ReDISK, eb.Re00MX, eb.ReTIME, eb.ReTTLS, eb.ReSAFE, eb.ReSTOP, eb.ReUNIX,
+	[]string{ // 1. IncludedIn[*]() function in the following reasons are called from reason.Find()
+		eb.ReFULL, eb.ReSPAM, eb.ReEXEC, eb.RePASS, eb.RePROC, eb.ReINET, eb.ReQUIT, eb.ReDISK, eb.ReTIME,
+		eb.ReSAFE, eb.ReSTOP, eb.ReUNIX, eb.ReWONT, eb.ReCOMM,
 	},
 }
 

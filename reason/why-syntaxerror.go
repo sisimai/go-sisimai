@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____              _             _____                     
 // / ___| _   _ _ __ | |_ __ ___  _| ____|_ __ _ __ ___  _ __ 
@@ -8,7 +8,6 @@
 //        |___/                                               
 
 package reason
-import "strconv"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 
@@ -25,13 +24,6 @@ func init() {
 	//     - fo (*siba.Fact): Decoded data in progress.
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
-	ProbesInto[eb.ReCOMM] = func(fo *siba.Fact) bool {
-		if fo        == nil       { return false }
-		if fo.Reason == eb.ReCOMM { return true  }
-
-		reply, nyaan := strconv.ParseUint(fo.ReplyCode, 10, 16); if nyaan != nil { return false }
-		if (reply > 400 && reply < 408) || (reply > 500 && reply < 508)          { return true  }
-		return false
-	}
+	ProbesInto[eb.ReCOMM] = func(fo *siba.Fact) bool { return false }
 }
 
