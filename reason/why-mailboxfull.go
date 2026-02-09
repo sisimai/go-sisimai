@@ -28,6 +28,7 @@ func init() {
 			"boite du destinataire pleine",
 			"exceeded storage allocation",
 			"full mailbox",
+			"mailbox exceeds allowed size",
 			"mailbox size limit exceeded",
 			"mailbox would exceed maximum allowed storage",
 			"mailfolder is full",

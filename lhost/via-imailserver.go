@@ -35,11 +35,7 @@ func init() {
 		boundaries := []string{"Original message follows."}
 		startingof := map[string][]string{"error": []string{"Body of message generated response:"}}
 		messagesof := map[string][]string{
-			eb.ReHOST: []string{"Unknown host"},
 			eb.ReUSER: []string{"Unknown user", "Invalid final delivery userid"},
-			eb.ReFULL: []string{"User mailbox exceeds allowed size"},
-			eb.ReEXEC: []string{"Requested action not taken: virus detected"},
-			eb.ReSPAM: []string{"Blacklisted URL in message"},
 			eb.ReTIME: []string{"Delivery failed "},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
