@@ -28,6 +28,7 @@ func init() {
 			"failed to deliver to domain ",
 			"have been failing for a long time",
 			"has been delayed",
+			"host not reachable",
 			"it has not been collected after",
 			"message could not be delivered for more than",
 			"message expired, ",
