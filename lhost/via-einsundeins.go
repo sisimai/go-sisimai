@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      _______ _           _   _           _ _____ _           
 // | | |__   ___  ___| |_   / / ____(_)_ __  ___| | | |_ __   __| | ____(_)_ __  ___ 
@@ -33,8 +33,6 @@ func init() {
 			"message": []string{"This message was created automatically by mail delivery software"},
 			"error":   []string{"For the following reason:"},
 		}
-		messagesof := map[string][]string{eb.ReSIZE: []string{"Mail size limit exceeded"}}
-
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		stringbuff := strings.Builder{}; stringbuff.Grow(len(emailparts[0]) / 2)
@@ -102,12 +100,6 @@ func init() {
 				if strings.Contains(e.Diagnosis, "SMTP error")       { e.Spec    = "SMTP"    }
 			}
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
-
-			for r := range messagesof {
-				// The key name is a bounce reason name
-				// Try to find an error message including lower-cased string listed in messagesof
-				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
-			}
 		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}
