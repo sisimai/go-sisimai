@@ -38,6 +38,7 @@ func init() {
 		}
 		pairs := [][]string{
 			[]string{"could not be delivered for", " days"},
+			[]string{"could not deliver for the last", "second"},
 			[]string{"delivery ", "expired"},
 			[]string{"not", "reach", "period"},
 		}

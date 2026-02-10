@@ -38,6 +38,7 @@ func init() {
 		}
 		pairs := [][]string{
 			[]string{"domain ", "not exist"},
+			[]string{"host ", " not found"},
 			[]string{"unrout", "able ", "address"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
