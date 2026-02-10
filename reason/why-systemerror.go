@@ -34,9 +34,11 @@ func init() {
 			"ldap attribute", // qmail-ldap-1.03-20040101.patch:19817 - 19866
 			"ldap lookup",    // qmail-ldap-1.03-20040101.patch:19817 - 19866
 			"ldap server",    // qmail-ldap-1.03-20040101.patch:19817 - 19866
+			"loop back warning:", // FML
 			"loop was found in the mail exchanger",
 			"loops back to myself",
 			"mail transport unavailable",
+			"may cause mail loop", // FML
 			"no such file or directory",
 			"error while executing qmail-forward", // qmail-ldap-1.03-20040101.patch:19817 - 19866
 			"queue file write error",
@@ -51,6 +53,7 @@ func init() {
 		}
 		pairs := [][]string{
 			[]string{"config", " error"},
+			[]string{"fml ", "has detected a loop condition so that"}, // FML
 			[]string{"internal ", "error"},
 			[]string{"local ", "error"},
 			[]string{"proxy", "broken pipe"},
