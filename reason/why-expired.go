@@ -35,6 +35,7 @@ func init() {
 			"message could not be delivered for more than",
 			"message expired, ",
 			"message has been in the queue too long",
+			"message was not delivered within ",
 			"message timed out",
 			"server did not accept our requests to connect",
 			"server did not respond",
