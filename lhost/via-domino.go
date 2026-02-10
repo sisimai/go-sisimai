@@ -36,9 +36,8 @@ func init() {
 		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{"message": []string{"Your message"}}
 		messagesof := map[string][]string{
-			eb.ReFILT: []string{"Cannot route mail to user"},
-			eb.RePROC: []string{"Several matches found in Domino Directory"},
 			eb.ReUSER: []string{
+				"Cannot route mail to user",
 				"not listed in Domino Directory",
 				"not listed in public Name & Address Book",
 				"no se encuentra en el Directorio de Domino",

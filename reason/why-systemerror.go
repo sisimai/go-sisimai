@@ -43,6 +43,7 @@ func init() {
 			"recipient deferred because there is no mdb",
 			"remote server is misconfigured",
 			"service currently unavailable",
+			"several matches found in domino directory", // Donimo
 			"temporary local problem",
 			"timeout waiting for input",
 			"too many results returned but needs to be unique", // qmail-ldap-1.03-20040101.patch:19817 - 19866
