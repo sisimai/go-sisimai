@@ -31,6 +31,7 @@ func init() {
 			"host or domain name not found",
 			"host unknown",
 			"host unreachable",
+			"illegal host/domain name found",
 			"name or service not known",
 			"no such domain",
 			"recipient address rejected: unknown domain name",
