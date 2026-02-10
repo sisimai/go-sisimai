@@ -26,6 +26,7 @@ func init() {
 			"could not find a gateway for",
 			"delivery attempts will continue to be",
 			"delivery retry timeout exceeded",
+			"envelope expired", // OpenSMTPD/smtpd/queue.c:221
 			"failed to deliver to domain ",
 			"have been failing for a long time",
 			"has been delayed",

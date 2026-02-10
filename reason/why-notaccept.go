@@ -25,10 +25,12 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"does not accept mail",             // Sendmail, iCloud
+			"destination seem to reject all mails", // OpenSMTPD/smtp/mta.c
+			"no mx found for ",                     // OpenSMTPD/smtp/mta.c
+			"does not accept mail",                 // Sendmail, iCloud
 			"mail receiving disabled",
-			"name server: .: host not found",   // Sendmail
-			"no mx record found for domain=",   // Oath(Yahoo!)
+			"name server: .: host not found",       // Sendmail
+			"no mx record found for domain=",       // Oath(Yahoo!)
 			"no route for current request",
 			"null mx",
 		}

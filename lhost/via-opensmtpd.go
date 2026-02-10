@@ -9,7 +9,6 @@
 
 package lhost
 import "strings"
-import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -63,37 +62,6 @@ func init() {
 			//   bounce.c/339:
 			"message": []string{"    This is the MAILER-DAEMON, please DO NOT REPLY to this"},
 		}
-		messagesof := map[string][]string{
-			// smtpd/queue.c:221|  envelope_set_errormsg(&evp, "Envelope expired");
-			// smtpd/mta.c:1013|  relay->failstr = "Could not retrieve credentials";
-			eb.ReTIME: []string{"Envelope expired"},
-			eb.ReSAFE: []string{"Could not retrieve credentials"},
-			eb.ReHOST: []string{
-				// smtpd/mta.c:976|  relay->failstr = "Invalid domain name";
-				// smtpd/mta.c:980|  relay->failstr = "Domain does not exist";
-				"Invalid domain name",
-				"Domain does not exist",
-			},
-			eb.ReINET: []string{
-				//  smtpd/mta.c:972|  relay->failstr = "Temporary failure in MX lookup";
-				"Address family mismatch on destination MXs",
-				"All routes to destination blocked",
-				"bad DNS lookup error code",
-				"Could not retrieve source address",
-				"Loop detected",
-				"Network error on destination MXs",
-				"No valid route to remote MX",
-				"No valid route to destination",
-				"Temporary failure in MX lookup",
-			},
-			eb.Re00MX: []string{
-				// smtp/mta.c:1085|  relay->failstr = "Destination seem to reject all mails";
-				"Destination seem to reject all mails",
-				"No MX found for domain",
-				"No MX found for destination",
-			},
-		}
-
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
@@ -133,12 +101,6 @@ func init() {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
-
-			for r := range messagesof {
-				// The key name is a bounce reason name
-				// Try to find an error message including lower-cased string listed in messagesof
-				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
-			}
 		}
 
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}

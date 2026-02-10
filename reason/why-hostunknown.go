@@ -35,6 +35,7 @@ func init() {
 			"host unknown",
 			"host unreachable",
 			"illegal host/domain name found",
+			"invalid domain name", // OpenSMTPD/smtpd/mta.c:976
 			"name or service not known",
 			"no such domain",
 			"recipient address rejected: unknown domain name",

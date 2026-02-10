@@ -21,17 +21,23 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
+			"address family mismatch on destination mxs", // OpenSMTPD/smtpd/mta.c
+			"all routes to destination blocked",          // OpenSMTPD/smtpd/mta.c
+			"bad dns lookup error code",                  // OpenSMTPD/smtpd/mta.c
 			"could not connect and send the mail to",
-			"dns error: could not contact dns servers",
+			"could not contact dns servers",
+			"could not retrieve source address",          // OpenSMTPD/smtpd/mta.c
 			"dns records for the destination computer could not be found",
 			"establish an smtp connection",
 			"host is unreachable",
 			"host name lookup failure",
 			"host not found, try again",
 			"listed as a best-preference mx",
+			"loop detected",                              // OpenSMTPD/smtpd/mta.c
 			"maximum forwarding loop count exceeded",
+			"network error on destination mxs",           // OpenSMTPD/smtpd/mta.c
 			"no relevant answers",
-			"no route to host",
+			"temporary failure in mx lookup",             // OpenSMTPD/smtpd/mta.c
 			"too many hops",
 			"unable to resolve route ",
 			"unrouteable mail domain",
@@ -40,6 +46,7 @@ func init() {
 			[]string{"malformed", "name server reply"},
 			[]string{"mail ", "loop"},
 			[]string{"message ", "loop"},
+			[]string{"no ", "route to"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
