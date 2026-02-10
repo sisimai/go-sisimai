@@ -103,30 +103,6 @@ func init() {
 		// qmail-remote-fallback.patch
 		hasexpired := "this message has been in the queue too long."
 		onholdpair := []string{" does not like recipient.", "this message has been in the queue too long."}
-		failonldap := map[string][]string{
-			// qmail-ldap-1.03-20040101.patch:19817 - 19866
-			eb.ReSIZE: []string{"The message exeeded the maximum size the user accepts"}, // 5.2.3
-			eb.ReQUIT: []string{
-				"Mailaddress is administrativly disabled",
-				"Mailaddress is administrativley disabled",
-				"Mailaddress is administratively disabled",
-				"Mailaddress is administrativeley disabled",
-			},  // 5.2.1
-			eb.RePROC: []string{
-				"Automatic homedir creator crashed",                // 4.3.0
-				"Illegal value in LDAP attribute",                  // 5.3.5
-				"LDAP attribute is not given but mandatory",        // 5.3.5
-				"Timeout while performing search on LDAP server",   // 4.4.3
-				"Too many results returned but needs to be unique", // 5.3.5
-				"Permanent error while executing qmail-forward",    // 5.4.4
-				"Temporary error in automatic homedir creation",    // 4.3.0 or 5.3.0
-				"Temporary error while executing qmail-forward",    // 4.4.4
-				"Temporary failure in LDAP lookup",                 // 4.4.3
-				"Unable to contact LDAP server",                    // 4.4.3
-				"Unable to login into LDAP server, bad credentials",// 4.4.3
-			},
-			eb.ReUSER: []string{"Sorry, no mailbox here by that name"}, // 5.1.1
-		}
 		messagesof := map[string][]string{
 			// qmail-local.c:589|  strerr_die1x(100,"Sorry, no mailbox here by that name. (#5.1.1)");
 			// qmail-remote.c:253|  out("s"); outhost(); out(" does not like recipient.\n");
@@ -235,11 +211,6 @@ func init() {
 						for r := range messagesof {
 							// The key name is a bounce reason name
 							if moji.ContainsAny(f, messagesof[r]) { e.Reason = r; break FINDREASON }
-						}
-
-						for r := range failonldap {
-							// The key name is a bounce reason name
-							if moji.ContainsAny(f, failonldap[r]) { e.Reason = r; break FINDREASON }
 						}
 						if strings.Contains(f, hasexpired) { e.Reason = eb.ReTIME }
 					}

@@ -23,6 +23,7 @@ func init() {
 
 		index := []string{
 			"aliasing/forwarding loop broken",
+			"automatic homedir creator crashed", // qmail-ldap-1.03-20040101.patch:19817 - 19866
 			"can't create user output file",
 			"cannot send e-mail to yourself",
 			"could not load ",
@@ -30,15 +31,20 @@ func init() {
 			"interrupted system call",
 			"it encountered an error while being processed",
 			"it would create a mail loop",
+			"ldap attribute", // qmail-ldap-1.03-20040101.patch:19817 - 19866
+			"ldap lookup",    // qmail-ldap-1.03-20040101.patch:19817 - 19866
+			"ldap server",    // qmail-ldap-1.03-20040101.patch:19817 - 19866
 			"loop was found in the mail exchanger",
 			"loops back to myself",
 			"mail transport unavailable",
+			"error while executing qmail-forward", // qmail-ldap-1.03-20040101.patch:19817 - 19866
 			"queue file write error",
 			"recipient deferred because there is no mdb",
 			"remote server is misconfigured",
 			"service currently unavailable",
 			"temporary local problem",
 			"timeout waiting for input",
+			"too many results returned but needs to be unique", // qmail-ldap-1.03-20040101.patch:19817 - 19866
 			"transaction failed ",
 		}
 		pairs := [][]string{
