@@ -30,6 +30,7 @@ func init() {
 			"name server: .: host not found",   // Sendmail
 			"no mx record found for domain=",   // Oath(Yahoo!)
 			"no route for current request",
+			"null mx",
 		}
 		return moji.ContainsAny(mesg, index)
 	}

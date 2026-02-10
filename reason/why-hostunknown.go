@@ -35,6 +35,7 @@ func init() {
 			"name or service not known",
 			"no such domain",
 			"recipient address rejected: unknown domain name",
+			"responded with code nxdomain",
 			"unknown host",
 		}
 		pairs := [][]string{

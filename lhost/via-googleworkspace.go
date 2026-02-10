@@ -37,8 +37,6 @@ func init() {
 			"error":   []string{"The response was:", "The response from the remote server was:"},
 		}
 		messagesof := map[string][]string{
-			eb.ReINET: []string{" had no relevant answers.", " responded with code NXDOMAIN"},
-			eb.Re00MX: []string{"Null MX"},
 			eb.ReUSER: []string{"because the address couldn't be found. Check for typos or unnecessary spaces and try again."},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]

@@ -27,6 +27,7 @@ func init() {
 			"host name lookup failure",
 			"host not found, try again",
 			"maximum forwarding loop count exceeded",
+			"no relevant answers",
 			"no route to host",
 			"too many hops",
 			"unable to resolve route ",
