@@ -29,6 +29,7 @@ func init() {
 			"could not retrieve source address",          // OpenSMTPD/smtpd/mta.c
 			"dns records for the destination computer could not be found",
 			"establish an smtp connection",
+			"exceeded maximum hop count",                 // Courier
 			"host is unreachable",
 			"host name lookup failure",
 			"host not found, try again",
