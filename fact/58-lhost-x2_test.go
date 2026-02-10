@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -20,7 +20,7 @@ func TestLhostX2(t *testing.T) {
 		{{"03",   1, "5.9.340", "",    "expired",         false, false, ""}},
 		{{"04",   1, "5.9.220", "",    "mailboxfull",     false, false, ""}},
 		{{"05",   1, "4.1.9",   "",    "expired",         false, false, ""}},
-		{{"06",   1, "4.4.1",   "",    "expired",         false, false, ""}},
+		{{"06",   1, "4.4.1",   "",    "networkerror",    false, false, ""}},
 		{{"07",   1, "5.4.14",  "554", "networkerror",    false, false, ""}},
 	}; EngineTest(t, "X2", publiclist, true)
 
@@ -35,7 +35,7 @@ func TestLhostX2(t *testing.T) {
 		{{"1005", 1, "5.9.340", "",    "expired",         false, false, ""}},
 		{{"1006", 1, "5.1.2",   "",    "hostunknown",      true,  true, ""}},
 		{{"1007", 1, "5.9.340", "",    "expired",         false, false, ""}},
-		{{"1008", 1, "4.4.1",   "",    "expired",         false, false, ""}},
+		{{"1008", 1, "4.4.1",   "",    "networkerror",    false, false, ""}},
 		{{"1009", 1, "5.9.220", "",    "mailboxfull",     false, false, ""}},
 		{{"1010", 1, "5.9.221", "",    "suspend",         false,  true, ""}},
 		{{"1011", 1, "5.9.220", "",    "mailboxfull",     false, false, ""},
@@ -87,7 +87,7 @@ func TestLhostX2(t *testing.T) {
 		 {"1026", 2, "5.9.221", "",    "suspend",         false,  true, ""}},
 		{{"1027", 1, "5.9.220", "",    "mailboxfull",     false, false, ""},
 		 {"1027", 2, "5.9.220", "",    "mailboxfull",     false, false, ""}},
-		{{"1028", 1, "4.4.1",   "",    "expired",         false, false, ""}},
+		{{"1028", 1, "4.4.1",   "",    "networkerror",    false, false, ""}},
 		{{"1029", 1, "4.1.9",   "",    "expired",         false, false, ""}},
 		{{"1030", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"1031", 1, "5.4.14",  "554", "networkerror",    false, false, ""}},

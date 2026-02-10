@@ -23,9 +23,11 @@ func init() {
 		index := []string{
 			"could not connect and send the mail to",
 			"dns records for the destination computer could not be found",
+			"establish an smtp connection",
 			"host is unreachable",
 			"host name lookup failure",
 			"host not found, try again",
+			"listed as a best-preference mx",
 			"maximum forwarding loop count exceeded",
 			"no relevant answers",
 			"no route to host",

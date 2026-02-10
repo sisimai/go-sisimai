@@ -25,6 +25,7 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
+			"couldn't find any host ", // qmail-remote.c:78
 			"domain is not reachable",
 			"domain mentioned in email address is unknown",
 			"domain must exist",

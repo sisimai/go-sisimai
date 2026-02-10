@@ -98,36 +98,9 @@ func init() {
 			// qmail-remote.c:272|  if (code >= 400) quit("Z"," failed after I sent the message");
 			eb.CeDATA: []string{" failed on DATA command", " failed after I sent the message"},
 		}
-
-		// qmail-send.c:922| ... (&dline[c],"I'm not going to try again; this message has been in the queue too long.\n")) nomem();
-		// qmail-remote-fallback.patch
-		hasexpired := "this message has been in the queue too long."
-		onholdpair := []string{" does not like recipient.", "this message has been in the queue too long."}
 		messagesof := map[string][]string{
-			// qmail-local.c:589|  strerr_die1x(100,"Sorry, no mailbox here by that name. (#5.1.1)");
-			// qmail-remote.c:253|  out("s"); outhost(); out(" does not like recipient.\n");
-			eb.ReHOST: []string{"Sorry, I couldn't find any host "},
-			// error_str.c:192|  X(EDQUOT,"disk quota exceeded")
-			eb.ReFULL: []string{"disk quota exceeded"},
-			// qmail-qmtpd.c:233| ... result = "Dsorry, that message size exceeds my databytes limit (#5.3.4)";
-			// qmail-smtpd.c:391| ... out("552 sorry, that message size exceeds my databytes limit (#5.3.4)\r\n"); return;
-			eb.ReSIZE: []string{"Message size exceeds fixed maximum message size:"},
-			// qmail-remote.c:68|  Sorry, I couldn't find any host by that name. (#4.1.2)\n"); zerodie();
-			// qmail-remote.c:78|  Sorry, I couldn't find any host named ");
-			eb.ReINET: []string{
-				"Sorry, I wasn't able to establish an SMTP connection",
-				"Sorry. Although I'm listed as a best-preference MX or A for that host",
-			},
-			eb.Re00MX: []string{
-				// notqmail 1.08 returns the following error message when the destination MX is NullMX
-				"Sorry, I couldn't find a mail exchanger or IP address",
-			},
-			eb.RePROC: []string{
-				"bad interpreter: No such file or directory",
-				"system error",
-				"Unable to",
-			},
-			eb.ReDISK: []string{"Requested action not taken: mailbox unavailable (not enough free space)"},
+			// notqmail 1.08 returns the following error message when the destination MX is NullMX
+			eb.Re00MX: []string{"Sorry, I couldn't find a mail exchanger or IP address"},
 			eb.ReUSER: []string{"no mailbox here by that name"},
 		}
 
@@ -199,20 +172,13 @@ func init() {
 
 			} else {
 				// The error message includes any of patterns defined in the variable avobe
-				if moji.Aligned(e.Diagnosis, onholdpair) {
-					// Need to be matched with error message pattens defined in reason/*
-					e.Reason = eb.Re___1
-
-				} else {
-					FINDREASON: for _, f := range []string{anotherone[j], e.Diagnosis} {
-						// Check that the error message includes any of message patterns or not
-						if e.Reason != "" { break    }
-						if f == ""        { continue }
-						for r := range messagesof {
-							// The key name is a bounce reason name
-							if moji.ContainsAny(f, messagesof[r]) { e.Reason = r; break FINDREASON }
-						}
-						if strings.Contains(f, hasexpired) { e.Reason = eb.ReTIME }
+				FINDREASON: for _, f := range []string{anotherone[j], e.Diagnosis} {
+					// Check that the error message includes any of message patterns or not
+					if e.Reason != "" { break    }
+					if f == ""        { continue }
+					for r := range messagesof {
+						// The key name is a bounce reason name
+						if moji.ContainsAny(f, messagesof[r]) { e.Reason = r; break FINDREASON }
 					}
 				}
 			}

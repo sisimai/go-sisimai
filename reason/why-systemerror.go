@@ -37,6 +37,7 @@ func init() {
 			"loop was found in the mail exchanger",
 			"loops back to myself",
 			"mail transport unavailable",
+			"no such file or directory",
 			"error while executing qmail-forward", // qmail-ldap-1.03-20040101.patch:19817 - 19866
 			"queue file write error",
 			"recipient deferred because there is no mdb",
