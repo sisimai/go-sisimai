@@ -26,9 +26,11 @@ func init() {
 
 		index := []string{
 			"couldn't find any host ", // qmail-remote.c:78
+			"dns server returned answer with no data",
 			"domain is not reachable",
 			"domain mentioned in email address is unknown",
 			"domain must exist",
+			"domain name not found",
 			"host or domain name not found",
 			"host unknown",
 			"host unreachable",

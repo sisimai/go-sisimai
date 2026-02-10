@@ -80,17 +80,6 @@ func init() {
 			"message": []string{"Delivery to the following recipient"},
 			"error":   []string{"The error that the other server returned was:"},
 		}
-		messagesof := map[string][]string{
-			eb.ReTIME: []string{
-				"DNS Error: Could not contact DNS servers",
-				"Delivery to the following recipient has been delayed",
-				"The recipient server did not accept our requests to connect",
-			},
-			eb.ReHOST: []string{
-				"DNS Error: Domain name not found",
-				"DNS Error: DNS server returned answer with no data",
-			},
-		}
 		statetable := map[string][2]string{
 			// Technical details of permanent failure:
 			// Google tried to deliver your message, but it was rejected by the recipient domain.
@@ -220,14 +209,6 @@ func init() {
 				// Find "(state 18)" and pick "18" as a key of statetable
 				e.Command = statetable[cv][0]
 				e.Reason  = statetable[cv][1]
-			}
-
-			if e.Reason == "" {
-				// There is no state code in the error message
-				for r := range messagesof {
-					// The key name is a bounce reason name
-					if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
-				}
 			}
 			if e.Reason == "" { continue }
 

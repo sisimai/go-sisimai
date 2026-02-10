@@ -35,6 +35,7 @@ func init() {
 			"message expired, ",
 			"message has been in the queue too long",
 			"message timed out",
+			"server did not accept our requests to connect",
 			"server did not respond",
 			"unable to deliver message after multiple retries",
 		}
@@ -42,6 +43,7 @@ func init() {
 			[]string{"could not be delivered for", " days"},
 			[]string{"could not deliver for the last", "second"},
 			[]string{"delivery ", "expired"},
+			[]string{"delivery ", "delayed"},
 			[]string{"not", "reach", "period"},
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)

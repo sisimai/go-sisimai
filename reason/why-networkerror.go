@@ -22,6 +22,7 @@ func init() {
 
 		index := []string{
 			"could not connect and send the mail to",
+			"dns error: could not contact dns servers",
 			"dns records for the destination computer could not be found",
 			"establish an smtp connection",
 			"host is unreachable",
