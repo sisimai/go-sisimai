@@ -25,7 +25,8 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"couldn't find any host ", // qmail-remote.c:78
+			"all host address lookups failed", // Exim/transports/smtp.c:3524
+			"couldn't find any host ",         // qmail-remote.c:78
 			"dns server returned answer with no data",
 			"domain is not reachable",
 			"domain mentioned in email address is unknown",
@@ -35,7 +36,8 @@ func init() {
 			"host unknown",
 			"host unreachable",
 			"illegal host/domain name found",
-			"invalid domain name", // OpenSMTPD/smtpd/mta.c:976
+			"invalid domain name",                    // OpenSMTPD/smtpd/mta.c:976
+			"mx records point to non-existent hosts", // Exim/routers/dnslookup.c:331
 			"name or service not known",
 			"no such domain",
 			"recipient address rejected: unknown domain name",
@@ -45,7 +47,7 @@ func init() {
 		pairs := [][]string{
 			[]string{"domain ", "not exist"},
 			[]string{"host ", " not found"},
-			[]string{"unrout", "able ", "address"},
+			[]string{"unrout", "able ", "address"}, // Exim/route.c:1826
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}

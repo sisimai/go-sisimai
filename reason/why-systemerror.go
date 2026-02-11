@@ -27,18 +27,22 @@ func init() {
 			"can't create user output file",
 			"cannot send e-mail to yourself",
 			"could not load ",
+			"delivery to file forbidden", // Exim/deliver.c:5614
+			"delivery to pipe forbidden", // Exim/deliver.c:5624
 			"input/output error",
 			"interrupted system call",
 			"it encountered an error while being processed",
 			"it would create a mail loop",
-			"ldap attribute", // qmail-ldap-1.03-20040101.patch:19817 - 19866
-			"ldap lookup",    // qmail-ldap-1.03-20040101.patch:19817 - 19866
-			"ldap server",    // qmail-ldap-1.03-20040101.patch:19817 - 19866
-			"loop back warning:", // FML
+			"ldap attribute",        // qmail-ldap-1.03-20040101.patch:19817 - 19866
+			"ldap lookup",           // qmail-ldap-1.03-20040101.patch:19817 - 19866
+			"ldap server",           // qmail-ldap-1.03-20040101.patch:19817 - 19866
+			"lmtp error after ",     // Exim/transports/lmtp.c:186
+			"local delivery failed", // Exim/transports/pipe.c:1156
+			"loop back warning:",    // FML
 			"loop was found in the mail exchanger",
 			"loops back to myself",
 			"mail transport unavailable",
-			"may cause mail loop", // FML
+			"may cause mail loop",   // FML
 			"no such file or directory",
 			"error while executing qmail-forward", // qmail-ldap-1.03-20040101.patch:19817 - 19866
 			"queue file write error",

@@ -109,29 +109,6 @@ func init() {
 		}
 		messagesof := map[string][]string{
 			// find exim/ -type f -exec grep 'message = US' {} /dev/null \;
-			// route.c:1158|  DEBUG(D_uid) debug_printf("getpwnam() returned NULL (user not found)\n");
-			eb.ReUSER: []string{"user not found"},
-			// transports/smtp.c:3524|  addr->message = US"all host address lookups failed permanently";
-			// routers/dnslookup.c:331|  addr->message = US"all relevant MX records point to non-existent hosts";
-			// route.c:1826|  uschar *message = US"Unrouteable address";
-			eb.ReHOST: []string{
-				"all host address lookups failed permanently",
-				"all relevant MX records point to non-existent hosts",
-				"Unrouteable address",
-			},
-			// transports/appendfile.c:2567|  addr->user_message = US"mailbox is full";
-			// transports/appendfile.c:3049|  addr->message = string_sprintf("mailbox is full "
-			// transports/appendfile.c:3050|  "(quota exceeded while writing to file %s)", filename);
-			eb.ReFULL: []string{
-				"mailbox is full",
-				"error: quota exceed",
-			},
-			// routers/dnslookup.c:328|  addr->message = US"an MX or SRV record indicated no SMTP service";
-			// transports/smtp.c:3502|  addr->message = US"no host found for existing SMTP connection";
-			eb.Re00MX: []string{ // NotAccept
-				"an MX or SRV record indicated no SMTP service",
-				"no host found for existing SMTP connection",
-			},
 			// parser.c:666| *errorptr = string_sprintf("%s (expected word or \"<\")", *errorptr);
 			// parser.c:701| if(bracket_count++ > 5) FAILED(US"angle-brackets nested too deep");
 			// parser.c:738| FAILED(US"domain missing in source-routed address");
@@ -142,35 +119,16 @@ func init() {
 				"domain missing in source-routed address",
 				"malformed address:",
 			},
-			// deliver.c:5614|  addr->message = US"delivery to file forbidden";
-			// deliver.c:5624|  addr->message = US"delivery to pipe forbidden";
-			// transports/pipe.c:1156|  addr->user_message = US"local delivery failed";
-			eb.RePROC: []string{ // SystemError
-				"delivery to file forbidden",
-				"delivery to pipe forbidden",
-				"local delivery failed",
-				"LMTP error after ",
-			},
-			// deliver.c:5425|  new->message = US"Too many \"Received\" headers - suspected mail loop";
-			eb.ReBODY: []string{`Too many "Received" headers`},
+			// route.c:1158|  DEBUG(D_uid) debug_printf("getpwnam() returned NULL (user not found)\n");
+			eb.ReUSER: []string{"user not found"},
 		}
 		delayedfor := []string{
-			// retry.c:902|  addr->message = (addr->message == NULL)? US"retry timeout exceeded" :
-			// deliver.c:7475|  "No action is required on your part. Delivery attempts will continue for\n"
-			// smtp.c:3508|  US"retry time not reached for any host after a long failure period" :
-			// smtp.c:3508|  US"all hosts have been failing for a long time and were last tried "
-			//                 "after this message arrived";
-			// deliver.c:7459|  print_address_error(addr, f, US"Delay reason: ");
-			// deliver.c:7586|  "Message %s has been frozen%s.\nThe sender is <%s>.\n", message_id,
-			// receive.c:4021|  moan_tell_someone(freeze_tell, NULL, US"Message frozen on arrival",
-			// receive.c:4022|  "Message %s was frozen on arrival by %s.\nThe sender is <%s>.\n",
-			"retry timeout exceeded",
+			// deliver.c:7475| "No action is required on your part. Delivery attempts will continue for\n"
+			// smtp.c:3508|    US"retry time not reached for any host after a long failure period" :
+			// deliver.c:7459| print_address_error(addr, f, US"Delay reason: ");
 			"No action is required on your part",
 			"retry time not reached for any host after a long failure period",
-			"all hosts have been failing for a long time and were last tried",
 			"Delay reason: ",
-			"has been frozen",
-			"was frozen on arrival by ",
 		}
 
 		if strings.Contains(bf.Payload, "\n----- This ") {
@@ -186,7 +144,6 @@ func init() {
 		boundary00 := ""            // Boundary sting
 		anotherone := []string{""}  // Keeping another error messages
 		readcursor, nextcursor, rightindex := uint8(0), uint8(0), uint8(0)
-
 
 		if bf.Headers["content-type"][0] != "" {
 			// Get the boundary string and set regular expression for matching with the boundary string.
@@ -384,7 +341,7 @@ func init() {
 				// Final-Recipient: rfc822;|/p/q/r
 				// Status: 5.0.0
 				e.Diagnosis = dscontents[0].Diagnosis
-				if e.Spec        == "" { e.Spec = dscontents[0].Spec   }
+				if e.Spec        == "" { e.Spec = dscontents[0].Spec }
 				if anotherone[0] != "" {
 					if len(anotherone) <= j { anotherone = append(anotherone, "") }
 					anotherone[j] = anotherone[0]
@@ -434,18 +391,7 @@ func init() {
 						// The key is a bounce reason name
 						if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
 					}
-
-					if e.Reason == "" {
-						// The reason is Expired, or MailerError
-						if moji.ContainsAny(e.Diagnosis, delayedfor) == true {
-							// The reason is Expired
-							e.Reason = eb.ReTIME
-
-						} else {
-							// The reason is MailerError
-							if strings.Contains(e.Diagnosis, "pipe to |") { e.Reason = eb.ReUNIX }
-						}
-					}
+					if e.Reason == "" && moji.ContainsAny(e.Diagnosis, delayedfor) { e.Reason = eb.ReTIME }
 				}
 			}
 
@@ -461,7 +407,7 @@ func init() {
 			// The value of "Status:" indicates permanent error but the value of SMTP reply code in
 			// Diagnostic-Code: field is "TEMPERROR"!!!!
 			e.ReplyCode = reply.Find(e.Diagnosis, e.Status)
-			cv := ""; if failure.IsTemporary(e.ReplyCode) || e.Reason == eb.ReTIME || e.Reason == eb.ReFULL {
+			cv := ""; if failure.IsTemporary(e.ReplyCode) || e.Reason == eb.ReTIME {
 				// Set the pseudo status code as a temporary error
 				if reason.IsExplicit(e.Reason) { cv = status.Code(e.Reason, true) }
 			}

@@ -26,15 +26,18 @@ func init() {
 
 		index := []string{
 			"destination seem to reject all mails", // OpenSMTPD/smtp/mta.c
-			"no mx found for ",                     // OpenSMTPD/smtp/mta.c
 			"does not accept mail",                 // Sendmail, iCloud
 			"mail receiving disabled",
+			"mx or srv record indicated no smtp ",  // Exim/routers/dnslookup.c:328
 			"name server: .: host not found",       // Sendmail
-			"no mx record found for domain=",       // Oath(Yahoo!)
+			"no host found for existing smtp ",     // Exim/transports/smtp.c:3502
 			"no route for current request",
 			"null mx",
 		}
-		return moji.ContainsAny(mesg, index)
+		pairs := [][]string{
+			[]string{"no mx ", "found for "},       // OpenSMTPD/smtp/mta.c
+		}
+		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
 
 	// ProbesInto[*] checks the bounce reason is the reason defined in this file or not.
