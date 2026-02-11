@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //       _               _   
 //  _ __| |__   ___  ___| |_ 
@@ -34,7 +34,7 @@ var RhostClass = map[string][]string{
 	"Spectrum":    []string{"charter.net"},
 	"Tencent":     []string{".qq.com"},
 	"YahooInc":    []string{".yahoodns.net"},
-	"Zoho":        []string{".zoho.com", ".zoho.eu"},
+	"Zoho":        []string{".zoho.com", ".zoho.eu", "zoho.jp"},
 }
 
 // Name returns the rhost class name.
