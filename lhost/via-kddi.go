@@ -41,12 +41,6 @@ func init() {
 		startingof := map[string][]string{
 			"message": []string{"Your mail sent on:", "Your mail attempted to be delivered on:"},
 		}
-		messagesof := map[string][]string{
-			eb.ReFULL: []string{"As their mailbox is full"},
-			eb.RePASS: []string{"Due to the following SMTP relay error"},
-			eb.ReHOST: []string{"As the remote domain doesnt exist"},
-		}
-
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
@@ -93,12 +87,6 @@ func init() {
 			} else {
 				// There is no X-SPASIGN: header in the bounce message
 				if e.Command == eb.CeRCPT { e.Reason = eb.ReUSER; continue }
-
-				for r := range messagesof {
-					// The key name is a bounce reason name
-					// Try to find an error message including lower-cased string listed in messagesof
-					if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
-				}
 			}
 		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}

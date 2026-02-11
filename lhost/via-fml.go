@@ -41,21 +41,6 @@ func init() {
 			},
 			eb.ReSAFE: []string{"Security Alert"},
 		}
-		errortable := map[string][]string{
-			eb.ReFROM: []string{ // Rejected
-				" header may cause mail loop",
-				"NOT MEMBER article from ",
-				"reject mail from ",
-				"reject spammers:",
-				"You are not a member of this mailing list",
-			},
-			eb.ReNRFC: []string{"Duplicated Message-ID"},
-			eb.ReSAFE: []string{"Security alert:"},
-			eb.RePROC: []string{
-				" has detected a loop condition so that",
-				"Loop Back Warning:",
-			},
-		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)
@@ -83,12 +68,6 @@ func init() {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
-
-			for f := range errortable {
-				// The key is a bounce reason name
-				if moji.ContainsAny(e.Diagnosis, errortable[f]) { e.Reason = f; break }
-			}
-			if e.Reason != "" { continue }
 
 			for f := range errortitle {
 				// The key is a bounce reason name

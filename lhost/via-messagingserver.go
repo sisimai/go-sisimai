@@ -1,4 +1,4 @@
-// Copyright (C) 20242-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 20242-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ____  __                           _             ____                           
 // | | |__   ___  ___| |_   / /  \/  | ___  ___ ___  __ _  __ _(_)_ __   __ _/ ___|  ___ _ ____   _____ _ __ 
@@ -9,7 +9,6 @@
 
 package lhost
 import "strings"
-import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc791"
@@ -38,7 +37,6 @@ func init() {
 		startingof := map[string][]string{
 			"message": []string{"This report relates to a message you sent with the following header fields:"},
 		}
-		messagesof := map[string][]string{eb.ReHOST: []string{"Illegal host/domain name found"}}
 		envelopeto := [][]string{[]string{"  Recipient address: ", "@", "."}, []string{"  Original address: ",  "@", "."}}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
@@ -145,12 +143,6 @@ func init() {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
-
-			for r := range messagesof {
-				// The key name is a bounce reason name
-				// Try to find an error message including lower-cased string listed in messagesof
-				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
-			}
 		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}

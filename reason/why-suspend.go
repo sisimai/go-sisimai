@@ -47,7 +47,9 @@ func init() {
 		}
 		pairs := [][]string{
 			[]string{"account ", "disabled"},
+			[]string{"account ", "limited"},
 			[]string{"has been ", "suspended"},
+			[]string{"mailaddress ", "disabled"},
 			[]string{"mailbox ", "disabled"},
 			[]string{"not ", "active"},
 		}

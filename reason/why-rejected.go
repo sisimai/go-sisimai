@@ -51,6 +51,7 @@ func init() {
 			"is not a registered gateway user",
 			"mail from not owned by user",
 			"mailfrom domain is listed in spamhaus",
+			"not member article from ", // FML
 			"null sender is not allowed",
 			"returned mail not accepted here",
 			"sending this from a different address or alias using the ",
@@ -73,6 +74,7 @@ func init() {
 			[]string{"after mail from:", ".", " does not exist"},
 			[]string{"domain ", " is a dead domain"},
 			[]string{"email address ", "is not "},
+			[]string{"reject mail from ", "@"}, // FML
 			[]string{"send", "blacklisted"},
 			[]string{"sender", " rejected"},
 			[]string{"sender is", " list"},

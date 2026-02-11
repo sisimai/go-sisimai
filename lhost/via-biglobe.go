@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ______  _       _       _          
 // | | |__   ___  ___| |_   / / __ )(_) __ _| | ___ | |__   ___ 
@@ -9,7 +9,6 @@
 
 package lhost
 import "strings"
-import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -38,11 +37,6 @@ func init() {
 			"message": []string{"   ----- The following addresses had delivery problems -----"},
 			"error":   []string{"   ----- Non-delivered information -----"},
 		}
-		messagesof := map[string][]string{
-			eb.ReFILT: []string{"Mail Delivery Failed... User unknown"},
-			eb.ReFULL: []string{"The number of messages in recipient's mailbox exceeded the local limit."},
-		}
-
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
@@ -92,12 +86,6 @@ func init() {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
-
-			for r := range messagesof {
-				// The key name is a bounce reason name
-				// Try to find an error message including lower-cased string listed in messagesof
-				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
-			}
 		}
 
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}

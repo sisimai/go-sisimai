@@ -29,7 +29,6 @@ func init() {
 		boundaries := []string{"------- Returned Message --------"}
 		startingof := map[string][]string{"message": []string{"------- Failure Reasons "} }
 		messagesof := map[string][]string{
-			eb.ReINET: []string{"Message has exceeded maximum hop count"},
 			eb.ReUSER: []string{
 				"User not listed in public Name & Address Book",
 				"ディレクトリのリストにありません",

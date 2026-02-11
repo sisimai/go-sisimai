@@ -45,30 +45,16 @@ func init() {
 		startingof := map[string][]string{
 			"message": []string{"The user(s) ", "Your message ", "Each of the following", "<"},
 		}
-		messagesof := map[string][]string{
-			//eb.Re00MX: []string{"The following recipients did not receive this message:"},
-			eb.ReTIME: []string{ // Expired
-				// Your message was not delivered within 0 days and 1 hours.
-				// Remote host is not responding.
-				"Your message was not delivered within ",
-			},
-			eb.ReFULL: []string{"The user(s) account is temporarily over quota"},
-			eb.Re___1: []string{"Each of the following recipients was rejected by a remote mail server"},
-			eb.ReQUIT: []string{
-				// http://www.naruhodo-au.kddi.com/qa3429203.html
-				// The recipient may be unpaid user...?
-				"The user(s) account is disabled.",
-				"The user(s) account is temporarily limited.",
-			},
+		unpaiduser := []string{
+			// http://www.naruhodo-au.kddi.com/qa3429203.html
+			// The recipient may be unpaid user...?
+			"The user(s) account is disabled.",
+			"The user(s) account is temporarily limited.",
 		}
-
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		substrings := make([]string, 0, 6)  // All the values of "messagesof"
 		recipients, readcursor := uint8(0), uint8(0)
 
-		// Add all the values of messagesof into substrings
-		for e := range messagesof { for _, f := range messagesof[e] { substrings = append(substrings, f) } }
 		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
@@ -109,15 +95,7 @@ func init() {
 						//    >>> RCPT TO:<******@ezweb.ne.jp>
 						case strings.Contains(e, " >>> "): v.Command = command.Find(e); v.Diagnosis += " " + e
 						case strings.Contains(e, " <<< "): v.Diagnosis += " " + e //    <<< 550 ...
-					default:
-						// Check the error message
-						isincluded := false; for _, r := range substrings {
-							// Try to find that the line contains any error message text
-							if strings.Contains(e, r) == false { continue }
-							v.Diagnosis += " " + e
-							isincluded   = true
-						}
-						if isincluded == false { v.Diagnosis += " " + e }
+						default: v.Diagnosis += " " + e
 					}
 				}
 			}
@@ -138,11 +116,7 @@ func init() {
 
 			} else {
 				// There is no X-SPASIGN header or the value of the header is not "NG"
-				for r := range messagesof {
-					// The key name is a bounce reason name
-					// Try to find an error message including lower-cased string listed in messagesof
-					if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
-				}
+				if moji.ContainsAny(e.Diagnosis, unpaiduser) { e.Reason = eb.ReQUIT }
 			}
 			if e.Reason != ""                                { continue }
 			if strings.Contains(e.Recipient, "@ezweb.ne.jp") { continue }

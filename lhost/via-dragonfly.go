@@ -9,7 +9,6 @@
 
 package lhost
 import "strings"
-import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -43,24 +42,6 @@ func init() {
 			// https://github.com/corecode/dma/blob/ffad280aa40c242aa9a2cb9ca5b1b6e8efedd17e/mail.c#L84
 			"message": []string{"This is the DragonFly Mail Agent "},
 		}
-		messagesof := map[string][]string{
-			eb.ReTIME: []string{
-				// https://github.com/corecode/dma/blob/master/dma.c#L370C1-L374C19
-				// dma.c:370| if (gettimeofday(&now, NULL) == 0 &&
-				// dma.c:371|     (now.tv_sec - st.st_mtim.tv_sec > MAX_TIMEOUT)) {
-				// dma.c:372|     snprintf(errmsg, sizeof(errmsg),
-				// dma.c:373|          "Could not deliver for the last %d seconds. Giving up.",
-				// dma.c:374|          MAX_TIMEOUT);
-				// dma.c:375|     goto bounce;
-				// dma.c:376| }
-				"Could not deliver for the last ",
-			},
-			eb.ReHOST: []string{
-				// net.c:663| snprintf(errmsg, sizeof(errmsg), "DNS lookup failure: host %s not found", host);
-				"DNS lookup failure: host ",
-			},
-		}
-
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
@@ -110,12 +91,6 @@ func init() {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
 			e.Diagnosis = moji.Sweep(e.Diagnosis)
-
-			for r := range messagesof {
-				// The key name is a bounce reason name
-				// Try to find an error message including lower-cased string listed in messagesof
-				if moji.ContainsAny(e.Diagnosis, messagesof[r]) { e.Reason = r; break }
-			}
 		}
 
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}

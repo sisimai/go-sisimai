@@ -23,7 +23,7 @@ func TestLhostMailRu(t *testing.T) {
 		{{"07",   1, "5.9.210", "550", "filtered",        false,  true, ""}},
 		{{"08",   1, "5.9.213", "550", "userunknown",      true,  true, ""}},
 		{{"09",   1, "5.1.8",   "501", "rejected",        false, false, ""}},
-		{{"10",   1, "4.9.340", "",    "expired",         false, false, ""}},
+		{{"10",   1, "5.9.340", "",    "expired",         false, false, ""}},
 	}; EngineTest(t, "MailRu", publiclist, true)
 
 	secretlist := [][]IsExpected{

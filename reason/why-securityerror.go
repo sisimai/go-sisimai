@@ -27,6 +27,7 @@ func init() {
 			"authentication failure",
 			"authentication required",
 			"authentication turned on in your email client",
+			"could not retrieve credentials", // OpenSMTPD/smtpd/mta.c
 			"unauthenticated senders not allowed",
 			"verification failure",
 			"you are not authorized to send mail, authentication is required",

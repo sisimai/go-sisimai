@@ -25,7 +25,7 @@ func TestLhostYahoo(t *testing.T) {
 		{{"10",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
 		{{"11",   1, "5.1.8",   "501", "rejected",        false, false, ""}},
 		{{"12",   1, "5.1.8",   "501", "rejected",        false, false, ""}},
-		{{"13",   1, "5.9.231", "",    "systemerror",     false, false, ""}},
+		{{"13",   1, "5.9.340", "",    "expired",         false, false, ""}},
 		{{"14",   1, "5.9.134", "554", "blocked",         false, false, ""}},
 	}; EngineTest(t, "Yahoo", publiclist, true)
 

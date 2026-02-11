@@ -28,6 +28,7 @@ func init() {
 			"boite du destinataire pleine",
 			"exceeded storage allocation",
 			"full mailbox",
+			"mailbox exceeds allowed size",
 			"mailbox size limit exceeded",
 			"mailbox would exceed maximum allowed storage",
 			"mailfolder is full",
@@ -44,11 +45,11 @@ func init() {
 			[]string{"disk", "quota"},
 			[]string{"enough ", " space"},
 			[]string{"mailbox ", "exceeded", " limit"},
-			[]string{"mailbox ", "full"},
+			[]string{"mailbox ", "full"},   // Exim/transports/appendfile.c:2567
 			[]string{"mailbox ", "quota"},
 			[]string{"maildir ", "quota"},
 			[]string{"over ", "quota"},
-			[]string{"quota ", "exceeded"},
+			[]string{"quota ", "exceeded"}, // Exim/transports/appendfile.c:3050
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
