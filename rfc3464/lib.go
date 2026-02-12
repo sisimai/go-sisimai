@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ _____ _  _    __   _  _   
 // |  _ \|  ___/ ___|___ /| || |  / /_ | || |  
@@ -124,19 +124,13 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 				// the boundary appeared, the condition above also returns true.
 				if moji.HasPrefixAny(e, isboundary) { goestonext = false; break }
 				if strings.HasPrefix(e, "Content-Type:") {
-					// Content-Type: field in multipart/*
-					if strings.Contains(e, "multipart/") {
+					switch {
+						// Content-Type: field in multipart/*
 						// Content-Type: multipart/alternative; boundary=aa00220022222222ffeebb
 						// Pick the boundary string and store it into "isboucdary"
-						isboundary = append(isboundary, rfc2045.Boundary(e, 0))
-
-					} else if strings.Contains(e, "text/plain") {
-						// Content-Type: "text/plain"
-						goestonext = false
-
-					} else {
-						// Other types: for example, text/html, image/jpg, and so on
-						goestonext = true
+						case strings.Contains(e, "multipart/"): isboundary = append(isboundary, rfc2045.Boundary(e, 0))
+						case strings.Contains(e, "text/plain"): goestonext = false
+						default: goestonext = true // Other types: for example, text/html, image/jpg, and so on
 					}
 					break
 				}
@@ -156,7 +150,8 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 			v  = siba.TailDeliveryMatter(dscontents)
 			b  = &(eachbuffer[len(eachbuffer) - 1]); b.Grow(128)
 
-			if o[3] == "addr" {
+			switch o[3] {
+			case "addr":
 				// Final-Recipient: rfc822; kijitora@example.jp
 				// X-Actual-Recipient: rfc822; kijitora@example.co.jp
 				if o[0] == "final-recipient" {
@@ -178,12 +173,12 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 					// X-Actual-Recipient: rfc822; kijitora@example.co.jp
 					v.Alias = o[2]
 				}
-			} else if o[3] == "code" {
+			case "code":
 				// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
 				v.Spec = o[1]
 				b.WriteString(o[2] + " ")
 
-			} else {
+			default:
 				// Other DSN fields defined in RFC3464
 				// There are other error messages as a comment such as the following:
 				// Status: 5.0.0 (permanent failure)

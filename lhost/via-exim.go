@@ -251,28 +251,25 @@ func init() {
 					if rfc1894.Match(e) > 0 {
 						// "e" matched with any field defined in RFC3464
 						o := rfc1894.Field(e); if len(o) == 0 { continue }
-
-						if o[3] == "addr" {
+						switch o[3] {
+						default: v.Update(v.AsRFC1894(o[0]), o[2]) // Other DSN fields defined in RFC3464
+						case "addr":
 							// Final-Recipient: rfc822;|/bin/echo "Some pipe output"
 							if o[0] != "final-recipient" || v.Spec != "" { continue }
 							if strings.IndexByte(o[2], '@') > 0 { v.Spec = "SMTP" } else { v.Spec = "X-UNIX" }
-
-						} else if o[3] == "code" {
+						case "code":
 							// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
 							v.Spec      = strings.ToUpper(o[1])
 							v.Diagnosis = o[2]
-
-						} else {
-							// Other DSN fields defined in RFC3464
-							v.Update(v.AsRFC1894(o[0]), o[2])
 						}
 					} else {
 						// There are other error messages?
 						if nextcursor > 0 { continue }
-
-						// Content-type: message/delivery-status
-						if strings.HasPrefix(e, startingof["deliverystatus"][0]) { nextcursor = 1 }
-						if strings.HasPrefix(e, " ") { anotherone[rightindex] += e + " " }
+						switch {
+							// Content-type: message/delivery-status
+							case strings.HasPrefix(e, startingof["deliverystatus"][0]): nextcursor = 1
+							case strings.HasPrefix(e, " "): anotherone[rightindex] += e + " "
+						}
 					}
 				} else {
 					// There is no boundary string in "boundary00"
@@ -299,19 +296,17 @@ func init() {
 				if e.Alias == "" { continue }
 				if strings.IndexByte(e.Recipient, '@') < 0 { e.Recipient = e.Alias }
 			}
-		} else {
+		} else if len(bf.Headers["x-failed-recipients"]) > 0 {
 			// Fallback for getting recipient addresses
-			if len(bf.Headers["x-failed-recipients"]) > 0 {
-				// X-Failed-Recipients: kijitora@example.jp
-				rcptinhead := strings.Split(bf.Headers["x-failed-recipients"][0], ",")
-				recipients  = len(rcptinhead)
+			// X-Failed-Recipients: kijitora@example.jp
+			rcptinhead := strings.Split(bf.Headers["x-failed-recipients"][0], ",")
+			recipients  = len(rcptinhead)
 
-				for _, e := range rcptinhead {
-					// Insert each recipient address into "dscontents"
-					e = strings.Trim(e, " ")
-					siba.TailDeliveryMatter(dscontents).Recipient = e
-					if len(dscontents) != recipients { siba.NextDeliveryMatter(&dscontents) }
-				}
+			for _, e := range rcptinhead {
+				// Insert each recipient address into "dscontents"
+				e = strings.Trim(e, " ")
+				siba.TailDeliveryMatter(dscontents).Recipient = e
+				if len(dscontents) != recipients { siba.NextDeliveryMatter(&dscontents) }
 			}
 		}
 		if recipients == 0 { return nil }
@@ -381,10 +376,10 @@ func init() {
 					break
 				}
 
+				// Detect the bounce reason by using the SMTP command
 				switch e.Command {
-					// Detect the bounce reason by using the SMTP command
-					case eb.CeEHLO, eb.CeHELO: e.Reason = eb.ReBLOC // HELO | Connected to 192.0.2.135 but my name was rejected.
-					case eb.CeMAIL:            e.Reason = eb.Re___1 // MAIL | Connected to 192.0.2.135 but sender was rejected.
+				case eb.CeEHLO, eb.CeHELO: e.Reason = eb.ReBLOC // HELO | Connected to 192.0.2.135 but my name was rejected.
+				case eb.CeMAIL:            e.Reason = eb.Re___1 // MAIL | Connected to 192.0.2.135 but sender was rejected.
 				default:
 					// Find any error message string defined in "messagesof" from e.Diagnosis
 					for r := range messagesof {

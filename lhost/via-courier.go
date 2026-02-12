@@ -79,7 +79,8 @@ func init() {
 				z := rfc1894.FieldTable[o[0]]
 				v  = siba.TailDeliveryMatter(dscontents)
 
-				if o[3] == "addr" {
+				switch o[3] {
+				case "addr":
 					// Final-Recipient: rfc822; kijitora@example.jp
 					// X-Actual-Recipient: rfc822; kijitora@example.co.jp
 					if o[0] == "final-recipient" {
@@ -93,12 +94,11 @@ func init() {
 						// X-Actual-Recipient: rfc822; kijitora@example.co.jp
 						v.Alias = o[2]
 					}
-				} else if o[3] == "code" {
+				case "code":
 					// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
 					v.Spec = o[1]
 					v.Diagnosis = o[2]
-
-				} else {
+				default:
 					// Other DSN fields defined in RFC3464
 					v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 

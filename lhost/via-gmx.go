@@ -71,17 +71,14 @@ func init() {
 				v.Recipient = address.S3S4(strings.Trim(e, ":"))
 				recipients += 1
 
-			} else if strings.HasPrefix(e, "SMTP error ") {
-				// SMTP error from remote server after RCPT command:
-				v.Command = command.Find(e)
-
-			} else if strings.HasPrefix(e, "host: ") {
-				// host: mx.example.jp
-				v.Rhost = e[6:]
-
 			} else {
-				// Get error messages
-				if e != "" { v.Diagnosis += e + " " }
+				switch {
+					// - SMTP error from remote server after RCPT command:
+					// - host: mx.example.jp
+					case strings.HasPrefix(e, "SMTP error "): v.Command = command.Find(e)
+					case strings.HasPrefix(e, "host: "):      v.Rhost   = e[6:]
+					default: if e != "" { v.Diagnosis += e + " " } // Get error messages
+				}
 			}
 		}
 		if recipients == 0 { return nil }

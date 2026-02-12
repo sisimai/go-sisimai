@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      _______                   _ __  __ _                
 // | | |__   ___  ___| |_   / /_   _| __ ___ _ __   __| |  \/  (_) ___ _ __ ___  
@@ -66,18 +66,17 @@ func init() {
 				recipients  = uint8(len(dscontents))
 			}
 
-			if strings.HasPrefix(e, "Sent <<< ") {
-				// Sent <<< RCPT TO:<kijitora@example.co.jp>
-				v.Command = command.Find(e)
-
-			} else if strings.HasPrefix(e, "Received >>> ") {
-				// Received >>> 550 5.1.1 <kijitora@example.co.jp>... user unknown
-				v.Diagnosis = moji.Select(e + moji.RHS, " >>> ", "", 8)
-
-			} else if p1 > 0 || p2 > 0 {
-				// Error messages are not written in English
-				if strings.Contains(e, " >>> ") { v.Command   = command.Find(e) }
-				if strings.Contains(e, " <<< ") { v.Diagnosis = moji.Select(e + moji.RHS, "<<<", "", 3) }
+			// - Sent <<< RCPT TO:<kijitora@example.co.jp>
+			// - Received >>> 550 5.1.1 <kijitora@example.co.jp>... user unknown
+			switch {
+			case strings.HasPrefix(e, "Sent <<< "):     v.Command   = command.Find(e)
+			case strings.HasPrefix(e, "Received >>> "): v.Diagnosis = moji.Select(e + moji.RHS, " >>> ", "", 8)
+			default:
+				if p1 > 0 || p2 > 0 {
+					// Error messages are not written in English
+					if strings.Contains(e, " >>> ") { v.Command   = command.Find(e) }
+					if strings.Contains(e, " <<< ") { v.Diagnosis = moji.Select(e + moji.RHS, "<<<", "", 3) }
+				}
 			}
 		}
 		if recipients == 0 { return nil }

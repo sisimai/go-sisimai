@@ -55,18 +55,19 @@ func init() {
 			}
 			if readcursor & HereIsDeliveryStatus == 0 || e == "" { continue }
 
-			if strings.Contains(e, " Could not be delivered to: <") {
+			switch {
+			case strings.Contains(e, " Could not be delivered to: <"):
 				// Your mail sent on: Thu, 29 Apr 2010 11:04:47 +0900
 				//     Could not be delivered to: <******@**.***.**>
 				//     As their mailbox is full.
 				if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
 				if cv := moji.Select(e, ": <", ">", 16); rfc5322.IsEmailAddress(cv) { v.Recipient = cv; recipients++ }
 
-			} else if strings.Contains(e, "Your mail sent on: ") {
+			case strings.Contains(e, "Your mail sent on: "):
 				// Your mail sent on: Thu, 29 Apr 2010 11:04:47 +0900
 				v.Date = e[19:]
 
-			} else {
+			default:
 				//     As their mailbox is full.
 				if strings.HasPrefix(e, " ") { v.Diagnosis += e + " " }
 			}
