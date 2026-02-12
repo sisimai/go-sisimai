@@ -121,16 +121,17 @@ func init() {
 				// Remote-MTA: dns;mx.example.jp (TCP|17.111.174.67|47323|192.0.2.225|25)
 				//  (6jo.example.jp ESMTP SENDMAIL-VM)
 				// Diagnostic-code: smtp;550 5.1.1 <kijitora@example.jp>... User Unknown
-				if strings.HasPrefix(e, "Status: ") {
+				switch {
+				case strings.HasPrefix(e, "Status: "):
 					// Status: 5.1.1 (Remote SMTP server has rejected address)
 					if v.Status    == "" { v.Status = status.Find(e, v.ReplyCode)    }
 					if v.Diagnosis == "" { v.Diagnosis = moji.Select(e, "(", ")", 1) }
 
-				} else if strings.HasPrefix(e, "Arrival-Date: ") {
+				case strings.HasPrefix(e, "Arrival-Date: "):
 					// Arrival-date: Thu, 29 Apr 2014 23:34:45 +0000 (GMT)
 					if v.Date == "" { v.Date = moji.Select(e + moji.RHS, "-Date: ", "", 1) }
 
-				} else if strings.HasPrefix(e, "Reporting-MTA: ") {
+				case strings.HasPrefix(e, "Reporting-MTA: "):
 					// Reporting-MTA: dns;mr21p30im-asmtp004.me.com (tcp-daemon)
 					if strings.IndexByte(v.Lhost, '.') > 0 { continue        }
 					if cv := rfc1894.Field(e); len(cv) > 0 { v.Lhost = cv[2] }
