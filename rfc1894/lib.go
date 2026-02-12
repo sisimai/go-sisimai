@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ _  ___  ___  _  _   
 // |  _ \|  ___/ ___/ |( _ )/ _ \| || |  
@@ -133,6 +133,7 @@ func Field(line string) []string {
 		"failure":     eb.AeFAIL,
     }
 	actionlist := []string{eb.AeFAIL, eb.AeSTAY, eb.AeSENT, eb.AeTRAN, eb.AeEXPN}
+	subtypeset := map[string]string{"addr": "RFC822", "code": "SMTP", "host": "DNS"}
 	captureson := map[string][]string{
 		"addr": []string{"Final-Recipient", "Original-Recipient", "X-Actual-Recipient"},
 		"code": []string{"Diagnostic-Code"},
@@ -162,7 +163,8 @@ func Field(line string) []string {
 	table := []string{label, "", "", group, ""}
 	rhs    = strings.TrimSpace(rhs)
 
-	if group == "addr" || group == "code" || group == "host" {
+	switch group {
+	case "addr", "code", "host":
 		// - Final-Recipient: RFC822; kijitora@example.jp
 		// - Diagnostic-Code: SMTP; 550 5.1.1 <kijitora@example.jp>... User Unknown
 		// - Remote-MTA: DNS; mx.example.jp
@@ -174,26 +176,20 @@ func Field(line string) []string {
 
 		} else {
 			// There is no sub type like "Diagnostic-Code: 550 5.1.1 <kijitora@example.jp>..."
+			table[1] = subtypeset[group]
 			table[2] = strings.TrimSpace(rhs)
-			switch group {
-				case "addr": table[1] = "RFC822"
-				case "code": table[1] = "SMTP"
-				case "host": table[1] = "DNS"
-			}
 		}
 
 		if group == "host" { table[2] = strings.ToLower(table[2]) }
 		if len(strings.ReplaceAll(table[2], " ", "")) == 0 { table[2] = "" }
-
-	} else if group == "list" {
+	case "list":
 		// Action: failed
 		// Check that the value is an available value defined in "actionlist" or not.
 		// When the value is invalid, convert to an available value defined in "correction"
 		v := strings.ToLower(rhs)
-		if slices.Contains(actionlist, v) { table[2] = v }
+		if slices.Contains(actionlist, v) == true   { table[2] = v             }
 		if table[2] == "" && len(correction[v]) > 0 { table[2] = correction[v] }
-
-	} else {
+	default:
 		// Other groups such as Status:, Arrival-Date:, or X-Original-Message-ID:.
 		// There is no ";" character in the field.
 		// - Status: 5.2.2
