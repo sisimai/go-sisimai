@@ -153,23 +153,21 @@ func init() {
 				//  Subject: ...
 				//  Sent:    Thu, 29 Apr 2010 18:14:35 +0000
 				//
-				if moji.HasPrefixAny(e, []string{"  To:  ", "      To: "}) {
+				switch {
+				case moji.HasPrefixAny(e, []string{"  To:  ", "      To: "}):
 					//  To:      shironeko@example.jp
-					if connheader[0] != "" { continue }
-					connheader[0] = moji.Select(e + moji.RHS, " To:", "", 0)
+					if connheader[0] == "" { connheader[0] = moji.Select(e + moji.RHS, " To:", "", 0) }
 					connvalues++
 
-				} else if moji.HasPrefixAny(e, []string{"      Subject: ", "  Subject: "}) {
+				case moji.HasPrefixAny(e, []string{"      Subject: ", "  Subject: "}):
 					//  Subject: ...
-					if connheader[1] != "" { continue }
-					connheader[0] = moji.Select(e + moji.RHS, " Subject:", "", 0)
+					if connheader[1] == "" { connheader[0] = moji.Select(e + moji.RHS, " Subject:", "", 0) }
 					connvalues++
 
-				} else if moji.HasPrefixAny(e, []string{"  Sent: ", "      Sent: "}) {
+				case moji.HasPrefixAny(e, []string{"  Sent: ", "      Sent: "}):
 					//  Sent:    Thu, 29 Apr 2010 18:14:35 +0000
 					//  Sent:    4/29/99 9:19:59 AM
-					if connheader[2] != "" { continue }
-					connheader[0] = moji.Select(e + moji.RHS, " Sent:", "", 0)
+					if connheader[2] == "" { connheader[0] = moji.Select(e + moji.RHS, " Sent:", "", 0) }
 					connvalues++
 				}
 			}
