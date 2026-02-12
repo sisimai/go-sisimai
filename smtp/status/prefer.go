@@ -49,22 +49,23 @@ func Prefer(argv0, argv1, argv2 string) string {
 	}
 	if zeroindex1[0] > 0 && zeroindex1[1] < 0 { return codeinmesg } // The "Status:" field is "X.Y.0" or "X.0.Z"
 	if zeroindex2[1] > 0                      { return statuscode } // The SMTP status code is "X.0.0"
-	if statuscode == "4.4.7"                  { return codeinmesg } // "4.4.7" is an ambigous code
-	if statuscode == "4.7.0"                  { return codeinmesg } // "4.7.0" indicates "too many errors"
-	if strings.Index(statuscode, "5.3.") == 0 { return codeinmesg } // "5.3.Z" is a system error
-	if strings.Index(statuscode, ".5.1") == 1 { return codeinmesg } // "X.5.1" indicates an invalid command
-	if strings.Index(statuscode, ".5.2") == 1 { return codeinmesg } // "X.5.2" indicates a syntax error
-	if strings.Index(statuscode, ".5.4") == 1 { return codeinmesg } // "X.5.4" indicates an invalid command argument
-	if strings.Index(statuscode, ".5.5") == 1 { return codeinmesg } // "X.5.5" indicates a wrong protocol version
+	if strings.HasPrefix(statuscode, "5.3.")  { return codeinmesg } // "5.3.Z" is a system error
 
-	if statuscode == "5.1.1" {
-		// "5.1.1" is a code of UserUnknown
-		if zeroindex1[1] > 0 || strings.Index(codeinmesg, "5.5.") == 0 { return statuscode }
-		return codeinmesg
-
-	} else if statuscode == "5.1.3" {
-		// "5.1.3"
-		if strings.Index(codeinmesg, "5.7.") == 0 { return codeinmesg }
+	switch statuscode {
+		// - "4.4.7" is an ambigous code
+		// - "4.7.0" indicates "too many errors"
+		// - "X.5.1" indicates an invalid command
+		// - "X.5.2" indicates a syntax error
+		// - "X.5.4" indicates an invalid command argument
+		// - "X.5.5" indicates a wrong protocol version
+		case "4.4.7", "4.7.0":                   return codeinmesg
+		case "4.5.1", "4.5.2", "4.5.4", "4.5.5": return codeinmesg
+		case "5.5.1", "5.5.2", "5.5.4", "5.5.5": return codeinmesg
+		case "5.1.1":
+			// "5.1.1" is a code of UserUnknown
+			if zeroindex1[1] > 0 || strings.HasPrefix(codeinmesg, "5.5.") { return statuscode }
+			return codeinmesg
+		case "5.1.3": if strings.HasPrefix(codeinmesg, "5.7.") { return codeinmesg }
 	}
 	return statuscode
 }
