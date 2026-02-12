@@ -46,8 +46,8 @@ func Find(text string) [3]string {
 		// Check each character
 		if strings.ContainsRune(delimiters, e) {
 			// The character is a delimiter
-			if e == ',' {
-				// The "," is a email address separator or a character in a "name"
+			switch e {
+			case ',': // The "," is a email address separator or a character in a "name"
 				if IsIncluded(readbuffer[0].String()) {
 					// The email address has already been picked
 					if readcursor & HereIsCommentBlock > 0 {
@@ -73,9 +73,8 @@ func Find(text string) [3]string {
 						// Append "e" to "address" readbuffer[0] or "comment" readbuffer[2]
 						readbuffer[groupindex - 1].WriteRune(e)
 					}
-				} // End of if(",")
-			} else if e == '<' {
-				// "<": The beginning of an email address or a character in the display name or the comment
+				}
+			case '<': // The beginning of an email address or a character in the display name or the comment
 				if readbuffer[0].Len() == 0 {
 					// The 1st character of the email address: <neko@cat.example.jp>
 					readcursor |= HereIsEmailAddress
@@ -93,9 +92,8 @@ func Find(text string) [3]string {
 						// "e" is a part of the display name
 						readbuffer[1].WriteRune(e)
 					}
-				} // End of if("<")
-			} else if e == '>' {
-				// ">": The end of an email address or a character in the display name or the comment
+				}
+			case '>': // The end of an email address or a character in the display name or the comment
 				if readcursor & HereIsEmailAddress > 0 {
 					// The email address in readbuffer[0] has been successfully constructed
 					readcursor &= ^HereIsEmailAddress
@@ -112,9 +110,8 @@ func Find(text string) [3]string {
 						// "e" is a part of the display name
 						readbuffer[1].WriteRune(e)
 					}
-				} // End of if(">")
-			} else if e == '(' {
-				// "(": The beginning of a comment block or a character in the display name or the comment
+				}
+			case '(': // The beginning of a comment block or a character in the display name or the comment
 				if readcursor & HereIsEmailAddress > 0 {
 					// An email address including a comment like the followings:
 					// <"neko(cat)"@example.org> or <neko(cat)@example.org>
@@ -144,9 +141,8 @@ func Find(text string) [3]string {
 					if strings.HasSuffix(readbuffer[2].String(), ")") { readbuffer[2].WriteRune(' ') }
 					readbuffer[2].WriteRune(e)
 					groupindex = 3
-				} // End of if("(")
-			} else if e == ')' {
-				// "(": The end of a comment block or a character in the display name or the comment
+				}
+			case ')': // The end of a comment block or a character in the display name or the comment
 				if readcursor & HereIsEmailAddress > 0 {
 					// An email address including a comment like the followings:
 					// <"neko(cat)"@example.org> or <neko(cat)@example.org>
@@ -170,9 +166,8 @@ func Find(text string) [3]string {
 					// Deal as a display name
 					readbuffer[1].WriteRune(e)
 					groupindex = 0
-				} // End of if(")")
-			} else if e == '"' {
-				// '"': The beginning|end of the quoted string block or a part of an email address.
+				}
+			case '"': // The beginning|end of the quoted string block or a part of an email address.
 				if groupindex == 0 {
 					// The beginning of the quoted-string block
 					readbuffer[1].WriteRune(e)
@@ -182,7 +177,7 @@ func Find(text string) [3]string {
 				} else if groupindex == 2 {
 					// The end of the quoted-string block
 					readcursor &= ^HereIsQuotedString
-					groupindex = 0
+					groupindex  = 0
 
 				} else if groupindex > 0 {
 					// A part of the email address or the comment block
@@ -196,16 +191,14 @@ func Find(text string) [3]string {
 					readcursor &= ^HereIsQuotedString
 					groupindex = 0
 				} 
-			} // End of if(`"`)
+			}
 		} else {
 			// The character is not a delimiter
-			if groupindex == 0 || groupindex == 2 {
-				// Deal as a character of the display name
-				readbuffer[1].WriteRune(e)
-
-			} else {
-				// Append "e" to "address" readbuffer[0] or "comment" readbuffer[2]
-				readbuffer[groupindex - 1].WriteRune(e)
+			switch groupindex {
+				// - Deal as a character of the display name
+				// - Append "e" to "address" readbuffer[0] or "comment" readbuffer[2]
+				case 0, 2: readbuffer[1].WriteRune(e) 
+				default:   readbuffer[groupindex - 1].WriteRune(e)
 			}
 		}
 	} // End of the loop(for)
