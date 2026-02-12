@@ -219,7 +219,8 @@ func init() {
 			// - "Bounce"
 			// - "Complaint"
 			// - "Delivery"
-			if strings.Contains(sespayload, `"notificationType":"Bounce"`) {
+			switch {
+			case strings.Contains(sespayload, `"notificationType":"Bounce"`):
 				// {"notificationType":"Bounce","bounce":{"bounceType":"Permanent",...
 				var p ReturnedTo
 				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
@@ -227,7 +228,7 @@ func init() {
 				mailinside = &p.Mail
 				whatnotify = "B"
 
-			} else if strings.Contains(sespayload, `"notificationType":"Complaint"`) {
+			case strings.Contains(sespayload, `"notificationType":"Complaint"`):
 				// {"notificationType":"Complaint","complaint":{"complainedRecipients":[{"e...
 				var p Complained
 				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
@@ -235,7 +236,7 @@ func init() {
 				mailinside = &p.Mail
 				whatnotify = "C"
 
-			} else if strings.Contains(sespayload, `"notificationType":"Delivery"`) {
+			case strings.Contains(sespayload, `"notificationType":"Delivery"`):
 				// {"notificationType":"Delivery","mail":{"timestamp":...
 				var p Deliveries
 				jsonerrors = json.Unmarshal(jsonstring, &p); if jsonerrors != nil { break }
@@ -243,7 +244,7 @@ func init() {
 				mailinside = &p.Mail
 				whatnotify = "D"
 
-			} else {
+			default:
 				// There is no "notificationType" field or unknown type of "notificationType" field
 				// in the JSON string in the message body
 				jsonerrors = errors.New("there is no notificationType field or unknown type of notificationType field")
@@ -260,7 +261,8 @@ func init() {
 		recipients := uint8(0)
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 
-		if whatnotify == "B" {
+		switch whatnotify {
+		case "B":
 			// "notificationType":"Bounce"
 			o := &notifiedto.returnedto.Bounce; for _, e := range (*o).BouncedRecipients {
 				// {"emailAddress":"neko@example.jp", "action":"failed", "status":"5.1.1", "diagnosticCode": "..."}
@@ -281,7 +283,7 @@ func init() {
 					if reasonpair[f] == (*o).BounceSubType { v.Reason = f; break }
 				}
 			}
-		} else if whatnotify == "C" {
+		case "C":
 			// "notificationType":"Complaint"
 			o := &notifiedto.complained.Complaint; for _, e := range (*o).ComplainedRecipients {
 				// {"emailAddress":"neko@example.jp"}
@@ -292,9 +294,9 @@ func init() {
 				v.FeedbackType = (*o).ComplaintFeedbackType
 				v.Date         = (*o).Timestamp
 				v.Diagnosis    = fmt.Sprintf(`{"feedbackid":"%s", "useragent":"%s"}`, (*o).FeedbackID, (*o).UserAgent)
-				recipients += 1
+				recipients    += 1
 			}
-		} else if whatnotify == "D" {
+		case "D":
 			// "notificationType":"Delivery"
 			o := &notifiedto.deliveries.Delivery; for _, e := range (*o).Recipients {
 				// {"recipients":["neko@example.jp"]}
