@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                _           __   _        _             
 //  ___ _ __ ___ | |_ _ __   / /__| |_ __ _| |_ _   _ ___ 
@@ -28,8 +28,8 @@ func Find(logs string, hint string) string {
 	esmtperror := " " + logs + "   " // Why 3 space characters? see https://github.com/sisimai/p5-sisimai/issues/574
 	lookingfor := make(map[string]string, 10)
 	indextable := make([]int, 0, 10)
-	givenclass := hint[0:1]; switch givenclass {
-		case "2", "4", "5": eestatuses = append(eestatuses, givenclass + ".")
+	switch hint[0:1] {
+		case "2", "4", "5": eestatuses = append(eestatuses, hint[0:1] + ".")
 		default:            eestatuses = append(eestatuses, []string{"5.", "4.", "2."}...)
 	}
 
