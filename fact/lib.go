@@ -256,7 +256,13 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		// Set other values returned from message.Rise()
 		addrs["recipient"] = [3]string{e.Recipient, "", ""}
 		piece["subject"]   = strings.ReplaceAll(rfc822data["subject"][0], "\r", "")
+
+		// When "RCPT first" in the error message, set "RCPT" as the last command.
+		// - <<< 503 RCPT first (#5.5.1)
+		// - <<< 503-5.5.1 RCPT first. A mail transaction protocol command was issued ...
+		// -   RCPT first (in reply to DATA command)
 		if command.Test(e.Command) { piece["command"] = e.Command }
+		if strings.Contains(piece["diagnosticcode"], "RCPT first") { piece["command"] = "RCPT" }
 
 		{	// - Create email address object as address.EmailAddress struct
 			// - Create decoded bounce mail object as siba.Fact struct
