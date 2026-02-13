@@ -93,85 +93,83 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		}
 		if addrs["addresser"][0] == "" { continue RISEOF }
 
-		{	// TIMESTAMP: Convert from the value of "Date" or the date string to time.Time
-			datevalues := make([]string, 0, 2); if e.Date != "" { datevalues = append(datevalues, e.Date) }
-			for _, f := range rfc5322.HeaderTable["date"] {
-				// Date information did not exist in message/delivery-status part.
-				// Get the value of "Date:" header or other date related headers.
-				if len(rfc822data[f]) > 0 { datevalues = append(datevalues, rfc822data[f][0]) }
-			}
-
-			if len(datevalues) < 2 && len((*beforefact).Headers["date"]) > 0 {
-				// Get the value of "Date:" header of the bounce message
-				datevalues = append(datevalues, (*beforefact).Headers["date"][0])
-			}
-			for _, v := range datevalues {
-				// Parse each date string using net/mail.ParseDate()
-				if times, nyaan := mail.ParseDate(v); nyaan == nil { clock = times; break }
-			}
-			if clock.IsZero() {
-				// Failed to parse the date string at the previous loop,
-				// try to tidy up it using rfc5322.Date() before calling net/mail.ParseDate()
-				for _, v := range datevalues {
-					// Try to parse the date string tidied by rfc5322.Date()
-					if j := rfc5322.Date(v); j != "" {
-						// rfc5322.Date() returned a valid date string
-						if times, nyaan := mail.ParseDate(j); nyaan == nil { clock = times; break }
-					}
-				}
-			}
-			if clock.IsZero() { continue RISEOF }
+		// TIMESTAMP: Convert from the value of "Date" or the date string to time.Time
+		datevalues := make([]string, 0, 2); if e.Date != "" { datevalues = append(datevalues, e.Date) }
+		for _, f := range rfc5322.HeaderTable["date"] {
+			// Date information did not exist in message/delivery-status part.
+			// Get the value of "Date:" header or other date related headers.
+			if len(rfc822data[f]) > 0 { datevalues = append(datevalues, rfc822data[f][0]) }
 		}
 
-		{	// RECEIVED: Try to pick a remote hostname from the error message
-			// Scan "Received:" header of the bounce message
-			le := len((*beforefact).Headers["received"])
+		if len(datevalues) < 2 && len((*beforefact).Headers["date"]) > 0 {
+			// Get the value of "Date:" header of the bounce message
+			datevalues = append(datevalues, (*beforefact).Headers["date"][0])
+		}
+		for _, v := range datevalues {
+			// Parse each date string using net/mail.ParseDate()
+			if times, nyaan := mail.ParseDate(v); nyaan == nil { clock = times; break }
+		}
+		if clock.IsZero() {
+			// Failed to parse the date string at the previous loop,
+			// try to tidy up it using rfc5322.Date() before calling net/mail.ParseDate()
+			for _, v := range datevalues {
+				// Try to parse the date string tidied by rfc5322.Date()
+				if j := rfc5322.Date(v); j != "" {
+					// rfc5322.Date() returned a valid date string
+					if times, nyaan := mail.ParseDate(j); nyaan == nil { clock = times; break }
+				}
+			}
+		}
+		if clock.IsZero() { continue RISEOF }
+
+		// RECEIVED: Try to pick a remote hostname from the error message
+		// Scan "Received:" header of the bounce message
+		le := len((*beforefact).Headers["received"])
+		if e.Rhost == "" {
+			// Try to pick a remote hostname from Received: headers of the bounce message
+			if cv := rfc1123.Find(e.Diagnosis); rfc1123.IsInternetHost(cv) { e.Rhost = cv }
 			if e.Rhost == "" {
-				// Try to pick a remote hostname from Received: headers of the bounce message
-				if cv := rfc1123.Find(e.Diagnosis); rfc1123.IsInternetHost(cv) { e.Rhost = cv }
-				if e.Rhost == "" {
-					// The remote hostname in the error message did not exist or is not a valid
-					// internet hostname
-					for ri := le - 1; ri > -1; ri-- {
-						// Check the Received: headers backwards and get a remote hostname
-						cv := rfc5322.Received((*beforefact).Headers["received"][ri])
-						if rfc1123.IsInternetHost(cv[0]) { e.Rhost = cv[0]; break }
-					}
+				// The remote hostname in the error message did not exist or is not a valid
+				// internet hostname
+				for ri := le - 1; ri > -1; ri-- {
+					// Check the Received: headers backwards and get a remote hostname
+					cv := rfc5322.Received((*beforefact).Headers["received"][ri])
+					if rfc1123.IsInternetHost(cv[0]) { e.Rhost = cv[0]; break }
 				}
 			}
-			if e.Lhost == e.Rhost { e.Lhost = "" }
-			if e.Lhost == "" {
-				// Try to pick a local hostname from Received: headers of the bounce message
-				for li := 0; li < le; li++ {
-					// Check the Received: headers forwards and get a local hostnaame
-					cv := rfc5322.Received((*beforefact).Headers["received"][li])
-					if rfc1123.IsInternetHost(cv[0]) { e.Lhost = cv[0]; break }
+		}
+		if e.Lhost == e.Rhost { e.Lhost = "" }
+		if e.Lhost == "" {
+			// Try to pick a local hostname from Received: headers of the bounce message
+			for li := 0; li < le; li++ {
+				// Check the Received: headers forwards and get a local hostnaame
+				cv := rfc5322.Received((*beforefact).Headers["received"][li])
+				if rfc1123.IsInternetHost(cv[0]) { e.Lhost = cv[0]; break }
+			}
+		}
+
+		for _, v := range []*string{&e.Rhost, &e.Lhost} {
+			// Check and rewrite each host name
+			if *v == "" { continue }
+
+			// Use the domain part as a remote/local host when the value is an email address
+			if strings.IndexByte(*v, '@') > 0 { *v = strings.Split(*v, "@")[1] }
+
+			// Remove [], (), \r, and strings before "="
+			for _, c := range []string{"(", ")", "[", "]", "\r"} { *v = strings.ReplaceAll(*v, c, "") }
+			if _, rhs, cut := strings.Cut(*v, "="); cut == true  { *v = rhs }
+			if strings.IndexByte(*v, ' ') > -1 {
+				// Check a space character in each value and get the first hostname
+				ee := strings.Split(*v, " "); for _, w := range ee {
+					// Get a hostname from the string like "127.0.0.1 x109-20.example.com 192.0.2.20"
+					// or "mx.sp.example.jp 192.0.2.135"
+					if rfc791.IsIPv4Address(w) == false { *v = w; break }
 				}
+				if strings.IndexByte(*v, ' ') > 0 { *v = ee[0] }
 			}
 
-			for _, v := range []*string{&e.Rhost, &e.Lhost} {
-				// Check and rewrite each host name
-				if *v == "" { continue }
-
-				// Use the domain part as a remote/local host when the value is an email address
-				if strings.IndexByte(*v, '@') > 0 { *v = strings.Split(*v, "@")[1] }
-
-				// Remove [], (), \r, and strings before "="
-				for _, c := range []string{"(", ")", "[", "]", "\r"} { *v = strings.ReplaceAll(*v, c, "") }
-				if _, rhs, cut := strings.Cut(*v, "="); cut == true  { *v = rhs }
-				if strings.IndexByte(*v, ' ') > -1 {
-					// Check a space character in each value and get the first hostname
-					ee := strings.Split(*v, " "); for _, w := range ee {
-						// Get a hostname from the string like "127.0.0.1 x109-20.example.com 192.0.2.20"
-						// or "mx.sp.example.jp 192.0.2.135"
-						if rfc791.IsIPv4Address(w) == false { *v = w; break }
-					}
-					if strings.IndexByte(*v, ' ') > 0 { *v = ee[0] }
-				}
-
-				// Remove "." at the end of the hostname.
-				if strings.HasSuffix(*v, ".") { *v = strings.TrimRight(*v, ".") }
-			}
+			// Remove "." at the end of the hostname.
+			if strings.HasSuffix(*v, ".") { *v = strings.TrimRight(*v, ".") }
 		}
 
 		if len(rfc822data["message-id"]) > 0 && moji.Aligned(rfc822data["message-id"][0], []string{"<", "@", ">"}) {
@@ -331,16 +329,15 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 			thing.Reason = re; break REASON
 		}
 
-		{	// HARDBOUNCE: Set the value of "hardbounce", default value of "hardbounce" is false
-			if slices.Contains([]string{eb.ReSENT, eb.ReFEED, eb.ReAWAY}, thing.Reason) {
-				// Delete the value of ReplyCode when the Reason is Feedback or Vacation.
-				if thing.Reason != eb.ReSENT { thing.ReplyCode = "" }
+		// HARDBOUNCE: Set the value of "hardbounce", default value of "hardbounce" is false
+		if slices.Contains([]string{eb.ReSENT, eb.ReFEED, eb.ReAWAY}, thing.Reason) {
+			// Delete the value of ReplyCode when the Reason is Feedback or Vacation.
+			if thing.Reason != eb.ReSENT { thing.ReplyCode = "" }
 
-			} else {
-				// The Reason is not Delivered, or Feedback, or Vacation.
-				cv := piece["deliverystatus"] + " " + piece["diagnosticcode"]; if len(cv) < 4 { cv = "" }
-				thing.HardBounce = failure.IsHardBounce(thing.Reason, cv)
-			}
+		} else {
+			// The Reason is not Delivered, or Feedback, or Vacation.
+			cv := piece["deliverystatus"] + " " + piece["diagnosticcode"]; if len(cv) < 4 { cv = "" }
+			thing.HardBounce = failure.IsHardBounce(thing.Reason, cv)
 		}
 
 		if thing.DeliveryStatus == "" {
@@ -351,37 +348,36 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 			thing.DeliveryStatus = status.Code(thing.Reason, eu)
 		}
 
-		{	// REPLYCODE: Check both of the first digit of "DeliveryStatus" and "ReplyCode"
-			cx := [2]string{}
-			if thing.DeliveryStatus != "" { cx[0] = string(thing.DeliveryStatus[0]) }
-			if thing.ReplyCode      != "" { cx[1] = string(thing.ReplyCode[0])      }
+		// REPLYCODE: Check both of the first digit of "DeliveryStatus" and "ReplyCode"
+		cx := [2]string{}
+		if thing.DeliveryStatus != "" { cx[0] = string(thing.DeliveryStatus[0]) }
+		if thing.ReplyCode      != "" { cx[1] = string(thing.ReplyCode[0])      }
 
-			if cx[0] != cx[1] {
-				// The class of the "Status:" is defer with the first digit of the reply code
-				if cx[1] = reply.Find(piece["diagnosticcode"], cx[0]); strings.HasPrefix(cx[1], cx[0]) {
-					// The first digit of cx[1] found by status.Find() is equal to cx[0]
-					thing.ReplyCode = cx[1]
+		if cx[0] != cx[1] {
+			// The class of the "Status:" is defer with the first digit of the reply code
+			if cx[1] = reply.Find(piece["diagnosticcode"], cx[0]); strings.HasPrefix(cx[1], cx[0]) {
+				// The first digit of cx[1] found by status.Find() is equal to cx[0]
+				thing.ReplyCode = cx[1]
 
-				} else {
-					// Remove the value of ReplyCode when the 1st digit of the both values are differ
-					thing.ReplyCode = ""
-				}
+			} else {
+				// Remove the value of ReplyCode when the 1st digit of the both values are differ
+				thing.ReplyCode = ""
 			}
-
-			if rfc1894.ActionList[thing.Action] == false {
-				// - There is an action value that is not described at RFC1894
-				// - Rewrite the value of "Action:" field to the valid value
-				// - The syntax for the action-field is:
-				//     action-field = "Action" ":" action-value
-				//     action-value = "failed" / "delayed" / "delivered" / "relayed" / "expanded"
-				if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 { thing.Action = ox[2] }
-			}
-			switch thing.Reason {
-				case eb.ReSENT: thing.Action = eb.AeSENT // delivered
-				case eb.ReTIME: thing.Action = eb.AeSTAY // delayed
-			}
-			if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = eb.AeFAIL }
 		}
+
+		if rfc1894.ActionList[thing.Action] == false {
+			// - There is an action value that is not described at RFC1894
+			// - Rewrite the value of "Action:" field to the valid value
+			// - The syntax for the action-field is:
+			//     action-field = "Action" ":" action-value
+			//     action-value = "failed" / "delayed" / "delivered" / "relayed" / "expanded"
+			if ox := rfc1894.Field("Action: " + thing.Action); len(ox) > 0 { thing.Action = ox[2] }
+		}
+		switch thing.Reason {
+			case eb.ReSENT: thing.Action = eb.AeSENT // delivered
+			case eb.ReTIME: thing.Action = eb.AeSTAY // delayed
+		}
+		if thing.Action == "" && (cx[0] == "4" || cx[0] == "5") { thing.Action = eb.AeFAIL }
 
 		if thing.ReplyCode != "" {
 			// Fill empty values: ["SMTP Command", "DSN", "Reason"]
