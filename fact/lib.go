@@ -264,39 +264,38 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		if command.Test(e.Command) { piece["command"] = e.Command }
 		if strings.Contains(piece["diagnosticcode"], "RCPT first") { piece["command"] = "RCPT" }
 
-		{	// - Create email address object as address.EmailAddress struct
-			// - Create decoded bounce mail object as siba.Fact struct
-			as := address.Rise(addrs["addresser"]); if as == nil { continue RISEOF }
-			ar := address.Rise(addrs["recipient"]); if ar == nil { continue RISEOF }
+		// - Create email address object as address.EmailAddress struct
+		// - Create decoded bounce mail object as siba.Fact struct
+		as := address.Rise(addrs["addresser"]); if as == nil { continue RISEOF }
+		ar := address.Rise(addrs["recipient"]); if ar == nil { continue RISEOF }
 
-			thing.Action         = e.Action
-			thing.Addresser      = *as
-			thing.Alias          = e.Alias; if thing.Alias == "" { thing.Alias = ar.Alias }
-			thing.Catch          = (*beforefact).Catch
-			thing.DeliveryStatus = piece["deliverystatus"]
-			thing.Destination    = ar.Host
-			thing.DiagnosticCode = piece["diagnosticcode"]
-			thing.DiagnosticType = piece["diagnostictype"]
-			thing.FeedbackID     = ""
-			thing.FeedbackType   = e.FeedbackType
-			thing.HardBounce     = false
-			thing.Lhost          = e.Lhost
-			thing.ListID         = piece["listid"]
-			thing.MessageID      = piece["messageid"]
-			thing.Origin         = origin
-			thing.Reason         = piece["reason"]
-			thing.Rhost          = e.Rhost
-			thing.Recipient      = *ar
-			thing.ReplyCode      = piece["replycode"]; if thing.ReplyCode == "" { reply.Find(piece["diagnosticcode"], "") }
-			thing.DecodedBy      = e.Agent
-			thing.Command        = piece["command"]
-			thing.SenderDomain   = as.Host
-			thing.Subject        = piece["subject"]
-			thing.Timestamp      = clock
-			thing.TimezoneOffset = clock.Format("+0900")
-			thing.Token          = token(as.Address, ar.Address, int(thing.Timestamp.Unix()))
-			thing.Toxic          = e.Toxic
-		}
+		thing.Action         = e.Action
+		thing.Addresser      = *as
+		thing.Alias          = e.Alias; if thing.Alias == "" { thing.Alias = ar.Alias }
+		thing.Catch          = (*beforefact).Catch
+		thing.DeliveryStatus = piece["deliverystatus"]
+		thing.Destination    = ar.Host
+		thing.DiagnosticCode = piece["diagnosticcode"]
+		thing.DiagnosticType = piece["diagnostictype"]
+		thing.FeedbackID     = ""
+		thing.FeedbackType   = e.FeedbackType
+		thing.HardBounce     = false
+		thing.Lhost          = e.Lhost
+		thing.ListID         = piece["listid"]
+		thing.MessageID      = piece["messageid"]
+		thing.Origin         = origin
+		thing.Reason         = piece["reason"]
+		thing.Rhost          = e.Rhost
+		thing.Recipient      = *ar
+		thing.ReplyCode      = piece["replycode"]; if thing.ReplyCode == "" { reply.Find(piece["diagnosticcode"], "") }
+		thing.DecodedBy      = e.Agent
+		thing.Command        = piece["command"]
+		thing.SenderDomain   = as.Host
+		thing.Subject        = piece["subject"]
+		thing.Timestamp      = clock
+		thing.TimezoneOffset = clock.Format("+0900")
+		thing.Token          = token(as.Address, ar.Address, int(thing.Timestamp.Unix()))
+		thing.Toxic          = e.Toxic
 
 		ALIAS: for thing.Recipient.Address == thing.Alias {
 			// Look up the Envelope-To address from the Received: header in the original message
