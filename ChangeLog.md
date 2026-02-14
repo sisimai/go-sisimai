@@ -13,6 +13,7 @@ v5.?.?
     - Update error message patterns in `AuthFailure`, `ContentError`, `NoRelaying`, `UserUnknown`,
       `Rejected`, `SystemError`, `Suspend`, and `rhost/microsoft`.
     - #346 Remove error message patterns in some MTA moudles in `lhost/`.
+  - #337 Bug fix: The value of command should be `RCPT` when `RCPT first` in the error message.
   - #347 Update the order of `classorder` in `reason/lib.go`.
   - #350 Use a switch statement instead of if-else for better readability.
 
