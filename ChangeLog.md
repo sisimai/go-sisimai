@@ -14,6 +14,7 @@ v5.?.?
       `Rejected`, `SystemError`, `Suspend`, and `rhost/microsoft`.
     - #346 Remove error message patterns in some MTA moudles in `lhost/`.
   - #347 Update the order of `classorder` in `reason/lib.go`.
+  - #350 Use a switch statement instead of if-else for better readability.
 
 v5.6.0
 ---------------------------------------------------------------------------------------------------
