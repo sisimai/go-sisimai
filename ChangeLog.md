@@ -12,6 +12,7 @@ v5.?.?
   - #336 Improvement in error message patterns.
     - Update error message patterns in `AuthFailure`, `ContentError`, `NoRelaying`, `UserUnknown`,
       `Rejected`, `SystemError`, `Suspend`, and `rhost/microsoft`.
+    - #346 Remove error message patterns in some MTA moudles in `lhost/`.
 
 v5.6.0
 ---------------------------------------------------------------------------------------------------
