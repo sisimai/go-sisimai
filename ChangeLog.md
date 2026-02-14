@@ -4,6 +4,15 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
+v5.?.?
+---------------------------------------------------------------------------------------------------
+- release: ""
+- version: ""
+- changes:
+  - #336 Improvement in error message patterns.
+    - Update error message patterns in `AuthFailure`, `ContentError`, `NoRelaying`, `UserUnknown`,
+      `Rejected`, `SystemError`, `Suspend`, and `rhost/microsoft`.
+
 v5.6.0
 ---------------------------------------------------------------------------------------------------
 - release: "Mon,  2 Feb 2026 18:30:22 +0900 (JST)"
