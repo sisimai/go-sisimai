@@ -9,10 +9,11 @@ v5.?.?
 - release: ""
 - version: ""
 - changes:
-  - #336 Improvement in error message patterns.
+  - #336 #346 Improvement in error message patterns.
     - Update error message patterns in `AuthFailure`, `ContentError`, `NoRelaying`, `UserUnknown`,
       `Rejected`, `SystemError`, `Suspend`, and `rhost/microsoft`.
-    - #346 Remove error message patterns in some MTA moudles in `lhost/`.
+    - Remove error message patterns already defined in `reason/` from some MTA moudles of `lhost/`.
+    - Move error message patterns from some MTA modules of `lhost/` to `reason/`.
   - #337 Bug fix: The value of command should be `RCPT` when `RCPT first` in the error message.
   - #347 Update the order of `classorder` in `reason/lib.go`.
   - #350 Use a switch statement instead of if-else for better readability.
