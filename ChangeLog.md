@@ -13,6 +13,7 @@ v5.?.?
     - Update error message patterns in `AuthFailure`, `ContentError`, `NoRelaying`, `UserUnknown`,
       `Rejected`, `SystemError`, `Suspend`, and `rhost/microsoft`.
     - #346 Remove error message patterns in some MTA moudles in `lhost/`.
+  - #347 Update the order of `classorder` in `reason/lib.go`.
 
 v5.6.0
 ---------------------------------------------------------------------------------------------------
