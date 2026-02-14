@@ -46,8 +46,8 @@ func init() {
 			"empty envelope senders not allowed",
 			"from: domain is invalid. please provide a valid from:",
 			"fully qualified email address required",   // McAfee
-			"invalid sender",
 			"has an outgoing mail suspension",
+			"invalid sender",
 			"is not a registered gateway user",
 			"mail from not owned by user",
 			"mailfrom domain is listed in spamhaus",
