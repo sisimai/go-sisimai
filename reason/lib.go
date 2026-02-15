@@ -60,8 +60,8 @@ var classorder = [][]string{
 		eb.Re00MX, eb.ReEXEC, eb.ReWONT,
 	},
 	[]string{ // 1. IncludedIn[*]() function in the following reasons are called from reason.Find()
-		eb.ReFULL, eb.ReSPAM, eb.ReEXEC, eb.RePASS, eb.RePROC, eb.ReINET, eb.ReQUIT, eb.ReDISK, eb.ReTIME,
-		eb.ReSAFE, eb.ReSTOP, eb.ReUNIX, eb.ReWONT, eb.ReCOMM,
+		eb.ReFULL, eb.ReSPAM, eb.ReEXEC, eb.RePASS, eb.RePROC, eb.ReINET, eb.ReQUIT, eb.ReDISK, eb.ReSTOP,
+		eb.ReUNIX, eb.ReSAFE, eb.ReWONT, eb.ReCOMM, eb.ReTIME,
 	},
 }
 
