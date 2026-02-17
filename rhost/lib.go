@@ -34,7 +34,7 @@ var RhostClass = map[string][]string{
 	"Spectrum":    []string{"charter.net"},
 	"Tencent":     []string{".qq.com"},
 	"YahooInc":    []string{".yahoodns.net"},
-	"Zoho":        []string{".zoho.com", ".zoho.eu", "zoho.jp"},
+	"Zoho":        []string{".zoho.com", ".zoho.eu", ".zoho.jp"},
 }
 
 // Name returns the rhost class name.
