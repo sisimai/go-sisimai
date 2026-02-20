@@ -24,8 +24,8 @@ func init() {
 		if mesg == "" { return false }
 
 		index := []string{
-			"line limit exceeded",
 			"exceeds the maximum size ",
+			"line limit exceeded",
 			"message too large",
 			"size limit",
 			"taille limite du message atteinte",
