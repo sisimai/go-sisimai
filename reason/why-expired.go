@@ -39,7 +39,7 @@ func init() {
 			"message has been in the queue too long",
 			"message was not delivered within ",
 			"message timed out",
-			"retry timeout exceeded",             // Exim/retry.c:902
+			"retry timeout exceeded", // Exim/retry.c:902
 			"server did not accept our requests to connect",
 			"server did not respond",
 			"unable to deliver message after multiple retries",
