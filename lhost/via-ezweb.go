@@ -91,12 +91,8 @@ func init() {
 
 				} else {
 					// The line does not begin with a DSN field defined in RFC3464
-					switch {
-						//    >>> RCPT TO:<******@ezweb.ne.jp>
-						case strings.Contains(e, " >>> "): v.Command = command.Find(e); v.Diagnosis += " " + e
-						case strings.Contains(e, " <<< "): v.Diagnosis += " " + e //    <<< 550 ...
-						default: v.Diagnosis += " " + e
-					}
+					if strings.Contains(e, " >>> ") { v.Command = command.Find(e) }
+					v.Diagnosis += " " + e
 				}
 			}
 		}
