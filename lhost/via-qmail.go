@@ -172,13 +172,13 @@ func init() {
 
 			} else {
 				// The error message includes any of patterns defined in the variable avobe
-				FINDREASON: for _, f := range []string{anotherone[j], e.Diagnosis} {
+				for _, f := range []string{anotherone[j], e.Diagnosis} {
 					// Check that the error message includes any of message patterns or not
 					if e.Reason != "" { break    }
 					if f == ""        { continue }
 					for r := range messagesof {
 						// The key name is a bounce reason name
-						if moji.ContainsAny(f, messagesof[r]) { e.Reason = r; break FINDREASON }
+						if moji.ContainsAny(f, messagesof[r]) { e.Reason = r; break }
 					}
 				}
 			}
