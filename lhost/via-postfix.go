@@ -70,15 +70,15 @@ func init() {
 				// Pick email addresses, error messages, and the last SMTP command.
 				v = siba.TailDeliveryMatter(dscontents)
 				switch e.Command {
-					case eb.CeEHLO, eb.CeHELO: v.Lhost = e.Argument // Use the argument of EHLO/HELO command as a value of "lhost"
-					case eb.CeMAIL:
-						// Set the argument of "MAIL" command to pseudo To: header of the original message
-						if len(emailparts[1]) == 0 { emailparts[1] += "To: " + e.Argument + "\n" }
-					case eb.CeRCPT:
-						// RCPT TO: <...>
-						if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
-						v.Recipient = e.Argument
-						recipients += 1
+				case eb.CeEHLO, eb.CeHELO: v.Lhost = e.Argument // Use the argument of EHLO/HELO command as a value of "lhost"
+				case eb.CeMAIL:
+					// Set the argument of "MAIL" command to pseudo To: header of the original message
+					if len(emailparts[1]) == 0 { emailparts[1] += "To: " + e.Argument + "\n" }
+				case eb.CeRCPT:
+					// RCPT TO: <...>
+					if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
+					v.Recipient = e.Argument
+					recipients += 1
 				}
 				if reply, nyaan := strconv.ParseUint(e.Response.Reply, 10, 16); nyaan != nil || reply < 400 { continue }
 
