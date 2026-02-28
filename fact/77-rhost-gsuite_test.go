@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,20 +12,20 @@ import "testing"
 func TestRhostGSuite(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.1.0",   "550", "userunknown",      true,  true, ""}},
-		{{"02",   1, "5.0.0",   "",    "userunknown",      true,  true, ""}},
-		{{"03",   1, "4.0.0",   "",    "notaccept",       false, false, ""}},
-		{{"04",   1, "4.0.0",   "",    "networkerror",    false, false, ""}},
-		{{"05",   1, "4.0.0",   "",    "networkerror",    false, false, ""}},
-		{{"06",   1, "4.4.1",   "",    "expired",         false, false, ""}},
-		{{"07",   1, "4.4.1",   "",    "expired",         false, false, ""}},
-		{{"08",   1, "5.0.0",   "550", "filtered",        false,  true, ""}},
-		{{"09",   1, "5.0.0",   "550", "userunknown",      true,  true, ""}},
-		{{"10",   1, "4.0.0",   "",    "notaccept",       false, false, ""}},
-		{{"11",   1, "5.1.8",   "501", "rejected",        false, false, ""}},
-		{{"12",   1, "5.0.0",   "",    "spamdetected",    false, false, ""}},
-		{{"13",   1, "4.0.0",   "",    "networkerror",    false, false, ""}},
-		{{"14",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"01",   1, "5.1.0",   "550", "userunknown",      true, 1, ""}},
+		{{"02",   1, "5.0.0",   "",    "userunknown",      true, 1, ""}},
+		{{"03",   1, "4.0.0",   "",    "notaccept",       false, 0, ""}},
+		{{"04",   1, "4.0.0",   "",    "networkerror",    false, 0, ""}},
+		{{"05",   1, "4.0.0",   "",    "networkerror",    false, 0, ""}},
+		{{"06",   1, "4.4.1",   "",    "expired",         false, 0, ""}},
+		{{"07",   1, "4.4.1",   "",    "expired",         false, 0, ""}},
+		{{"08",   1, "5.0.0",   "550", "filtered",        false, 1, ""}},
+		{{"09",   1, "5.0.0",   "550", "userunknown",      true, 1, ""}},
+		{{"10",   1, "4.0.0",   "",    "notaccept",       false, 0, ""}},
+		{{"11",   1, "5.1.8",   "501", "rejected",        false, 0, ""}},
+		{{"12",   1, "5.0.0",   "",    "spamdetected",    false, 0, ""}},
+		{{"13",   1, "4.0.0",   "",    "networkerror",    false, 0, ""}},
+		{{"14",   1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
 	}; EngineTest(t, "GSuite", publiclist, true)
 
 	secretlist := [][]IsExpected{

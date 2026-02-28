@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -13,9 +13,9 @@ import "testing"
 func TestRhostMessageLabs(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.0.0",   "550", "securityerror",   false, false, ""}},
-		{{"02",   1, "5.0.0",   "550", "userunknown",      true,  true, ""}},
-		{{"03",   1, "5.0.0",   "",    "onhold",          false, false, ""}},
+		{{"01",   1, "5.0.0",   "550", "securityerror",   false, 0, ""}},
+		{{"02",   1, "5.0.0",   "550", "userunknown",      true, 1, ""}},
+		{{"03",   1, "5.0.0",   "",    "onhold",          false, 0, ""}},
 	}; EngineTest(t, "MessageLabs", publiclist, true)
 
 	secretlist := [][]IsExpected{

@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,14 +12,14 @@ import "testing"
 func TestLhostVerizon(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.9.213", "",    "userunknown",      true,  true, ""}},
-		{{"02",   1, "5.9.213", "550", "userunknown",      true,  true, ""}},
+		{{"01",   1, "5.9.213", "",    "userunknown",      true, 1, ""}},
+		{{"02",   1, "5.9.213", "550", "userunknown",      true, 1, ""}},
 	}; EngineTest(t, "Verizon", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.9.213", "",    "userunknown",      true,  true, ""}},
-		{{"1002", 1, "5.9.213", "550", "userunknown",      true,  true, ""}},
+		{{"1001", 1, "5.9.213", "",    "userunknown",      true, 1, ""}},
+		{{"1002", 1, "5.9.213", "550", "userunknown",      true, 1, ""}},
 	}; EngineTest(t, "Verizon", secretlist, false)
 }
 

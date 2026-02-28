@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,8 +12,8 @@ import "testing"
 func TestRhostMimecast(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.0.0",   "554", "policyviolation", false, false, ""}},
-		{{"02",   1, "5.0.0",   "554", "spamdetected",    false, false, ""}},
+		{{"01",   1, "5.0.0",   "554", "policyviolation", false, 0, ""}},
+		{{"02",   1, "5.0.0",   "554", "spamdetected",    false, 0, ""}},
 	}; EngineTest(t, "Mimecast", publiclist, true)
 
 	secretlist := [][]IsExpected{

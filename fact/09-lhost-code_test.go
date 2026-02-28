@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -31,7 +31,7 @@ type IsExpected struct {
 	ReplyCode  string // "550" or empty
 	Reason     string // "userunknown"
 	HardBounce bool   // true or false
-	Toxic      bool   // true or false
+	Toxic      int    // true or false
 	AnotherOne string // "Feedback-Type" or other value
 }
 var SampleRoot = "set-of-emails"
@@ -178,7 +178,7 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 
 						cx++; if fs.Toxic != ev.Toxic {
 							// Toxic
-							t.Errorf("%s Toxic is (%t) but (%t)", ee, fs.Toxic, ev.Toxic)
+							t.Errorf("%s Toxic is (%d) but (%d)", ee, fs.Toxic, ev.Toxic)
 						}
 
 						cx++; if ev.AnotherOne != "" {

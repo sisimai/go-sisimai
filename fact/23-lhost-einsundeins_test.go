@@ -12,25 +12,25 @@ import "testing"
 func TestLhostEinsUndEins(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"02",   1, "5.9.161", "",    "emailtoolarge",   false, false, ""}},
-		{{"03",   1, "5.2.0",   "550", "spamdetected",    false, false, ""}},
+		{{"02",   1, "5.9.161", "",    "emailtoolarge",   false, 0, ""}},
+		{{"03",   1, "5.2.0",   "550", "spamdetected",    false, 0, ""}},
 	}; EngineTest(t, "EinsUndEins", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.9.220", "",    "mailboxfull",     false, false, ""}},
-		{{"1002", 1, "5.9.220", "",    "mailboxfull",     false, false, ""}},
-		{{"1003", 1, "5.9.161", "",    "emailtoolarge",   false, false, ""}},
-		{{"1004", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1005", 1, "5.4.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1006", 1, "5.4.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1007", 1, "5.4.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1008", 1, "5.4.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1009", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1010", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1011", 1, "5.4.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1012", 1, "5.4.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1013", 1, "5.4.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1001", 1, "5.9.220", "",    "mailboxfull",     false, 0, ""}},
+		{{"1002", 1, "5.9.220", "",    "mailboxfull",     false, 0, ""}},
+		{{"1003", 1, "5.9.161", "",    "emailtoolarge",   false, 0, ""}},
+		{{"1004", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1005", 1, "5.4.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1006", 1, "5.4.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1007", 1, "5.4.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1008", 1, "5.4.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1009", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1010", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1011", 1, "5.4.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1012", 1, "5.4.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1013", 1, "5.4.1",   "550", "userunknown",      true, 1, ""}},
 	}; EngineTest(t, "EinsUndEins", secretlist, false)
 }
 

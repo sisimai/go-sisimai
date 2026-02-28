@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,8 +12,8 @@ import "testing"
 func TestRhostCox(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.1.0",   "550", "blocked",         false, false, ""},
-		 {"01",   2, "5.1.0",   "550", "blocked",         false, false, ""}},
+		{{"01",   1, "5.1.0",   "550", "blocked",         false, 0, ""},
+		 {"01",   2, "5.1.0",   "550", "blocked",         false, 0, ""}},
 	}; EngineTest(t, "Cox", publiclist, true)
 
 	secretlist := [][]IsExpected{

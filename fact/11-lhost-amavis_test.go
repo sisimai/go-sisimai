@@ -12,17 +12,17 @@ import "testing"
 func TestLhostAmavis(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.1.1",   "550", "userunknown",       true,  true, ""}},
-		{{"02",   1, "5.1.1",   "550", "userunknown",       true,  true, ""}},
-		{{"03",   1, "5.7.0",   "554", "notcompliantrfc",  false, false, ""}},
+		{{"01",   1, "5.1.1",   "550", "userunknown",       true, 1, ""}},
+		{{"02",   1, "5.1.1",   "550", "userunknown",       true, 1, ""}},
+		{{"03",   1, "5.7.0",   "554", "notcompliantrfc",  false, 0, ""}},
 	}
 	EngineTest(t, "Amavis", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.1.1",   "550", "userunknown",       true,  true, ""}},
-		{{"1002", 1, "5.1.1",   "550", "userunknown",       true,  true, ""}},
-		{{"1003", 1, "5.7.0",   "554", "notcompliantrfc",  false, false, ""}},
+		{{"1001", 1, "5.1.1",   "550", "userunknown",       true, 1, ""}},
+		{{"1002", 1, "5.1.1",   "550", "userunknown",       true, 1, ""}},
+		{{"1003", 1, "5.7.0",   "554", "notcompliantrfc",  false, 0, ""}},
 	}; EngineTest(t, "Amavis", secretlist, false)
 }
 
