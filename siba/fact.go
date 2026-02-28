@@ -44,17 +44,17 @@ type Fact struct {
 	Timestamp       time.Time    `json:"timestamp"`      // Unix machine time(int64) of that the email bounced
 	TimezoneOffset  string       `json:"timezoneoffset"` // Time zone offset of "Timestamp", such as "+0900"
 	Token           string       `json:"token"`          // The Message token(MD5 Hex digest value)
-	Toxic           bool         `json:"toxic"`          // (EXPERIMENTAL)
+	Toxic           int          `json:"toxic"`          // (EXPERIMENTAL)
 }
 
 // Fact.IsToxic checks if the recipient address should be permanently excluded from the list.
 // It returns true for addresses that pose a persistent delivery risk, making further resend
 // attempts unviable and detrimental to the sender's reputation.
 //   Returns:
-//     - (bool): true if the recipient address should be removed from the list.
-func(fo Fact) IsToxic() bool {
+//     - (int): 1 if the recipient address should be removed from the list.
+func(fo Fact) IsToxic() int {
 	cv, cw := fo.ReplyCode, fo.DeliveryStatus
-	if strings.HasPrefix(cv, "4") || strings.HasPrefix(cw, "4.") { return false }
+	if strings.HasPrefix(cv, "4") || strings.HasPrefix(cw, "4.") { return 0 }
 
 	switch fo.Reason {
 	// 1. Hard bounces or some soft bounces with a permanent error.
@@ -67,21 +67,21 @@ func(fo Fact) IsToxic() bool {
 	//   2-4. The SMTP status code begins with "5." such as "5.1.1".
 	// 3. Feedback Loop
 	//   3-1. The Feedback Type is any of "abuse", "fraud", "opt-out"
-	case eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX, eb.ReQUIT, eb.ReSTOP: return true
+	case eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX, eb.ReQUIT, eb.ReSTOP: return 1
 	case eb.ReFULL, eb.ReFILT, eb.RePASS:
 		// MailboxFull, Filtered, and NoRelaying.
-		if fo.Reason != eb.ReFULL && fo.Command == eb.CeRCPT { return true  }
-		if strings.HasPrefix(cv, "5")           == true      { return true  }
-		if status.IsExplicit(cw)                == false     { return false }
-		if strings.HasPrefix(cw, "5.")          == true      { return true  }
+		if fo.Reason != eb.ReFULL && fo.Command == eb.CeRCPT { return 1 }
+		if strings.HasPrefix(cv, "5")           == true      { return 1 }
+		if status.IsExplicit(cw)                == false     { return 0 }
+		if strings.HasPrefix(cw, "5.")          == true      { return 1 }
 	case eb.ReFEED:
 		// Feedback-Type
 		// - https://datatracker.ietf.org/doc/html/rfc5965
 		// - https://datatracker.ietf.org/doc/html/rfc6650
 		ct := []string{"abuse", "fraud", "opt-out"}
-		if moji.HasPrefixAny(fo.FeedbackType, ct) { return true }
+		if moji.HasPrefixAny(fo.FeedbackType, ct) { return 1 }
 	}
-	return false
+	return 0
 }
 
 // Fact.MarshalJSON returns a lower-cased member name converted from a field name defined in RFC1894.
