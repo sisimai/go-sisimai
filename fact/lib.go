@@ -392,7 +392,7 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		if len(rfc822data["feedback-id"]) > 0 { thing.FeedbackID = rfc822data["feedback-id"][0] }
 
 		// EXPERIMENTAL:
-		if thing.Toxic == false { thing.Toxic = thing.IsToxic() }
+		if thing.Toxic == 0 { thing.Toxic = thing.IsToxic() }
 
 		// Convert the value of Reason to the lower-cased name such as "mailboxfull".
 		thing.Reason = strings.ToLower(thing.Reason)
