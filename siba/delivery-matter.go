@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____       _ _                      __  __       _   _            
 // |  _ \  ___| (_)_   _____ _ __ _   _|  \/  | __ _| |_| |_ ___ _ __ 
@@ -32,7 +32,7 @@ type DeliveryMatter struct {
 	Rhost        string     // The value of Remote-MTA header
 	Spec         string     // Protocl specification
 	Status       string     // The value of Status header
-	Toxic        bool       // EXPERIMENTAL
+	Toxic        int        // EXPERIMENTAL
 }
 
 // TailDeliveryMatter returns the last element pointer of DeliveryMatter struct.
