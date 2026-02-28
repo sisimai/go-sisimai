@@ -33,18 +33,18 @@ func TestFact(t *testing.T) {
 		Command: eb.CeQUIT,
 		SenderDomain: "example.jp",
 		Token: "",
-		Toxic: true,
+		Toxic: 1,
 	}
 
-	cx++; if cv == nil             { t.Fatalf("%s{} = nil", cc) }
-	cx++; if cv.Action    == ""    { t.Errorf("%s.Action is empty", cc) }
-	cx++; if cv.Alias     == ""    { t.Errorf("%s.Alias is empty", cc) }
-	cx++; if cv.DecodedBy == ""    { t.Errorf("%s.DecodedBy is empty", cc) }
-	cx++; if cv.Lhost     == ""    { t.Errorf("%s.Lhost is empty", cc) }
-	cx++; if cv.Reason    == ""    { t.Errorf("%s.Reason is empty", cc) }
-	cx++; if cv.Command   == ""    { t.Errorf("%s.Command is empty", cc) }
-	cx++; if cv.Toxic     == false { t.Errorf("%s.Toxic is false", cc) }
-	cx++; if cv.IsToxic() == false { t.Errorf("%s.IsToxic() returns false", cc) }
+	cx++; if cv == nil          { t.Fatalf("%s{} = nil", cc) }
+	cx++; if cv.Action    == "" { t.Errorf("%s.Action is empty", cc) }
+	cx++; if cv.Alias     == "" { t.Errorf("%s.Alias is empty", cc) }
+	cx++; if cv.DecodedBy == "" { t.Errorf("%s.DecodedBy is empty", cc) }
+	cx++; if cv.Lhost     == "" { t.Errorf("%s.Lhost is empty", cc) }
+	cx++; if cv.Reason    == "" { t.Errorf("%s.Reason is empty", cc) }
+	cx++; if cv.Command   == "" { t.Errorf("%s.Command is empty", cc) }
+	cx++; if cv.Toxic     == 0  { t.Errorf("%s.Toxic is 0 ", cc) }
+	cx++; if cv.IsToxic() == 0  { t.Errorf("%s.IsToxic() returns 0", cc) }
 
 	if cv != nil {
 		dj, de := cv.MarshalJSON()
@@ -58,7 +58,7 @@ func TestFact(t *testing.T) {
 
 	cv  = &Fact{}
 	if cv != nil {
-		cx++; if cv.IsToxic() == true { t.Errorf("%s.IsToxic() returns true", cc) }
+		cx++; if cv.IsToxic() == 1 { t.Errorf("%s.IsToxic() returns 1", cc) }
 
 		dj, de := cv.MarshalJSON()
 		cx++; if string(dj) == ""    { t.Errorf("%s.MarshalJSON() returns empty", cc) }
@@ -97,10 +97,10 @@ func TestIsToxic(t *testing.T) {
 	}
 
 	for _, e := range cw {
-		cx++; if e.IsToxic() == true  { t.Errorf("%s(%s) returns true",  fn, e.DeliveryStatus) }
+		cx++; if e.IsToxic() == 1 { t.Errorf("%s(%s) returns 1", fn, e.DeliveryStatus) }
 	}
 	for _, e := range cv {
-		cx++; if e.IsToxic() == false { t.Errorf("%s(%s) returns false", fn, e.DeliveryStatus) }
+		cx++; if e.IsToxic() == 0 { t.Errorf("%s(%s) returns 0", fn, e.DeliveryStatus) }
 	}
 	t.Logf("The number of tests = %d", cx)
 }

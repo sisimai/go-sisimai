@@ -26,7 +26,7 @@ import "libsisimai.org/sisimai/v5/eb"
 // Rhost        string     // The value of Remote-MTA header
 // Spec         string     // Protocl specification
 // Status       string     // The value of Status header
-// Toxic        string     // EXPERIMENTAL
+// Toxic        int        // EXPERIMENTAL
 func TestTailDeliveryMatter(t *testing.T) {
 	fn := "TailDeliveryMatter"
 	ae := make([]DeliveryMatter, 1)
@@ -72,7 +72,7 @@ func TestDeliveryMatter(t *testing.T) {
 		Rhost:     "mx34.example.co.jp",
 		Spec:      "SMTP",
 		Status:    "5.1.1",
-		Toxic:     true,
+		Toxic:     1,
 	}
 	cx := 0
 
@@ -91,7 +91,7 @@ func TestDeliveryMatter(t *testing.T) {
 	cx++; if cv.Rhost        == "" { t.Errorf("%s.Rhost is empty", fn) }
 	cx++; if cv.Spec         == "" { t.Errorf("%s.Rhost is empty", fn) }
 	cx++; if cv.Status       == "" { t.Errorf("%s.Status is empty", fn) }
-	cx++; if cv.Toxic     == false { t.Errorf("%s.Toxic is false", fn) }
+	cx++; if cv.Toxic        == 0  { t.Errorf("%s.Toxic is 0", fn) }
 
 	// Select()
 	fn  = "Select"
