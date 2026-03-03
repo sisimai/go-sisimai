@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ _ _ ____  _____ 
 // |  _ \|  ___/ ___/ / |___ \|___ / 
@@ -171,7 +171,7 @@ func Find(text string) string {
 
 	for _, e := range sourcelist {
 		// Pick some strings which have 4 or more length, is including "." character
-		e = strings.TrimRight(e, ".") // Remove "." at the end of the string
+		e, _ = strings.CutSuffix(e, ".") // Remove "." at the end of the string
 		for _, f := range prefix0x32 { e = strings.ReplaceAll(e, f, "") }
 		for _, f := range suffix0x32 { e = strings.ReplaceAll(e, f, "") }
 
