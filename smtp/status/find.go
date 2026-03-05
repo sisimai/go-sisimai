@@ -30,7 +30,7 @@ func Find(logs string, hint string) string {
 	indextable := make([]int, 0, 10)
 	switch hint[0:1] {
 		case "2", "4", "5": eestatuses = append(eestatuses, hint[0:1] + ".")
-		default:            eestatuses = append(eestatuses, []string{"5.", "4.", "2."}...)
+		default:            eestatuses = []string{"5.", "4.", "2."}
 	}
 
 	// Rewrite an IPv4 address in the given string(logs) with '***.***.***.***'
