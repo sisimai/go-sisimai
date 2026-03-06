@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //            _     _                   
 //   __ _  __| | __| |_ __ ___  ___ ___ 
@@ -279,7 +279,7 @@ func Find(text string) [3]string {
 	}
 
 	// Remove "." at the end of the email address such as "neko@example.jp."
-	emailtable[0] = strings.Trim(emailtable[0], ".")
+	emailtable[0] = strings.TrimRight(emailtable[0], ".")
 
 	// Check and tidy up the comment block
 	if rfc5322.IsComment(layoutbuff[2]) { emailtable[2] = strings.TrimSpace(layoutbuff[2]) }
