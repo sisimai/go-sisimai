@@ -68,7 +68,7 @@ func init() {
 				// delivery retry timeout exceeded
 				if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
 
-				v.Recipient = address.S3S4(strings.Trim(e, ":"))
+				v.Recipient = address.S3S4(strings.TrimRight(e, ":"))
 				recipients += 1
 
 			} else {
