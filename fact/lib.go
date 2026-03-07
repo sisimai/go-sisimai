@@ -167,9 +167,7 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 				}
 				if strings.IndexByte(*v, ' ') > 0 { *v = ee[0] }
 			}
-
-			// Remove "." at the end of the hostname.
-			if strings.HasSuffix(*v, ".") { *v = strings.TrimRight(*v, ".") }
+			*v, _ = strings.CutSuffix(*v, ".") // Remove "." at the end of the hostname.
 		}
 
 		if len(rfc822data["message-id"]) > 0 && moji.Aligned(rfc822data["message-id"][0], []string{"<", "@", ">"}) {

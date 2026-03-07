@@ -89,6 +89,7 @@ package reply
 // 555  MAIL FROM/RCPT TO parameters not recognized or not implemented
 // 556  Domain does not accept mail (See RFC7504)
 //
+import "slices"
 import "strconv"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
@@ -181,9 +182,7 @@ func Find(logs, hint string) string {
 
 	} else {
 		// The first character of the 2nd argument is 0 or other values
-		replycodes = append(replycodes, codeofsmtp["5"]...)
-		replycodes = append(replycodes, codeofsmtp["4"]...)
-		replycodes = append(replycodes, codeofsmtp["2"]...)
+		replycodes = slices.Concat(replycodes, codeofsmtp["5"], codeofsmtp["4"], codeofsmtp["2"])
 	}
 
 	for _, e := range replycodes {

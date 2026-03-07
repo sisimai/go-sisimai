@@ -60,7 +60,7 @@ func init() {
 			if moji.Aligned(e, []string{"@", "."}) && (strings.HasSuffix(e, ":") || strings.IndexByte(e, ' ') < 0 ) {
 				// general@example.eu OR
 				// the line begin with 4 space characters, end with ":" like "    neko@example.eu:"
-				ce := address.S3S4(strings.Trim(e, ":")); if rfc5322.IsEmailAddress(ce) == false { continue }
+				ce := address.S3S4(strings.TrimRight(e, ":")); if rfc5322.IsEmailAddress(ce) == false { continue }
 
 				if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
 				v.Recipient = ce
