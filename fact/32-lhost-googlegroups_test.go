@@ -45,6 +45,7 @@ func TestLhostGoogleGroups(t *testing.T) {
 		{{"1012", 1, "5.9.110", "",    "rejected",        false, false, ""}},
 		{{"1013", 1, "5.9.110", "",    "rejected",        false, false, ""}},
 		{{"1014", 1, "5.9.110", "",    "rejected",        false, false, ""}},
+		{{"1015", 1, "5.9.110", "",    "rejected",        false, false, ""}},
 	}; EngineTest(t, "GoogleGroups", secretlist, false)
 }
 
