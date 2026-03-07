@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ______                   _       ____                           
 // | | |__   ___  ___| |_   / / ___| ___   ___   __ _| | ___ / ___|_ __ ___  _   _ _ __  ___ 
@@ -23,10 +23,9 @@ func init() {
 	//     - (*siba.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
 	InquireFor["GoogleGroups"] = func(bf *siba.BeforeFact) *siba.RisingUnderway {
 		// - Google Groups: https://groups.google.com
-		if bf == nil || bf.IsEmpty() == true                      { return nil }
-		if strings.Contains(bf.Payload, "Google Groups") == false { return nil }
-		if len(bf.Headers["x-failed-recipients"])        == 0     { return nil }
-		if len(bf.Headers["x-google-smtp-source"])       == 0     { return nil }
+		if bf == nil || bf.IsEmpty() == true                     { return nil }
+		if strings.Contains(bf.Payload, "Google Group") == false { return nil }
+		if len(bf.Headers["x-failed-recipients"])       == 0     { return nil }
 
 		// X-Google-Smtp-Source: APXvYqx67WVONuSclAC3HckRuO768rET6VCNXk6xYv7cW5I1l9kkn35pT4zE29miuroXfMsHzqeVDrOoIjb8hdt7tjtNL2XAomNl7FA=
 		// From: Mail Delivery Subsystem <mailer-daemon@googlemail.com>
