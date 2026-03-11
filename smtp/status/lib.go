@@ -402,7 +402,7 @@ import "libsisimai.org/sisimai/v5/eb"
         5xx      temporary, for example the server is operating in a mode where only higher
                  priority messages below certain size are accepted for transfer and delivery.
 
- X.7.17 5xx    Mailbox owner has changed:(RFC 6710)
+ X.7.17 5xx    Mailbox owner has changed:(RFC 7293)
                  This status code is returned when a message is received with a
                  Require-Recipient-Valid-Since field or RRVS extension and the receiving system is
                  able to determine that the intended recipient mailbox has not been under
