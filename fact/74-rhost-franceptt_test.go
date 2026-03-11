@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,17 +12,17 @@ import "testing"
 func TestRhostFrancePTT(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"02",   1, "5.5.0",   "550", "userunknown",      true,  true, ""}},
-		{{"03",   1, "5.2.0",   "550", "spamdetected",    false, false, ""}},
-		{{"04",   1, "5.2.0",   "550", "spamdetected",    false, false, ""}},
-		{{"05",   1, "5.5.0",   "550", "suspend",         false,  true, ""}},
-		{{"06",   1, "4.0.0",   "",    "blocked",         false, false, ""}},
-		{{"07",   1, "4.0.0",   "421", "ratelimited",     false, false, ""}},
-		{{"08",   1, "4.2.0",   "421", "systemerror",     false, false, ""}},
-		{{"10",   1, "5.5.0",   "550", "blocked",         false, false, ""}},
-		{{"11",   1, "4.2.1",   "421", "requireptr",      false, false, ""}},
-		{{"12",   1, "5.7.1",   "554", "policyviolation", false, false, ""}},
+		{{"01",   1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"02",   1, "5.5.0",   "550", "userunknown",      true, 1, ""}},
+		{{"03",   1, "5.2.0",   "550", "spamdetected",    false, 0, ""}},
+		{{"04",   1, "5.2.0",   "550", "spamdetected",    false, 0, ""}},
+		{{"05",   1, "5.5.0",   "550", "suspend",         false, 1, ""}},
+		{{"06",   1, "4.0.0",   "",    "blocked",         false, 0, ""}},
+		{{"07",   1, "4.0.0",   "421", "ratelimited",     false, 0, ""}},
+		{{"08",   1, "4.2.0",   "421", "systemerror",     false, 0, ""}},
+		{{"10",   1, "5.5.0",   "550", "blocked",         false, 0, ""}},
+		{{"11",   1, "4.2.1",   "421", "requireptr",      false, 0, ""}},
+		{{"12",   1, "5.7.1",   "554", "policyviolation", false, 0, ""}},
 	}; EngineTest(t, "FrancePTT", publiclist, true)
 
 	secretlist := [][]IsExpected{

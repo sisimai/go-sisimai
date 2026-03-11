@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,14 +12,14 @@ import "testing"
 func TestLhostBarracuda(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"01",   1, "5.7.1",   "550", "spamdetected",    false,  false, ""}},
-		{{"02",   1, "5.7.1",   "550", "spamdetected",    false,  false, ""}},
+		{{"01",   1, "5.7.1",   "550", "spamdetected",    false, 0, ""}},
+		{{"02",   1, "5.7.1",   "550", "spamdetected",    false, 0, ""}},
 	}; EngineTest(t, "Barracuda", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, AnotherOne
-		{{"1001" ,1, "5.7.1",   "550", "spamdetected",    false, false, ""}},
-		{{"1002" ,1, "5.7.1",   "550", "spamdetected",    false, false, ""}},
+		{{"1001" ,1, "5.7.1",   "550", "spamdetected",    false, 0, ""}},
+		{{"1002" ,1, "5.7.1",   "550", "spamdetected",    false, 0, ""}},
 	}; EngineTest(t, "Barracuda", secretlist, false)
 }
 

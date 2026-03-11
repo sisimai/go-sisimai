@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,23 +12,23 @@ import "testing"
 func TestLhostX3(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"02",   1, "5.9.340", "",    "expired",         false, false, ""}},
-		{{"03",   1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"05",   1, "5.9.300", "",    "undefined",       false, false, ""}},
-		{{"06",   1, "5.2.2",   "552", "mailboxfull",     false,  true, ""}},
+		{{"01",   1, "5.3.0",   "553", "userunknown",      true, 1, ""}},
+		{{"02",   1, "5.9.340", "",    "expired",         false, 0, ""}},
+		{{"03",   1, "5.3.0",   "553", "userunknown",      true, 1, ""}},
+		{{"05",   1, "5.9.300", "",    "undefined",       false, 0, ""}},
+		{{"06",   1, "5.2.2",   "552", "mailboxfull",     false, 1, ""}},
 	}; EngineTest(t, "X3", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"1002", 1, "5.9.300", "",    "undefined",       false, false, ""}},
-		{{"1003", 1, "5.9.340", "",    "expired",         false, false, ""}},
-		{{"1004", 1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"1005", 1, "5.9.300", "",    "undefined",       false, false, ""}},
-		{{"1006", 1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
-		{{"1007", 1, "5.9.340", "",    "expired",         false, false, ""}},
-		{{"1008", 1, "5.3.0",   "553", "userunknown",      true,  true, ""}},
+		{{"1001", 1, "5.3.0",   "553", "userunknown",      true, 1, ""}},
+		{{"1002", 1, "5.9.300", "",    "undefined",       false, 0, ""}},
+		{{"1003", 1, "5.9.340", "",    "expired",         false, 0, ""}},
+		{{"1004", 1, "5.3.0",   "553", "userunknown",      true, 1, ""}},
+		{{"1005", 1, "5.9.300", "",    "undefined",       false, 0, ""}},
+		{{"1006", 1, "5.3.0",   "553", "userunknown",      true, 1, ""}},
+		{{"1007", 1, "5.9.340", "",    "expired",         false, 0, ""}},
+		{{"1008", 1, "5.3.0",   "553", "userunknown",      true, 1, ""}},
 	}; EngineTest(t, "X3", secretlist, false)
 }
 

@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,9 +12,9 @@ import "testing"
 func TestRhostNTTDOCOMO(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.2.0",   "550", "filtered",        false,  true, ""}},
-		{{"02",   1, "5.0.0",   "550", "userunknown",      true,  true, ""}},
-		{{"03",   1, "5.0.0",   "550", "userunknown",      true,  true, ""}},
+		{{"01",   1, "5.2.0",   "550", "filtered",        false, 1, ""}},
+		{{"02",   1, "5.0.0",   "550", "userunknown",      true, 1, ""}},
+		{{"03",   1, "5.0.0",   "550", "userunknown",      true, 1, ""}},
 	}; EngineTest(t, "NTTDOCOMO", publiclist, true)
 
 	secretlist := [][]IsExpected{

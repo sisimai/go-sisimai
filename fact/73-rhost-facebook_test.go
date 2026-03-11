@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,8 +12,8 @@ import "testing"
 func TestRhostFacebook(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"03",   1, "5.1.1",   "550", "filtered",        false,  true, ""}},
-		{{"04",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"03",   1, "5.1.1",   "550", "filtered",        false, 1, ""}},
+		{{"04",   1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
 	}; EngineTest(t, "Facebook", publiclist, true)
 
 	secretlist := [][]IsExpected{

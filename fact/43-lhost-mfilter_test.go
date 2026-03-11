@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,29 +12,29 @@ import "testing"
 func TestLhostmFILTER(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"02",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"03",   1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"04",   1, "5.4.1",   "550", "rejected",        false, false, ""}},
-		{{"05",   1, "4.3.1",   "452", "systemfull",      false, false, ""}},
+		{{"01",   1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"02",   1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"03",   1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"04",   1, "5.4.1",   "550", "rejected",        false, 0, ""}},
+		{{"05",   1, "4.3.1",   "452", "systemfull",      false, 0, ""}},
 	}; EngineTest(t, "mFILTER", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"1002", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1003", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"1004", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"1005", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1006", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"1007", 1, "5.9.213", "550", "userunknown",      true,  true, ""}},
-		{{"1008", 1, "5.4.1",   "550", "rejected",        false, false, ""}},
-		{{"1009", 1, "5.4.1",   "550", "rejected",        false, false, ""}},
-		{{"1010", 1, "4.3.1",   "452", "systemfull",      false, false, ""}},
-		{{"1011", 1, "5.6.0",   "550", "spamdetected",    false, false, ""}},
-		{{"1012", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1013", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"1014", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1001", 1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"1002", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1003", 1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"1004", 1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"1005", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1006", 1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"1007", 1, "5.9.213", "550", "userunknown",      true, 1, ""}},
+		{{"1008", 1, "5.4.1",   "550", "rejected",        false, 0, ""}},
+		{{"1009", 1, "5.4.1",   "550", "rejected",        false, 0, ""}},
+		{{"1010", 1, "4.3.1",   "452", "systemfull",      false, 0, ""}},
+		{{"1011", 1, "5.6.0",   "550", "spamdetected",    false, 0, ""}},
+		{{"1012", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1013", 1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"1014", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
 	}; EngineTest(t, "mFILTER", secretlist, false)
 }
 

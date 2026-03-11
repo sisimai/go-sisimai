@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -13,19 +13,19 @@ import "testing"
 func TestLhostReceivingSES(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"02",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"03",   1, "4.0.0",   "450", "onhold",          false, false, ""}},
-		{{"04",   1, "5.2.2",   "552", "mailboxfull",     false,  true, ""}},
-		{{"05",   1, "5.3.4",   "552", "emailtoolarge",   false, false, ""}},
-		{{"06",   1, "5.6.1",   "500", "spamdetected",    false, false, ""}},
-		{{"07",   1, "5.2.0",   "550", "filtered",        false,  true, ""}},
-		{{"08",   1, "5.2.3",   "552", "emailtoolarge",   false, false, ""}},
+		{{"01",   1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"02",   1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"03",   1, "4.0.0",   "450", "onhold",          false, 0, ""}},
+		{{"04",   1, "5.2.2",   "552", "mailboxfull",     false, 1, ""}},
+		{{"05",   1, "5.3.4",   "552", "emailtoolarge",   false, 0, ""}},
+		{{"06",   1, "5.6.1",   "500", "spamdetected",    false, 0, ""}},
+		{{"07",   1, "5.2.0",   "550", "filtered",        false, 1, ""}},
+		{{"08",   1, "5.2.3",   "552", "emailtoolarge",   false, 0, ""}},
 	}; EngineTest(t, "ReceivingSES", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.2.3",   "552", "emailtoolarge",   false, false, ""}},
+		{{"1001", 1, "5.2.3",   "552", "emailtoolarge",   false, 0, ""}},
 	}; EngineTest(t, "ReceivingSES", secretlist, false)
 }
 

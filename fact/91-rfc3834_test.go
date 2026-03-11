@@ -12,30 +12,30 @@ import "testing"
 func TestRFC3834(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "",        "",    "vacation",        false, false, ""}},
-		{{"02",   1, "",        "",    "vacation",        false, false, ""}},
-		{{"03",   1, "",        "",    "vacation",        false, false, ""}},
-		{{"04",   1, "",        "",    "vacation",        false, false, ""}},
-		{{"05",   1, "",        "",    "vacation",        false, false, ""}},
-		{{"06",   1, "5.9.221", "",    "suspend",         false,  true, ""}},
+		{{"01",   1, "",        "",    "vacation",        false, 0, ""}},
+		{{"02",   1, "",        "",    "vacation",        false, 0, ""}},
+		{{"03",   1, "",        "",    "vacation",        false, 0, ""}},
+		{{"04",   1, "",        "",    "vacation",        false, 0, ""}},
+		{{"05",   1, "",        "",    "vacation",        false, 0, ""}},
+		{{"06",   1, "5.9.221", "",    "suspend",         false, 1, ""}},
 	}; EngineTest(t, "RFC3834", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1002", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1003", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1004", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1005", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1006", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1007", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1008", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1009", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1010", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1011", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1012", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1013", 1, "",        "",    "vacation",        false, false, ""}},
-		{{"1014", 1, "5.9.221", "",    "suspend",         false,  true, ""}},
+		{{"1001", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1002", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1003", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1004", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1005", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1006", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1007", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1008", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1009", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1010", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1011", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1012", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1013", 1, "",        "",    "vacation",        false, 0, ""}},
+		{{"1014", 1, "5.9.221", "",    "suspend",         false, 1, ""}},
 	}; EngineTest(t, "RFC3834", secretlist, false)
 }
 

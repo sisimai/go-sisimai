@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package fact
 
@@ -12,25 +12,25 @@ import "testing"
 func TestLhostActivehunter(t *testing.T) {
 	publiclist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"01",   1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"02",   1, "5.9.210", "550", "filtered",        false,  true, ""}},
+		{{"01",   1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"02",   1, "5.9.210", "550", "filtered",        false, 1, ""}},
 	}
 	EngineTest(t, "Activehunter", publiclist, true)
 
 	secretlist := [][]IsExpected{
 		// Label, Index, Status, ReplyCode, Reason, HardBounce, Toxic, AnotherOne
-		{{"1001", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"1002", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1003", 1, "5.3.0"  , "553", "filtered",        false,  true, ""}},
-		{{"1004", 1, "5.7.17",  "550", "filtered",        false,  true, ""}},
-		{{"1005", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1006", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1007", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"1008", 1, "5.9.210", "550", "filtered",        false,  true, ""}},
-		{{"1009", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
-		{{"1010", 1, "5.3.0",   "553", "filtered",        false,  true, ""}},
-		{{"1011", 1, "5.7.17",  "550", "filtered",        false,  true, ""}},
-		{{"1012", 1, "5.1.1",   "550", "userunknown",      true,  true, ""}},
+		{{"1001", 1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"1002", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1003", 1, "5.3.0"  , "553", "filtered",        false, 1, ""}},
+		{{"1004", 1, "5.7.17",  "550", "filtered",        false, 1, ""}},
+		{{"1005", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1006", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1007", 1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"1008", 1, "5.9.210", "550", "filtered",        false, 1, ""}},
+		{{"1009", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
+		{{"1010", 1, "5.3.0",   "553", "filtered",        false, 1, ""}},
+		{{"1011", 1, "5.7.17",  "550", "filtered",        false, 1, ""}},
+		{{"1012", 1, "5.1.1",   "550", "userunknown",      true, 1, ""}},
 	}; EngineTest(t, "Activehunter", secretlist, false)
 }
 
