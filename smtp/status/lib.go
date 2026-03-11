@@ -173,6 +173,12 @@ import "libsisimai.org/sisimai/v5/eb"
  X.3.5  ---    System incorrectly configured:(RFC 3463)
                  The system is not configured in a manner that will permit it to accept this
                  message.
+
+ X.3.6  250    Requested priority was changed:(RFC 6710)
+        251      The message was accepted for relay/delivery, but the requested priority (possibly
+                 the implied default) was not honored. The human readable text after the status
+                 code contains the new priority, followed by SP (space) and explanatory human
+                 readable text.
 ---------------------------------------------------------------------------------------------------
  X.4.0  ---    Other or undefined network or routing status:(RFC 3463)
                  Something went wrong with the networking, but it is not clear what the problem is,
