@@ -116,7 +116,7 @@ func sift(bf *siba.BeforeFact, hook siba.CfParameter0) bool {
 		if e = strings.TrimRight(e, "\n\r"); e == "" && rfc822buff.Len() > 0 { break }
 		if strings.IndexByte(e, ':') < 1 {           // The line does not contain ":" or begins with ":"
 			// The line is not a line continued from the previous line of a long header
-			if strings.HasPrefix(e, " ") == false || strings.HasPrefix(e, "\t") == false { continue }
+			if strings.HasPrefix(e, " ") == false && strings.HasPrefix(e, "\t") == false { continue }
 		}
 		rfc822buff.WriteString(e + "\n")
 	}
