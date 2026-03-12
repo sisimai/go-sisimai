@@ -127,7 +127,7 @@ func main() {
         cv, _ := e.Dump()
         fmt.Printf("%s\n",cv)
     }
-    if len(nyaan) > 0 { fmt.Frpintf(os.Stderr, "%v\n", nyaan) }
+    if len(nyaan) > 0 { fmt.Fprintf(os.Stderr, "%v\n", nyaan) }
 }
 ```
 
