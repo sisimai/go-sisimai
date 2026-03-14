@@ -18,6 +18,7 @@ v5.?.?
   - #347 Update the order of `classorder` in `reason/lib.go`.
   - #350 Use a switch statement instead of if-else for better readability.
   - #355 List all the Zoho domains.
+  - #365 Tiny code improvements around `strings.Trim` function.
   - #372 Fix typo in the sample code at README files. thanks to @jcbf
   - #374 Fix bug in the boolean logic for lines starting with space or tab. Thanks to @jcbf
 
