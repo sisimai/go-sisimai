@@ -49,6 +49,7 @@ func init() {
 			[]string{"could not deliver for the last", "second"},
 			[]string{"delivery ", "expired"},
 			[]string{"delivery ", "delayed"},
+			[]string{"exceed", "time", "out"},
 			[]string{"not", "reach", "period"}, // Exim/smtp.c:3508
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
