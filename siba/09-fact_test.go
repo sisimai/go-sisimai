@@ -33,7 +33,7 @@ func TestFact(t *testing.T) {
 		Command: eb.CeQUIT,
 		SenderDomain: "example.jp",
 		Token: "",
-		Toxic: 1,
+		Toxic: 0,
 	}
 
 	cx++; if cv == nil          { t.Fatalf("%s{} = nil", cc) }
@@ -43,8 +43,7 @@ func TestFact(t *testing.T) {
 	cx++; if cv.Lhost     == "" { t.Errorf("%s.Lhost is empty", cc) }
 	cx++; if cv.Reason    == "" { t.Errorf("%s.Reason is empty", cc) }
 	cx++; if cv.Command   == "" { t.Errorf("%s.Command is empty", cc) }
-	cx++; if cv.Toxic     == 0  { t.Errorf("%s.Toxic is 0 ", cc) }
-	cx++; if cv.IsToxic() == 0  { t.Errorf("%s.IsToxic() returns 0", cc) }
+	cx++; if cv.Toxic     != 0  { t.Errorf("%s.Toxic is %d", cc, cv.Toxic) }
 
 	if cv != nil {
 		dj, de := cv.MarshalJSON()
@@ -58,8 +57,6 @@ func TestFact(t *testing.T) {
 
 	cv  = &Fact{}
 	if cv != nil {
-		cx++; if cv.IsToxic() == 1 { t.Errorf("%s.IsToxic() returns 1", cc) }
-
 		dj, de := cv.MarshalJSON()
 		cx++; if string(dj) == ""    { t.Errorf("%s.MarshalJSON() returns empty", cc) }
 		cx++; if de         != nil   { t.Errorf("%s.MarshalJSON() returns error: %s", cc, de) }
@@ -70,41 +67,4 @@ func TestFact(t *testing.T) {
 	}
 	t.Logf("The number of tests = %d", cx)
 }
-
-func TestIsToxic(t *testing.T) {
-	fn := "IsToxic"
-	cx := 0
-	cw := []Fact{
-		Fact{},
-		Fact{DeliveryStatus: "5.0.0", ReplyCode: "550", Reason: eb.Re___0, Command: eb.CeCONN},
-		Fact{DeliveryStatus: "4.0.0", ReplyCode: "421", Reason: eb.Re___1, Command: eb.CeCONN},
-		Fact{DeliveryStatus: "4.2.2", ReplyCode: "450", Reason: eb.ReFULL, Command: eb.CeRCPT},
-		Fact{DeliveryStatus: "5.9.999", ReplyCode: "",  Reason: eb.RePASS, Command: eb.CeMAIL},
-		Fact{DeliveryStatus: "", ReplyCode: "", Reason: eb.ReFEED, Command: "", FeedbackType: "auth-failure"},
-	}
-	cv := []Fact{
-		Fact{DeliveryStatus: "5.1.0", ReplyCode: "550", Reason: eb.ReHOST, Command: eb.CeCONN},
-		Fact{DeliveryStatus: "5.1.1", ReplyCode: "550", Reason: eb.ReUSER, Command: eb.CeRCPT},
-		Fact{DeliveryStatus: "5.1.6", ReplyCode: "556", Reason: eb.ReMOVE, Command: eb.CeRCPT},
-		Fact{DeliveryStatus: "5.0.1", ReplyCode: "500", Reason: eb.Re00MX, Command: eb.CeCONN},
-		Fact{DeliveryStatus: "5.7.0", ReplyCode: "550", Reason: eb.ReQUIT, Command: eb.CeDATA},
-		Fact{DeliveryStatus: "5.7.1", ReplyCode: "550", Reason: eb.ReSTOP, Command: eb.CeCONN},
-		Fact{DeliveryStatus: "5.1.2", ReplyCode: "501", Reason: eb.ReFILT, Command: eb.CeRCPT},
-		Fact{DeliveryStatus: "5.2.2", ReplyCode: "552", Reason: eb.ReFULL, Command: eb.CeRCPT},
-		Fact{DeliveryStatus: "5.7.3", ReplyCode: "550", Reason: eb.RePASS, Command: eb.CeRCPT},
-		Fact{DeliveryStatus: "5.7.4", ReplyCode: "",    Reason: eb.RePASS, Command: eb.CeMAIL},
-		Fact{DeliveryStatus: "", ReplyCode: "", Reason: eb.ReFEED, Command: "", FeedbackType: "abuse"},
-	}
-
-	for _, e := range cw {
-		cx++; if e.IsToxic() == 1 { t.Errorf("%s(%s) returns 1", fn, e.DeliveryStatus) }
-	}
-	for _, e := range cv {
-		cx++; if e.IsToxic() == 0 { t.Errorf("%s(%s) returns 0", fn, e.DeliveryStatus) }
-	}
-	t.Logf("The number of tests = %d", cx)
-}
-
-
-
 
