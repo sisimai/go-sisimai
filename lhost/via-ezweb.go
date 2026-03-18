@@ -108,7 +108,6 @@ func init() {
 				// Content-Type: text/plain; ..., X-SPASIGN: NG (spamghetti, au by EZweb)
 				// Filtered recipient returns message that include 'X-SPASIGN' header
 				e.Reason = eb.ReFILT
-				e.Toxic  = 1
 
 			} else {
 				// There is no X-SPASIGN header or the value of the header is not "NG"

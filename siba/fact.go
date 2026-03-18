@@ -11,11 +11,7 @@
 package siba
 
 import "time"
-import "strings"
 import "encoding/json"
-import "libsisimai.org/sisimai/v5/eb"
-import "libsisimai.org/sisimai/v5/moji"
-import "libsisimai.org/sisimai/v5/smtp/status"
 
 type Fact struct {
 	Action          string       `json:"action"`         // The value of "Action:" field
@@ -45,43 +41,6 @@ type Fact struct {
 	TimezoneOffset  string       `json:"timezoneoffset"` // Time zone offset of "Timestamp", such as "+0900"
 	Token           string       `json:"token"`          // The Message token(MD5 Hex digest value)
 	Toxic           int          `json:"toxic"`          // (EXPERIMENTAL)
-}
-
-// Fact.IsToxic checks if the recipient address should be permanently excluded from the list.
-// It returns true for addresses that pose a persistent delivery risk, making further resend
-// attempts unviable and detrimental to the sender's reputation.
-//   Returns:
-//     - (int): 1 if the recipient address should be removed from the list.
-func(fo Fact) IsToxic() int {
-	cv, cw := fo.ReplyCode, fo.DeliveryStatus
-	if strings.HasPrefix(cv, "4") || strings.HasPrefix(cw, "4.") { return 0 }
-
-	switch fo.Reason {
-	// 1. Hard bounces or some soft bounces with a permanent error.
-	//   1-1. Hard bounce: UserUnknown, HostUnknown, HasMoved, NotAccept
-	//   1-2. Almost hard bounce: Suspend, Suppressed
-	// 2. Several softbounces: MailboxFull, Filtered, NoRelaying
-	//   2-1. The SMTP command is "RCPT" except "MailboxFull".
-	//   2-2. The SMTP reply code begins with "5" such as "550".
-	//   2-3. The SMTP status code is explicit code (not empty, not 5.9.***).
-	//   2-4. The SMTP status code begins with "5." such as "5.1.1".
-	// 3. Feedback Loop
-	//   3-1. The Feedback Type is any of "abuse", "fraud", "opt-out"
-	case eb.ReUSER, eb.ReHOST, eb.ReMOVE, eb.Re00MX, eb.ReQUIT, eb.ReSTOP: return 1
-	case eb.ReFULL, eb.ReFILT, eb.RePASS:
-		// MailboxFull, Filtered, and NoRelaying.
-		if fo.Reason != eb.ReFULL && fo.Command == eb.CeRCPT { return 1 }
-		if strings.HasPrefix(cv, "5")           == true      { return 1 }
-		if status.IsExplicit(cw)                == false     { return 0 }
-		if strings.HasPrefix(cw, "5.")          == true      { return 1 }
-	case eb.ReFEED:
-		// Feedback-Type
-		// - https://datatracker.ietf.org/doc/html/rfc5965
-		// - https://datatracker.ietf.org/doc/html/rfc6650
-		ct := []string{"abuse", "fraud", "opt-out"}
-		if moji.HasPrefixAny(fo.FeedbackType, ct) { return 1 }
-	}
-	return 0
 }
 
 // Fact.MarshalJSON returns a lower-cased member name converted from a field name defined in RFC1894.
