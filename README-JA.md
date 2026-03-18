@@ -166,7 +166,7 @@ $ ./sisid ./path/to/bounce-mail.eml | jq
   "subject": "Nyaan",
   "timezoneoffset": "+0900",
   "token": "5253e9da9dd67573851b057a89cbcf41293e99bf",
-  "toxic": false
+  "toxic": 0
 }
 ```
 
@@ -361,7 +361,7 @@ Output example
     "subject": "Nyaan",
     "timezoneoffset": "+0900",
     "token": "5253e9da9dd67573851b057a89cbcf41293e99bf",
-    "toxic": false
+    "toxic": 0
   }
 ]
 ```
