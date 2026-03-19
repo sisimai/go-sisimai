@@ -181,6 +181,11 @@ func EngineTest(t *testing.T, enginename string, isexpected [][]IsExpected, publ
 							t.Errorf("%s Toxic is (%d) but (%d)", ee, fs.Toxic, ev.Toxic)
 						}
 
+						cx++; if fs.Bogus != 0 {
+							// Bogus
+							t.Errorf("%s Bogus is (%d) but (%d)", ee, fs.Bogus, 0)
+						}
+
 						cx++; if ev.AnotherOne != "" {
 							// AnotherOne
 							cx++; if fs.Reason == "feedback" && fs.FeedbackType != ev.AnotherOne {
