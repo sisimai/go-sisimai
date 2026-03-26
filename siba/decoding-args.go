@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____                     _ _                _                  
 // |  _ \  ___  ___ ___   __| (_)_ __   __ _   / \   _ __ __ _ ___ 
@@ -10,7 +10,7 @@
 package siba
 
 // CfParameter* is an argument of the callback function specified at sisimai.Rise().
-type CfParameter0 func(arg *CallbackArg0) (map[string]interface{}, error)
+type CfParameter0 func(arg *CallbackArg0) (map[string]any, error)
 type CfParameter1 func(arg *CallbackArg1) (bool, error)
 
 // DecodingArgs is an argument of the sisimai.Rise() function.
