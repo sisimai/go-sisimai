@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____        __                _____          _   
 // | __ )  ___ / _| ___  _ __ ___|  ___|_ _  ___| |_ 
@@ -14,7 +14,7 @@ type BeforeFact struct {
 	RFC822  map[string][]string // Email headers of the original message
 	Digest  []DeliveryMatter    // Decoded results returned from lhost/via-*.go
 	Errors  []NotDecoded        // All the errors and warnings
-	Catch   interface{}         // Any data structure returned by the callback function [0]
+	Catch   any                 // Any data structure returned by the callback function [0]
 	Sender  string              // Unix FROM line ("From ")
 	Payload string              // Entire message body of the bounce mail
 }
