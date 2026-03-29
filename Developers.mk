@@ -60,6 +60,10 @@ cross-build:
 	$(RM) $(EXECUTABLE).$(GO_SYSNAME)-$(GO_CPUARCH)
 	$(MAKE) -f $(FILE) $(EXECUTABLE)-$(SISIMAIVER).$(GO_SYSNAME)-$(GO_CPUARCH)
 
+debug-build:
+	# https://zenn.dev/mattn/articles/5860d73d292f32
+	CGO_ENABLED=0 $(GO) build -gcflags="-d=ssa/check_bce/debug=1" -o $(EXECUTABLE)-debug $(EXECUTABLE).go
+
 test:
 	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
 	@ $(foreach v, $(shell make -f ./Developers.mk lhost-files), grep -Fq "$(v)" ./lhost/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
