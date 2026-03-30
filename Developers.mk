@@ -38,6 +38,8 @@ GOLANGLINT := golangci-lint
 GO_SYSNAME := $(shell echo $$GOOS   || $(GO) env GOOS  )
 GO_CPUARCH := $(shell echo $$GOARCH || $(GO) env GOARCH)
 LISTENADDR := 127.0.0.1:5321
+HOWMANYRUN := 10
+GOBENCHLOG := benchmark.log
 K          := neko
 
 # -------------------------------------------------------------------------------------------------
@@ -107,9 +109,10 @@ profile:
 	ls -laF ./usage-of-*
 
 benchmark:
-	test -f bin/benchmark.go && CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o min-sisid ./bin/benchmark.go
-	uptime
-	while true; do zsh -c 'time ./min-sisid $(PROFILESET)'; sleep 10; done
+	@test -f ./00-libsisimai-benchmark_test.go
+	@uptime
+	@printf "%d emails\n" `$(LS) $(PROFILESET)/*.eml | wc -l`
+	@go test -bench 'Benchmark' -count $(HOWMANYRUN) | tee $(GOBENCHLOG)
 
 lint:
 	test -x `which $(GOLANGLINT)`
