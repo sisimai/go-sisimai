@@ -4,6 +4,7 @@ usage-of-*
 *sisid*
 *.txt
 *.eml
+*.log
 sbin/
 stash/
 set-of-emails/private
