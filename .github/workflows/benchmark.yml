@@ -1,0 +1,19 @@
+name: Run Benckmarks for Rise and Dump
+on:
+  push:
+    branches: ["5-stable"]
+  pull_request:
+    branches: ["*"]
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "stable"
+      - name: Copy sample emails to tmp/all-the-emails
+        run: make -f Developers.mk samples
+      - name: Execute make benchmark
+        run: make -f Developers.mk benchmark
+
