@@ -114,6 +114,9 @@ benchmark:
 	@printf "%d emails\n" `$(LS) $(PROFILESET)/*.eml | wc -l`
 	@go test -bench 'Benchmark' -count $(HOWMANYRUN) | tee $(GOBENCHLOG)
 
+install-benchstat:
+	test -x `which benchstat` || install golang.org/x/perf/cmd/benchstat@latest
+
 lint:
 	test -x `which $(GOLANGLINT)`
 	NO_COLOR=2 $(GOLANGLINT) run $(SISIMAIDIR)
@@ -214,6 +217,7 @@ start-godoc-server:
 
 clean:
 	$(RM)    ./_reason-table.txt
+	$(RM)    ./$(GOBENCHLOG)
 	$(RM)    ./$(EXECUTABLE)
 	$(RM)    ./$(COVERAGETO)
 	$(RM) -r ./$(ASSEMBLEIN)
