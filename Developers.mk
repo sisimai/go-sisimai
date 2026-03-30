@@ -33,6 +33,7 @@ ASSEMBLEIN := tmp/assembled-in-here
 PROFILESET := tmp/all-the-emails
 EXECUTABLE := bin/sisid
 BUILDFLAGS := -ldflags="-s -w" -trimpath
+DEBUGFLAGS := -gcflags="$(LIBSISIMAI)/$(NAME)/v5/...=-d=ssa/check_bce/debug=1"
 GOLANGLINT := golangci-lint
 GO_SYSNAME := $(shell echo $$GOOS   || $(GO) env GOOS  )
 GO_CPUARCH := $(shell echo $$GOARCH || $(GO) env GOARCH)
@@ -62,7 +63,7 @@ cross-build:
 
 debug-build:
 	# https://zenn.dev/mattn/articles/5860d73d292f32
-	CGO_ENABLED=0 $(GO) build -gcflags="-d=ssa/check_bce/debug=1" -o $(EXECUTABLE)-debug $(EXECUTABLE).go
+	CGO_ENABLED=0 $(GO) build $(DEBUGFLAGS) -o $(EXECUTABLE)-debug $(EXECUTABLE).go
 
 test:
 	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
