@@ -111,7 +111,9 @@ profile:
 benchmark:
 	@test -f ./00-libsisimai-benchmark_test.go
 	@uptime
-	@printf "%d emails\n" `$(LS) $(PROFILESET)/*.eml | wc -l`
+	@GOOS=$(GO_SYSNAME) GOARCH=$(GO_CPUARCH) CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o count-only bin/count-only.go
+	@test -x ./count-only
+	@printf "%d emails\n" `./count-only $(PROFILESET)`
 	@go test -bench 'Benchmark' -count $(HOWMANYRUN) | tee $(GOBENCHLOG)
 
 install-benchstat:
@@ -217,6 +219,7 @@ start-godoc-server:
 
 clean:
 	$(RM)    ./_reason-table.txt
+	$(RM)    ./count-only
 	$(RM)    ./$(GOBENCHLOG)
 	$(RM)    ./$(EXECUTABLE)
 	$(RM)    ./$(COVERAGETO)
