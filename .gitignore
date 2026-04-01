@@ -1,10 +1,10 @@
+_benchmark.log
 coverage.*
 usage-of-*
 *pprof*
 *sisid*
 *.txt
 *.eml
-*.log
 sbin/
 stash/
 set-of-emails/private
