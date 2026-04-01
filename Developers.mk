@@ -39,7 +39,7 @@ GO_SYSNAME := $(shell echo $$GOOS   || $(GO) env GOOS  )
 GO_CPUARCH := $(shell echo $$GOARCH || $(GO) env GOARCH)
 LISTENADDR := 127.0.0.1:5321
 HOWMANYRUN := 10
-GOBENCHLOG := benchmark.log
+GOBENCHLOG := _benchmark.log
 K          := neko
 
 # -------------------------------------------------------------------------------------------------
