@@ -1,0 +1,27 @@
+emails: 2725
+goos: darwin
+goarch: arm64
+pkg: libsisimai.org/sisimai/v5
+cpu: Apple M4
+BenchmarkRise-10    	       3	 401137820 ns/op
+BenchmarkRise-10    	       3	 409793931 ns/op
+BenchmarkRise-10    	       3	 407151361 ns/op
+BenchmarkRise-10    	       3	 411412431 ns/op
+BenchmarkRise-10    	       3	 411511139 ns/op
+BenchmarkRise-10    	       3	 441556555 ns/op
+BenchmarkRise-10    	       3	 434827681 ns/op
+BenchmarkRise-10    	       3	 414287833 ns/op
+BenchmarkRise-10    	       3	 415613583 ns/op
+BenchmarkRise-10    	       3	 419485028 ns/op
+BenchmarkDump-10    	       3	 433862125 ns/op
+BenchmarkDump-10    	       3	 428000778 ns/op
+BenchmarkDump-10    	       3	 447345014 ns/op
+BenchmarkDump-10    	       3	 428836847 ns/op
+BenchmarkDump-10    	       3	 440752389 ns/op
+BenchmarkDump-10    	       3	 430737000 ns/op
+BenchmarkDump-10    	       3	 459215083 ns/op
+BenchmarkDump-10    	       3	 437877750 ns/op
+BenchmarkDump-10    	       3	 443343694 ns/op
+BenchmarkDump-10    	       3	 473314181 ns/op
+PASS
+ok  	libsisimai.org/sisimai/v5	55.247s
