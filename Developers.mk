@@ -115,6 +115,11 @@ benchmark:
 	@test -x ./count-only
 	@printf "%d emails\n" `./count-only $(PROFILESET)`
 	@go test -bench 'Benchmark' -count $(HOWMANYRUN) | tee $(GOBENCHLOG)
+	@test -f $(GOBENCHLOG)
+	@mv $(GOBENCHLOG) $(GOBENCHLOG).tmp
+	@printf "emails: %d\n" `./count-only $(PROFILESET)` > $(GOBENCHLOG)
+	@cat $(GOBENCHLOG).tmp >> $(GOBENCHLOG)
+	@$(RM) ./$(GOBENCHLOG).tmp
 
 install-benchstat:
 	test -x `which benchstat` || install golang.org/x/perf/cmd/benchstat@latest
