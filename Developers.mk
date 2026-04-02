@@ -113,7 +113,7 @@ benchmark:
 	@uptime
 	@GOOS=$(GO_SYSNAME) GOARCH=$(GO_CPUARCH) CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o count-only bin/count-only.go
 	@test -x ./count-only
-	@printf "%d emails\n" `./count-only $(PROFILESET)`
+	@printf "emails: %d\n" `./count-only $(PROFILESET)`
 	@go test -bench 'Benchmark' -count $(HOWMANYRUN) | tee $(GOBENCHLOG)
 	@test -f $(GOBENCHLOG)
 	@mv $(GOBENCHLOG) $(GOBENCHLOG).tmp
