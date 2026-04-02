@@ -122,6 +122,7 @@ benchmark:
 	@$(RM) ./$(GOBENCHLOG).tmp
 
 install-benchstat:
+	# https://pkg.go.dev/golang.org/x/perf/cmd/benchstat
 	test -x `which benchstat` || install golang.org/x/perf/cmd/benchstat@latest
 
 lint:
