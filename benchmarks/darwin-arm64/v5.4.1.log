@@ -3,25 +3,25 @@ goos: darwin
 goarch: arm64
 pkg: libsisimai.org/sisimai/v5
 cpu: Apple M4
-BenchmarkRise-10    	       3	 401137820 ns/op
-BenchmarkRise-10    	       3	 409793931 ns/op
-BenchmarkRise-10    	       3	 407151361 ns/op
-BenchmarkRise-10    	       3	 411412431 ns/op
-BenchmarkRise-10    	       3	 411511139 ns/op
-BenchmarkRise-10    	       3	 441556555 ns/op
-BenchmarkRise-10    	       3	 434827681 ns/op
-BenchmarkRise-10    	       3	 414287833 ns/op
-BenchmarkRise-10    	       3	 415613583 ns/op
-BenchmarkRise-10    	       3	 419485028 ns/op
-BenchmarkDump-10    	       3	 433862125 ns/op
-BenchmarkDump-10    	       3	 428000778 ns/op
-BenchmarkDump-10    	       3	 447345014 ns/op
-BenchmarkDump-10    	       3	 428836847 ns/op
-BenchmarkDump-10    	       3	 440752389 ns/op
-BenchmarkDump-10    	       3	 430737000 ns/op
-BenchmarkDump-10    	       3	 459215083 ns/op
-BenchmarkDump-10    	       3	 437877750 ns/op
-BenchmarkDump-10    	       3	 443343694 ns/op
-BenchmarkDump-10    	       3	 473314181 ns/op
+BenchmarkRise-10    	       1	 397967208 ns/op	635859808 B/op	 1987689 allocs/op
+BenchmarkRise-10    	       1	 401167333 ns/op	635878056 B/op	 1987826 allocs/op
+BenchmarkRise-10    	       1	 402018666 ns/op	635880928 B/op	 1987866 allocs/op
+BenchmarkRise-10    	       1	 399709334 ns/op	635861712 B/op	 1987673 allocs/op
+BenchmarkRise-10    	       1	 401795541 ns/op	635852856 B/op	 1987674 allocs/op
+BenchmarkRise-10    	       1	 399679542 ns/op	635853184 B/op	 1987637 allocs/op
+BenchmarkRise-10    	       1	 398958958 ns/op	635853640 B/op	 1987631 allocs/op
+BenchmarkRise-10    	       1	 400684167 ns/op	635851976 B/op	 1987597 allocs/op
+BenchmarkRise-10    	       1	 402764584 ns/op	635845432 B/op	 1987542 allocs/op
+BenchmarkRise-10    	       1	 401066875 ns/op	635858776 B/op	 1987594 allocs/op
+BenchmarkDump-10    	       1	 411214792 ns/op	652944872 B/op	 2001372 allocs/op
+BenchmarkDump-10    	       1	 412874250 ns/op	652958264 B/op	 2001351 allocs/op
+BenchmarkDump-10    	       1	 414731792 ns/op	652901784 B/op	 2001356 allocs/op
+BenchmarkDump-10    	       1	 411753875 ns/op	652910376 B/op	 2001367 allocs/op
+BenchmarkDump-10    	       1	 415176667 ns/op	652880592 B/op	 2001332 allocs/op
+BenchmarkDump-10    	       1	 416174875 ns/op	652952216 B/op	 2001282 allocs/op
+BenchmarkDump-10    	       1	 415425208 ns/op	652950792 B/op	 2001385 allocs/op
+BenchmarkDump-10    	       1	 416788000 ns/op	652899112 B/op	 2001233 allocs/op
+BenchmarkDump-10    	       1	 415592917 ns/op	652878544 B/op	 2001234 allocs/op
+BenchmarkDump-10    	       1	 418233542 ns/op	652910536 B/op	 2001215 allocs/op
 PASS
-ok  	libsisimai.org/sisimai/v5	55.247s
+ok  	libsisimai.org/sisimai/v5	11.850s
