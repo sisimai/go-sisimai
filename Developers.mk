@@ -39,7 +39,9 @@ GO_SYSNAME := $(shell echo $$GOOS   || $(GO) env GOOS  )
 GO_CPUARCH := $(shell echo $$GOARCH || $(GO) env GOARCH)
 LISTENADDR := 127.0.0.1:5321
 HOWMANYRUN := 10
+GOBENCHDIR := benchmarks/$(shell $(GO) env GOOS GOARCH | tr '\n' '-' | sed 's/-$$//')
 GOBENCHLOG := _benchmark.log
+PREVRESULT := $(shell $(LS) $(GOBENCHDIR)/*.log | tail -n 1)
 K          := neko
 
 # -------------------------------------------------------------------------------------------------
@@ -114,12 +116,20 @@ benchmark:
 	@GOOS=$(GO_SYSNAME) GOARCH=$(GO_CPUARCH) CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o count-only bin/count-only.go
 	@test -x ./count-only
 	@printf "emails: %d\n" `./count-only $(PROFILESET)`
-	@go test -bench 'Benchmark' -count $(HOWMANYRUN) | tee $(GOBENCHLOG)
+	@go test -bench 'Benchmark' -count $(HOWMANYRUN) -benchmem -benchtime 1x | tee $(GOBENCHLOG)
 	@test -f $(GOBENCHLOG)
 	@mv $(GOBENCHLOG) $(GOBENCHLOG).tmp
 	@printf "emails: %d\n" `./count-only $(PROFILESET)` > $(GOBENCHLOG)
 	@cat $(GOBENCHLOG).tmp >> $(GOBENCHLOG)
 	@$(RM) ./$(GOBENCHLOG).tmp
+
+compare-benchmark:
+	@test -d ./$(GOBENCHDIR)
+	@test -f ./$(PREVRESULT)
+	@test -x `which benchstat`
+	@$(CP) ./$(GOBENCHLOG)  $(GOBENCHDIR)/latest.log
+	benchstat $(PREVRESULT) $(GOBENCHDIR)/latest.log
+	@$(RM) ./$(GOBENCHDIR)/latest.log
 
 install-benchstat:
 	# https://pkg.go.dev/golang.org/x/perf/cmd/benchstat
