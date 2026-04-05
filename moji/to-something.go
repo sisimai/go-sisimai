@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All
 // rights reserved. This software is distributed under The BSD 2-Clause License.
 //                  _ _ 
 //  _ __ ___   ___ (_|_)
@@ -19,8 +19,8 @@ func ToLF(text *string) *string {
 	if text == nil || *text == "" || strings.IndexByte(*text, '\r') < 0 { return nil }
 
 	readbuffer := []byte(*text)
-	tolinefeed := make([]byte, 0, len(readbuffer))
 	bytelength := len(readbuffer)
+	tolinefeed := make([]byte, 0, len(readbuffer))
 
 	for j := 0; j < bytelength; j++ {
 		// Replace '\r' and '\r\n' with '\n'
