@@ -32,7 +32,7 @@ PRIVATESET := $(PUBLICFILE)/private
 ASSEMBLEIN := tmp/assembled-in-here
 PROFILESET := tmp/all-the-emails
 EXECUTABLE := bin/sisid
-BUILDFLAGS := -ldflags="-s -w" -trimpath
+BUILDFLAGS := -ldflags="-s" -trimpath
 DEBUGFLAGS := -gcflags="$(LIBSISIMAI)/$(NAME)/v5/...=-d=ssa/check_bce/debug=1"
 GOLANGLINT := golangci-lint
 GO_SYSNAME := $(shell echo $$GOOS   || $(GO) env GOOS  )
