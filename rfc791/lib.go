@@ -37,12 +37,18 @@ func IsIPv4Address(addr string) bool {
 func FindIPv4Address(text string) []string {
 	if len(text) < 7 { return []string{} }
 
-	// Rewrite: "mx.example.jp[192.0.2.1]" => "mx.example.jp 192.0.2.1"
-	for _, e := range []string{"(", ")", "[", "]", ","} { text = strings.ReplaceAll(text, e, " ") }
-	ipv4a := make([]string, 0, 4); for _, e := range strings.Split(text, " ") {
-		// Find a string including an IPv4 address
-		if IsIPv4Address(e){ ipv4a = append(ipv4a, e) }
+	ipv4a := make([]string, 0, 1)
+	cw := -1; for j := 0; j < len(text); j++ {
+		switch text[j] {
+			case '(', ')', '[', ']', ',', ' ':
+				if cw < 0 { continue }
+				if cv := text[cw:j]; IsIPv4Address(cv) == true { ipv4a = append(ipv4a, cv) }
+				cw = -1
+			default: if cw < 0 { cw = j }
+		}
 	}
+	if cw == -1 { return ipv4a }
+	if cv := text[cw:]; IsIPv4Address(cv) == true { ipv4a = append(ipv4a, cv) }
 	return ipv4a
 }
 
