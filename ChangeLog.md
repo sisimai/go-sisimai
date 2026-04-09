@@ -24,6 +24,7 @@ v5.?.?
   - #369 #370 Fix and update comments in `smtp/status/lib.go`.
   - #372 Fix typo in the sample code at README files. thanks to @jcbf
   - #374 Fix bug in the boolean logic for lines starting with space or tab. Thanks to @jcbf
+  - #388 `rfc791.FindIPv4Address()` is 3x faster.
 
 v5.6.0
 ---------------------------------------------------------------------------------------------------
