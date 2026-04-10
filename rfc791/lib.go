@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ _____ ___  _ 
 // |  _ \|  ___/ ___|___  / _ \/ |
@@ -9,8 +9,6 @@
 // Package "rfc791" provides functions related to IPv4 address described in RFC791.
 // https://datatracker.ietf.org/doc/html/rfc791
 package rfc791
-import "strings"
-import "strconv"
 
 // IsIPv4Address returns "true" when the given string is an IPv4 address.
 //   Arguments:
@@ -20,13 +18,24 @@ import "strconv"
 //    See:
 //     - https://datatracker.ietf.org/doc/html/rfc791
 func IsIPv4Address(addr string) bool {
-	if len(addr) < 7 || strings.Count(addr, ".") != 3 { return false }
+	if size := len(addr); size < 7 || size > 15 { return false }
 
-	for _, e := range strings.Split(addr, ".") {
-		// Check each octet is between 0 and 255
-		if v, nyaan := strconv.Atoi(e); nyaan != nil || v < 0 || v > 255 { return false }
+	co, ci := 0, -1; for j := 0; j < len(addr); j++ {
+		if cv := addr[j]; cv < '0' || cv > '9' {
+			// Is not a numeric character
+			if cv != '.' || ci == -1 { return false }
+			co +=  1
+			ci  = -1
+
+		} else {
+			// Is a numeric character
+			if ci == -1 { ci = int(cv - '0'); continue }
+
+			ci = (ci * 10) + int(cv - '0')
+			if ci > 255 { return false }
+		}
 	}
-	return true
+	return co == 3 && ci > -1
 }
 
 // FindIPv4Address finds IPv4 addresses from the given string.
