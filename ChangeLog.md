@@ -25,6 +25,7 @@ v5.?.?
   - #372 Fix typo in the sample code at README files. thanks to @jcbf
   - #374 Fix bug in the boolean logic for lines starting with space or tab. Thanks to @jcbf
   - #388 `rfc791.FindIPv4Address()` is 3x faster.
+  - #390 `rfc791.IsIPv4Address()` is 6x faster.
 
 v5.6.0
 ---------------------------------------------------------------------------------------------------
