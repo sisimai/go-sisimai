@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                  _ _ 
 //  _ __ ___   __ _(_) |
@@ -13,6 +13,7 @@ package mail
 import "io"
 import "os"
 import "fmt"
+import "bytes"
 import "bufio"
 import "strings"
 import "path/filepath"
@@ -33,7 +34,7 @@ import "libsisimai.org/sisimai/v5/eb"
 */
 type EmailEntity struct {
 	handle  *os.File // https://pkg.go.dev/os#File
-	payload []string // Each email message/file name
+	payload [][]byte // Each email message/file name
 	Kind    string   // "mailbox", "maildir", "memory" or "stdin"
 	Path    string   // Path to the mbox, Maildir/, or "<MEMORY>" or "<STDIN>"
 	Dir     string   // Directory name of mbox, Maildir/
@@ -54,7 +55,7 @@ func Rise(path string) (*EmailEntity, error) {
 
 	if path == "STDIN" || strings.IndexByte(path, '\n') > -1 {
 		// Read from STDIN or Memory(string)
-		payload := ""
+		payload := []byte{}
 
 		if path == "STDIN" {
 			// For example, % cat ./bounce.eml | go run sisimai.go STDIN
@@ -68,7 +69,7 @@ func Rise(path string) (*EmailEntity, error) {
 				// The input text is empty or too large (2GB)
 				return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
 			}
-			payload = string(stdin)
+			payload = stdin
 
 		} else {
 			// Email data is in a string(memory)
@@ -78,20 +79,20 @@ func Rise(path string) (*EmailEntity, error) {
 			}
 			ee.Kind = "memory"
 			ee.Path = "<MEMORY>"
-			payload = path
+			payload = []byte(path)
 		}
 
-		if countUnixMboxFrom(&payload) < 2 {
+		if countUnixMboxFrom(payload) < 2 {
 			// There is 1 or 0 "From " line in the payload
 			ee.payload = append(ee.payload, payload)
 			ee.Size = len(payload)
 
 		} else {
 			// There is 2 or more "From " line in the payload
-			for _, uf := range strings.Split(payload, "\nFrom ") {
+			for _, uf := range bytes.Split(payload, []byte("\nFrom ")) {
 				// Split by "From "
-				if uf == "" { continue }
-				cv := "From " + uf + "\n"
+				if len(uf) == 0 { continue }
+				cv        := append(append([]byte("From "), uf...), '\n')
 				ee.payload = append(ee.payload, cv)
 				ee.Size   += len(cv)
 			}
@@ -133,21 +134,21 @@ func Rise(path string) (*EmailEntity, error) {
 
 // countUnixMboxFrom returns the number of "From " line of the UNIX mbox.
 //   Arguments:
-//     - mesg (*string): Pointer to the entire email message.
+//     - mesg ([]byte): Pointer to the entire email message.
 //   Returns:
 //     - (uint): The number of "From " lines.
-func countUnixMboxFrom(mesg *string) uint {
-	if len(*mesg) < 5 || strings.HasPrefix(*mesg, "From ") == false { return 0 }
-	return uint(strings.Count(*mesg, "\nFrom "))
+func countUnixMboxFrom(mesg []byte) uint {
+	if len(mesg) < 5 || bytes.HasPrefix(mesg, []byte("From ")) == false { return 0 }
+	return uint(bytes.Count(mesg, []byte("\nFrom ")))
 }
 
 // *EmailEntity.Read is an email reader, works like an iterator.
 //   Returns:
-//     - (*string): Each email message one by one.
+//     - ([]byte): Each email message one by one.
 //     - (error):   Occurred error
-func(ee *EmailEntity) Read() (*string, error) {
-	var email *string // Email contents: headers and entire message body
-	var nyaan  error  // Some errors while reading an email file
+func(ee *EmailEntity) Read() ([]byte, error) {
+	var email []byte // Email contents: headers and entire message body
+	var nyaan  error // Some errors while reading an email file
 
 	switch ee.Kind {
 		case "maildir": email, nyaan = ee.readMaildir()
@@ -161,11 +162,12 @@ func(ee *EmailEntity) Read() (*string, error) {
 // *EmailEntity.setNewLine set a new line type(CRLF, CR, LF) to EmailEntity.newline field.
 func(ee *EmailEntity) setNewLine() {
 	if ee.Kind == "maildir" { return }
-	var bufferedio *bufio.Reader
-	var readbuffer string
+	readbuffer := make([]byte, 1000)
 
 	if ee.Kind == "mailbox" || ee.Kind == "stdin" {
 		// UNIX mbox or STDIN
+		var bufferedio *bufio.Reader
+
 		if ee.Kind == "mailbox" {
 			// UNIX mbox
 			filep, nyaan := os.Open(ee.Path); if nyaan != nil { return }
@@ -179,17 +181,17 @@ func(ee *EmailEntity) setNewLine() {
 
 		the1st1000  := make([]byte, 1000)
 		if _, nyaan := bufferedio.Read(the1st1000); nyaan != nil && nyaan != io.EOF { return }
-		readbuffer   = string(the1st1000)
+		readbuffer   = the1st1000
 
 	} else {
 		// Memory
-		if len(ee.payload) == 0 || ee.payload[0] == "" { ee.newline = 0; return }
+		if len(ee.payload) == 0 || len(ee.payload[0]) == 0 { ee.newline = 0; return }
 		readbuffer = ee.payload[0][:min(1000, len(ee.payload[0]))]
 	}
 
-	if strings.Contains(readbuffer, "\r\n")     { ee.newline = 3; return }
-	if strings.IndexByte(readbuffer, '\r') > -1 { ee.newline = 2; return }
-	if strings.IndexByte(readbuffer, '\n') > -1 { ee.newline = 1; return }
+	if bytes.Contains(readbuffer, []byte("\r\n")) { ee.newline = 3; return }
+	if bytes.IndexByte(readbuffer, '\r') > -1     { ee.newline = 2; return }
+	if bytes.IndexByte(readbuffer, '\n') > -1     { ee.newline = 1; return }
 	ee.newline = 0
 }
 
