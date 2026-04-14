@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package mail
 
@@ -138,7 +138,7 @@ func TestRead(t *testing.T) {
 		if eo, _ := Rise(e); eo != nil {
 			cv, ce := eo.Read()
 			cx++; if ce != nil           { t.Errorf("%s.%s(%s) returns error: %s", cf, fn, e, ce) }
-			cx++; if len(*cv)  == 0      { t.Errorf("%s.%s(%s) returns empty", cf, fn, e) }
+			cx++; if len(cv)   == 0      { t.Errorf("%s.%s(%s) returns empty", cf, fn, e) }
 			cx++; if eo.offset == 0      { t.Errorf("%s.offset is 0", cf) }
 			cx++; if eo.handle == nil    { t.Errorf("%s.handle is nil", cf) }
 			cx++; if eo.Size < eo.offset { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
@@ -150,7 +150,7 @@ func TestRead(t *testing.T) {
 		if eo, _ := Rise(e); eo != nil {
 			cv, ce := eo.Read()
 			cx++; if ce != nil           { t.Errorf("%s.%s(%s) returns error: %s", cf, fn, e, ce) }
-			cx++; if len(*cv)  == 0      { t.Errorf("%s.%s(%s) returns empty", cf, fn, e) }
+			cx++; if len(cv)   == 0      { t.Errorf("%s.%s(%s) returns empty", cf, fn, e) }
 			cx++; if eo.offset == 0      { t.Errorf("%s.offset is 0", cf) }
 			cx++; if eo.handle != nil    { t.Errorf("%s.handle is not nil", cf) }
 			cx++; if eo.Size < eo.offset { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
@@ -166,7 +166,7 @@ func TestRead(t *testing.T) {
 	if eo, _ := Rise(string(by)); eo != nil {
 		cv, ce := eo.Read()
 		cx++; if ce != nil             { t.Errorf("%s.%s(%s) returns error: %s", cf, fn, Mailtxt, ce) }
-		cx++; if len(*cv)  == 0        { t.Errorf("%s.%s(%s) returns empty", cf, fn, Mailtxt) }
+		cx++; if len(cv)   == 0        { t.Errorf("%s.%s(%s) returns empty", cf, fn, Mailtxt) }
 		cx++; if eo.offset == 0        { t.Errorf("%s.offset is 0", cf) }
 		cx++; if eo.handle != nil      { t.Errorf("%s.handle is not nil", cf) }
 		cx++; if eo.Size < eo.offset   { t.Errorf("%s.offset(%d) is greater than Size(%d)", cf, eo.Size, eo.offset) }
@@ -182,17 +182,15 @@ func TestCountUnixMboxFrom(t *testing.T) {
 	fn := "countUnixMboxFrom"
 	cx := 0
 
-	for _, e := range []string{"neko", "cat", "", "nekochan"} {
-		cx++; if cv := int(countUnixMboxFrom(&e)); cv != 0 { t.Errorf("%s(%s) returns %d", fn, e, cv) }
+	for _, e := range [][]byte{[]byte("neko"), []byte("cat"), []byte(""), []byte("nekochan")} {
+		cx++; if cv := int(countUnixMboxFrom(e)); cv != 0 { t.Errorf("%s(%s) returns %d", fn, e, cv) }
 	}
 	if bo, _ := os.ReadFile(Mailtxt); len(bo) != 0 {
-		cf := string(bo)
-		cx++; if cv := int(countUnixMboxFrom(&cf)); cv != 0 { t.Errorf("%s(%s) returns %d", fn, cf[0:10], cv) }
+		cx++; if cv := int(countUnixMboxFrom(bo)); cv != 0 { t.Errorf("%s(%s) returns %d", fn, bo[0:10], cv) }
 	}
 
 	if bo, _ := os.ReadFile(Mailbox[0]); len(bo) != 0 {
-		cf := string(bo)
-		cx++; if cv := int(countUnixMboxFrom(&cf)); cv == 0 { t.Errorf("%s(%s) returns %d", fn, cf[0:10], cv) }
+		cx++; if cv := int(countUnixMboxFrom(bo)); cv == 0 { t.Errorf("%s(%s) returns %d", fn, bo[0:10], cv) }
 	}
 
 	t.Logf("The number of tests = %d", cx)
