@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                  _ _    __                                         
 //  _ __ ___   __ _(_) |  / / __ ___   ___ _ __ ___   ___  _ __ _   _ 
@@ -12,13 +12,12 @@ import "io"
 
 // readMemory is an email reader stored in a variable as a string.
 //   Returns:
-//     - (*string): Contents of each email in EmailEntity.payload field.
-//     - (error):   Occurred error.
-func (ee *EmailEntity) readMemory() (*string, error) {
+//     - ([]byte): Contents of each email in EmailEntity.payload field.
+//     - (error):  Occurred error.
+func (ee *EmailEntity) readMemory() ([]byte, error) {
 	if ee.Size == 0 || ee.offset >= len(ee.payload) { return nil, io.EOF }
 
-	emailblock := ee.payload[ee.offset]
 	ee.offset++
-	return &emailblock, nil
+	return []byte(ee.payload[ee.offset]), nil
 }
 
