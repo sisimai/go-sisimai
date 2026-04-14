@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                  _ _    ______ _____ ____ ___ _   _ 
 //  _ __ ___   __ _(_) |  / / ___|_   _|  _ \_ _| \ | |
@@ -11,13 +11,12 @@ import "io"
 
 // readSTDIN is an email reader input from the STDIN.
 //   Returns:
-//     - (*string): Contents of each email in the STDIN.
-//     - (error):   Occurred error.
-func (ee *EmailEntity) readSTDIN() (*string, error) {
+//     - ([]byte): Contents of each email in the STDIN.
+//     - (error):  Occurred error.
+func (ee *EmailEntity) readSTDIN() ([]byte, error) {
 	if ee.Size == 0 || ee.offset >= len(ee.payload) { return nil, io.EOF }
 
-	emailblock := ee.payload[ee.offset]
 	ee.offset++
-	return &emailblock, nil
+	return []byte(ee.payload[ee.offset]), nil
 }
 
