@@ -9,6 +9,7 @@
 // Package "rfc5322" provides functions for email addresses, Date: header, Received: headers, and
 // other headers and messages related to RFC5322. https://datatracker.ietf.org/doc/html/rfc5322
 package rfc5322
+import "bytes"
 import "libsisimai.org/sisimai/v5/moji"
 
 var FieldIndex = []string{
@@ -40,21 +41,24 @@ var woReceived = []string{" invoked by uid", " invoked from network"}
 
 // LooksLikeEmail checks that the text looks like an email.
 //   Arguments:
-//     - mesg (*string): String to be checked that the text looks like an email.
+//     - mesg ([]byte): String to be checked that the text looks like an email.
 //   Returns:
 //     - (bool): true if the text may be an email.
-func LooksLikeEmail(mesg *string) bool {
-	if mesg == nil || len(*mesg) == 0 { return false }
+func LooksLikeEmail(mesg []byte) bool {
+	cw := len(mesg); if cw == 0 || moji.IsText(mesg) == false { return false }
 
-	// - The first 1000 bytes should be a plain text.
-	// - LF or CR or CRLF should be included in the first 1000 bytes.
-	// - The header and body must be separated by a double line break: "\n\n", "\r\n\r\n", or "\r\r".
-	le, cw := len(*mesg), 1000; if le < cw { cw = le - 1 }
-	cv     := (*mesg)[:cw]
+	ci, cx := 0, 0; for j := 0; j < cw; j++ {
+		// - The first 1000 bytes should be a plain text.
+		// - LF or CR or CRLF should be included in the first 1000 bytes.
+		if j  >= 1000 { break }
+		if mesg[j] == '\n' || mesg[j] == '\r' { ci = j; cx = 1; break }
+	}
+	if cx < 1 { return false }
 
-	if moji.IsText(mesg)                                             == false { return false }
-	if moji.ContainsAny(cv, []string{"\n", "\r", "\r\n"})            == false { return false }
-	if moji.ContainsAny(*mesg, []string{"\n\n", "\r\n\r\n", "\r\r"}) == false { return false }
-	return true
+	// - The header and body must be separated by a blank line such as "\n\n".
+	if bytes.Index(mesg[ci:], []byte("\n\n"))     >= 0 { return true }
+	if bytes.Index(mesg[ci:], []byte("\r\n\r\n")) >= 0 { return true }
+	if bytes.Index(mesg[ci:], []byte("\r\r"))     >= 0 { return true }
+	return false
 }
 

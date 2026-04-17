@@ -24,10 +24,11 @@ func(ee *EmailEntity) readMailbox() ([]byte, error) {
 		ee.handle = filehandle // Successfully opened the mbox
 	}
 
-	seekoffset := int64(ee.offset);              if ee.offset  < 0 { seekoffset = 0 }
-	_, nyaan   := ee.handle.Seek(seekoffset, 0); if nyaan != nil { return nil, nyaan  }
-	lineending := 0;                             if ee.newline > 2 { lineending = 1 }
+	seekoffset := int64(ee.offset);              if ee.offset  < 0 { seekoffset = 0    }
+	_, nyaan   := ee.handle.Seek(seekoffset, 0); if nyaan != nil   { return nil, nyaan }
+	lineending := 0;                             if ee.newline > 2 { lineending = 1    }
 	readbuffer := bytes.Buffer{}; readbuffer.Grow(4096)
+	emailblock := make([]byte, 0, 2048)
 	thisheight := 0
 
 	unixmboxio := bufio.NewScanner(ee.handle); for unixmboxio.Scan() {
@@ -36,8 +37,8 @@ func(ee *EmailEntity) readMailbox() ([]byte, error) {
 		if bytes.HasPrefix(e, []byte("From ")) && readbuffer.Len() > 0 {
 			// - The line is a UNIX From line such as "From MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 			// - This UNIX From line is the beginning of the second or later email message
-			ee.offset += readbuffer.Len() + (thisheight * lineending)
-			readbuffer.Reset()
+			emailblock = readbuffer.Bytes(); readbuffer.Reset()
+			ee.offset += len(emailblock) + (thisheight * lineending)
 			break
 		}
 		thisheight += 1
@@ -47,9 +48,10 @@ func(ee *EmailEntity) readMailbox() ([]byte, error) {
 
 	if readbuffer.Len() > 0 {
 		// The last email message in the UNIX mbox
+		emailblock = readbuffer.Bytes()
 		ee.offset += readbuffer.Len() + (thisheight * lineending)
 		if nyaan  := ee.handle.Close(); nyaan != nil { return nil, nyaan }
 	}
-	return readbuffer.Bytes(), nil
+	return emailblock, nil
 }
 

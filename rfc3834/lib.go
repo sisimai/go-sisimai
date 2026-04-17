@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ _____  ___ _____ _  _   
 // |  _ \|  ___/ ___|___ / ( _ )___ /| || |  
@@ -10,11 +10,11 @@
 // responded messages formatted according to RFC3834; Recommendations for Automatic Responses to 
 // Electronic Mail. https://datatracker.ietf.org/doc/html/rfc3834
 package rfc3834
+import "bytes"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
-import "libsisimai.org/sisimai/v5/rfc2045"
 import "libsisimai.org/sisimai/v5/rfc5322"
 import "libsisimai.org/sisimai/v5/address"
 
@@ -29,7 +29,6 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	if bf == nil || bf.IsEmpty() == true { return nil }
 
 	proceedsto := true
-	boundaries := []string{"__SISIMAI_PSEUDO_BOUNDARY__"}
 	lowerlabel := []string{"from", "to", "subject", "auto-submitted", "precedence", "x-apple-action"}
 	lowervalue := map[string]string{}
 	dontdecode := map[string][]string{
@@ -85,32 +84,32 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	}
 	if recipients == 0 { return nil }
 
-	moji.Squeeze(&bf.Payload, '\n') // Squeeze continuous "\n" in the message body
-	bf.Payload  = strings.Trim(bf.Payload, "\n")
-	bodyslices := strings.Split(bf.Payload, "\n")
-	rfc822part := ""
-
-	if bf.Headers["content-type"][0] != "" {
-		// Get the boundary string and set regular expression for matching with the boundary string.
-		if cv := rfc2045.Boundary(bf.Headers["content-type"][0], 0); cv != "" { boundaries[0] = cv }
-	}
+	bodystring := string(bytes.Trim(bytes.ReplaceAll(bf.Payload, []byte("\n\n"), []byte("\n")), "\n"))
+	bodyslices := strings.Split(bodystring, "\n")
+	rfc822part := strings.Builder{}; rfc822part.Grow(512)
 
 	if len(bodyslices) < 5 {
 		// There is vacation message only in the message body
-		bf.Payload  = strings.ReplaceAll(bf.Payload, "\n", " ")
-		v.Diagnosis = moji.Sweep(bf.Payload)
+		bf.Payload  = []byte(strings.Join(strings.Fields(bodystring), " "))
+		v.Diagnosis = string(bf.Payload)
 
 	} else {
+		messagebuf := strings.Builder{}; messagebuf.Grow(len(bf.Payload))
 		for _, e := range bodyslices {
 			// Read vacation messages from the head of the email
-			if e != "" && strings.HasPrefix(e, "--") == false { v.Diagnosis += e + " " }
+			if len(e) < 1 || strings.HasPrefix(e, "--") { continue }
+			messagebuf.WriteString(e); messagebuf.WriteByte(' ')
 		}
+		v.Diagnosis = messagebuf.String()
 	}
 
 	if p1 := strings.Index(bf.Headers["subject"][0], ": "); p1 > -1 {
 		// Pick the original Subject: value from the bounce message
 		if moji.ContainsAny(lowervalue["subject"], autoreply0["subject"]) {
-			rfc822part += "Subject: " + moji.Sweep(bf.Headers["subject"][0][p1 + 2:]) + "\n"
+			// 
+			rfc822part.WriteString("Subject: ")
+			rfc822part.WriteString(bf.Headers["subject"][0][p1 + 2:])
+			rfc822part.WriteByte('\n')
 		}
 	}
 
@@ -119,8 +118,10 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		if moji.Aligned(cv, e) { v.Reason = eb.ReQUIT; break }
 	}
 
-	v.Date      = bf.Headers["date"][0]
-	rfc822part += "To: <" + dscontents[0].Recipient + ">\n"
-	return &siba.RisingUnderway{Digest: dscontents, RFC822: rfc822part}
+	v.Date = bf.Headers["date"][0]
+	rfc822part.WriteString("To: <")
+	rfc822part.WriteString(dscontents[0].Recipient)
+	rfc822part.WriteString(">\n")
+	return &siba.RisingUnderway{Digest: dscontents, RFC822: rfc822part.String()}
 }
 

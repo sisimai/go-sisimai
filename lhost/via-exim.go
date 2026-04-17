@@ -7,6 +7,7 @@
 // |_|_| |_|\___/|___/\__/_/  |_____/_/\_\_|_| |_| |_|
 
 package lhost
+import "bytes"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
@@ -66,14 +67,14 @@ func init() {
 		}
 		if proceedsto < 2 && thirdparty == false { return nil }
 
-		boundaries := []string{
+		boundaries := [][]byte{
 			// deliver.c:6423|          if (bounce_return_body) fprintf(f,
 			// deliver.c:6424|"------ This is a copy of the message, including all the headers. ------\n");
 			// deliver.c:6425|          else fprintf(f,
 			// deliver.c:6426|"------ This is a copy of the message's headers. ------\n");
-			"------ This is a copy of the message, including all the headers. ------",
-			"Content-Type: message/rfc822",
-			"Included is a copy of the message header:\n-----------------------------------------", // MXLogic
+			[]byte("------ This is a copy of the message, including all the headers. ------"),
+			[]byte("Content-Type: message/rfc822"),
+			[]byte("Included is a copy of the message header:\n-----------------------------------------"), // MXLogic
 		}
 		startingof := map[string][]string{
 			// Error text strings which are defined in exim/src/deliver.c
@@ -131,15 +132,15 @@ func init() {
 			"Delay reason: ",
 		}
 
-		if strings.Contains(bf.Payload, "\n----- This ") {
+		if bytes.Contains(bf.Payload, []byte("\n----- This ")) {
 			// There are extremely rare cases where there are only five hyphens.
 			// https://github.com/sisimai/set-of-emails/blob/master/maildir/bsd/lhost-exim-05.eml
 			// ----- This is a copy of the message, including all the headers. ------
-			bf.Payload = strings.Replace(bf.Payload, "\n----- This ", "\n------ This ", 1)
+			bf.Payload = bytes.Replace(bf.Payload, []byte("\n----- This "), []byte("\n------ This "), 1)
 		}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients := 0
 		boundary00 := ""            // Boundary sting
 		anotherone := []string{""}  // Keeping another error messages
@@ -431,12 +432,13 @@ func init() {
 			// remains undelivered. Eventually the mail delivery software will give up,
 			// and when that happens, the message will be returned to you.
 			emailparts[1] += "To: <" + dscontents[0].Recipient + ">\n"
+			bodystring    := string(bf.Payload)
 
-			if cv := moji.Select(bf.Payload, "The date of the message is: ", "\n", 0); cv != "" {
+			if cv := moji.Select(bodystring, "The date of the message is: ", "\n", 0); cv != "" {
 				// The date of the message is:    Thu, 22 Apr 2016 23:34:45 +0900
 				emailparts[1] += "Date: " + strings.Trim(cv, " ") + "\n"
 			}
-			if cv := moji.Select(bf.Payload, "The subject of the message is: ", "\n", 0); cv != "" {
+			if cv := moji.Select(bodystring, "The subject of the message is: ", "\n", 0); cv != "" {
 				// The date of the message is:    Thu, 22 Apr 2016 23:34:45 +0900
 				emailparts[1] += "Subject: " + strings.Trim(cv, " ") + "\n"
 			}

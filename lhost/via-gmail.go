@@ -75,7 +75,7 @@ func init() {
 		if strings.Contains(bf.Headers["from"][0], "<mailer-daemon@googlemail.com>")  == false { return nil }
 		if strings.Contains(bf.Headers["subject"][0], "Delivery Status Notification") == false { return nil }
 
-		boundaries := []string{"----- Original message -----", "----- Message header follows -----"}
+		boundaries := [][]byte{[]byte("----- Original message -----"), []byte("----- Message header follows -----")}
 		startingof := map[string][]string{
 			"message": []string{"Delivery to the following recipient"},
 			"error":   []string{"The error that the other server returned was:"},
@@ -154,7 +154,7 @@ func init() {
 		}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

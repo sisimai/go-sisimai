@@ -8,6 +8,7 @@
 //                                                              |___/                             
 
 package lhost
+import "bytes"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
@@ -38,12 +39,12 @@ func init() {
 			"Non recapitabile", // it-CH
 			"Olevererbart",     // sv-SE
 		}
-		boundaries := []string{
-			"Original Message Headers",
-			"Original message headers:",             // en-US
-			"tes de message d'origine :",            // fr-FR/En-têtes de message d'origine
-			"Intestazioni originali del messaggio:", // it-CH
-			"Ursprungshuvuden:",                     // sv-SE
+		boundaries := [][]byte{
+			[]byte("Original Message Headers"),
+			[]byte("Original message headers:"),             // en-US
+			[]byte("tes de message d'origine :"),            // fr-FR/En-têtes de message d'origine
+			[]byte("Intestazioni originali del messaggio:"), // it-CH
+			[]byte("Ursprungshuvuden:"),                     // sv-SE
 		}
 		startingof := map[string][]string{
 			"error":   []string{" RESOLVER.", " QUEUE."},
@@ -79,13 +80,14 @@ func init() {
 		}
 		if moji.ContainsAny(bf.Headers["subject"][0], emailtitle) { proceedsto++ }
 		if moji.ContainsAny(bf.Headers["from"][0], mailsender)    { proceedsto++ }
-		if moji.ContainsAny(bf.Payload, startingof["error"])      { proceedsto++ }
-		if moji.ContainsAny(bf.Payload, startingof["message"])    { proceedsto++ }
+		if bytes.Contains(bf.Payload, []byte(" RESOLVER."))       { proceedsto++ }
+		if bytes.Contains(bf.Payload, []byte(" QUEUE."))          { proceedsto++ }
+		if moji.ContainsAny(string(bf.Payload), startingof["message"])    { proceedsto++ }
 		if len(bf.Headers["content-language"]) > 0                { proceedsto++ }
 		if proceedsto < 2 { return nil }
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

@@ -39,7 +39,7 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
+		boundaries := [][]byte{[]byte("Content-Type: message/rfc822"), []byte("Content-Type: text/rfc822-headers")}
 		startingof := map[string][]string{
 			// savemail.c:1040|if (printheader && !putline("   ----- Transcript of session follows -----\n",
 			// savemail.c:1041|          mci))
@@ -54,7 +54,7 @@ func init() {
 		permessage := map[string]string{}   // Store values of each Per-Message field
 		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		readslices := make([]string, 1, 32) // Copy each line for later reference
 		esmtpreply := make([]string, 0, 2)  // Reply messages from the remote server on an SMTP session
 		anotherset := map[string]string{}   // Another error information

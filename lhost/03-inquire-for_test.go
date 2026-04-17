@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -31,17 +31,17 @@ func TestInquireFor(t *testing.T) {
 				"content-type": []string{"text/plain"},
 				"subject": []string{"Delivery failure"},
 			},
-			Payload: "Nekochan",
+			Payload: []byte("Nekochan"),
 			RFC822:  map[string][]string{},
 			Digest:  []siba.DeliveryMatter{},
 		}
 		cx++; if cv := InquireFor[e](nil); cv != nil { t.Errorf("%s[%s]() did not return nil", fn, e) }
 		cx++; if cv := InquireFor[e](bf);  cv != nil { t.Errorf("%s[%s]() did not return nil", fn, e) }
 
-		bf.Payload = ""
+		bf.Payload = []byte("")
 		cx++; if cv := InquireFor[e](bf);  cv != nil { t.Errorf("%s[%s]() did not return nil", fn, e) }
 
-		bf.Payload = "nekochan"
+		bf.Payload = []byte("nekochan")
 		bf.Headers = map[string][]string{}
 		cx++; if cv := InquireFor[e](bf);  cv != nil { t.Errorf("%s[%s]() did not return nil", fn, e) }
 	}

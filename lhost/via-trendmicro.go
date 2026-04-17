@@ -7,6 +7,7 @@
 // |_|_| |_|\___/|___/\__/_/    |_||_|  \___|_| |_|\__,_|_|  |_|_|\___|_|  \___/ 
 
 package lhost
+import "bytes"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
@@ -30,13 +31,13 @@ func init() {
 		switch {
 			case strings.HasPrefix(bf.Headers["from"][0], `"InterScan`):
 			case strings.Contains(bf.Headers["content-type"][0], "InterScan"):
-			case strings.Contains(bf.Payload, " InterScan "):
+			case bytes.Contains(bf.Payload, []byte(" InterScan ")):
 			default: return nil
 		}
 
-		boundaries := []string{"Content-Type: message/rfc822"}
+		boundaries := [][]byte{[]byte("Content-Type: message/rfc822")}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients := uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

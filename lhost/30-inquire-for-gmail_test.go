@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package lhost
 
@@ -35,7 +35,7 @@ func TestInquire30(t *testing.T) {
 		bo, _ := io.ReadAll(eo.Body)
 		bf    := &siba.BeforeFact{
 			Headers: rfc5322.Headers(&eo.Header),
-			Payload: string(bo),
+			Payload: bo,
 		}
 
 		cv = InquireFor[en](bf)

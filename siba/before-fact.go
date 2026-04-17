@@ -16,12 +16,12 @@ type BeforeFact struct {
 	Errors  []NotDecoded        // All the errors and warnings
 	Catch   any                 // Any data structure returned by the callback function [0]
 	Sender  string              // Unix FROM line ("From ")
-	Payload string              // Entire message body of the bounce mail
+	Payload []byte              // Entire message body of the bounce mail
 }
 
 // *BeforeFact.IsEmpty returns true when Headers or body is empty.
 func(be *BeforeFact) IsEmpty() bool {
-	if len(be.Headers) == 0 || be.Payload == "" { return true }
+	if len(be.Headers) == 0 || len(be.Payload) == 0 { return true }
 	return false
 }
 

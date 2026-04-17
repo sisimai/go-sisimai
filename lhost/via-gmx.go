@@ -30,12 +30,12 @@ func init() {
 		// X-UI-Out-Filterresults: unknown:0;
 		if len(bf.Headers["x-gmx-antispam"]) == 0 { return nil }
 
-		boundaries := []string{"--- The header of the original message is following. ---"}
+		boundaries := [][]byte{[]byte("--- The header of the original message is following. ---")}
 		startingof := map[string][]string{
 			"message": []string{"This message was created automatically by mail delivery software"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

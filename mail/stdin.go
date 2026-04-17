@@ -16,7 +16,8 @@ import "io"
 func (ee *EmailEntity) readSTDIN() ([]byte, error) {
 	if ee.Size == 0 || ee.offset >= len(ee.payload) { return nil, io.EOF }
 
+	emailblock := ee.payload[ee.offset]
 	ee.offset++
-	return []byte(ee.payload[ee.offset]), nil
+	return emailblock, nil
 }
 

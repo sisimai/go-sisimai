@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ____  ____   
 // | | |__   ___  ___| |_   / /\ \/ / /_  
@@ -27,11 +27,11 @@ func init() {
 		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], "There was an error sending your mail") == false { return nil }
 
-		boundaries := []string{"The attachment contains the original mail headers"}
+		boundaries := [][]byte{[]byte("The attachment contains the original mail headers")}
 		startingof := map[string][]string{"message": []string{"We had trouble delivering your message. Full details follow:"}}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

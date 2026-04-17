@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ____     __        _                
 // | | |__   ___  ___| |_   / /\ \   / /__ _ __(_)_______  _ __  
@@ -7,6 +7,7 @@
 // |_|_| |_|\___/|___/\__/_/      \_/ \___|_|  |_/___\___/|_| |_|
 
 package lhost
+import "bytes"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
@@ -30,14 +31,14 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Original Message:", "Message details:"}
+		boundaries := [][]byte{[]byte("Original Message:"), []byte("Message details:")}
 		nooriginal := false
 		startingof := map[string][]string{"message": []string{"Error: "}}
 		messagesof := map[string][]string{
 			eb.ReUSER: []string{"550 - Requested action not taken: no such user here", "No valid recipients"},
 		}
 
-		if strings.Contains(bf.Payload, boundaries[1]) {
+		if bytes.Contains(bf.Payload, boundaries[1]) {
 			// Message details:
 			//   Subject: Test message
 			//   Sent date: Wed Apr 29 23:34:45 GMT 2013
@@ -46,13 +47,13 @@ func init() {
 			//   From: sironeko-nekochan-nyaaaaaaaan-nyan@sabineko.example.com
 			// Convert strings above to RFC822 email headers
 			nooriginal = true
-			bf.Payload = strings.Replace(bf.Payload, "Sent date: ", "Date: ", 1)
-			bf.Payload = strings.Replace(bf.Payload, "MAIL FROM: ", "Return-Path: ", 1)
-			bf.Payload = strings.Replace(bf.Payload, "RCPT TO: ",   "To: ", 1)
+			bf.Payload = bytes.Replace(bf.Payload, []byte("Sent date: "), []byte("Date: "), 1)
+			bf.Payload = bytes.Replace(bf.Payload, []byte("MAIL FROM: "), []byte("Return-Path: "), 1)
+			bf.Payload = bytes.Replace(bf.Payload, []byte("RCPT TO: "),   []byte("To: "), 1)
 		}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		readcursor := uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

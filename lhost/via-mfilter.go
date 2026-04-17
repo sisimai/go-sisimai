@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      __         _____ ___ _   _____ _____ ____  
 // | | |__   ___  ___| |_   / / __ ___ |  ___|_ _| | |_   _| ____|  _ \ 
@@ -7,6 +7,7 @@
 // |_|_| |_|\___/|___/\__/_/ |_| |_| |_|_|   |___|_____|_| |_____|_| \_\
 
 package lhost
+import "bytes"
 import "strings"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
@@ -23,22 +24,21 @@ func init() {
 		// - Digital Arts m-FILTER: https://www.daj.jp/bs/mf/
 		if bf == nil || bf.IsEmpty() || bf.Headers["subject"][0]  != "failure notice" { return nil }
 
-		boundaries := []string{"-------original message", "-------original mail info"}
+		switch {
+			case len(bf.Headers["x-mailer"]) > 1 && bf.Headers["x-mailer"][0] == "m-FILTER":
+			case bytes.Contains(bf.Payload, []byte("\n-------original m")):
+			case bytes.Contains(bf.Payload, []byte("\n-------SMTP command")):
+			case bytes.Contains(bf.Payload, []byte("\n-------server message")):
+			default: return nil
+		}
+
+		boundaries := [][]byte{[]byte("-------original message"), []byte("-------original mail info")}
 		startingof := map[string][]string{
 			"command": []string{"-------SMTP command"},
 			"error":   []string{"-------server message"},
 		}
-
-		switch {
-			case len(bf.Headers["x-mailer"]) > 1 && bf.Headers["x-mailer"][0] == "m-FILTER":
-			case moji.ContainsAny(bf.Payload, boundaries):
-			case moji.ContainsAny(bf.Payload, startingof["command"]):
-			case moji.ContainsAny(bf.Payload, startingof["error"]):
-			default: return nil
-		}
-
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		readcursor := uint8(0)              // Points the current cursor position
 		recipients := 0                     // The number of 'Final-Recipient' header
 		markingset := [2]bool{false, false} // [diagnosis, command]

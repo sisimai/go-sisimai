@@ -37,13 +37,13 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Original message follows.", "Message headers follow"}
+		boundaries := [][]byte{[]byte("Original message follows."), []byte("Message headers follow")}
 		startingof := map[string][]string{
 			// https://github.com/corecode/dma/blob/ffad280aa40c242aa9a2cb9ca5b1b6e8efedd17e/mail.c#L84
 			"message": []string{"This is the DragonFly Mail Agent "},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

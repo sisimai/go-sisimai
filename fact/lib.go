@@ -34,14 +34,14 @@ import "libsisimai.org/sisimai/v5/smtp/failure"
 
 // Rise() returns []siba.Fact when it successfully decoded bounce messages.
 //   Arguments:
-//     - email (*string):           Entire email message.
+//     - email ([]byte):            Entire email message.
 //     - origin (string):           Path to the original bounce email file.
 //     - args (*siba.DecodingArgs): Arguments for decoding(delivered, vacation, callbacks).
 //   Returns:
 //     - ([]siba.Fact):       List of successfully decoded bounce messages.
 //     - ([]siba.NotDecoded): List of occurred errors.
-func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, []siba.NotDecoded) {
-	if email == nil || len(*email) < 1 || rfc5322.LooksLikeEmail(email) == false {
+func Rise(email []byte, origin string, args *siba.DecodingArgs) ([]siba.Fact, []siba.NotDecoded) {
+	if len(email) < 1 || rfc5322.LooksLikeEmail(email) == false {
 		// The email message is empty or is a binary
 		ce := *siba.MakeNotDecoded("the file may not be a text file", true); ce.Email(origin)
 		return nil, []siba.NotDecoded{ce}

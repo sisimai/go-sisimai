@@ -40,14 +40,14 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{
+		boundaries := [][]byte{
 			// qmail-send.c:qmail_puts(&qqt,*sender.s ? "--- Below this line is a copy of the message.\n\n" :...
-			"--- Below this line is a copy of the message.",     // qmail-1.03
-			"--- Below this line is a copy of the mail header.",
-			"--- Below the next line is a copy of the message.", // The followings are the qmail clone
-			"--- Mensaje original adjunto.",
-			"Content-Type: message/rfc822",
-			"Original message follows.",
+			[]byte("--- Below this line is a copy of the message."),     // qmail-1.03
+			[]byte("--- Below this line is a copy of the mail header."),
+			[]byte("--- Below the next line is a copy of the message."), // The followings are the qmail clone
+			[]byte("--- Mensaje original adjunto."),
+			[]byte("Content-Type: message/rfc822"),
+			[]byte("Original message follows."),
 		}
 		startingof := map[string][]string{
 			//  qmail-remote.c:248|    if (code >= 500) {
@@ -105,7 +105,7 @@ func init() {
 		}
 
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		anotherone := []string{""}        // Keeping another error messages
 		rightindex, recipients, readcursor := uint8(0), uint8(0), uint8(0)
 

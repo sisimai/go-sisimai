@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package arf
 
@@ -34,7 +34,7 @@ func TestIsARF(t *testing.T) {
 		bo, _ := io.ReadAll(eo.Body)
 		bf    := &siba.BeforeFact{
 			Headers: rfc5322.Headers(&eo.Header),
-			Payload: string(bo),
+			Payload: bo,
 		}
 
 		cx++; if isARF(bf) == false { t.Errorf("%s(%s) returns false", fn, e) }
@@ -58,7 +58,7 @@ func TestInquire(t *testing.T) {
 		bo, _ := io.ReadAll(eo.Body)
 		bf    := &siba.BeforeFact{
 			Headers: rfc5322.Headers(&eo.Header),
-			Payload: string(bo),
+			Payload: bo,
 		}
 
 		cv = Inquire(bf)

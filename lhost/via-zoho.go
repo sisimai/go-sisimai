@@ -23,12 +23,12 @@ func init() {
 		// - Zoho Mail: https://www.zoho.com/mail/
 		if bf == nil || bf.IsEmpty() || len(bf.Headers["x-zohomail"]) == 0 { return nil }
 
-		boundaries := []string{"\n\nReceived:"}
+		boundaries := [][]byte{[]byte("\n\nReceived:")}
 		startingof := map[string][]string{
 			"message": []string{"This message was created automatically by mail delivery"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, true)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, true)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

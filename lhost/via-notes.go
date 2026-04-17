@@ -26,7 +26,7 @@ func init() {
 		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Undeliverable message") == false { return nil }
 
-		boundaries := []string{"------- Returned Message --------"}
+		boundaries := [][]byte{[]byte("------- Returned Message --------")}
 		startingof := map[string][]string{"message": []string{"------- Failure Reasons "} }
 		messagesof := map[string][]string{
 			eb.ReUSER: []string{
@@ -36,7 +36,7 @@ func init() {
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		notdecoded := make([]siba.NotDecoded, 0)
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

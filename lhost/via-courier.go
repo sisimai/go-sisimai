@@ -36,7 +36,7 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
+		boundaries := [][]byte{[]byte("Content-Type: message/rfc822"), []byte("Content-Type: text/rfc822-headers")}
 		startingof := map[string][]string{
 			// https://www.courier-mta.org/courierdsn.html
 			// courier/module.dsn/dsn*.txt
@@ -55,7 +55,7 @@ func init() {
 		permessage := map[string]string{}   // Store values of each Per-Message field
 		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		readslices := make([]string, 1, 32) // Copy each line for later reference
 		thecommand := ""                    // An SMTP command name begins with the string ">>>"
 		recipients, readcursor := uint8(0), uint8(0)

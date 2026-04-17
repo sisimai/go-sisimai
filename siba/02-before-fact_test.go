@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package siba
 
@@ -22,7 +22,7 @@ func TestBeforeFact(t *testing.T) {
 	cv := &BeforeFact{
 		Sender:  "From <mailer-daemon@example.jp>",
 		Headers: map[string][]string{"Subject": []string{"Delivery Failure"}},
-		Payload: "Sorry, the email delivery failed",
+		Payload: []byte("Sorry, the email delivery failed"),
 		RFC822:  map[string][]string{"To": []string{"<postmaster@example.org>"}},
 		Digest:  []DeliveryMatter{DeliveryMatter{Action: eb.AeFAIL}},
 		Catch:   nil,
@@ -45,7 +45,7 @@ func TestBeforeFact(t *testing.T) {
 	cx++; if cv.IsEmpty() == false { t.Errorf("%s.IsEmpty() returns false", fn) }
 	cx++; if cv.HasDone() == false { t.Errorf("%s.HasDone() returns false", fn) }
 
-	cv.Payload = ""
+	cv.Payload = []byte{}
 	cx++; if cv.IsEmpty() == false { t.Errorf("%s.IsEmpty() returns false", fn) }
 	cx++; if cv.HasDone() == false { t.Errorf("%s.HasDone() returns false", fn) }
 

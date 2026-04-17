@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
 
@@ -9,7 +9,7 @@ package message
 //   |_|\___||___/\__/_/ |_| |_| |_|\___||___/___/\__,_|\__, |\___|
 //                                                      |___/      
 import "testing"
-import "strings"
+import "bytes"
 import "libsisimai.org/sisimai/v5/eb"
 
 func TestTidy(t *testing.T) {
@@ -64,9 +64,11 @@ Subject: Nyaaaan
 Nyaaan
 
 `
-	cv := tidy(&ae)
-	cx++; if len(*cv) == 0 { t.Errorf("%s() returns empty", fn) }
-	cx++; if strings.Contains(*cv, "Content-Type: text/plain") == false { t.Errorf("%s() does not contain Content-Type heaader", fn) }
+	cv := tidy([]byte(ae))
+	cx++; if len(cv) == 0 { t.Errorf("%s() returns empty", fn) }
+	cx++; if bytes.Contains(cv, []byte("Content-Type: text/plain")) == false {
+		t.Errorf("%s() does not contain Content-Type heaader", fn)
+	}
 
 	we := []struct {tidied string; examples []string}{
 		{"Action: " + eb.AeFAIL, []string{"Action: FAILED", "ACTION:   Failed"}},
@@ -97,14 +99,14 @@ Nyaaan
 
 	for _, e := range we {
 		for _, f := range e.examples {
-			cx++; if cv = tidy(&f); strings.Contains(*cv, e.tidied) == false {
-				t.Errorf("%s(%s) failed to tidy and returns [%s]", fn, f, *cv)
+			cx++; if cv = tidy([]byte(f)); bytes.Contains(cv, []byte(e.tidied)) == false {
+				t.Errorf("%s(%s) failed to tidy and returns [%s]", fn, f, cv)
 			}
 		}
 	}
 
-	cw := ""
-	cx += 1; if cv := tidy(&cw); cv != nil { t.Errorf("%s() returns %s", fn, *cv) }
+	cw := []byte("")
+	cx += 1; if cv := tidy(cw); len(cv) > 0 { t.Errorf("%s() returns %s", fn, cv) }
 
 	t.Logf("The number of tests = %d", cx)
 }

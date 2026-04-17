@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ ____ _________  ____  
 // |  _ \|  ___/ ___| ___|___ /___ \|___ \ 
@@ -7,45 +7,48 @@
 // |_| \_\_|   \____|____/____/_____|_____|
 
 package rfc5322
+import "bytes"
 import "strings"
 import "libsisimai.org/sisimai/v5/moji"
 
 // Part splits the entire message body given as the 1st argument into error message lines and the
 // original message part only include email headers.
 //   Arguments:
-//     - email (*string):  Entire message body.
-//     - cutby ([]string): String list of the message/rfc822 or the beginning of the original message part.
+//     - email ([]byte):   Entire message body.
+//     - cutby ([][]byte): String list of the message/rfc822 or the beginning of the original message part.
 //     - keeps (bool):     Flag for keeping strings after "\n\n".
 //   Returns:
 //     - ([2]string): [2]string{"Error message lines", "The original message"}
-func Part(email *string, cutby []string, keeps bool) [2]string {
-	if email == nil || *email == "" || len(cutby) == 0 { return [2]string{} }
+func Part(email []byte, cutby [][]byte, keeps bool) [2]string {
+	if len(email) == 0 || len(cutby) == 0 { return [2]string{} }
 
 	positionor := -1 // A position of the boundary string
-	formerbuff := strings.Builder{}; formerbuff.Grow(len(*email) / 2) // The error message part
-	latterbuff := strings.Builder{}; latterbuff.Grow(len(*email) / 2) // The original message part
+	bytelength := len(email) / 2
+	formerbuff := bytes.Buffer{}; formerbuff.Grow(bytelength) // The error message part
+	latterbuff := bytes.Buffer{}; latterbuff.Grow(bytelength) // The original message part
 
 	for _, e := range cutby {
 		// Find a boundary string(2nd argument)] from the 1st argument
-		positionor = strings.Index(*email, e); if positionor > 0 { break }
+		positionor = bytes.Index(email, e); if positionor > 0 { break }
 	}
 
 	if positionor > 0 {
 		// There is the boundary string in the message body
-		formerbuff.WriteString((*email)[:positionor])
-		rfc822part := strings.Split((*email)[positionor:], "\n\n")
+		formerbuff.Write(email[:positionor])
+		rfc822part := bytes.Split(email[positionor:], []byte("\n\n"))
 
 		for _, e := range rfc822part {
 			// Find a part including "Received:", "From:" header
-			if moji.ContainsAny(e, []string{"Received: ", "From: "}) == false { continue }
-			latterbuff.WriteString(e); break
+			if bytes.Contains(e, []byte("Received: ")) || bytes.Contains(e, []byte("From: ")) {
+				latterbuff.Write(e); break
+			}
 		}
-		if latterbuff.Len() == 0 { latterbuff.WriteString((*email)[positionor:]) }
+		if latterbuff.Len() == 0 { latterbuff.Write(email[positionor:]) }
 
 	} else {
 		// Substitute the entire message to the former part when the boundary string is not included
 		// in the 1st argument
-		formerbuff.WriteString(*email)
+		formerbuff.Write(email)
 	}
 
 	latterpart := latterbuff.String(); if latterpart != "" {

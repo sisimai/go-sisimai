@@ -33,7 +33,7 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"    Below is a copy of the original message:"}
+		boundaries := [][]byte{[]byte("    Below is a copy of the original message:")}
 		startingof := map[string][]string{
 			// http://www.openbsd.org/cgi-bin/man.cgi?query=smtpd&sektion=8
 			// opensmtpd-5.4.2p1/smtpd/
@@ -63,7 +63,7 @@ func init() {
 			"message": []string{"    This is the MAILER-DAEMON, please DO NOT REPLY to this"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

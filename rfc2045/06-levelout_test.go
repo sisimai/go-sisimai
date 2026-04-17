@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
 
@@ -8,12 +8,13 @@ package rfc2045
 //   | |  __/\__ \ |_ / / |  _ <|  _|| |___ / __/| |_| |__   _|__) |
 //   |_|\___||___/\__/_/  |_| \_\_|   \____|_____|\___/   |_||____/ 
 import "testing"
+import "bytes"
 
 func TestLevelOut(t *testing.T) {
 	fn := "rfc2045.levelout"
 	cx := 0
 	ct := `multipart/mixed; boundary="b0Nvs+XKfKLLRaP/Qo8jZhQPoiqeWi3KWPXMgw=="`
-	ae := `--b0Nvs+XKfKLLRaP/Qo8jZhQPoiqeWi3KWPXMgw==
+	ae := []byte(`--b0Nvs+XKfKLLRaP/Qo8jZhQPoiqeWi3KWPXMgw==
 Content-Description: "error-message"
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -43,17 +44,17 @@ Content-Type: message/delivery-status
 Reporting-MTA: dns; server-15.bemta-3.messagelabs.com
 Arrival-Date: Tue, 23 Dec 2014 20:39:34 +0000
 
-`
-	cv, ce := levelout(ct, &ae)
+`)
+	cv, ce := levelout(ct, ae)
 	for _, e := range cv {
-		cx++; if len(cv) == 0             { t.Errorf("%s(%s) returns an empty list", fn, ae[:20]) }
-		cx++; if ce != nil && len(ce) > 0 { t.Errorf("%s(%s) returns error: %v", fn, ae[:20], ce) }
-		cx++; if e[0]   == "" { t.Errorf("%s(%s)[0] is empty", fn, ae[:20]) }
-		cx++; if e[2]   == "" { t.Errorf("%s(%s)[2] is empty", fn, ae[:20]) }
+		cx++; if len(cv) == 0                  { t.Errorf("%s(%s) returns an empty list", fn, ae[:20]) }
+		cx++; if ce != nil && len(ce) > 0      { t.Errorf("%s(%s) returns error: %v", fn, ae[:20], ce) }
+		cx++; if bytes.Equal(e[0], []byte("")) { t.Errorf("%s(%s)[0] is empty", fn, ae[:20]) }
+		cx++; if bytes.Equal(e[2], []byte("")) { t.Errorf("%s(%s)[2] is empty", fn, ae[:20]) }
 	}
 
-	ae = ""
-	cv, ce = levelout("", &ae)
+	ae = []byte("")
+	cv, ce = levelout("", ae)
 	cx++; if cv != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
 	cx++; if ce != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
 

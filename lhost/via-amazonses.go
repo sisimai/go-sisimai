@@ -34,8 +34,8 @@ func init() {
 		// --
 		// If you wish to stop receiving notifications from this topic, please click or visit the link below to unsubscribe:
 		// https://sns.us-west-2.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:us-west-2:1...
-		sespayload := bf.Payload
-		if cv := moji.Select(moji.LHS + bf.Payload, "", "\n\n--\n", 0); cv != "" { sespayload = cv }
+		sespayload := string(bf.Payload)
+		if cv := moji.Select(moji.LHS + sespayload, "", "\n\n--\n", 0); cv != "" { sespayload = cv }
 		if strings.Contains(sespayload, "!\n ") { sespayload = strings.ReplaceAll(sespayload, "!\n ", "") }
 		if p1 := strings.Index(sespayload, `"Message"`); p1 > 0 {
 			// The JSON included in the email is a format like the following:

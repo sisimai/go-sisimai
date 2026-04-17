@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
 
@@ -8,13 +8,13 @@ package rfc2045
 //   | |  __/\__ \ |_ / / |  _ <|  _|| |___ / __/| |_| |__   _|__) |
 //   |_|\___||___/\__/_/  |_| \_\_|   \____|_____|\___/   |_||____/ 
 import "testing"
-import "strings"
+import "bytes"
 
 func TestMakeFlat(t *testing.T) {
 	fn := "rfc2045.MakeFlat"
 	cx := 0
 	ct := `multipart/report; report-type=delivery-status; boundary="NekoNyaan--------1"` 
-	ae := `--NekoNyaan--------1
+	ae := []byte(`--NekoNyaan--------1
 Content-Type: multipart/related; boundary="NekoNyaan--------2"
 
 --NekoNyaan--------2
@@ -62,20 +62,20 @@ Content-Type: message/rfc822
 Received: ...
 
 --NekoNyaan--------2--
-`
-	cv, ce := MakeFlat(ct, &ae)
-	cx++; if len(*cv) == 0              { t.Errorf("%s(%s, %s) returns empty", fn, ct, ae[:20]) }
-	cx++; if ce != nil && len(ce) != 0  { t.Errorf("%s(%s, %s) returns error: %v", fn, ct, ae[:20], ce) }
-	cx++; if len(*cv) > len(ae)         { t.Errorf("%s(%s, %s) returns too short", fn, ct, ae[:20]) }
-	cx++; if strings.Contains(*cv, "sironeko")  == false { t.Errorf("%s(%s, %s) does not contain sironeko", fn, ct, ae[:20]) }
-	cx++; if strings.Contains(*cv, "<html>")    == true  { t.Errorf("%s(%s, %s) contains <html>", fn, ct, ae[:20]) }
-	cx++; if strings.Contains(*cv, "4AAQSkZJR") == true  { t.Errorf("%s(%s, %s) contains 4AAQSkZJ", fn, ct, ae[:20]) }
-	cx++; if strings.Contains(*cv, "kijitora@") == false { t.Errorf("%s(%s, %s) does not contain kijitora@", fn, ct, ae[:20]) }
-	cx++; if strings.Contains(*cv, "Received:") == false { t.Errorf("%s(%s, %s) does not contain Received:", fn, ct, ae[:20]) }
+`)
+	cv, ce := MakeFlat(ct, ae)
+	cx++; if len(cv) == 0              { t.Errorf("%s(%s, %s) returns empty", fn, ct, ae[:20]) }
+	cx++; if ce != nil && len(ce) != 0 { t.Errorf("%s(%s, %s) returns error: %v", fn, ct, ae[:20], ce) }
+	cx++; if len(cv) > len(ae)         { t.Errorf("%s(%s, %s) returns too short", fn, ct, ae[:20]) }
+	cx++; if bytes.Contains(cv, []byte("sironeko"))  == false { t.Errorf("%s(%s, %s) does not contain sironeko", fn, ct, ae[:20]) }
+	cx++; if bytes.Contains(cv, []byte("<html>"))    == true  { t.Errorf("%s(%s, %s) contains <html>", fn, ct, ae[:20]) }
+	cx++; if bytes.Contains(cv, []byte("4AAQSkZJR")) == true  { t.Errorf("%s(%s, %s) contains 4AAQSkZJ", fn, ct, ae[:20]) }
+	cx++; if bytes.Contains(cv, []byte("kijitora@")) == false { t.Errorf("%s(%s, %s) does not contain kijitora@", fn, ct, ae[:20]) }
+	cx++; if bytes.Contains(cv, []byte("Received:")) == false { t.Errorf("%s(%s, %s) does not contain Received:", fn, ct, ae[:20]) }
 
-	ae = ""; cx++; if cv, _ = MakeFlat("", &ae); cv!= nil { t.Errorf("%s('', '')  did not return nil", fn) }
-	ae = "2";cx++; if cv, _ = MakeFlat("", &ae); cv!= nil { t.Errorf("%s('', '2') did not return nil", fn) }
-	ae = ""; cx++; if cv, _ = MakeFlat("2", &ae);cv!= nil { t.Errorf("%s('2', '') did not return nil", fn) }
+	ae = []byte(""); cx++; if cv, _ = MakeFlat("", ae); cv!= nil { t.Errorf("%s('', '')  did not return nil", fn) }
+	ae = []byte("2");cx++; if cv, _ = MakeFlat("", ae); cv!= nil { t.Errorf("%s('', '2') did not return nil", fn) }
+	ae = []byte(""); cx++; if cv, _ = MakeFlat("2", ae);cv!= nil { t.Errorf("%s('2', '') did not return nil", fn) }
 
 	t.Logf("The number of tests = %d", cx)
 }

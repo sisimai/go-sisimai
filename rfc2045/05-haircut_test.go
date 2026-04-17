@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc2045
 
@@ -8,12 +8,12 @@ package rfc2045
 //   | |  __/\__ \ |_ / / |  _ <|  _|| |___ / __/| |_| |__   _|__) |
 //   |_|\___||___/\__/_/  |_| \_\_|   \____|_____|\___/   |_||____/ 
 import "testing"
-import "strings"
+import "bytes"
 
 func TestHairCut(t *testing.T) {
 	fn := "rfc2045.haircut"
 	cx := 0
-	ae := `Content-Description: "error-message"
+	ae := []byte(`Content-Description: "error-message"
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -23,15 +23,15 @@ I was unable to deliver your message to the following addresses:
 
 neko@dest.example.net
 
-Reason: 550 neko@dest.example.net... No such user`
+Reason: 550 neko@dest.example.net... No such user`)
 
-	cv := haircut(&ae, false)
+	cv := haircut(ae, false)
 	cx++; if len(cv) == 0 { t.Errorf("%s(%s) returns an empty list", fn, ae[:20]) }
-	cx++; if cv[0] != `text/plain; charset="utf-8"` { t.Errorf("%s(%s)[0] returns %s", fn, ae[:20], cv[0]) }
-	cx++; if cv[1] != "quoted-printable"            { t.Errorf("%s(%s)[1] returns %s", fn, ae[:20], cv[1]) }
-	cx++; if cv[2] == ""                            { t.Errorf("%s(%s)[2] returns empty", fn, ae[:20])     }
+	cx++; if !bytes.Equal(cv[0], []byte(`text/plain; charset="utf-8"`)) { t.Errorf("%s(%s)[0] returns %s", fn, ae[:20], cv[0]) }
+	cx++; if !bytes.Equal(cv[1], []byte("quoted-printable"))            { t.Errorf("%s(%s)[1] returns %s", fn, ae[:20], cv[1]) }
+	cx++; if  bytes.Equal(cv[2], []byte("")) == true                    { t.Errorf("%s(%s)[2] returns empty", fn, ae[:20])     }
 
-	ae  = `Content-Description: "error-message"
+	ae  = []byte(`Content-Description: "error-message"
 Content-Type: text/plain; charset="UTF-8"; boundary="nekochan"
 Content-Transfer-Encoding: quoted-printable
 
@@ -41,19 +41,19 @@ I was unable to deliver your message to the following addresses:
 
 neko@dest.example.net
 
-Reason: 550 neko@dest.example.net... No such user`
-	cv  = haircut(&ae, false)
+Reason: 550 neko@dest.example.net... No such user`)
+	cv  = haircut(ae, false)
 	cx++; if len(cv) == 0 { t.Errorf("%s(%s) returns an empty list", fn, ae[:20]) }
-	cx++; if strings.Contains(cv[0], "nekochan") == false { t.Errorf("%s(%s)[0] returns %s", fn, ae[:20], cv[0]) }
-	cx++; if cv[1] != "quoted-printable"                  { t.Errorf("%s(%s)[1] returns %s", fn, ae[:20], cv[1]) }
-	cx++; if cv[2] == ""                                  { t.Errorf("%s(%s)[2] returns empty", fn, ae[:20])     }
+	cx++; if bytes.Contains(cv[0], []byte("nekochan"))      == false { t.Errorf("%s(%s)[0] returns %s", fn, ae[:20], cv[0]) }
+	cx++; if bytes.Equal(cv[1], []byte("quoted-printable")) == false { t.Errorf("%s(%s)[1] returns %s", fn, ae[:20], cv[1]) }
+	cx++; if bytes.Equal(cv[2], []byte(""))                 == true  { t.Errorf("%s(%s)[2] returns empty", fn, ae[:20])     }
 
-	cw := "nekochan"
-	cv  = haircut(&cw, false)
+	cw := []byte("nekochan")
+	cv  = haircut(cw, false)
 	cx++; if len(cv) == 0  { t.Errorf("%s(%s) returns an empty list", fn, cw) }
 	cx++; if len(cv) != 2  { t.Errorf("%s(%s) returns invalid list: %d", fn, cw, len(cv)) }
-	cx++; if cv[0]   != "" { t.Errorf("%s(%s)[0] returns %s", fn, cw, cv[0]) }
-	cx++; if cv[1]   != "" { t.Errorf("%s(%s)[1] returns %s", fn, cw, cv[1]) }
+	cx++; if bytes.Equal(cv[0], []byte("")) == false { t.Errorf("%s(%s)[0] returns %s", fn, cw, cv[0]) }
+	cx++; if bytes.Equal(cv[1], []byte("")) == false { t.Errorf("%s(%s)[1] returns %s", fn, cw, cv[1]) }
 
 	t.Logf("The number of tests = %d", cx)
 }

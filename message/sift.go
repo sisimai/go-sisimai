@@ -27,7 +27,7 @@ import "libsisimai.org/sisimai/v5/rfc5322"
 func sift(bf *siba.BeforeFact, hook siba.CfParameter0) bool {
 	if bf == nil || bf.IsEmpty() == true { return false }
 
-	bf.Payload = *(tidy(&bf.Payload)) // Tidy up each field name and value in the entire message body
+	bf.Payload = tidy(bf.Payload) // Tidy up each field name and value in the entire message body
 	mesgformat, ctencoding := "", ""
 
 	if ct := "content-type"; len(bf.Headers[ct])              > 0 { mesgformat = strings.ToLower(bf.Headers[ct][0]) }
@@ -45,20 +45,25 @@ func sift(bf *siba.BeforeFact, hook siba.CfParameter0) bool {
 			ce := *siba.MakeNotDecoded(nyaan.Error(), false)
 			bf.Errors = append(bf.Errors, ce)
 		}
-		if strings.HasPrefix(mesgformat, "text/html") { bf.Payload = *(moji.ToPlain(&bf.Payload)) }
+		if strings.HasPrefix(mesgformat, "text/html") { bf.Payload = moji.ToPlain(bf.Payload) }
 
 	} else if strings.HasPrefix(mesgformat, "multipart/") {
 		// In case of Content-Type: multipart/*
-		cv, fe := rfc2045.MakeFlat(bf.Headers["content-type"][0], &bf.Payload)
-		if cv != nil                { bf.Payload = *cv                      }
+		cv, fe := rfc2045.MakeFlat(bf.Headers["content-type"][0], bf.Payload)
+		if cv != nil                { bf.Payload = cv                       }
 		if fe != nil && len(fe) > 0 { bf.Errors  = append(bf.Errors, fe...) }
 	}
-	moji.ToLF(&bf.Payload)
-	bf.Payload = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
+	bf.Payload = moji.ToLF(bf.Payload)
+	payloadbuf := make([]byte, 0, len(bf.Payload)); for _, e := range []byte(bf.Payload) {
+		cv := e; if cv == '\t' { cv = ' ' }
+		payloadbuf = append(payloadbuf, cv)
+	}
+	bf.Payload = payloadbuf
 
 	if hook != nil {
 		// Execute the first callback function
-		cvv, nyaan := hook(&siba.CallbackArg0{Headers: bf.Headers, Payload: &bf.Payload}); if nyaan != nil {
+		bodystring := string(bf.Payload)
+		cvv, nyaan := hook(&siba.CallbackArg0{Headers: bf.Headers, Payload: &bodystring}); if nyaan != nil {
 			// Something wrong when the 1st callback function executed
 			ce := *siba.MakeNotDecoded(nyaan.Error(), false)
 			bf.Errors = append(bf.Errors, ce)

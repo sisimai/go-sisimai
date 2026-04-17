@@ -8,24 +8,23 @@
 //               |__/   
 
 package moji
-import "strings"
+import "bytes"
 
 // ToLF replace CR and CR/LF with LF.
 //   Arguments:
-//     - text (*string): Text including CR or CR/LF.
+//     - text ([]byte): Text including CR or CR/LF.
 //   Returns:
 //     - (*string): Text converted to UTF8.
-func ToLF(text *string) *string {
-	if text == nil || *text == "" || strings.IndexByte(*text, '\r') < 0 { return nil }
+func ToLF(text []byte) []byte {
+	if len(text) < 1 || bytes.IndexByte(text, '\r') < 0 { return text }
 
-	readbuffer := []byte(*text)
-	bytelength := len(readbuffer)
-	tolinefeed := make([]byte, 0, len(readbuffer))
+	bytelength := len(text)
+	tolinefeed := make([]byte, 0, bytelength)
 
 	for j := 0; j < bytelength; j++ {
 		// Replace '\r' and '\r\n' with '\n'
-		if readbuffer[j] != '\r' { tolinefeed = append(tolinefeed, readbuffer[j]); continue }
-		if j + 1 < bytelength && readbuffer[j + 1] == '\n' {
+		if text[j] != '\r' { tolinefeed = append(tolinefeed, text[j]); continue }
+		if j + 1 < bytelength && text[j + 1] == '\n' {
 			// The next character is not the last character, and the next character is '\n'
 			tolinefeed = append(tolinefeed, '\n'); j++
 
@@ -34,52 +33,55 @@ func ToLF(text *string) *string {
 			tolinefeed = append(tolinefeed, '\n')
 		}
 	}
-	*text = string(tolinefeed)
-	return nil
+	return tolinefeed
 }
 
 // ToPlain converts given HTML text to a plain text.
 //   Arguments:
-//     - htmle (*string): Text including HTML elements.
+//     - htmle ([]byte): Text including HTML elements.
 //   Returns:
-//     - (*string): Converted plain text.
-func ToPlain(htmle *string) *string {
-	if htmle == nil || *htmle == "" { return htmle }
+//     - ([]byte): Converted plain text.
+func ToPlain(htmle []byte) []byte {
+	if len(htmle) == 0 { return htmle }
 
-	lower := strings.ToLower(*htmle); if strings.Contains(lower, "<body") == false { return htmle }
-	xhtml := *htmle
-	buffr := strings.Builder{}; buffr.Grow(len(xhtml) / 4)
-	for _, e := range []string{">", " ", "\t", "\n"} {
-		// Find the position of <body?, and remove the HTML header part
-		body0 := strings.Index(lower, "<body" + e); if body0 < 0 { continue }
-		body0 += len("<body>") + 1
+	// Find the position of "<body?", and remove the HTML header part
+	lower := bytes.ToLower(htmle)
+	body0 := bytes.Index(lower, []byte("<body")); if body0 < 0 { return htmle }
+	body1 := bytes.IndexByte(lower[body0:], '>'); if body1 < 1 { return htmle }
+	htmle  = htmle[body0 + body1 + 1:]
 
-		if e != ">" { body0 = IndexOnTheWay(lower, ">", body0) + 1 }
-		xhtml = xhtml[body0:]
-		lower = strings.ToLower(xhtml)
-
+	for {
 		// Remove string from <style> to </style>
-		p0 := strings.Index(lower, "<style");  if p0 < 0 { break }
-		p1 := strings.Index(lower, "</style"); if p1 < 0 { break }
-		xhtml = xhtml[:p0] + xhtml[p1 + 8:]
+		lower = bytes.ToLower(htmle)
+		p0   := bytes.Index(lower, []byte("<style"));  if p0 < 0 { break }
+		p1   := bytes.Index(lower, []byte("</style")); if p1 < 0 { break }
+
+		if p1 < p0 { break }
+		buffr := make([]byte, p0 + len(htmle) - (p1 + 8))
+		copy(buffr, htmle[:p0])
+		copy(buffr[p0:], htmle[p1 + 8:])
+		htmle  = buffr
 	}
 
-	for strings.IndexByte(xhtml, '<') > -1 || strings.IndexByte(xhtml, '>') > -1 {
+	var buffr bytes.Buffer; buffr.Grow(len(htmle))
+	xhtml := htmle; for {
 		// Find "<" from HTML element and remove string until ">"
-		p0 := strings.IndexByte(xhtml, '<');     if p0 < 0 { break }
-		p1 := IndexOnTheWay(xhtml, ">", p0 + 2); if p1 < 0 { break }
+		p0 := bytes.IndexByte(xhtml, '<'); if p0 < 0 { buffr.Write(xhtml); break }
+		buffr.Write(xhtml[:p0]); buffr.WriteByte(' ')
 
-		if p0 >  0 { buffr.WriteString(xhtml[0:p0] + " ")      }
-		if p0 > p1 { buffr.WriteString(xhtml[p1 + 1:p0] + " ") }
-
-		xhtml = xhtml[p1 + 1:]
+		p1 := bytes.IndexByte(xhtml[p0:], '>'); if p1 < 0 { break }
+		xhtml = xhtml[p0 + p1 + 1:]
 	}
 
-	// Remove or replace entity references
 	table := map[string]string{"lt": "<", "gt": ">", "quot": `"`, "nbsp": " ", "copy": "(C)", "amp": "&"}
-	plain := ""
-	for _, e := range table { plain = strings.ReplaceAll(buffr.String(), "&" + e + ";", table[e]) }
-	plain = Sweep(strings.ReplaceAll(plain, "\n", " "))
-	return &plain
+	plain := buffr.Bytes()
+	for k, e := range table {
+		// Remove or replace entity references
+		deref := bytes.Join([][]byte{[]byte("&"), []byte(k), []byte(";")}, nil) 
+		plain  = bytes.ReplaceAll(plain, deref, []byte(e))
+	}
+
+	plain = bytes.ReplaceAll(plain, []byte("\n"), []byte(" "))
+    return bytes.Join(bytes.Fields(plain), []byte(" "))
 }
 

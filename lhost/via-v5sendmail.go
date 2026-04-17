@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ____     ______                     _                 _ _ 
 // | | |__   ___  ___| |_   / /\ \   / / ___| ___  ___ _ __   __| |_ __ ___   __ _(_) |
@@ -28,7 +28,7 @@ func init() {
 		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Returned mail: ") == false { return nil }
 
-		boundaries := []string{"   ----- Unsent message follows -----", "  ----- No message was collected -----"}
+		boundaries := [][]byte{[]byte("   ----- Unsent message follows -----"), []byte("  ----- No message was collected -----")}
 		startingof := map[string][]string{
 			// Error text regular expressions which defined in src/savemail.c
 			//   savemail.c:485| (void) fflush(stdout);
@@ -50,7 +50,7 @@ func init() {
 			"message": []string{"----- Transcript of session follows -----"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[1] == "" { return nil }
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false); if emailparts[1] == "" { return nil }
 		anotherone := map[uint8]string{}    // Other error messages
 		remotehost, curcommand := "", ""    // The last remote hostname, The last SMTP command
 		recipients, readcursor := uint8(0), uint8(0)

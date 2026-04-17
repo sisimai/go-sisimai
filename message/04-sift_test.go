@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
 
@@ -33,7 +33,7 @@ func TestSift(t *testing.T) {
 
 	bf.Sender  = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 	bf.Headers = rfc5322.Headers(&em.Header)
-	bf.Payload = string(by)
+	bf.Payload = by
 
 	cx++; if len(bf.Headers) == 0             { t.Errorf("rfc5322.Headers() returns empty headers") }
 	cx++; if cv := sift(nil, nil); cv == true { t.Errorf("%s(nil) returns true", fn) }

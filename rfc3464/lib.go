@@ -10,6 +10,7 @@
 // messages formatted according to RFC3464; An Extensible Message Format for Delivery Status Notifications.
 // https://datatracker.ietf.org/doc/html/rfc3464
 package rfc3464
+import "bytes"
 import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/siba"
@@ -33,31 +34,33 @@ import "libsisimai.org/sisimai/v5/smtp/command"
 func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	if bf == nil || bf.IsEmpty() == true { return nil }
 
-	boundaries := []string{
+	boundaries := [][]byte{
 		// When the new value added, the part of the value should be listed in "delimiters" variable
 		// defined at MakeFlat() function in rfc2045/make-multipart-flat.go
-		"Content-Type: message/rfc822",
-		"Content-Type: text/rfc822-headers",
-		"Content-Type: message/partial",
-		"Content-Disposition: inline", // See lhost-amavis-*.eml, lhost-facebook-*.eml
+		[]byte("Content-Type: message/rfc822"),
+		[]byte("Content-Type: text/rfc822-headers"),
+		[]byte("Content-Type: message/partial"),
+		[]byte("Content-Disposition: inline"), // See lhost-amavis-*.eml, lhost-facebook-*.eml
 	}
 	startingof := map[string][]string{"message": []string{"Content-Type: message/delivery-status"}}
 	dontappend := []string{
 		"Content-", "This is a MIME", "This is a multi", "This is an auto", "This multi-part", "###", "***", "--",
 	}
 
-	for moji.ContainsAny(bf.Payload, boundaries) == false {
+	ab := false; for _, j := range boundaries {
+		if bytes.Contains(bf.Payload, j) == true { ab = true; break }
+	}
+	if cv := []byte("\n\nReturn-Path:"); ab == false && bytes.Contains(bf.Payload, cv) == true {
 		// There is no "Content-Type: message/rfc822" line in the message body
 		// Insert "Content-Type: message/rfc822" before "Return-Path:" of the original message
-		cv := "\n\nReturn-Path:"; if strings.Contains(bf.Payload, cv) == false { break }
-		bf.Payload = strings.Replace(bf.Payload, cv, "\n\n" + boundaries[0] + cv, 1)
-		break
+		bf.Payload = bytes.Replace(bf.Payload, cv, bytes.Join([][]byte{[]byte("\n\n"), boundaries[0], cv}, nil), 1)
 	}
+
 	permessage := map[string]string{}   // Store values of each Per-Message field
 	keystrings := make([]string, 0, 4)  // Key list of permessage
 	dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 	alternates := new(siba.DeliveryMatter)
-	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+	emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 	readslices := make([]string, 1, 32) // Copy each line for later reference
 	goestonext := false                 // Flag: do not append the line into "leadinbuff"
 	leadinbuff := strings.Builder{}; leadinbuff.Grow(len(emailparts[0]) / 2)
@@ -68,21 +71,21 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	for strings.IndexByte(emailparts[0], '@') == -1 {
 		// There is no email address in the first element of emailparts
 		// There is a bounce message inside of message/rfc822 part at lhost-x5-*, rfc3464/1311
-		p0 := -1 // The index of the boundary string found first
-		p1 :=  0 // Offset position of the message body after the boundary string
-		ct := "" // Boundary string found first such as "Content-Type: message/rfc822"
+		p0 := -1       // The index of the boundary string found first
+		p1 :=  0       // Offset position of the message body after the boundary string
+		ct := []byte{} // Boundary string found first such as "Content-Type: message/rfc822"
 		for _, e := range boundaries {
 			// Look for a boundary string from the message body
-			p0 = strings.Index(bf.Payload, e + "\n"); if p0 < 0 { continue }
+			p0 = bytes.Index(bf.Payload, append(e, '\n')); if p0 < 0 { continue }
 			p1 = p0 + len(e) + 2
 			ct = e; break
 		}
 		if p0 < 0 { break } // There is no boundary string
 
 		cx := bf.Payload[p1:]
-		p2 := strings.Index(cx, "\n\n")
+		p2 := bytes.Index(cx, []byte("\n\n"))
 		cv := cx[p2 + 2:]
-		emailparts = rfc5322.Part(&cv, []string{ct}, false); break
+		emailparts = rfc5322.Part(cv, [][]byte{ct}, false); break
 	}
 
 	for strings.Contains(emailparts[0], startingof["message"][0]) == false {
@@ -137,7 +140,10 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 				if moji.HasPrefixAny(e, dontappend)      { break }
 				if strings.Contains(e, "--- The follow") { break } // ----- The following addresses had delivery problems -----
 				if strings.Contains(e, "--- Transcript") { break } // ----- Transcript of session follows -----
-				leadinbuff.WriteString(e + " ");           break
+
+				leadinbuff.WriteString(e)
+				leadinbuff.WriteByte(' ')
+				break
 			}
 			continue
 		}
@@ -176,7 +182,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 			case "code":
 				// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
 				v.Spec = o[1]
-				b.WriteString(o[2] + " ")
+				b.WriteString(o[2]); b.WriteByte(' ')
 
 			default:
 				// Other DSN fields defined in RFC3464
@@ -213,12 +219,18 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 					// In the case of multiple "message/delivery-status" line
 					if strings.HasPrefix(e, "Content-") { continue } // Content-Disposition, ...
 					if strings.HasPrefix(e, "--")       { continue } // Boundary string
-					leadinbuff.WriteString(e + " ");      continue
+
+					leadinbuff.WriteString(e)
+					leadinbuff.WriteByte(' ')
+					continue
 				}
 
-				// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
-				//    has an SPF record with a hard fail
-				if strings.HasPrefix(e, " ") { b.WriteString(" " + moji.Sweep(e)) }
+				if strings.HasPrefix(e, " ") { 
+					// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
+					//   has an SPF record with a hard fail
+					b.WriteByte(' ')
+					b.WriteString(strings.Join(strings.Fields(e), " "))
+				}
 			}
 		}
 	}
@@ -230,7 +242,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 
 	beforemesg := ""; if leadinbuff.Len() > 0 {
 		// Pick some values of []siba.DeliveryMatter{} from the string before startingof["message"]
-		beforemesg           = moji.Sweep(leadinbuff.String())
+		beforemesg           = strings.Join(strings.Fields(leadinbuff.String()), " ")
 		alternates.Command   = command.Find(beforemesg)
 		alternates.ReplyCode = reply.Find(beforemesg, dscontents[0].Status)
 		alternates.Status    = status.Find(beforemesg, alternates.ReplyCode)
@@ -245,7 +257,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 			e.Update(z, permessage[z])
 		}
 
-		e.Diagnosis = moji.Sweep(eachbuffer[j].String())
+		e.Diagnosis = strings.Join(strings.Fields(eachbuffer[j].String()), " ")
 		if recipients == 1 {
 			// Do not mix the error message of each recipient with "beforemesg" when there is
 			// multiple recipient addresses in the bounce message
@@ -256,7 +268,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 			} else {
 				// The value of e.Diagnosis is not contained in "beforemesg"
 				// There may be an important error message in "beforemesg"
-				e.Diagnosis = moji.Sweep(beforemesg + " " + e.Diagnosis)
+				e.Diagnosis = beforemesg + " " + e.Diagnosis
 			}
 		}
 		e.Command   = command.Find(e.Diagnosis);         if e.Command   == "" { e.Command   = alternates.Command   }

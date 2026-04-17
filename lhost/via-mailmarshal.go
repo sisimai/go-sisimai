@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ____  __       _ _ __  __                _           _ 
 // | | |__   ___  ___| |_   / /  \/  | __ _(_) |  \/  | __ _ _ __ ___| |__   __ _| |
@@ -25,8 +25,8 @@ func init() {
 		if bf == nil || bf.IsEmpty() == true { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], `Undeliverable Mail: "`) == false { return nil }
 
-		boundaries := []string{"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"}
-		if cv := rfc2045.Boundary(bf.Headers["content-type"][0], 1); cv != "" { boundaries = append(boundaries, cv) }
+		boundaries := [][]byte{[]byte("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")}
+		if cv := rfc2045.Boundary(bf.Headers["content-type"][0], 1); cv != "" { boundaries = append(boundaries, []byte(cv)) }
 
 		startingof := map[string][]string{
 			"message": []string{"Your message:"},
@@ -34,7 +34,7 @@ func init() {
 			"rcpts":   []string{"The following recipients were affected:"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		endoferror := false // Flag for the end of error messages
 		recipients, readcursor := uint8(0), uint8(0)
 		

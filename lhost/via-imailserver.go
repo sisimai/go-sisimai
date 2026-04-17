@@ -32,14 +32,14 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Original message follows."}
+		boundaries := [][]byte{[]byte("Original message follows.")}
 		startingof := map[string][]string{"error": []string{"Body of message generated response:"}}
 		messagesof := map[string][]string{
 			eb.ReUSER: []string{"Unknown user", "Invalid final delivery userid"},
 			eb.ReTIME: []string{"Delivery failed "},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		mesgbuffer := strings.Builder{}; mesgbuffer.Grow(len(emailparts[0]) / 2)
 		recipients := uint8(0)
 

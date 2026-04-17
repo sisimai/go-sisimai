@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ______           _    __ _      
 // | | |__   ___  ___| |_   / /  _ \ ___  ___| |_ / _(_)_  __
@@ -40,7 +40,7 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
+		boundaries := [][]byte{[]byte("Content-Type: message/rfc822"), []byte("Content-Type: text/rfc822-headers")}
 		startingof := map[string][][]string{
 			// Postfix manual - bounce(5) - http://www.postfix.org/bounce.5.html
 			"message": [][]string{
@@ -55,7 +55,7 @@ func init() {
 		permessage := map[string]string{}   // Store values of each Per-Message field
 		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients := uint8(0)              // The number of 'Final-Recipient' header
 		nomessages := false                 // Delivery report unavailable
 		anotherset := map[string]string{}   // Another error information

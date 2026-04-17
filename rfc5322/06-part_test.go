@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc5322
 
@@ -64,7 +64,7 @@ Nyaaan
 `
 	cw := []string{"Final-Recipient", "Action", "Status", "Remote-MTA", "Diagnostic-Code", "Last-Attempt-Date"}
 	for _, bo := range []bool{true, false} {
-		cv := Part(&ae, []string{"Content-Type: message/rfc822"}, bo)
+		cv := Part([]byte(ae), [][]byte{[]byte("Content-Type: message/rfc822")}, bo)
 		cx++; if len(cv) == 0  { t.Errorf("%s(%s) returns empty", fn, ae[0:10]) }
 		cx++; if len(cv) != 2  { t.Errorf("%s(%s) returns invalid elements: %d", fn, ae[0:10], len(cv)) }
 		cx++; if cv[0]   == "" { t.Errorf("%s(%s)[0] is empty", fn, ae[0:10]) }
@@ -77,31 +77,31 @@ Nyaaan
 			cx++; if strings.Contains(cv[1], "\n" + e + ": ") == false { t.Errorf("%s()[1] does not include %s", fn, e) }
 		}
 
-		ce := ""
-		cv  = Part(&ce, []string{}, bo)
+		ce := []byte{}
+		cv  = Part([]byte(ce), [][]byte{}, bo)
 		cx++; if len(cv) == 0               { t.Errorf("%s() returns empty", fn) }
 		cx++; if len(cv) != 2               { t.Errorf("%s() returns invalid elements: %d", fn, len(cv)) }
 		cx++; if cv[0] != "" || cv[1] != "" { t.Errorf("%s() contains invalid string: %s %s", fn, cv[0], cv[1]) }
 
-		cv  = Part(&ce, []string{"Content-Type: message/rfc822"}, bo)
+		cv  = Part(ce, [][]byte{[]byte("Content-Type: message/rfc822")}, bo)
 		cx++; if len(cv) == 0               { t.Errorf("%s() returns empty", fn) }
 		cx++; if len(cv) != 2               { t.Errorf("%s() returns invalid elements: %d", fn, len(cv)) }
 		cx++; if cv[0] != "" || cv[1] != "" { t.Errorf("%s() contains invalid string: %s %s", fn, cv[0], cv[1]) }
 
-		ce  = "Dummy message body"
-		cv  = Part(&ce, []string{}, bo)
+		ce  = []byte("Dummy message body")
+		cv  = Part(ce, [][]byte{}, bo)
 		cx++; if len(cv) == 0               { t.Errorf("%s() returns empty", fn) }
 		cx++; if len(cv) != 2               { t.Errorf("%s() returns invalid elements: %d", fn, len(cv)) }
 		cx++; if cv[0] != "" || cv[1] != "" { t.Errorf("%s() contains invalid string: %s %s", fn, cv[0], cv[1]) }
 
-		ce  = "nekochan meow"
-		cv  = Part(&ce, []string{"cat"}, bo)
+		ce  = []byte("nekochan meow")
+		cv  = Part(ce, [][]byte{[]byte("cat")}, bo)
 		cx++; if len(cv) == 0               { t.Errorf("%s() returns empty", fn) }
 		cx++; if len(cv) != 2               { t.Errorf("%s() returns invalid elements: %d", fn, len(cv)) }
 		cx++; if cv[0] == "" && cv[1] != "" { t.Errorf("%s() contains invalid string: %s %s", fn, cv[0], cv[1]) }
 
-		ce  = "nekochan meumeu"
-		cv  = Part(&ce, []string{"nekochan"}, bo)
+		ce  = []byte("nekochan meumeu")
+		cv  = Part(ce, [][]byte{[]byte("nekochan")}, bo)
 		cx++; if len(cv) == 0               { t.Errorf("%s() returns empty", fn) }
 		cx++; if len(cv) != 2               { t.Errorf("%s() returns invalid elements: %d", fn, len(cv)) }
 		cx++; if cv[0] == "" && cv[1] != "" { t.Errorf("%s() contains invalid string: %s %s", fn, cv[0], cv[1]) }

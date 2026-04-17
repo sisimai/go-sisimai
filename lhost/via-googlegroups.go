@@ -8,6 +8,7 @@
 //                                              |___/                             |_|        
 
 package lhost
+import "bytes"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
@@ -23,9 +24,9 @@ func init() {
 	//     - (*siba.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
 	InquireFor["GoogleGroups"] = func(bf *siba.BeforeFact) *siba.RisingUnderway {
 		// - Google Groups: https://groups.google.com
-		if bf == nil || bf.IsEmpty() == true                     { return nil }
-		if strings.Contains(bf.Payload, "Google Group") == false { return nil }
-		if len(bf.Headers["x-failed-recipients"])       == 0     { return nil }
+		if bf == nil || bf.IsEmpty() == true                           { return nil }
+		if bytes.Contains(bf.Payload, []byte("Google Group")) == false { return nil }
+		if len(bf.Headers["x-failed-recipients"])             == 0     { return nil }
 
 		// X-Google-Smtp-Source: APXvYqx67WVONuSclAC3HckRuO768rET6VCNXk6xYv7cW5I1l9kkn35pT4zE29miuroXfMsHzqeVDrOoIjb8hdt7tjtNL2XAomNl7FA=
 		// From: Mail Delivery Subsystem <mailer-daemon@googlemail.com>
@@ -51,9 +52,9 @@ func init() {
 		// Thanks,
 		//
 		// Google Groups
-		boundaries := []string{"----- Original message -----", "Content-Type: message/rfc822"}
+		boundaries := [][]byte{[]byte("----- Original message -----"), []byte("Content-Type: message/rfc822")}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients := uint8(0)
 
 		entiremesg := strings.SplitN(emailparts[0], "\n\n", 5); entiremesg[len(entiremesg) - 1] = ""

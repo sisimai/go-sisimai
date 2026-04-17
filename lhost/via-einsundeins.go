@@ -28,13 +28,13 @@ func init() {
 		if strings.HasPrefix(bf.Headers["from"][0], `"Mail Delivery System"`) == false     { return nil }
 		if bf.Headers["subject"][0] != "Mail delivery failed: returning message to sender" { return nil }
 
-		boundaries := []string{"--- The header of the original message is following. ---"}
+		boundaries := [][]byte{[]byte("--- The header of the original message is following. ---")}
 		startingof := map[string][]string{
 			"message": []string{"This message was created automatically by mail delivery software"},
 			"error":   []string{"For the following reason:"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		stringbuff := strings.Builder{}; stringbuff.Grow(len(emailparts[0]) / 2)
 		recipients, readcursor := uint8(0), uint8(0)
 

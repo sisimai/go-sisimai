@@ -25,7 +25,7 @@ func init() {
 		if strings.Index(bf.Headers["from"][0], "-admin@")             < 1 { return nil }
 		if strings.Index(bf.Headers["message-id"][0], ".FML")          < 2 { return nil }
 
-		boundaries := []string{"Original mail as follows:"}
+		boundaries := [][]byte{[]byte("Original mail as follows:")}
 		errortitle := map[string][]string{
 			eb.ReFROM: []string{ // Rejected
 				" are not member",
@@ -42,7 +42,7 @@ func init() {
 			eb.ReSAFE: []string{"Security Alert"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients := uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

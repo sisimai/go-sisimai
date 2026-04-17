@@ -33,7 +33,7 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Content-Type: message/rfc822"}
+		boundaries := [][]byte{[]byte("Content-Type: message/rfc822")}
 		startingof := map[string][]string{"message": []string{"Your message"}}
 		messagesof := map[string][]string{
 			eb.ReUSER: []string{
@@ -57,7 +57,7 @@ func init() {
 		permessage := map[string]string{}   // Store values of each Per-Message field
 		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		subjecttxt := ""                    // The value of "Subject:"
 		recipients, readcursor := uint8(0), uint8(0)
 

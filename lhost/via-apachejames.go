@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ___                     _              _                           
 // | | |__   ___  ___| |_   / / \   _ __   __ _  ___| |__   ___    | | __ _ _ __ ___   ___  ___ 
@@ -33,7 +33,7 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Content-Type: message/rfc822"}
+		boundaries := [][]byte{[]byte("Content-Type: message/rfc822")}
 		startingof := map[string][]string{
 			// apache-james-2.3.2/src/java/org/apache/james/transport/mailets/
 			//   AbstractNotify.java|124:  out.println("Error message below:");
@@ -41,7 +41,7 @@ func init() {
 			"message": []string{"Message details:"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		alternates := [4]string{} // [Envelope-From, Header-From, Date, Subject]
 		recipients, readcursor := uint8(0), uint8(0)
 

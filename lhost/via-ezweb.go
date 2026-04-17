@@ -41,7 +41,10 @@ func init() {
 		}
 		if proceedsto < 2 { return nil }
 
-		boundaries := []string{"--------------------------------------------------", "Content-Type: message/rfc822"}
+		boundaries := [][]byte{
+			[]byte("--------------------------------------------------"),
+			[]byte("Content-Type: message/rfc822"),
+		}
 		startingof := map[string][]string{
 			"message": []string{"The user(s) ", "Your message ", "Each of the following", "<"},
 		}
@@ -52,7 +55,7 @@ func init() {
 			"The user(s) account is temporarily limited.",
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(bf.Payload, boundaries, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

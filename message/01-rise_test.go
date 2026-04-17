@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package message
 
@@ -72,10 +72,10 @@ func TestRise(t *testing.T) {
 				break
 			}
 
-			cx++; if cv.Payload      == "" { t.Errorf("%s.Payload is empty", fs) }
-			cx++; if len(cv.Headers) == 0  { t.Errorf("%s.Headers is empty", fs) }
-			cx++; if len(cv.RFC822)  == 0  { t.Errorf("%s.RFC822 is empty", fs) }
-			cx++; if len(cv.Digest)  == 0  { t.Errorf("%s.Digest is empty", fs) }
+			cx++; if len(cv.Payload) == 0 { t.Errorf("%s.Payload is empty", fs) }
+			cx++; if len(cv.Headers) == 0 { t.Errorf("%s.Headers is empty", fs) }
+			cx++; if len(cv.RFC822)  == 0 { t.Errorf("%s.RFC822 is empty", fs) }
+			cx++; if len(cv.Digest)  == 0 { t.Errorf("%s.Digest is empty", fs) }
 
 			for _, e := range []string{"to", "from", "subject", "date"} {
 				cx++; if len(cv.Headers[e]) == 0  { t.Errorf("%s.Headers[%s] have no element", fs, e); continue }
@@ -194,18 +194,18 @@ func TestRise(t *testing.T) {
 	}
 	if en != 37 { t.Errorf("%s() returns %d emails", fn, en) }
 
-	et := ""
-	ev := Rise(&et, nil)
+	et := []byte("")
+	ev := Rise(et, nil)
 	cx++; if ev.HasDone()        { t.Errorf("%s.HasDone() returns true", fs) }
 	cx++; if ev.Sender  != ""    { t.Errorf("%s.Sender is not empty: %s", fs, ev.Sender)   }
-	cx++; if ev.Payload != ""    { t.Errorf("%s.Payload is not empty: %s", fs, ev.Payload) }
+	cx++; if len(ev.Payload) > 0 { t.Errorf("%s.Payload is not empty: %s", fs, ev.Payload) }
 	cx++; if len(ev.Errors) > 0  { t.Errorf("%s.Errors is not empty: %v", fs, ev.Errors)   }
 
-	et  = "nekochan"
-	ev  = Rise(&et, nil)
+	et  = []byte("nekochan")
+	ev  = Rise(et, nil)
 	cx++; if ev.HasDone()        { t.Errorf("%s.HasDone() returns true", fs) }
 	cx++; if ev.Sender  != ""    { t.Errorf("%s.Sender is not empty: %s", fs, ev.Sender)   }
-	cx++; if ev.Payload != ""    { t.Errorf("%s.Payload is not empty: %s", fs, ev.Payload) }
+	cx++; if len(ev.Payload) > 0 { t.Errorf("%s.Payload is not empty: %s", fs, ev.Payload) }
 	cx++; if len(ev.Errors) == 0 { t.Errorf("%s.Errors is empty: %v", fs, ev.Errors)       }
 
 	eo, _  = sisimbox.Rise("../set-of-emails/maildir/bsd/rfc3464-37.eml")

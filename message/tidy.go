@@ -7,6 +7,7 @@
 //                                |___/      
 
 package message
+import "bytes"
 import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/moji"
@@ -38,25 +39,24 @@ func makefield(fs ...[]string) map[string]string {
 
 // tidy tidies up each field name and format of email headers.
 //   Arguments:
-//     - head (*string): String including fields and values in email headers.
+//     - head ([]byte): String including fields and values in email headers.
 //   Returns:
-//     - (*string): String tidied up.
-func tidy(head *string) *string {
-	if head == nil || *head == "" { return nil }
+//     - ([]byte): String tidied up.
+func tidy(head []byte) []byte {
+	if len(head) == 0 { return head }
 
 	// Find and tidy up fields defined in RFC5322, RFC1894, and RFC5965
-	bu := strings.Builder{}; bu.Grow(1024)
-	el := strings.Split(*head, "\n"); for j, e := range el {
+	bu := bytes.Buffer{}; bu.Grow(1024)
+	el := bytes.Split(head, []byte("\n")); for j, e := range el {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
-		p0 := strings.IndexByte(e, ':'); if p0 < 0 { bu.WriteString(e + "\n"); continue }
-		cf := strings.ToLower(strings.TrimRight(e[0:p0], " "))
-		if strings.IndexByte(cf, ' ') > 0 { bu.WriteString(e + "\n"); continue }
-		fn := fieldtable[cf]; if fn == "" { bu.WriteString(e + "\n"); continue }
+		p0 := bytes.IndexByte(e, ':'); if p0 < 0 { bu.Write(append(e, '\n')); continue }
+		cf := string(bytes.ToLower(bytes.TrimRight(e[0:p0], " ")))
+		if strings.IndexByte(cf, ' ') > 0 { bu.Write(append(e, '\n')); continue }
+		fn := fieldtable[cf]; if fn == "" { bu.Write(append(e, '\n')); continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
-		ab := make([]string, 0, 2)
+		ab := make([][]byte, 0, 2)
 		bf := e[p0 + 1:]
-		cx := strings.Contains(bf, ";")
 
 		// Such as Diagnostic-Code, Remote-MTA, and so on
 		// - Before: Diagnostic-Code: SMTP;550 User unknown
@@ -65,42 +65,42 @@ func tidy(head *string) *string {
 			// The field name is not listed in RFC1894
 			if fn == ef || fn == "Content-Type" { match = true; break }
 		}
-		if match == true && cx == true {
+		if match == true && bytes.Contains(bf, []byte(";")) == true {
 			// The field including one or more ";"
-			for _, ef := range strings.Split(bf, ";") {
+			for _, ef := range bytes.Split(bf, []byte(";")) {
 				// 2-1. Trim leading and trailing space characters from the current buffer
-				ef = strings.Trim(ef, " ")
+				ef = bytes.Trim(ef, " ")
 
 				// 2-2. Convert some parameters to the lower-cased string
-				if ps := ""; strings.IndexByte(ef, ' ') < 1 {
+				if ps := []byte{}; bytes.IndexByte(ef, ' ') < 1 {
 					// For example,
 					// - Content-Type: Message/delivery-status => message/delivery-status
 					// - Content-Type: Charset=UTF8            => charset=utf8
 					// - Reporting-MTA: DNS; ...               => dns
 					// - Final-Recipient: RFC822; ...          => rfc822
-					if cv := moji.Select(moji.LHS + ef, "", "=", 0); cv != "" {
+					if cv := moji.Select(moji.LHS + string(ef), "", "=", 0); cv != "" {
 						// charset=, boundary=, and other pairs divided by "="
-						ps = strings.ToLower(cv)
-						ef = strings.Replace(ef, cv, ps, 1)
+						ps = []byte(strings.ToLower(cv))
+						ef = bytes.Replace(ef, []byte(cv), ps, 1)
 					}
-					if ps != "boundary" { ef = strings.ToLower(ef) }
-					if ef == "rfc/822"  { ef = "rfc822"            }
+					if bytes.Equal(ps, []byte("boundary")) == false { ef = bytes.ToLower(ef) }
+					if bytes.Equal(ef, []byte("rfc/822"))  == true  { ef = []byte("rfc822")  }
 				}
-				ab = append(ab, ef)
+				ab = append(ab, []byte(ef))
 			}
 
-			if fn == "Diagnostic-Code" && len(ab) == 1 && strings.IndexByte(el[j + 1], ' ') != 0 {
+			if fn == "Diagnostic-Code" && len(ab) == 1 && bytes.IndexByte(el[j + 1], ' ') != 0 {
 				// Diagnostic-Code: x-unix;
 				//   /var/email/kijitora/Maildir/tmp/1000000000.A000000B00000.neko22:
 				//   Disk quota exceeded
-				ab = append(ab, "")
+				ab = append(ab, []byte(""))
 			}
-			bf = strings.Join(ab, "; ")
-			ab = make([]string, 0, 2)
+			bf = bytes.Join(ab, []byte("; "))
+			ab = make([][]byte, 0, 2)
 
 		} else {
 			// There is no ";" in the field
-			if moji.ContainsAny(fn, []string{"-Date", "-Message-ID"}) == false { bf = strings.ToLower(bf) }
+			if moji.ContainsAny(fn, []string{"-Date", "-Message-ID"}) == false { bf = bytes.ToLower(bf) }
 		}
 
 		// 3. Tidy up a value, and a parameter of Content-Type: field 
@@ -109,23 +109,22 @@ func tidy(head *string) *string {
 			for _, ef := range mediatypes {
 				// - Before: Content-Type: message/xdelivery-status; ...
 				// - After:  Content-Type: message/delivery-status; ...
-				bf = strings.Replace(bf, ef[0], ef[1], 1)
+				bf = bytes.Replace(bf, []byte(ef[0]), []byte(ef[1]), 1)
 			}
 		}
 
 		// 4. Concatenate the field name and the field value
-		for _, ef := range strings.Split(bf, " ") {
+		for _, ef := range bytes.Split(bf, []byte(" ")) {
 			// Remove redundant space characters
-			if ef != "" { ab = append(ab, ef) }
+			if len(ef) > 0 { ab = append(ab, ef) }
 		}
-		bu.WriteString(fn + ": " + strings.Join(ab, " ") + "\n")
+		bu.WriteString(fn + ": " + string(bytes.Join(ab, []byte(" "))) + "\n")
 	}
-	email := bu.String();
+	email := bu.Bytes();
 
 	// 5. Convert the lower-cased SMTP command to the upper-cased.
-	email = strings.ReplaceAll(email, "after end of data:", "after end of DATA:")
-
-	if email[len(email) - 2:] != "\n\n" { email += "\n\n" }
-	return &email
+	email = bytes.ReplaceAll(email, []byte("after end of data:"), []byte("after end of DATA:"))
+	if bytes.HasSuffix(email, []byte("\n\n")) == false { email = append(email, []byte("\n\n")...) }
+	return email
 }
 
