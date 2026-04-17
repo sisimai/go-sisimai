@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package moji
 
@@ -15,7 +15,7 @@ func TestSweep(t *testing.T) {
 	cx := 0
 	ae := []struct {arg string; exp string}{
 		{" neko		meow	cat ", "neko meow cat"},
-		{"neko      meow   cat --nekochan kijitora", "neko meow cat"},
+		{"neko      meow   cat nekochan kijitora", "neko meow cat nekochan kijitora"},
 		{"-- --", "-- --"},
 		{"", ""},
 	}

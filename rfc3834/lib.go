@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ _____  ___ _____ _  _   
 // |  _ \|  ___/ ___|___ / ( _ )___ /| || |  
@@ -14,7 +14,6 @@ import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
-import "libsisimai.org/sisimai/v5/rfc2045"
 import "libsisimai.org/sisimai/v5/rfc5322"
 import "libsisimai.org/sisimai/v5/address"
 
@@ -29,7 +28,6 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	if bf == nil || bf.IsEmpty() == true { return nil }
 
 	proceedsto := true
-	boundaries := []string{"__SISIMAI_PSEUDO_BOUNDARY__"}
 	lowerlabel := []string{"from", "to", "subject", "auto-submitted", "precedence", "x-apple-action"}
 	lowervalue := map[string]string{}
 	dontdecode := map[string][]string{
@@ -89,11 +87,6 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	bf.Payload  = strings.Trim(bf.Payload, "\n")
 	bodyslices := strings.Split(bf.Payload, "\n")
 	rfc822part := ""
-
-	if bf.Headers["content-type"][0] != "" {
-		// Get the boundary string and set regular expression for matching with the boundary string.
-		if cv := rfc2045.Boundary(bf.Headers["content-type"][0], 0); cv != "" { boundaries[0] = cv }
-	}
 
 	if len(bodyslices) < 5 {
 		// There is vacation message only in the message body
