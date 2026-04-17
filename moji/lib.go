@@ -38,10 +38,6 @@ func Sweep(text string) string {
 	if text == "" { return "" }
 
 	text = strings.TrimSpace(strings.ReplaceAll(text, "\t", " ")); Squeeze(&text, ' ')
-	if strings.Contains(text, " --") && strings.Contains(text, "-- ") == false {
-		// Delete all the string after a boundary string like " --neko-chan"
-		text = Select(LHS + text, "", " --", 0)
-	}
 	return text 
 }
 
