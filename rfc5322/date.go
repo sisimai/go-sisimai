@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ ____ _________  ____     ______        _         
 // |  _ \|  ___/ ___| ___|___ /___ \|___ \   / /  _ \  __ _| |_ ___ _ 
@@ -75,7 +75,7 @@ var dayofweek = []string{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}
 func Date(date0 string) string {
 	if date0 == "" { return "" }
 
-	datestring := strings.ReplaceAll(date0, ",", ", "); moji.Squeeze(&datestring, ' ') // "Thu,22" -> "Thu, 22"
+	datestring := strings.Join(strings.Fields(strings.ReplaceAll(date0, ",", ", ")), " ") // "Thu,22" -> "Thu, 22"
 	year2digit := uint8(0)    // 2-digit year such as 22, 97
 	p          := [6]string{} // [0] 2018, [1] Feb, [2] 2(Day), [3] Fri, [4] 18:30:22, [5] Timezone Offset(0)
 
