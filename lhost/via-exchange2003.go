@@ -177,7 +177,6 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, try to detect the bounce reason.
 			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			if moji.Aligned(e.Diagnosis, []string{"MSEXCH:", "(", ")"}) {
 				//     MSEXCH:IMS:KIJITORA CAT:EXAMPLE:EXCHANGE 0 (000C05A6) Unknown Recipient
@@ -199,7 +198,7 @@ func init() {
 
 			// Could not detect the reason from the value of "diagnosis", copy alternative error message 
 			if e.Reason != "" || anotherone[j] == "" { continue }
-			e.Diagnosis = moji.Sweep(anotherone[j] + " " + e.Diagnosis)
+			e.Diagnosis = anotherone[j] + " " + e.Diagnosis
 		}
 
 		if emailparts[1] == "" {

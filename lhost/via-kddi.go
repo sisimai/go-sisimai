@@ -77,8 +77,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
-			e.Command   = command.Find(e.Diagnosis)
+			e.Command = command.Find(e.Diagnosis)
 
 			if len(bf.Headers["x-spasign"]) > 0 && bf.Headers["x-spasign"][0] == "NG" {
 				// Content-Type: text/plain; ..., X-SPASIGN: NG (spamghetti, au by KDDI)

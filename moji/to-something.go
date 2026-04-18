@@ -79,7 +79,7 @@ func ToPlain(htmle *string) *string {
 	table := map[string]string{"lt": "<", "gt": ">", "quot": `"`, "nbsp": " ", "copy": "(C)", "amp": "&"}
 	plain := ""
 	for _, e := range table { plain = strings.ReplaceAll(buffr.String(), "&" + e + ";", table[e]) }
-	plain = Sweep(strings.ReplaceAll(plain, "\n", " "))
+	plain = strings.Join(strings.Fields(strings.ReplaceAll(plain, "\n", " ")), " ")
 	return &plain
 }
 

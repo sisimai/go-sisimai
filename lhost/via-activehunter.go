@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ___        _   _           _                 _            
 // | | |__   ___  ___| |_   / / \   ___| |_(_)_   _____| |__  _   _ _ __ | |_ ___ _ __ 
@@ -9,7 +9,6 @@
 package lhost
 import "strings"
 import "libsisimai.org/sisimai/v5/siba"
-import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
@@ -62,12 +61,6 @@ func init() {
 			}
 		}
 		if recipients == 0 { return nil }
-
-		for j, _ := range dscontents { 
-			// Remove leading or/and trailing spaces, redandant spaces from the error messaage
-			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
-		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}
 }

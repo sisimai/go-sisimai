@@ -82,12 +82,6 @@ func init() {
 			}
 		}
 		if recipients == 0 { return nil }
-
-		for j, _ := range dscontents {
-			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
-			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(strings.ReplaceAll(e.Diagnosis, "\n", " "))
-		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}
 }

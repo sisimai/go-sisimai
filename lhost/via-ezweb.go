@@ -101,7 +101,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Check each value of DeliveryMatter{}, try to detect the bounce reason.
 			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
+			e.Diagnosis = strings.Join(strings.Fields(e.Diagnosis), " ")
 
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 			if len(bf.Headers["x-spasign"]) > 0 && bf.Headers["x-spasign"][0] == "NG" {

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ____  ___ 
 // | | |__   ___  ___| |_   / /\ \/ / |
@@ -76,7 +76,6 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Pick the date string from the error message.
 			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			// The original message was received at Thu, 29 Apr 2010 23:34:45 +0900 (JST)
 			// from shironeko@example.jp

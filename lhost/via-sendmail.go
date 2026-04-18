@@ -165,7 +165,7 @@ func init() {
 					// Get the error message continued from the previous line
 					if strings.HasPrefix(e, " ")                            == false { continue }
 					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") == false { continue }
-					v.Diagnosis += " " + moji.Sweep(e)
+					v.Diagnosis += " " + e
 				}
 			}
 		}
@@ -193,7 +193,6 @@ func init() {
 				// when the following conditions have matched
 				e.Diagnosis = strings.Join(esmtpreply, " ") + " " + e.Diagnosis
 			}
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			if e.Command == "" { e.Command = thecommand }
 			if e.Command == "" { e.Command = command.Find(e.Diagnosis) }
 			if e.Command == "" { if len(esmtpreply) > 0 { e.Command = eb.CeEHLO }}

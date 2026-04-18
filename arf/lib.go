@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //     _    ____  _____ 
 //    / \  |  _ \|  ___|
@@ -197,7 +197,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 			// X-Apple-Unsubscribe: true
 			if strings.IndexByte(bf.Headers["from"][0], '@') < 0 { break }
 			dscontents[0].Recipient    = bf.Headers["from"][0]
-			dscontents[0].Diagnosis    = moji.Sweep(emailparts[0])
+			dscontents[0].Diagnosis    = emailparts[0]
 			dscontents[0].FeedbackType = "opt-out"
 
 			// Addpend To: field as a pseudo header
@@ -216,11 +216,11 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	}
 	if recipients == 0 { return nil }
 
-	if anotherone != "" { anotherone = ": " + strings.TrimRight(moji.Sweep(anotherone), ",") }
+	if anotherone != "" { anotherone = ": " + strings.TrimRight(anotherone, ",") }
 	for j := range dscontents {
 		// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 		e := &dscontents[j]
-		e.Diagnosis = moji.Sweep(e.Diagnosis + anotherone)
+		e.Diagnosis = strings.Join(strings.Fields(e.Diagnosis + anotherone), " ")
 		e.Reason    = eb.ReFEED
 		e.Rhost     = remotehost
 		e.Lhost     = reportedby

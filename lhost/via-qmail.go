@@ -146,7 +146,7 @@ func init() {
 					// Connected to 192.0.2.112 but my name was rejected.
 					// Giving up on 192.0.2.135.
 					// remote host 203.138.180.112 said:...
-					if cv := moji.Select(e + " ", r, " ", 0); cv != "" { v.Rhost = moji.Sweep(cv); break }
+					if cv := moji.Select(e + " ", r, " ", 0); cv != "" { v.Rhost = cv; break }
 				}
 			}
 		}
@@ -155,7 +155,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
+			e.Diagnosis = strings.Join(strings.Fields(e.Diagnosis), " ")
 
 			for r := range commandset {
 				// Get the last SMTP command

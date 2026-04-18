@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ____     ______                     _                 _ _ 
 // | | |__   ___  ___| |_   / /\ \   / / ___| ___  ___ _ __   __| |_ __ ___   __ _(_) |
@@ -154,8 +154,6 @@ func init() {
 			e := &dscontents[j]
 			if e.Diagnosis == "" { e.Diagnosis = anotherone[uint8(j)] }
 			if e.Command   == "" { e.Command   = command.Find(e.Diagnosis) }
-
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			e.ReplyCode = reply.Find(e.Diagnosis, "")
 
 			// There is no local part in the recipient email address like "@example.jp"
