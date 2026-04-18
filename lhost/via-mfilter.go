@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      __         _____ ___ _   _____ _____ ____  
 // | | |__   ___  ___| |_   / / __ ___ |  ___|_ _| | |_   _| ____|  _ \ 
@@ -103,12 +103,6 @@ func init() {
 			}
 		}
 		if recipients == 0 { return nil }
-
-		for j, _ := range dscontents {
-			// Tidy up the error message in e.Diagnosis
-			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
-		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}
 }

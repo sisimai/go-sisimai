@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ___                     _              _                           
 // | | |__   ___  ___| |_   / / \   _ __   __ _  ___| |__   ___    | | __ _ _ __ ___   ___  ___ 
@@ -100,12 +100,6 @@ func init() {
 		if strings.Contains(emailparts[1], "\nSubject: ") == false {
 			// There is no Subject field in the original message
 			if alternates[3] != "" { emailparts[1] += "Subject: " + alternates[3] + "\n" }
-		}
-
-		for j, _ := range dscontents {
-			// Tidy up the error message in e.Diagnosis
-			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}
