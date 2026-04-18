@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _      ______           _    __ _      
 // | | |__   ___  ___| |_   / /  _ \ ___  ___| |_ / _(_)_  __
@@ -153,7 +153,7 @@ func init() {
 					// 5.1.1 <userunknown@example.co.jp>... User Unknown (in reply to RCPT TO command)
 					if strings.HasPrefix(readslices[j], "Diagnostic-Code:") && strings.HasPrefix(e, " ") {
 						// Continued line of the value of Diagnostic-Code field
-						v.Diagnosis += " " + moji.Sweep(e)
+						v.Diagnosis += " " + strings.Join(strings.Fields(e), " ")
 						readslices[j + 1] = "Diagnostic-Code: " + e
 
 					} else if moji.Aligned(e, []string{"X-Postfix-Sender:", "rfc822;", "@"}) {
@@ -235,7 +235,7 @@ func init() {
 
 			if len(anotherset["diagnosis"]) > 0 {
 				// Copy alternative error message to e.Diagnosis
-				anotherset["diagnosis"] = moji.Sweep(anotherset["diagnosis"])
+				anotherset["diagnosis"] = strings.Join(strings.Fields(anotherset["diagnosis"]), " ")
 				if len(e.Diagnosis) == 0 { e.Diagnosis = anotherset["diagnosis"] }
 
 				if moji.ContainsOnlyNumbers(e.Diagnosis) {
@@ -271,7 +271,6 @@ func init() {
 					}
 				}
 			}
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			if len(commandset) > 0 {
 				// Set an SMTP command name picked from the error message

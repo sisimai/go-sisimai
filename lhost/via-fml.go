@@ -67,7 +67,6 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 
 			for f := range errortitle {
 				// The key is a bounce reason name

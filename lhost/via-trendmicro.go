@@ -84,7 +84,6 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up error messages in e.Diagnosis, set the value of e.Reason
 			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 			if strings.Contains(e.Diagnosis, "Unable to deliver") { e.Reason = eb.ReUSER }
 		}
 

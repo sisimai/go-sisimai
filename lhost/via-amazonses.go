@@ -269,7 +269,7 @@ func init() {
 				if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
 
 				v.Recipient = e.EmailAddress
-				v.Diagnosis = moji.Sweep(e.DiagnosticCode)
+				v.Diagnosis = e.DiagnosticCode
 				v.Command   = command.Find(v.Diagnosis)
 				v.Action    = e.Action
 				v.Status    = status.Find(e.Status, "")

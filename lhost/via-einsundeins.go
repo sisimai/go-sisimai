@@ -93,13 +93,12 @@ func init() {
 				// SMTP error from remote server for TEXT command,
 				//   host: smtp-in.orange.fr (193.252.22.65)
 				//   reason: 550 5.2.0 Mail rejete. Mail rejected. ofr_506 [506]
-				e.Rhost  = moji.Sweep(moji.Select(e.Diagnosis, "host: ", " ", 0))
+				e.Rhost  = moji.Select(e.Diagnosis, "host: ", " ", 0)
 				e.Status = status.Find(e.Diagnosis, "")
 
 				if strings.Contains(e.Diagnosis, "for TEXT command") { e.Command = eb.CeDATA }
 				if strings.Contains(e.Diagnosis, "SMTP error")       { e.Spec    = "SMTP"    }
 			}
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}

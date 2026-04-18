@@ -73,7 +73,7 @@ func init() {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
 
-			e.Diagnosis = moji.Sweep(strings.ReplaceAll(alternates + " " + e.Diagnosis, "\n", " "))
+			e.Diagnosis = alternates + " " + e.Diagnosis
 			e.Command   = command.Find(e.Diagnosis)
 
 			for r := range messagesof {

@@ -11,7 +11,6 @@ package lhost
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
-import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/address"
 import "libsisimai.org/sisimai/v5/rfc5322"
 
@@ -62,7 +61,7 @@ func init() {
 		recordwide := [3]string{
 			rfc5322.Received(receivedby[0])[1], // rhost
 			eb.Re___1,                          // reason
-			moji.Sweep(issuedcode),             // diagnosis
+			issuedcode,                         // diagnosis
 		}
 
 		switch {

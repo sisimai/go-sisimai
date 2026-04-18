@@ -202,8 +202,7 @@ func init() {
 		for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
-			e.Rhost     = rfc1123.Find(e.Diagnosis)
+			e.Rhost = rfc1123.Find(e.Diagnosis)
 
 			if cv := moji.Select(e.Diagnosis, " (state ", ")", 0); len(statetable[cv]) > 0 {
 				// Find "(state 18)" and pick "18" as a key of statetable

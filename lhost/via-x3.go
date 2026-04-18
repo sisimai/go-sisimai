@@ -129,7 +129,6 @@ func init() {
 				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 				e.Update(z, permessage[z])
 			}
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
 		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
 	}

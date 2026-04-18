@@ -209,7 +209,7 @@ func init() {
 						// parser.c:748|     s-1, (int)(s - US mailbox - 1), mailbox);
 						// parser.c:749|   goto PARSE_FAILED;
 						// parser.c:750|   }
-						v.Diagnosis = moji.Sweep(moji.Select(e + moji.RHS, ">:", "", 0))
+						v.Diagnosis = moji.Select(e + moji.RHS, ">:", "", 0)
 
 					} else {
 						// There is an email address only in the line, such as "  kijitora@example.jp"
@@ -362,7 +362,7 @@ func init() {
 				}
 			}
 
-			e.Diagnosis = moji.Sweep(e.Diagnosis)
+			e.Diagnosis = strings.Join(strings.Fields(e.Diagnosis), " ")
 			if cv := moji.Select(moji.LHS + e.Diagnosis, "", "__", 0); cv != "" { e.Diagnosis = cv }
 
 			if e.Rhost   == "" { e.Rhost = rfc1123.Find(e.Diagnosis) }
