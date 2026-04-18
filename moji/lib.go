@@ -14,33 +14,6 @@ import "strings"
 const LHS string = "<@>" // The LHS string for Select() function
 const RHS string = "<$>" // The RHS string for Select() function
 
-// Squeeze remove redundant characters from the given string.
-//   Arguments:
-//     - text (*string): String including redundant characters like "neko  chan".
-//     - char (byte):    Characters to be squeezed, for example ' '.
-func Squeeze(text *string, char byte) {
-	if text == nil || *text== "" || strings.IndexByte(*text, char) < 0 { return }
-
-	textbuffer := make([]byte, 0, len(*text))
-	cb := byte(0); for _, by := range []byte(*text) {
-		// Remove a character that is the same character of the previous character
-		if by != char || by != cb { textbuffer = append(textbuffer, by); cb = by }
-	}
-	*text = string(textbuffer)
-}
-
-// Sweep clears the string out.
-//   Arguments:
-//     - text (string): String to be cleaned.
-//   Returns:
-//     - (string): Cleaned out string.
-func Sweep(text string) string {
-	if text == "" { return "" }
-
-	text = strings.TrimSpace(strings.ReplaceAll(text, "\t", " ")); Squeeze(&text, ' ')
-	return text 
-}
-
 // ContainsOnlyNumbers returns true when the given string contain numbers only.
 //   Arguments:
 //     - text (string): String including only numbers such as "2022"
