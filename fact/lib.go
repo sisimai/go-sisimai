@@ -185,13 +185,12 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 		DIAGNOSTICCODE: for {
 			// - Cleanup the value of "Diagnostic-Code:" field
 			// - Find and set the SMTP Reply Code
-			piece["diagnosticcode"] = e.Diagnosis
+			piece["diagnosticcode"] = strings.Join(strings.Fields(e.Diagnosis), " ")
 			piece["deliverystatus"] = e.Status
 			piece["replycode"]      = e.ReplyCode
 			if e.Diagnosis == "" { break DIAGNOSTICCODE }
 
 			// Get an SMTP Reply Code and an SMTP Enhanced Status Code
-			piece["diagnosticcode"] = strings.ReplaceAll(piece["diagnosticcode"], "\r", "")
 			cs := status.Find(piece["diagnosticcode"], "")
 			cr := reply.Find(piece["diagnosticcode"], cs)
 			piece["deliverystatus"] = status.Prefer(piece["deliverystatus"], cs, cr)
@@ -236,7 +235,7 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 				piece["diagnosticcode"] = piece["diagnosticcode"][:p1] + " " + piece["diagnosticcode"][p2 + 7:]
 			}
 
-			piece["diagnosticcode"] = moji.Sweep(piece["diagnosticcode"])
+			piece["diagnosticcode"] = strings.Join(strings.Fields(piece["diagnosticcode"]), " ")
 			break DIAGNOSTICCODE
 		}
 
