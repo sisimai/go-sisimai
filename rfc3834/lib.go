@@ -83,15 +83,14 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	}
 	if recipients == 0 { return nil }
 
-	moji.Squeeze(&bf.Payload, '\n') // Squeeze continuous "\n" in the message body
-	bf.Payload  = strings.Trim(bf.Payload, "\n")
+	bf.Payload  = strings.Join(strings.Fields(bf.Payload), "\n")
 	bodyslices := strings.Split(bf.Payload, "\n")
 	rfc822part := ""
 
 	if len(bodyslices) < 5 {
 		// There is vacation message only in the message body
 		bf.Payload  = strings.ReplaceAll(bf.Payload, "\n", " ")
-		v.Diagnosis = moji.Sweep(bf.Payload)
+		v.Diagnosis = strings.Join(strings.Fields(bf.Payload), " ")
 
 	} else {
 		for _, e := range bodyslices {
