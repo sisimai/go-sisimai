@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ ____ _________  ____  
 // |  _ \|  ___/ ___| ___|___ /___ \|___ \ 
@@ -35,8 +35,7 @@ func Headers(heads *mail.Header) map[string][]string {
 			// 1. Exclude the Received header including "(qmail ** invoked from network)".
 			// 2. Convert all consecutive spaces and line breaks into a single space character.
 			if moji.ContainsAny(e, woReceived) { continue }
-			moji.Squeeze(&e, ' ')
-			receivedby = append(receivedby, e)
+			receivedby = append(receivedby, strings.Join(strings.Fields(e), " "))
 		}
 		headermaps["received"] = receivedby
 	}

@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ ____   ___  _  _  ____  
 // |  _ \|  ___/ ___|___ \ / _ \| || || ___| 
@@ -50,7 +50,7 @@ func haircut(block *string, heads bool) []string {
 			if len(headerpart[0]) > 0 {
 				// Append parameters
 				headerpart[0] += " " + e
-				moji.Squeeze(&headerpart[0], ' ')
+				headerpart[0]  = strings.Join(strings.Fields(headerpart[0]), " ")
 			}
 		}
 	}
