@@ -102,7 +102,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	if p1 := strings.Index(bf.Headers["subject"][0], ": "); p1 > -1 {
 		// Pick the original Subject: value from the bounce message
 		if moji.ContainsAny(lowervalue["subject"], autoreply0["subject"]) {
-			rfc822part += "Subject: " + moji.Sweep(bf.Headers["subject"][0][p1 + 2:]) + "\n"
+			rfc822part += "Subject: " + bf.Headers["subject"][0][p1 + 2:] + "\n"
 		}
 	}
 
