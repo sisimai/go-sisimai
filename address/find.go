@@ -252,7 +252,7 @@ func Find(text string) [3]string {
 
 		if strings.HasPrefix(layoutbuff[1], `"`) == false || strings.HasSuffix(layoutbuff[1], `"`) == false {
 			// Remove redundant spaces from the display name when the value is not a "quoted-string"
-			moji.Squeeze(&layoutbuff[1], ' ')
+			layoutbuff[1] = strings.Join(strings.Fields(layoutbuff[1]), " ")
 		}
 		if rfc5322.IsQuotedAddress(layoutbuff[1]) == false {
 			// Trim `"` from the display name when the value is not like "neko-cat"@libsisimai.org
