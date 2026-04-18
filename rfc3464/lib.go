@@ -218,7 +218,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 
 				// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
 				//    has an SPF record with a hard fail
-				if strings.HasPrefix(e, " ") { b.WriteString(" " + moji.Sweep(e)) }
+				if strings.HasPrefix(e, " ") { b.WriteString(" " + e) }
 			}
 		}
 	}
@@ -230,7 +230,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 
 	beforemesg := ""; if leadinbuff.Len() > 0 {
 		// Pick some values of []siba.DeliveryMatter{} from the string before startingof["message"]
-		beforemesg           = moji.Sweep(leadinbuff.String())
+		beforemesg           = strings.Join(strings.Fields(leadinbuff.String()), " ")
 		alternates.Command   = command.Find(beforemesg)
 		alternates.ReplyCode = reply.Find(beforemesg, dscontents[0].Status)
 		alternates.Status    = status.Find(beforemesg, alternates.ReplyCode)
@@ -245,7 +245,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 			e.Update(z, permessage[z])
 		}
 
-		e.Diagnosis = moji.Sweep(eachbuffer[j].String())
+		e.Diagnosis = strings.Join(strings.Fields(eachbuffer[j].String()), " ")
 		if recipients == 1 {
 			// Do not mix the error message of each recipient with "beforemesg" when there is
 			// multiple recipient addresses in the bounce message
@@ -256,7 +256,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 			} else {
 				// The value of e.Diagnosis is not contained in "beforemesg"
 				// There may be an important error message in "beforemesg"
-				e.Diagnosis = moji.Sweep(beforemesg + " " + e.Diagnosis)
+				e.Diagnosis = beforemesg + " " + e.Diagnosis
 			}
 		}
 		e.Command   = command.Find(e.Diagnosis);         if e.Command   == "" { e.Command   = alternates.Command   }
