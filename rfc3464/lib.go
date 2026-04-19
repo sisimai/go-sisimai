@@ -99,7 +99,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		cx := cv + "<"; if strings.Contains(emailparts[0], cx) == false { continue }
 
 		// Insert "rfc822; " just after the field name
-		emailparts[0] = strings.Replace(emailparts[0], cv + "<", cv + "rfc822; ", 1)
+		emailparts[0] = strings.Replace(emailparts[0], cx, cv + "rfc822; ", 1)
 		p0 := strings.Index(emailparts[0], cv)
 		p1 := moji.IndexOnTheWay(emailparts[0], ">\n", p0 + 1)
 		emailparts[0] = emailparts[0][:p1] + emailparts[0][p1 + 1:]
@@ -137,7 +137,8 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 				if moji.HasPrefixAny(e, dontappend)      { break }
 				if strings.Contains(e, "--- The follow") { break } // ----- The following addresses had delivery problems -----
 				if strings.Contains(e, "--- Transcript") { break } // ----- Transcript of session follows -----
-				leadinbuff.WriteString(e + " ");           break
+				leadinbuff.WriteString(e); leadinbuff.WriteByte(' ')
+				break
 			}
 			continue
 		}
@@ -176,14 +177,14 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 			case "code":
 				// Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@example.jp>... User Unknown
 				v.Spec = o[1]
-				b.WriteString(o[2] + " ")
+				b.WriteString(o[2]); b.WriteByte(' ')
 
 			default:
 				// Other DSN fields defined in RFC3464
 				// There are other error messages as a comment such as the following:
 				// Status: 5.0.0 (permanent failure)
 				// Status: 4.0.0 (cat.example.net: host name lookup failure)
-				if o[4] != "" { b.WriteString(" " + o[4] + " ") }
+				if o[4] != "" { b.WriteByte(' '); b.WriteString(o[4]); b.WriteByte(' ') }
 				v.Update(v.AsRFC1894(o[0]), o[2]); if f != 1 { continue }
 
 				// Copy the lower-cased member name of siba.DeliveryMatter{} for "permessage" for
@@ -213,12 +214,13 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 					// In the case of multiple "message/delivery-status" line
 					if strings.HasPrefix(e, "Content-") { continue } // Content-Disposition, ...
 					if strings.HasPrefix(e, "--")       { continue } // Boundary string
-					leadinbuff.WriteString(e + " ");      continue
+					leadinbuff.WriteString(e); leadinbuff.WriteByte(' ')
+					continue
 				}
 
 				// Diagnostic-Code: SMTP; 550-5.7.26 The MAIL FROM domain [email.example.jp]
 				//    has an SPF record with a hard fail
-				if strings.HasPrefix(e, " ") { b.WriteString(" " + e) }
+				if strings.HasPrefix(e, " ") { b.WriteByte(' '); b.WriteString(e) }
 			}
 		}
 	}
