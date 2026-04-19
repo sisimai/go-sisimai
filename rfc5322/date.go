@@ -142,7 +142,12 @@ func Date(date0 string) string {
 	if p[0] == "" || p[1] == "" || p[2] == "" || p[4] == "" { return "" }
 
 	var w strings.Builder; w.Grow(32)
-	w.WriteString(p[3] + ", " + p[2] + " " + p[1] + " " + p[0] + " " + p[4] + " " + p[5])
+	w.WriteString(p[3]); w.WriteString(", ")
+	w.WriteString(p[2]); w.WriteByte(' ')
+	w.WriteString(p[1]); w.WriteByte(' ')
+	w.WriteString(p[0]); w.WriteByte(' ')
+	w.WriteString(p[4]); w.WriteByte(' ')
+	w.WriteString(p[5])
 	return w.String()
 }
 
