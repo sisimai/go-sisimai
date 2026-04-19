@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2022,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                  _ _    __         _               
 //  _ __ ___   __ _(_) |  / / __ ___ | |__   _____  __
@@ -9,8 +9,8 @@
 package mail
 import "io"
 import "os"
+import "bytes"
 import "bufio"
-import "strings"
 
 // readMailbox is a UNIX mbox reader, works like a iterator.
 //   Returns:
@@ -24,17 +24,17 @@ func(ee *EmailEntity) readMailbox() (*string, error) {
 		ee.handle = filehandle // Successfully opened the mbox
 	}
 
-	seekoffset := int64(ee.offset);              if ee.offset  < 0 { seekoffset = 0 }
-	_, nyaan   := ee.handle.Seek(seekoffset, 0); if nyaan != nil { return nil, nyaan  }
-	lineending := 0;                             if ee.newline > 2 { lineending = 1 }
-	readbuffer := strings.Builder{}; readbuffer.Grow(4096)
+	seekoffset := int64(ee.offset);              if ee.offset  < 0 { seekoffset = 0    }
+	_, nyaan   := ee.handle.Seek(seekoffset, 0); if nyaan != nil   { return nil, nyaan }
+	lineending := 0;                             if ee.newline > 2 { lineending = 1    }
+	readbuffer := bytes.Buffer{}; readbuffer.Grow(4096)
 	emailblock := ""
 	thisheight := 0
 
 	unixmboxio := bufio.NewScanner(ee.handle); for unixmboxio.Scan() {
 		// Read the UNIX mbox until the EOF
-		e := unixmboxio.Text()
-		if strings.HasPrefix(e, "From ") && readbuffer.Len() > 0 {
+		e := unixmboxio.Bytes()
+		if bytes.HasPrefix(e, []byte("From ")) && readbuffer.Len() > 0 {
 			// - The line is a UNIX From line such as "From MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 			// - This UNIX From line is the beginning of the second or later email message
 			emailblock = readbuffer.String(); readbuffer.Reset()
@@ -42,7 +42,7 @@ func(ee *EmailEntity) readMailbox() (*string, error) {
 			break
 		}
 		thisheight += 1
-		readbuffer.WriteString(e + "\n")
+		readbuffer.Write(e); readbuffer.WriteByte('\n')
 	}
 
 	if readbuffer.Len() > 0 {
