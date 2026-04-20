@@ -203,10 +203,10 @@ func init() {
 
 		if emailparts[1] == "" {
 			// When original message is not included in the bounce message
-			bu := strings.Builder{}; bu.Grow(64)
-			bu.WriteString("From: " + connheader[0] + "\n")
-			bu.WriteString("Subject: " + connheader[2] + "\n")
-			bu.WriteString("Date: " + connheader[1] + "\n")
+			bu := strings.Builder{}; bu.Grow(128)
+			bu.WriteString("From: ");    bu.WriteString(connheader[0]); bu.WriteByte('\n')
+			bu.WriteString("Subject: "); bu.WriteString(connheader[2]); bu.WriteByte('\n')
+			bu.WriteString("Date: ");    bu.WriteString(connheader[1]); bu.WriteByte('\n')
 			emailparts[1] += bu.String()
 		}
 		return &siba.RisingUnderway{Digest: dscontents, RFC822: emailparts[1]}
