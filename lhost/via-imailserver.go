@@ -40,9 +40,9 @@ func init() {
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		mesgbuffer := strings.Builder{}; mesgbuffer.Grow(len(emailparts[0]) / 2)
 		recipients := uint8(0)
 
+		bu := strings.Builder{}; bu.Grow(255)
 		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
@@ -59,17 +59,17 @@ func init() {
 				// Other error messages
 				if strings.Contains(e, startingof["error"][0]) {
 					// Body of message generated response:
-					mesgbuffer.WriteString(e)
+					bu.WriteString(e)
 
 				} else {
 					// Error message after "Body of message generated response:" line
-					if mesgbuffer.Len() > 0 { mesgbuffer.WriteString(" " + e) }
+					if bu.Len() > 0 { bu.WriteByte(' '); bu.WriteString(e) }
 				}
 			}
 		}
 		if recipients == 0 { return nil }
 
-		alternates := mesgbuffer.String(); for j, _ := range dscontents {
+		alternates := bu.String(); for j, _ := range dscontents {
 			// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 			e := &dscontents[j]
 
