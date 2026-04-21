@@ -47,7 +47,7 @@ func Find(text string) string {
 
 	commandset := make([]string, 0, 4)
 	commandmap := map[string]string{"STAR": eb.CeTTLS, "XFOR": eb.CeXFWD}
-	issuedcode := " " + text + " "
+	issuedcode := []byte(" " + text + " ")
 
 	for _, e := range detectable {
 		// Find an SMTP command from the given string
@@ -55,7 +55,7 @@ func Find(text string) string {
 		if strings.IndexByte(e, ' ') < 0 {
 			// For example, "RCPT T" does not appear in an email address or a domain name
 			cx, cw := true, len(e) + 1
-			ca, cz := []byte(issuedcode[p0:p0 + 1])[0], []byte(issuedcode[p0 + cw:p0 + cw + 1])[0]
+			ca, cz := issuedcode[p0:p0 + 1][0], issuedcode[p0 + cw:p0 + cw + 1][0]
 			switch {
 				// Exclude an SMTP command in the part of an email address, a domain name, such as
 				// DATABASE@EXAMPLE.JP, EMAIL.EXAMPLE.COM, and so on.
