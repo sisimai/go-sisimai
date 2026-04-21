@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                _           ____       _ _                
 //  ___ _ __ ___ | |_ _ __   / / _| __ _(_) |_   _ _ __ ___ 
@@ -22,9 +22,8 @@ import "libsisimai.org/sisimai/v5/smtp/status"
 func IsPermanent(text string) bool {
 	if text == "" { return false }
 
-	statuscode := status.Find(text, "");  if statuscode == "" { statuscode = reply.Find(text, "") }
-	if strings.HasPrefix(statuscode, "5")                     { return true }
-	if strings.Contains(strings.ToLower(text), " permanent ") { return true }
+	cv := status.Find(text, ""); if cv == "" { cv = reply.Find(text, "") }
+	if strings.HasPrefix(cv, "5") || strings.Contains(strings.ToLower(text), " permanent ") { return true }
 	return false
 }
 
@@ -36,12 +35,12 @@ func IsPermanent(text string) bool {
 func IsTemporary(text string) bool {
 	if text == "" { return false }
 
-	statuscode := status.Find(text, ""); if statuscode == "" { statuscode = reply.Find(text, "") }
-	issuedcode := strings.ToLower(text)
+	cv := status.Find(text, ""); if cv== "" { cv = reply.Find(text, "") }
+	cc := strings.ToLower(text)
 
-	if strings.HasPrefix(statuscode, "4")          { return true }
-	if strings.Contains(issuedcode, " temporar")   { return true }
-	if strings.Contains(issuedcode, " persistent") { return true }
+	if strings.HasPrefix(cv, "4")          { return true }
+	if strings.Contains(cc, " temporar")   { return true }
+	if strings.Contains(cc, " persistent") { return true }
 	return false
 }
 
