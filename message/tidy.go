@@ -48,10 +48,10 @@ func tidy(head *string) *string {
 	bu := strings.Builder{}; bu.Grow(1024)
 	el := strings.Split(*head, "\n"); for j, e := range el {
 		// 1. Find a field label defined in RFC5322, RFC1894, or RFC5965 from this line
-		p0 := strings.IndexByte(e, ':'); if p0 < 0 { bu.WriteString(e + "\n"); continue }
+		p0 := strings.IndexByte(e, ':'); if p0 < 0 { bu.WriteString(e); bu.WriteByte('\n'); continue }
 		cf := strings.ToLower(strings.TrimRight(e[0:p0], " "))
-		if strings.IndexByte(cf, ' ') > 0 { bu.WriteString(e + "\n"); continue }
-		fn := fieldtable[cf]; if fn == "" { bu.WriteString(e + "\n"); continue }
+		if strings.IndexByte(cf, ' ') > 0 { bu.WriteString(e); bu.WriteByte('\n'); continue }
+		fn := fieldtable[cf]; if fn == "" { bu.WriteString(e); bu.WriteByte('\n'); continue }
 
 		// 2. Tidy up a sub type of each field defined in RFC1894 such as Reporting-MTA: DNS;...
 		ab := make([]string, 0, 2)
@@ -118,14 +118,17 @@ func tidy(head *string) *string {
 			// Remove redundant space characters
 			if ef != "" { ab = append(ab, ef) }
 		}
-		bu.WriteString(fn + ": " + strings.Join(ab, " ") + "\n")
+		bu.WriteString(fn)
+		bu.WriteString(": ")
+		bu.WriteString(strings.Join(ab, " "))
+		bu.WriteByte('\n')
 	}
 	email := bu.String();
 
 	// 5. Convert the lower-cased SMTP command to the upper-cased.
 	email = strings.ReplaceAll(email, "after end of data:", "after end of DATA:")
 
-	if email[len(email) - 2:] != "\n\n" { email += "\n\n" }
+	if strings.HasSuffix(email, "\n\n") == true { email += "\n\n" }
 	return &email
 }
 

@@ -110,6 +110,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
     //   o  "Version" indicates the version of specification that the report
     //      generator is using to generate the report.  The version number in
     //      this specification is set to "1".
+	bu := strings.Builder{}; bu.Grow(255)
 	for e := range strings.Lines(emailparts[0]) {
 		// Read error messages and delivery status lines from the head of the email to the
 		// previous line of the beginning of the original message.
@@ -167,7 +168,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 				//
 				// the header is optional and MUST NOT appear more than once.
 				//   Original-Mail-From: <somespammer@example.net>
-				anotherone += e + ", "
+				bu.WriteString(e); bu.WriteString(", ")
 
 			} else if moji.HasPrefixAny(e, []string{"Received-Date: ", "Arrival-Date: "}) {
 				// Arrival-Date header is optional and MUST NOT appear more than once.
@@ -216,7 +217,14 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	}
 	if recipients == 0 { return nil }
 
-	if anotherone != "" { anotherone = ": " + strings.TrimRight(anotherone, ",") }
+	if bu.Len() > 0 {
+		// Convert the value of the following fields to a string
+		// - Authentication-Results
+		// - User-Agent
+		// - Original-Mail-From
+		anotherone = strings.TrimRight(": " + bu.String(), ",")
+	}
+
 	for j := range dscontents {
 		// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 		e := &dscontents[j]

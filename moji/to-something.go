@@ -69,8 +69,8 @@ func ToPlain(htmle *string) *string {
 		p0 := strings.IndexByte(xhtml, '<');     if p0 < 0 { break }
 		p1 := IndexOnTheWay(xhtml, ">", p0 + 2); if p1 < 0 { break }
 
-		if p0 >  0 { buffr.WriteString(xhtml[0:p0] + " ")      }
-		if p0 > p1 { buffr.WriteString(xhtml[p1 + 1:p0] + " ") }
+		if p0 >  0 { buffr.WriteString(xhtml[0:p0]); buffr.WriteByte(' ')      }
+		if p0 > p1 { buffr.WriteString(xhtml[p1 + 1:p0]); buffr.WriteByte(' ') }
 
 		xhtml = xhtml[p1 + 1:]
 	}

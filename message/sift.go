@@ -118,7 +118,7 @@ func sift(bf *siba.BeforeFact, hook siba.CfParameter0) bool {
 			// The line is not a line continued from the previous line of a long header
 			if strings.HasPrefix(e, " ") == false && strings.HasPrefix(e, "\t") == false { continue }
 		}
-		rfc822buff.WriteString(e + "\n")
+		rfc822buff.WriteString(e); rfc822buff.WriteByte('\n')
 	}
 	if rfc822buff.Len() > 0 { rising.RFC822 = rfc822buff.String() + "\n" }
 

@@ -315,12 +315,23 @@ func init() {
 		}
 		if recipients == 0 { return nil }
 
-		// Generate pseudo email headers as the original message
-		cv := strings.Builder{}; cv.Grow(255)
-		for _, e := range mailinside.Headers      { cv.WriteString(e.Name + ": " + e.Value + "\n")                        }
-		if mailinside.CommonHeaders.Date    != "" { cv.WriteString("Date: " + mailinside.CommonHeaders.Date + "\n")       }
-		if mailinside.CommonHeaders.Subject != "" { cv.WriteString("Subject: " + mailinside.CommonHeaders.Subject + "\n") }
-		return &siba.RisingUnderway{Digest: dscontents, RFC822: cv.String()}
+		bu := strings.Builder{}; bu.Grow(255)
+		for _, e := range mailinside.Headers {
+			// Generate pseudo email headers as the original message
+			bu.WriteString(e.Name); bu.WriteString(": ")
+			bu.WriteString(e.Value);bu.WriteByte('\n')
+		}
+		if mailinside.CommonHeaders.Date != "" {
+			// Copy the original Date: header.
+			bu.WriteString("Date: ")
+			bu.WriteString(mailinside.CommonHeaders.Date); bu.WriteByte('\n')       
+		}
+		if mailinside.CommonHeaders.Subject != "" {
+			// Copy the original Subject: header.
+			bu.WriteString("Subject: ")
+			bu.WriteString(mailinside.CommonHeaders.Subject); bu.WriteByte('\n')
+		}
+		return &siba.RisingUnderway{Digest: dscontents, RFC822: bu.String()}
 	}
 }
 

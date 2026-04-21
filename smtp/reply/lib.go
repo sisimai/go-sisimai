@@ -89,11 +89,11 @@ package reply
 // 555  MAIL FROM/RCPT TO parameters not recognized or not implemented
 // 556  Domain does not accept mail (See RFC7504)
 //
+import "bytes"
 import "slices"
 import "strconv"
 import "strings"
 import "libsisimai.org/sisimai/v5/eb"
-import "libsisimai.org/sisimai/v5/moji"
 
 var replycode2 = []string{"211", "214", "220", "221", "235", "250", "251", "252", "253", "334", "354"}
 var replycode4 = []string{"421", "450", "451", "452", "422", "430", "432", "453", "454", "455", "458", "459"}
@@ -174,11 +174,11 @@ func Find(logs, hint string) string {
 	if len(logs) < 3 || strings.Contains(strings.ToUpper(logs), "X-UNIX") { return "" }
 	if len(hint) == 0 { hint = "0" }
 
-	esmtperror := " " + logs + " "
+	esmtperror := []byte(" " + logs + " "); cw := len(esmtperror)
 	replycodes := make([]string, 0, 50)
-	if statuscode := hint[0:1]; statuscode == "2" || statuscode == "4" || statuscode == "5" {
+	if cr := hint[0:1]; cr == "2" || cr == "4" || cr == "5" {
 		// The first character of the 2nd argument is 2 or 4 or 5
-		replycodes = codeofsmtp[statuscode]
+		replycodes = codeofsmtp[cr]
 
 	} else {
 		// The first character of the 2nd argument is 0 or other values
@@ -187,14 +187,18 @@ func Find(logs, hint string) string {
 
 	for _, e := range replycodes {
 		// Try to find an SMTP Reply Code from the given string
-		appearance := strings.Count(esmtperror, e); if appearance == 0 { continue }
+		characterb := []byte(e)
+		appearance := bytes.Count(esmtperror, characterb); if appearance == 0 { continue }
 		startingat := 1
 
 		for j := 0; j < appearance; j++ {
 			// Find all the reply codes in the error message
-			replyindex := moji.IndexOnTheWay(esmtperror, e, startingat); if replyindex < 0 { break }
-			formerchar := []byte(esmtperror[replyindex - 1:replyindex])[0]
-			latterchar := []byte(esmtperror[replyindex + 3:replyindex + 4])[0]
+			if cw <= startingat { break }
+
+			replyindex := bytes.Index(esmtperror[startingat:], characterb); if replyindex < 0 { break }
+			replyindex += startingat
+			formerchar := esmtperror[replyindex - 1:replyindex][0]
+			latterchar := esmtperror[replyindex + 3:replyindex + 4][0]
 
 			if formerchar > 45 && formerchar < 58 { startingat += replyindex + 3; continue } // '.' => '9'
 			if latterchar > 45 && latterchar < 58 { startingat += replyindex + 3; continue } // '.' => '9'

@@ -35,9 +35,9 @@ func init() {
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
-		stringbuff := strings.Builder{}; stringbuff.Grow(len(emailparts[0]) / 2)
 		recipients, readcursor := uint8(0), uint8(0)
 
+		bu := strings.Builder{}; bu.Grow(255)
 		for e := range strings.Lines(emailparts[0]) {
 			// Read error messages and delivery status lines from the head of the email to the
 			// previous line of the beginning of the original message.
@@ -77,7 +77,7 @@ func init() {
 				// OR the following format:
 				//   neko@example.fr:
 				//   SMTP error from remote server for TEXT command, host: ...
-				stringbuff.WriteString(" " + e)
+				bu.WriteByte(' '); bu.WriteString(e)
 			}
 		}
 		if recipients == 0 { return nil }
@@ -86,7 +86,7 @@ func init() {
 			// Get and set other values into siba.DeliveryMatter{}, Try to detect the bounce reason
 			e := &dscontents[j]
 
-			if e.Diagnosis == "" { e.Diagnosis = stringbuff.String() }
+			if e.Diagnosis == "" { e.Diagnosis = bu.String() }
 			e.Command = command.Find(e.Diagnosis)
 
 			if moji.Aligned(e.Diagnosis, []string{"host: ", " reason:"}) {
