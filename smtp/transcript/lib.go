@@ -1,4 +1,4 @@
-// Copyright (C) 2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2022,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                _           ___                                 _       _   
 //  ___ _ __ ___ | |_ _ __   / / |_ _ __ __ _ _ __  ___  ___ _ __(_)_ __ | |_ 
@@ -70,7 +70,7 @@ type TranscriptLog struct {
 //   Returns:
 //     - ([]TranscriptLog):  List of structured transcript logs.
 func Rise(log, lhs, rhs string) []TranscriptLog {
-	if log == "" { return nil    }
+	if log == "" { return nil  }
 	if lhs == "" { lhs = ">>>" } // Label for an SMTP client
 	if rhs == "" { rhs = "<<<" } // Label for an SMTP server
 
