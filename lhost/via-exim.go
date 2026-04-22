@@ -72,7 +72,7 @@ func init() {
 			// deliver.c:6425|          else fprintf(f,
 			// deliver.c:6426|"------ This is a copy of the message's headers. ------\n");
 			"------ This is a copy of the message, including all the headers. ------",
-			"Content-Type: message/rfc822",
+			eb.FeRFC822[0],
 			"Included is a copy of the message header:\n-----------------------------------------", // MXLogic
 		}
 		startingof := map[string][]string{

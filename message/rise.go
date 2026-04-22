@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ __ ___   ___  ___ ___  __ _  __ _  ___ 
 // | '_ ` _ \ / _ \/ __/ __|/ _` |/ _` |/ _ \
@@ -12,12 +12,10 @@ package message
 import "io"
 import "strings"
 import "net/mail"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
-
-var pseudofrom = "MAILER-DAEMON Fri Feb  2 18:30:22 2018"
-var boundaries = []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"};
 
 // Rise decode and structure various formats of bounce emails.
 //   Arguments:
@@ -48,7 +46,7 @@ func Rise(mesg *string, hook siba.CfParameter0) *siba.BeforeFact {
 
 			} else {
 				// Set pseudo UNIX From line
-				beforefact.Sender = pseudofrom
+				beforefact.Sender = eb.GeFrom
 			}
 
 			// Build "Head", "Body" members of BeforeFact
@@ -74,9 +72,9 @@ func Rise(mesg *string, hook siba.CfParameter0) *siba.BeforeFact {
 
 		// 3. Rewrite message body for detecting the bounce reason
 		if siftstatus := sift(beforefact, hook); siftstatus == true { break RISE }
-		for _, e := range boundaries {
-			// Check the message body contains "message/rfc822" or "message/delivery-status" for
-			// decoding the bounce message in the forwarded email
+		for _, e := range eb.FeRFC822 {
+			// Check the message body contains "message/rfc822" or text/rfc822-headers for decoding
+			// the bounce message in the forwarded email
 			if strings.Contains(beforefact.Payload, e) { break RISE }
 		}
 
@@ -85,7 +83,7 @@ func Rise(mesg *string, hook siba.CfParameter0) *siba.BeforeFact {
 		//    part as a entire message body again. rfc3464/1086-a847b090.eml is the email but the
 		//    results decoded by sisimai are unstable.
 		retryagain++
-		cv := rfc5322.Part(&beforefact.Payload, boundaries, true)[1]; if len(cv) < 128 { break RISE }
+		cv := rfc5322.Part(&beforefact.Payload, eb.FeRFC822, true)[1]; if len(cv) < 128 { break RISE }
 		mesg = &cv
 	}
 	if beforefact.HasDone() == false { return new(siba.BeforeFact) }

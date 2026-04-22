@@ -46,7 +46,7 @@ func init() {
 			"--- Below this line is a copy of the mail header.",
 			"--- Below the next line is a copy of the message.", // The followings are the qmail clone
 			"--- Mensaje original adjunto.",
-			"Content-Type: message/rfc822",
+			eb.FeRFC822[0],
 			"Original message follows.",
 		}
 		startingof := map[string][]string{

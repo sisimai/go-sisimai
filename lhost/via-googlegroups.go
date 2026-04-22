@@ -50,7 +50,7 @@ func init() {
 		// Thanks,
 		//
 		// Google Groups
-		boundaries := []string{"----- Original message -----", "Content-Type: message/rfc822"}
+		boundaries := []string{"----- Original message -----", eb.FeRFC822[0]}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)

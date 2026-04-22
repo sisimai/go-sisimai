@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc5322"
@@ -33,7 +34,6 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Content-Type: message/rfc822"}
 		startingof := map[string][]string{
 			// apache-james-2.3.2/src/java/org/apache/james/transport/mailets/
 			//   AbstractNotify.java|124:  out.println("Error message below:");
@@ -41,7 +41,7 @@ func init() {
 			"message": []string{"Message details:"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, []string{eb.FeRFC822[0]}, false)
 		alternates := [4]string{} // [Envelope-From, Header-From, Date, Subject]
 		recipients, readcursor := uint8(0), uint8(0)
 

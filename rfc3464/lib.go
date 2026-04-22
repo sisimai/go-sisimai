@@ -12,6 +12,7 @@
 package rfc3464
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/lhost"
@@ -36,8 +37,8 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	boundaries := []string{
 		// When the new value added, the part of the value should be listed in "delimiters" variable
 		// defined at MakeFlat() function in rfc2045/make-multipart-flat.go
-		"Content-Type: message/rfc822",
-		"Content-Type: text/rfc822-headers",
+		eb.FeRFC822[0],
+		eb.FeRFC822[1],
 		"Content-Type: message/partial",
 		"Content-Disposition: inline", // See lhost-amavis-*.eml, lhost-facebook-*.eml
 	}
