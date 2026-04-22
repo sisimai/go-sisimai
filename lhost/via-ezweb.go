@@ -41,7 +41,7 @@ func init() {
 		}
 		if proceedsto < 2 { return nil }
 
-		boundaries := []string{"--------------------------------------------------", "Content-Type: message/rfc822"}
+		boundaries := []string{"--------------------------------------------------", eb.FeRFC822[0]}
 		startingof := map[string][]string{
 			"message": []string{"The user(s) ", "Your message ", "Each of the following", "<"},
 		}
