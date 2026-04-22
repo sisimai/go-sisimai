@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ ____ _________  ____     ______               _               _   
 // |  _ \|  ___/ ___| ___|___ /___ \|___ \   / /  _ \ ___  ___ ___(_)_   _____  __| |_ 
@@ -102,7 +102,7 @@ func Received(rhead string) [6]string {
 		cv := rfc791.FindIPv4Address(token[e])
 		if len(cv) > 0 { token[e] = cv[0] } else { token[e] = "" }
 	}
-	_, e := token["from"]; if e == false { token["from"] = "" }
+	if _, e := token["from"]; e == false { token["from"] = "" }
 
 	switch {
 		// Prefer hostnames over IP addresses, except for localhost.localdomain and similar.
