@@ -47,9 +47,9 @@ func init() {
 	//   Returns:
 	//     - (bool): true if a reason is the reason defined in this file.
 	ProbesInto[eb.ReWONT] = func(fo *siba.Fact) bool {
-		if fo        == nil                         { return false }
-		if fo.Reason == eb.ReWONT                   { return true  }
-		if fo.Command != "" && fo.Command != "DATA" { return false }
+		if fo        == nil                            { return false }
+		if fo.Reason == eb.ReWONT                      { return true  }
+		if fo.Command != "" && fo.Command != eb.CeDATA { return false }
 		return IncludedIn[eb.ReWONT](strings.ToLower(fo.DiagnosticCode))
 	}
 }

@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _____     _ _          _ ____ _____  _    ____ _____ _____ _     ____  
 // |  ___|_ _(_) | ___  __| / ___|_   _|/ \  |  _ \_   _|_   _| |   / ___| 
@@ -36,7 +36,7 @@ func init() {
 	//     - (bool): true if a reason is the reason defined in this file.
 	ProbesInto[eb.ReTTLS] = func(fo *siba.Fact) bool {
 		if fo == nil                                                    { return false }
-		if fo.Reason == eb.ReTTLS || fo.Command == "STARTTLS"           { return true  }
+		if fo.Reason == eb.ReTTLS || fo.Command == eb.CeTTLS            { return true  }
 		if slices.Contains([]string{"523", "524", "538"}, fo.ReplyCode) { return true  }
 		return IncludedIn[eb.ReTTLS](strings.ToLower(fo.DiagnosticCode))
 	}
