@@ -11,6 +11,7 @@ package status
 import "fmt"
 import "sort"
 import "bytes"
+import "slices"
 import "strings"
 import "libsisimai.org/sisimai/v5/rfc791"
 
@@ -102,7 +103,7 @@ func Find(logs string, hint string) string {
 	if anotherone != "" { statuscode = append(statuscode, anotherone) }
 	if len(statuscode) < 1 { return "" }
 
-	cv := ""; for j, e := range statuscode {
+	cv := ""; for j, e := range slices.Compact(statuscode) {
 		// Select one from picked status codes
 		if j == 0 { cv = e; continue }
 		cv = Prefer(cv, e, "");
