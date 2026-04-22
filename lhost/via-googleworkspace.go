@@ -31,7 +31,6 @@ func init() {
 		if strings.Contains(bf.Headers["from"][0], "<mailer-daemon@googlemail.com>")  == false { return nil }
 		if strings.Contains(bf.Headers["subject"][0], "Delivery Status Notification") == false { return nil }
 
-		boundaries := []string{"Content-Type: message/rfc822", "Content-Type: text/rfc822-headers"}
 		startingof := map[string][]string{
 			"message": []string{"** "},
 			"error":   []string{"The response was:", "The response from the remote server was:"},
@@ -40,7 +39,7 @@ func init() {
 			eb.ReUSER: []string{"because the address couldn't be found. Check for typos or unnecessary spaces and try again."},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, eb.FeRFC822, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {
