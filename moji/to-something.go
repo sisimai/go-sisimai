@@ -25,14 +25,9 @@ func ToLF(text *string) *string {
 	for j := 0; j < bytelength; j++ {
 		// Replace '\r' and '\r\n' with '\n'
 		if readbuffer[j] != '\r' { tolinefeed = append(tolinefeed, readbuffer[j]); continue }
-		if j + 1 < bytelength && readbuffer[j + 1] == '\n' {
-			// The next character is not the last character, and the next character is '\n'
-			tolinefeed = append(tolinefeed, '\n'); j++
 
-		} else {
-			// The next character is the last character, or the next character is not '\n'
-			tolinefeed = append(tolinefeed, '\n')
-		}
+		tolinefeed = append(tolinefeed, '\n')
+		if j + 1 < bytelength && readbuffer[j + 1] == '\n' { j++ }
 	}
 	*text = string(tolinefeed)
 	return nil
