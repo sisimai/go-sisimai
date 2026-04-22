@@ -9,6 +9,7 @@
 
 package lhost
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc791"
@@ -33,7 +34,7 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{"Content-Type: message/rfc822", "\nReturn-Path: "}
+		boundaries := []string{eb.FeRFC822[0], "\nReturn-Path: "}
 		startingof := map[string][]string{
 			"message": []string{"This report relates to a message you sent with the following header fields:"},
 		}
