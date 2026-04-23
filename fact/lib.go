@@ -389,6 +389,8 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 
 		// Convert the value of Reason to the lower-cased name such as "mailboxfull".
 		thing.Reason = strings.ToLower(thing.Reason)
+		thing.Bogus  = -1
+		thing.Toxic  = -1
 
 		listoffact = append(listoffact, thing)
 	}
