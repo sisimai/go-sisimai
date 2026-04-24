@@ -46,9 +46,10 @@ func IsIPv4Address(addr string) bool {
 func FindIPv4Address(text string) []string {
 	if len(text) < 7 { return []string{} }
 
-	ipv4a := make([]string, 0, 1)
-	cw := -1; for j := 0; j < len(text); j++ {
+	// Rewrite: "mx.example.jp[192.0.2.1]" => "mx.example.jp 192.0.2.1"
+	ipv4a := make([]string, 0, 1); cw := -1; for j := 0; j < len(text); j++ {
 		switch text[j] {
+			// Find a string including an IPv4 address
 			case '(', ')', '[', ']', ',', ' ':
 				if cw < 0 { continue }
 				if cv := text[cw:j]; IsIPv4Address(cv) == true { ipv4a = append(ipv4a, cv) }
