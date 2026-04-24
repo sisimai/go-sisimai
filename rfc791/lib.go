@@ -21,6 +21,7 @@ func IsIPv4Address(addr string) bool {
 	if size := len(addr); size < 7 || size > 15 { return false }
 
 	co, ci := 0, -1; for j := 0; j < len(addr); j++ {
+		// Check that each octed is between 0 and 255.
 		if cv := addr[j]; cv < '0' || cv > '9' {
 			// Is not a numeric character
 			if cv != '.' || ci == -1 { return false }
