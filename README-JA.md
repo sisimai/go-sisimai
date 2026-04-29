@@ -44,14 +44,15 @@ Sisimai(シシマイ)は複雑で多種多様なバウンスメールを解析�
 The key features of Sisimai
 ---------------------------------------------------------------------------------------------------
 * __バウンスメールを構造化したデータに変換__
-  * 以下27項目の情報を含むデータ構造[^1]
+  * 以下28項目の情報を含むデータ構造[^1]
     * __基本的情報__: `Timestamp`, `Origin`
     * __発信者情報__: `Addresser`, `SenderDomain`, 
     * __受信者情報__: `Recipient`, `Destination`, `Alias`
     * __配信の情報__: `Action`, `ReplyCode`, `DeliveryStatus`, `Command`
     * __エラー情報__: `Reason`, `DiagnosticCode`, `DiagnosticType`, `FeedbackType`, `FeedbacID`, `HardBounce`
     * __メール情報__: `Subject`, `MessageID`, `ListID`,
-    * __その他情報__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`, `Toxic`
+    * __その他情報__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`
+    * __評価用項目__: `Toxic`, `Bogus`, `Catch` (ユーザーが自由に使える項目)
   * __出力可能な形式__
     * struct ([sisimai/siba.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/siba/fact.go))
     * JSON ([`encoding/json`](https://pkg.go.dev/encoding/json)を使用)
