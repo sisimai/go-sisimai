@@ -47,14 +47,15 @@ and the recipient email address, in structured data. It is also possible to outp
 The key features of Sisimai
 ---------------------------------------------------------------------------------------------------
 * __Decode email bounces to structured data__
-  * Sisimai provides detailed insights into bounce emails by extracting 27 key data points.[^1]
+  * Sisimai provides detailed insights into bounce emails by extracting 28 key data points.[^1]
     * __Essential information__: `Timestamp`, `Origin`
     * __Sender information__: `Addresser`, `SenderDomain`, 
     * __Recipient information__: `Recipient`, `Destination`, `Alias`
     * __Delivery information__: `Action`, `ReplyCode`, `DeliveryStatus`, `Command`
     * __Bounce details__: `Reason`, `DiagnosticCode`, `DiagnosticType`, `FeedbackType`, `FeedbackID`, `HardBounce`
     * __Message details__: `Subject`, `MessageID`, `ListID`,
-    * __Additional information__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`, `Catch`, `Toxic`
+    * __Additional information__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`
+    * __Evaluation metrics (User-calculated)__: `Toxic`, `Bogus`, `Catch`
   * Output formats
     * struct ([sisimai/siba.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/siba/fact.go))
     * JSON (by using [`encoding/json`](https://pkg.go.dev/encoding/json))
