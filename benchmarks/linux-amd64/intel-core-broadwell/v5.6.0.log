@@ -1,0 +1,27 @@
+emails: 2743
+goos: linux
+goarch: amd64
+pkg: libsisimai.org/sisimai/v5
+cpu: Intel Core Processor (Broadwell)
+BenchmarkRise 	       1	1816807233 ns/op	597062088 B/op	 1965011 allocs/op
+BenchmarkRise 	       1	1498702548 ns/op	597057080 B/op	 1964940 allocs/op
+BenchmarkRise 	       1	1530256183 ns/op	597057336 B/op	 1964940 allocs/op
+BenchmarkRise 	       1	1507372771 ns/op	597057320 B/op	 1964942 allocs/op
+BenchmarkRise 	       1	1524454322 ns/op	597057472 B/op	 1964944 allocs/op
+BenchmarkRise 	       1	1541006876 ns/op	597056960 B/op	 1964938 allocs/op
+BenchmarkRise 	       1	1586255250 ns/op	597056696 B/op	 1964935 allocs/op
+BenchmarkRise 	       1	1562615992 ns/op	597057680 B/op	 1964948 allocs/op
+BenchmarkRise 	       1	1587256306 ns/op	597056984 B/op	 1964938 allocs/op
+BenchmarkRise 	       1	1605010483 ns/op	597058024 B/op	 1964954 allocs/op
+BenchmarkDump 	       1	1649641408 ns/op	614119768 B/op	 1978697 allocs/op
+BenchmarkDump 	       1	1636747337 ns/op	614120968 B/op	 1978711 allocs/op
+BenchmarkDump 	       1	1626417736 ns/op	614121008 B/op	 1978709 allocs/op
+BenchmarkDump 	       1	1622691825 ns/op	614121072 B/op	 1978714 allocs/op
+BenchmarkDump 	       1	1637596596 ns/op	614120352 B/op	 1978705 allocs/op
+BenchmarkDump 	       1	1652446114 ns/op	614121248 B/op	 1978716 allocs/op
+BenchmarkDump 	       1	1642029412 ns/op	614120576 B/op	 1978705 allocs/op
+BenchmarkDump 	       1	1665626449 ns/op	614121480 B/op	 1978719 allocs/op
+BenchmarkDump 	       1	1700595698 ns/op	614121432 B/op	 1978716 allocs/op
+BenchmarkDump 	       1	1703447512 ns/op	614121280 B/op	 1978716 allocs/op
+PASS
+ok  	libsisimai.org/sisimai/v5	46.436s
