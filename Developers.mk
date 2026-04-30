@@ -41,7 +41,6 @@ LISTENADDR := 127.0.0.1:5321
 HOWMANYRUN := 10
 GOBENCHDIR := benchmarks/$(shell $(GO) env GOOS GOARCH | tr '\n' '-' | sed 's/-$$//')
 GOBENCHLOG := _benchmark.log
-PREVRESULT := $(shell $(LS) $(GOBENCHDIR)/*.log | tail -n 1)
 K          := neko
 
 # -------------------------------------------------------------------------------------------------
@@ -125,10 +124,10 @@ benchmark:
 
 compare-benchmark:
 	@test -d ./$(GOBENCHDIR)
-	@test -f ./$(PREVRESULT)
+	@test -n "$(shell find $(GOBENCHDIR)/ -type f -name '*.log')"
 	@test -x `which benchstat`
 	@$(CP) ./$(GOBENCHLOG)  $(GOBENCHDIR)/latest.log
-	benchstat $(PREVRESULT) $(GOBENCHDIR)/latest.log
+	benchstat $(shell find $(GOBENCHDIR) -type f -name '*.log' | tail -n 1) $(GOBENCHDIR)/latest.log
 	@$(RM) ./$(GOBENCHDIR)/latest.log
 
 install-benchstat:
