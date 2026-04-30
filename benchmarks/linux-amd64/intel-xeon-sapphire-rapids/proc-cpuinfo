@@ -1,0 +1,81 @@
+processor       : 0
+vendor_id       : GenuineIntel
+cpu family      : 6
+model           : 143
+model name      : Intel Xeon Processor (SapphireRapids)
+stepping        : 4
+microcode       : 0x1
+cpu MHz         : 2000.000
+cache size      : 16384 KB
+physical id     : 0
+siblings        : 1
+core id         : 0
+cpu cores       : 1
+apicid          : 0
+initial apicid  : 0
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 32
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single ssbd ibrs ibpb ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx512_bf16 wbnoinvd arat avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid bus_lock_detect cldemote movdiri movdir64b fsrm serialize tsxldtrk amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities
+bugs            : spectre_v1 spectre_v2 spec_store_bypass swapgs eibrs_pbrsb bhi its
+bogomips        : 4000.00
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 40 bits physical, 57 bits virtual
+power management:
+
+processor       : 1
+vendor_id       : GenuineIntel
+cpu family      : 6
+model           : 143
+model name      : Intel Xeon Processor (SapphireRapids)
+stepping        : 4
+microcode       : 0x1
+cpu MHz         : 2000.000
+cache size      : 16384 KB
+physical id     : 1
+siblings        : 1
+core id         : 0
+cpu cores       : 1
+apicid          : 1
+initial apicid  : 1
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 32
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single ssbd ibrs ibpb ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx512_bf16 wbnoinvd arat avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid bus_lock_detect cldemote movdiri movdir64b fsrm serialize tsxldtrk amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities
+bugs            : spectre_v1 spectre_v2 spec_store_bypass swapgs eibrs_pbrsb bhi its
+bogomips        : 4000.00
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 40 bits physical, 57 bits virtual
+power management:
+
+processor       : 2
+vendor_id       : GenuineIntel
+cpu family      : 6
+model           : 143
+model name      : Intel Xeon Processor (SapphireRapids)
+stepping        : 4
+microcode       : 0x1
+cpu MHz         : 2000.000
+cache size      : 16384 KB
+physical id     : 2
+siblings        : 1
+core id         : 0
+cpu cores       : 1
+apicid          : 2
+initial apicid  : 2
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 32
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single ssbd ibrs ibpb ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx512_bf16 wbnoinvd arat avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid bus_lock_detect cldemote movdiri movdir64b fsrm serialize tsxldtrk amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities
+bugs            : spectre_v1 spectre_v2 spec_store_bypass swapgs eibrs_pbrsb bhi its
+bogomips        : 4000.00
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 40 bits physical, 57 bits virtual
+power management:
+
