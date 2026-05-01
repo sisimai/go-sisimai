@@ -50,7 +50,7 @@ func Label(line string) string {
 
 // Match checks that the argument matches with a field defined in RFC3464 or not.
 //   Arguments:
-//     - line (string): Line inlcuding field and value defined in RFC3464.
+//     - line (string): Line including field and value defined in RFC3464.
 //   Returns:
 //     - (uint8): 0 is not matched, 1 is matched with per-message field, 2 is per-recipient.
 //   See:

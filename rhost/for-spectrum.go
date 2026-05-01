@@ -133,7 +133,7 @@ func init() {
 			// Try to find an error code matches with the code in the value of fo.DiagnosticCode
 			if codestring == e[0] { return e[2] } // ["1500", "", "reason"] or ["1500", "1550", "reason"]
 
-			// Check the code number is inlcuded the range like ["1500", "1550", 'reason']
+			// Check the code number is included the range like ["1500", "1550", 'reason']
 			if e[1] == "" { continue }
 
 			coderange0, nyaan := strconv.ParseUint(e[0], 10, 16); if nyaan != nil { continue }

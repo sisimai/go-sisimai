@@ -81,7 +81,7 @@ import "libsisimai.org/sisimai/v5/eb"
                  means the address portion to the the left of the "@" sign is invalid. This code is
                  only useful for permanent failures.
 
- X.1.2  ---    Bad destination system addres:
+ X.1.2  ---    Bad destination system address:
                  The destination system specified in the address does not exist or is incapable of
                  accepting mail. For Internet mail names, this means the address portion to the
                  right of the "@" is invalid for mail. This code is only useful for permanent

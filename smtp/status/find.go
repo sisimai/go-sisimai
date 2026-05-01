@@ -41,7 +41,7 @@ func Find(logs string, hint string) string {
 	for _, e := range eestatuses {
 		// Count the number of "5.", "4.", and "2." in the error message
 		p0, p1 := 0, 0; for p0 > -1 {
-			// Find all of the "5." and "4." string and store its postion
+			// Find all of the "5." and "4." string and store its position
 			p0  = bytes.Index(esmtperror[p1:], e); if p0 < 0 { break }
 			p0 += p1
 			p1  = p0 + 5

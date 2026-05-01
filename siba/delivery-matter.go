@@ -30,7 +30,7 @@ type DeliveryMatter struct {
 	Recipient    string     // The value of Final-Recipient header
 	ReplyCode    string     // SMTP Reply Code
 	Rhost        string     // The value of Remote-MTA header
-	Spec         string     // Protocl specification
+	Spec         string     // Protocol specification
 	Status       string     // The value of Status header
 }
 

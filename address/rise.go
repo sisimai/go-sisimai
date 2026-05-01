@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //            _     _                   
 //   __ _  __| | __| |_ __ ___  ___ ___ 
@@ -36,7 +36,7 @@ func Rise(addrs [3]string) *siba.EmailAddress {
 			thing.Alias = other
 		}
 
-		// Remove the folowing characters: "<", ">", ",", ".", and ";" from the email address
+		// Remove the following characters: "<", ">", ",", ".", and ";" from the email address
 		lpart = strings.TrimLeft(lpart, "<");     thing.User = lpart
 		dpart = strings.TrimRight(dpart, ">,.;"); thing.Host = dpart
 		thing.Address = lpart + "@" + dpart
