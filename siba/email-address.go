@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2021,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _____                 _ _    _       _     _                   
 // | ____|_ __ ___   __ _(_) |  / \   __| | __| |_ __ ___  ___ ___ 
@@ -9,7 +9,7 @@
 package siba
 type EmailAddress struct {
 	Address string // Email address
-	User    string // Local part of the email addres
+	User    string // Local part of the email address
 	Host    string // Domain part of the email address
 	Verp    string // Expanded VERP address
 	Alias   string // Expanded Alias of the email address
