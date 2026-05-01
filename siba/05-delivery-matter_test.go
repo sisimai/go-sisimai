@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package siba
 
@@ -24,7 +24,7 @@ import "libsisimai.org/sisimai/v5/eb"
 // Recipient    string     // The value of Final-Recipient header
 // ReplyCode    string     // SMTP Reply Code
 // Rhost        string     // The value of Remote-MTA header
-// Spec         string     // Protocl specification
+// Spec         string     // Protocol specification
 // Status       string     // The value of Status header
 func TestTailDeliveryMatter(t *testing.T) {
 	fn := "TailDeliveryMatter"
