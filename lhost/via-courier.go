@@ -148,8 +148,7 @@ func init() {
 				if len(v.Select(z)) > 0 || len(permessage[z]) == 0 { continue }
 				e.Update(z, permessage[z])
 			}
-			e.Diagnosis = strings.Join(strings.Fields(e.Diagnosis), " ")
-			e.Command   = thecommand
+			e.Command = thecommand
 
 			for r := range messagesof {
 				// The key name is a bounce reason name
