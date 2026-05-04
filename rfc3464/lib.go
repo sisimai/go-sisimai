@@ -233,7 +233,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 
 	beforemesg := ""; if leadinbuff.Len() > 0 {
 		// Pick some values of []siba.DeliveryMatter{} from the string before startingof["message"]
-		beforemesg           = strings.Join(strings.Fields(leadinbuff.String()), " ")
+		beforemesg           = leadinbuff.String()
 		alternates.Command   = command.Find(beforemesg)
 		alternates.ReplyCode = reply.Find(beforemesg, dscontents[0].Status)
 		alternates.Status    = status.Find(beforemesg, alternates.ReplyCode)
