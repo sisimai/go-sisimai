@@ -224,11 +224,11 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 	for j := range dscontents {
 		// Tidy up the error message in e.Diagnosis, Try to detect the bounce reason.
 		e := &dscontents[j]
-		e.Diagnosis = strings.Join(strings.Fields(e.Diagnosis + anotherone), " ")
-		e.Reason    = eb.ReFEED
-		e.Rhost     = remotehost
-		e.Lhost     = reportedby
-		e.Date      = timestamp0
+		e.Diagnosis += " " + anotherone
+		e.Reason     = eb.ReFEED
+		e.Rhost      = remotehost
+		e.Lhost      = reportedby
+		e.Date       = timestamp0
 
 		// Copy some values from the previous element when the report have 2 or more email address
 		if j == 0 || len(dscontents) == 1 { continue }
