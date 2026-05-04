@@ -362,9 +362,7 @@ func init() {
 				}
 			}
 
-			e.Diagnosis = strings.Join(strings.Fields(e.Diagnosis), " ")
 			if cv := moji.Select(moji.LHS + e.Diagnosis, "", "__", 0); cv != "" { e.Diagnosis = cv }
-
 			if e.Rhost   == "" { e.Rhost = rfc1123.Find(e.Diagnosis) }
 			if e.Lhost   == "" { e.Lhost = recvdtoken[0] }
 			if e.Command == "" {

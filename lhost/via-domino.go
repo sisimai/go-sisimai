@@ -137,7 +137,6 @@ func init() {
 		for j, _ := range dscontents {
 			// Set default values stored in "permessage" if each value in "dscontents" is empty.
 			e := &(dscontents[j])
-			e.Diagnosis = strings.Join(strings.Fields(e.Diagnosis), " ")
 			e.Recipient = address.S3S4(e.Recipient)
 			for _, z := range keystrings {
 				// Do not set an empty string into each member of DeliveryMatter{}
