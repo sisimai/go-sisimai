@@ -30,6 +30,7 @@ v5.?.?
     - #395 #411 string improvement: Replace `moji.Sweep` and `moji.Squeeze` with `strings.Fields`.
     - #396 Remove useless code blocks.
     - #403 Use functions in `slices` package instead of `append`.
+  - #410 Fix many typos.
 
 v5.6.0
 ---------------------------------------------------------------------------------------------------
