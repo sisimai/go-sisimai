@@ -26,9 +26,10 @@ v5.?.?
   - #374 Fix bug in the boolean logic for lines starting with space or tab. Thanks to @jcbf
   - #388 `rfc791.FindIPv4Address()` is 3x faster.
   - #390 `rfc791.IsIPv4Address()` is 6x faster.
-  - #399 Memory allocations reduced by approximately 11%.
-    - #395 string improvement: Replace `moji.Sweep` and `moji.Squeeze` with `strings.Fields`.
+  - #399 Memory allocations reduced by approximately 17%.
+    - #395 #411 string improvement: Replace `moji.Sweep` and `moji.Squeeze` with `strings.Fields`.
     - #396 Remove useless code blocks.
+    - #403 Use functions in `slices` package instead of `append`.
 
 v5.6.0
 ---------------------------------------------------------------------------------------------------
