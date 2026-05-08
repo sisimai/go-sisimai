@@ -72,7 +72,7 @@ The key features of Sisimai
 
 Command line demo
 ---------------------------------------------------------------------------------------------------
-The following screen shows a demonstration of `Dump` function of libsimai.org/sisimai package at
+The following screen shows a demonstration of `Dump` function of `libsimai.org/sisimai` package at
 the command line using Go(go-sisimai) and `jq` command.
 ![](https://libsisimai.org/static/images/demo/sisimai-5-cli-dump-g01.gif)
 

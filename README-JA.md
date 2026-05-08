@@ -216,7 +216,7 @@ func main() {
 
 Convert to JSON
 ---------------------------------------------------------------------------------------------------
-下記のようにlibsisimai.org/sisimai.Dump()関数を、mboxかMaildir/のPATHを引数にして実行すると解析結果
+下記のように`libsisimai.org/sisimai.Dump`関数を、mboxかMaildir/のPATHを引数にして実行すると解析結果
 が文字列(JSON)で返ってきます。
 
 ```go
