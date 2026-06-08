@@ -29,6 +29,7 @@ func TestRise(t *testing.T) {
 		filepath.Join("maildir", "not"),
 		filepath.Join("mailbox", "size-1"),
 	}
+	nocrash := "should-not-crash"
 	sisiarg := Args(); sisiarg.Delivered = true; sisiarg.Vacation = true
 	errorat := []string{"lhost-office365-13.eml"}
 	notfile := []string{"/dev/null", "/dev/neko"}
@@ -105,6 +106,22 @@ func TestRise(t *testing.T) {
 		// When the 2nd argument is nil
 		cv, _   = Rise(e, nil)
 		cx++; if len(cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, e, cv) }
+	}
+
+	ef    := filepath.Join(".", rootdir, nocrash)
+	fh, _ := os.Open(ef)
+	de, _ := fh.Readdir(0)
+	for _, f := range de {
+		// Read each email file in the set-of-emails/should-not-crash
+		if f.IsDir() == false || f.Size() > 0 {
+			cv, ce := Rise(filepath.Join(ef, f.Name()), sisiarg)
+			cx++; if len(cv) != 0 { t.Errorf("%s(%s) returns results: %v", fn, ef, cv) }
+			cx++; if len(ce) == 0 { t.Errorf("%s(%s) returns empty error", fn, ef) }
+
+			// When the 2nd argument is nil
+			cv, _   = Rise(ef, nil)
+			cx++; if len(cv) != 0 { t.Errorf("%s(%s, nil) returns results: %v", fn, ef, cv) }
+		}
 	}
 
 	// TODO: How create an empty file on Windows?
