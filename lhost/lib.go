@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020-2022,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _ _               _   
 // | | |__   ___  ___| |_ 
@@ -12,6 +12,6 @@ package lhost
 import "libsisimai.org/sisimai/v5/siba"
 
 // Keep each function for decoding a bounce mail: % grep '^func init' ./lhost/via-*.go | wc -l
-var InquireFor = make(map[string]func(*siba.BeforeFact) *siba.RisingUnderway, 37)
+var InquireFor = make(map[string]func(*siba.BeforeFact) *siba.RisingUnderway, 38)
 const (HereIsDeliveryStatus = 1 << (iota + 1); HereIsMessageRFC822)
 
