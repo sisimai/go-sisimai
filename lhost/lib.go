@@ -10,6 +10,7 @@
 // Sendmail, Postfix, OpenSMTPD, some commercial mail servers, and other email services.
 package lhost
 import "libsisimai.org/sisimai/v5/siba"
+const (HereIsDeliveryStatus = 1 << (iota + 1); HereIsMessageRFC822)
 
 // Keep each function for decoding a bounce mail: % grep '^func init' ./lhost/via-*.go | wc -l
 var InquireFor = make(map[string]func(*siba.BeforeFact) *siba.RisingUnderway, 38)
@@ -27,5 +28,4 @@ var BannerDTAG = []string{
 	"|------------------------- Message header follows: ----------------------|", /* 3. Deutsche Telekom */
 //	"|----------- Message text follows: (body too large, truncated) ----------|", /* 4. Deutsche Telekom */
 }
-const (HereIsDeliveryStatus = 1 << (iota + 1); HereIsMessageRFC822)
 
