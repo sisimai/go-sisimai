@@ -31,7 +31,6 @@ func init() {
 			// smail-3.2.0.108/src/
 			//  notify.c:1052|(void) fprintf(f, "Subject: mail failed, %s\nReference: <%s@%s>\n\n",
 			//  notify.c:1053|       subject_to, message_id, primary_name);
-			case strings.HasPrefix(bf.Headers["subject"][0], "mail failed, "):
 			case moji.ContainsAny(bf.Payload, BannerDTAG):
 			default: return nil
 		}
