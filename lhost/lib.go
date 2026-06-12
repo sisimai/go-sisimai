@@ -13,5 +13,19 @@ import "libsisimai.org/sisimai/v5/siba"
 
 // Keep each function for decoding a bounce mail: % grep '^func init' ./lhost/via-*.go | wc -l
 var InquireFor = make(map[string]func(*siba.BeforeFact) *siba.RisingUnderway, 38)
+var BannerDTAG = []string{
+	// smail-3.2.0.108/src/
+	//   notify.c:61|static char *log_banner = "\
+	//   notify.c:62||------------------------- Message log follows: -------------------------|\n";
+	//   notify.c:63|static char *addr_error_banner = "\
+	//   notify.c:64||------------------------- Failed addresses follow: ---------------------|\n";
+	//   notify.c:65|static char *text_banner = "\
+	//   notify.c:66||------------------------- Message text follows: ------------------------|\n";
+	"|------------------------- Message log follows: -------------------------|", /* 0. Smail 3 */
+	"|------------------------- Failed addresses follow: ---------------------|", /* 1. Smail 3 */
+	"|------------------------- Message text follows: ------------------------|", /* 2. Smail 3 */
+	"|------------------------- Message header follows: ----------------------|", /* 3. Deutsche Telekom */
+//	"|----------- Message text follows: (body too large, truncated) ----------|", /* 4. Deutsche Telekom */
+}
 const (HereIsDeliveryStatus = 1 << (iota + 1); HereIsMessageRFC822)
 
