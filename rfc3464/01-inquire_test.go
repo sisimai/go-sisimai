@@ -25,7 +25,7 @@ func TestInquire(t *testing.T) {
 		"rfc3464-60", "rfc3464-61", "rfc3464-62", "rfc3464-63", "rfc3464-64", "rfc3464-65", "rfc3464-66",
 		"lhost-powermta-01", "lhost-powermta-02", "lhost-powermta-03",
 
-		"rfc3464-35", "rfc3464-36", "rfc3464-37", "rfc3464-38", "rfc3464-39", "rfc3464-42", "rfc3464-52",
+		"rfc3464-35", "rfc3464-36", "rfc3464-38", "rfc3464-39", "rfc3464-42", "rfc3464-52",
 		"rfc3464-54",
 	}
 	cx := 0
@@ -42,13 +42,12 @@ func TestInquire(t *testing.T) {
 			Payload: string(bo),
 		}
 
-		if e == "rfc3464-35" || e == "rfc3464-36" || e == "rfc3464-37" || e == "rfc3464-38" ||
-		   e == "rfc3464-39" || e == "rfc3464-42" || e == "rfc3464-52" || e == "rfc3464-54" ||
-		   e == "rfc3464-66" {
+		if e == "rfc3464-35" || e == "rfc3464-36" || e == "rfc3464-38" || e == "rfc3464-39" ||
+		   e == "rfc3464-42" || e == "rfc3464-52" || e == "rfc3464-54" || e == "rfc3464-66" {
 			// TODO:
 			// - rfc3464-35 returns an empty RFC822 part
 			// - rfc3464-36 returns an empty RFC822 part
-			// - rfc3464-37 returns nil
+			// - rfc3464-37 has been moved to lhsot-deutschetelekom-03.eml
 			// - rfc3464-38 returns nil
 			// - rfc3464-39 returns nil
 			// - rfc3464-42 returns an empty RFC822 part
