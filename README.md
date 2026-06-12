@@ -63,7 +63,7 @@ The key features of Sisimai
   * `$ go get -u libsisimai.org/sisimai/v5@latest`
   * `import "libsisimai.org/sisimai/v5"`
 * __High Precision of Analysis__
-  * Support [60 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
+  * Support [61 MTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)
   * Support Feedback Loop Message(ARF)
   * Can detect [34 bounce reasons](https://libsisimai.org/en/reason/)
 
@@ -391,15 +391,16 @@ Features
 | System requirements                          | 1.24 -         | 5.26 -          | 2.4 - / 9.2 - |
 | Dependencies (Except standard libs)          | **0 packages** | 2 modules       | 1 gem         |
 | Supported character sets                     | **UTF-8 only** | UTF-8,etc. [^2] | UTF-8,etc.[^3]|
-| Source lines of code                         | 8,900 lines    | 9,750 lines     | 9,700 lines   |
-| The number of tests                          | 255,000 tests  | 340,000 tests   | 240,000 tests |
-| The number of bounce emails decoded/sec [^4] | 2900 emails    | 750 emails      | 620 emails    |
+| Source lines of code                         | 8,700 lines    | 9,750 lines     | 9,700 lines   |
+| The number of tests                          | 261,000 tests  | 340,000 tests   | 240,000 tests |
+| The number of bounce emails decoded/sec      | 2900 emails[^4]| 750 emails [^5] | 620 emails[^5]|
 | License                                      | 2 Clause BSD   | 2 Clause BSD    | 2 Clause BSD  |
 | Commercial support                           | Available      | Available       | Available     |
 
 [^2]: Character sets supported by `Encode` and `Encode::Guess` modules
 [^3]: Character sets supported by `String#encode` method
-[^4]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Go 1.22/Perl 5.30/Ruby 2.6.4
+[^4]: macOS Sequoia/Apple M4/32GB-RAM/Go 1.24.1
+[^5]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Perl 5.30/Ruby 2.6.4
 
 Contributing
 ===================================================================================================

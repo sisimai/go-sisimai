@@ -60,7 +60,7 @@ The key features of Sisimai
   * `$ go get -u libsisimai.org/sisimai/v5@latest`
   * `import "libsisimai.org/sisimai/v5"`
 * __高い解析精度__
-  * [60種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
+  * [61種類のMTAs/MDAs/ESPs](https://libsisimai.org/en/engine/)に対応
   * Feedback Loop(ARF)にも対応
   * [34種類のバウンス理由](https://libsisimai.org/en/reason/)を検出
 
@@ -382,13 +382,14 @@ Features
 | 対応している文字コード                  | **UTF-8のみ**   | UTF-8と他[^2]     | UTF-8と他[^3]   |
 | ソースコードの行数                      | 8,900 行        | 9,750 行          | 9,700 行        |
 | テスト件数                              | 255,000 件      | 340,000 件        | 240,000 件      |
-| 1秒間に解析できるバウンスメール数[^4]   | 2900 通         | 750 通            | 620 通          |
+| 1秒間に解析できるバウンスメール数       | 2900 通[^4]     | 750 通[^5]        | 620 通[^5]      |
 | ライセンス                              | 二条項BSD       | 二条項BSD         | 二条項BSD       |
 | 開発会社による商用サポート              | 提供中          | 提供中            | 提供中          |
 
 [^2]: `Encode`と`Encode::Guess`に対応している文字コード
 [^3]: `String#encode`メソッドが解釈できる文字コード
-[^4]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Go 1.22/Perl 5.30/Ruby 2.6.4
+[^4]: macOS Sequoia/Apple M4/32GB-RAM/Go 1.24.1
+[^5]: macOS Monterey/1.6GHz Dual-Core Intel Core i5/16GB-RAM/Perl 5.30/Ruby 2.6.4
 
 Contributing
 ===================================================================================================
