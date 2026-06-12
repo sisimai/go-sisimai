@@ -30,7 +30,8 @@ func init() {
 	//     - (*siba.RisingUnderway): A structure as a staging data that is processed in message.sift() function.
 	InquireFor["Exim"] = func(bf *siba.BeforeFact) *siba.RisingUnderway {
 		// - Exim Internet Mailer: https://www.exim.org/
-		if bf == nil || bf.IsEmpty() == true { return nil }
+		if bf == nil || bf.IsEmpty() == true        { return nil }
+		if moji.ContainsAny(bf.Payload, BannerDTAG) { return nil } /* Deutsche Telekom, Smail 3 */
 
 		// X-Failed-Recipients: kijitora@example.ed.jp
 		thirdparty := false
