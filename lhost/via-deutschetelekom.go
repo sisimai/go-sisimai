@@ -35,10 +35,9 @@ func init() {
 			default: return nil
 		}
 
-		boundaries := []string{BannerDTAG[3], BannerDTAG[2]} /* [3] is the first */
 		startingof := map[string][]string{"message": []string{BannerDTAG[1]}}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
+		emailparts := rfc5322.Part(&bf.Payload, []string{BannerDTAG[3], BannerDTAG[2]}, false) /* [3] is the first */
 		messagelog := ""
 		recipients, readcursor := uint8(0), uint8(0)
 
