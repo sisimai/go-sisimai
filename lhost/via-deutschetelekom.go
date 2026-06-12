@@ -27,13 +27,16 @@ func init() {
 		// - Smail 3: http://www.weird.com/~woods/projects/smail.html
 		if bf == nil || bf.IsEmpty() == true { return nil }
 
-		switch {
-			// smail-3.2.0.108/src/
-			//  notify.c:1052|(void) fprintf(f, "Subject: mail failed, %s\nReference: <%s@%s>\n\n",
-			//  notify.c:1053|       subject_to, message_id, primary_name);
-			case moji.ContainsAny(bf.Payload, BannerDTAG):
-			default: return nil
-		}
+		// smail-3.2.0.108/src/
+		//  notify.c:1052|(void) fprintf(f, "Subject: mail failed, %s\nReference: <%s@%s>\n\n",
+		//  notify.c:1053|       subject_to, message_id, primary_name);
+		//
+		// T-Online specific headers
+		//   Received: from mailin42.aul.t-online.de (mailin42.aul.t-online.de [192.51.100.1])
+		//     by mailout11.t-online.de (Postfix) with SMTP id 05E5A1CAC0
+		//   From: Mail Delivery System <Mailer-Daemon@t-online.de>
+		//   X-TOI-MSGID: c9412855-531f-497b-b007-5ffc033877a0
+		if moji.ContainsAny(bf.Payload, BannerDTAG) == false { return nil }
 
 		startingof := map[string][]string{"message": []string{BannerDTAG[1]}}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
