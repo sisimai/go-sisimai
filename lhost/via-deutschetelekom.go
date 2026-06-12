@@ -53,7 +53,7 @@ func init() {
 
 				} else {
 					// |------------------------- Message log follows: -------------------------|
-					// The line above may appears only in smail.
+					// The line above may appears only in Smail 3.
 					if e != "" && strings.HasPrefix(e, BannerDTAG[0]) == false {
 						// smail-3.2.0.108/src/
 						//   models.c:787| if (deliver == NULL && defer == NULL) {
