@@ -18,6 +18,7 @@ GO    := go
 
 GOROOT := $(shell echo $$GOROOT)
 GOPATH := $(shell echo $$GOPATH)
+GOVERS := $(shell echo $$GOVERSION)
 
 LIBSISIMAI := libsisimai.org
 SISIMAIVER := $(shell grep '^const version string' libsisimai.go | cut -d' ' -f5 | tr -d '"')
@@ -118,11 +119,13 @@ benchmark:
 	@test -x ./print-vers
 	@printf "version: %s\n" `./print-vers`
 	@printf "emails: %d\n" `./count-only $(PROFILESET)`
+	@printf "build: %s\n" `$(GO) version | cut -d' ' -f3`
 	@go test -bench 'Benchmark' -count $(HOWMANYRUN) -benchmem -benchtime 1x | tee $(GOBENCHLOG)
 	@test -f $(GOBENCHLOG)
 	@mv $(GOBENCHLOG) $(GOBENCHLOG).tmp
 	@printf "version: %s\n" `./print-vers` > $(GOBENCHLOG)
 	@printf "emails: %d\n" `./count-only $(PROFILESET)` > $(GOBENCHLOG)
+	@printf "build: %s\n" `$(GO) version | cut -d' ' -f3` > $(GOBENCHLOG)
 	@cat $(GOBENCHLOG).tmp >> $(GOBENCHLOG)
 	@$(RM) ./$(GOBENCHLOG).tmp ./count-only ./print-vers
 
