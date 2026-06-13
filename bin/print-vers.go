@@ -1,3 +1,4 @@
+//go:build ignore
 package main
 import "fmt"
 import "libsisimai.org/sisimai/v5"
