@@ -1,3 +1,5 @@
+version: v5.6.0
+build: go1.24.1
 emails: 2751
 goos: darwin
 goarch: arm64

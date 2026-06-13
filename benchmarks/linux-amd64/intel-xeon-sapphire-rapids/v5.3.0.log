@@ -1,3 +1,5 @@
+version: v5.3.0
+build: go1.24.1
 emails: 2724
 goos: linux
 goarch: amd64
