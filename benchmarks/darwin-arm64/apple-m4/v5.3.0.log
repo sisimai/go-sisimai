@@ -1,3 +1,4 @@
+version: v5.3.0
 emails: 2724
 goos: darwin
 goarch: arm64
