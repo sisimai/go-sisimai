@@ -113,14 +113,18 @@ benchmark:
 	@test -f ./00-libsisimai-benchmark_test.go
 	@uptime
 	@GOOS=$(GO_SYSNAME) GOARCH=$(GO_CPUARCH) CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o count-only bin/count-only.go
+	@GOOS=$(GO_SYSNAME) GOARCH=$(GO_CPUARCH) CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o print-vers bin/print-vers.go
 	@test -x ./count-only
+	@test -x ./print-vers
+	@printf "version: %s\n" `./print-vers`
 	@printf "emails: %d\n" `./count-only $(PROFILESET)`
 	@go test -bench 'Benchmark' -count $(HOWMANYRUN) -benchmem -benchtime 1x | tee $(GOBENCHLOG)
 	@test -f $(GOBENCHLOG)
 	@mv $(GOBENCHLOG) $(GOBENCHLOG).tmp
+	@printf "version: %s\n" `./print-vers` > $(GOBENCHLOG)
 	@printf "emails: %d\n" `./count-only $(PROFILESET)` > $(GOBENCHLOG)
 	@cat $(GOBENCHLOG).tmp >> $(GOBENCHLOG)
-	@$(RM) ./$(GOBENCHLOG).tmp
+	@$(RM) ./$(GOBENCHLOG).tmp ./count-only ./print-vers
 
 compare-benchmark:
 	@test -d ./$(GOBENCHDIR)
