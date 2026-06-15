@@ -134,7 +134,7 @@ compare-benchmark:
 	@test -n "$(shell find $(GOBENCHDIR)/ -type f -name '*.log')"
 	@test -x `which benchstat`
 	@$(CP) ./$(GOBENCHLOG)  $(GOBENCHDIR)/latest.log
-	benchstat $(shell find $(GOBENCHDIR) -type f -name '*.log' | tail -n 1) $(GOBENCHDIR)/latest.log
+	benchstat $(shell find $(GOBENCHDIR) -type f -name '*.log' | sort | tail -n 1) $(GOBENCHDIR)/latest.log
 	@$(RM) ./$(GOBENCHDIR)/latest.log
 
 install-benchstat:
