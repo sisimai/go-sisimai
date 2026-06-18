@@ -410,10 +410,9 @@ Please use the [issue tracker](https://github.com/sisimai/go-sisimai/issues) to 
 
 Emails could not be decoded
 ---------------------------------------------------------------------------------------------------
-Bounce emails that couldn't be decoded by the latest version of sisimai are saved in the repository
-[set-of-emails/to-be-debugged-because/sisimai-cannot-parse-yet](https://github.com/sisimai/set-of-emails/tree/master/to-be-debugged-because/sisimai-cannot-parse-yet). 
-If you have found any bounce email cannot be decoded using sisimai, please add the email into the
-directory and send Pull-Request to this repository.
+Bounce emails that couldn't be decoded by the latest version of sisimai are saved in
+[set-of-emails/to-be-debugged-because/sisimai-cannot-parse-yet](https://github.com/sisimai/go-sisimai/tree/5-stable/set-of-emails/to-be-debugged-because/sisimai-cannot-parse-yet) directory. If you have found any bounce email cannot be decoded
+using sisimai, please add the email into the directory and send Pull-Request to this repository.
 
 
 Other Information
