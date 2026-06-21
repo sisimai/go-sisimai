@@ -54,8 +54,8 @@ The key features of Sisimai
     * __Delivery information__: `Action`, `ReplyCode`, `DeliveryStatus`, `Command`
     * __Bounce details__: `Reason`, `DiagnosticCode`, `DiagnosticType`, `FeedbackType`, `FeedbackID`, `HardBounce`
     * __Message details__: `Subject`, `MessageID`, `ListID`,
-    * __Additional information__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`
     * __Evaluation metrics (User-calculated)__: `Toxic`, `Bogus`, `Catch`
+    * __Additional information__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`
   * Output formats
     * struct ([sisimai/siba.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/siba/fact.go))
     * JSON (by using [`encoding/json`](https://pkg.go.dev/encoding/json))
@@ -97,7 +97,7 @@ $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
 $ go get -u libsisimai.org/sisimai/v5@latest
-go: added libsisimai.org/sisimai/v5 v5.6.0
+go: added libsisimai.org/sisimai/v5 v5.7.0
 
 $ cat ./go.mod
 module example.com/sisimaicli
@@ -105,7 +105,7 @@ module example.com/sisimaicli
 go 1.25
 
 require (
-	libsisimai.org/sisimai/v5 v5.6.0 // indirect
+	libsisimai.org/sisimai/v5 v5.7.0 // indirect
 )
 ```
 
@@ -152,6 +152,7 @@ $ ./sisid ./path/to/bounce-mail.eml | jq
   "timestamp": 1650119685,
   "action": "failed",
   "alias": "contact@example.co.jp",
+  "bogus": -1,
   "catch": null,
   "decodedby": "Postfix",
   "deliverystatus": "5.7.26",
@@ -173,7 +174,7 @@ $ ./sisid ./path/to/bounce-mail.eml | jq
   "subject": "Nyaan",
   "timezoneoffset": "+0900",
   "token": "5253e9da9dd67573851b057a89cbcf41293e99bf",
-  "toxic": 0
+  "toxic": -1
 }
 ```
 
