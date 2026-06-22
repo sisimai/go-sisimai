@@ -34,7 +34,7 @@ v5.7.0
       Telekom or Smail 3 reported at sisimai/set-of-emails#30. Thanks to @dmke.
   - **Code improvements and Environment**
     - #350 Use a switch statement instead of if-else for better readability.
-    - #358 #360 #365 Tiny code improvements around `append`, `strings.Trim` function.
+    - #358 #360 #365 Tiny code improvements around `append`, `strings.Trim` functions.
     - #361 Sisimai can be built with Go 1.26.0.
     - #369 #370 Fix and update comments in `smtp/status/lib.go`.
     - #396 Remove useless code blocks.
