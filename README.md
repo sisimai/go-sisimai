@@ -54,8 +54,8 @@ The key features of Sisimai
     * __Delivery information__: `Action`, `ReplyCode`, `DeliveryStatus`, `Command`
     * __Bounce details__: `Reason`, `DiagnosticCode`, `DiagnosticType`, `FeedbackType`, `FeedbackID`, `HardBounce`
     * __Message details__: `Subject`, `MessageID`, `ListID`,
-    * __Additional information__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`
     * __Evaluation metrics (User-calculated)__: `Toxic`, `Bogus`, `Catch`
+    * __Additional information__: `DecodedBy`, `TimezoneOffset`, `Lhost`, `Rhost`, `Token`
   * Output formats
     * struct ([sisimai/siba.Fact](https://github.com/sisimai/go-sisimai/blob/5-stable/siba/fact.go))
     * JSON (by using [`encoding/json`](https://pkg.go.dev/encoding/json))
@@ -97,7 +97,7 @@ $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
 $ go get -u libsisimai.org/sisimai/v5@latest
-go: added libsisimai.org/sisimai/v5 v5.6.0
+go: added libsisimai.org/sisimai/v5 v5.7.0
 
 $ cat ./go.mod
 module example.com/sisimaicli
@@ -105,7 +105,7 @@ module example.com/sisimaicli
 go 1.25
 
 require (
-	libsisimai.org/sisimai/v5 v5.6.0 // indirect
+	libsisimai.org/sisimai/v5 v5.7.0 // indirect
 )
 ```
 
@@ -152,6 +152,7 @@ $ ./sisid ./path/to/bounce-mail.eml | jq
   "timestamp": 1650119685,
   "action": "failed",
   "alias": "contact@example.co.jp",
+  "bogus": -1,
   "catch": null,
   "decodedby": "Postfix",
   "deliverystatus": "5.7.26",
@@ -173,7 +174,7 @@ $ ./sisid ./path/to/bounce-mail.eml | jq
   "subject": "Nyaan",
   "timezoneoffset": "+0900",
   "token": "5253e9da9dd67573851b057a89cbcf41293e99bf",
-  "toxic": 0
+  "toxic": -1
 }
 ```
 
@@ -391,8 +392,8 @@ Features
 | System requirements                          | 1.24 -         | 5.26 -          | 2.4 - / 9.2 - |
 | Dependencies (Except standard libs)          | **0 packages** | 2 modules       | 1 gem         |
 | Supported character sets                     | **UTF-8 only** | UTF-8,etc. [^2] | UTF-8,etc.[^3]|
-| Source lines of code                         | 8,700 lines    | 9,750 lines     | 9,700 lines   |
-| The number of tests                          | 261,000 tests  | 340,000 tests   | 240,000 tests |
+| Source lines of code                         | 8,700 lines    | 9,550 lines     | 9,500 lines   |
+| The number of tests                          | 261,000 tests  | 346,000 tests   | 255,000 tests |
 | The number of bounce emails decoded/sec      | 2900 emails[^4]| 750 emails [^5] | 620 emails[^5]|
 | License                                      | 2 Clause BSD   | 2 Clause BSD    | 2 Clause BSD  |
 | Commercial support                           | Available      | Available       | Available     |
