@@ -123,9 +123,9 @@ benchmark:
 	@go test -bench 'Benchmark' -count $(HOWMANYRUN) -benchmem -benchtime 1x | tee $(GOBENCHLOG)
 	@test -f $(GOBENCHLOG)
 	@mv $(GOBENCHLOG) $(GOBENCHLOG).tmp
-	@printf "version: %s\n" `./print-vers` > $(GOBENCHLOG)
-	@printf "build: %s\n" `$(GO) version | cut -d' ' -f3` > $(GOBENCHLOG)
-	@printf "emails: %d\n" `./count-only $(PROFILESET)` > $(GOBENCHLOG)
+	@printf "version: %s\n" `./print-vers` >> $(GOBENCHLOG)
+	@printf "build: %s\n" `$(GO) version | cut -d' ' -f3` >> $(GOBENCHLOG)
+	@printf "emails: %d\n" `./count-only $(PROFILESET)` >> $(GOBENCHLOG)
 	@cat $(GOBENCHLOG).tmp >> $(GOBENCHLOG)
 	@$(RM) ./$(GOBENCHLOG).tmp ./count-only ./print-vers
 
