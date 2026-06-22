@@ -19,7 +19,6 @@ v5.7.0
     - #390 `rfc791.IsIPv4Address()` is 6x faster.
     - #399 Memory allocations reduced by approximately 17%.
       - #395 #411 string improvement: Replace `moji.Sweep` and `moji.Squeeze` with `strings.Fields`.
-      - #396 Remove useless code blocks.
       - #403 Use functions in `slices` package instead of `append`.
   - **MTA modules and error message patterns**
     - #336 #346 Improvement in error message patterns.
@@ -38,6 +37,7 @@ v5.7.0
     - #358 #360 #365 Tiny code improvements around `append`, `strings.Trim` function.
     - #361 Sisimai can be built with Go 1.26.0.
     - #369 #370 Fix and update comments in `smtp/status/lib.go`.
+    - #396 Remove useless code blocks.
   - **EXPERIMENTAL Features**
     - #311 #357 Change the data type of `Toxic` field implemented at v5.5.0 from Boolean to Integer
       with `-1` as the default value to allow score-based evaluation of recipient address toxicity.
