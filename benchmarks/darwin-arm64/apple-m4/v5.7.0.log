@@ -1,0 +1,29 @@
+version: v5.7.0
+build: go1.24.1
+emails: 2753
+goos: darwin
+goarch: arm64
+pkg: libsisimai.org/sisimai/v5
+cpu: Apple M4
+BenchmarkRise-10    	       1	 368699208 ns/op	632108120 B/op	 1745773 allocs/op
+BenchmarkRise-10    	       1	 367561166 ns/op	632112568 B/op	 1745796 allocs/op
+BenchmarkRise-10    	       1	 370060416 ns/op	632100952 B/op	 1745723 allocs/op
+BenchmarkRise-10    	       1	 365598459 ns/op	632087744 B/op	 1745589 allocs/op
+BenchmarkRise-10    	       1	 366717667 ns/op	632089240 B/op	 1745588 allocs/op
+BenchmarkRise-10    	       1	 368392375 ns/op	632089072 B/op	 1745545 allocs/op
+BenchmarkRise-10    	       1	 367251125 ns/op	632091072 B/op	 1745616 allocs/op
+BenchmarkRise-10    	       1	 370863834 ns/op	632070664 B/op	 1745448 allocs/op
+BenchmarkRise-10    	       1	 368655833 ns/op	632076384 B/op	 1745490 allocs/op
+BenchmarkRise-10    	       1	 368413583 ns/op	632080688 B/op	 1745554 allocs/op
+BenchmarkDump-10    	       1	 382536917 ns/op	649529456 B/op	 1759443 allocs/op
+BenchmarkDump-10    	       1	 381471000 ns/op	649562024 B/op	 1759404 allocs/op
+BenchmarkDump-10    	       1	 384340500 ns/op	649561440 B/op	 1759374 allocs/op
+BenchmarkDump-10    	       1	 383845875 ns/op	649492648 B/op	 1759284 allocs/op
+BenchmarkDump-10    	       1	 386090666 ns/op	649599536 B/op	 1759414 allocs/op
+BenchmarkDump-10    	       1	 386630917 ns/op	649521776 B/op	 1759243 allocs/op
+BenchmarkDump-10    	       1	 384338875 ns/op	649557880 B/op	 1759500 allocs/op
+BenchmarkDump-10    	       1	 385718916 ns/op	649571984 B/op	 1759463 allocs/op
+BenchmarkDump-10    	       1	 384078625 ns/op	649555520 B/op	 1759338 allocs/op
+BenchmarkDump-10    	       1	 385295000 ns/op	649553544 B/op	 1759451 allocs/op
+PASS
+ok  	libsisimai.org/sisimai/v5	11.130s
