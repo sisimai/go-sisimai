@@ -4,6 +4,13 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
+v5.?.?
+---------------------------------------------------------------------------------------------------
+- release: ""
+- version: ""
+- changes:
+  - #421 Fix calculation error in eb.XeBYTE constant (Currently 2TB instead of 2GB).
+
 v5.7.0
 ---------------------------------------------------------------------------------------------------
 - release: "Mon, 22 Jun 2026 16:22:22 +0900 (JST)"
