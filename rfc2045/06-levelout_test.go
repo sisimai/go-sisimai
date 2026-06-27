@@ -44,7 +44,7 @@ Reporting-MTA: dns; server-15.bemta-3.messagelabs.com
 Arrival-Date: Tue, 23 Dec 2014 20:39:34 +0000
 
 `
-	cv, ce := levelout(ct, &ae)
+	cv, ce := levelout(ct, &ae, 1)
 	for _, e := range cv {
 		cx++; if len(cv) == 0             { t.Errorf("%s(%s) returns an empty list", fn, ae[:20]) }
 		cx++; if ce != nil && len(ce) > 0 { t.Errorf("%s(%s) returns error: %v", fn, ae[:20], ce) }
@@ -53,11 +53,15 @@ Arrival-Date: Tue, 23 Dec 2014 20:39:34 +0000
 	}
 
 	ae = ""
-	cv, ce = levelout("", &ae)
+	cv, ce = levelout("", &ae, 2)
 	cx++; if cv != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
 	cx++; if ce != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
 
-	cv, ce = levelout("", nil)
+	cv, ce = levelout("", nil, 3)
+	cx++; if cv != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
+	cx++; if ce != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
+
+	cv, ce = levelout("", nil, 128)
 	cx++; if cv != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
 	cx++; if ce != nil { t.Errorf("%s(%s) returns %v", fn, ae, cv) }
 
