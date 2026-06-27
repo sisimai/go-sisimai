@@ -8,6 +8,7 @@
 
 package rfc2045
 import "strings"
+import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/siba"
 import "libsisimai.org/sisimai/v5/moji"
 
@@ -87,13 +88,19 @@ func haircut(block *string, heads bool) []string {
 //   Arguments:
 //     - ctype (string):  value of Content-Type header.
 //     - mpart (*string): Pointer to multipart/* message blocks.
+//     - depth (int):     Depth of MIME parts
 //   Returns:
 //     - ([][3]string):       List of each part of multipart/*.
 //     - ([]siba.NotDecoded): Pointer to an occurred error list.
-func levelout(ctype string, mpart *string) ([][3]string, []siba.NotDecoded) {
-	if ctype == "" || mpart == nil || *mpart == ""        { return nil, nil }
+func levelout(ctype string, mpart *string, depth int) ([][3]string, []siba.NotDecoded) {
+	if ctype == "" || mpart == nil || *mpart == "" { return nil, nil }
+	if depth > eb.XdMIME {
+		// MIME nesting level exceeded
+		return nil, []siba.NotDecoded{*siba.MakeNotDecoded("MIME depth exceeded", true)}
+	}
 	boundary01 := Boundary(ctype, 0); if boundary01 == "" { return nil, nil }
 	multiparts := strings.Split(*mpart, boundary01 + "\n")
+	partsdepth := depth + 1
 	partstable := make([][3]string, 0, 4)
 	notdecoded := make([]siba.NotDecoded, 0)
 
@@ -118,7 +125,7 @@ func levelout(ctype string, mpart *string) ([][3]string, []siba.NotDecoded) {
 			_, bi, cut := strings.Cut(cf[2], "\n\n");   if cut == false { continue }
 			if len(bi) < 8 || strings.Contains(bi, boundary02) == false { continue }
 
-			cv, ce := levelout(cf[0], &bi); if ce != nil && len(ce) > 0 {
+			cv, ce := levelout(cf[0], &bi, partsdepth); if ce != nil && len(ce) > 0 {
 				// There is any errors
 				notdecoded = append(notdecoded, ce...)
 				if cv == nil { continue }
@@ -158,7 +165,7 @@ func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 	lhead := strings.ToLower(ctype)
 	if moji.ContainsAny(lhead, []string{"multipart/", "boundary="}) == false { return nil, nil }
 
-	multiparts, notdecoded := levelout(ctype, mpart)
+	multiparts, notdecoded := levelout(ctype, mpart, 0)
 	flatbuffer := strings.Builder{}; flatbuffer.Grow(len(*mpart) / 2)
 	delimiters := []string{"/delivery-status", "/rfc822", "/feedback-report", "/partial"}
 
