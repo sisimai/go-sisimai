@@ -84,6 +84,7 @@ func TestLhostPostfix(t *testing.T) {
 		{{"78",   1, "5.0.0",   "554", "notcompliantrfc", false, 0, ""}},
 		{{"79",   1, "5.2.0",   "",    "mailererror",     false, 0, ""}},
 		{{"80",   1, "5.1.0",   "550", "rejected",        false, 0, ""}},
+		{{"81",   1, "5.9.341", "",    "networkerror",    false, 0, ""}},
 	}; EngineTest(t, "Postfix", publiclist, true)
 
 	secretlist := [][]IsExpected{
