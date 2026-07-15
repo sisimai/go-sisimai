@@ -24,7 +24,7 @@ var detectable = []string{
 	eb.CeDATA, eb.CeQUIT, eb.CeXFWD,
 }
 var ExceptDATA = []string{eb.CeCONN, eb.CeEHLO, eb.CeHELO, eb.CeMAIL, eb.CeRCPT}
-var BeforeRCPT = []string{eb.CeCONN, eb.CeHELO, eb.CeHELO, eb.CeMAIL, eb.CeAUTH, eb.CeTTLS}
+var BeforeRCPT = []string{eb.CeCONN, eb.CeEHLO, eb.CeHELO, eb.CeMAIL, eb.CeAUTH, eb.CeTTLS}
 
 // Test checks that an SMTP command in the argument is valid or not.
 //   Arguments:
