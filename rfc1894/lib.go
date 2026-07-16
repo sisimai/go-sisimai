@@ -33,7 +33,7 @@ var FieldTable = map[string]string{
 	"x-actual-recipient": "alias",
 }
 var ActionList = map[string]bool{
-	eb.AeSTAY: true, eb.AeSENT: true, eb.AeEXPN: true, eb.AeFAIL: true, eb.AeTRAN: true,
+	eb.AeSTAY: true, eb.AeSENT: true, eb.AeEXPN: true, eb.AeFAIL: true, eb.AePASS: true,
 }
 
 // Label returns a lower-cased field name.
@@ -132,7 +132,7 @@ func Field(line string) []string {
 		"expired":     eb.AeFAIL,
 		"failure":     eb.AeFAIL,
     }
-	actionlist := []string{eb.AeFAIL, eb.AeSTAY, eb.AeSENT, eb.AeTRAN, eb.AeEXPN}
+	actionlist := []string{eb.AeFAIL, eb.AeSTAY, eb.AeSENT, eb.AePASS, eb.AeEXPN}
 	subtypeset := map[string]string{"addr": "RFC822", "code": "SMTP", "host": "DNS"}
 	captureson := map[string][]string{
 		"addr": []string{"Final-Recipient", "Original-Recipient", "X-Actual-Recipient"},
