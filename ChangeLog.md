@@ -10,6 +10,9 @@ v5.?.?
 - version: ""
 - changes:
   - #421 Fix calculation error in eb.XeBYTE constant (Currently 2TB instead of 2GB).
+  - #423 Limit the nesting depth of MIME parts in rfc2045 package.
+  - Fix duplicated SMTP command `eb.CeHELO` in `eb/command.go`.
+  - #428 Replace `eb.AeTRAN` with `eb.AePASS` in `eb/action.go`.
 
 v5.7.0
 ---------------------------------------------------------------------------------------------------
