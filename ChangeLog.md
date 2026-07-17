@@ -4,15 +4,18 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
-v5.?.?
+v5.7.1
 ---------------------------------------------------------------------------------------------------
-- release: ""
-- version: ""
+- release: "Fri, 17 Jul 2026 13:22:22 +0900 (JST)"
+- version: "5.7.1"
 - changes:
-  - #421 Fix calculation error in eb.XeBYTE constant (Currently 2TB instead of 2GB).
-  - #423 Limit the nesting depth of MIME parts in rfc2045 package.
-  - Fix duplicated SMTP command `eb.CeHELO` in `eb/command.go`.
-  - #428 Replace `eb.AeTRAN` with `eb.AePASS` in `eb/action.go`.
+  - **Bug fixes**
+    - #421 Fix calculation error in eb.XeBYTE constant (Corrected 2TB to 2GB).
+    - Fix duplicated SMTP command `eb.CeHELO` in `eb/command.go`.
+  - **Mitigation for potential DoS vectors**
+    - #423 Limit the nesting depth of MIME parts in `rfc2045` package to mitigate recursion attacks.
+  - **Code improvements**
+    - #428 Replace `eb.AeTRAN` with `eb.AePASS` in `eb/action.go`.
 
 v5.7.0
 ---------------------------------------------------------------------------------------------------
