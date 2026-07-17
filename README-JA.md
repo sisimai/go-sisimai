@@ -92,7 +92,7 @@ $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
 $ go get -u libsisimai.org/sisimai/v5@latest
-go: added libsisimai.org/sisimai/v5 v5.7.0
+go: added libsisimai.org/sisimai/v5 v5.7.1
 
 $ cat ./go.mod
 module example.com/sisimaicli
@@ -100,7 +100,7 @@ module example.com/sisimaicli
 go 1.25
 
 require (
-	libsisimai.org/sisimai/v5 v5.7.0 // indirect
+	libsisimai.org/sisimai/v5 v5.7.1 // indirect
 )
 ```
 
@@ -381,7 +381,7 @@ Features
 | 動作環境                                | 1.24 -          | 5.26 -            | 2.4 - / 9.2 -   |
 | 依存モジュール数(標準パッケージを除く)  | **0**           | 2 モジュール      | 1 gem           |
 | 対応している文字コード                  | **UTF-8のみ**   | UTF-8と他[^2]     | UTF-8と他[^3]   |
-| ソースコードの行数                      | 8,900 行        | 9,550 行          | 9,500 行        |
+| ソースコードの行数                      | 8,900 行        | 9,700 行          | 9,700 行        |
 | テスト件数                              | 261,000 件      | 346,000 件        | 255,000 件      |
 | 1秒間に解析できるバウンスメール数       | 2900 通[^4]     | 750 通[^5]        | 620 通[^5]      |
 | ライセンス                              | 二条項BSD       | 二条項BSD         | 二条項BSD       |
