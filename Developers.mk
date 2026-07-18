@@ -114,20 +114,18 @@ benchmark:
 	@test -f ./00-libsisimai-benchmark_test.go
 	@uptime
 	@GOOS=$(GO_SYSNAME) GOARCH=$(GO_CPUARCH) CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o count-only bin/count-only.go
-	@GOOS=$(GO_SYSNAME) GOARCH=$(GO_CPUARCH) CGO_ENABLED=0 $(GO) build $(BUILDFLAGS) -o print-vers bin/print-vers.go
 	@test -x ./count-only
-	@test -x ./print-vers
-	@printf "version: %s\n" `./print-vers`
+	@printf "version: %s\n" $(SISIMAIVER)
 	@printf "build: %s\n" `$(GO) version | cut -d' ' -f3`
 	@printf "emails: %d\n" `./count-only $(PROFILESET)`
 	@go test -bench 'Benchmark' -count $(HOWMANYRUN) -benchmem -benchtime 1x | tee $(GOBENCHLOG)
 	@test -f $(GOBENCHLOG)
 	@mv $(GOBENCHLOG) $(GOBENCHLOG).tmp
-	@printf "version: %s\n" `./print-vers` >> $(GOBENCHLOG)
+	@printf "version: %s\n" $(SISIMAIVER) >> $(GOBENCHLOG)
 	@printf "build: %s\n" `$(GO) version | cut -d' ' -f3` >> $(GOBENCHLOG)
 	@printf "emails: %d\n" `./count-only $(PROFILESET)` >> $(GOBENCHLOG)
 	@cat $(GOBENCHLOG).tmp >> $(GOBENCHLOG)
-	@$(RM) ./$(GOBENCHLOG).tmp ./count-only ./print-vers
+	@$(RM) ./$(GOBENCHLOG).tmp ./count-only
 
 compare-benchmark:
 	@test -d ./$(GOBENCHDIR)
