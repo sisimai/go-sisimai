@@ -50,8 +50,9 @@ git-follow-log:
 		printf "\nUsage:\n %% make -f Repository.mk $@ V=<filename>\n"
 
 git-branch-tree:
-	$(GIT) log --graph \
-		--pretty='format:%C(yellow)%h%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset'
+	$(GIT) log --graph --oneline --decorate --all \
+		--date=format:'%Y-%m-%d %H:%M' \
+		--pretty='format:%C(yellow)%h%Creset %C(blue)[%cd]%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset'
 
 git-rm-cached:
 	$(GIT) rm -f --cached $(V) || \
