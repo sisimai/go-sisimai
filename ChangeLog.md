@@ -4,6 +4,14 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
+v5.7.2
+---------------------------------------------------------------------------------------------------
+- release: "Mon, 31 Aug 2026 18:25:22 +0900 (JST)"
+- version: "5.7.2"
+    - #441 Sisimai can be built with Go 1.27.0.
+    - #443 #444 #445 Fixed an issue where `Message-ID` and `Subject` header values in the original
+      message part were accidentally lowercased by `message.tidy()`. Thanks to @aapsunde.
+
 v5.7.1
 ---------------------------------------------------------------------------------------------------
 - release: "Fri, 17 Jul 2026 13:22:22 +0900 (JST)"
