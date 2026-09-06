@@ -42,6 +42,7 @@ LISTENADDR := 127.0.0.1:5321
 HOWMANYRUN := 10
 GOBENCHDIR := benchmarks/$(shell $(GO) env GOOS GOARCH | tr '\n' '-' | sed 's/-$$//')
 GOBENCHLOG := _benchmark.log
+INVISIBLES := '[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]|\xEF\xBB\xBF|\xE2\x80[\xAA-\xAE]|\xE2\x81[\xA6-\xA9]|\xE2\x80[\x8B-\x8F]'
 K          := neko
 
 # -------------------------------------------------------------------------------------------------
@@ -73,6 +74,10 @@ test:
 	@ $(GO) test ./ $(addprefix ./, $(SISIMAIDIR))
 	@ $(foreach v, $(shell make -f ./Developers.mk lhost-files), grep -Fq "$(v)" ./lhost/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
 	@ $(foreach v, $(shell make -f ./Developers.mk other-files), grep -Fq "$(v)" ./rfc3*/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
+	@ $(MAKE) -f ./Developers.mk check-invisibles
+
+check-invisibles:
+	@git --no-pager grep -P -I $(INVISIBLES) '*.go' && exit 1 || true
 
 lhost-files:
 	@ $(LS) $(PUBLICFILE)/maildir/bsd/lhost-*.eml \
