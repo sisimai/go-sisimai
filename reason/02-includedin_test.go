@@ -28,6 +28,7 @@ func TestIncludedIn(t *testing.T) {
 			"Remote host said: 554 INVALID IP FOR SENDING MAIL OF DOMAIN amazonses.com [RCPT_TO]",
 			"551 Server access forbidden by your IP 192.0.2.2 websites spamcop.net, mailspike.net for removal",
 			"client [192.0.2.1] blocked using dnsbl.sorbs.net Please see http://support.mailhostbox.com/",
+			"554 mx.example.jp 192.0.2.25 found on one or more DNSBLs, see https://postmaster.comcast.net/smtp-error-codes.php#BL000001",
 		},
 		eb.ReBODY: []string{
 			"550 5.6.0 the headers in this message contain improperly-formatted binary content",
