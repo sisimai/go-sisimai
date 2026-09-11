@@ -17,6 +17,7 @@ func TestIncludedIn(t *testing.T) {
 		eb.ReAUTH: []string{
 			`550 5.1.0 192.0.2.222 is not allowed to send from <example.net> per it's SPF Record`,
 			`Unauthenticated email from libsisimai.org is not accepted due to domain's DMARC policy`,
+			"Message rejected due to DMARC. Please see https://postmaster.comcast.net/smtp-error-codes.php#DM000001",
 		},
 		eb.ReFAMA: []string{
 			"451 4.7.650 The mail server [192.0.2.2] has been temporarily rate limited due to IP reputation.",
