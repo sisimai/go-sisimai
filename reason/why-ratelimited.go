@@ -30,7 +30,6 @@ func init() {
 			"throttling failure: ",
 			"too many errors from your ip",         // Free.fr
 			"too many recipients",                  // ntt docomo
-			"too many smtp sessions for this host", // Sendmail(daemon.c)
 			"trop de connexions, ",
 			"we have already made numerous attempts to deliver this message",
 		}
@@ -40,6 +39,7 @@ func init() {
 			[]string{"temporarily", "rate limited"},
 			[]string{"throttled ", "postmaster.comcast.net"},
 			[]string{"too many con", "s"},
+			[]string{"too many ", "sessions "}, // Sendmail(daemon.c), comcast.net
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}

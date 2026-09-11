@@ -125,6 +125,7 @@ func TestIncludedIn(t *testing.T) {
 			"452 4.3.2 Connection rate limit exceeded. (in reply to MAIL FROM command)",
 			"421 4.1.0 192.0.2.1 Throttled - try again later. Please see https://postmaster.comcast.net/smtp-error-codes.php#RL000003",
 			"451 4.2.0 Throttled - https://postmaster.comcast.net/smtp-error-codes.php#RL000010",
+			"Too many sessions opened",
 		},
 		eb.RePROC: []string{
 			"500 5.3.5 System config error",
