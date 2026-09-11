@@ -136,6 +136,7 @@ func TestIncludedIn(t *testing.T) {
 			": 550 5.1.1 <kijitora@example.jp>: Recipient address rejected: User unknown in local recipient table",
 			"554 delivery error: dd This user doesn't have a yahoo.com account (this-local-part-does-not-exist@yahoo.com)",
 			`procmail: Couldn't create \"/var/spool/mail/neko\" id: r.example.org: No such user`,
+			"SMTP;550 5.1.1 <example@comcast.net> recipient mailbox unallocated",
 		},
 		eb.ReAWAY: []string{
 			"I am away on vacation until December 20th and will return email at that time",
