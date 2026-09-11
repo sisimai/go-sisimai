@@ -18,6 +18,7 @@ func TestIncludedIn(t *testing.T) {
 			`550 5.1.0 192.0.2.222 is not allowed to send from <example.net> per it's SPF Record`,
 			`Unauthenticated email from libsisimai.org is not accepted due to domain's DMARC policy`,
 			"Message rejected due to DMARC. Please see https://postmaster.comcast.net/smtp-error-codes.php#DM000001",
+			"552 5.2.0 nyaan DMARC Policy Enforcement: https://postmaster.comcast.net/smtp-error-codes.php#ODM00001",
 		},
 		eb.ReFAMA: []string{
 			"451 4.7.650 The mail server [192.0.2.2] has been temporarily rate limited due to IP reputation.",
@@ -122,6 +123,8 @@ func TestIncludedIn(t *testing.T) {
 			"421 Too many connections",
 			"451 4.7.1 <smtp.example.jp[192.0.2.3]>: Client host rejected: Please try again slower",
 			"452 4.3.2 Connection rate limit exceeded. (in reply to MAIL FROM command)",
+			"421 4.1.0 192.0.2.1 Throttled - try again later. Please see https://postmaster.comcast.net/smtp-error-codes.php#RL000003",
+			"451 4.2.0 Throttled - https://postmaster.comcast.net/smtp-error-codes.php#RL000010",
 		},
 		eb.RePROC: []string{
 			"500 5.3.5 System config error",
