@@ -39,7 +39,7 @@ func init() {
 			[]string{"temporarily", "rate limited"},
 			[]string{"throttled ", "postmaster.comcast.net"},
 			[]string{"too many con", "s"},
-			[]string{"too many ", "sessions "}, // Sendmail(daemon.c), comcast.net
+			[]string{"too many ", "session"}, // Sendmail(daemon.c), comcast.net
 		}
 		return moji.ContainsAny(mesg, index) || moji.AlignedAny(mesg, pairs)
 	}
