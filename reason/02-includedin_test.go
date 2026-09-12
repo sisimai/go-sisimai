@@ -99,6 +99,7 @@ func TestIncludedIn(t *testing.T) {
 		eb.ReFROM: []string{
 			"550 5.1.8 Domain of sender address example.org does not exist",
 			"5.7.1 Access denied (in reply to MAIL FROM command)",
+			"Invalid sender domain",
 		},
 		eb.ReQPTR: []string{
 			"550 5.7.25 [192.0.2.25] The IP address sending this message does not have a PTR record setup",
