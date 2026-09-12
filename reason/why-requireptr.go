@@ -29,6 +29,7 @@ func init() {
 			"corresponding forward dns entry does not point to the sending ip", // Google
 			"ip name lookup failed",
 			"no matches to nameserver query",
+			"ptr lookup failure",
 			"sender ip reverse lookup rejected",
 			"unresolvable relay host name",
 		}
