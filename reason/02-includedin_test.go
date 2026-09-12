@@ -128,6 +128,7 @@ func TestIncludedIn(t *testing.T) {
 			"451 4.2.0 Throttled - https://postmaster.comcast.net/smtp-error-codes.php#RL000010",
 			"Too many sessions opened",
 			"Too many emails sent on this session",
+			"Too many recipients for message",
 		},
 		eb.RePROC: []string{
 			"500 5.3.5 System config error",
