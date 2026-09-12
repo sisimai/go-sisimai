@@ -129,6 +129,7 @@ func TestIncludedIn(t *testing.T) {
 			"Too many sessions opened",
 			"Too many emails sent on this session",
 			"Too many recipients for message",
+			"Your message could not be delivered due to too many invalid recipients",
 		},
 		eb.RePROC: []string{
 			"500 5.3.5 System config error",
