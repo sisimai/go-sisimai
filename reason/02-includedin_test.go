@@ -104,6 +104,7 @@ func TestIncludedIn(t *testing.T) {
 			"550 5.7.25 [192.0.2.25] The IP address sending this message does not have a PTR record setup",
 			"571 No PTR Record found. Reverse DNS required:",
 			"550 5.7.1 Connections not accepted from servers without a valid sender domain. Fix reverse DNS for 203.0.113.2",
+			"Reverse DNS failure : Try again later",
 		},
 		eb.ReSAFE: []string{
 			"570 5.7.0 Authentication failure",
