@@ -17,6 +17,8 @@ func TestIncludedIn(t *testing.T) {
 		eb.ReAUTH: []string{
 			`550 5.1.0 192.0.2.222 is not allowed to send from <example.net> per it's SPF Record`,
 			`Unauthenticated email from libsisimai.org is not accepted due to domain's DMARC policy`,
+			"Message rejected due to DMARC. Please see https://postmaster.comcast.net/smtp-error-codes.php#DM000001",
+			"552 5.2.0 nyaan DMARC Policy Enforcement: https://postmaster.comcast.net/smtp-error-codes.php#ODM00001",
 		},
 		eb.ReFAMA: []string{
 			"451 4.7.650 The mail server [192.0.2.2] has been temporarily rate limited due to IP reputation.",
@@ -28,6 +30,7 @@ func TestIncludedIn(t *testing.T) {
 			"Remote host said: 554 INVALID IP FOR SENDING MAIL OF DOMAIN amazonses.com [RCPT_TO]",
 			"551 Server access forbidden by your IP 192.0.2.2 websites spamcop.net, mailspike.net for removal",
 			"client [192.0.2.1] blocked using dnsbl.sorbs.net Please see http://support.mailhostbox.com/",
+			"554 mx.example.jp 192.0.2.25 found on one or more DNSBLs, see https://postmaster.comcast.net/smtp-error-codes.php#BL000001",
 		},
 		eb.ReBODY: []string{
 			"550 5.6.0 the headers in this message contain improperly-formatted binary content",
@@ -96,11 +99,14 @@ func TestIncludedIn(t *testing.T) {
 		eb.ReFROM: []string{
 			"550 5.1.8 Domain of sender address example.org does not exist",
 			"5.7.1 Access denied (in reply to MAIL FROM command)",
+			"Invalid sender domain",
 		},
 		eb.ReQPTR: []string{
 			"550 5.7.25 [192.0.2.25] The IP address sending this message does not have a PTR record setup",
 			"571 No PTR Record found. Reverse DNS required:",
 			"550 5.7.1 Connections not accepted from servers without a valid sender domain. Fix reverse DNS for 203.0.113.2",
+			"Reverse DNS failure : Try again later",
+			"PTR lookup failure",
 		},
 		eb.ReSAFE: []string{
 			"570 5.7.0 Authentication failure",
@@ -120,6 +126,12 @@ func TestIncludedIn(t *testing.T) {
 			"421 Too many connections",
 			"451 4.7.1 <smtp.example.jp[192.0.2.3]>: Client host rejected: Please try again slower",
 			"452 4.3.2 Connection rate limit exceeded. (in reply to MAIL FROM command)",
+			"421 4.1.0 192.0.2.1 Throttled - try again later. Please see https://postmaster.comcast.net/smtp-error-codes.php#RL000003",
+			"451 4.2.0 Throttled - https://postmaster.comcast.net/smtp-error-codes.php#RL000010",
+			"Too many sessions opened",
+			"Too many emails sent on this session",
+			"Too many recipients for message",
+			"Your message could not be delivered due to too many invalid recipients",
 		},
 		eb.RePROC: []string{
 			"500 5.3.5 System config error",
@@ -134,6 +146,7 @@ func TestIncludedIn(t *testing.T) {
 			": 550 5.1.1 <kijitora@example.jp>: Recipient address rejected: User unknown in local recipient table",
 			"554 delivery error: dd This user doesn't have a yahoo.com account (this-local-part-does-not-exist@yahoo.com)",
 			`procmail: Couldn't create \"/var/spool/mail/neko\" id: r.example.org: No such user`,
+			"SMTP;550 5.1.1 <example@comcast.net> recipient mailbox unallocated",
 		},
 		eb.ReAWAY: []string{
 			"I am away on vacation until December 20th and will return email at that time",
