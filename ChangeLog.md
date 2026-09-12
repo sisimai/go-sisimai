@@ -4,6 +4,13 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
+v5.?.?
+---------------------------------------------------------------------------------------------------
+- release: ""
+- version: ""
+  - #439 Add invisible/control character check to Makefile to prevent Trojan Source attacks.
+  - #448 Add error message patterns for comcast.net.
+
 v5.7.2
 ---------------------------------------------------------------------------------------------------
 - release: "Mon, 31 Aug 2026 18:25:22 +0900 (JST)"
