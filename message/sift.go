@@ -55,6 +55,7 @@ func sift(bf *siba.BeforeFact, hook siba.CfParameter0) bool {
 	}
 	moji.ToLF(&bf.Payload)
 	bf.Payload = strings.ReplaceAll(bf.Payload, "\t", " ") // Replace all the TAB with " "
+	if len(bf.Payload) == 0 { return false }
 
 	if hook != nil {
 		// Execute the first callback function
