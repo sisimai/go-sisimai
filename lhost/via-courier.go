@@ -35,6 +35,7 @@ func init() {
 			case strings.HasPrefix(bf.Headers["message-id"][0], "<courier."):
 			default: return nil
 		}
+		emailparts := rfc5322.Part(&bf.Payload, eb.FeRFC822, false); if emailparts[0] == "" { return nil }
 
 		startingof := map[string][]string{
 			// https://www.courier-mta.org/courierdsn.html
@@ -51,11 +52,10 @@ func init() {
 			eb.ReINET: []string{"DNS lookup failed."},
 		}
 
-		permessage := map[string]string{}   // Store values of each Per-Message field
-		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, eb.FeRFC822, false)
+		keystrings := make([]string, 0, 4)  // Key list of permessage
 		readslices := make([]string, 1, 32) // Copy each line for later reference
+		permessage := map[string]string{}   // Store values of each Per-Message field
 		thecommand := ""                    // An SMTP command name begins with the string ">>>"
 		recipients, readcursor := uint8(0), uint8(0)
 
