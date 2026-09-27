@@ -51,10 +51,10 @@ func init() {
 			},
 		}
 
+		emailparts := rfc5322.Part(&bf.Payload, eb.FeRFC822, false); if emailparts[0] == "" { return nil }
+		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		permessage := map[string]string{}   // Store values of each Per-Message field
 		keystrings := make([]string, 0, 4)  // Key list of permessage
-		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, eb.FeRFC822, false)
 		recipients := uint8(0)              // The number of 'Final-Recipient' header
 		nomessages := false                 // Delivery report unavailable
 		anotherset := map[string]string{}   // Another error information
