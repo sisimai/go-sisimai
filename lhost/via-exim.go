@@ -139,8 +139,8 @@ func init() {
 			bf.Payload = strings.Replace(bf.Payload, "\n----- This ", "\n------ This ", 1)
 		}
 
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[0] == "" { return nil }
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := 0
 		boundary00 := ""            // Boundary sting
 		anotherone := []string{""}  // Keeping another error messages
