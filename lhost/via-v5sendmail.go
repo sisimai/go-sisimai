@@ -49,8 +49,8 @@ func init() {
 			"error":   []string{"While talking to "},
 			"message": []string{"----- Transcript of session follows -----"},
 		}
-		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[1] == "" { return nil }
+		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 		anotherone := map[uint8]string{}    // Other error messages
 		remotehost, curcommand := "", ""    // The last remote hostname, The last SMTP command
 		recipients, readcursor := uint8(0), uint8(0)
