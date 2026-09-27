@@ -50,12 +50,12 @@ func init() {
 			"message": []string{"   ----- Transcript of session follows -----"},
 			"error":   []string{"... while talking to "},
 		}
-		permessage := map[string]string{}   // Store values of each Per-Message field
-		keystrings := make([]string, 0, 4)  // Key list of permessage
+		emailparts := rfc5322.Part(&bf.Payload, eb.FeRFC822, false); if emailparts[0] == "" { return nil }
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, eb.FeRFC822, false)
+		keystrings := make([]string, 0, 4)  // Key list of permessage
 		readslices := make([]string, 1, 32) // Copy each line for later reference
 		esmtpreply := make([]string, 0, 2)  // Reply messages from the remote server on an SMTP session
+		permessage := map[string]string{}   // Store values of each Per-Message field
 		anotherset := map[string]string{}   // Another error information
 		sessionerr := false                 // Flag, true if it is an SMTP session error
 		thecommand := ""                    // An SMTP command name begins with the string ">>>"
