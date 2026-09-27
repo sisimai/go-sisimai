@@ -51,8 +51,8 @@ func init() {
 		//
 		// Google Groups
 		boundaries := []string{"----- Original message -----", eb.FeRFC822[0]}
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[0] == "" { return nil }
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)
 
 		entiremesg := strings.SplitN(emailparts[0], "\n\n", 5); entiremesg[len(entiremesg) - 1] = ""
