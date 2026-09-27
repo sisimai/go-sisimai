@@ -31,15 +31,15 @@ func init() {
 			case len(bf.Headers["x-mailer"]) > 0 && strings.HasPrefix(bf.Headers["x-mailer"][0], "<SMTP32 v"):
 			default: return nil
 		}
-
 		boundaries := []string{"Original message follows."}
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[0] == "" { return nil }
+
 		startingof := map[string][]string{"error": []string{"Body of message generated response:"}}
 		messagesof := map[string][]string{
 			eb.ReUSER: []string{"Unknown user", "Invalid final delivery userid"},
 			eb.ReTIME: []string{"Delivery failed "},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		recipients := uint8(0)
 
 		bu := strings.Builder{}; bu.Grow(255)
