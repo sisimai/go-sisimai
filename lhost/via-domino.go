@@ -53,10 +53,10 @@ func init() {
 			},
 		}
 
-		permessage := map[string]string{}   // Store values of each Per-Message field
-		keystrings := make([]string, 0, 4)  // Key list of permessage
+		emailparts := rfc5322.Part(&bf.Payload, []string{eb.FeRFC822[0]}, false); if emailparts[0] == "" { return nil }
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, []string{eb.FeRFC822[0]}, false)
+		keystrings := make([]string, 0, 4)  // Key list of permessage
+		permessage := map[string]string{}   // Store values of each Per-Message field
 		subjecttxt := ""                    // The value of "Subject:"
 		recipients, readcursor := uint8(0), uint8(0)
 
