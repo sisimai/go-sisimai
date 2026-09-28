@@ -32,12 +32,12 @@ func init() {
 		}
 		if proceedsto == false { return nil }
 
+		emailparts := rfc5322.Part(&bf.Payload, []string{eb.FeRFC822[0]}, false); if emailparts[0] == "" { return nil }
 		startingof := map[string][]string{
 			"message": []string{"   ----- The following addresses had delivery problems -----"},
 			"error":   []string{"   ----- Non-delivered information -----"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, []string{eb.FeRFC822[0]}, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

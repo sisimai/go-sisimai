@@ -28,6 +28,7 @@ func init() {
 		if bf == nil || bf.IsEmpty()                                                   == true  { return nil }
 		if strings.HasPrefix(bf.Headers["from"][0],    "Mail Delivery System")         == false { return nil }
 		if strings.HasPrefix(bf.Headers["subject"][0], "Delivery status notification") == false { return nil }
+		emailparts := rfc5322.Part(&bf.Payload, []string{eb.FeRFC822[0]}, false); if emailparts[0] == "" { return nil }
 
 		startingof := map[string][]string{
 			"message": []string{"      This is an automatically generated Delivery Status Notification."},
@@ -35,7 +36,6 @@ func init() {
 		permessage := map[string]string{}   // Store values of each Per-Message field
 		keystrings := make([]string, 0, 4)  // Key list of permessage
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, []string{eb.FeRFC822[0]}, false)
 		recipients, readcursor := uint8(0), uint8(0)
 
 		for e := range strings.Lines(emailparts[0]) {

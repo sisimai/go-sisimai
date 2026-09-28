@@ -27,6 +27,7 @@ func init() {
 
 		boundaries := []string{"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"}
 		if cv := rfc2045.Boundary(bf.Headers["content-type"][0], 1); cv != "" { boundaries = append(boundaries, cv) }
+		emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[0] == "" { return nil }
 
 		startingof := map[string][]string{
 			"message": []string{"Your message:"},
@@ -34,7 +35,6 @@ func init() {
 			"rcpts":   []string{"The following recipients were affected:"},
 		}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 		endoferror := false // Flag for the end of error messages
 		recipients, readcursor := uint8(0), uint8(0)
 		

@@ -54,11 +54,11 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		bf.Payload = strings.Replace(bf.Payload, cv, "\n\n" + boundaries[0] + cv, 1)
 		break
 	}
+	emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[0] == "" { return nil }
 	permessage := map[string]string{}   // Store values of each Per-Message field
 	keystrings := make([]string, 0, 4)  // Key list of permessage
 	dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
 	alternates := new(siba.DeliveryMatter)
-	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 	readslices := make([]string, 1, 32) // Copy each line for later reference
 	goestonext := false                 // Flag: do not append the line into "leadinbuff"
 	leadinbuff := strings.Builder{}; leadinbuff.Grow(len(emailparts[0]) / 2)
@@ -85,6 +85,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		cv := cx[p2 + 2:]
 		emailparts = rfc5322.Part(&cv, []string{ct}, false); break
 	}
+	if emailparts[0] == "" { return nil }
 
 	for strings.Contains(emailparts[0], startingof["message"][0]) == false {
 		// There is no "Content-Type: message/delivery-status" line in the message body

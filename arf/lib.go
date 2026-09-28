@@ -78,8 +78,8 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		[]string{"this is an email abuse report"},
 	}
 
+	emailparts := rfc5322.Part(&bf.Payload, boundaries, false); if emailparts[0] == "" { return nil }
 	dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-	emailparts := rfc5322.Part(&bf.Payload, boundaries, false)
 	readcursor := uint8(0) // Points the current cursor position
 	recipients := uint8(0) // The number of "Final-Recipient" header
 	timestamp0 := ""       // The value of "Arrival-Date" or "Received-Date"

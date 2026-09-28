@@ -38,9 +38,11 @@ func init() {
 		//   X-TOI-MSGID: c9412855-531f-497b-b007-5ffc033877a0
 		if moji.ContainsAny(bf.Payload, BannerDTAG) == false { return nil }
 
+		emailparts := rfc5322.Part(&bf.Payload, []string{BannerDTAG[3], BannerDTAG[2]}, false) /* [3] is the first */
+		if emailparts[0] == "" { return nil }
+
 		startingof := map[string][]string{"message": []string{BannerDTAG[1]}}
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, []string{BannerDTAG[3], BannerDTAG[2]}, false) /* [3] is the first */
 		messagelog := ""
 		recipients, readcursor := uint8(0), uint8(0)
 

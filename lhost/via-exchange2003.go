@@ -76,8 +76,8 @@ func init() {
 			},
 		}
 
+		emailparts := rfc5322.Part(&bf.Payload, []string{eb.FeRFC822[0]}, false); if emailparts[0] == "" { return nil }
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
-		emailparts := rfc5322.Part(&bf.Payload, []string{eb.FeRFC822[0]}, false)
 		rightindex := uint8(0)      // The last index number of dscontents
 		statuspart := false         // Flag, true if it has read the delivery status part
 		connvalues := 0             // Counter, 3 if it has got the all values of connheader
