@@ -10,6 +10,7 @@ v5.?.?
 - version: ""
   - #439 Add invisible/control character check to Makefile to prevent Trojan Source attacks.
   - #448 Add error message patterns for comcast.net.
+  - #450 Check that the return value of `rfc5322.Part()` is an empty array or not.
 
 v5.7.2
 ---------------------------------------------------------------------------------------------------
