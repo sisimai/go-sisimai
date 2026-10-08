@@ -1,0 +1,29 @@
+version: 5.4.1
+build: go1.26.2
+emails: 2729
+goos: openbsd
+goarch: amd64
+pkg: libsisimai.org/sisimai/v5
+cpu: Intel Xeon Processor (SapphireRapids)
+BenchmarkRise-3   	       1	 969753552 ns/op	608699208 B/op	 1992225 allocs/op
+BenchmarkRise-3   	       1	 916873246 ns/op	608705544 B/op	 1992273 allocs/op
+BenchmarkRise-3   	       1	 920321747 ns/op	608704768 B/op	 1992291 allocs/op
+BenchmarkRise-3   	       1	 916471310 ns/op	608709624 B/op	 1992345 allocs/op
+BenchmarkRise-3   	       1	 925306057 ns/op	608707680 B/op	 1992309 allocs/op
+BenchmarkRise-3   	       1	 933310193 ns/op	608705968 B/op	 1992286 allocs/op
+BenchmarkRise-3   	       1	 923054036 ns/op	608702552 B/op	 1992250 allocs/op
+BenchmarkRise-3   	       1	 923919433 ns/op	608703736 B/op	 1992262 allocs/op
+BenchmarkRise-3   	       1	 925003950 ns/op	608710280 B/op	 1992332 allocs/op
+BenchmarkRise-3   	       1	 906152867 ns/op	608703000 B/op	 1992242 allocs/op
+BenchmarkDump-3   	       1	 949217482 ns/op	625798088 B/op	 2006053 allocs/op
+BenchmarkDump-3   	       1	 958809486 ns/op	625787112 B/op	 2006053 allocs/op
+BenchmarkDump-3   	       1	 958397368 ns/op	625792480 B/op	 2006038 allocs/op
+BenchmarkDump-3   	       1	1030734083 ns/op	625831512 B/op	 2006097 allocs/op
+BenchmarkDump-3   	       1	 962969975 ns/op	625779728 B/op	 2006109 allocs/op
+BenchmarkDump-3   	       1	 953344219 ns/op	625773000 B/op	 2006083 allocs/op
+BenchmarkDump-3   	       1	 948734248 ns/op	625817080 B/op	 2006098 allocs/op
+BenchmarkDump-3   	       1	 951321479 ns/op	625765936 B/op	 2006099 allocs/op
+BenchmarkDump-3   	       1	 959468673 ns/op	625836952 B/op	 2006166 allocs/op
+BenchmarkDump-3   	       1	1039356002 ns/op	625734600 B/op	 2006012 allocs/op
+PASS
+ok  	libsisimai.org/sisimai/v5	27.505s
