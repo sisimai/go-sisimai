@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //                  _ _ 
 //  _ __ ___   __ _(_) |
@@ -12,8 +12,9 @@ package mail
 
 import "io"
 import "os"
-import "fmt"
 import "bufio"
+import "errors"
+import "strconv"
 import "strings"
 import "path/filepath"
 import "libsisimai.org/sisimai/v5/eb"
@@ -66,7 +67,7 @@ func Rise(path string) (*EmailEntity, error) {
 			stdin, nyaan  := io.ReadAll(os.Stdin); if nyaan != nil { return &ee, nyaan }
 			if textlength := len(stdin); textlength == 0 || textlength > eb.XeBYTE {
 				// The input text is empty or too large (2GB)
-				return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
+				return &ee, errors.New("input text is empty or too large: " + strconv.Itoa(textlength) + " bytes")
 			}
 			payload = string(stdin)
 
@@ -74,7 +75,7 @@ func Rise(path string) (*EmailEntity, error) {
 			// Email data is in a string(memory)
 			if textlength := len(path); textlength < 3 || textlength > eb.XeBYTE {
 				// The input text is empty or too large (2GB)
-				return &ee, fmt.Errorf("input text is empty or too large: %d bytes", textlength)
+				return &ee, errors.New("input text is empty or too large: " + strconv.Itoa(textlength) + " bytes")
 			}
 			ee.Kind = "memory"
 			ee.Path = "<MEMORY>"
@@ -115,7 +116,7 @@ func Rise(path string) (*EmailEntity, error) {
 				// UNIX mbox
 				cw := filestatus.Size(); if cw == 0 || cw > eb.XeBYTE {
 					// The mbox is empty or too large (2GB)
-					return &ee, fmt.Errorf("%s is empty or too large: %d bytes", path, ee.Size)
+					return &ee, errors.New(path + " is empty or too large: " + strconv.Itoa(ee.Size) + " bytes")
 				}
 				ee.Size = int(cw)
 				ee.Kind = "mailbox"
