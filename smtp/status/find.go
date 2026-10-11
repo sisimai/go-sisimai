@@ -8,11 +8,11 @@
 //                   |_|                                  
 
 package status
-import "fmt"
 import "sort"
 import "bytes"
 import "slices"
 import "strings"
+import "libsisimai.org/sisimai/v5/moji"
 import "libsisimai.org/sisimai/v5/rfc791"
 
 // Find returns a delivery status code found from the given string.
@@ -45,7 +45,7 @@ func Find(logs string, hint string) string {
 			p0  = bytes.Index(esmtperror[p1:], e); if p0 < 0 { break }
 			p0 += p1
 			p1  = p0 + 5
-			lookingfor[fmt.Sprintf("%04d", p0)] = e
+			lookingfor[moji.ZeroPadding(p0, 4)] = e
 			indextable = append(indextable, p0)
 		}
 	}
@@ -58,7 +58,7 @@ func Find(logs string, hint string) string {
 	bu := bytes.Buffer{}; bu.Grow(5)
 	for _, e := range indextable {
 		// Try to find an SMTP Status Code from the given string
-		cu := fmt.Sprintf("%04d", e)
+		cu := moji.ZeroPadding(e, 4)
 		ci := bytes.Index(esmtperror[e:], lookingfor[cu]); if ci < 0 { continue }
 		ci += e
 		cx := [8]byte{0, 0, 0, 0, 0, 0, 0, 0}
