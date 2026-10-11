@@ -54,7 +54,6 @@ package rfc5322
   00:00:00 through 23:59:60 (the number of seconds allowing for a leap second; see [RFC1305]), and
   the last two digits of the zone MUST be within the range 00 through 59.
 **************************************************************************************************/
-import "fmt"
 import "slices"
 import "strings"
 import "strconv"
@@ -87,7 +86,7 @@ func Date(date0 string) string {
 			cv, nyaan := strconv.ParseUint(e, 10, 8); if nyaan != nil { return "" }
 			switch {
 				case cv > 31 || cv == 0: year2digit = uint8(cv) // 2-digit year?
-				default: p[2] = fmt.Sprintf("%02d", cv)         // Deal as a day of month
+				default: p[2] = moji.ZeroPadding(int(cv), 2)    // Deal as a day of month
 			}
 		} else if cw == 3 || (cw == 4 && strings.HasSuffix(e, ",")) {
 			// 3 characters: "Feb" or "Thu" or "Thu,", or 3-digit date like "029"
@@ -102,22 +101,22 @@ func Date(date0 string) string {
 			}
 		} else if cw == 4 {
 			// This piece might be a 4-digit year such as 1997, 2018
-			if cv, nyaan := strconv.ParseUint(e, 10, 16); nyaan == nil { p[0] = fmt.Sprintf("%04d", cv) }
+			if cv, nyaan := strconv.ParseUint(e, 10, 16); nyaan == nil { p[0] = moji.ZeroPadding(int(cv), 4) }
 
 		} else if cw == 5 && moji.HasPrefixAny(e, []string{"+", "-"}) {
 			// This piece might be a timezone offset such as "+0900", "-0400"
-			if cv, nyaan := strconv.ParseUint(e[1:5], 10, 16); nyaan == nil { p[5] = fmt.Sprintf("%s%04d", e[0:1], cv) }
+			if cv, nyaan := strconv.ParseUint(e[1:5], 10, 16); nyaan == nil { p[5] = e[0:1] + moji.ZeroPadding(int(cv), 4) }
 
 		} else if cw > 5 {
 			// Time string such as "18:30:22" or other formatted string
 			if strings.Count(e, ":") == 2 {
 				// This piece might be a time such as "18:30:22", "3:1:4"
-				ct := make([]uint8, 0, 3); for _, f := range strings.Split(e, ":") {
+				ct := make([]int, 0, 3); for _, f := range strings.Split(e, ":") {
 					// Each element(integer) should be greater equal 0 and less equal 60.
 					cv, nyaan := strconv.ParseUint(f, 10, 8); if nyaan != nil || cv > 60 { return "" }
-					ct = append(ct, uint8(cv))
+					ct = append(ct, int(cv))
 				}
-				p[4] = fmt.Sprintf("%02d:%02d:%02d", ct[0], ct[1], ct[2])
+				p[4] = moji.ZeroPadding(ct[0], 2) + ":" + moji.ZeroPadding(ct[1], 2) + ":" + moji.ZeroPadding(ct[2], 2)
 
 			} else {
 				// NOTE: Should we support other formatted date string like the followings?
@@ -133,7 +132,7 @@ func Date(date0 string) string {
 	if p[0] == "" && year2digit > 0 {
 		// 4-digit year string is empty, try to use 2-digit year instead.
 		yy  := "20"; if year2digit > 81 { yy = "19" } // RFC822 is published August, 1982
-		p[0] = fmt.Sprintf("%s%2d", yy, int(year2digit))
+		p[0] = yy + moji.ZeroPadding(int(year2digit), 2)
 	}
 	if p[3] == "" { p[3] = "Thu"   } // Set "Thu" for now
 	if p[5] == "" { p[5] = "+0000" } // Deal as UTC
