@@ -7,7 +7,6 @@
 // |_|_| |_|\___/|___/\__/_/_/   \_\_| |_| |_|\__,_/___\___/|_| |_|____/|_____|____/ 
 
 package lhost
-import "fmt"
 import "errors"
 import "strings"
 import "encoding/json"
@@ -293,7 +292,7 @@ func init() {
 				v.Reason       = eb.ReFEED
 				v.FeedbackType = (*o).ComplaintFeedbackType
 				v.Date         = (*o).Timestamp
-				v.Diagnosis    = fmt.Sprintf(`{"feedbackid":"%s", "useragent":"%s"}`, (*o).FeedbackID, (*o).UserAgent)
+				v.Diagnosis    = `{"feedbackid":"` + (*o).FeedbackID + `", "useragent": "` + (*o).UserAgent + `"}`
 				recipients    += 1
 			}
 		case "D":

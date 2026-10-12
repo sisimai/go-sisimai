@@ -9,12 +9,13 @@
 
 // Package "fact" provide a function for generating structs keeping decoded bounce mail data.
 package fact
-import "fmt"
 import "time"
 import "slices"
 import "strings"
+import "strconv"
 import "net/mail"
 import "crypto/sha1"
+import "encoding/hex"
 import "libsisimai.org/sisimai/v5/eb"
 import "libsisimai.org/sisimai/v5/lda"
 import "libsisimai.org/sisimai/v5/siba"
@@ -415,8 +416,8 @@ func token(addre string, recip string, epoch int) string {
 	if addre == "" || len(recip) == 0 { return "" }
 
 	// Format: STX(0x02) Sender-Address RS(0x1e) Recipient-Address ETX(0x03)
-	plain := fmt.Sprintf("\x02%s\x1e%s\x1e%d\x03", strings.ToLower(addre), strings.ToLower(recip), epoch)
+	plain := "\x02" + strings.ToLower(addre) + "\x1e" + strings.ToLower(recip) + "\x1e" + strconv.Itoa(epoch) + "\x03"
 	crypt := sha1.New(); crypt.Write([]byte(plain))
-	return fmt.Sprintf("%x", crypt.Sum(nil))
+	return hex.EncodeToString(crypt.Sum(nil))
 }
 

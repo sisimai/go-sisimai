@@ -1,4 +1,4 @@
-// Copyright (C) 2024 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2024,2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  _   _       _   ____                     _          _ 
 // | \ | | ___ | |_|  _ \  ___  ___ ___   __| | ___  __| |
@@ -7,8 +7,8 @@
 // |_| \_|\___/ \__|____/ \___|\___\___/ \__,_|\___|\__,_|
 
 package siba
-import "fmt"
 import "time"
+import "strconv"
 import "runtime"
 
 type NotDecoded struct {
@@ -31,7 +31,7 @@ func MakeNotDecoded(mesg string, flag bool) *NotDecoded {
 		BecauseOf: mesg,
 		CalledOff: flag,
 		Timestamp: time.Now(),
-		WhoCalled: fmt.Sprintf("%s():%d", runtime.FuncForPC(p).Name(), l),
+		WhoCalled: runtime.FuncForPC(p).Name() + "():" + strconv.Itoa(l),
 	}
 }
 

@@ -1,7 +1,7 @@
 //go:build ignore
 package main
 import "os"
-import "fmt"
+import "strconv"
 import "libsisimai.org/sisimai/v5"
 
 func main() {
@@ -10,5 +10,5 @@ func main() {
 	args.Delivered = true
 	args.Vacation  = true
 	sisi, _ := sisimai.Rise(path, args)
-	fmt.Printf("%d\n", len(sisi))
+	os.Stdout.WriteString(strconv.Itoa(len(sisi)) + "\n")
 }

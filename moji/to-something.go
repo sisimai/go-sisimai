@@ -9,6 +9,7 @@
 
 package moji
 import "strings"
+import "strconv"
 
 // ToLF replace CR and CR/LF with LF.
 //   Arguments:
@@ -76,5 +77,19 @@ func ToPlain(htmle *string) *string {
 	for _, e := range table { plain = strings.ReplaceAll(buffr.String(), "&" + e + ";", table[e]) }
 	plain = strings.Join(strings.Fields(strings.ReplaceAll(plain, "\n", " ")), " ")
 	return &plain
+}
+
+// ZeroPadding is an alternative implementation of Sprintf("%04d", v).
+//   Arguments:
+//     - number (int): String to be padded with "0".
+//     - digits (int): How many digit?
+//   Returns:
+//     - (string): Text with padding "0" such as "0022".
+func ZeroPadding(number int, digits int) string {
+	numoji := strconv.Itoa(number) // "22"
+	length := len(numoji)          //   2
+	if digits > 8 { digits = 8 }
+	if digits < 2 || length >= digits { return numoji }
+	return "0000000"[:digits - length] + numoji
 }
 
