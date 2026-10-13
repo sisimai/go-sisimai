@@ -144,6 +144,9 @@ install-benchstat:
 	# https://pkg.go.dev/golang.org/x/perf/cmd/benchstat
 	test -x `which benchstat` || install golang.org/x/perf/cmd/benchstat@latest
 
+list-dependencies:
+	$(GO) list -f '{{.ImportPath}}: {{.Imports}}' -deps $(EXECUTABLE).go | grep -v $(LIBSISIMAI)
+
 lint:
 	test -x `which $(GOLANGLINT)`
 	NO_COLOR=2 $(GOLANGLINT) run $(SISIMAIDIR)
