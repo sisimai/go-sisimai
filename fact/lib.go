@@ -385,8 +385,14 @@ func Rise(email *string, origin string, args *siba.DecodingArgs) ([]siba.Fact, [
 			}
 		}
 
-		// Feedback-ID: 1.us-west-2.QHuyeCQrGtIIMGKQfVdUhP9hCQR2LglVOrRamBc+Prk=:AmazonSES
-		if len(rfc822data["feedback-id"]) > 0 { thing.FeedbackID = rfc822data["feedback-id"][0] }
+		if len(rfc822data["feedback-id"]) > 0 { 
+			// Feedback-ID: 1.us-west-2.QHuyeCQrGtIIMGKQfVdUhP9hCQR2LglVOrRamBc+Prk=:AmazonSES
+			thing.FeedbackID = rfc822data["feedback-id"][0]
+
+		} else if strings.Contains(thing.DiagnosticCode, `"feedbackid":`) {
+			// "feedbackid":"01010158992bed93-5747af89-b2b1-11e6-be59-ed91bcff66c4-000000",...
+			thing.FeedbackID = moji.Select(thing.DiagnosticCode, `"feedbackid":"`, `",`, 0)
+		}
 
 		// Convert the value of Reason to the lower-cased name such as "mailboxfull".
 		thing.Reason = strings.ToLower(thing.Reason)
