@@ -259,6 +259,7 @@ func init() {
 
 		recipients := uint8(0)
 		dscontents := make([]siba.DeliveryMatter, 1); v := &dscontents[0]
+		feedbackid := ""
 
 		switch whatnotify {
 		case "B":
@@ -275,6 +276,7 @@ func init() {
 				v.ReplyCode = reply.Find(v.Diagnosis, v.Status)
 				v.Date      = (*o).Timestamp
 				v.Lhost     = rfc1123.Find((*o).ReportingMTA)
+				feedbackid  = (*o).FeedbackID
 				recipients += 1
 
 				for f := range reasonpair {
@@ -293,6 +295,7 @@ func init() {
 				v.FeedbackType = (*o).ComplaintFeedbackType
 				v.Date         = (*o).Timestamp
 				v.Diagnosis    = `{"feedbackid":"` + (*o).FeedbackID + `", "useragent": "` + (*o).UserAgent + `"}`
+				feedbackid     = (*o).FeedbackID
 				recipients    += 1
 			}
 		case "D":
@@ -315,6 +318,7 @@ func init() {
 		if recipients == 0 { return nil }
 
 		bu := strings.Builder{}; bu.Grow(255)
+		if feedbackid != "" { bu.WriteString("Feedback-ID: " + feedbackid + "\n") }
 		for _, e := range mailinside.Headers {
 			// Generate pseudo email headers as the original message
 			bu.WriteString(e.Name); bu.WriteString(": ")
