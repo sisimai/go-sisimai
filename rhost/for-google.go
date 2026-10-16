@@ -412,7 +412,9 @@ func init() {
 				[3]string{"550", "5.7.25", "does not match the ip address of the hostname"},
 			},
 			eb.ReSAFE: [][3]string{ // SecurityError
-				// - 454 4.7.0 Too many sign-in attempts, try again later. For details, go to SMTP relay service error messages.
+				// - 454 4.7.0 Too many sign-in attempts, try again later. For details,
+				//   go to SMTP relay service error messages.
+				// - https://support.google.com/mail/answer/7126229
 				[3]string{"454", "4.7.0", "too many sign-in attempts"},
 
 				// - 503 5.7.0 No identity changes permitted. For more information, go to About SMTP
@@ -520,6 +522,7 @@ func init() {
 
 				// - 454 4.7.0 Cannot sign in due to a temporary system problem. Try again later.
 				//   For details, go to SMTP relay service error messages.
+				// - https://support.google.com/a/answer/3221692
 				[3]string{"454", "4.7.0", "cannot sign in due to a temporary system problem"},
 			},
 			eb.ReUSER: [][3]string{ // UserUnknown
