@@ -411,9 +411,8 @@ func init() {
 				[3]string{"550", "5.7.25", "does not match the ip address of the hostname"},
 			},
 			eb.ReSAFE: [][3]string{ // SecurityError
-				// - 454 4.7.0 Too many login attempts, please try again later. For more information,
-				//   go to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
-				[3]string{"454", "4.7.0", "too many login attempts"},
+				// - 454 4.7.0 Too many sign-in attempts, try again later. For details, go to SMTP relay service error messages.
+				[3]string{"454", "4.7.0", "too many sign-in attempts"},
 
 				// - 503 5.7.0 No identity changes permitted. For more information, go to About SMTP
 				//   error messages.
