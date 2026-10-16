@@ -252,8 +252,9 @@ func init() {
 				[3]string{"550", "5.7.1", "email quota exceeded"},
 			},
 			eb.ReINET: [][3]string{ // NetworkError
-				// - 554 5.4.6 Message exceeded 50 hops, this may indicate a mail loop.
-				//   For more information, go to Gmail Help. https://support.google.com/mail/?p=MailLoop
+				// - 554 5.4.6 Message exceeded 50 hops, this may show a mail loop. For details,
+				//   go to SMTP relay service error messages.
+				// - https://support.google.com/mail/?p=MailLoop
 				[3]string{"554", "5.4.6", "message exceeded 50 hops"},
 				[3]string{"554", "5.6.0", "message exceeded 50 hops"},
 			},
