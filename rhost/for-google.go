@@ -252,8 +252,9 @@ func init() {
 				[3]string{"550", "5.7.1", "email quota exceeded"},
 			},
 			eb.ReINET: [][3]string{ // NetworkError
-				// - 554 5.4.6 Message exceeded 50 hops, this may indicate a mail loop.
-				//   For more information, go to Gmail Help. https://support.google.com/mail/?p=MailLoop
+				// - 554 5.4.6 Message exceeded 50 hops, this may show a mail loop. For details,
+				//   go to SMTP relay service error messages.
+				// - https://support.google.com/mail/?p=MailLoop
 				[3]string{"554", "5.4.6", "message exceeded 50 hops"},
 				[3]string{"554", "5.6.0", "message exceeded 50 hops"},
 			},
@@ -411,9 +412,10 @@ func init() {
 				[3]string{"550", "5.7.25", "does not match the ip address of the hostname"},
 			},
 			eb.ReSAFE: [][3]string{ // SecurityError
-				// - 454 4.7.0 Too many login attempts, please try again later. For more information,
-				//   go to Add Gmail to another email client. https://support.google.com/mail/answer/7126229
-				[3]string{"454", "4.7.0", "too many login attempts"},
+				// - 454 4.7.0 Too many sign-in attempts, try again later. For details,
+				//   go to SMTP relay service error messages.
+				// - https://support.google.com/mail/answer/7126229
+				[3]string{"454", "4.7.0", "too many sign-in attempts"},
 
 				// - 503 5.7.0 No identity changes permitted. For more information, go to About SMTP
 				//   error messages.
@@ -518,10 +520,10 @@ func init() {
 				//   https://support.google.com/a/answer/7282433
 				[3]string{"452", "4.5.3", "domain policy size per transaction exceeded"},
 
-				// - 454 4.7.0 Cannot authenticate due to a temporary system problem. Try again later.
-				//   For more information, go to About SMTP error messages.
-				//   https://support.google.com/a/answer/3221692
-				[3]string{"454", "4.7.0", "cannot authenticate due to temporary system problem"},
+				// - 454 4.7.0 Cannot sign in due to a temporary system problem. Try again later.
+				//   For details, go to SMTP relay service error messages.
+				// - https://support.google.com/a/answer/3221692
+				[3]string{"454", "4.7.0", "cannot sign in due to a temporary system problem"},
 			},
 			eb.ReUSER: [][3]string{ // UserUnknown
 				// - 550 5.1.1 The email account that you tried to reach does not exist. Please try
