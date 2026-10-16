@@ -517,10 +517,9 @@ func init() {
 				//   https://support.google.com/a/answer/7282433
 				[3]string{"452", "4.5.3", "domain policy size per transaction exceeded"},
 
-				// - 454 4.7.0 Cannot authenticate due to a temporary system problem. Try again later.
-				//   For more information, go to About SMTP error messages.
-				//   https://support.google.com/a/answer/3221692
-				[3]string{"454", "4.7.0", "cannot authenticate due to temporary system problem"},
+				// - 454 4.7.0 Cannot sign in due to a temporary system problem. Try again later.
+				//   For details, go to SMTP relay service error messages.
+				[3]string{"454", "4.7.0", "cannot sign in due to a temporary system problem"},
 			},
 			eb.ReUSER: [][3]string{ // UserUnknown
 				// - 550 5.1.1 The email account that you tried to reach does not exist. Please try
