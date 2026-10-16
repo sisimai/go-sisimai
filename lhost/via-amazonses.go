@@ -317,8 +317,13 @@ func init() {
 		}
 		if recipients == 0 { return nil }
 
+		// Call WriteString/WriteByte separately to avoid intermediate allocations from "+".
 		bu := strings.Builder{}; bu.Grow(255)
-		if feedbackid != "" { bu.WriteString("Feedback-ID: " + feedbackid + "\n") }
+		if feedbackid != "" {
+			// Set the value of feedbackId into the original message part as pseudo header.
+			bu.WriteString("Feedback-ID: ")
+			bu.WriteString(feedbackid); bu.WriteByte('\n')
+		}
 		for _, e := range mailinside.Headers {
 			// Generate pseudo email headers as the original message
 			bu.WriteString(e.Name); bu.WriteString(": ")
