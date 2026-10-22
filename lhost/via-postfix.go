@@ -263,7 +263,7 @@ func init() {
 					switch {
 						// Replace e.Diagnosis with the value of anotherset["diagnosis"] when all
 						// the following conditions have not matched.
-						case len(as + ar) == 0:
+						case as == "" && ar == "":
 						case len(anotherset["diagnosis"]) < len(e.Diagnosis):
 						case strings.Index(anotherset["diagnosis"], e.Diagnosis) < 0:
 						default: e.Diagnosis = anotherset["diagnosis"]
