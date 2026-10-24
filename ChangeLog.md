@@ -15,6 +15,7 @@ v5.?.?
   - #458 Eliminate dependency on `fmt` package.
   - #465 Update Google SMTP error codes: `454 4.7.0` and `554 5.4.6` as of 15th October 2026.
   - #467 Limit the maximum size of each email file in Maildir/ to 128MB.
+  - #468 Use `io.LimitReader()` to limit the maximum size of data read from STDIN to 2GB.
   - #470 Fix conditional logic in `listMaildir()` function to properly exclude subdirectories.
 
 v5.7.2
