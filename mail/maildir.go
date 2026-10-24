@@ -11,6 +11,7 @@ import "io"
 import "os"
 import "errors"
 import "path/filepath"
+import "libsisimai.org/sisimai/v5/eb"
 
 // listMaildir is a Maildir/ reader, works like a iterator.
 //   Returns:
@@ -24,8 +25,9 @@ func(ee *EmailEntity) listMaildir() (int, error) {
 	}
 	direntries, nyaan := ee.handle.Readdir(0); if nyaan != nil { return 0, nyaan }
 	for _, e := range direntries {
-		// Read each email file in the Maildir/
-		if e.IsDir() == false && e.Size() > 0 { ee.payload = append(ee.payload, e.Name()) }
+		// Read each email file in the Maildir/.
+		if b := e.Size(); e.IsDir() || b < 1 || b > eb.XeBYTE { continue }
+		ee.payload = append(ee.payload, e.Name())
 	}
 	nyaan = ee.handle.Close(); ee.handle = nil
 	return len(ee.payload), nyaan

@@ -52,6 +52,7 @@ type EmailEntity struct {
 //     - (error):        Occurred error.
 func Rise(path string) (*EmailEntity, error) {
 	ee := EmailEntity{}
+	xb := eb.XeBYTE * 16 // 128MB * 16 = 2GB
 
 	if path == "STDIN" || strings.IndexByte(path, '\n') > -1 {
 		// Read from STDIN or Memory(string)
@@ -65,7 +66,7 @@ func Rise(path string) (*EmailEntity, error) {
 			// Read all strings from STDIN, and store them to ee.payload
 			// TODO: In the case of that the input data is a binary
 			stdin, nyaan  := io.ReadAll(os.Stdin); if nyaan != nil { return &ee, nyaan }
-			if textlength := len(stdin); textlength == 0 || textlength > eb.XeBYTE {
+			if textlength := len(stdin); textlength == 0 || textlength > xb {
 				// The input text is empty or too large (2GB)
 				return &ee, errors.New("input text is empty or too large: " + strconv.Itoa(textlength) + " bytes")
 			}
@@ -73,7 +74,7 @@ func Rise(path string) (*EmailEntity, error) {
 
 		} else {
 			// Email data is in a string(memory)
-			if textlength := len(path); textlength < 3 || textlength > eb.XeBYTE {
+			if textlength := len(path); textlength < 3 || textlength > xb {
 				// The input text is empty or too large (2GB)
 				return &ee, errors.New("input text is empty or too large: " + strconv.Itoa(textlength) + " bytes")
 			}
@@ -114,7 +115,7 @@ func Rise(path string) (*EmailEntity, error) {
 
 			} else {
 				// UNIX mbox
-				cw := filestatus.Size(); if cw == 0 || cw > eb.XeBYTE {
+				cw := filestatus.Size(); if cw == 0 || cw > int64(xb) {
 					// The mbox is empty or too large (2GB)
 					return &ee, errors.New(path + " is empty or too large: " + strconv.Itoa(ee.Size) + " bytes")
 				}
