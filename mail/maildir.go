@@ -25,7 +25,7 @@ func(ee *EmailEntity) listMaildir() (int, error) {
 	direntries, nyaan := ee.handle.Readdir(0); if nyaan != nil { return 0, nyaan }
 	for _, e := range direntries {
 		// Read each email file in the Maildir/
-		if e.IsDir() == false || e.Size() > 0 { ee.payload = append(ee.payload, e.Name()) }
+		if e.IsDir() == false && e.Size() > 0 { ee.payload = append(ee.payload, e.Name()) }
 	}
 	nyaan = ee.handle.Close(); ee.handle = nil
 	return len(ee.payload), nyaan
