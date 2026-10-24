@@ -14,6 +14,7 @@ v5.?.?
   - #450 Check that the return value of `rfc5322.Part()` is an empty array or not.
   - #458 Eliminate dependency on `fmt` package.
   - #465 Update Google SMTP error codes: `454 4.7.0` and `554 5.4.6` as of 15th October 2026.
+  - #467 Limit the maximum size of each email file in Maildir/ to 128MB.
   - #470 Fix conditional logic in `listMaildir()` function to properly exclude subdirectories.
 
 v5.7.2
