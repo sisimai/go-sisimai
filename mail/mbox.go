@@ -51,7 +51,7 @@ func(ee *EmailEntity) readMailbox() (*string, error) {
 		//   - "bufio.Scanner: token too long"
 		// - I/O errors: File or storage read failures (e.g., EIO, permission, network disconnection)
 		// - Stream errors: Corrupted reader state or unexpected stream interruption
-		if ee.handle != nil { ee.handle.Close() }
+		if ee.handle != nil { _ = ee.handle.Close() }
 		return nil, nyaan
 	}
 
