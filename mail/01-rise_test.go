@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package mail
 
@@ -30,6 +30,7 @@ var Mailtxt = filepath.Join(RootDir, "maildir", "bsd", "lhost-opensmtpd-01.eml")
 var Mailbox = []string{
 	filepath.Join(RootDir, "mailbox", "mbox-0"),
 	filepath.Join(RootDir, "mailbox", "mbox-1"),
+	filepath.Join(RootDir, "mailbox", "mbox-2"),
 }
 var Maildir = []string{
 	filepath.Join(RootDir, "maildir", "bsd"),
