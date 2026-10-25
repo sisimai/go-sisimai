@@ -11,6 +11,7 @@ import "io"
 import "os"
 import "bytes"
 import "bufio"
+import "libsisimai.org/sisimai/v5/eb"
 
 // readMailbox is a UNIX mbox reader, works like a iterator.
 //   Returns:
@@ -31,10 +32,10 @@ func(ee *EmailEntity) readMailbox() (*string, error) {
 	emailblock := ""
 	thisheight := 0
 
-	unixmboxio := bufio.NewScanner(ee.handle); for unixmboxio.Scan() {
+	unixmboxio := bufio.NewScanner(ee.handle)
+	unixmboxio.Buffer(make([]byte, 64 * 1024), eb.XeBYTE); for unixmboxio.Scan() {
 		// Read the UNIX mbox until the EOF
-		e := unixmboxio.Bytes()
-		if bytes.HasPrefix(e, []byte("From ")) && readbuffer.Len() > 0 {
+		e := unixmboxio.Bytes(); if bytes.HasPrefix(e, []byte("From ")) && readbuffer.Len() > 0 {
 			// - The line is a UNIX From line such as "From MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 			// - This UNIX From line is the beginning of the second or later email message
 			emailblock = readbuffer.String(); readbuffer.Reset()
@@ -43,6 +44,15 @@ func(ee *EmailEntity) readMailbox() (*string, error) {
 		}
 		thisheight += 1
 		readbuffer.Write(e); readbuffer.WriteByte('\n')
+	}
+	if nyaan := unixmboxio.Err(); nyaan != nil {
+		// Possible errors captured by unixmboxio.Err():
+		// - bufio.ErrTooLong: A single line exceeds the maximum buffer size (eb.XeBYTE)
+		//   - "bufio.Scanner: token too long"
+		// - I/O errors: File or storage read failures (e.g., EIO, permission, network disconnection)
+		// - Stream errors: Corrupted reader state or unexpected stream interruption
+		if ee.handle != nil { _ = ee.handle.Close() }
+		return nil, nyaan
 	}
 
 	if readbuffer.Len() > 0 {
