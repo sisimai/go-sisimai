@@ -14,11 +14,10 @@ v5.?.?
   - #450 Check that the return value of `rfc5322.Part()` is an empty array or not.
   - #458 Eliminate dependency on `fmt` package.
   - #465 Update Google SMTP error codes: `454 4.7.0` and `554 5.4.6` as of 15th October 2026.
-  - #467 Limit the maximum size of each email file in Maildir/ to 128MB.
+  - #467 #481 Limit the maximum size of each email file in Maildir/ and UNIX mbox to 64MB.
   - #468 Use `io.LimitReader()` to limit the maximum size of data read from STDIN to 2GB.
   - #469 Prevent potential infinite loop in readMailbox() when scanning long lines.
   - #470 Fix conditional logic in `listMaildir()` function to properly exclude subdirectories.
-  - #481 Reduce `eb.XeBYTE` the max size of each email in Maildir/ and UNIX mbox to 64MB.
 
 v5.7.2
 ---------------------------------------------------------------------------------------------------
