@@ -52,7 +52,7 @@ type EmailEntity struct {
 //     - (error):        Occurred error.
 func Rise(path string) (*EmailEntity, error) {
 	ee := EmailEntity{}
-	xb := int64(eb.XeBYTE * 16) // 128MB * 16 = 2GB
+	xb := int64(eb.XeBYTE * 32) // 64MB * 32 = 2GB
 
 	if path == "STDIN" || strings.IndexByte(path, '\n') > -1 {
 		// Read from STDIN or Memory(string)
