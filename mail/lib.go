@@ -90,10 +90,11 @@ func Rise(path string) (*EmailEntity, error) {
 
 		} else {
 			// There is 2 or more "From " line in the payload
-			for _, uf := range strings.Split(payload, "\nFrom ") {
+			for j, uf := range strings.Split(payload, "\nFrom ") {
 				// Split by "From "
 				if uf == "" { continue }
-				cv := "From " + uf + "\n"
+				cv := uf; if j > 0 { cv = "From " + uf }
+				cv += "\n"
 				ee.payload = append(ee.payload, cv)
 				ee.Size   += len(cv)
 			}
