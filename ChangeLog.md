@@ -8,18 +8,21 @@ v5.?.?
 ---------------------------------------------------------------------------------------------------
 - release: ""
 - version: ""
-  - #427 The value of `feedbackId` returned from Amazon SES is set to the `FeedbackID` field.
-  - #439 Add invisible/control character check to Makefile to prevent Trojan Source attacks.
-  - #448 Add error message patterns for comcast.net.
-  - #450 Check that the return value of `rfc5322.Part()` is an empty array or not.
-  - #458 Eliminate dependency on `fmt` package.
-  - #465 Update Google SMTP error codes: `454 4.7.0` and `554 5.4.6` as of 15th October 2026.
-  - #467 #481 Limit the maximum size of each email file in Maildir/ and UNIX mbox to 64MB.
-  - #468 Use `io.LimitReader()` to limit the maximum size of data read from STDIN to 2GB.
-  - #469 Prevent potential infinite loop in readMailbox() when scanning long lines.
-  - #470 Fix conditional logic in `listMaildir()` function to properly exclude subdirectories.
-  - #482 Check the max size of each email in UNIX mbox, data read from memory or STDIN.
-  - #484 Fix mbox email splitting bug when reading from STDIN or string payload.
+  - **Security Fixes & Guardrail Improvements**
+    - #439 Add invisible/control character check to Makefile to prevent Trojan Source attacks.
+    - #450 Check that the return value of `rfc5322.Part()` is an empty array or not.
+    - #467 #481 Limit the maximum size of each email file in Maildir/ and UNIX mbox to 64MB.
+    - #468 Use `io.LimitReader()` to limit the maximum size of data read from STDIN to 2GB.
+    - #469 Prevent potential infinite loop in readMailbox() when scanning long lines.
+    - #470 Fix conditional logic in `listMaildir()` function to properly exclude subdirectories.
+    - #482 Check the max size of each email in UNIX mbox, data read from memory or STDIN.
+    - #484 Fix mbox email splitting bug when reading from STDIN or string payload.
+  - **Error message pattern updates**
+    - #448 Add error message patterns for comcast.net.
+    - #465 Update Google SMTP error codes: `454 4.7.0` and `554 5.4.6` as of 15th October 2026.
+  - **Other Tiny Improvements**
+    - #427 The value of `feedbackId` returned from Amazon SES is set to the `FeedbackID` field.
+    - #458 Eliminate dependency on `fmt` package.
 
 v5.7.2
 ---------------------------------------------------------------------------------------------------
