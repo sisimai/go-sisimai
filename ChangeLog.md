@@ -18,6 +18,7 @@ v5.?.?
   - #468 Use `io.LimitReader()` to limit the maximum size of data read from STDIN to 2GB.
   - #469 Prevent potential infinite loop in readMailbox() when scanning long lines.
   - #470 Fix conditional logic in `listMaildir()` function to properly exclude subdirectories.
+  - #482 Check the max size of each email in UNIX mbox, data read from memory or STDIN.
   - #484 Fix mbox email splitting bug when reading from STDIN or string payload.
 
 v5.7.2
