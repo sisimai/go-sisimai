@@ -4,7 +4,7 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
-v5.?.?
+v5.8.0
 ---------------------------------------------------------------------------------------------------
 - release: ""
 - version: ""
@@ -17,7 +17,7 @@ v5.?.?
     - #470 Fix conditional logic in `listMaildir()` function to properly exclude subdirectories.
     - #482 Check the max size of each email in UNIX mbox, data read from memory or STDIN.
     - #484 Fix mbox email splitting bug when reading from STDIN or string payload.
-  - **Error message pattern updates**
+  - **Error Message Pattern Updates**
     - #448 Add error message patterns for comcast.net.
     - #465 Update Google SMTP error codes: `454 4.7.0` and `554 5.4.6` as of 15th October 2026.
   - **Other Tiny Improvements**
