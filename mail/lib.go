@@ -85,15 +85,20 @@ func Rise(path string) (*EmailEntity, error) {
 
 		if countUnixMboxFrom(&payload) < 2 {
 			// There is 1 or 0 "From " line in the payload
+			if cw := int64(len(payload)); cw > eb.XeBYTE {
+				// The input text is too large > eb.XeBYTE(64MB)
+				return &ee, errors.New("input text is too large: " + strconv.FormatInt(cw, 10) + " bytes")
+			}
 			ee.payload = append(ee.payload, payload)
 			ee.Size = len(payload)
 
 		} else {
 			// There is 2 or more "From " line in the payload
-			for j, uf := range strings.Split(payload, "\nFrom ") {
+			for uj, uf := range strings.Split(payload, "\nFrom ") {
 				// Split by "From "
-				if uf == "" { continue }
-				cv := uf; if j > 0 { cv = "From " + uf }
+				// Skip to the next email when the text size is 0 or larger than eb.XeBYTE(64MB).
+				if cw := int64(len(uf)); cw > eb.XeBYTE || cw < 1 { continue }
+				cv := uf; if uj > 0 { cv = "From " + uf }
 				cv += "\n"
 				ee.payload = append(ee.payload, cv)
 				ee.Size   += len(cv)
