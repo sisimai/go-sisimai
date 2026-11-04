@@ -123,7 +123,7 @@ func Rise(path string) (*EmailEntity, error) {
 				// UNIX mbox
 				cw := filestatus.Size(); if cw == 0 || cw > xb {
 					// The mbox is empty or too large (2GB)
-					return &ee, errors.New(path + " is empty or too large: " + strconv.Itoa(ee.Size) + " bytes")
+					return &ee, errors.New(path + " is empty or too large: " + strconv.FormatInt(cw, 10) + " bytes")
 				}
 				ee.Size = int(cw)
 				ee.Kind = "mailbox"
