@@ -10,6 +10,8 @@ package mail
 import "io"
 import "os"
 import "errors"
+import "strings"
+import "strconv"
 import "path/filepath"
 import "libsisimai.org/sisimai/v5/eb"
 
@@ -25,13 +27,25 @@ func(ee *EmailEntity) listMaildir() (int, error) {
 	}
 	direntries, nyaan := ee.handle.Readdir(0); if nyaan != nil { return 0, nyaan }
 
+	xe := []string{} // Stack occurred errors while reading the Maildir/
 	for _, e := range direntries {
-		// Read each email file in the Maildir/.
-		if b := e.Size(); e.IsDir() || b < 1 || b > eb.XeBYTE { continue }
-		ee.payload = append(ee.payload, e.Name())
+		// Read each email file in the Maildir/ except the following emails:
+		by := e.Size(); switch {
+			// 1. Is a directory
+			// 2. Is an empty file
+			// 3. Is too large: eb.XeBYTE(64MB)
+			case e.IsDir():      { xe = append(xe, e.Name() + " is a directory")   }
+			case by < 1:         { xe = append(xe, e.Name() + " is an empty file") }
+			case by > eb.XeBYTE: { xe = append(xe, e.Name() + " is larger than " + strconv.Itoa(eb.XeBYTE)) } 
+			default:               ee.payload = append(ee.payload, e.Name())
+		}
 	}
-	nyaan = ee.handle.Close(); ee.handle = nil
-	return len(ee.payload), nyaan
+	nyaan = ee.handle.Close(); if nyaan != nil { xe = append(xe, nyaan.Error()) }
+	ee.handle = nil
+
+	// There is one or more errors occurred.
+	if len(xe) > 0 { return len(ee.payload), errors.New(strings.Join(xe, "\n")) }
+	return len(ee.payload), nil
 }
 
 // readMaildir is an email reader in the Maildir/, works like a iterator.
@@ -39,7 +53,7 @@ func(ee *EmailEntity) listMaildir() (int, error) {
 //     - (*string): Contents of each email file in the Maildir/ one by one.
 //     - (error):   Occurred error.
 func(ee *EmailEntity) readMaildir() (*string, error) {
-	if ee.Size == 0         { return nil, errors.New("there is no email file in" + ee.Dir) }
+	if ee.Size == 0         { return nil, errors.New("there is no email file in " + ee.Dir) }
 	if ee.Size <= ee.offset { return nil, io.EOF }
 
 	for {
