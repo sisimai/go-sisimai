@@ -1,4 +1,4 @@
-_benchmark.log
+_*benchmark*.log
 coverage.*
 usage-of-*
 *pprof*
