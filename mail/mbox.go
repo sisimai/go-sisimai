@@ -39,7 +39,11 @@ func(ee *EmailEntity) readMailbox() (*string, error) {
 			// - The line is a UNIX From line such as "From MAILER-DAEMON Fri Feb  2 18:30:22 2018"
 			// - This UNIX From line is the beginning of the second or later email message
 			emailblock = readbuffer.String(); readbuffer.Reset()
-			ee.offset += len(emailblock) + (thisheight * lineending)
+			cw        := len(emailblock)
+			ee.offset += cw + (thisheight * lineending)
+
+			// The email block in the UNIX mbox is larger than eb.XeBYTE(64MB)
+			if int64(cw) > eb.XeBYTE { thisheight = 0; emailblock = "" }
 			break
 		}
 		thisheight += 1
@@ -52,6 +56,7 @@ func(ee *EmailEntity) readMailbox() (*string, error) {
 		// - I/O errors: File or storage read failures (e.g., EIO, permission, network disconnection)
 		// - Stream errors: Corrupted reader state or unexpected stream interruption
 		if ee.handle != nil { _ = ee.handle.Close() }
+		ee.offset = ee.Size
 		return nil, nyaan
 	}
 
