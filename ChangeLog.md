@@ -9,7 +9,7 @@ v5.8.0
 - release: ""
 - version: ""
   - **Security Fixes & Guardrail Improvements**
-    - **Limit each email size in a UNIX mbox, Maildir/, and other input data to 64MB.** #487
+    - **Limit each email size in a UNIX mbox, Maildir/, and other input data to 64MB.** #481 #487
       - #467 #481 Limit the maximum size of each email file in Maildir/ and UNIX mbox to 64MB.
       - #468 Use `io.LimitReader()` to limit the maximum size of data read from STDIN to 2GB.
       - #482 #490 Check the max size of each email in UNIX mbox, data read from memory or STDIN.
