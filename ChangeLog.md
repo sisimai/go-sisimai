@@ -8,14 +8,14 @@ v5.8.0
 ---------------------------------------------------------------------------------------------------
 - release: ""
 - version: ""
-  - **Security Fixes & Guardrail Improvements**
-    - **Limit each email size in a UNIX mbox, Maildir/, and other input data to 64MB.** #481 #487
-      - #467 #481 Limit the maximum size of each email file in Maildir/ and UNIX mbox to 64MB.
-      - #468 Use `io.LimitReader()` to limit the maximum size of data read from STDIN to 2GB.
-      - #482 #490 Check the max size of each email in UNIX mbox, data read from memory or STDIN.
+  - **LIMIT THE MAXIMUM EMAIL DATA SIZE**
+    - The total size of input data (UNIX mbox, memory, or STDIN) is limited to 2GB.
+    - Each individual email message (in Maildir/, UNIX mbox, memory, or STDIN) is limited to 64MB.
+    - #467 #468 #481 #482 #487 #490
+  - **Security Fixes**
     - #439 Add invisible/control character check to Makefile to prevent Trojan Source attacks.
     - #450 Check that the return value of `rfc5322.Part()` is an empty array or not.
-    - #469 Prevent potential infinite loop in readMailbox() when scanning long lines.
+    - #469 Prevent potential infinite loop in `readMailbox()` when scanning long lines.
     - #470 Fix conditional logic in `listMaildir()` function to properly exclude subdirectories.
     - #484 Fix mbox email splitting bug when reading from STDIN or string payload.
   - **Error Message Pattern Updates**
