@@ -20,17 +20,22 @@ import "path/filepath"
 import "libsisimai.org/sisimai/v5/eb"
 
 /* EmailEntity struct keeps each parameter of UNIX mbox, Maildir/.
- | FIELD      | UNIX mbox | Maildir/  | Memory    | <STDIN>    |
- |------------|-----------|-----------|-----------|------------|
- | Kind       | o         | o         | o         | o          |
- | Path       | o         | o         | o         | o          |
- | Dir        | o         | o         |           |            |
- | File       | o         | o         |           |            |
- | Size       | o         | o         | o         | o          |
- | newline    | o         |           | o         | o          |
- | offset     | o         | o         | o         | o          |
- | handle     | o         | o         |           |            |
- | payload    |           | o         | o         | o          |
+ | FIELD NAME           | UNIX mbox | Maildir/  | Memory    | <STDIN>    |
+ |----------------------|-----------|-----------|-----------|------------|
+ | Kind                 | o         | o         | o         | o          |
+ | Path                 | o         | o         | o         | o          |
+ | Dir                  | o         | o         |           |            |
+ | File                 | o         | o         |           |            |
+ | Size                 | o         | o         | o         | o          |
+ | newline              | o         |           | o         | o          |
+ | offset               | o         | o         | o         | o          |
+ | handle               | o         | o         |           |            |
+ | payload              |           | o         | o         | o          |
+ |----------------------|-----------|-----------|-----------|------------|
+ | THE MAXIMUM SIZE OF  |           | o         | o         | o          |
+ | - entire email text  |    2048MB |           |    2048MB |     2048MB |
+ | - each email message |      64MB |      64MB |      64MB |       64MB |
+ |----------------------|-----------|-----------|-----------|------------|
 */
 type EmailEntity struct {
 	handle  *os.File // https://pkg.go.dev/os#File
@@ -67,16 +72,16 @@ func Rise(path string) (*EmailEntity, error) {
 			// TODO: In the case of that the input data is a binary
 			stdin, nyaan := io.ReadAll(io.LimitReader(os.Stdin, xb + 1)); if nyaan != nil { return &ee, nyaan }
 			if cw := int64(len(stdin)); cw == 0 || cw > xb {
-				// The input text is empty or too large (2GB)
-				return &ee, errors.New("input text is empty or too large: " + strconv.FormatInt(cw, 10) + " bytes")
+				// Email text is empty or too large (2GB)
+				return &ee, errors.New("email text is empty or too large: " + strconv.FormatInt(cw, 10) + " bytes")
 			}
 			payload = string(stdin)
 
 		} else {
 			// Email data is in a string(memory)
 			if cw := int64(len(path)); cw < 3 || cw > xb {
-				// The input text is empty or too large (2GB)
-				return &ee, errors.New("input text is empty or too large: " + strconv.FormatInt(cw, 10) + " bytes")
+				// Email text is empty or too large (2GB)
+				return &ee, errors.New("email text is empty or too large: " + strconv.FormatInt(cw, 10) + " bytes")
 			}
 			ee.Kind = "memory"
 			ee.Path = "<MEMORY>"
@@ -86,8 +91,8 @@ func Rise(path string) (*EmailEntity, error) {
 		if countUnixMboxFrom(&payload) < 2 {
 			// There is 1 or 0 "From " line in the payload
 			if cw := int64(len(payload)); cw > eb.XeBYTE {
-				// The input text is too large > eb.XeBYTE(64MB)
-				return &ee, errors.New("input text is too large: " + strconv.FormatInt(cw, 10) + " bytes")
+				// Email text is too large > eb.XeBYTE(64MB)
+				return &ee, errors.New("email text is too large: " + strconv.FormatInt(cw, 10) + " bytes")
 			}
 			ee.payload = append(ee.payload, payload)
 			ee.Size = len(payload)
