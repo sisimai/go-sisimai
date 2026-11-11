@@ -5,6 +5,11 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/sisimai/go-sisimai/make-test.yml)
 ![Codecov](https://img.shields.io/codecov/c/github/sisimai/go-sisimai)
 
+> [!WARNING]
+> メモリ保護とシステムの安定性を確保するため、Sisimai 5.8.0よりUNIX mboxとメモリ(変数からの入力)と
+> STDINから入るメール全体の容量を**2GB**に、Maildir/の各ファイルを含む個々のメールの最大値を**64MB**
+> に、それぞれ制限するようになりました。
+
 > [!NOTE]
 > Sisimaiは多種多様な形式のバウンスメールを解析して宛先アドレスやバウンス理由など分析に必要な情報を
 > 構造化して出力するライブラリでGoパッケージとして提供しています。Go言語以外でもPHPやJava、Pythonや
@@ -381,7 +386,7 @@ Features
 | 動作環境                                | 1.24 -          | 5.26 -            | 2.5 - / 9.2 -   |
 | 依存モジュール数(標準パッケージを除く)  | **0**           | 2 モジュール      | 1 gem           |
 | 対応している文字コード                  | **UTF-8のみ**   | UTF-8と他[^2]     | UTF-8と他[^3]   |
-| ソースコードの行数                      | 8,700 行        | 9,720 行          | 9,670 行        |
+| ソースコードの行数                      | 8,750 行        | 9,750 行          | 9,700 行        |
 | テスト件数                              | 261,000 件      | 346,000 件        | 255,000 件      |
 | 1秒間に解析できるバウンスメール数       | 2900 通[^4]     | 750 通[^5]        | 620 通[^5]      |
 | ライセンス                              | 二条項BSD       | 二条項BSD         | 二条項BSD       |

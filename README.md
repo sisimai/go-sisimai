@@ -5,6 +5,11 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/sisimai/go-sisimai/make-test.yml)
 ![Codecov](https://img.shields.io/codecov/c/github/sisimai/go-sisimai)
 
+> [!WARNING]
+> To ensure memory protection and system stability, Starting with v5.8.0, Sisimai limits the total
+> size of input data (such as a UNIX mbox, in-memory date from a variable, or STDIN) to **2GB**, and
+> caps the maximum size of each individual email in Maildir/, UNIX mbox, memory, or STDIN at **64MB**.
+
 > [!NOTE]
 > Sisimai is a library provided as a Go package that decodes various formats of bounce emails and
 > outputs structured data necessary for analysis, such as destination addresses and bounce reasons.
@@ -97,7 +102,7 @@ $ go mod init example.com/sisimaicli
 go: creating new go.mod: module example.com/sisimaicli
 
 $ go get -u libsisimai.org/sisimai/v5@latest
-go: added libsisimai.org/sisimai/v5 v5.7.2
+go: added libsisimai.org/sisimai/v5 v5.8.0
 
 $ cat ./go.mod
 module example.com/sisimaicli
@@ -105,7 +110,7 @@ module example.com/sisimaicli
 go 1.25
 
 require (
-	libsisimai.org/sisimai/v5 v5.7.2 // indirect
+	libsisimai.org/sisimai/v5 v5.8.0 // indirect
 )
 ```
 
@@ -392,7 +397,7 @@ Features
 | System requirements                          | 1.24 -         | 5.26 -          | 2.5 - / 9.2 - |
 | Dependencies (Except standard libs)          | **0 packages** | 2 modules       | 1 gem         |
 | Supported character sets                     | **UTF-8 only** | UTF-8,etc. [^2] | UTF-8,etc.[^3]|
-| Source lines of code                         | 8,700 lines    | 9,720 lines     | 9,670 lines   |
+| Source lines of code                         | 8,750 lines    | 9,750 lines     | 9,700 lines   |
 | The number of tests                          | 261,000 tests  | 346,000 tests   | 255,000 tests |
 | The number of bounce emails decoded/sec      | 2900 emails[^4]| 750 emails [^5] | 620 emails[^5]|
 | License                                      | 2 Clause BSD   | 2 Clause BSD    | 2 Clause BSD  |
