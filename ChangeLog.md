@@ -6,9 +6,9 @@ RELEASE NOTES for the Go version of Sisimai
 
 v5.8.0
 ---------------------------------------------------------------------------------------------------
-- release: ""
-- version: ""
-  - **LIMIT THE MAXIMUM EMAIL DATA SIZE**
+- release: "Wed, 11 Nov 2026 20:22:22 +0900 (JST)"
+- version: "5.8.0"
+  - **LIMIT THE MAXIMUM EMAIL DATA SIZE FOR MEMORY PROTECTION**
     - The total size of input data (UNIX mbox, memory, or STDIN) is limited to 2GB.
     - Each individual email message (in Maildir/, UNIX mbox, memory, or STDIN) is limited to 64MB.
     - #467 #468 #481 #482 #487 #490
@@ -23,7 +23,7 @@ v5.8.0
     - #465 Update Google SMTP error codes: `454 4.7.0` and `554 5.4.6` as of 15th October 2026.
   - **Other Tiny Improvements**
     - #427 The value of `feedbackId` returned from Amazon SES is set to the `FeedbackID` field.
-    - #458 Eliminate dependency on `fmt` package.
+    - #458 Sisimai no longer depends on `fmt` package.
 
 v5.7.2
 ---------------------------------------------------------------------------------------------------
