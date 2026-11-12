@@ -76,6 +76,9 @@ test:
 	@ $(foreach v, $(shell make -f ./Developers.mk other-files), grep -Fq "$(v)" ./rfc3*/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
 	@ $(MAKE) -f ./Developers.mk check-invisibles
 
+fuzz-test:
+	@ $(GO) test -tags=fuzz -fuzz=FuzzRise -fuzztime=1m .
+
 check-invisibles:
 	@git --no-pager grep -P -I $(INVISIBLES) '*.go' && exit 1 || true
 
