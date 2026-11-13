@@ -255,4 +255,5 @@ clean:
 	$(RM)    ./$(EXECUTABLE)
 	$(RM)    ./$(COVERAGETO)
 	$(RM) -r ./$(ASSEMBLEIN)
+	$(RM) -r ./testdata/fuzz
 
