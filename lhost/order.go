@@ -72,7 +72,7 @@ func OrderBySubject(title string) []string {
 	buffr := strings.Builder{}; buffr.Grow(len(title))
 	words := strings.SplitN(strings.ToLower(title), " ", 3)
 
-	if wi := strings.IndexByte(words[0], ':'); wi > 0 {
+	if wi := strings.IndexByte(title, ':'); wi > 0 {
 		// Undeliverable: ..., notify: ...
 		buffr.WriteString(strings.ToLower(title[:wi]))
 
