@@ -69,10 +69,11 @@ func OrderBySubject(title string) []string {
 	// The following order is decided by the first 2 words of Subject: header
 	for _, e := range []string{"[", "]", "_"} { title = strings.Replace(title, e, " ", -1) }
 	title  = strings.Join(strings.Fields(title), " ")
-	buffr := strings.Builder{}; buffr.Grow(len(title))
+	width := len(title); if width < 1 { return defaultorder }
+	buffr := strings.Builder{}; buffr.Grow(width)
 	words := strings.SplitN(strings.ToLower(title), " ", 3)
 
-	if wi := strings.IndexByte(words[0], ':'); wi > 0 {
+	if wi := strings.IndexByte(title, ':'); wi > 0 {
 		// Undeliverable: ..., notify: ...
 		buffr.WriteString(strings.ToLower(title[:wi]))
 
