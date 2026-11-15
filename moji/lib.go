@@ -68,8 +68,9 @@ func Is7bit(text string, vide bool) bool {
 		// * 0x00 - 0x1F: Control characters
 		// * 0x20 - 0x7E: Visible characters
 		// * 0x7F       : DEL
-		cv := text[j]; if vide && (cv < 32 || cv > 126) { return false }
-		if cv > 127 { return false }
+		cv := text[j]
+		if vide && (cv < 32 || cv > 126)  { return false }
+		if cv > 127 /* 8bit characters */ { return false }
     }
     return true
 }
