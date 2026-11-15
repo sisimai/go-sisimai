@@ -204,7 +204,7 @@ func MakeFlat(ctype string, mpart *string) (*string, []siba.NotDecoded) {
 				// - NOT a plain text.
 				case     ctencoding != "base64":
 				case     moji.Aligned(e[0], []string{"charset", "=", "utf-8"}):
-				case     moji.IsText(&bodystring):
+				case     moji.IsText(bodystring):
 				default: continue
 			}
 
