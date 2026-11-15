@@ -52,7 +52,7 @@ func LooksLikeEmail(mesg *string) bool {
 	le, cw := len(*mesg), 1000; if le < cw { cw = le - 1 }
 	cv     := (*mesg)[:cw]
 
-	if moji.IsText(mesg)                                             == false { return false }
+	if moji.IsText(*mesg)                                            == false { return false }
 	if moji.ContainsAny(cv, []string{"\n", "\r", "\r\n"})            == false { return false }
 	if moji.ContainsAny(*mesg, []string{"\n\n", "\r\n\r\n", "\r\r"}) == false { return false }
 	return true

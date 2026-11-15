@@ -27,12 +27,10 @@ func TestIsText(t *testing.T) {
 	}
 
 	for _, e := range ae {
-		cx++; if cv := IsText(&(e.text)); cv != e.expected {
+		cx++; if cv := IsText(e.text); cv != e.expected {
 			t.Errorf("%s(%s) returns %t", fn, e.text, !e.expected)
 		}
 	}
-	cx++; if cv := IsText(nil); cv == true { t.Errorf("%s(nil) returns true", fn) }
-
 	t.Logf("The number of tests = %d", cx)
 }
 
