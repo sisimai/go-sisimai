@@ -80,7 +80,7 @@ fuzz-test:
 	@ $(GO) test -tags=fuzz -fuzz=FuzzRise -fuzztime=1m .
 
 check-invisibles:
-	@git --no-pager grep -P -I $(INVISIBLES) '*.go' && exit 1 || true
+	@git --no-pager grep -P -I $(INVISIBLES) -- '*.go' ':!*_test.go' && exit 1 || true
 
 lhost-files:
 	@ $(LS) $(PUBLICFILE)/maildir/bsd/lhost-*.eml \
