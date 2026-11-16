@@ -55,6 +55,27 @@ func IsText(text string) bool {
 	return true
 }
 
+// Is7bit returns true if the given string contains only 7-bit ASCII characters (0x00-0x7F).
+//   Arguments:
+//     - text (string): String to be checked that the text contains only ASCII characters.
+//     - vide (bool):   Flag for excluding control characters: 0x00-0x1F, and 0x7F.
+//   Returns:
+//     - (bool): true if all the characters are ASCII characters.
+func Is7bit(text string, vide bool) bool {
+	if text == "" { return true }
+
+	cw := len(text); for j := 0; j < cw; j++ {
+		// * 0x00 - 0x1F: Control characters
+		// * 0x20 - 0x7E: Visible characters
+		// * 0x7F       : DEL
+		cv := text[j]
+		if vide && (cv < 32 || cv > 126)  { return false }
+		if cv > 127 /* 8bit characters */ { return false }
+    }
+    return true
+}
+
+
 // Aligned checks if each element of the 2nd argument is aligned in the 1st argument or not.
 //   Arguments:
 //     - text (string):   String to be checked such as "I am a cat. I have, as yet, no name.".
