@@ -75,7 +75,6 @@ func Is7bit(text string, vide bool) bool {
     return true
 }
 
-
 // Aligned checks if each element of the 2nd argument is aligned in the 1st argument or not.
 //   Arguments:
 //     - text (string):   String to be checked such as "I am a cat. I have, as yet, no name.".
