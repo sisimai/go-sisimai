@@ -4,6 +4,12 @@ RELEASE NOTES for the Go version of Sisimai
 - document: "https://libsisimai.org/"
 - packages: "https://pkg.go.dev/libsisimai.org/sisimai/v5"
 
+v5.?.?
+---------------------------------------------------------------------------------------------------
+- release: ""
+- version: ""
+  - #501 Implement `moji.Is7bit()` fucntion to check all the argument is 7bit character or not.
+
 v5.8.0
 ---------------------------------------------------------------------------------------------------
 - release: "Wed, 11 Nov 2026 20:22:22 +0900 (JST)"
