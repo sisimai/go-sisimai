@@ -1,4 +1,4 @@
-// Copyright (C) 2020,2024-2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2020,2024-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 //  ____  _____ ____ ____   ___  _  _  ____  
 // |  _ \|  ___/ ___|___ \ / _ \| || || ___| 
@@ -21,7 +21,7 @@ import "libsisimai.org/sisimai/v5/moji"
 //   See:
 //     - https://datatracker.ietf.org/doc/html/rfc2045
 func Parameter(ctype string, lower string) string {
-	if ctype == "" { return "" }
+	if ctype == "" || moji.Is7bit(ctype, false) == false { return "" }
 
 	cv := ""; ci := 0; if len(lower) > 0 {
 		// There is a parameter name in the second argument
