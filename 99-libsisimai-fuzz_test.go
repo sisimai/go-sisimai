@@ -13,6 +13,7 @@ import "strings"
 
 func FuzzRise(f *testing.F) {
 	headerseed := []string{
+		"Return-Path: <>",
 		"From: Mail Delivery Subsystem <postmaster@libsisimai.org>",
 		"To: Kijitora-Neko <kijitora@libsisimai.net>",
 		"Subject: Returned mail: see transcript for details",
@@ -20,6 +21,7 @@ func FuzzRise(f *testing.F) {
 		"Message-Id: <neko-michitsuna-20180202183022@nyaan.jp>",
 		`Content-Type: multipart/report; report-type=delivery-status; boundary="nekochan"`,
 		"MIME-Version: 1.0",
+		"Auto-Submitted: auto-replied",
 	}
 	receivedby := [][]string{
 		[]string{
