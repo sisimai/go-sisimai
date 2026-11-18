@@ -78,7 +78,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 			p1 = p0 + len(e) + 2
 			ct = e; break
 		}
-		if p0 < 0 { break } // There is no boundary string
+		if p0 < 0 || p1 >= len(bf.Payload) { break } // There is no boundary string
 
 		cx := bf.Payload[p1:]
 		p2 := strings.Index(cx, "\n\n")
