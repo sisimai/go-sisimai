@@ -87,11 +87,8 @@ func Aligned(text string, sort []string) bool {
 	align, right := -1, 0; for _, e := range sort {
 		// Get the position of each element in the 1st argument using index()
 		if align > 0 { text = text[align + 1:] }
-		p := strings.Index(text, e)
-
-		if p < 0 { break }      // Break this loop when there is no string in the 1st argument
-		align = len(e) + p - 1  // There is an aligned string in the 1st argument
-		right++
+		p0 := strings.Index(text, e); if p0 < 0 { break }
+		align = len(e) + p0 - 1; right++
 	}
 	return right == len(sort)
 }
