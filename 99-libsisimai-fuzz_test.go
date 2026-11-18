@@ -13,6 +13,7 @@ import "strings"
 
 func FuzzRise(f *testing.F) {
 	headerseed := []string{
+		"From MAILER-DAEMON Fri Feb  2 18:30:22 2018",
 		"Return-Path: <>",
 		"From: Mail Delivery Subsystem <postmaster@libsisimai.org>",
 		"To: Kijitora-Neko <kijitora@libsisimai.net>",
