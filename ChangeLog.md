@@ -9,6 +9,7 @@ v5.?.?
 - release: ""
 - version: ""
   - #501 Implement `moji.Is7bit()` fucntion to check all the argument is 7bit character or not.
+  - #502 Change the argument of `moji.IsText()` to a string.
 
 v5.8.0
 ---------------------------------------------------------------------------------------------------
