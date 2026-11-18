@@ -22,6 +22,7 @@ func FuzzRise(f *testing.F) {
 		`Content-Type: multipart/report; report-type=delivery-status; boundary="nekochan"`,
 		"MIME-Version: 1.0",
 		"Auto-Submitted: auto-replied",
+		"X-Failed-Recipients: chashiro@libsisimai.org",
 	}
 	receivedby := [][]string{
 		[]string{
