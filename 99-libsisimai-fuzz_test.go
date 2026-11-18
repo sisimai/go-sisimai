@@ -16,7 +16,7 @@ func FuzzRise(f *testing.F) {
 		"To: Kijitora-Neko <kijitora@libsisimai.net>",
 		"Subject: Returned mail: see transcript for details",
 		"Date: Fri,  2 Feb 2018 18:30:22 +0900 (JST)",
-		"Message-Id: <neko>",
+		"Message-Id: <neko-michitsuna-20180202183022@nyaan.jp>",
 		"MIME-Version: 1.0",
 	}
 	bodyasseed := "Nyaan?"
