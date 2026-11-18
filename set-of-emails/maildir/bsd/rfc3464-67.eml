@@ -1,0 +1,37 @@
+Return-Path: <MAILER-DAEMON@smtpgw.example.jp>
+Received: from localhost (localhost)
+	by smtpgw.example.jp (V8/cf) id r9G5FZh9018575;
+	Wed, 16 Oct 2013 14:15:35 +0900
+Date: Wed, 16 Oct 2013 14:15:35 +0900
+From: Mail Delivery Subsystem <MAILER-DAEMON@smtpgw.example.jp>
+Message-Id: <201310160515.r9G5FZh9018575@smtpgw.example.jp>
+To: <kijitora@example.org>
+MIME-Version: 1.0
+Content-Type: multipart/report; report-type=delivery-status;
+	boundary="r9G5FZh9018575.1381900535/smtpgw.example.jp"
+Subject: Returned mail: see transcript for details
+Auto-Submitted: auto-generated (failure)
+
+This is a MIME-encapsulated message
+
+--r9G5FZh9018575.1381900535/smtpgw.example.jp
+
+Your message to <nekochan> was automatically rejected:
+Not enough disk space
+
+--r9G5FZh9018575.1381900535/smtpgw.example.jp
+Content-Type: message/delivery-status
+
+Reporting-MTA: dns; smtpgw.example.jp
+Received-From-MTA: DNS; p0000-ipbfpfx00kyoto.kyoto.example.co.jp
+Arrival-Date: Wed, 16 Oct 2013 14:15:34 +0900
+
+Final-Recipient: RFC822; userunknown@bouncehammer.jp
+Action: failed
+Status: 5.1.1
+Remote-MTA: DNS; mx.bouncehammer.jp
+Diagnostic-Code: SMTP; 550 5.1.1 <userunknown@bouncehammer.jp>... User Unknown
+Last-Attempt-Date: Wed, 16 Oct 2013 14:15:35 +0900
+
+--r9G5FZh9018575.1381900535/smtpgw.example.jp
+Content-Type: message/rfc822
