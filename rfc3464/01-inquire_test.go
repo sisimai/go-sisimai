@@ -1,4 +1,4 @@
-// Copyright (C) 2025 azumakuniyuki and sisimai development team, All rights reserved.
+// Copyright (C) 2025-2026 azumakuniyuki and sisimai development team, All rights reserved.
 // This software is distributed under The BSD 2-Clause License.
 package rfc3464
 
@@ -23,7 +23,7 @@ func TestInquire(t *testing.T) {
 		"rfc3464-10", "rfc3464-26", "rfc3464-28", "rfc3464-29", "rfc3464-34", "rfc3464-40", "rfc3464-43",
 		"rfc3464-51", "rfc3464-53", "rfc3464-55", "rfc3464-56", "rfc3464-57", "rfc3464-58", "rfc3464-59",
 		"rfc3464-60", "rfc3464-61", "rfc3464-62", "rfc3464-63", "rfc3464-64", "rfc3464-65", "rfc3464-66",
-		"lhost-powermta-01", "lhost-powermta-02", "lhost-powermta-03",
+		"rfc3464-67", "lhost-powermta-01", "lhost-powermta-02", "lhost-powermta-03",
 
 		"rfc3464-35", "rfc3464-36", "rfc3464-38", "rfc3464-39", "rfc3464-42", "rfc3464-52",
 		"rfc3464-54",

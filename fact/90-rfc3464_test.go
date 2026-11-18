@@ -49,6 +49,7 @@ func TestRFC3464(t *testing.T) {
 		{{"64",   1, "4.0.0",   "",    "networkerror",    false, 0, ""}},
 		{{"65",   1, "5.0.0",   "",    "userunknown",      true, 1, ""}},
 		{{"66",   1, "5.0.0",   "",    "filtered",        false, 1, ""}},
+		{{"67",   1, "5.1.1",   "550", "mailboxfull",     false, 1, ""}},
 	}; EngineTest(t, "RFC3464", publiclist, true)
 
 	secretlist := [][]IsExpected{
