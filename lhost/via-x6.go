@@ -57,7 +57,11 @@ func init() {
 			if p1 == 0 || p2 == 0 {
 				// SMTP Server <mta2.example.jp> rejected recipient <kijitora@example.jp>
 				// The following recipients returned permanent errors: neko@example.jp.
-				if p1 == 0 { p3 = strings.Index(e, ": ") } else { p3 = strings.LastIndex(e, " <") }
+				switch p1 {
+					case 0:  p3 = strings.Index(e, ": ")
+					default: p3 = strings.LastIndex(e, " <")
+				}
+				if p3 < 0 { continue }
 				cv := address.S3S4(e[p3:]); if rfc5322.IsEmailAddress(cv) == false { continue }
 
 				if len(v.Recipient) > 0 { v = siba.NextDeliveryMatter(&dscontents) }
