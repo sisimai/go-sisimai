@@ -11,6 +11,7 @@ v5.?.?
   - #501 Implement `moji.Is7bit()` fucntion to check all the argument is 7bit character or not.
   - #502 Change the argument of `moji.IsText()` to a string.
   - #507 Check the payload length in `rfc3464.Inquire()` function.
+  - #509 Fix "slice bounds out of range" caused by slicing right after `strings.Index()`.
 
 v5.8.0
 ---------------------------------------------------------------------------------------------------
