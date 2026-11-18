@@ -103,7 +103,7 @@ func Inquire(bf *siba.BeforeFact) *siba.RisingUnderway {
 		// Insert "rfc822; " just after the field name
 		emailparts[0] = strings.Replace(emailparts[0], cx, cv + "rfc822; ", 1)
 		p0 := strings.Index(emailparts[0], cv)
-		p1 := moji.IndexOnTheWay(emailparts[0], ">\n", p0 + 1)
+		p1 := moji.IndexOnTheWay(emailparts[0], ">\n", p0 + 1); if p1 < 0 { continue }
 		emailparts[0] = emailparts[0][:p1] + emailparts[0][p1 + 1:]
 	}
 
