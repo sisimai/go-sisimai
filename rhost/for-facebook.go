@@ -95,11 +95,12 @@ func init() {
 			},
 		}
 
-		errorindex := strings.IndexByte(fo.DiagnosticCode, '-')
-		errorlabel := fo.DiagnosticCode[errorindex - 3:errorindex + 3]
+		cw := len(fo.DiagnosticCode)
+		ci := strings.IndexByte(fo.DiagnosticCode, '-'); if ci < 3 || ci + 3 > cw { return "" }
+		cv := fo.DiagnosticCode[ci - 3:ci + 3]
 		for e := range errorcodes {
 			// The key is a bounce reason name
-			if slices.Contains(errorcodes[e], errorlabel) { return e }
+			if slices.Contains(errorcodes[e], cv) { return e }
 		}
 		return ""
 	}
