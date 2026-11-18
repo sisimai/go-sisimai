@@ -20,6 +20,7 @@ func FuzzRise(f *testing.F) {
 		"Date: Fri,  2 Feb 2018 18:30:22 +0900 (JST)",
 		"Message-Id: <neko-michitsuna-20180202183022@nyaan.jp>",
 		`Content-Type: multipart/report; report-type=delivery-status; boundary="nekochan"`,
+		"Content-Transfer-Encoding: 7bit",
 		"MIME-Version: 1.0",
 		"Auto-Submitted: auto-replied",
 		"X-Failed-Recipients: chashiro@libsisimai.org",
