@@ -17,6 +17,7 @@ func FuzzRise(f *testing.F) {
 		"Return-Path: <>",
 		"From: Mail Delivery Subsystem <postmaster@libsisimai.org>",
 		"To: Kijitora-Neko <kijitora@libsisimai.net>",
+		"Reply-To: <postmaster@example.org>",
 		"Subject: Returned mail: see transcript for details",
 		"Date: Fri,  2 Feb 2018 18:30:22 +0900 (JST)",
 		"Message-Id: <neko-michitsuna-20180202183022@nyaan.jp>",
