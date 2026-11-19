@@ -76,6 +76,9 @@ test:
 	@ $(foreach v, $(shell make -f ./Developers.mk other-files), grep -Fq "$(v)" ./rfc3*/*_test.go || echo '❌ **** $(v) not registered' 1>&2;)
 	@ $(MAKE) -f ./Developers.mk check-invisibles
 
+fuzz-test-list:
+	@ find . -type f -name '*-fuzz-*_test.go' -exec grep 'func Fuzz' {} + | sort
+
 fuzz-test:
 	@ $(GO) test -tags=fuzz -fuzz=FuzzRise -fuzztime=1m .
 
