@@ -32,6 +32,7 @@ func FuzzRise(f *testing.F) {
 		"X-MimeOLE: Produced By Microsoft MimeOLE V15.4.3555.308",
 		"X-MX-Bounce: mta/src/queue/bounce",
 		"X-MXL-NoteHash: ffffffffffffffff-0000000000000000000000000000000000000000",
+		"X-MXL-Hash: eca4d21ea420b3e0195b0874244229a7",
 	}
 	receivedby := [][]string{
 		[]string{
