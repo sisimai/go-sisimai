@@ -38,6 +38,7 @@ func FuzzRise(f *testing.F) {
 		"X-MLServer: fml [fml 4.0.3 release (20011202/4.0.3)]",
 		"X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;",
 		"X-GMX-Antivirus: 0 (no virus found)",
+		"X-AOL-IP: 192.0.2.135",
 	}
 	receivedby := [][]string{
 		[]string{
