@@ -30,6 +30,7 @@ func FuzzRise(f *testing.F) {
 		"X-AHMAILID: 20110429T233445+0900-0000-0000D0-AAA-FF",
 		"X-MS-Embedded-Report: ",
 		"X-MimeOLE: Produced By Microsoft MimeOLE V15.4.3555.308",
+		"X-MX-Bounce: mta/src/queue/bounce",
 	}
 	receivedby := [][]string{
 		[]string{
