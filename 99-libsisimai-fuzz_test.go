@@ -39,6 +39,7 @@ func FuzzRise(f *testing.F) {
 		"X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;",
 		"X-GMX-Antivirus: 0 (no virus found)",
 		"X-AOL-IP: 192.0.2.135",
+		"X-ZohoMail: Si CHF_MF_NL SS_10 UW48 UB48 FMWL UW48 UB48 SGR3_1_09124_43",
 	}
 	receivedby := [][]string{
 		[]string{
