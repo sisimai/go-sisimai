@@ -25,6 +25,7 @@ func FuzzRise(f *testing.F) {
 		"MIME-Version: 1.0",
 		"Auto-Submitted: auto-replied",
 		"X-Failed-Recipients: chashiro@libsisimai.org",
+		"X-AHMAILID: 20110429T233445+0900-0000-0000D0-AAA-FF",
 	}
 	receivedby := [][]string{
 		[]string{
