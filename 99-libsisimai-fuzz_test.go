@@ -24,6 +24,7 @@ func FuzzRise(f *testing.F) {
 		"Content-Transfer-Encoding: 7bit",
 		"MIME-Version: 1.0",
 		"Auto-Submitted: auto-replied",
+		"Content-Language: en-US",
 		"X-Mailer: Internet Mail Service (5.5.1960.3)",
 		"X-Failed-Recipients: chashiro@libsisimai.org",
 		"X-AHMAILID: 20110429T233445+0900-0000-0000D0-AAA-FF",
