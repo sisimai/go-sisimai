@@ -34,6 +34,7 @@ func FuzzRise(f *testing.F) {
 		"X-MXL-NoteHash: ffffffffffffffff-0000000000000000000000000000000000000000",
 		"X-MXL-Hash: eca4d21ea420b3e0195b0874244229a7",
 		"X-SPASIGN: NG",
+		"X-MLServer: fml [fml 4.0.3 release (20011202/4.0.3)]",
 	}
 	receivedby := [][]string{
 		[]string{
