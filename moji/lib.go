@@ -125,8 +125,9 @@ func Select(whole, begin, until string, start int) string {
 	if cw[0] < 3 || cw[0] <= (cw[1] + cw[2]) { return "" }
 
 	ci    := [3]int{0, -1, -1}
-	ci[1]  = strings.Index(cv, begin);                     if ci[1] < 0 { return "" }
-	ci[2]  = strings.Index(cv[ci[1] + cw[1] + 1:], until); if ci[2] < 0 { return "" }
+	ci[1]  = strings.Index(cv, begin);        if ci[1] < 0     { return "" }
+	left  := ci[1] + cw[1] + 1;               if left  > cw[0] { return "" }
+	ci[2]  = strings.Index(cv[left:], until); if ci[2] < 0     { return "" }
 	ci[2] += ci[1] + cw[1] + 1
 	return cv[ci[1] + cw[1]:ci[2]]
 }
