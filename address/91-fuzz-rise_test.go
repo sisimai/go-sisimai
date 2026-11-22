@@ -13,11 +13,7 @@ import "testing"
 
 // % go test -tags=fuzz -fuzz=FuzzRise -fuzztime=1m ./address
 func FuzzRise(f *testing.F) {
-	emailseeds := [][3]string{
-		[3]string{"neko@example.jp", "Nyaan?", "(kijitora)"},
-		[3]string{"<neko@example.jp>", "<neko>", "<kijitora>"},
-	}
-	for _, e := range emailseeds { f.Add(e[0], e[1], e[2]) }
+	for _, e := range TestEmailAddrs { f.Add(e.argument, e.displays, e.comments) }
 	f.Fuzz(func(t *testing.T, addr, name, comm string) {
 		args := [3]string{addr, name, comm}
 		_     = Rise(args) 
