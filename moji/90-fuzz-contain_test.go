@@ -27,3 +27,19 @@ func FuzzIsContained(f *testing.F) {
 	f.Fuzz(func(t *testing.T, text string) { _ = IsContained(text, list) })
 }
 
+// % go test -tags=fuzz -fuzz=FuzzContainsAny -fuzztime=1m ./moji
+func FuzzContainsAny(f *testing.F) {
+	neko := []string{"neko", "22", "cat", "nyaan"}
+	list := []string{"nekochan", "kijitora"}
+	for _, e := range neko { f.Add(e) }
+	f.Fuzz(func(t *testing.T, text string) { _ = ContainsAny(text, list) })
+}
+
+// % go test -tags=fuzz -fuzz=FuzzHasPrefixAny -fuzztime=1m ./moji
+func FuzzHasPrefixAny(f *testing.F) {
+	neko := []string{"neko", "22", "cat", "nyaan"}
+	list := []string{"nekochan", "kijitora"}
+	for _, e := range neko { f.Add(e) }
+	f.Fuzz(func(t *testing.T, text string) { _ = HasPrefixAny(text, list) })
+}
+
